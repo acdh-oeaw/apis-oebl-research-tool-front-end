@@ -9,11 +9,19 @@ module.exports = {
     '@vue/typescript/recommended'
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: 2020,
+    experimentalDecorators: true
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    '@typescript-eslint/no-empty-function': 'warn',
+    '@typescript-eslint/member-delimiter-style': 'off',
+    'space-before-function-paren': 'off',
+    'object-curly-spacing': 'off',
+    'no-trailing-spaces': 'warn',
+    'padded-blocks': 'off',
+    'template-curly-spacing': 'off'
   },
   overrides: [
     {
