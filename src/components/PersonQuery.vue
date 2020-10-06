@@ -122,6 +122,7 @@
           </div>
           <v-progress-linear
             class="px-0"
+            color="green"
             :stream="true"
             :buffer-value="progress[0]"
             :value="progress[1]" />
@@ -186,8 +187,9 @@
                         :value="item.lobid.length > 0"
                         :color="item.candidateSelected > -1 ? 'green' : 'red'"
                         :content="item.lobid.length">
-                        <v-icon color="green" v-if="item.candidateSelected > -1">mdi-check</v-icon>
-                        <v-icon v-else-if="item.lobid.length > 1">mdi-account-group</v-icon>
+                        <v-icon v-if="item.candidateSelected === -1 && item.lobid.length === 1">mdi-account-outline</v-icon>
+                        <v-icon v-else-if="item.candidateSelected > -1" color="green">mdi-check</v-icon>
+                        <v-icon v-else-if="item.lobid.length > 1">mdi-account-group-outline</v-icon>
                       </v-badge>
                     </v-list-item-action>
                   </v-list-item>
@@ -221,7 +223,7 @@
                 </v-card-title>
                 <v-divider />
                 <v-card-text style="overflow: auto">
-                  <v-list nav>
+                  <v-list nav v-if="searchingPerson === false">
                     <lobid-list-item
                       v-for="(person, i) in searchTableFiltered[selectedPersonIndex].lobid"
                       :show-action="true"
@@ -230,6 +232,8 @@
                       :key="person.id"
                       :person="person" />
                   </v-list>
+                  <v-skeleton-loader v-for="i in 3" :key="i" type="list-item-avatar-three-line" v-else>
+                  </v-skeleton-loader>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -265,6 +269,7 @@ export default class PersonQuery extends Vue {
   file: File|null = null
   log = console.log
   personListElementClass = 'person-result'
+  searchingPerson = false
   searchSinglePerson: Person = {
     firstName: null,
     lastName: null,
@@ -366,9 +371,9 @@ export default class PersonQuery extends Vue {
 
   loadTable(t: Table<Person>): void {
     this.showColumnMatcher = false
-    this.searchTable = t.map(r => ({...r, lobid: [], loaded: false, candidateSelected: -1}))
+    this.searchTable = t.map(r => ({...r, lobid: [], loaded: false, candidateSelected: -1, id: _.uniqueId()}))
     t.forEach((r, i) => {
-      this.findLobidPerson(r).then(m => {
+      lobid.findPerson(r).then(m => {
         if (m !== undefined) {
           const newR = { ...r, lobid: m, candidateSelected: m.length === 1 ? 0 : -1, loaded: true }
           this.$set(this.searchTable, i, newR)
@@ -379,22 +384,6 @@ export default class PersonQuery extends Vue {
 
   selectLobidPerson(personIndex: number, lobidPersonIndex: number): void {
     this.searchTable[personIndex].candidateSelected = lobidPersonIndex
-  }
-
-  async findLobidPerson(p: Person): Promise<LdPerson[]|undefined> {
-    const qp = new URLSearchParams({
-      q: `preferredName:${ p.firstName || '' } ${ p.lastName || '' } AND dateOfBirth:${(p.dateOfBirth || '')}* AND dateOfBirth:${ null || '' }*`,
-      filter: 'type:Person',
-      format: 'json',
-      size: '10'
-    })
-    try {
-      const r = await (await fetch('http://lobid.org/gnd/search?' + qp)).json()
-      return r.member || []
-    } catch (e) {
-      console.error(e)
-      // this really shouldn’t happen
-    }
   }
 
   focusNextOfClass(elementClass: string): void {
@@ -431,8 +420,10 @@ export default class PersonQuery extends Vue {
   }
 
   async searchPerson(person: Person): Promise<void> {
+    this.searchingPerson = true
     this.searchSinglePerson = person
     this.searchTableFiltered[this.selectedPersonIndex].lobid = await this.loadResults(person) || []
+    this.searchingPerson = false
   }
 
   async loadResults(p: Person): Promise<LdPerson[]> {
