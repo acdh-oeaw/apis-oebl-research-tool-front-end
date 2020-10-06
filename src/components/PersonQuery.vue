@@ -1,251 +1,337 @@
 <template>
-  <v-row class="pa-3">
+  <v-container fill-height class="align-stretch">
     <v-dialog v-model="showColumnMatcher" scrollable max-width="1000px">
       <column-matcher
+        v-if="file !== null"
         :target-columns="allowedPersonFields"
         @cancel="showColumnMatcher = false"
         @confirm="loadTable"
-        :file="file" />
+        :file-type="file.type"
+        :file-name="file.name"
+        :buffer="fileBuffer" />
     </v-dialog>
-    <v-col v-if="searchTable.length === 0">
-      <v-row>
-        <v-col cols="6">
-          <v-card rounded="lg" elevation="0">
-            <v-form
-              @input="log"
-              class="pa-5">
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    autofocus
-                    dense
-                    clearable
-                    autocomplete="off"
-                    @keydown.down.prevent="focusNextOfClass(personListElementClass)"
-                    @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-                    hide-details
-                    @input="updateName"
-                    required
-                    label="Name" />
-                </v-col>
-                <v-col>
-                  <v-select
-                    dense
-                    hide-details
-                    required
-                    label="Berufsfeld"
-                    :items="[ 'Politik und Verwaltung' ]"
+    <v-row v-if="searchTable.length === 0" class="pa-3">
+      <v-col cols="6">
+        <v-card rounded="lg" elevation="0">
+          <v-form
+            @input="log"
+            class="pa-5">
+            <v-row>
+              <v-col>
+                <v-text-field
+                  autofocus
+                  dense
+                  clearable
+                  autocomplete="off"
+                  @keydown.down.prevent="focusNextOfClass(personListElementClass)"
+                  @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
+                  hide-details
+                  @input="searchPersonDebounced(searchSinglePerson)"
+                  v-model="searchSinglePerson.firstName"
+                  required
+                  label="Name" />
+              </v-col>
+              <v-col>
+                <v-select
+                  dense
+                  hide-details
+                  required
+                  label="Berufsfeld"
+                  :items="[ 'Politik und Verwaltung' ]"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <date-picker
+                  type="year"
+                  dense
+                  label="Geburtsdatum"
+                  @input="searchPersonDebounced(searchSinglePerson)"
+                  :v-model="searchSinglePerson.dateOfBirth" />
+              </v-col>
+              <v-col>
+                <date-picker
+                  type="year"
+                  dense
+                  label="Sterbedatum"
+                  @input="searchPersonDebounced(searchSinglePerson)"
+                  :v-model="searchSinglePerson.dateOfDeath"
                   />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <date-picker
-                    type="year"
-                    dense
-                    label="Geburtsdatum"
-                    v-model="dateOfBirth" />
-                </v-col>
-                <v-col>
-                  <date-picker
-                    type="year"
-                    dense
-                    label="Sterbedatum"
-                    v-model="dateOfDeath" />
-                </v-col>
-              </v-row>
-              <v-text-field
-                dense
-                label="GND oder Gideon ID" />
-            </v-form>
-          </v-card>
-          <div class="pa-3 text-center grey--text">
-            oder
-          </div>
-          <v-card rounded="lg" elevation="0" class="pa-4">
-            <v-file-input
-              accept="text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              </v-col>
+            </v-row>
+            <v-text-field
               dense
-              chips
-              small-chips
-              hide-details
-              clearable
-              show-size
-              @change="updateFile"
-              label="CSV oder Excel Datei" />
-          </v-card>
-        </v-col>
-        <v-col cols="6">
-          <v-list
-            class="rounded-lg"
-            nav
-            avatar
-            three-line>
-            <lobid-list-item
-              v-for="result in results"
-              :key="result.id"
-              :person="result"
-              :class="personListElementClass" />
-          </v-list>
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-col class="pa-5" v-else>
-      <v-row class="px-5">
-        <v-col cols="7">
-          <div class="caption grey--text">
-            {{ searchTable.filter(r => r.candidateSelected).length }}
-            von {{ searchTable.length }} gefunden,
-            {{ searchTable.filter(r => !r.candidateSelected).length }} mehrdeutig.
-          </div>
-        </v-col>
-        <v-col class="text-">
+              label="GND oder Gideon ID" />
+          </v-form>
+        </v-card>
+        <div class="pa-3 text-center grey--text">
+          oder
+        </div>
+        <v-card rounded="lg" elevation="0" class="pa-4">
+          <v-file-input
+            accept="text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            dense
+            chips
+            small-chips
+            hide-details
+            clearable
+            show-size
+            @change="updateFile"
+            label="CSV oder Excel Datei" />
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-list
+          class="rounded-lg"
+          nav
+          avatar
+          three-line>
+          <lobid-list-item
+            v-for="result in results"
+            :key="result.id"
+            :person="result"
+            :class="personListElementClass" />
+        </v-list>
+      </v-col>
+    </v-row>
+    <template v-else>
+      <v-row style="height: 20%; overflow: auto" class="flex-shrink-1">
+        <v-col cols="3">
           <v-text-field label="E-Mail Adresse" type="email" />
-          <v-btn color="primary">
-            {{ searchTable.filter(r => r.candidateSelected).length }} von {{searchTable.length}} Personen Abfragen</v-btn>
-          </v-col>
+        </v-col>
+        <v-col cols="3" class="text-">
+          <v-select
+            label="Filter"
+            v-model="selectedFilter"
+            return-object
+            item-value="value"
+            :item-text="(i) => i.text + ' (' + searchTable.filter(i.filter).length + ')'"
+            :items="filterOpts" />
+        </v-col>
+        <v-col class="text-right" cols="6">
+          <v-btn elevation="0" color="primary">
+            {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen
+          </v-btn>
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <div class="caption grey--text">
+            {{ searchTable.filter(r => r.candidateSelected > -1).length }}
+            von {{ searchTable.length }} gefunden,
+            {{ searchTable.filter(r => !(r.candidateSelected > -1)).length }} mehrdeutig.
+          </div>
+          <v-progress-linear
+            class="px-0"
+            :stream="true"
+            :buffer-value="progress[0]"
+            :value="progress[1]" />
+        </v-col>
       </v-row>
-      <v-row>
-        <!-- <v-progress-linear class="px-5" :value="searchTable.filter(r => r.lobid !== undefined).length / searchTable.length * 100" /> -->
-        <v-divider />
-      </v-row>
-      <v-row>
-        <v-col cols="7">
-          <v-virtual-scroll
-            :bench="1"
-            max-height="85vh"
-            :item-height="60"
-            @keydown.down.prevent="focusNextOfClass(personListElementClass)"
-            @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-            :items="searchTable">
-            <template v-slot="{ item, index }">
-              <v-list-item
-                tabindex="-1"
+      <v-divider />
+      <v-row class="flex-shrink-0" style="position: relative; height: 80%">
+        <v-container class="fill-height pa-0">
+          <v-row class="fill-height">
+            <v-col style="position: relative" class="fill-height pa-0 px-3">
+              <v-virtual-scroll
+                class="fill-height v-list--nav"
+                :bench="1"
+                :item-height="60"
                 @keydown.down.prevent="focusNextOfClass(personListElementClass)"
                 @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-                :class="personListElementClass"
-                @click="showPersonDetail(index)">
-                <v-list-item-avatar>
-                  <template v-if="item.lobid && item.lobid.length > 0">
-                    <v-img v-if="item.lobid[0].depiction && item.lobid[0].depiction[0]" :src="item.lobid[0].depiction[0].thumbnail" />
-                    <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
-                  </template>
-                  <template v-else>
-                    <v-icon color="grey">mdi-close</v-icon>
-                  </template>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title v-if="item.lobid && item.lobid.length > 0">
-                    {{ item.lobid[0].preferredName }}
-                    ({{ item.lobid[0].dateOfBirth ? item.lobid[0].dateOfBirth[0] : '?' }}
-                      {{ item.lobid[0].placeOfBirth ? 'in ' + item.lobid[0].placeOfBirth[0].label : '' }}
-                      —
-                      {{ item.lobid[0].dateOfDeath ? item.lobid[0].dateOfDeath[0] : '?' }}
-                      {{ item.lobid[0].placeOfDeath ? 'in ' + item.lobid[0].placeOfDeath[0].label : '' }})
-                  </v-list-item-title>
-                  <v-list-item-title v-else>
-                    {{ item.firstname }} {{ item.lastname }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle v-if="item.lobid && item.lobid.length > 0">
-                    <span v-if="item.lobid[0].biographicalOrHistoricalInformation"> {{ item.lobid[0].biographicalOrHistoricalInformation[0] }}</span>
-                    <span v-if="item.lobid[0].placeOfActivity">; Wirkungsorte:
-                      <span v-for="place in item.lobid[0].placeOfActivity" :key="place.id">
-                        {{ place.label }}
-                      </span>
-                    </span>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle v-else>
-                    (not found)
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-badge
-                    overlap
-                    :value="item.lobid.length > 0"
-                    :color="item.candidateSelected ? 'green' : 'red'"
-                    :content="item.lobid.length">
-                    <v-icon color="green" v-if="item.candidateSelected">mdi-check</v-icon>
-                    <v-icon v-else-if="item.lobid.length > 1">mdi-account-group</v-icon>
-                  </v-badge>
-                </v-list-item-action>
-              </v-list-item>
-              <v-divider />
-            </template>
-          </v-virtual-scroll>
-        </v-col>
-        <v-col class="" cols="5">
-          <v-card rounded elevation="0">
-            <v-subheader>Eingabe</v-subheader>
-            <div class="pl-5">
-              <v-text-field
-                v-for="(v, i) in allowedPersonFields"
-                :key="i"
-                dense
-                class="detail-text-field caption mr-3"
-                flat
-                :label="v.text"
-                :value="searchTable[selectedPersonIndex][v.value]" />
-            </div>
-            <v-subheader>Ergebnisse ({{ searchTable[selectedPersonIndex].lobid.length }})</v-subheader>
-            <v-list nav>
-              <lobid-list-item
-                v-for="(person, i) in searchTable[selectedPersonIndex].lobid"
-                @click="selectLobidPerson(selectedPersonIndex, i)"
-                :input-value="i === 0"
-                :key="person.id"
-                :person="person" />
-            </v-list>
-          </v-card>
-        </v-col>
+                :items="searchTableFiltered">
+                <template v-slot="{ item, index }">
+                  <v-list-item
+                    tabindex="-1"
+                    @keydown.down.prevent="focusNextOfClass(personListElementClass)"
+                    @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
+                    :input-value="index === selectedPersonIndex"
+                    :class="[personListElementClass, 'rounded']"
+                    @click="showPersonDetail(index)">
+                    <v-list-item-avatar>
+                      <template v-if="item.lobid && item.lobid.length > 0">
+                        <v-img v-if="item.lobid[0].depiction && item.lobid[0].depiction[0]" :src="item.lobid[0].depiction[0].thumbnail" />
+                        <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                      </template>
+                      <template v-else>
+                        <v-icon color="grey">mdi-close</v-icon>
+                      </template>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title v-if="item.lobid && item.lobid.length > 0">
+                        {{ item.lobid[0].preferredName }}
+                        ({{ item.lobid[0].dateOfBirth ? item.lobid[0].dateOfBirth[0] : '?' }}
+                          {{ item.lobid[0].placeOfBirth ? 'in ' + item.lobid[0].placeOfBirth[0].label : '' }}
+                          —
+                          {{ item.lobid[0].dateOfDeath ? item.lobid[0].dateOfDeath[0] : '?' }}
+                          {{ item.lobid[0].placeOfDeath ? 'in ' + item.lobid[0].placeOfDeath[0].label : '' }})
+                      </v-list-item-title>
+                      <v-list-item-title v-else>
+                        {{ item.firstName }} {{ item.lastName }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle v-if="item.lobid && item.lobid.length > 0">
+                        <span v-if="item.lobid[0].biographicalOrHistoricalInformation"> {{ item.lobid[0].biographicalOrHistoricalInformation[0] }}</span>
+                        <span v-if="item.lobid[0].placeOfActivity">; Wirkungsorte:
+                          <span v-for="place in item.lobid[0].placeOfActivity" :key="place.id">
+                            {{ place.label }}
+                          </span>
+                        </span>
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle v-else>
+                        (not found)
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-badge
+                        overlap
+                        :value="item.lobid.length > 0"
+                        :color="item.candidateSelected > -1 ? 'green' : 'red'"
+                        :content="item.lobid.length">
+                        <v-icon color="green" v-if="item.candidateSelected > -1">mdi-check</v-icon>
+                        <v-icon v-else-if="item.lobid.length > 1">mdi-account-group</v-icon>
+                      </v-badge>
+                    </v-list-item-action>
+                  </v-list-item>
+                </template>
+              </v-virtual-scroll>
+            </v-col>
+            <v-col class="fill-height py-0" cols="5">
+              <v-card class="fill-height d-flex flex-column rounded-lg" scrollable rounded elevation="0">
+                <v-card-title class="pb-0">
+                  <v-subheader>Eingabe</v-subheader>
+                  <search-person-detail
+                    class="pl-5"
+                    :fields="allowedPersonFields"
+                    :value="searchTableFiltered[selectedPersonIndex]"
+                    @change="searchPersonDebounced($event)"
+                  />
+                  <v-subheader>
+                    Ergebnisse ({{ searchTableFiltered[selectedPersonIndex].lobid.length }})
+                  </v-subheader>
+                  <v-spacer />
+                  <v-btn
+                    style="float: right"
+                    small
+                    rounded
+                    text
+                    v-if="searchTableFiltered[selectedPersonIndex].candidateSelected > -1"
+                    @click="searchTableFiltered[selectedPersonIndex].candidateSelected = -1"
+                    elevation="0">
+                    nichts auswählen
+                  </v-btn>
+                </v-card-title>
+                <v-divider />
+                <v-card-text style="overflow: auto">
+                  <v-list nav>
+                    <lobid-list-item
+                      v-for="(person, i) in searchTableFiltered[selectedPersonIndex].lobid"
+                      :show-action="true"
+                      @click="selectLobidPerson(selectedPersonIndex, i)"
+                      :class="[i === searchTableFiltered[selectedPersonIndex].candidateSelected && 'v-list-item--active']"
+                      :key="person.id"
+                      :person="person" />
+                  </v-list>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-row>
-    </v-col>
-  </v-row>
+    </template>
+  </v-container>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import DatePicker from './DatePicker.vue'
 import ColumnMatcher from './ColumnMatcher.vue'
 import LobidListItem from './LobidListItem.vue'
+import SearchPersonDetail from './SearchPersonDetail.vue'
+import { Person as LdPerson } from 'schema-dts'
+import { Table, Person, PersonMatchable } from '../types'
+import * as lobid from '../service/lobid'
 
-import {Table} from '../table'
 import _ from 'lodash'
 
 @Component({
   components: {
     DatePicker,
     LobidListItem,
-    ColumnMatcher
+    ColumnMatcher,
+    SearchPersonDetail
   }
 })
 export default class PersonQuery extends Vue {
 
+  fileBuffer: ArrayBuffer|null = null
   file: File|null = null
-  dateOfBirth: string|null = null
-  dateOfDeath: string|null = null
-  name: string|null = ''
   log = console.log
-  results = []
   personListElementClass = 'person-result'
-  updateNameDebounced = _.debounce(this.updateName, 300)
+  searchSinglePerson: Person = {
+    firstName: null,
+    lastName: null,
+    dateOfBirth: null,
+    dateOfDeath: null,
+    placeOfBirth: null,
+    placeOfDeath: null
+  }
+
+  searchPersonDebounced = _.debounce(this.searchPerson, 300)
+  results: LdPerson[] = []
   showColumnMatcher = false
-  searchTable: any[] = []
-  selectedPersonIndex: any = 0
+
+  get progress(): [number, number] {
+    const loaded = this.searchTable.filter(r => r.loaded).length / this.searchTable.length * 100
+    const selected = this.searchTable.filter(r => r.candidateSelected > -1).length / this.searchTable.length * 100
+    return [loaded, selected]
+  }
+
+  get filterOpts() {
+    return [
+      {
+        text: 'alle',
+        value: 'all',
+        filter: () => true
+      },
+      {
+        text: 'nicht gefunden',
+        value: 'not found',
+        filter: (e: PersonMatchable) => e.lobid.length === 0
+      },
+      {
+        text: 'ambig',
+        value: 'ambiguous',
+        filter: (e: PersonMatchable) => e.lobid.length > 1
+      },
+      {
+        text: 'disambiguiert',
+        value: 'found',
+        filter: (e: PersonMatchable) => e.lobid.length === 1 || e.candidateSelected > -1
+      }
+    ]
+  }
+
+  selectedFilter = this.filterOpts[0]
+  searchTable: PersonMatchable[] = []
+  selectedPersonIndex = 0
   allowedPersonFields = [
     {
-      value: 'firstname',
+      value: 'firstName',
       text: 'Vorname'
     },
     {
-      value: 'lastname',
+      value: 'lastName',
       text: 'Nachname'
     },
     {
       value: 'dateOfBirth',
-      text: 'Geburtsdatum'
+      text: 'Geburtsdatum',
+      hint: 'YYYY or YYYY-MM-DD',
+      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
     {
       value: 'dateOfDeath',
-      text: 'Sterbedatum'
+      text: 'Sterbedatum',
+      hint: 'YYYY or YYYY-MM-DD',
+      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
     {
       value: 'placeOfDeath',
@@ -261,41 +347,43 @@ export default class PersonQuery extends Vue {
     }
   ]
 
-  showPersonDetail(i: any) {
+  get searchTableFiltered(): PersonMatchable[] {
+    return this.searchTable.filter(this.selectedFilter.filter)
+  }
+
+  showPersonDetail(i: number): void {
     console.log(document.activeElement)
     this.selectedPersonIndex = i
   }
 
-  updateFile(f: File) {
+  async updateFile(f: File): Promise<void> {
     if (f !== undefined) {
       this.file = f
+      this.fileBuffer = await f.arrayBuffer()
       this.showColumnMatcher = true
     }
   }
 
-  loadTable(t: Table) {
+  loadTable(t: Table<Person>): void {
     this.showColumnMatcher = false
-    this.searchTable = t.map(r => ({...r, lobid: []}))
-    setTimeout(() => {
-      t.forEach((r, i) => {
-        this.findLobidPerson(r as any).then((m: any[]) => {
-          const newR = { ...r, lobid: m, candidateSelected: m.length === 1 }
+    this.searchTable = t.map(r => ({...r, lobid: [], loaded: false, candidateSelected: -1}))
+    t.forEach((r, i) => {
+      this.findLobidPerson(r).then(m => {
+        if (m !== undefined) {
+          const newR = { ...r, lobid: m, candidateSelected: m.length === 1 ? 0 : -1, loaded: true }
           this.$set(this.searchTable, i, newR)
-        })
+        }
       })
-    }, 500)
+    })
   }
 
-  selectLobidPerson(personIndex: any, lobidPersonIndex: number) {
-    // moves the item to the top of the list
-    this.searchTable[personIndex].candidateSelected = true
-    this.searchTable[personIndex].lobid.unshift(this.searchTable[personIndex].lobid.splice(lobidPersonIndex, 1)[0])
-
+  selectLobidPerson(personIndex: number, lobidPersonIndex: number): void {
+    this.searchTable[personIndex].candidateSelected = lobidPersonIndex
   }
 
-  async findLobidPerson(p: {firstname: string, lastname: string, dateOfBirth: string|null}): Promise<any> {
+  async findLobidPerson(p: Person): Promise<LdPerson[]|undefined> {
     const qp = new URLSearchParams({
-      q: `preferredName:${ p.firstname || '' } ${ p.lastname || '' } AND dateOfBirth:${(p.dateOfBirth || '')}* AND dateOfBirth:${ null || '' }*`,
+      q: `preferredName:${ p.firstName || '' } ${ p.lastName || '' } AND dateOfBirth:${(p.dateOfBirth || '')}* AND dateOfBirth:${ null || '' }*`,
       filter: 'type:Person',
       format: 'json',
       size: '10'
@@ -309,7 +397,7 @@ export default class PersonQuery extends Vue {
     }
   }
 
-  focusNextOfClass(elementClass: string) {
+  focusNextOfClass(elementClass: string): void {
     const aE = document.activeElement
     if (
       aE instanceof HTMLElement &&
@@ -325,7 +413,7 @@ export default class PersonQuery extends Vue {
     }
   }
 
-  focusPrevOfClass(elementClass: string) {
+  focusPrevOfClass(elementClass: string): void {
     const aE = document.activeElement
     if (
       aE instanceof HTMLElement &&
@@ -342,48 +430,18 @@ export default class PersonQuery extends Vue {
     }
   }
 
-  updateName(name: string) {
-    this.name = name
-    this.loadResults()
+  async searchPerson(person: Person): Promise<void> {
+    this.searchSinglePerson = person
+    this.searchTableFiltered[this.selectedPersonIndex].lobid = await this.loadResults(person) || []
   }
 
-  @Watch('dateOfBirth')
-  onChangeDate() {
-    this.loadResults()
-  }
-
-  async loadResults() {
-    if (this.name === null || this.name.trim() === '') {
+  async loadResults(p: Person): Promise<LdPerson[]> {
+    if (Object.keys(p).length === 0) {
       this.results = []
     } else {
-      console.log(this.name)
-      // const u = http://lobid.org/gnd/search?q=preferredName%3AFranz*%20AND%20dateOfDeath:1910*&filter=type%3APerson&format=json:preferredName,dateOfDeath,dateOfBirth,%20placeOfDeath,placeOfBirth&size=100
-      const qp = new URLSearchParams({
-        // TODO:
-        q: `preferredName:${ this.name } AND dateOfDeath:${(this.dateOfDeath || '')}* AND dateOfBirth:${ this.dateOfBirth || '' }*`,
-        // q: `preferredName:${e}`,
-        filter: 'type:Person',
-        format: 'json',
-        size: '100'
-      })
-      try {
-        const r = await (await fetch('http://lobid.org/gnd/search?' + qp)).json()
-        this.results = r.member
-        console.log(r)
-      } catch (e) {
-        console.error(e)
-        // this really shouldn’t happen
-      }
+      this.results = await lobid.findPerson(p)
     }
+    return this.results
   }
 }
 </script>
-<style lang="stylus" scoped>
-.detail-text-field {
-  width: 45%;
-  display: inline-block;
-  /deep/ label{
-    font-size: 13px !important;
-  }
-}
-</style>

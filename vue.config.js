@@ -4,6 +4,9 @@ module.exports = {
   ],
   devServer: {
     writeToDisk: true,
-    disableHostCheck: true
+    disableHostCheck: true,
+    watchOptions: {
+      poll: false
+    }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main class="main">
+    <v-main style="max-height: 100vh" class="main">
       <research-tool />
     </v-main>
   </v-app>

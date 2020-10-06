@@ -21,7 +21,8 @@ module.exports = {
     'object-curly-spacing': 'off',
     'no-trailing-spaces': 'warn',
     'padded-blocks': 'off',
-    'template-curly-spacing': 'off'
+    'template-curly-spacing': 'off',
+    'array-bracket-spacing': 'off'
   },
   overrides: [
     {

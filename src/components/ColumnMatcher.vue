@@ -1,7 +1,7 @@
 <template>
   <v-card rounded="lg">
   <v-card-title class="text-center text-caption">
-    <v-spacer />Spaltenzuordnung für {{ file.name }}<v-spacer />
+    <v-spacer />Spaltenzuordnung für {{ fileName }}<v-spacer />
   </v-card-title>
   <v-divider />
   <v-card-text class="px-0 pb-0">
@@ -10,13 +10,12 @@
       fixed-header
       dense
       disable-sort
+      :page="tablePage"
       height="500"
+      hide-default-footer
       :headers="headers"
       :items="initialTable"
       :items-per-page="100"
-      :footer-props="{
-        'items-per-page-options': [10, 50, 100]
-      }"
     >
     <template v-for="h in headers" v-slot:[`header.${h.value}`]="{}">
       <div class="py-1 custom-header" :key="h.value">
@@ -33,6 +32,38 @@
           dense
           :items="getTargetColumnsOptions(h)" />
       </div>
+    </template>
+    <template v-slot:footer="{}">
+      <v-divider />
+      <v-row class="px-5">
+        <v-col cols="3">
+          <v-select
+            dense
+            hide-details
+            label="Trennzeichen"
+            v-model="separator"
+            @change="updateSeparator"
+            :items="[
+              {
+                text: ',',
+                value: ','
+              },
+              {
+                text: ';',
+                value: ';'
+              },
+              {
+                text: '(Tabulator)',
+                value: '  '
+              }
+              ]"
+          />
+        </v-col>
+        <v-col class="text-right">
+          <v-btn :disabled="tablePage === 1" @click="tablePage = tablePage - 1" icon><v-icon>mdi-chevron-left</v-icon></v-btn>
+          <v-btn :disabled="tablePage === Math.ceil(initialTable.length / 100)" @click="tablePage = tablePage + 1" icon><v-icon>mdi-chevron-right</v-icon></v-btn>
+        </v-col>
+      </v-row>
     </template>
     </v-data-table>
   </v-card-text>
@@ -62,9 +93,9 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import neatCsv from 'neat-csv'
-import _ from 'lodash'
+import * as _ from 'lodash'
 import { VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VDivider, VDataTable, VSelect } from 'vuetify/lib'
-import { Column, Header, Table, Row } from '../table'
+import { Column, Header, Table, Row } from '../types'
 
 @Component({
   components: {
@@ -73,13 +104,17 @@ import { Column, Header, Table, Row } from '../table'
 })
 export default class ColumnMatcher extends Vue {
 
-  @Prop() file: File
-  @Prop() targetColumns: Column[]
+  @Prop({ required: true }) buffer: ArrayBuffer
+  @Prop({ default: [], required: true }) targetColumns: Column[]
+  @Prop({ required: true }) fileName: string
+  @Prop({ required: true }) fileType: string
 
   headers: Header[] = []
-  initialTable: Table = []
+  initialTable: Table<Row> = []
+  tablePage = 1
+  separator = ';'
 
-  convertTable(t: Table, hs: Header[]): Table {
+  convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
     return t.map((r) => {
       return hs.reduce((m, e) => {
         if (e.matchWith !== null) {
@@ -106,20 +141,36 @@ export default class ColumnMatcher extends Vue {
     ]
   }
 
-  @Watch('file', { immediate: true })
-  async onUpdateFile() {
-    if (this.file.type === 'text/csv') {
-      const t = await this.file.text()
-      const c = await neatCsv(t)
-      const firstRow = c[0]
-      this.headers = _(firstRow)
-        .map((v, k) => ({
-          text: k,
-          sortable: true,
-          value: k,
-          matchWith: null
-        }))
-        .value()
+  async parseCsvToJson(csv: string, separator: string): Promise<[Header[], Table<Row>]> {
+    const c = await neatCsv(csv, {separator})
+    const firstRow = c[0]
+    const h = _.map(firstRow, (v, k) => ({
+      text: k,
+      sortable: true,
+      value: k,
+      matchWith: this.targetColumns.find(c => c.text.toLowerCase() === k.toLowerCase())?.value || null
+    }))
+    return [h, c]
+  }
+
+  async updateSeparator(s: string): Promise<void> {
+    const [h, c] = await this.parseCsvToJson(await this.getTextFromFile(this.buffer), s)
+    this.headers = h
+    this.initialTable = c
+  }
+
+  getTextFromFile(f: ArrayBuffer): string {
+    const t = new TextDecoder()
+    const s = t.decode(f)
+    return s
+  }
+
+  @Watch('buffer', { immediate: true })
+  async onUpdateFile(): Promise<void> {
+    if (this.fileType === 'text/csv') {
+      const t = await this.getTextFromFile(this.buffer)
+      const [h, c] = await this.parseCsvToJson(t, ';')
+      this.headers = h
       this.initialTable = c
     } else {
       alert('no excel support for now')
