@@ -26,7 +26,7 @@
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action>
-      <v-tooltip top>
+      <v-tooltip transition="none" top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             v-if="person.gndIdentifier !== undefined"
