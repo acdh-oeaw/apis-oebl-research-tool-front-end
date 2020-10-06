@@ -15,56 +15,76 @@
       hide-default-footer
       :headers="headers"
       :items="initialTable"
-      :items-per-page="100"
-    >
-    <template v-for="h in headers" v-slot:[`header.${h.value}`]="{}">
-      <div class="py-1 custom-header" :key="h.value">
-        <span class="initial-header">
-          {{h.text}}
-        </span>
-        <v-select
-          hide-details
-          solo
-          flat
-          v-model="h.matchWith"
-          @
-          class="col-select"
-          dense
-          :items="getTargetColumnsOptions(h)" />
-      </div>
-    </template>
-    <template v-slot:footer="{}">
-      <v-divider />
-      <v-row class="px-5">
-        <v-col cols="3">
+      :items-per-page="100">
+      <template v-for="h in headers" v-slot:[`header.${h.value}`]="{}">
+        <div class="py-1 custom-header" :key="h.value">
+          <span class="initial-header">
+            {{h.text}}
+          </span>
           <v-select
-            dense
             hide-details
-            label="Trennzeichen"
-            v-model="separator"
-            @change="updateSeparator"
-            :items="[
-              {
-                text: ',',
-                value: ','
-              },
-              {
-                text: ';',
-                value: ';'
-              },
-              {
-                text: '(Tabulator)',
-                value: '  '
-              }
-              ]"
-          />
-        </v-col>
-        <v-col class="text-right">
-          <v-btn :disabled="tablePage === 1" @click="tablePage = tablePage - 1" icon><v-icon>mdi-chevron-left</v-icon></v-btn>
-          <v-btn :disabled="tablePage === Math.ceil(initialTable.length / 100)" @click="tablePage = tablePage + 1" icon><v-icon>mdi-chevron-right</v-icon></v-btn>
-        </v-col>
-      </v-row>
-    </template>
+            solo
+            flat
+            v-model="h.matchWith"
+            @
+            class="col-select"
+            dense
+            :items="getTargetColumnsOptions(h)" />
+        </div>
+      </template>
+      <template v-slot:item="{ item }">
+        <tr>
+          <td
+            v-for="(h, i) in headers"
+            :class="[
+              (nullValues.indexOf(item[h.value]) > -1) && 'is-null-equivalent',
+              (h.matchWith === null) && 'do-not-import']"
+            :key="i">
+            {{ item[h.value] }}
+          </td>
+        </tr>
+      </template>
+      <template v-slot:footer="{}">
+        <v-divider />
+        <v-row class="px-5">
+          <v-col cols="3">
+            <v-select
+              dense
+              hide-details
+              label="Trennzeichen"
+              v-model="separator"
+              @change="updateSeparator"
+              :items="allSeparators"
+            />
+          </v-col>
+          <v-col cols="4">
+            <v-combobox
+              hide-details
+              label="Werte ignorieren"
+              v-model="nullValues"
+              chips
+              deletable-chips
+              small-chips
+              dense
+              multiple>
+            </v-combobox>
+          </v-col>
+          <v-col class="text-right">
+            <v-btn
+              :disabled="tablePage === 1"
+              @click="tablePage = tablePage - 1"
+              icon>
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+            <v-btn
+              :disabled="tablePage === Math.ceil(initialTable.length / 100)"
+              @click="tablePage = tablePage + 1"
+              icon>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </template>
     </v-data-table>
   </v-card-text>
   <v-divider />
@@ -113,6 +133,22 @@ export default class ColumnMatcher extends Vue {
   initialTable: Table<Row> = []
   tablePage = 1
   separator = ';'
+  allSeparators = [
+    {
+      text: ',',
+      value: ','
+    },
+    {
+      text: ';',
+      value: ';'
+    },
+    {
+      text: '(Tabulator)',
+      value: '  '
+    }
+  ]
+
+  nullValues = [ '?' ]
 
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
     return t.map((r) => {
@@ -179,6 +215,12 @@ export default class ColumnMatcher extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
+.do-not-import {
+  color: rgba(0,0,0,.5)
+}
+.is-null-equivalent{
+  color: rgba(0,0,0,.3)
+}
 .target-selector{
   width: 100%
 }
