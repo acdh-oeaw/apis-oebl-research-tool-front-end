@@ -38,7 +38,8 @@
             v-for="(h, i) in headers"
             :class="[
               (nullValues.indexOf(item[h.value]) > -1) && 'is-null-equivalent',
-              (h.matchWith === null) && 'do-not-import']"
+              (h.matchWith === null) && 'do-not-import']
+            "
             :key="i">
             {{ item[h.value] }}
           </td>
@@ -76,6 +77,17 @@
               icon>
               <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
+            <select
+              class="px-2"
+              :value="tablePage"
+              @change="tablePage = Number($event.target.value)">
+              <option
+                v-for="p in Math.ceil(initialTable.length / 100)"
+                :key="p"
+                :value="p">
+                Seite {{ p }} von {{ Math.ceil(initialTable.length / 100) }}
+              </option>
+            </select>
             <v-btn
               :disabled="tablePage === Math.ceil(initialTable.length / 100)"
               @click="tablePage = tablePage + 1"
@@ -241,5 +253,12 @@ export default class ColumnMatcher extends Vue {
 .custom-header .col-select {
   font-size: 13px
   font-weight: normal
+}
+select {
+  user-select none
+  -webkit-user-select none
+  -moz-appearance none
+  -webkit-appearance none
+  appearance none
 }
 </style>
