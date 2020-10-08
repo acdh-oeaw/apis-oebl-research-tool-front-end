@@ -118,7 +118,7 @@
           <div class="caption grey--text">
             {{ searchTable.filter(r => r.candidateSelected > -1).length }}
             von {{ searchTable.length }} gefunden,
-            {{ searchTable.filter(r => !(r.candidateSelected > -1)).length }} mehrdeutig.
+            {{ searchTable.filter(r => (r.candidateSelected === -1 && r.lobid.length > 1)).length }} mehrdeutig.
           </div>
           <v-progress-linear
             class="px-0"
@@ -289,7 +289,7 @@ export default class PersonQuery extends Vue {
     return [loaded, selected]
   }
 
-  get filterOpts() {
+  get filterOpts(): Array<{text: string, value: string, filter: (e: PersonMatchable) => boolean}> {
     return [
       {
         text: 'alle',
@@ -348,7 +348,8 @@ export default class PersonQuery extends Vue {
     },
     {
       value: 'gnd',
-      text: 'GND'
+      text: 'GND',
+      rules: [ (e: any): boolean => !isNaN(e) ]
     }
   ]
 
