@@ -1,6 +1,5 @@
 variables:
   SERVICE_NAME: "oebl-research-fronted"
-  DOCKER_REGISTRY: "acdh"
 
 stages:
   - build
@@ -9,26 +8,26 @@ stages:
   - deploy
 
 before_script:
-  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 build-stage:
   stage: build
   script:
-    - docker build --build-arg ENV_FILE=env-stage.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+    - docker build --build-arg ENV_FILE=env-stage.env -t $CI_REGISTRY/${SERVICE_NAME}:$CI_BUILD_REF .
   only:
     - dev
 
 build-master:
   stage: build
   script:
-    - docker build --build-arg ENV_FILE=env-production.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+    - docker build --build-arg ENV_FILE=env-production.env -t $CI_REGISTRY/${SERVICE_NAME}:$CI_BUILD_REF .
   only:
     - master
 
 build-test:
   stage: build
   script:
-    - docker build --build-arg ENV_FILE=env-test.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+    - docker build --build-arg ENV_FILE=env-test.env -t $CI_REGISTRY/${SERVICE_NAME}:$CI_BUILD_REF .
   except:
     - dev
     - master
@@ -41,7 +40,7 @@ build-test:
 push:
   stage: push
   script:
-    - docker push ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF}
+    - docker push $CI_REGISTRY/${SERVICE_NAME}:CI_BUILD_REF
   only:
     # - dev
     - master
