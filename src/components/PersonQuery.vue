@@ -285,6 +285,7 @@ export default class PersonQuery extends Vue {
   results: LdPerson[] = []
   showColumnMatcher = false
 
+  // the ones that have been loaded and the ones that have exactly one result.
   get progress(): [number, number] {
     const loaded = this.searchTable.filter(r => r.loaded).length / this.searchTable.length * 100
     const selected = this.searchTable.filter(r => r.candidateSelected > -1).length / this.searchTable.length * 100
