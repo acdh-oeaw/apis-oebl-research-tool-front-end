@@ -1,0 +1,47 @@
+variables:
+  SERVICE_NAME: "oebl-research-fronted"
+  DOCKER_REGISTRY: "acdh"
+
+stages:
+  - build
+  # - test
+  - push
+  - deploy
+
+before_script:
+  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+
+build-stage:
+  stage: build
+  script:
+    - docker build --build-arg ENV_FILE=env-stage.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+  only:
+    - dev
+
+build-master:
+  stage: build
+  script:
+    - docker build --build-arg ENV_FILE=env-production.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+  only:
+    - master
+
+build-test:
+  stage: build
+  script:
+    - docker build --build-arg ENV_FILE=env-test.env -t ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} .
+  except:
+    - dev
+    - master
+
+test:
+  stage: test
+  script:
+    - docker run --env-file=env-test.env ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} test
+
+push:
+  stage: push
+  script:
+    - docker push ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF}
+  only:
+    # - dev
+    - master
