@@ -28,12 +28,21 @@ export interface Person {
   dateOfDeath: string|null
   placeOfBirth: string|null
   placeOfDeath: string|null
+  gnd: string|null
 }
 
 export interface PersonMatchable extends Person {
+  id: string
   lobid: LdPerson[]
   candidateSelected: number
   loaded: boolean
+}
+
+export interface PersonField {
+  value: keyof Person
+  text: string
+  hint?: string
+  rules?: Array<(e: string) => boolean>
 }
 
 declare module 'vue-multipane'
