@@ -33,10 +33,10 @@ build-test:
     - dev
     - master
 
-test:
-  stage: test
-  script:
-    - docker run --env-file=env-test.env ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} test
+# test:
+#  stage: test
+#  script:
+#    - docker run --env-file=env-test.env ${DOCKER_REGISTRY}/${SERVICE_NAME}:${CI_BUILD_REF} test
 
 push:
   stage: push
