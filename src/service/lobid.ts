@@ -22,7 +22,8 @@ export async function findPerson(p: Person, simpleTry = false): Promise<LdPerson
         dateOfBirth: null,
         dateOfDeath: null,
         placeOfBirth: null,
-        placeOfDeath: null
+        placeOfDeath: null,
+        gnd: null
       }, true)
     }
   } catch (e) {
@@ -46,7 +47,6 @@ function makeLobidQueryString(p: Person): string {
     placeOfDeath: p.placeOfDeath
   }
   return _.reduce(lobidQ, (m, e, k) => {
-    console.log(k, e)
     return m.concat(isQueryableValue(e)
       ? k + ':' + e
       : []
