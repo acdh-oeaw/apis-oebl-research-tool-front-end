@@ -1,8 +1,17 @@
 <template>
-  <v-list-item v-if="typeof person !== 'string'" v-on="$listeners" v-bind="$props">
+  <v-list-item
+    v-if="typeof person !== 'string'"
+    v-on="$listeners"
+    :class="[ selected && 'v-list-item--active' ]"
+    v-bind="$props">
     <v-list-item-avatar>
-      <v-img v-if="person.depiction && person.depiction[0]" :src="person.depiction[0].thumbnail" />
-      <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
+      <v-img
+        :src="person.depiction && person.depiction[0]
+          ? person.depiction[0].thumbnail
+          : 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='"
+        :gradient="selected ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)' : undefined">
+        <v-icon style="width: 100%;" color="white" v-if="selected">mdi-check</v-icon>
+      </v-img>
     </v-list-item-avatar>
     <v-list-item-content>
       <v-list-item-title>
@@ -51,6 +60,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 export default class LobidListItem extends Vue {
 
   @Prop() person: any
+  @Prop() selected: boolean
 
   openExternal(url: string): void {
     window.open(url)
