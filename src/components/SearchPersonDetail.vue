@@ -19,16 +19,21 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { PersonField, PersonMatchable } from '../types'
+
+function clone(v: any) {
+  return JSON.parse(JSON.stringify(v))
+}
 
 @Component
 export default class SearchPersonDetail extends Vue {
 
-  @Prop() value: any
-  @Prop() fields: any
+  @Prop() value: PersonMatchable
+  @Prop() fields: PersonField[]
 
   localValue: any = {}
 
-  updateLocalValue(field: string, val: string) {
+  updateLocalValue(field: keyof PersonMatchable, val: string): void {
     if (this.value[field] === this.localValue[field]) {
       this.$delete(this.localValue, field)
     } else {
@@ -37,21 +42,25 @@ export default class SearchPersonDetail extends Vue {
     }
   }
 
-  resetLocalValue() {
+  resetLocalValue(): void {
     this.localValue = {}
     this.$emit('change', this.value)
   }
 
-  get hasChanged() {
+  get hasChanged(): boolean {
     return JSON.stringify(this.value) !== JSON.stringify({...this.value, ...this.localValue})
   }
 
-  get computedValue() {
+  get computedValue(): PersonMatchable {
     return { ...this.value, ...this.localValue }
   }
 
-  mounted() {
-    
+  // if the ID changes, we need to update the local value too.
+  @Watch('value')
+  onChangeValue(newVal: PersonMatchable, oldVal: PersonMatchable): void {
+    if (newVal.id !== oldVal.id) {
+      this.localValue = clone(newVal)
+    }
   }
 }
 </script>
