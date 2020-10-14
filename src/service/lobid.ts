@@ -12,7 +12,7 @@ export async function findPerson(p: Person, simpleTry = false): Promise<LdPerson
     size: '100'
   })
   try {
-    const r = await (await fetch('http://lobid.org/gnd/search?' + qp)).json()
+    const r = await (await fetch('https://lobid.org/gnd/search?' + qp)).json()
     if (r.member.length > 0 || simpleTry === true) {
       res = r.member
     } else {
