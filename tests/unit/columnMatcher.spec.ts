@@ -4,6 +4,10 @@ import HelloWorld from '@/components/ColumnMatcher.vue'
 import { readFileSync } from 'fs'
 import flushPromises from 'flush-promises'
 import Vuetify from 'vuetify'
+import Vue from 'vue'
+// https://github.com/vuetifyjs/vuetify/issues/4861
+// Vue.use(VueRouter)
+Vue.use(Vuetify)
 // require('jsdom-global/register')
 const vuetify = new Vuetify()
 const localVue = createLocalVue();
