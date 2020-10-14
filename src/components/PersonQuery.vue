@@ -98,7 +98,7 @@
     <template v-else>
       <v-row style="height: 20%; overflow: auto" class="flex-shrink-1">
         <v-col cols="3">
-          <v-text-field label="E-Mail Adresse" type="email" />
+          <v-text-field v-model="eMail" label="E-Mail Adresse" type="email" />
         </v-col>
         <v-col cols="3" class="text-">
           <v-select
@@ -110,7 +110,7 @@
             :items="filterOpts" />
         </v-col>
         <v-col class="text-right" cols="6">
-          <v-btn elevation="0" color="primary">
+          <v-btn elevation="0" color="primary" @click="sendMatches">
             {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen
           </v-btn>
         </v-col>
@@ -253,6 +253,7 @@ import SearchPersonDetail from './SearchPersonDetail.vue'
 import { Person as LdPerson } from 'schema-dts'
 import { Table, Person, PersonMatchable, PersonField } from '../types'
 import * as lobid from '../service/lobid'
+import { saveAs } from 'file-saver'
 
 import _ from 'lodash'
 
@@ -281,11 +282,26 @@ export default class PersonQuery extends Vue {
     gnd: null
   }
 
+  eMail = ''
   searchPersonDebounced = _.debounce(this.searchPerson, 300)
   results: LdPerson[] = []
   showColumnMatcher = false
 
-  // the ones that have been loaded and the ones that have exactly one result.
+  sendMatches(): void {
+    const res = this.searchTable
+      .filter(p => p.candidateSelected > -1)
+      .map(p => {
+        return {
+          firstName: p.firstName,
+          lastName: p.lastName,
+          gnd: (p.lobid[p.candidateSelected] as any).gndIdentifier as string
+        }
+      })
+    console.log(res)
+    saveAs(new Blob([JSON.stringify({email: this.eMail, lemmas: res}, undefined, 4)]), 'research-list-matched.json')
+  }
+
+  // the ones that have been loaded and the ones that have exactly one
   get progress(): [number, number] {
     const loaded = this.searchTable.filter(r => r.loaded).length / this.searchTable.length * 100
     const selected = this.searchTable.filter(r => r.candidateSelected > -1).length / this.searchTable.length * 100
