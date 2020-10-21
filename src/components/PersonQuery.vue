@@ -394,7 +394,7 @@ export default class PersonQuery extends Vue {
     }
   }
 
-  loadTable(t: Table<Person>): void {
+  async loadTable(t: Table<Person>): Promise<void> {
     this.showColumnMatcher = false
     this.searchTable = t.map(r => ({
       ...r,
@@ -403,19 +403,34 @@ export default class PersonQuery extends Vue {
       candidateSelected: -1,
       id: _.uniqueId()
     }))
-    this.searchTable.forEach((r, i) => {
-      lobid.findPerson(r).then(m => {
-        if (m !== undefined) {
-          const newR = {
-            ...r,
-            lobid: m,
-            candidateSelected: m.length === 1 ? 0 : -1,
-            loaded: true
-          }
-          this.$set(this.searchTable, i, newR)
+    const chunks = _.chunk(this.searchTable, 20)
+    let i = 0
+    for (const chunk of chunks) {
+      await Promise.all(chunk.map(async p => {
+        const lp = await lobid.findPerson(p)
+        const newR = {
+          ...p,
+          lobid: lp,
+          candidateSelected: lp.length === 1 ? 0 : -1,
+          loaded: true
         }
-      })
-    })
+        this.$set(this.searchTable, i, newR)
+        i = i + 1
+      }))
+    }
+    // chunks.forEach((r, i) => {
+    //   lobid.findPerson(r).then(m => {
+    //     if (m !== undefined) {
+    //       const newR = {
+    //         ...r,
+    //         lobid: m,
+    //         candidateSelected: m.length === 1 ? 0 : -1,
+    //         loaded: true
+    //       }
+    //       this.$set(this.searchTable, i, newR)
+    //     }
+    //   })
+    // })
   }
 
   selectLobidPerson(personId: string, lobidPersonIndex: number): void {
