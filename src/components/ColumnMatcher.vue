@@ -50,12 +50,22 @@
         <v-row class="px-5">
           <v-col cols="3">
             <v-select
+              v-if="fileType === mimeTypeCsv"
               dense
               hide-details
               label="Trennzeichen"
-              v-model="separator"
+              :value="separator"
               @change="updateSeparator"
               :items="allSeparators"
+            />
+            <v-select
+              v-if="fileType === mimeTypeXls || fileType === mimeTypeXlsx"
+              dense
+              hide-details
+              label="Tabellenblatt"
+              :value="sheetName"
+              @change="updateSheetName"
+              :items="sheetNames"
             />
           </v-col>
           <v-col cols="4">
@@ -125,9 +135,10 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import neatCsv from 'neat-csv'
+import * as XLSX from 'xlsx'
 import * as _ from 'lodash'
 import { VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VDivider, VDataTable, VSelect } from 'vuetify/lib'
-import { Column, Header, Table, Row } from '../types'
+import { Column, Header, Table, Row, SelectOptions } from '../types'
 
 @Component({
   components: {
@@ -141,11 +152,18 @@ export default class ColumnMatcher extends Vue {
   @Prop({ required: true }) fileName: string
   @Prop({ required: true }) fileType: string
 
+  mimeTypeCsv = 'text/csv'
+  mimeTypeXls = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  mimeTypeXlsx = 'application/vnd.ms-excel'
+
   headers: Header[] = []
   initialTable: Table<Row> = []
   tablePage = 1
   separator = ';'
-  allSeparators = [
+  sheetName = ''
+  sheetNames: string[] = []
+
+  allSeparators: SelectOptions[] = [
     {
       text: ',',
       value: ','
@@ -162,6 +180,13 @@ export default class ColumnMatcher extends Vue {
 
   nullValues = [ '?' ]
 
+  updateSheetName(name: string): void {
+    this.sheetName = name
+    const [h, c] = this.parseExcelToJson(this.buffer, name)
+    this.headers = h
+    this.initialTable = c
+  }
+
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
     return t.map((r) => {
       return hs.reduce((m, e) => {
@@ -173,7 +198,7 @@ export default class ColumnMatcher extends Vue {
     })
   }
 
-  getTargetColumnsOptions(h: Header) {
+  getTargetColumnsOptions(h: Header): SelectOptions[] {
     return [
       {
         text: 'nicht importieren',
@@ -213,15 +238,33 @@ export default class ColumnMatcher extends Vue {
     return s
   }
 
+  parseExcelToJson(b: ArrayBuffer, useSheetName: string|null = null): [ Header[], Table<Row> ] {
+    const doc = XLSX.read(b, {type: 'buffer', WTF: false})
+    const sheets = doc.SheetNames.map(s => XLSX.utils.sheet_to_json(doc.Sheets[s]))
+    const useSheetIndex = doc.SheetNames.findIndex(s => s === useSheetName)
+    const rows = sheets[useSheetIndex === -1 ? 0 : useSheetIndex] as Row[]
+    const headers: Header[] = _.map(rows[0], (v, k) => ({
+      value: k,
+      text: k,
+      sortable: true,
+      matchWith: this.targetColumns.find(c => c.text.toLowerCase() === k.toLowerCase())?.value || null
+    }))
+    this.sheetNames = doc.SheetNames
+    this.sheetName = doc.SheetNames[useSheetIndex]
+    return [ headers, rows ]
+  }
+
   @Watch('buffer', { immediate: true })
   async onUpdateFile(): Promise<void> {
-    if (this.fileType === 'text/csv') {
+    if (this.fileType === this.mimeTypeCsv) {
       const t = await this.getTextFromFile(this.buffer)
       const [h, c] = await this.parseCsvToJson(t, ';')
       this.headers = h
       this.initialTable = c
-    } else {
-      alert('no excel support for now')
+    } else if (this.fileType === this.mimeTypeXls || this.fileType === this.mimeTypeXlsx) {
+      const [h, c] = this.parseExcelToJson(this.buffer)
+      this.headers = h
+      this.initialTable = c
     }
   }
 }
