@@ -45,4 +45,10 @@ export interface PersonField {
   rules?: Array<(e: string) => boolean>
 }
 
+export interface SelectOptions {
+  text: string
+  value: string|null
+  disabled?: boolean
+}
+
 declare module 'vue-multipane'
