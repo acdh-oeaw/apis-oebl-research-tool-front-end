@@ -16,53 +16,18 @@
           <v-form
             @input="log"
             class="pa-5">
-            <v-row>
-              <v-col>
-                <v-text-field
-                  autofocus
-                  dense
-                  clearable
-                  autocomplete="off"
-                  @keydown.down.prevent="focusNextOfClass(personListElementClass)"
-                  @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-                  hide-details
-                  @input="searchPersonDebounced(searchSinglePerson)"
-                  v-model="searchSinglePerson.firstName"
-                  required
-                  label="Name" />
-              </v-col>
-              <v-col>
-                <v-select
-                  dense
-                  hide-details
-                  required
-                  label="Berufsfeld"
-                  :items="[ 'Politik und Verwaltung' ]"
-                />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <date-picker
-                  type="year"
-                  dense
-                  label="Geburtsdatum"
-                  @input="searchPersonDebounced(searchSinglePerson)"
-                  :v-model="searchSinglePerson.dateOfBirth" />
-              </v-col>
-              <v-col>
-                <date-picker
-                  type="year"
-                  dense
-                  label="Sterbedatum"
-                  @input="searchPersonDebounced(searchSinglePerson)"
-                  :v-model="searchSinglePerson.dateOfDeath"
-                  />
-              </v-col>
-            </v-row>
-            <v-text-field
-              dense
-              label="GND oder Gideon ID" />
+              <v-select
+                dense
+                hide-details
+                required
+                label="Berufsfeld"
+                :items="[ 'Politik und Verwaltung' ]"
+              />
+              <search-person-detail
+                class="pt-5"
+                :fields="allowedPersonFields"
+                @change="searchOnePersonDebounced"
+                :value="personSingle" />
           </v-form>
         </v-card>
         <div class="pa-3 text-center grey--text">
@@ -205,7 +170,7 @@
                     class="pl-5"
                     :fields="allowedPersonFields"
                     :value="selectedPerson"
-                    @change="searchPersonDebounced($event)"
+                    @change="searchResultPersonDebounced($event)"
                   />
                   <v-subheader>
                     Ergebnisse ({{ selectedPerson.lobid.length }})
@@ -272,18 +237,23 @@ export default class PersonQuery extends Vue {
   log = console.log
   personListElementClass = 'person-result'
   searchingPerson = false
-  searchSinglePerson: Person = {
+  personSingle: PersonMatchable = {
+    id: '-1',
+    candidateSelected: -1,
+    loaded: false,
     firstName: null,
     lastName: null,
     dateOfBirth: null,
     dateOfDeath: null,
     placeOfBirth: null,
     placeOfDeath: null,
-    gnd: null
+    gnd: null,
+    lobid: []
   }
 
   eMail = ''
-  searchPersonDebounced = _.debounce(this.searchPerson, 300)
+  searchOnePersonDebounced = _.debounce(this.searchOnePerson, 300)
+  searchResultPersonDebounced = _.debounce(this.searchResultPerson, 300)
   results: LdPerson[] = []
   showColumnMatcher = false
 
@@ -475,9 +445,13 @@ export default class PersonQuery extends Vue {
     return this.searchTableFiltered.findIndex(r => r.id === id)
   }
 
-  async searchPerson(person: PersonMatchable): Promise<void> {
+  async searchOnePerson(person: PersonMatchable): Promise<void> {
+    this.personSingle = person
+    this.personSingle.lobid = await this.loadResults(person) || []
+  }
+
+  async searchResultPerson(person: PersonMatchable): Promise<void> {
     this.searchingPerson = true
-    this.searchSinglePerson = person
     const res = await this.loadResults(person) || []
     this.searchTableFiltered[this.findIndexById(person.id)].lobid = res
     this.searchingPerson = false

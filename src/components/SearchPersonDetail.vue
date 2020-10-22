@@ -10,7 +10,7 @@
       :label="v.text"
       :placeholder="v.hint || ''"
       :rules="v.rules || []"
-      :value="computedValue[v.value]"
+      :value="computedValue[v.value] || ''"
     />
     <v-btn v-if="hasChanged" @click="resetLocalValue()" elevation="0" small rounded>
       zurücksetzen
