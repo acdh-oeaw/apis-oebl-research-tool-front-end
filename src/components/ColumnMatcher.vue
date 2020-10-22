@@ -250,7 +250,7 @@ export default class ColumnMatcher extends Vue {
       matchWith: this.targetColumns.find(c => c.text.toLowerCase() === k.toLowerCase())?.value || null
     }))
     this.sheetNames = doc.SheetNames
-    this.sheetName = doc.SheetNames[useSheetIndex]
+    this.sheetName = doc.SheetNames[useSheetIndex === -1 ? 0 : useSheetIndex]
     return [ headers, rows ]
   }
 
