@@ -82,9 +82,10 @@
         </v-col>
         <v-col cols="12" class="text-center">
           <div class="caption grey--text">
-            {{ searchTable.filter(r => r.candidateSelected > -1).length }}
-            von {{ searchTable.length }} gefunden,
-            {{ searchTable.filter(r => (r.candidateSelected === -1 && r.lobid.length > 1)).length }} mehrdeutig.
+            {{ searchTable.filter(r => r.candidateSelected > -1).length }} gefunden,
+            {{ searchTable.filter(r => r.loaded === true && r.lobid.length === 0).length }} nicht gefunden,
+            {{ searchTable.filter(r => (r.candidateSelected === -1 && r.lobid.length > 1)).length }} mehrdeutig
+            (von {{ searchTable.length }})
           </div>
           <v-progress-linear
             class="px-0"
@@ -99,69 +100,20 @@
         <v-container class="fill-height pa-0">
           <v-row class="fill-height">
             <v-col style="position: relative" class="fill-height pa-0 px-3">
-              <v-virtual-scroll
-                class="fill-height v-list--nav"
-                :bench="1"
-                :item-height="60"
-                @keydown.down.prevent="focusNextOfClass(personListElementClass)"
-                @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-                :items="searchTableFiltered">
+              <RecycleScroller
+                class="scroller fill-height v-list--nav"
+                :items="searchTableFiltered"
+                key-field="id"
+                :item-size="60">
                 <template v-slot="{ item }">
-                  <v-list-item
+                  <research-person-item
+                    @click="showPersonDetail(item.id)"
+                    :selected="item.id === selectedPersonId"
+                    class="rounded"
                     :key="item.id"
-                    tabindex="-1"
-                    @keydown.down.prevent="focusNextOfClass(personListElementClass)"
-                    @keydown.up.prevent="focusPrevOfClass(personListElementClass)"
-                    :input-value="item.id === selectedPersonId"
-                    :class="[personListElementClass, 'rounded']"
-                    @click="showPersonDetail(item.id)">
-                    <v-list-item-avatar>
-                      <template v-if="item.lobid && item.lobid.length > 0">
-                        <v-img v-if="item.lobid[0].depiction && item.lobid[0].depiction[0]" :src="item.lobid[0].depiction[0].thumbnail" />
-                        <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
-                      </template>
-                      <template v-else>
-                        <v-icon color="grey">mdi-close</v-icon>
-                      </template>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title v-if="item.lobid && item.lobid.length > 0">
-                        {{ item.lobid[0].preferredName }}
-                        ({{ item.lobid[0].dateOfBirth ? item.lobid[0].dateOfBirth[0] : '?' }}
-                          {{ item.lobid[0].placeOfBirth ? 'in ' + item.lobid[0].placeOfBirth[0].label : '' }}
-                          —
-                          {{ item.lobid[0].dateOfDeath ? item.lobid[0].dateOfDeath[0] : '?' }}
-                          {{ item.lobid[0].placeOfDeath ? 'in ' + item.lobid[0].placeOfDeath[0].label : '' }})
-                      </v-list-item-title>
-                      <v-list-item-title v-else>
-                        {{ item.firstName }} {{ item.lastName }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle v-if="item.lobid && item.lobid.length > 0">
-                        <span v-if="item.lobid[0].biographicalOrHistoricalInformation"> {{ item.lobid[0].biographicalOrHistoricalInformation[0] }}</span>
-                        <span v-if="item.lobid[0].placeOfActivity">; Wirkungsorte:
-                          <span v-for="place in item.lobid[0].placeOfActivity" :key="place.id">
-                            {{ place.label }}
-                          </span>
-                        </span>
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle v-else>
-                        (not found)
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-badge
-                        overlap
-                        :value="item.lobid.length > 0"
-                        :color="item.candidateSelected > -1 ? 'green' : 'red'"
-                        :content="item.lobid.length">
-                        <v-icon v-if="item.candidateSelected === -1 && item.lobid.length === 1">mdi-account-outline</v-icon>
-                        <v-icon v-else-if="item.candidateSelected > -1" color="green">mdi-check</v-icon>
-                        <v-icon v-else-if="item.lobid.length > 1">mdi-account-group-outline</v-icon>
-                      </v-badge>
-                    </v-list-item-action>
-                  </v-list-item>
+                    :item="item" />
                 </template>
-              </v-virtual-scroll>
+              </RecycleScroller>
             </v-col>
             <v-col class="fill-height py-0" cols="5">
               <v-card class="fill-height d-flex flex-column rounded-lg" scrollable rounded elevation="0">
@@ -215,12 +167,13 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import DatePicker from './DatePicker.vue'
 import ColumnMatcher from './ColumnMatcher.vue'
 import LobidListItem from './LobidListItem.vue'
+import ResearchPersonItem from './ResearchPersonItem.vue'
 import SearchPersonDetail from './SearchPersonDetail.vue'
 import { Person as LdPerson } from 'schema-dts'
 import { Table, Person, PersonMatchable, PersonField } from '../types'
 import * as lobid from '../service/lobid'
 import { saveAs } from 'file-saver'
-
+import { RecycleScroller } from 'vue-virtual-scroller'
 import _ from 'lodash'
 
 @Component({
@@ -228,7 +181,9 @@ import _ from 'lodash'
     DatePicker,
     LobidListItem,
     ColumnMatcher,
-    SearchPersonDetail
+    SearchPersonDetail,
+    ResearchPersonItem,
+    RecycleScroller
   }
 })
 export default class PersonQuery extends Vue {
@@ -374,34 +329,26 @@ export default class PersonQuery extends Vue {
       candidateSelected: -1,
       id: _.uniqueId()
     }))
-    const chunks = _.chunk(this.searchTable, 20)
-    let i = 0
-    for (const chunk of chunks) {
-      await Promise.all(chunk.map(async p => {
-        const lp = await lobid.findPerson(p)
-        const newR = {
-          ...p,
-          lobid: lp,
-          candidateSelected: lp.length === 1 ? 0 : -1,
-          loaded: true
-        }
-        this.$set(this.searchTable, i, newR)
-        i = i + 1
+    let i = -1
+    for (const chunk of _.chunk(this.searchTable, 30)) {
+      console.log('starting chunk ' + i)
+      const rs = await Promise.all(chunk.map(p => {
+        return lobid.findPerson(p)
+          .then(lp => {
+            i = i + 1
+            return {
+              i: i,
+              ...p,
+              lobid: lp,
+              candidateSelected: lp.length === 1 ? 0 : -1,
+              loaded: true
+            }
+          })
       }))
+      this.searchTable.splice(rs[0].i, rs.length, ...rs)
+      await this.$nextTick()
+      console.log('done with ' + i, {chunk})
     }
-    // chunks.forEach((r, i) => {
-    //   lobid.findPerson(r).then(m => {
-    //     if (m !== undefined) {
-    //       const newR = {
-    //         ...r,
-    //         lobid: m,
-    //         candidateSelected: m.length === 1 ? 0 : -1,
-    //         loaded: true
-    //       }
-    //       this.$set(this.searchTable, i, newR)
-    //     }
-    //   })
-    // })
   }
 
   selectLobidPerson(personId: string, lobidPersonIndex: number): void {
@@ -468,3 +415,8 @@ export default class PersonQuery extends Vue {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../../node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css';
+
+</style>
