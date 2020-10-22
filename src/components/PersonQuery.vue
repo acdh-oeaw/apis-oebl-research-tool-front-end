@@ -17,6 +17,7 @@
             @input="log"
             class="pa-5">
               <v-select
+                class="mr-5"
                 dense
                 hide-details
                 required
@@ -318,13 +319,13 @@ export default class PersonQuery extends Vue {
     {
       value: 'dateOfBirth',
       text: 'Geburtsdatum',
-      hint: 'YYYY or YYYY-MM-DD',
+      hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
     {
       value: 'dateOfDeath',
       text: 'Sterbedatum',
-      hint: 'YYYY or YYYY-MM-DD',
+      hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
     {
