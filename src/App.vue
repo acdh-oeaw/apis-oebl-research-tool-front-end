@@ -1,26 +1,16 @@
 <template>
   <v-app>
     <v-main style="max-height: 100vh" class="main">
-      <research-tool />
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import ResearchTool from './components/ResearchTool.vue'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
-export default Vue.extend({
-  name: 'App',
-
-  components: {
-    ResearchTool
-  },
-
-  data: () => ({
-    //
-  })
-})
+@Component
+export default class App extends Vue {}
 </script>
 
 <style lang="stylus">
