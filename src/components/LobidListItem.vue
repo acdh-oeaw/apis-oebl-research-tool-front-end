@@ -24,10 +24,8 @@
       </v-list-item-title>
       <v-list-item-subtitle>
         <template v-if="person.biographicalOrHistoricalInformation"> {{ person.biographicalOrHistoricalInformation[0] }}</template>
-      </v-list-item-subtitle>
-      <v-list-item-subtitle>
         <template v-if="person.placeOfActivity">
-          Wirkungsorte:
+          . Wirkungsorte:
           <span v-for="place in person.placeOfActivity" :key="place.id">
             {{ place.label }}
           </span>

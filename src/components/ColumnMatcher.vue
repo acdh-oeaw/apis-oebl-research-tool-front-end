@@ -47,7 +47,7 @@
       </template>
       <template v-slot:footer="{}">
         <v-divider />
-        <v-row class="px-5">
+        <v-row class="px-5 ma-0">
           <v-col cols="3">
             <v-select
               v-if="fileType === mimeTypeCsv"
