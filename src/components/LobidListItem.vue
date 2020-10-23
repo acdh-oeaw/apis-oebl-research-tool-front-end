@@ -13,7 +13,7 @@
         <v-icon style="width: 100%;" color="white" v-if="selected">mdi-check</v-icon>
       </v-img>
     </v-list-item-avatar>
-    <v-list-item-content>
+    <v-list-item-content class="align-self-start">
       <v-list-item-title>
         {{ person.preferredName }}
         ({{ person.dateOfBirth ? person.dateOfBirth[0] : '?' }}
