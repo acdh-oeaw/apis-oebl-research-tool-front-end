@@ -10,7 +10,7 @@
         :file-name="file.name"
         :buffer="fileBuffer" />
     </v-dialog>
-    <v-row v-if="searchTable.length === 0" class="pa-3">
+    <v-row v-if="searchTable.length === 0" class="pa-3 fill-height">
       <v-col cols="6">
         <v-card rounded="lg" elevation="0">
           <v-form
@@ -47,17 +47,29 @@
             label="CSV oder Excel Datei" />
         </v-card>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="6" class="fill-height">
         <v-list
-          class="rounded-lg"
+          class="rounded-lg pa-0 fill-height"
           nav
           avatar
           three-line>
-          <lobid-list-item
-            v-for="result in results"
-            :key="result.id"
-            :person="result"
-            :class="personListElementClass" />
+          <v-subheader>
+            Ergebnisse ({{ results.length }})
+          </v-subheader>
+          <RecycleScroller
+            class="scroller fill-height v-list--nav"
+            :items="results"
+            key-field="id"
+            :item-size="60">
+            <template v-if="searchingPerson" v-slot="{item}">
+              <v-skeleton-loaderw :key="item.id" type="list-item-avatar-three-line" />
+            </template>
+            <template v-else v-slot="{ item }">
+              <lobid-list-item
+                :key="item.id"
+                :person="item" />
+            </template>
+          </RecycleScroller>
         </v-list>
       </v-col>
     </v-row>
@@ -75,7 +87,7 @@
             :item-text="(i) => i.text + ' (' + searchTable.filter(i.filter).length + ')'"
             :items="filterOpts" />
         </v-col>
-        <v-col class="text-right" cols="6">
+        <v-col class="text-right px-0" cols="6">
           <v-btn elevation="0" color="primary" @click="sendMatches">
             {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen
           </v-btn>
@@ -394,8 +406,10 @@ export default class PersonQuery extends Vue {
   }
 
   async searchOnePerson(person: PersonMatchable): Promise<void> {
+    this.searchingPerson = true
     this.personSingle = person
     this.personSingle.lobid = await this.loadResults(person) || []
+    this.searchingPerson = false
   }
 
   async searchResultPerson(person: PersonMatchable): Promise<void> {
