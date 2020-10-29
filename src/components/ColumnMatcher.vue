@@ -188,6 +188,7 @@ export default class ColumnMatcher extends Vue {
   }
 
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
+    // TODO: ignore null values
     return t.map((r) => {
       return hs.reduce((m, e) => {
         if (e.matchWith !== null) {
@@ -227,12 +228,12 @@ export default class ColumnMatcher extends Vue {
   }
 
   async updateSeparator(s: string): Promise<void> {
-    const [h, c] = await this.parseCsvToJson(await this.getTextFromFile(this.buffer), s)
+    const [h, c] = await this.parseCsvToJson(await this.getTextFromBuffer(this.buffer), s)
     this.headers = h
     this.initialTable = c
   }
 
-  getTextFromFile(f: ArrayBuffer): string {
+  getTextFromBuffer(f: ArrayBuffer): string {
     const t = new TextDecoder()
     const s = t.decode(f)
     return s
@@ -257,7 +258,7 @@ export default class ColumnMatcher extends Vue {
   @Watch('buffer', { immediate: true })
   async onUpdateFile(): Promise<void> {
     if (this.fileType === this.mimeTypeCsv) {
-      const t = await this.getTextFromFile(this.buffer)
+      const t = await this.getTextFromBuffer(this.buffer)
       const [h, c] = await this.parseCsvToJson(t, ';')
       this.headers = h
       this.initialTable = c
