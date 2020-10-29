@@ -6,7 +6,7 @@
     <div class="bar" :style="{width: progress.ambiguous / this.searchTable.length * 100 + '%', background: 'red'}">
       {{ progress.ambiguous }} mehrdeutig
     </div>
-    <div class="bar" :style="{width: progress.notFound / this.searchTable.length * 100 + '%', background: 'grey'}">
+    <div class="bar" :style="{width: progress.notFound / this.searchTable.length * 100 + '%', background: '#ccc'}">
       {{ progress.notFound }} nicht gefunden
     </div>
   </div>
@@ -32,13 +32,16 @@ export default class Progress extends Vue {
 </script>
 <style lang="stylus" scoped>
 .outer-bar{
-  background: #f4f4f4
+  background: #ccc
   border-radius 5px
   overflow hidden
   position relative
   height: 20px
 }
 .bar{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 0.5em;
   transition .25s width
   text-align center
   font-size small

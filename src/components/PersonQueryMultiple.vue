@@ -19,12 +19,6 @@
         </v-btn>
       </v-col>
       <v-col cols="12" class="text-center">
-        <div class="caption grey--text">
-          {{ searchTable.filter(r => r.candidateSelected > -1).length }} gefunden,
-          {{ searchTable.filter(r => r.loaded === true && r.lobid.length === 0).length }} nicht gefunden,
-          {{ searchTable.filter(r => (r.candidateSelected === -1 && r.lobid.length > 1)).length }} mehrdeutig
-          (von {{ searchTable.length }})
-        </div>
         <query-progress :search-table="searchTable" />
       </v-col>
     </v-row>

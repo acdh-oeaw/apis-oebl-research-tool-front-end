@@ -122,15 +122,11 @@ export default class PersonQuery extends Vue {
     }))
     const chunkLength = 30
     let chunkIndex = 0
-    let i = -1
     for (const chunk of _.chunk(this.searchTable, chunkLength)) {
-      console.log('starting chunk ' + i)
       const rs = await Promise.all(chunk.map(p => {
         return lobid.findPerson(p)
           .then(lp => {
-            i = i + 1
             return {
-              // i: i,
               ...p,
               lobid: lp,
               candidateSelected: lp.length === 1 ? 0 : -1,
