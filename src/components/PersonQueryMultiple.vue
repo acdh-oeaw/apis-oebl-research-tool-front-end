@@ -25,12 +25,7 @@
           {{ searchTable.filter(r => (r.candidateSelected === -1 && r.lobid.length > 1)).length }} mehrdeutig
           (von {{ searchTable.length }})
         </div>
-        <v-progress-linear
-          class="px-0"
-          color="green"
-          :stream="true"
-          :buffer-value="progress[0]"
-          :value="progress[1]" />
+        <query-progress :search-table="searchTable" />
       </v-col>
     </v-row>
     <v-divider />
@@ -110,10 +105,10 @@ import * as lobid from '../service/lobid'
 import { saveAs } from 'file-saver'
 import { PersonField, PersonMatchable } from '@/types'
 import { postList } from '@/service/backend'
-
+import QueryProgress from './QueryProgress.vue'
 @Component({
   components: {
-    LobidListItem, SearchPersonDetail, ResearchPersonItem, RecycleScroller
+    LobidListItem, SearchPersonDetail, ResearchPersonItem, RecycleScroller, QueryProgress
   }
 })
 export default class PersonQueryMultiple extends Vue {
@@ -125,12 +120,6 @@ export default class PersonQueryMultiple extends Vue {
   searchResultPersonDebounced = _.debounce(this.searchResultPerson, 300)
   searchingLobidPerson = false
   eMail = ''
-  // the ones that have been loaded and the ones that have exactly one
-  get progress(): [number, number] {
-    const loaded = this.searchTable.filter(r => r.loaded).length / this.searchTable.length * 100
-    const selected = this.searchTable.filter(r => r.candidateSelected > -1).length / this.searchTable.length * 100
-    return [loaded, selected]
-  }
 
   get filterOpts(): Array<{text: string, value: string, filter: (e: PersonMatchable) => boolean}> {
     return [
@@ -167,7 +156,7 @@ export default class PersonQueryMultiple extends Vue {
   }
 
   showPersonDetail(i: string): void {
-    console.log(document.activeElement)
+    // console.log(document.activeElement)
     this.selectedPersonId = i
   }
 
@@ -193,7 +182,7 @@ export default class PersonQueryMultiple extends Vue {
           gnd: (p.lobid[p.candidateSelected] as any).gndIdentifier as string
         }
       })
-    console.log(res)
+    // console.log(res)
     await postList(res, this.eMail)
     saveAs(new Blob([JSON.stringify({email: this.eMail, lemmas: res}, undefined, 4)]), 'research-list-matched.json')
   }
