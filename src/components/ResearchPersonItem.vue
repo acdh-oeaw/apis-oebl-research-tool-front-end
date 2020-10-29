@@ -6,7 +6,8 @@
         <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
       </template>
       <template v-else>
-        <v-icon color="grey">mdi-close</v-icon>
+        <v-icon v-if="item.loaded === true" color="grey">mdi-circle-outline</v-icon>
+        <v-icon v-if="item.loaded === false" color="red">mdi-alert-circle</v-icon>
       </template>
     </v-list-item-avatar>
     <v-list-item-content>
