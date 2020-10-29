@@ -109,6 +109,7 @@ import _ from 'lodash'
 import * as lobid from '../service/lobid'
 import { saveAs } from 'file-saver'
 import { PersonField, PersonMatchable } from '@/types'
+import { postList } from '@/service/backend'
 
 @Component({
   components: {
@@ -182,17 +183,18 @@ export default class PersonQueryMultiple extends Vue {
     this.searchTable[i].candidateSelected = lobidPersonIndex
   }
 
-  sendMatches(): void {
+  async sendMatches(): Promise<void> {
     const res = this.searchTable
       .filter(p => p.candidateSelected > -1)
       .map(p => {
         return {
-          firstName: p.firstName,
-          lastName: p.lastName,
+          firstName: p.firstName as string,
+          lastName: p.lastName as string,
           gnd: (p.lobid[p.candidateSelected] as any).gndIdentifier as string
         }
       })
     console.log(res)
+    await postList(res)
     saveAs(new Blob([JSON.stringify({email: this.eMail, lemmas: res}, undefined, 4)]), 'research-list-matched.json')
   }
 
