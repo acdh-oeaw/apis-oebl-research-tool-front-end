@@ -120,15 +120,17 @@ export default class PersonQuery extends Vue {
       candidateSelected: -1,
       id: _.uniqueId()
     }))
+    const chunkLength = 30
+    let chunkIndex = 0
     let i = -1
-    for (const chunk of _.chunk(this.searchTable, 30)) {
+    for (const chunk of _.chunk(this.searchTable, chunkLength)) {
       console.log('starting chunk ' + i)
       const rs = await Promise.all(chunk.map(p => {
         return lobid.findPerson(p)
           .then(lp => {
             i = i + 1
             return {
-              i: i,
+              // i: i,
               ...p,
               lobid: lp,
               candidateSelected: lp.length === 1 ? 0 : -1,
@@ -136,9 +138,11 @@ export default class PersonQuery extends Vue {
             }
           })
       }))
-      this.searchTable.splice(rs[0].i, rs.length, ...rs)
+      this.searchTable.splice(chunkIndex * chunkLength, chunkLength, ...rs)
+      chunkIndex = chunkIndex + 1
       await this.$nextTick()
-      console.log('done with ' + i, {chunk})
+      console.log('done with chunk ' + chunkIndex, {chunk})
+      console.log('searchtable is now', this.searchTable)
     }
   }
 
