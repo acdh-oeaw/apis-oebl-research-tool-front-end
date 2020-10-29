@@ -10,16 +10,13 @@ interface ApiSuccessMessage {
   success: string
 }
 
-export async function postList(ps: ApiPerson[]): Promise<ApiSuccessMessage> {
+export async function postList(lemmas: ApiPerson[], email: string): Promise<ApiSuccessMessage> {
   const r = await (await fetch(host + '/lemmaresearch/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      email: 'arnold.graf@oeaw.ac.at',
-      lemmas: ps
-    })
+    body: JSON.stringify({email, lemmas})
   })).json()
   return r
 }

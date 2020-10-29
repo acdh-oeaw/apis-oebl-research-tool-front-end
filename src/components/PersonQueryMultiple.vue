@@ -194,7 +194,7 @@ export default class PersonQueryMultiple extends Vue {
         }
       })
     console.log(res)
-    await postList(res)
+    await postList(res, this.eMail)
     saveAs(new Blob([JSON.stringify({email: this.eMail, lemmas: res}, undefined, 4)]), 'research-list-matched.json')
   }
 
