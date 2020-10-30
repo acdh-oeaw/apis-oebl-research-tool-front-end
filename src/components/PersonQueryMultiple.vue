@@ -14,7 +14,7 @@
             Die Ergebnisse werden nach dem Datenabgleich unter dieser Adresse angezeigt:
           </p>
           <p>
-            <a :href="'https://'+ host + '/' + successId">{{ host }}/result/{{ successId }}</a>
+            <a :href="'https://'+ host + '/result/' + successId">{{ host }}/result/{{ successId }}</a>
           </p>
           <p>
             Sie erhalten eine E-Mail an <b>{{ eMail }}</b> mit dem Link, sobald die Verarbeitung abgeschlossen ist.
