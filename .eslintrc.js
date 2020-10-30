@@ -22,7 +22,10 @@ module.exports = {
     'no-trailing-spaces': 'warn',
     'padded-blocks': 'off',
     'template-curly-spacing': 'off',
-    'array-bracket-spacing': 'off'
+    'array-bracket-spacing': 'off',
+    'vue/valid-v-slot': 'off',
+    camelcase: 'off',
+    'comma-dangle': 'off'
   },
   overrides: [
     {
