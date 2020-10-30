@@ -6,7 +6,7 @@
       dense
       class="detail-text-field caption mr-3"
       flat
-      @input="updateLocalValue(v.value, $event)"
+      @keyup="(e) => updateLocalValue(v.value, e.target.value)"
       :label="v.text"
       :placeholder="v.hint || ''"
       :rules="v.rules || []"
@@ -34,21 +34,24 @@ export default class SearchPersonDetail extends Vue {
   localValue: any = {}
 
   updateLocalValue(field: keyof PersonMatchable, val: string): void {
-    if (this.value[field] === this.localValue[field]) {
+    console.log('update local value')
+    if (val === this.localValue[field]) {
       this.$delete(this.localValue, field)
     } else {
       this.localValue[field] = val
-      this.$emit('change', {...this.value, ...this.localValue})
+      this.$emit('change', clone({...this.value, ...this.localValue}))
     }
   }
 
   resetLocalValue(): void {
     this.localValue = {}
-    this.$emit('change', this.value)
+    this.$emit('change', clone(this.value))
   }
 
   get hasChanged(): boolean {
-    return JSON.stringify(this.value) !== JSON.stringify({...this.value, ...this.localValue})
+    const hasChanged = JSON.stringify(this.value) !== JSON.stringify({...this.value, ...this.localValue})
+    console.log('has changed ?', hasChanged)
+    return hasChanged
   }
 
   get computedValue(): PersonMatchable {
@@ -59,6 +62,7 @@ export default class SearchPersonDetail extends Vue {
   @Watch('value')
   onChangeValue(newVal: PersonMatchable, oldVal: PersonMatchable): void {
     if (newVal.id !== oldVal.id) {
+      console.log('new person selected')
       this.localValue = clone(newVal)
     }
   }
