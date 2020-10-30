@@ -78,13 +78,13 @@ export default class PersonQuery extends Vue {
     },
     {
       value: 'dateOfBirth',
-      text: 'Geburtsdatum',
+      text: 'Geburtsdatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
     {
       value: 'dateOfDeath',
-      text: 'Sterbedatum',
+      text: 'Sterbedatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
     },
