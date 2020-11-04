@@ -120,8 +120,8 @@ export default class Result extends Vue {
       sortable: true
     },
     {
-      text: 'OBV',
-      value: 'obv_counts',
+      text: 'OBV einträge',
+      value: 'obv_count',
       sortable: true
     },
     {
