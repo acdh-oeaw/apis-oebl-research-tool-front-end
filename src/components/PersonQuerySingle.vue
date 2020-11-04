@@ -7,7 +7,7 @@
             class="mr-5"
             dense
             hide-details
-            required
+            disabled
             label="Berufsfeld"
             :items="[ 'Politik und Verwaltung' ]"
           />
