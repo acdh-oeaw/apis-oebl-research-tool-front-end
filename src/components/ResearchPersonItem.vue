@@ -11,16 +11,15 @@
       </template>
     </v-list-item-avatar>
     <v-list-item-content>
-      <v-list-item-title v-if="item.lobid && item.lobid.length > 0">
-        {{ item.lobid[0].preferredName }}
-        ({{ item.lobid[0].dateOfBirth ? item.lobid[0].dateOfBirth[0] : '?' }}
-          {{ item.lobid[0].placeOfBirth ? 'in ' + item.lobid[0].placeOfBirth[0].label : '' }}
-          —
-          {{ item.lobid[0].dateOfDeath ? item.lobid[0].dateOfDeath[0] : '?' }}
-          {{ item.lobid[0].placeOfDeath ? 'in ' + item.lobid[0].placeOfDeath[0].label : '' }})
-      </v-list-item-title>
-      <v-list-item-title v-else>
-        {{ item.firstName }} {{ item.lastName }}
+      <v-list-item-title>
+        {{ item.lastName }}, {{ item.firstName }}
+        <template v-if="item.candidateSelected > -1 && item.lobid[0]">
+          ({{ item.lobid[0].dateOfBirth ? item.lobid[0].dateOfBirth[0] : '?' }}
+            {{ item.lobid[0].placeOfBirth ? 'in ' + item.lobid[0].placeOfBirth[0].label : '' }}
+            —
+            {{ item.lobid[0].dateOfDeath ? item.lobid[0].dateOfDeath[0] : '?' }}
+            {{ item.lobid[0].placeOfDeath ? 'in ' + item.lobid[0].placeOfDeath[0].label : '' }})
+        </template>
       </v-list-item-title>
       <v-list-item-subtitle v-if="item.lobid && item.lobid.length > 0">
         <span v-if="item.lobid[0].biographicalOrHistoricalInformation"> {{ item.lobid[0].biographicalOrHistoricalInformation[0] }}</span>

@@ -59,20 +59,24 @@
       </v-col>
     </v-form>
     <v-divider />
-    <v-row class="flex-shrink-0" style="position: relative; height: 85%">
+    <v-row
+      class="flex-shrink-0" style="position: relative; height: 85%">
       <v-container class="fill-height pa-0">
         <v-row class="fill-height">
-          <v-col style="position: relative" class="fill-height pa-0 px-3">
+          <v-col
+            style="position: relative"
+            class="fill-height pa-0 px-3">
             <RecycleScroller
               class="scroller fill-height v-list--nav pl-0"
               :items="searchTableFiltered"
               key-field="id"
               :item-size="60">
-              <template v-slot="{ item }">
+              <template v-slot="{ item, index }">
                 <research-person-item
+                  :tabindex="index"
                   @click="showPersonDetail(item.id)"
                   :selected="item.id === selectedPersonId"
-                  class="rounded"
+                  :class="[ 'rounded', 'research-list-item', item.id === selectedPersonId && 'selected' ]"
                   :key="item.id"
                   :item="item" />
               </template>
@@ -154,6 +158,43 @@ export default class PersonQueryMultiple extends Vue {
   successId: string|null = null
   host = window.location.host
   eMail = ''
+  log = console.log
+
+  async focusSelectedItem(): Promise<void> {
+    await this.$nextTick()
+    const el = this.$el.querySelector('.research-list-item.selected')
+    if (el instanceof HTMLElement) {
+      el.focus()
+    }
+  }
+
+  selectNextPerson(): void {
+    const i = this.findIndexById(this.selectedPersonId)
+    this.selectedPersonId = this.searchTableFiltered[i + 1].id
+    this.focusSelectedItem()
+  }
+
+  async selectPreviousPerson(): Promise<void> {
+    const i = this.findIndexById(this.selectedPersonId)
+    this.selectedPersonId = this.searchTableFiltered[i - 1].id
+    this.focusSelectedItem()
+  }
+
+  keyListener(e: KeyboardEvent): void {
+    if (e.key === 'ArrowUp') {
+      this.selectPreviousPerson()
+    } else if (e.key === 'ArrowDown') {
+      this.selectNextPerson()
+    }
+  }
+
+  mounted(): void {
+    document.addEventListener('keydown', this.keyListener)
+  }
+
+  beforeDestroy(): void {
+    document.removeEventListener('keydown', this.keyListener)
+  }
 
   get filterOpts(): Array<{text: string, value: string, filter: (e: PersonMatchable) => boolean}> {
     return [
@@ -197,8 +238,7 @@ export default class PersonQueryMultiple extends Vue {
     return this.searchTable.filter(this.selectedFilter.filter)
   }
 
-  showPersonDetail(i: string): void {
-    // console.log(document.activeElement)
+  showPersonDetail(i: string): void{
     this.selectedPersonId = i
   }
 
