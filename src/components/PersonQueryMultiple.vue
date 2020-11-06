@@ -180,6 +180,14 @@ export default class PersonQueryMultiple extends Vue {
     ]
   }
 
+  get progress(): {found: number, notFound: number, ambiguous: number} {
+    return {
+      found: this.searchTable.filter(r => r.loaded === true && r.candidateSelected > -1).length,
+      notFound: this.searchTable.filter(r => r.loaded === true && r.lobid.length === 0).length,
+      ambiguous: this.searchTable.filter(r => r.loaded === true && r.candidateSelected === -1 && r.lobid.length !== 0).length,
+    }
+  }
+
   get selectedPerson(): PersonMatchable {
     const i = this.findIndexById(this.selectedPersonId)
     return this.searchTableFiltered[i]
