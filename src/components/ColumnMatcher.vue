@@ -16,7 +16,7 @@
       :headers="headers"
       :items="initialTable"
       :items-per-page="100">
-      <template v-for="h in headers" v-slot:[`header.${h.value}`]="{}">
+      <template v-for="(h, i) in headers" v-slot:[`header.${h.value}`]="{}">
         <div class="py-1 custom-header" :key="h.value">
           <span class="initial-header">
             {{h.text}}
@@ -25,8 +25,8 @@
             hide-details
             solo
             flat
-            v-model="h.matchWith"
-            @
+            :value="h.matchWith"
+            @input="matchHeaderWith(i, $event)"
             class="col-select"
             dense
             :items="getTargetColumnsOptions(h)" />
@@ -120,7 +120,7 @@
     </v-btn>
     <v-spacer />
     <v-btn
-      class="px-4"
+      class="px-4 test-confirm-button"
       small
       rounded
       elevation="0"
@@ -237,6 +237,10 @@ export default class ColumnMatcher extends Vue {
     const t = new TextDecoder()
     const s = t.decode(f)
     return s
+  }
+
+  matchHeaderWith(headerIndex: number, matchWith: string|null): void {
+    this.headers[headerIndex].matchWith = matchWith
   }
 
   parseExcelToJson(b: ArrayBuffer, useSheetName: string|null = null): [ Header[], Table<Row> ] {
