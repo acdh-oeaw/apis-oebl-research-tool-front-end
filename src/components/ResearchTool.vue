@@ -12,9 +12,6 @@ import PersonQuery from './PersonQuery.vue'
 })
 export default class ResearchTool extends Vue {
 
-  mounted() {
-    
-  }
 }
 </script>
 <style lang="scss" scoped>

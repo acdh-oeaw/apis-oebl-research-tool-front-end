@@ -39,7 +39,6 @@ import ColumnMatcher from './ColumnMatcher.vue'
 import LobidListItem from './LobidListItem.vue'
 import ResearchPersonItem from './ResearchPersonItem.vue'
 import SearchPersonDetail from './SearchPersonDetail.vue'
-import { Person as LdPerson } from 'schema-dts'
 import { Table, Person, PersonMatchable, PersonField } from '../types'
 import * as lobid from '../service/lobid'
 import PersonQuerySingle from './PersonQuerySingle.vue'
@@ -66,6 +65,7 @@ export default class PersonQuery extends Vue {
   searchingLobidPerson = false
   showColumnMatcher = false
   searchTable: PersonMatchable[] = []
+  log = console.log
 
   allowedPersonFields: PersonField[] = [
     {
@@ -139,39 +139,6 @@ export default class PersonQuery extends Vue {
       await this.$nextTick()
       console.log('done with chunk ' + chunkIndex, {chunk})
       console.log('searchtable is now', this.searchTable)
-    }
-  }
-
-  focusNextOfClass(elementClass: string): void {
-    const aE = document.activeElement
-    if (
-      aE instanceof HTMLElement &&
-      aE.classList.contains(elementClass) &&
-      aE.nextElementSibling instanceof HTMLElement
-    ) {
-      aE.nextElementSibling.focus()
-    } else {
-      const e = document.querySelector('.' + elementClass)
-      if (e instanceof HTMLElement) {
-        e.focus()
-      }
-    }
-  }
-
-  focusPrevOfClass(elementClass: string): void {
-    const aE = document.activeElement
-    if (
-      aE instanceof HTMLElement &&
-      aE.classList.contains(elementClass) &&
-      aE.previousElementSibling instanceof HTMLElement
-    ) {
-      aE.previousElementSibling.focus()
-    } else {
-      const es = document.querySelectorAll('.' + elementClass)
-      const last = es[es.length - 1]
-      if (last instanceof HTMLElement) {
-        last.focus()
-      }
     }
   }
 }
