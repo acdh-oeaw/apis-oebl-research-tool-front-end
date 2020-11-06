@@ -24,7 +24,6 @@
     </v-dialog>
     <v-form
       class="row flex-shrink-1"
-      style="height: 15%; overflow: auto;"
       ref="form"
       v-model="isFormValid"
       lazy-validation>
@@ -50,12 +49,13 @@
           :disabled="isSending"
           elevation="0"
           color="primary"
+          class="mt-3"
           @click="sendMatches">
           {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen
         </v-btn>
       </v-col>
       <v-col cols="12" class="pr-0 mr-0 text-center">
-        <query-progress :search-table="searchTable" />
+        <query-progress :total="searchTable.length" :progress="progress" />
       </v-col>
     </v-form>
     <v-divider />
