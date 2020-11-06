@@ -6,7 +6,9 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import lineClamp from 'vue-line-clamp'
 
-Vue.config.productionTip = false
+Vue.config.devtools = true
+Vue.config.performance = true
+Vue.config.productionTip = true
 
 Vue.use(lineClamp)
 
