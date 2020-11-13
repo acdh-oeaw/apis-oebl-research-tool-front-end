@@ -6,7 +6,7 @@
       dense
       class="detail-text-field caption mr-3"
       flat
-      @keyup="(e) => updateLocalValue(v.value, e.target.value)"
+      @input="(e) => updateLocalValue(v.value, e)"
       :label="v.text"
       :placeholder="v.hint || ''"
       :rules="v.rules || []"
