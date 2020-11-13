@@ -2,8 +2,8 @@
   <v-list-item v-on="$listeners" :input-value="selected">
     <v-list-item-avatar>
       <template v-if="item.lobid && item.lobid.length > 0">
-        <v-img v-if="item.lobid[0].depiction && item.lobid[0].depiction[0]" :src="item.lobid[0].depiction[0].thumbnail" />
-        <v-img v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
+        <img :key="'img' + item.id" v-if="item.lobid[0].depiction && item.lobid[0].depiction[0]" :src="item.lobid[0].depiction[0].thumbnail" />
+        <img :key="'img' + item.id" v-else src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" />
       </template>
       <template v-else>
         <v-icon v-if="item.loaded === true" color="grey">mdi-circle-outline</v-icon>
@@ -52,8 +52,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class ResearchPersonItem extends Vue {
-  @Prop({ default: false }) selected: boolean
-  @Prop({ required: true }) item: PersonMatchable
+  @Prop() selected: boolean
+  @Prop() item: PersonMatchable
 }
 </script>
 
