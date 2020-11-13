@@ -46,6 +46,7 @@
             <v-btn small icon v-if="selectedFilter.value !== 'all'" @click="selectFilter(filters[0])">
               <v-icon>mdi-close</v-icon>
             </v-btn>
+            <span v-else />
           </template>
         </v-select>
       </v-col>
@@ -76,7 +77,8 @@
             style="position: relative"
             class="fill-height pa-0 px-3">
             <v-text-field
-              class="rounded-lg mb-3"
+              class="rounded-lg mb-3 mr-1"
+              background-color="#ddd"
               dense
               clearable
               hide-details
@@ -98,7 +100,7 @@
                   @click="showPersonDetail(item.id)"
                   @keydown.enter="focusDetailQueryField"
                   :selected="item.id === selectedPersonId"
-                  :class="[ 'rounded', 'research-list-item', item.id === selectedPersonId && 'selected' ]"
+                  :class="[ 'rounded-lg', 'research-list-item', item.id === selectedPersonId && 'selected' ]"
                   :key="item.id"
                   :item="item" />
               </template>
