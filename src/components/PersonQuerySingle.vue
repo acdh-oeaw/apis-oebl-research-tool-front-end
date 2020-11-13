@@ -3,6 +3,10 @@
     <v-row class="pa-3 fill-height">
       <v-col cols="6">
         <v-card class="pa-5" rounded="lg" elevation="0">
+          <search-person-detail
+            :fields="allowedPersonFields"
+            @change="searchOnePersonDebounced"
+            :value="person" />
           <v-select
             class="mr-5"
             dense
@@ -11,11 +15,6 @@
             label="Berufsfeld"
             :items="[ 'Politik und Verwaltung' ]"
           />
-          <search-person-detail
-            class="pt-5"
-            :fields="allowedPersonFields"
-            @change="searchOnePersonDebounced"
-            :value="person" />
         </v-card>
         <div class="pa-3 text-center grey--text">
           oder
