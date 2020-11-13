@@ -23,7 +23,7 @@
       </v-card>
     </v-dialog>
     <v-form
-      class="row flex-shrink-1"
+      class="row flex-shrink-1 px-3"
       ref="form"
       v-model="isFormValid"
       lazy-validation>
@@ -40,8 +40,8 @@
           v-model="selectedFilter"
           return-object
           item-value="value"
-          :item-text="(i) => i.text + ' (' + searchTable.filter(i.filter).length + ')'"
-          :items="filterOpts" />
+          :item-text="(i) => i.text + ' (' + i.count + ')'"
+          :items="filters" />
       </v-col>
       <v-col class="text-right px-0" cols="6">
         <v-btn
@@ -51,11 +51,15 @@
           color="primary"
           class="mt-3"
           @click="sendMatches">
-          {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen
+          {{ searchTable.filter(r => r.candidateSelected > -1).length }} von {{searchTable.length}} Personen Abfragen …
         </v-btn>
       </v-col>
       <v-col cols="12" class="pr-0 mr-0 text-center">
-        <query-progress :total="searchTable.length" :progress="progress" />
+        <query-progress
+          :active-filter="selectedFilter"
+          @select-filter="selectFilter"
+          :total="searchTable.length"
+          :filters="filters" />
       </v-col>
     </v-form>
     <v-divider />
@@ -74,6 +78,7 @@
                 <research-person-item
                   :tabindex="index"
                   @click="showPersonDetail(item.id)"
+                  @keydown.enter="focusDetailQueryField"
                   :selected="item.id === selectedPersonId"
                   :class="[ 'rounded', 'research-list-item', item.id === selectedPersonId && 'selected' ]"
                   :key="item.id"
@@ -85,40 +90,46 @@
             <v-card class="fill-height d-flex flex-column rounded-lg" scrollable rounded elevation="0">
               <v-card-title class="pb-0">
                 <v-subheader>Eingabe</v-subheader>
-                <search-person-detail
-                  class="pl-5"
-                  :fields="allowedPersonFields"
-                  :value="selectedPerson"
-                  @change="searchResultPersonDebounced($event)"
-                />
-                <v-subheader>
-                  Ergebnisse ({{ selectedPerson.lobid.length }})
-                </v-subheader>
-                <v-spacer />
-                <v-btn
-                  color="red"
-                  small
-                  rounded
-                  text
-                  v-if="selectedPerson.candidateSelected > -1"
-                  @click="selectedPerson.candidateSelected = -1"
-                  elevation="0">
-                  nichts auswählen
-                </v-btn>
+                <div v-if="selectedPerson !== undefined">
+                  <search-person-detail
+                    v-if="selectedPerson"
+                    class="pl-5 search-person-detail"
+                    :fields="allowedPersonFields"
+                    :value="selectedPerson"
+                    @change="searchResultPersonDebounced($event)"
+                  />
+                  <v-subheader>
+                    <v-badge offset-x="-4" offset-y="5" dot left :color="getPersonFilterColor(selectedPerson)" />
+                    Ergebnisse ({{ selectedPerson.lobid.length }})
+                    <v-spacer />
+                    <v-btn
+                      color="red"
+                      small
+                      rounded
+                      text
+                      v-if="selectedPerson.candidateSelected > -1"
+                      @click="selectedPerson.candidateSelected = -1"
+                      elevation="0">
+                      nichts auswählen
+                    </v-btn>
+                  </v-subheader>
+                </div>
               </v-card-title>
               <v-divider />
               <v-card-text style="overflow: auto">
-                <v-list nav v-if="searchingLobidPerson === false">
-                  <lobid-list-item
-                    v-for="(person, i) in selectedPerson.lobid"
-                    :show-action="true"
-                    @click="selectLobidPerson(selectedPersonId, i)"
-                    :selected="i === selectedPerson.candidateSelected"
-                    :key="person.id"
-                    :person="person" />
-                </v-list>
-                <v-skeleton-loader v-for="i in 3" :key="i" type="list-item-avatar-three-line" v-else>
-                </v-skeleton-loader>
+                <div v-if="selectedPerson !== undefined">
+                  <v-list nav v-if="searchingLobidPerson === false">
+                    <lobid-list-item
+                      v-for="(person, i) in selectedPerson.lobid"
+                      :show-action="true"
+                      @click="selectLobidPerson(selectedPersonId, i)"
+                      :selected="i === selectedPerson.candidateSelected"
+                      :key="person.id"
+                      :person="person" />
+                  </v-list>
+                  <v-skeleton-loader v-for="i in 3" :key="i" type="list-item-avatar-three-line" v-else>
+                  </v-skeleton-loader>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -136,9 +147,10 @@ import SearchPersonDetail from './SearchPersonDetail.vue'
 import _ from 'lodash'
 import * as lobid from '../service/lobid'
 // import { saveAs } from 'file-saver'
-import { PersonField, PersonMatchable } from '@/types'
+import { Filter, PersonField, PersonMatchable } from '@/types'
 import { postList } from '@/service/backend'
 import QueryProgress from './QueryProgress.vue'
+import vuetify from '@/plugins/vuetify'
 @Component({
   components: {
     LobidListItem, SearchPersonDetail, ResearchPersonItem, RecycleScroller, QueryProgress
@@ -148,7 +160,8 @@ export default class PersonQueryMultiple extends Vue {
 
   @Prop() allowedPersonFields: PersonField[]
   @Prop({ default: [] }) searchTable: PersonMatchable[]
-  selectedFilter = this.filterOpts[0]
+
+  selectedFilter = this.filters[0]
   selectedPersonId = '1'
   searchResultPersonDebounced = _.debounce(this.searchResultPerson, 300)
   searchingLobidPerson = false
@@ -167,14 +180,35 @@ export default class PersonQueryMultiple extends Vue {
     }
   }
 
+  getPersonFilterColor(p: PersonMatchable): string|undefined {
+    // console.log('filterColor', this.filters.find(f => f.value !== 'all' && f.filter(p))?.color)
+    return this.filters.find(f => f.value !== 'all' && f.filter(p))?.color
+  }
+
+  focusDetailQueryField(): void {
+    const el = this.$el.querySelector('.search-person-detail input')
+    if (el instanceof HTMLInputElement) {
+      el.focus()
+      el.select()
+    }
+  }
+
+  selectFilter(f: Filter): void {
+    if (f.value === this.selectedFilter.value) {
+      this.selectedFilter = this.filters[0]
+    } else {
+      this.selectedFilter = f
+    }
+  }
+
   selectNextPerson(): void {
-    const i = this.findIndexById(this.selectedPersonId)
+    const i = this.searchTableFiltered.findIndex(p => p.id === this.selectedPersonId)
     this.selectedPersonId = this.searchTableFiltered[i + 1].id
     this.focusSelectedItem()
   }
 
   async selectPreviousPerson(): Promise<void> {
-    const i = this.findIndexById(this.selectedPersonId)
+    const i = this.searchTableFiltered.findIndex(p => p.id === this.selectedPersonId)
     this.selectedPersonId = this.searchTableFiltered[i - 1].id
     this.focusSelectedItem()
   }
@@ -195,42 +229,53 @@ export default class PersonQueryMultiple extends Vue {
     document.removeEventListener('keydown', this.keyListener)
   }
 
-  get filterOpts(): Array<{text: string, value: string, filter: (e: PersonMatchable) => boolean}> {
+  get filters(): Filter[] {
+    const all = () => true
+    const notFound = (e: PersonMatchable) => e.lobid.length === 0 && e.loaded === true
+    const ambiguous = (e: PersonMatchable) => e.lobid.length > 1 && e.candidateSelected === -1
+    const found = (e: PersonMatchable) => e.candidateSelected > -1
     return [
       {
         text: 'alle',
         value: 'all',
-        filter: () => true
-      },
-      {
-        text: 'nicht gefunden',
-        value: 'not found',
-        filter: (e: PersonMatchable) => e.lobid.length === 0 && e.loaded === true
-      },
-      {
-        text: 'mehrdeutig',
-        value: 'ambiguous',
-        filter: (e: PersonMatchable) => e.lobid.length > 1
+        filter: all,
+        count: this.searchTable.filter(all).length,
+        color: ''
       },
       {
         text: 'gefunden',
         value: 'found',
-        filter: (e: PersonMatchable) => e.lobid.length === 1 || e.candidateSelected > -1
-      }
+        filter: found,
+        color: '#4caf50',
+        count: this.searchTable.filter(found).length
+      },
+      {
+        text: 'mehrdeutig',
+        value: 'ambiguous',
+        filter: ambiguous,
+        count: this.searchTable.filter(ambiguous).length,
+        color: '#f44236'
+      },
+      {
+        text: 'nicht gefunden',
+        value: 'not found',
+        filter: notFound,
+        count: this.searchTable.filter(notFound).length,
+        color: '#ababab'
+      },
     ]
   }
 
-  get progress(): {found: number, notFound: number, ambiguous: number} {
-    return {
-      found: this.searchTable.filter(r => r.loaded === true && r.candidateSelected > -1).length,
-      notFound: this.searchTable.filter(r => r.loaded === true && r.lobid.length === 0).length,
-      ambiguous: this.searchTable.filter(r => r.loaded === true && r.candidateSelected === -1 && r.lobid.length !== 0).length,
+  get selectedPerson(): PersonMatchable|undefined {
+    const personInFilteredList = this.searchTableFiltered.find(p => p.id === this.selectedPersonId)
+    const personNotInFilteredList = this.searchTable.find(p => p.id === this.selectedPersonId)
+    if (personInFilteredList !== undefined) {
+      return personInFilteredList
+    } else if (personNotInFilteredList !== undefined) {
+      return personNotInFilteredList
+    } else {
+      return undefined
     }
-  }
-
-  get selectedPerson(): PersonMatchable {
-    const i = this.findIndexById(this.selectedPersonId)
-    return this.searchTableFiltered[i > -1 ? i : 0]
   }
 
   get searchTableFiltered(): PersonMatchable[] {
@@ -244,13 +289,17 @@ export default class PersonQueryMultiple extends Vue {
   async searchResultPerson(person: PersonMatchable): Promise<void> {
     this.searchingLobidPerson = true
     const res = await lobid.findPerson(person) || []
-    this.searchTableFiltered[this.findIndexById(person.id)].lobid = res
+    this.searchTable[this.findIndexById(person.id)].lobid = res
     this.searchingLobidPerson = false
   }
 
   selectLobidPerson(personId: string, lobidPersonIndex: number): void {
-    const i = this.findIndexById(personId)
-    this.searchTable[i].candidateSelected = lobidPersonIndex
+    const i = this.searchTable.findIndex(p => p.id === personId)
+    if (i > -1) {
+      this.searchTable[i].candidateSelected = lobidPersonIndex
+    } else {
+      throw new Error('Can’t find Person with Id ' + personId)
+    }
   }
 
   isNormalEmail(email: string): boolean {
@@ -277,7 +326,7 @@ export default class PersonQueryMultiple extends Vue {
   }
 
   findIndexById(id: string): number {
-    return this.searchTableFiltered.findIndex(r => r.id === id)
+    return this.searchTable.findIndex(r => r.id === id)
   }
 }
 </script>
