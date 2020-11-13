@@ -59,8 +59,7 @@
       </v-col>
     </v-form>
     <v-divider />
-    <v-row
-      class="flex-shrink-0" style="position: relative; height: 85%">
+    <v-row class="flex-shrink-0" style="position: relative; height: 85%">
       <v-container class="fill-height pa-0">
         <v-row class="fill-height">
           <v-col
@@ -231,7 +230,7 @@ export default class PersonQueryMultiple extends Vue {
 
   get selectedPerson(): PersonMatchable {
     const i = this.findIndexById(this.selectedPersonId)
-    return this.searchTableFiltered[i]
+    return this.searchTableFiltered[i > -1 ? i : 0]
   }
 
   get searchTableFiltered(): PersonMatchable[] {
