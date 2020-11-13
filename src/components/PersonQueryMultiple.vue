@@ -41,7 +41,13 @@
           return-object
           item-value="value"
           :item-text="(i) => i.text + ' (' + i.count + ')'"
-          :items="filters" />
+          :items="filters">
+          <template v-slot:append-outer>
+            <v-btn small icon v-if="selectedFilter.value !== 'all'" @click="selectFilter(filters[0])">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-select>
       </v-col>
       <v-col class="text-right px-0" cols="6">
         <v-btn
