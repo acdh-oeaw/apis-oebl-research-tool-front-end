@@ -51,4 +51,12 @@ export interface SelectOptions {
   disabled?: boolean
 }
 
+export interface Filter {
+  text: string
+  value: string
+  filter: (e: PersonMatchable) => boolean
+  count: number
+  color: string
+}
+
 declare module 'vue-multipane'
