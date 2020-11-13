@@ -23,11 +23,11 @@
       </v-card>
     </v-dialog>
     <v-form
-      class="row flex-shrink-1 px-3"
+      class="row flex-shrink-1"
       ref="form"
       v-model="isFormValid"
       lazy-validation>
-      <v-col cols="3">
+      <v-col cols="3" class="pl-5">
         <v-text-field
           v-model="eMail"
           label="E-Mail Adresse"
@@ -49,7 +49,7 @@
           </template>
         </v-select>
       </v-col>
-      <v-col class="text-right px-0" cols="6">
+      <v-col class="text-right pr-3" cols="6">
         <v-btn
           :loading="isSending"
           :disabled="isSending"
@@ -75,8 +75,20 @@
           <v-col
             style="position: relative"
             class="fill-height pa-0 px-3">
+            <v-text-field
+              class="rounded-lg mb-3"
+              dense
+              clearable
+              hide-details
+              placeholder="Suchen…"
+              @keyup.esc="searchValue = null"
+              v-model="searchValue"
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat />
             <RecycleScroller
-              class="scroller fill-height v-list--nav pl-0"
+              class="scroller v-list--nav pl-0"
+              style="height: calc(100% - 50px)"
               :items="searchTableFiltered"
               key-field="id"
               :item-size="60">
@@ -168,6 +180,7 @@ export default class PersonQueryMultiple extends Vue {
   @Prop({ default: [] }) searchTable: PersonMatchable[]
 
   selectedFilter = this.filters[0]
+  searchValue = null
   selectedPersonId = '1'
   searchResultPersonDebounced = _.debounce(this.searchResultPerson, 300)
   searchingLobidPerson = false
@@ -285,7 +298,9 @@ export default class PersonQueryMultiple extends Vue {
   }
 
   get searchTableFiltered(): PersonMatchable[] {
-    return this.searchTable.filter(this.selectedFilter.filter)
+    return this.searchTable
+      .filter(this.selectedFilter.filter)
+      .filter(p => this.searchValue === null || (p.lastName + ', ' + p.firstName).toLowerCase().includes(this.searchValue.toLowerCase()))
   }
 
   showPersonDetail(i: string): void{
