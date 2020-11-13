@@ -37,7 +37,7 @@
           <td
             v-for="(h, i) in headers"
             :class="[
-              (nullValues.indexOf(item[h.value]) > -1) && 'is-null-equivalent',
+              isIgnoredValue(item[h.value]) && 'is-null-equivalent',
               (h.matchWith === null) && 'do-not-import']
             "
             :key="i">
@@ -187,11 +187,15 @@ export default class ColumnMatcher extends Vue {
     this.initialTable = c
   }
 
+  isIgnoredValue(v: string): boolean {
+    return this.nullValues.indexOf(v) > -1
+  }
+
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
     // TODO: ignore null values
     return t.map((r) => {
       return hs.reduce((m, e) => {
-        if (e.matchWith !== null) {
+        if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
           m[e.matchWith] = r[e.value]
         }
         return m
