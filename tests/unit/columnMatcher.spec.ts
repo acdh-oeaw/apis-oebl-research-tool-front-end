@@ -62,7 +62,7 @@ describe('ColumnMatcher.vue', async () => {
       t.includes(exampleGuy.placeOfDeath)
     ).to.equal(true)
   })
-  it('emits a correctly parsed Javascript Object from a CSV', async () => {
+  it('emits a correctly parsed JavaScript Object from a CSV', async () => {
     wrapper?.find('.test-confirm-button').trigger('click')
     const emitted = wrapper?.emitted()
     if (emitted && emitted.confirm && emitted.confirm[0]) {
@@ -105,7 +105,7 @@ describe('ColumnMatcher.vue', async () => {
       t.includes('Sheet 1 Cell 3')
     ).to.equal(true)
   })
-  it('can switch table sheets in Excel mode', async () => {
+  it('can switch between table sheets in Excel mode', async () => {
     (wrapper?.vm as any).updateSheetName!('Blatt 2')
     await flushPromises()
     const t = wrapper!.text()
@@ -119,7 +119,28 @@ describe('ColumnMatcher.vue', async () => {
     wrapper!.find('.test-confirm-button').trigger('click')
     expect(wrapper!.emitted().confirm).to.equal(undefined)
   })
-  // it('can can select Columns for importing', async () => {
-  //   console.log(wrapper?.vm.headers)
-  // })
+  it('can can select Columns for importing and emits them', async () => {
+    (wrapper?.vm as any).matchHeaderWith!(0, 'firstName');
+    (wrapper?.vm as any).matchHeaderWith!(1, 'lastName');
+    await flushPromises()
+    wrapper!.find('.test-confirm-button').trigger('click')
+    const emitted = wrapper?.emitted('confirm')
+    if (emitted && emitted[0]) {
+      const d = emitted[0][0][0]
+      expect(d).to.haveOwnProperty('firstName') && expect(d).to.haveOwnProperty('lastName')
+    }
+  })
+  it('can emit ignored columns with custom prefixes', async () => {
+    await wrapper?.setProps({
+      returnIgnoredColumns: true,
+      prefixIgnoredColumns: 'test-prefix.'
+    })
+    await flushPromises()
+    wrapper!.find('.test-confirm-button').trigger('click')
+    const emitted = wrapper?.emitted('confirm')
+    if (emitted && emitted[1]) {
+      const d = emitted[1][0][0]
+      expect(d).to.haveOwnProperty('test-prefix.Header3 ')
+    }
+  })
 })

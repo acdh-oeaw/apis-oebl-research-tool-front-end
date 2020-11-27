@@ -302,7 +302,7 @@ export default class PersonQueryMultiple extends Vue {
   get searchTableFiltered(): PersonMatchable[] {
     return this.searchTable
       .filter(this.selectedFilter.filter)
-      .filter(p => this.searchValue === null || (p.lastName + ', ' + p.firstName).toLowerCase().includes(this.searchValue.toLowerCase()))
+      .filter(p => this.searchValue === null || (p.lastName + ', ' + p.firstName).toLowerCase().includes((this.searchValue || '').toLowerCase()))
   }
 
   showPersonDetail(i: string): void{

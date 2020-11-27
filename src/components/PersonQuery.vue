@@ -4,6 +4,8 @@
       <column-matcher
         v-if="file !== null"
         :target-columns="allowedPersonFields"
+        :return-ignored-columns="true"
+        prefix-ignored-columns="user."
         @cancel="showColumnMatcher = false"
         @confirm="loadTable"
         :file-type="file.type"

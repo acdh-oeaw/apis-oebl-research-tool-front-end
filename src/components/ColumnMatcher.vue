@@ -151,6 +151,8 @@ export default class ColumnMatcher extends Vue {
   @Prop({ default: [], required: true }) targetColumns: Column[]
   @Prop({ required: true }) fileName: string
   @Prop({ required: true }) fileType: string
+  @Prop({ default: false }) returnIgnoredColumns: boolean
+  @Prop({ default: 'ignored.' }) prefixIgnoredColumns: string
 
   mimeTypeCsv = 'text/csv'
   mimeTypeXls = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -192,11 +194,14 @@ export default class ColumnMatcher extends Vue {
   }
 
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
-    // TODO: ignore null values
     return t.map((r) => {
       return hs.reduce((m, e) => {
+        // if the column is selected for import, and the value is not on the ignored list.
         if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
           m[e.matchWith] = r[e.value]
+        // if the column is ignored, and we should return the ignored columns with a prefix.
+        } else if (this.returnIgnoredColumns && e.matchWith === null) {
+          m[this.prefixIgnoredColumns + e.value] = r[e.value]
         }
         return m
       }, {} as Row)
@@ -223,9 +228,9 @@ export default class ColumnMatcher extends Vue {
     const c = await neatCsv(csv, {separator})
     const firstRow = c[0]
     const h = _.map(firstRow, (v, k) => ({
-      text: k,
+      text: k.trim(),
+      value: k.trim(),
       sortable: true,
-      value: k,
       matchWith: this.targetColumns.find(c => c.text.toLowerCase() === k.toLowerCase())?.value || null
     }))
     return [h, c]
