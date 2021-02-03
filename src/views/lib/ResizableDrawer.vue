@@ -19,7 +19,7 @@
     app>
     <div
       v-if="!mini"
-      @dblclick="width = 370"
+      @dblclick="expandOrShrink"
       @mousedown="startDrag"
       :class="{
         'resize-handle-outer': true,
@@ -53,10 +53,20 @@ export default class ResizableDrawer extends Vue {
 
   transitionValues: {[selector: string]: string} = {}
   width = store.settings.drawerRightWidth
-  minWidth = 300
+  minWidth = 350
   maxWidth = 750
-  closeWidth = 250
+  closeWidth = 300
   willClose = false
+
+  expandOrShrink() {
+    if (this.width === this.minWidth) {
+      this.width = this.maxWidth
+    } else if (this.width === this.maxWidth) {
+      this.width = this.minWidth
+    } else {
+      this.width = this.maxWidth
+    }
+  }
 
   disableUserSelect() {
     document.body.style.pointerEvents = 'none'
