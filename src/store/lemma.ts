@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { WorkflowService, Author, Lemma, ResearchService } from '@/api'
+import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList } from '@/api'
 import request from './request'
 // eslint-disable-next-line @typescript-eslint/camelcase
 import random_name from 'node-random-name'
 import _ from 'lodash'
-import { LemmaColumn, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
+import { ImportablePerson, LemmaColumn, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 
@@ -24,6 +24,8 @@ export default class LemmaStore {
   private lastViewDate: Date|null = null
   private localDb = new LemmaDatabase()
   private _lemmas: LemmaRow[] = []
+
+  lemmaLists: LemmaList[] = []
 
   columns: LemmaColumn[] = []
 
@@ -123,10 +125,15 @@ export default class LemmaStore {
 
   constructor() {
     this.initLemmaData()
+    this.loadRemoteLemmaLists()
   }
 
   addLemma(l: Lemma) {
     console.log('add lemma', l)
+  }
+
+  async loadRemoteLemmaLists() {
+    this.lemmaLists = await (await request(ResearchService.researchApiV1ListresearchList, undefined)).results || []
   }
 
   getAllUserColumns(lemmas: LemmaRow[]): LemmaColumn[] {
@@ -222,19 +229,17 @@ export default class LemmaStore {
     }
   }
 
-  async importLemmas(ls: any[]) {
-    // const x = await ResearchService.researchApiV1LemmaresearchCreate(({
-    //   lemmas: [
-    //     {
-    //       firstName: '',
-    //       lastName: '',
-    //       dateOfBirth: '',
-    //       dateOfDeath: '',
-    //       gnd: [ 'ids' ]
-    //     }
-    //   ]
-    // }) as any)
-    // console.log({x})
+  async importLemmas(ls: ImportablePerson[], listName: string|null) {
+    const x = await ResearchService.researchApiV1LemmaresearchCreate(({
+      lemmas: ls.map(l => ({
+        ...l,
+        firstName: l.firstName || undefined,
+        lastName: l.lastName || undefined,
+        dateOfBirth: l.dateOfBirth || undefined,
+        dateOfDeath: l.dateOfDeath || undefined,
+        gnd: l.gnd
+      }))
+    }))
   }
 
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
@@ -244,7 +249,7 @@ export default class LemmaStore {
       id: rs.id!,
       starred: false,
       birthYear: dateOfBirth ? (new Date(dateOfBirth).getFullYear().toString()) : null,
-      deathYear: dateOfDeath ? (new Date(dateOfBirth).getFullYear().toString()) : null,
+      deathYear: dateOfDeath ? (new Date(dateOfDeath).getFullYear().toString()) : null,
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
       viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf'),
       wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count'),
