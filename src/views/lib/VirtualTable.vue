@@ -33,6 +33,7 @@
           @click="selectItem(item, $event)"
           @dblclick="$emit('dblclick:row', item, $event)"
           :style="{ height: rowHeight + 'px' }"
+          @keydown="handleKey"
           :class="['table-row', selected[item.id] && 'selected']">
           <div
             v-for="column in visibleColumns"
@@ -84,6 +85,7 @@ export default class VirtualTable extends Vue {
   @Prop({ default: [] }) data!: Row[]
   @Prop({ default: 40 }) rowHeight!: number
   @Prop({ default: true }) sortableColumns!: boolean
+  @Prop({ default: true }) keyboardSelection!: boolean
 
   selected: { [key: number]: Row } = {}
   log = console.log
@@ -96,6 +98,11 @@ export default class VirtualTable extends Vue {
     if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault()
       this.selectAll()
+    }
+    if (e.key === 'ArrowDown') {
+      console.log('down')
+    } else if (e.key === 'ArrowUp') {
+      console.log('up')
     }
   }
 
