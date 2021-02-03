@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('select-lemma', value)">
+  <div style="user-select: none" @click="$emit('select-lemma', value)">
     <template v-if="value.lemma">
       <h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
       <h5 class="pa-0 ma-0" v-if="showDescription">{{ lemma.description }}</h5>
