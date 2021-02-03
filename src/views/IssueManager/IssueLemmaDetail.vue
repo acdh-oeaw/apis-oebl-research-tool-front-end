@@ -84,12 +84,11 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 pl-5"
+        class="pt-2 pb-2 pl-5 background"
         :style="{
-        zIndex: 1,
-        position: 'sticky',
-        top: 0,
-        background: $vuetify.theme.currentTheme.sidebar
+          zIndex: 1,
+          position: 'sticky',
+          top: 0,
       }">Labels</h4>
       <v-card-text class="pt-0">
         <lemma-labels
@@ -98,12 +97,11 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pl-5 pt-2 pb-2"
+        class="pl-5 pt-2 pb-2 background"
         :style="{
         zIndex: 1,
         position: 'sticky',
-        top: 0,
-        background: $vuetify.theme.currentTheme.sidebar
+        top: 0
       }">Notizen</h4>
       <v-card-text style="position: relative" class="pt-0">
         <v-textarea
@@ -145,7 +143,13 @@
     <v-card-actions>
       <v-row dense>
         <v-col>
-          <v-btn :disabled="lemma.lemma === null" class="rounded-lg" color="background darken-2" elevation="0" block>
+          <v-btn
+            :disabled="lemma.lemma === null"
+            class="rounded-lg"
+            color="background darken-2"
+            elevation="0"
+            @click="openInLemmaManager"
+            block>
             <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon>Lemma anzeigen
           </v-btn>
         </v-col>
@@ -198,6 +202,13 @@ export default class LemmaDetail extends Vue {
 
   isAddingNote = false
   isLoadingNotes = false
+
+  openInLemmaManager() {
+    if (this.researchLemma !== null) {
+      store.lemma.selectedLemmas = [ this.researchLemma ]
+      this.$router.push('/lemmas')
+    }
+  }
 
   formatTimeDistance(d: string|undefined): string {
     if (d !== undefined) {
