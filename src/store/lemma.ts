@@ -29,6 +29,7 @@ export default class LemmaStore {
   private _selectedLemmaFilterId: null|string = null
   private _selectedLemmaIssueId: null|number = null
 
+  public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
   public selectedLemmas: LemmaRow[] = []
   public lemmaLists: LemmaList[] = []
@@ -249,7 +250,7 @@ export default class LemmaStore {
 
   async deleteLemma(ids: number[]) {
     const deleteRemote = await Promise.all(ids.map(id => {
-      return ResearchService.researchApiV1LemmaresearchDestroy(id)
+      return request(ResearchService.researchApiV1LemmaresearchDestroy, id)
     }))
     // TODO:
     // this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) > -1)

@@ -214,14 +214,14 @@
           </v-menu>
         </v-flex>
         <v-flex
-          v-if="!showSideBar"
+          v-if="!store.lemma.showSideBar"
           shrink
           align-self-start
           class="pl-0 ml-0 pr-3"
           style="margin-top: -3px">
           <v-btn
-            @click="showSideBar = !showSideBar"
-            v-if="!showSideBar"
+            @click="store.lemma.showSideBar = !store.lemma.showSideBar"
+            v-if="!store.lemma.showSideBar"
             tile
             class="rounded-lg"
             icon>
@@ -233,14 +233,14 @@
     <resizable-drawer
       :card="true"
       :right="true"
-      :value="showSideBar">
+      :value="store.lemma.showSideBar">
       <v-btn
         style="position: absolute; right: 0px; top: 5px; z-index: 99"
         width="48"
         height="48"
         tile
         class="rounded-lg mr-2"
-        @click="showSideBar = false"
+        @click="store.lemma.showSideBar = false"
         icon>
         <v-icon>mdi-dock-right</v-icon>
       </v-btn>
@@ -257,7 +257,7 @@
         <span style="opacity: .7">{{ selectedRows.length }} Lemmata ausgewählt</span>
       </v-overlay>
       <lemma-detail
-        @close="showSideBar = false"
+        @close="store.lemma.showSideBar = false"
         v-else
         :value="selectedRows[0]" />
     </resizable-drawer>
@@ -270,7 +270,7 @@
         :row-height="40"
         @keyup.native.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
-        @dblclick:row="showSideBar = !showSideBar"
+        @dblclick:row="store.lemma.showSideBar = !store.lemma.showSideBar"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
         @mouseover:cell="onHoverCellDebounced"
@@ -349,7 +349,6 @@ export default class LemmaManager extends Vue {
 
   tableHeight = 0
   addLemmaDialog = false
-  showSideBar = false
 
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []

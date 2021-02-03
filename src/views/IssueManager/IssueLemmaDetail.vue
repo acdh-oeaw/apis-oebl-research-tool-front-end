@@ -206,6 +206,7 @@ export default class LemmaDetail extends Vue {
   openInLemmaManager() {
     if (this.researchLemma !== null) {
       store.lemma.selectedLemmas = [ this.researchLemma ]
+      store.lemma.showSideBar = true
       this.$router.push('/lemmas')
     }
   }
