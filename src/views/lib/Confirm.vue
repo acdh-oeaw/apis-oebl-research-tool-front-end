@@ -9,7 +9,7 @@
           {{ confirmStore.confirmText }}
         </v-btn>
       </v-card-actions>
-      <v-card-actions>
+      <v-card-actions v-if="confirmStore.showCancel">
         <v-btn block @click="bus.$emit('abort')" class="rounded-lg" color="background darken-2" elevation="0">
           {{ confirmStore.abortText }}
         </v-btn>
