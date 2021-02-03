@@ -26,8 +26,12 @@ export default class IssueStore {
     this._issues = (await request(WorkflowService.workflowApiV1IssuesList, undefined)).results || []
   }
 
+  async getIssueLemmas(id: number) {
+    return ((await request(WorkflowService.workflowApiV1IssueLemmaList, undefined, undefined, id)).results || []) as WithId<IssueLemma>[]
+  }
+
   async loadIssueLemmas(id: number) {
-    this._issueLemmas = ((await request(WorkflowService.workflowApiV1IssueLemmaList, undefined, undefined, id)).results || []) as WithId<IssueLemma>[]
+    this._issueLemmas = await this.getIssueLemmas(id)
   }
 
   async createLabel(name: string, color: string): Promise<LemmaLabel> {
