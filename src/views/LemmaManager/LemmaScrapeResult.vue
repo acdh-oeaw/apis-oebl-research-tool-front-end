@@ -10,6 +10,9 @@
         style="text-transform: uppercase; letter-spacing: .1em">
         {{ title }}
       </v-list-item-title>
+      <v-list-item-action-text class="ellipsis">
+        <span v-for="(subValue, key) in value" :key="key">{{ formatKey(key) }}, </span>
+      </v-list-item-action-text>
     </template>
     <v-list-item
       dense
@@ -110,6 +113,10 @@ export default class LemmaScrapeResult extends Vue {
 .longform-text
   font-size 15px !important
 
+.ellipsis
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 </style>
 <style lang="stylus">
 .scrape-result .v-list-item--active
