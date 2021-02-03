@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList } from '@/api'
+import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList, IssueLemma } from '@/api'
 import request from './request'
 // eslint-disable-next-line @typescript-eslint/camelcase
 import random_name from 'node-random-name'
@@ -7,6 +7,7 @@ import _ from 'lodash'
 import { ImportablePerson, LemmaColumn, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
+import { WithId } from '@/types'
 
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
@@ -24,12 +25,15 @@ export default class LemmaStore {
   private lastViewDate: Date|null = null
   private localDb = new LemmaDatabase()
   private _lemmas: LemmaRow[] = []
+  private _selectedLemmaListId: null|number = null
+  private _selectedLemmaFilterId: null|string = null
+  private _selectedLemmaIssueId: null|number = null
 
-  lemmaLists: LemmaList[] = []
-
-  columns: LemmaColumn[] = []
-
-  defaultColumns: LemmaColumn[] = [
+  public selectedIssueLemmas: WithId<IssueLemma>[] = []
+  public selectedLemmas: LemmaRow[] = []
+  public lemmaLists: LemmaList[] = []
+  public columns: LemmaColumn[] = []
+  public defaultColumns: LemmaColumn[] = [
     {
       name: 'Markiert',
       value: 'starred',
@@ -128,6 +132,41 @@ export default class LemmaStore {
     this.loadRemoteLemmaLists()
   }
 
+  get selectedLemmaIssueId() {
+    return this._selectedLemmaIssueId
+  }
+
+  set selectedLemmaIssueId(id) {
+    this._selectedLemmaListId = null
+    this._selectedLemmaFilterId = null
+    this._selectedLemmaIssueId = id
+  }
+
+  get selectedLemmaListId() {
+    return this._selectedLemmaListId
+  }
+
+  set selectedLemmaListId(val) {
+    this._selectedLemmaIssueId = null
+    this._selectedLemmaFilterId = null
+    this._selectedLemmaListId = val
+  }
+
+  get selectedLemmaFilterId() {
+    return this._selectedLemmaFilterId
+  }
+
+  set selectedLemmaFilterId(val) {
+    this._selectedLemmaIssueId = null
+    this._selectedLemmaListId = null
+    this._selectedLemmaFilterId = val
+  }
+
+  async deleteLemmaList(id: number) {
+    await request(ResearchService.researchApiV1ListresearchDestroy, id)
+    await this.loadRemoteLemmaLists()
+  }
+
   addLemma(l: Lemma) {
     console.log('add lemma', l)
   }
@@ -208,6 +247,14 @@ export default class LemmaStore {
     return x
   }
 
+  async deleteLemma(ids: number[]) {
+    const deleteRemote = await Promise.all(ids.map(id => {
+      return ResearchService.researchApiV1LemmaresearchDestroy(id)
+    }))
+    // TODO:
+    // this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) > -1)
+  }
+
   fakeLemma(seed: number): LemmaRow {
     const gnds = _.range(0, _.random(0, 3)).map(() => _.random(100000001, 993183199, false).toString())
     const bYear = _.random(1890, 1990, false)
@@ -231,6 +278,7 @@ export default class LemmaStore {
 
   async importLemmas(ls: ImportablePerson[], listName: string|null) {
     const x = await ResearchService.researchApiV1LemmaresearchCreate(({
+      list: 3,
       lemmas: ls.map(l => ({
         ...l,
         firstName: l.firstName || undefined,
@@ -271,7 +319,7 @@ export default class LemmaStore {
       return []
     } else {
       // @ts-ignore
-      return ((await request(ResearchService.researchApiV1LemmaresearchList)).results as ServerResearchLemma[] || [] as ServerResearchLemma[]).map(this.convertRemoteLemmaToLemmaRow)
+      return ((await request(ResearchService.researchApiV1LemmaresearchList, 1000)).results as ServerResearchLemma[] || [] as ServerResearchLemma[]).map(this.convertRemoteLemmaToLemmaRow)
       // get all (mock)
       // return _(_.range(0, 10000))
       //   .map(this.fakeLemma)
@@ -296,11 +344,19 @@ export default class LemmaStore {
   }
 
   getLemmaById(id?: number) {
-    return id === undefined ? undefined : this.lemmas.find(l => l.id === id)
+    return id === undefined ? undefined : this._lemmas.find(l => l.id === id)
   }
 
   get lemmas() {
-    return this._lemmas
+    if (this.selectedLemmaListId !== null) {
+      return this._lemmas.filter(l => l.list?.id === this.selectedLemmaListId)
+    } else if (this.selectedLemmaIssueId !== null) {
+      return _(this.selectedIssueLemmas).map(l => {
+        return this.getLemmaById(l.lemma || undefined)
+      }).compact().value()
+    } else {
+      return this._lemmas
+    }
   }
 
   set lemmas(ls: LemmaRow[]) {
