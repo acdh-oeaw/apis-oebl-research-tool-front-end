@@ -56,7 +56,7 @@
           top: 0,
           background: ''
         }">
-        Externe Ressourcen
+        Externe Ressourcen <v-badge color="blue-grey" inline :content="countResources(value.columns_scrape)" />
       </h4>
       <v-card-text class="pt-0">
         <v-list dense nav class="text-body-2 pa-0">
@@ -88,6 +88,13 @@ export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow
   log = console.log
+  countResources(r: LemmaRow['columns_scrape']) {
+    if (r === undefined) {
+      return 0
+    } else {
+      return Object.values(r).filter(r => r !== undefined && !(Array.isArray(r))).length
+    }
+  }
 }
 </script>
 <style lang="stylus" scoped>
