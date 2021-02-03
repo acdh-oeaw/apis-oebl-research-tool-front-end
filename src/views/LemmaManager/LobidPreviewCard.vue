@@ -1,8 +1,19 @@
 <template>
   <div>
-    <v-row v-for="(fragment, gnd) in fragments" :key="gnd" style="font-size: 120%; line-height: 1.2;" class="fragment" no-gutters>
+    <v-row
+      v-for="(fragment, gnd) in fragments"
+      :key="gnd"
+      style="font-size: 130%; line-height: 1.2;"
+      class="fragment"
+      no-gutters>
       <slot />
-      <v-col style="height: 100px" v-html="fragment.html" cols="11">
+      <v-col
+        v-if="fragment.html !== null"
+        style="height: 100px"
+        v-html="fragment.html"
+        cols="11" />
+      <v-col style="opacity: .5" class="pa-0 text-center caption" v-else>
+        (nicht gefunden)
       </v-col>
     </v-row>
   </div>
@@ -13,7 +24,7 @@ import * as lobidService from '../../service/lobid'
 
 type Fragments = {
   [gnd: string]: {
-    html: string,
+    html: string | null,
     selected: boolean
   }
 }
@@ -30,7 +41,10 @@ export default class LobidPreviewCard extends Vue {
   async loadPreviews(gnd: string[]) {
     const results = await lobidService.getPreviews(gnd)
     return gnd.reduce((m, e, i) => {
-      m[e] = { html: results[i], selected: false }
+      m[e] = {
+        html: results[i],
+        selected: false
+      }
       return m
     }, {} as Fragments)
   }
