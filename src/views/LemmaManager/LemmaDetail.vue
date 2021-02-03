@@ -33,35 +33,42 @@
       </v-container>
     </v-card-title>
     <v-divider />
-    <v-card-text class="overflow-y-auto flex-grow-1">
-      <v-list dense nav class="text-body-2">
-        <template v-if="value.columns_scrape">
-          <lemma-scrape-result
-            v-for="(source, sourceName) in value.columns_scrape"
-            :key="sourceName"
-            :value="source"
-            :title="sourceName" />
-        </template>
-      </v-list>
-    </v-card-text>
+    <div class="overflow-y-auto flex-grow-1">
+      <v-card-text>
+        <v-subheader class="px-1">GND: {{ value.gnd[0] }}<v-spacer /><v-btn rounded elevation="0" small>bearbeiten</v-btn></v-subheader>
+        <lobid-preview-card @update="log" :limit="1" :gnd="value.gnd" />
+      </v-card-text>
+      <v-card-text>
+        <v-subheader class="px-1">Crawling Ergebnisse</v-subheader>
+        <v-list dense nav class="text-body-2 pa-0">
+          <template v-if="value.columns_scrape">
+            <lemma-scrape-result
+              v-for="(source, sourceName) in value.columns_scrape"
+              :key="sourceName"
+              :value="source"
+              :title="sourceName" />
+          </template>
+        </v-list>
+      </v-card-text>
+    </div>
   </v-card>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
+import LobidPreviewCard from './LobidPreviewCard.vue'
+
 @Component({
   components: {
-    LemmaScrapeResult
+    LemmaScrapeResult,
+    LobidPreviewCard
   }
 })
 export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow
-
-  mounted() {
-    
-  }
+  log = console.log
 }
 </script>
 <style lang="stylus" scoped>

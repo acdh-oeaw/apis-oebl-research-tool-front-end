@@ -1,8 +1,8 @@
 <template>
   <div class="fill-height" ref="container">
     <v-menu
-      :value="Object.keys(lobidPreviewHtmlFragments).length > 0"
-      @input="lobidPreviewHtmlFragments = {}"
+      :value="lobidPreviewGnds.length > 0"
+      @input="lobidPreviewGnds = []"
       :position-x="previewPopupCoords[0]"
       :close-on-content-click="false"
       absolute
@@ -10,7 +10,11 @@
       offset-x
       content-class="soft-shadow"
       :position-y="previewPopupCoords[1]">
-      <lobid-preview-card :fragments="lobidPreviewHtmlFragments" />
+      <v-card color="background darken-2" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
+        <v-card-text class="pb-3 pl-0 pt-4 pr-0">
+          <lobid-preview-card :gnd="lobidPreviewGnds" />
+        </v-card-text>
+      </v-card>
     </v-menu>
     <drag-image
       ref="dragGhost"
@@ -39,7 +43,7 @@
         :file-name="fileToImport.file.name"
         :buffer="fileToImport.buffer"
         @cancel="fileToImport = { file: null, buffer: null }"
-        @confirm="log"
+        @confirm="fileToImport = { file: null, buffer: null }"
       />
     </v-dialog>
     <v-app-bar
@@ -299,7 +303,7 @@ import LemmaAdd from './LemmaAdd.vue'
 import { fileToArrayBuffer } from '../../util'
 import store from '../../store'
 import { Lemma } from '../../api'
-import { LemmaFilterComparator, LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
+import { LemmaFilterComparator, LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import * as lobidService from '../../service/lobid'
 import prompt from '@/store/prompt'
@@ -329,7 +333,7 @@ export default class LemmaManager extends Vue {
   showSideBar = false
 
   previewPopupCoords: [number, number] = [0, 0]
-  lobidPreviewHtmlFragments: { [gnd: number]: {html: string, selected: boolean} } = {}
+  lobidPreviewGnds: string[] = []
 
   selectedRows: LemmaRow[] = []
   title = 'Lemmabibliothek'
@@ -414,7 +418,7 @@ export default class LemmaManager extends Vue {
   ]
 
   defaultFilterItem = {
-    column: store.lemma.defaultColumns[0],
+    column: store.lemma.defaultColumns[1],
     comparator: this.comparators[0].value,
     query: ''
   }
@@ -552,12 +556,11 @@ export default class LemmaManager extends Vue {
     if (prop === 'gnd') {
       if (e.target instanceof HTMLElement) {
         this.previewPopupCoords = [ e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().bottom ]
-        const fakeIds = _.take([ 118624822, 118540238, 118529579], item.gnd.length)
-        const results = await lobidService.getPreview(fakeIds)
-        this.lobidPreviewHtmlFragments = fakeIds.reduce((m, e, i) => {
-          m[e] = { html: results[i], selected: false}
-          return m
-        }, {} as { [key: number]: {html: string, selected: boolean} })
+        this.lobidPreviewGnds = item.gnd
+        // this.lobidPreviewHtmlFragments = item.gnd.reduce((m, e, i) => {
+        //   m[e] = { html: results[i], selected: false}
+        //   return m
+        // }, {} as { [key: string]: {html: string, selected: boolean} })
       }
     }
   }

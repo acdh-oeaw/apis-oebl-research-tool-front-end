@@ -1,30 +1,44 @@
 <template>
-  <v-card color="background darken-2" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
-    <v-card-text
-      class="pa-0 pt-4 fragment"
-      style="font-size: 120%; line-height: 1.2;"
-      v-for="(fragment, gnd) in fragments"
-      :key="gnd"
-    >
-      <v-row no-gutters>
-        <v-col class="pl-1" align-self="center" cols="1">
-          <v-checkbox />
-        </v-col>
-        <v-col v-html="fragment.html" cols="11">
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn elevation="0" class="rounded-lg" color="background" block>Auswahl zurücksetzen</v-btn>
-    </v-card-actions>
-  </v-card>
+  <div>
+    <v-row v-for="(fragment, gnd) in fragments" :key="gnd" style="font-size: 120%; line-height: 1.2;" class="fragment" no-gutters>
+      <slot />
+      <v-col style="height: 100px" v-html="fragment.html" cols="11">
+      </v-col>
+    </v-row>
+  </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import * as lobidService from '../../service/lobid'
+
+type Fragments = {
+  [gnd: string]: {
+    html: string,
+    selected: boolean
+  }
+}
 
 @Component
 export default class LobidPreviewCard extends Vue {
-  @Prop({ default: {} }) fragments!: { [gnd: number]: {html: string, selected: boolean} }
+
+  @Prop({ default: [] }) gnd!: string[]
+  @Prop({ default: 10 }) limit!: number
+
+  fragments: Fragments = {}
+  loading = false
+
+  async loadPreviews(gnd: string[]) {
+    const results = await lobidService.getPreviews(gnd)
+    return gnd.reduce((m, e, i) => {
+      m[e] = { html: results[i], selected: false }
+      return m
+    }, {} as Fragments)
+  }
+
+  @Watch('gnd', { immediate: true })
+  async onChangeGnd(gnd: string[]) {
+    this.fragments = await this.loadPreviews(gnd)
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -33,5 +47,4 @@ export default class LobidPreviewCard extends Vue {
 
 .fragment /deep/ a
   font-weight 700
-  color var(--v-secondary-base)
 </style>
