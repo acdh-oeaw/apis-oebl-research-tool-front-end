@@ -2,7 +2,7 @@ import { Person as LdPerson } from 'schema-dts'
 import { ImportablePerson } from '../../types/lemma'
 import _ from 'lodash'
 
-export async function getPreview(gnds: number[]) {
+export async function getPreviews(gnds: string[]) {
   return Promise.all(gnds.map(gnd => fetch('https://lobid.org/gnd/' + gnd + '.preview').then(r => r.text())))
 }
 
@@ -47,7 +47,7 @@ export async function findPerson(p: ImportablePerson, secondTry = false): Promis
         dateOfDeath: null,
         placeOfBirth: null,
         placeOfDeath: null,
-        gnd: null
+        gnd: []
       }, true)
     }
   } catch (e) {
