@@ -4,8 +4,9 @@
 import type { List } from '../models/List';
 import type { ListCreateAPIViewRequest } from '../models/ListCreateAPIViewRequest';
 import type { ListCreateAPIViewResponse } from '../models/ListCreateAPIViewResponse';
+import type { ListEntry } from '../models/ListEntry';
 import type { ListRequest } from '../models/ListRequest';
-import type { PaginatedListCreateAPIViewResponseList } from '../models/PaginatedListCreateAPIViewResponseList';
+import type { PaginatedListEntryList } from '../models/PaginatedListEntryList';
 import type { PaginatedListList } from '../models/PaginatedListList';
 import type { PatchedListRequest } from '../models/PatchedListRequest';
 import { request as __request } from '../core/request';
@@ -13,18 +14,19 @@ import { request as __request } from '../core/request';
 export class ResearchService {
 
     /**
-     * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
-     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
+     * APIView to process scraping requests
      *
+     * Args:
+     * GenericAPIView ([type]): [description]
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedListCreateAPIViewResponseList
+     * @returns PaginatedListEntryList
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchList(
         limit?: number,
         offset?: number,
-    ): Promise<PaginatedListCreateAPIViewResponseList> {
+    ): Promise<PaginatedListEntryList> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/lemmaresearch/`,
@@ -51,6 +53,44 @@ export class ResearchService {
             method: 'POST',
             path: `/research/api/v1/lemmaresearch/`,
             body: requestBody,
+        });
+        return result.body;
+    }
+
+    /**
+     * APIView to process scraping requests
+     *
+     * Args:
+     * GenericAPIView ([type]): [description]
+     * @param id A unique integer value identifying this list entry.
+     * @returns ListEntry
+     * @throws ApiError
+     */
+    public static async researchApiV1LemmaresearchRetrieve(
+        id: number,
+    ): Promise<ListEntry> {
+        const result = await __request({
+            method: 'GET',
+            path: `/research/api/v1/lemmaresearch/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * APIView to process scraping requests
+     *
+     * Args:
+     * GenericAPIView ([type]): [description]
+     * @param id A unique integer value identifying this list entry.
+     * @returns any No response body
+     * @throws ApiError
+     */
+    public static async researchApiV1LemmaresearchDestroy(
+        id: number,
+    ): Promise<any> {
+        const result = await __request({
+            method: 'DELETE',
+            path: `/research/api/v1/lemmaresearch/${id}/`,
         });
         return result.body;
     }

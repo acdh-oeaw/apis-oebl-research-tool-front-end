@@ -58223,7 +58223,7 @@
         "/research/api/v1/lemmaresearch/": {
             "get": {
                 "operationId": "research_api_v1_lemmaresearch_list",
-                "description": "Endpoint that allows to POST a list of lemmas to the research pipeline for processing.\n        All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.\n        ",
+                "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
                 "parameters": [
                     {
                         "name": "limit",
@@ -58263,7 +58263,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedListCreateAPIViewResponseList"
+                                    "$ref": "#/components/schemas/PaginatedListEntryList"
                                 }
                             }
                         },
@@ -58309,7 +58309,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -58318,6 +58318,83 @@
                             }
                         },
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/research/api/v1/lemmaresearch/{id}/": {
+            "get": {
+                "operationId": "research_api_v1_lemmaresearch_retrieve",
+                "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this list entry.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "research"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListEntry"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "research_api_v1_lemmaresearch_destroy",
+                "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this list entry.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "research"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
                     }
                 }
             }
@@ -64691,6 +64768,46 @@
                     "success"
                 ]
             },
+            "ListEntry": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "gnd": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    },
+                    "list": {
+                        "$ref": "#/components/schemas/ListSerializerLimited"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "columns_user": {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "nullable": true
+                    },
+                    "columns_scrape": {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "list"
+                ]
+            },
             "ListRequest": {
                 "type": "object",
                 "properties": {
@@ -64704,6 +64821,26 @@
                 },
                 "required": [
                     "editor",
+                    "title"
+                ]
+            },
+            "ListSerializerLimited": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "editor": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
                     "title"
                 ]
             },
@@ -65441,7 +65578,7 @@
                     }
                 }
             },
-            "PaginatedListCreateAPIViewResponseList": {
+            "PaginatedListEntryList": {
                 "type": "object",
                 "properties": {
                     "count": {
@@ -65463,7 +65600,7 @@
                     "results": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ListCreateAPIViewResponse"
+                            "$ref": "#/components/schemas/ListEntry"
                         }
                     }
                 }
