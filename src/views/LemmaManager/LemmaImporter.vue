@@ -37,6 +37,7 @@
             value="Import vom 1/2/21"
             class="mx-5 rounded-lg"
             hint="Der Name kann später geändert werden"
+            v-model="importToListName"
             solo
             flat
             placeholder="Listenname…" />
@@ -67,7 +68,7 @@
         class="px-4 rounded-lg"
         elevation="0"
         color="primary"
-        @click="$emit('confirm', importable)">
+        @click="importLemmas(importable, importToListName)">
         Import abschließen
       </v-btn>
     </v-card-actions>
@@ -79,6 +80,7 @@ import ColumnMatcher from './ColumnMatcher.vue'
 import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import { PersonField, ImportablePerson } from '@/types/lemma'
 import * as lobid from '../../service/lobid'
+import store from '../../store'
 import _ from 'lodash'
 
 @Component({
@@ -94,12 +96,10 @@ export default class LemmaImporter extends Vue {
   @Prop({ required: true }) buffer!: Buffer
 
   step = 0
-
   log = console.log
-
   importable: ImportablePerson[] = []
-
   userColumnPrefix = 'user.'
+  importToListName = ''
 
   get importableHeaders(): number {
     if (this.importable.length > 0) {
@@ -107,6 +107,11 @@ export default class LemmaImporter extends Vue {
     } else {
       return 0
     }
+  }
+
+  async importLemmas(lemmas: ImportablePerson[], listName: string|null) {
+    store.lemma.importLemmas(lemmas, listName)
+    // console.log({lemmas})
   }
 
   async startLobidMatching(rs: any[]) {
