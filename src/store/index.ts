@@ -7,7 +7,7 @@ import LemmaStore from './lemma'
 import LabelStore from './label'
 
 import { IssueLemma, Lemma, OpenAPI } from '../api'
-import { LemmaFilterItem } from '@/types/lemma'
+import { LemmaFilterItem, LemmaRow } from '@/types/lemma'
 
 OpenAPI.BASE = 'https://acdh-oeaw-oebl-oebl-irs-devops.10.3.6.53.nip.io'
 OpenAPI.WITH_CREDENTIALS = true
@@ -38,7 +38,6 @@ interface Settings {
   drawerLeftWidth: number
   storedLemmaFilters: StoredLemmaFilter[]
   storedLemmaLists: StoredLemmaList[]
-  selectedLemmaFilter: string
   lemmaManagerNavVisible: boolean
   issueManagerNavVisible: boolean
   issueViewOptions: {
@@ -55,7 +54,6 @@ class Store {
   public loginCallbacks: (() => any)[] = []
 
   private _selectedIssueId = 1
-  private _selectedLemmaListId = 1
   private _selectedBiographyId = 1
   private _isLoading = false
   private _settings: Settings = {
@@ -66,7 +64,6 @@ class Store {
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
     storedLemmaFilters: [],
-    selectedLemmaFilter: '-1',
     storedLemmaLists: [],
     lemmaManagerNavVisible: true,
     issueManagerNavVisible: false,
@@ -116,10 +113,6 @@ class Store {
 
   get selectedIssue() {
     return this._selectedIssueId
-  }
-
-  get selectedLemmaList() {
-    return this._selectedLemmaListId
   }
 
   get selectedBiography() {
