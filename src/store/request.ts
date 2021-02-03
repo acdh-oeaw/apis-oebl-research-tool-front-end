@@ -1,4 +1,5 @@
 import store from '.'
+import confirm from './confirm'
 
 export default async function request<T, A>(func: (...args: A[]) => Promise<T>, ...args: A[]): Promise<T> {
   console.log('request args', func.name, args)
@@ -22,6 +23,11 @@ export default async function request<T, A>(func: (...args: A[]) => Promise<T>, 
           resolve(x)
         })
       } else {
+        await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false })
+        console.error(e)
+        if (store) {
+          store.isLoading = false
+        }
         reject(e)
       }
     }
