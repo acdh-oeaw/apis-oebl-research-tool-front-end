@@ -2,8 +2,16 @@ import { Person as LdPerson } from 'schema-dts'
 import { ImportablePerson } from '../../types/lemma'
 import _ from 'lodash'
 
-export async function getPreviews(gnds: string[]) {
-  return Promise.all(gnds.map(gnd => fetch('https://lobid.org/gnd/' + gnd + '.preview').then(r => r.text())))
+export async function getPreviews(gnds: (string|null)[]) {
+  return Promise.all(gnds.map(async gnd => {
+    return fetch('https://lobid.org/gnd/' + gnd + '.preview').then(r => {
+      if (r.ok) {
+        return r.text()
+      } else {
+        return null
+      }
+    })
+  }))
 }
 
 function isQueryableValue(e?: string|null): boolean {
