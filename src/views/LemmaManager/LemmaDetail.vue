@@ -5,25 +5,25 @@
     v-if="value !== undefined">
     <v-card-title>
       <v-btn
-        style="position: absolute; right: 0px; top: 5px;"
+        style="position: absolute; left: 5px; top: 5px; font-size: 100%"
         width="48"
         height="48"
         tile
+        @click="value.starred = !value.starred"
         class="rounded-lg mr-2"
-        @click="$emit('close')"
         icon>
-        <v-icon>mdi-dock-right</v-icon>
+        <span style="color: var(--v-primary-base)" v-if="value.starred">★</span>
+        <span style="opacity: .5" v-else>☆</span>
       </v-btn>
       <v-container class="pa-0">
         <v-row no-gutters>
-          <v-col cols="1"></v-col>
+          <v-col cols="1" />
           <transition name="roll">
             <v-col :key="value.id" class="text-center" cols="10">
               {{ value.lastName }}, {{ value.firstName }}
             </v-col>
           </transition>
-          <v-col class="text-right" cols="1">
-          </v-col>
+          <v-col cols="1" />
         </v-row>
         <v-row no-gutters>
           <v-col cols="12" class="text-caption text-center">
@@ -34,12 +34,31 @@
     </v-card-title>
     <v-divider />
     <div class="overflow-y-auto flex-grow-1">
-      <v-card-text>
-        <v-subheader class="px-1">GND: {{ value.gnd[0] }}<v-spacer /><v-btn rounded elevation="0" small>bearbeiten</v-btn></v-subheader>
+      <h4
+        class="pt-2 pb-2 pl-5 background"
+        :style="{
+        zIndex: 1,
+        position: 'sticky',
+        top: 0,
+        background: ''
+      }">
+        GND: {{ value.gnd[0] }}<v-spacer /><!--<v-btn rounded elevation="0" small>bearbeiten</v-btn>-->
+      </h4>
+      <v-card-text class="pt-2">
         <lobid-preview-card @update="log" :limit="1" :gnd="value.gnd" />
       </v-card-text>
-      <v-card-text>
-        <v-subheader class="px-1">Crawling Ergebnisse</v-subheader>
+      <v-divider />
+      <h4
+        class="pt-2 pb-2 pl-5 background"
+        :style="{
+          zIndex: 1,
+          position: 'sticky',
+          top: 0,
+          background: ''
+        }">
+        Externe Ressourcen
+      </h4>
+      <v-card-text class="pt-0">
         <v-list dense nav class="text-body-2 pa-0">
           <template v-if="value.columns_scrape">
             <lemma-scrape-result

@@ -170,8 +170,17 @@
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
-                v-if="store.settings.selectedLemmaFilter === '-1'"
-                :disabled="usableFilterItems.length === 0"
+                v-if="store.lemma.selectedLemmaListId !== null"
+                @click="deleteList(store.lemma.selectedLemmaListId)">
+                <v-list-item-avatar size="15">
+                  <v-icon small>mdi-delete-outline</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  Liste löschen
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item
+                v-if="store.lemma.selectedLemmaFilterId === null && usableFilterItems.length > 0"
                 @click="saveFilter" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-card-search-outline</v-icon>
@@ -181,8 +190,8 @@
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
-                v-else
-                @click="deleteFilter(store.settings.selectedLemmaFilter)" dense>
+                v-else-if="store.lemma.selectedLemmaFilterId !== null"
+                @click="deleteFilter(store.lemma.selectedLemmaFilterId)" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-delete-outline</v-icon>
                 </v-list-item-avatar>
@@ -225,6 +234,16 @@
       :card="true"
       :right="true"
       :value="showSideBar">
+      <v-btn
+        style="position: absolute; right: 0px; top: 5px; z-index: 99"
+        width="48"
+        height="48"
+        tile
+        class="rounded-lg mr-2"
+        @click="showSideBar = false"
+        icon>
+        <v-icon>mdi-dock-right</v-icon>
+      </v-btn>
       <v-overlay
         v-if="selectedRows.length === 0"
         absolute
@@ -334,9 +353,15 @@ export default class LemmaManager extends Vue {
 
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
-
-  selectedRows: LemmaRow[] = []
   title = 'Lemmabibliothek'
+
+  get selectedRows() {
+    return store.lemma.selectedLemmas
+  }
+
+  set selectedRows(ls) {
+    store.lemma.selectedLemmas = ls
+  }
 
   filteredData: LemmaRow[] = this.store.lemma.lemmas
   filterDataDebounced = _.debounce(this.filterData, 150)
@@ -425,6 +450,15 @@ export default class LemmaManager extends Vue {
 
   filterItems: LemmaFilterItem[] = [ clone(this.defaultFilterItem) ]
 
+  async deleteList(id: number) {
+    const list = store.lemma.lemmaLists.find(l => l.id === id)
+    if (list !== undefined) {
+      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen?`)) {
+        await store.lemma.deleteLemmaList(id)
+      }
+    }
+  }
+
   updateTableHeight() {
     this.tableHeight = this.getTableHeight()
   }
@@ -461,7 +495,7 @@ export default class LemmaManager extends Vue {
   async deleteSelectedLemmas() {
     const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) in den Papierkorb legen? Dies kann später rückgängig gemacht werden.`
     if (await confirm.confirm(msg)) {
-      console.log('DELETE!')
+      await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
     }
   }
 
@@ -494,14 +528,14 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  async deleteFilter(id: string) {
+  async deleteFilter(id: string|null) {
     const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
     if (lf !== undefined && await confirm.confirm(`Die Abfrage ”${ lf.name }” löschen?`)) {
       store.settings = {
         ...store.settings,
-        selectedLemmaFilter: '-1',
         storedLemmaFilters: store.settings.storedLemmaFilters.filter(lf => lf.id !== id)
       }
+      store.lemma.selectedLemmaFilterId = null
     }
   }
 
@@ -510,7 +544,7 @@ export default class LemmaManager extends Vue {
     store.settings = {
       ...store.settings,
       storedLemmaFilters: store.settings.storedLemmaFilters.map((f, i) => {
-        if (f.id === store.settings.selectedLemmaFilter) {
+        if (f.id === store.lemma.selectedLemmaFilterId) {
           return {...f, name: t}
         } else {
           return f
