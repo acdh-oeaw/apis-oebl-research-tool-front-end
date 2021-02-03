@@ -111,7 +111,7 @@ export interface ImportablePerson {
   dateOfDeath: string|null
   placeOfBirth: string|null
   placeOfDeath: string|null
-  gnd: string|null
+  gnd: string[]
 }
 
 export interface PersonMatchable extends ImportablePerson {
