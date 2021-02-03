@@ -29,10 +29,12 @@
           <v-btn x-large :to="'/bio/' + store.selectedBiography" class="mb-2 rounded-lg" icon tile>
             <v-icon size="22" color="grey darken-1">mdi-pen</v-icon>
           </v-btn>
-          <loading-spinner
-            color="white"
-            class="ml-3 mt-5"
-            v-if="store.isLoading === true" />
+          <transition name="fade">
+            <loading-spinner
+              color="white"
+              class="ml-3 mt-5"
+              v-if="store.isLoading === true" />
+          </transition>
         </v-flex>
         <v-flex v-if="showDrawer" class="pr-2 pt-5" grow>
           <router-view name="sidebar" />
@@ -83,6 +85,17 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.fade-enter-active
+.fade-leave-active
+  transition: opacity .5s;
+
+.fade-enter
+.fade-leave-to
+  opacity: 0;
+
+</style>
 
 <style lang="stylus">
 @import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
