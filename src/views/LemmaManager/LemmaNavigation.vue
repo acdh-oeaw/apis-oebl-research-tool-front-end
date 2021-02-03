@@ -25,8 +25,8 @@
         nav dense>
         <v-list-item
           dense
-          :input-value="store.settings.selectedLemmaFilter === '-1'"
-          @click="store.settings = { ...store.settings, selectedLemmaFilter: '-1' }"
+          :input-value="store.lemma.selectedLemmaListId === null && store.lemma.selectedLemmaFilterId === null && store.lemma.selectedLemmaIssueId === null"
+          @click="store.lemma.selectedLemmaListId = null"
           class="rounded-lg">
           <v-list-item-avatar tile size="15">
             <v-icon small>mdi-bookshelf</v-icon>
@@ -51,7 +51,8 @@
           @dragover.prevent=""
           @drop.prevent="highlightedKey = null"
           class="rounded-lg mb-0"
-          @click="log"
+          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
+          @click="loadIssueLemmas(issue.id || null)"
           :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
@@ -82,27 +83,28 @@
         </v-subheader>
         <v-list-item
           dense
+          v-for="list in filteredLemmaLists"
           @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list.id, $event)"
+          :input-value="store.lemma.selectedLemmaListId === list.id"
           :class="['rounded-lg', 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
-          @click="log"
-          v-for="list in filteredLemmaLists"
+          @click="store.lemma.selectedLemmaListId = list.id || null"
           :key="list.id">
           <v-list-item-avatar size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <input v-if="editingNameKey === 'my-list_' + list.id" v-model="list.name">
+            <input v-if="editingNameKey === 'my-list_' + list.id" v-model="list.title">
             <v-list-item-title v-else>
-              {{ list.name }}
+              {{ list.title }}
             </v-list-item-title>
           </v-list-item-content>
-          <v-list-item-action>
+          <!-- <v-list-item-action>
             <transition name="roll">
               <v-badge :key="list.items.length" inline color="blue-grey" :content="list.items.length" />
             </transition>
-          </v-list-item-action>
+          </v-list-item-action> -->
         </v-list-item>
         <v-subheader
           class="sticky"
@@ -112,7 +114,7 @@
         <v-list-item
           dense
           class="rounded-lg mb-0"
-          :input-value="filter.id === store.settings.selectedLemmaFilter"
+          :input-value="filter.id === store.lemma.selectedLemmaFilterId"
           @click="selectLemmaFilter(filter.id)"
           v-for="(filter, i) in filteredStoredLemmas"
           :key="'l' + i">
@@ -137,6 +139,7 @@ import { LemmaRow } from '@/types/lemma'
 import _ from 'lodash'
 import confirm from '@/store/confirm'
 import prompt from '@/store/prompt'
+import { List as LemmaList } from '@/api/models/List'
 
 @Component
 export default class LemmaNavigation extends Vue {
@@ -153,7 +156,7 @@ export default class LemmaNavigation extends Vue {
   }
 
   selectLemmaFilter(i: string) {
-    store.settings = { ...store.settings, selectedLemmaFilter: i }
+    store.lemma.selectedLemmaFilterId = i
   }
 
   onEscSearch(e: KeyboardEvent) {
@@ -163,6 +166,14 @@ export default class LemmaNavigation extends Vue {
       if (e.target instanceof HTMLInputElement) {
         e.target.blur()
       }
+    }
+  }
+
+  async loadIssueLemmas(issueId: number|null) {
+    if (issueId !== null) {
+      const ls = await store.issue.getIssueLemmas(issueId)
+      store.lemma.selectedIssueLemmas = ls
+      store.lemma.selectedLemmaIssueId = issueId
     }
   }
 
@@ -197,7 +208,7 @@ export default class LemmaNavigation extends Vue {
       (n: string|null) => {
         if (n === null) {
           return 'Geben Sie einen Namen ein'
-        } else if (this.filteredLemmaLists.findIndex(ll => ll.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase()) > -1) {
+        } else if (this.filteredLemmaLists.findIndex(ll => ll.title.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase()) > -1) {
           return 'Name bereits vergeben.'
         } else {
           return true
@@ -229,11 +240,11 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
-  get filteredLemmaLists() {
+  get filteredLemmaLists(): LemmaList[] {
     if (this.searchQuery.trim() !== '') {
-      return store.settings.storedLemmaLists.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery))
+      return store.lemma.lemmaLists.filter(l => l.title.toLocaleLowerCase().includes(this.searchQuery))
     } else {
-      return store.settings.storedLemmaLists
+      return store.lemma.lemmaLists
     }
   }
 
