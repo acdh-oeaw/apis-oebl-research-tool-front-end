@@ -31,7 +31,7 @@
           </v-btn>
           <transition name="fade">
             <loading-spinner
-              color="white"
+              :color="$vuetify.theme.dark ? 'white' : 'grey'"
               class="ml-3 mt-5"
               v-if="store.isLoading === true" />
           </transition>
