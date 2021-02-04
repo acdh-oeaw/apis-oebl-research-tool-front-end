@@ -2,15 +2,24 @@ import { Person as LdPerson } from 'schema-dts'
 import { ImportablePerson } from '../../types/lemma'
 import _ from 'lodash'
 
-export async function getPreviews(gnds: (string|null)[]) {
+const previewCache: { [gnd: string]: string|null } = {}
+
+export async function getPreviews(gnds: (string|null)[]): Promise<(string|null)[]> {
   return Promise.all(gnds.map(async gnd => {
-    return fetch('https://lobid.org/gnd/' + gnd + '.preview').then(r => {
-      if (r.ok) {
-        return r.text()
-      } else {
-        return null
-      }
-    })
+    if (gnd !== null && previewCache[gnd] !== undefined) {
+      return previewCache[gnd]
+    } else if (gnd !== null) {
+      previewCache[gnd] = await fetch('https://lobid.org/gnd/' + gnd + '.preview').then(r => {
+        if (r.ok) {
+          return r.text()
+        } else {
+          return null
+        }
+      })
+      return previewCache[gnd]
+    } else {
+      return null
+    }
   }))
 }
 
