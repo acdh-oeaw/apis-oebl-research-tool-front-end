@@ -94,59 +94,57 @@
             <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
           </v-btn>
         </template>
-        <!-- <v-card class="pa-3 pt-1 rounded-lg soft-shadow"> -->
-          <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
-            <v-subheader>
-              Layout
-            </v-subheader>
-            <v-list-item class="pa-1 rounded-lg">
-              <switch-button
-                :items="[
-                  { icon: 'mdi-chart-box-outline', value: 'board' },
-                  { icon: 'mdi-format-list-bulleted', value: 'list' }
-                ]"
-                v-model="viewAs"
-              />
-            </v-list-item>
-            <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showDescription: !store.settings.issueViewOptions.showDescription }}">
-              <v-list-item-avatar size="15">
-                <v-icon v-if="store.settings.issueViewOptions.showDescription">mdi-check</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Beschreibung anzeigen
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showAuthor: !store.settings.issueViewOptions.showAuthor }}">
-              <v-list-item-avatar size="15">
-                <v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Autor anzeigen
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showEditor: !store.settings.issueViewOptions.showEditor }}">
-              <v-list-item-avatar size="15">
-                <v-icon v-if="store.settings.issueViewOptions.showEditor">mdi-check</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Redakteur anzeigen
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider />
-            <v-subheader>
-              Farbschema
-            </v-subheader>
-            <v-list-item :style="{backgroundColor: 'var(--v-background-darken-2)'}" class="pa-1 rounded-lg">
-              <theme-toggle />
-            </v-list-item>
-          </v-list>
-        <!-- </v-card> -->
+        <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
+          <v-subheader>
+            Layout
+          </v-subheader>
+          <v-list-item class="pa-1 rounded-lg">
+            <switch-button
+              :items="[
+                { icon: 'mdi-chart-box-outline', value: 'board' },
+                { icon: 'mdi-format-list-bulleted', value: 'list' }
+              ]"
+              v-model="viewAs"
+            />
+          </v-list-item>
+          <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showDescription: !store.settings.issueViewOptions.showDescription }}">
+            <v-list-item-avatar size="15">
+              <v-icon v-if="store.settings.issueViewOptions.showDescription">mdi-check</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                Beschreibung anzeigen
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showAuthor: !store.settings.issueViewOptions.showAuthor }}">
+            <v-list-item-avatar size="15">
+              <v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                Autor anzeigen
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showEditor: !store.settings.issueViewOptions.showEditor }}">
+            <v-list-item-avatar size="15">
+              <v-icon v-if="store.settings.issueViewOptions.showEditor">mdi-check</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                Redakteur anzeigen
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider />
+          <v-subheader>
+            Farbschema
+          </v-subheader>
+          <v-list-item :style="{backgroundColor: 'var(--v-background-darken-2)'}" class="pa-1 rounded-lg">
+            <theme-toggle />
+          </v-list-item>
+        </v-list>
       </v-menu>
       <v-btn
         @click="showSideBar = !showSideBar"
@@ -163,14 +161,16 @@
       :color="$vuetify.theme.currentTheme.sidebar"
       :value="showSideBar"
       @close="showSideBar = false">
-      <lemma-detail
+      <issue-lemma-detail
+        v-if="selectedLemma !== null"
         :lemma="selectedLemma"
         :value="selectedLemma !== null"
+        @update="updateLemmaById(selectedLemma.id, $event)"
         @update-status="updateLemmaStatus"
         @close="showSideBar = false" />
     </resizable-drawer>
     <v-main class="fill-height rounded-lg">
-      <lemma-board
+      <issue-lemma-board
         v-if="store.settings.issueLayout === 'board'"
         class="fill-height"
         :columns="columns"
@@ -181,7 +181,7 @@
         @dblclick.native="showSideBar = !showSideBar"
         :view-options="viewOptions"
       />
-      <lemma-list
+      <issue-lemma-list
         v-if="store.settings.issueLayout === 'list'"
         class="fill-height"
         :columns="columns"
@@ -207,11 +207,11 @@ import { WithId } from '../../types'
 import { LemmaStatus, IssueLemma, LemmaLabel } from '../../api/index'
 import _ from 'lodash'
 import ThemeToggle from '../ThemeToggle.vue'
-import LemmaBoard from './IssueLemmaBoard.vue'
+import IssueLemmaBoard from './IssueLemmaBoard.vue'
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
-import LemmaDetail from './IssueLemmaDetail.vue'
+import IssueLemmaDetail from './IssueLemmaDetail.vue'
 import LoadingSpinner from '../lib/LoadingSpinner.vue'
-import LemmaList from './IssueLemmaList.vue'
+import IssueLemmaList from './IssueLemmaList.vue'
 import SwitchButton from '../lib/SwitchButton.vue'
 import store from '@/store'
 
@@ -221,9 +221,9 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 
 @Component({
   components: {
-    LemmaDetail,
-    LemmaBoard,
-    LemmaList,
+    IssueLemmaDetail,
+    IssueLemmaBoard,
+    IssueLemmaList,
     ResizableDrawer,
     LoadingSpinner,
     ThemeToggle,
@@ -234,7 +234,6 @@ export default class IssueManager extends Vue {
 
   @Prop({ default: '-1' }) issueId!: string
 
-  selectedLemma: IssueLemma|null = store.settings.selectedIssueLemma
   searchText: string|null = null
   searchItems: any[] = store.settings.issueLemmaSearchItems
   animateLemmas = false
@@ -242,6 +241,14 @@ export default class IssueManager extends Vue {
   showSideBar = false
 
   log = console.log
+
+  get selectedLemma() {
+    return store.issue.selectedLemma
+  }
+
+  set selectedLemma(l) {
+    store.issue.selectedLemma = l
+  }
 
   get viewAs(): 'board'|'list' {
     return store.settings.issueLayout
@@ -321,10 +328,7 @@ export default class IssueManager extends Vue {
   }
 
   updateLemmaById(id: number, u: Partial<IssueLemma>) {
-    const i = this.issueLemmas.findIndex(l => l.id === id)
-    if (i > -1) {
-      this.$set(this.issueLemmas, i, { ...this.issueLemmas[i], ...u })
-    }
+    store.issue.updateLemma(id, u)
   }
 
   onUpdateColumn(status: LemmaStatus, lemmas: WithId<IssueLemma>[]) {
@@ -442,8 +446,7 @@ export default class IssueManager extends Vue {
     })
   }
 
-  openLemma(l: IssueLemma) {
-    store.settings = { ...store.settings, selectedIssueLemma: l }
+  openLemma(l: WithId<IssueLemma>) {
     this.selectedLemma = l
   }
 
