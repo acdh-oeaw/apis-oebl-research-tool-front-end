@@ -100,9 +100,27 @@ export default class VirtualTable extends Vue {
       this.selectAll()
     }
     if (e.key === 'ArrowDown') {
-      console.log('down')
+      this.selectNext()
     } else if (e.key === 'ArrowUp') {
-      console.log('up')
+      this.selectPrevious()
+    }
+  }
+
+  selectPrevious() {
+    const selectedIndexes = _.map(this.selected, v => this.data.findIndex(r => r.id === v.id))
+    const prevItem = this.data[ Math.min(...selectedIndexes) - 1 ]
+    if (prevItem !== undefined) {
+      this.selected = { [ prevItem.id ]: prevItem }
+      this.$emit('change-selection', [ prevItem ])
+    }
+  }
+
+  selectNext() {
+    const selectedIndexes = _.map(this.selected, v => this.data.findIndex(r => r.id === v.id))
+    const nextItem = this.data[ Math.max(...selectedIndexes) + 1 ]
+    if (nextItem !== undefined) {
+      this.selected = { [nextItem.id]: nextItem }
+      this.$emit('change-selection', [ nextItem ])
     }
   }
 
