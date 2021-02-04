@@ -16,15 +16,11 @@
         <span style="opacity: .5" v-else>☆</span>
       </v-btn>
       <v-container class="pa-0">
-        <v-row no-gutters>
-          <v-col cols="1" />
-          <transition name="roll">
-            <v-col :key="value.id" class="text-center" cols="10">
-              {{ value.lastName }}, {{ value.firstName }}
-            </v-col>
-          </transition>
-          <v-col cols="1" />
-        </v-row>
+        <transition name="roll">
+          <div :key="value.id" class="text-center" style="width: 100%">
+            {{ value.lastName }}, {{ value.firstName }}
+          </div>
+        </transition>
         <v-row no-gutters>
           <v-col cols="12" class="text-caption text-center">
             {{ value.birthYear }} - {{ value.deathYear }}
@@ -56,7 +52,7 @@
           top: 0,
           background: ''
         }">
-        Externe Ressourcen <v-badge color="blue-grey" inline :content="countResources(value.columns_scrape)" />
+        Externe Ressourcen <v-badge color="blue-grey" inline :content="countScrapedResources(value.columns_scrape)" />
       </h4>
       <v-card-text class="pt-0">
         <v-list dense nav class="text-body-2 pa-0">
@@ -67,6 +63,25 @@
               :value="source"
               :title="sourceName" />
           </template>
+        </v-list>
+      </v-card-text>
+      <v-divider />
+      <h4
+        class="pt-2 pb-2 pl-5 background"
+        :style="{
+          zIndex: 1,
+          position: 'sticky',
+          top: 0,
+          background: ''
+        }">
+        Importierte Daten <!--<v-badge color="blue-grey" inline :content="countImportedResources(value.columns_scrape)" />-->
+      </h4>
+      <v-card-text class="pt-0">
+        <v-list dense class="text-body-2 pt-0">
+          <v-list-item class="px-2" v-for="(userValue, userKey) in value.columns_user" :key="userKey">
+            <v-list-item-content>{{ userKey }}</v-list-item-content>
+            <v-list-item-action-text>{{ userValue }}</v-list-item-action-text>
+          </v-list-item>
         </v-list>
       </v-card-text>
     </div>
@@ -88,13 +103,16 @@ export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow
   log = console.log
-  countResources(r: LemmaRow['columns_scrape']) {
+
+  countScrapedResources(r: LemmaRow['columns_scrape']) {
     if (r === undefined) {
       return 0
     } else {
       return Object.values(r).filter(r => r !== undefined && !(Array.isArray(r))).length
     }
   }
+
+
 }
 </script>
 <style lang="stylus" scoped>
@@ -104,6 +122,7 @@ export default class LemmaDetail extends Vue {
   transition: all .3s ease;
 
 .roll-enter, .roll-leave-to
+  width 100%
   position absolute
   opacity: 0
 
