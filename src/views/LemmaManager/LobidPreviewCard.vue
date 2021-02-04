@@ -37,7 +37,6 @@ export default class LobidPreviewCard extends Vue {
 
   fragments: Fragments = {}
   loading = false
-
   async loadPreviews(gnd: string[]) {
     const results = await lobidService.getPreviews(gnd)
     return gnd.reduce((m, e, i) => {
@@ -58,6 +57,7 @@ export default class LobidPreviewCard extends Vue {
 <style lang="stylus" scoped>
 .fragment /deep/ img
   border-radius 7px
+  background var(--v-background-lighten2)
 
 .fragment /deep/ a
   font-weight 700

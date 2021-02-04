@@ -15,7 +15,7 @@
         <span style="color: var(--v-primary-base)" v-if="value.starred">★</span>
         <span style="opacity: .5" v-else>☆</span>
       </v-btn>
-      <v-container class="pa-0">
+      <v-container style="position: relative" class="pa-0">
         <transition name="roll">
           <div :key="value.id" class="text-center" style="width: 100%">
             {{ value.lastName }}, {{ value.firstName }}
