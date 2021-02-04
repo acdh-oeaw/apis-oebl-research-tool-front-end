@@ -49,7 +49,7 @@
           dense
           @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
           @dragover.prevent=""
-          @drop.prevent="highlightedKey = null"
+          @drop.prevent="addLemmaToIssue(issue.id, $event)"
           class="rounded-lg mb-0"
           :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           @click="loadIssueLemmas(issue.id || null)"
@@ -177,27 +177,27 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
-  async copyLemmasToList(id: string, e: DragEvent) {
+  async copyLemmasToList(id: number, e: DragEvent) {
     this.highlightedKey = null
     const lemmas = JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[]
-    const listIndex = store.settings.storedLemmaLists.findIndex(l => l.id === id)
+    const listIndex = store.lemma.lemmaLists.findIndex(l => l.id === id)
     if (listIndex > -1) {
-      const list = store.settings.storedLemmaLists[listIndex]
-      const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...list.items ])
-      const diff = newLemmaList.length - list.items.length
-      if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.name}” hinzufügen?`)) {
-        store.settings = {
-          ...store.settings,
-          storedLemmaLists: store.settings.storedLemmaLists.map((l, i) => {
-            if (i === listIndex) {
-              return { ...l, items: newLemmaList }
-            } else {
-              return l
-            }
-          })
-        }
+      const list = store.lemma.lemmaLists[listIndex]
+      const listItems = store.lemma.getLemmasByList(list.id as number)
+      const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
+      const diff = newLemmaList.length - listItems.length
+      if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`)) {
+        // TODO:
+        // store.lemma.addLemmasToList(list.id, lemmas)
       }
     }
+  }
+
+  async addLemmaToIssue(issueId: number, e: DragEvent) {
+    const lemmas = e instanceof DragEvent ? JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[] : []
+    const issueLemmas = await Promise.all(lemmas.map(l => {
+      return store.issue.createIssueLemma(issueId, l)
+    }))
   }
 
   async createLemmaList(e: DragEvent|MouseEvent) {
