@@ -163,6 +163,11 @@ export default class LemmaStore {
     this._selectedLemmaFilterId = val
   }
 
+  async addLemmasToList(id: number, ls: LemmaRow[]) {
+    // TODO:
+    // await ResearchService.
+  }
+
   async deleteLemmaList(id: number) {
     await request(ResearchService.researchApiV1ListresearchDestroy, id)
     await this.loadRemoteLemmaLists()
@@ -305,7 +310,6 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      // yuck
       gnd: rs.gnd,
       columns_user: rs.columns_user,
       columns_scrape: rs.columns_scrape,
@@ -348,13 +352,21 @@ export default class LemmaStore {
     return id === undefined ? undefined : this._lemmas.find(l => l.id === id)
   }
 
+  getLemmasByList(listId: number) {
+    return this._lemmas.filter(l => l.list?.id === listId)
+  }
+
+  getLemmasByIssue(issueId: number) {
+    return _(this.selectedIssueLemmas).map(l => {
+      return this.getLemmaById(l.lemma || undefined)
+    }).compact().value()
+  }
+
   get lemmas() {
     if (this.selectedLemmaListId !== null) {
-      return this._lemmas.filter(l => l.list?.id === this.selectedLemmaListId)
+      return this.getLemmasByList(this.selectedLemmaListId)
     } else if (this.selectedLemmaIssueId !== null) {
-      return _(this.selectedIssueLemmas).map(l => {
-        return this.getLemmaById(l.lemma || undefined)
-      }).compact().value()
+      return this.getLemmasByIssue(this.selectedLemmaIssueId)
     } else {
       return this._lemmas
     }
