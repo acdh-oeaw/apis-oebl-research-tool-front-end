@@ -1,5 +1,6 @@
 import { Issue, WorkflowService, IssueLemma, LemmaStatus, LemmaLabel, LemmaNote } from '@/api'
 import { WithId } from '@/types'
+import { LemmaRow } from '@/types/lemma'
 import request from './request'
 export default class IssueStore {
 
@@ -8,11 +9,26 @@ export default class IssueStore {
   private _issueLemmas: WithId<IssueLemma>[] = []
   private _statuses: WithId<LemmaStatus>[] = []
   private _labels: LemmaLabel[] = []
+  public selectedLemma: WithId<IssueLemma>|null = null
 
   constructor(id: number) {
     this.loadIssueList()
     this.loadLabels()
     this.loadIssue(id)
+  }
+
+  async createIssueLemma(issueId: number, lemma: LemmaRow): Promise<WithId<IssueLemma>> {
+    const newLemma = await (request(WorkflowService.workflowApiV1IssueLemmaCreate, {
+      author: null,
+      editor: null,
+      issue: issueId,
+      labels: [],
+      lemma: lemma.id,
+    })) as WithId<IssueLemma>
+    if (this.id === issueId) {
+      this.issueLemmas.push(newLemma)
+    }
+    return newLemma
   }
 
   async loadIssue(id: number) {
@@ -64,11 +80,14 @@ export default class IssueStore {
     }))
   }
 
-  updateLemma(id: number, l: Partial<IssueLemma>): IssueLemma|undefined {
+  async updateLemma(id: number, l: Partial<IssueLemma>): Promise<IssueLemma|undefined> {
     const index = this.issueLemmas.findIndex(l => l.id === id)
     if (index > -1) {
       this.issueLemmas[index] = { ...this.issueLemmas[index], ...l }
-      WorkflowService.workflowApiV1IssueLemmaUpdate(id, this.issueLemmas[index])
+      if (this.selectedLemma !== null && this.issueLemmas[index].id === this.selectedLemma.id) {
+        this.selectedLemma = this.issueLemmas[index]
+      }
+      await WorkflowService.workflowApiV1IssueLemmaUpdate(id, this.issueLemmas[index])
       return this.issueLemmas[index]
     }
   }

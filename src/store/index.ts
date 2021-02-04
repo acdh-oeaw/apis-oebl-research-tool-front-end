@@ -33,7 +33,6 @@ interface Settings {
   darkTheme: boolean
   issueLayout: 'board'|'list'
   issueLemmaSearchItems: any[]
-  selectedIssueLemma: IssueLemma|null
   drawerRightWidth: number
   drawerLeftWidth: number
   storedLemmaFilters: StoredLemmaFilter[]
@@ -60,7 +59,6 @@ class Store {
     darkTheme: false,
     issueLayout: 'board',
     issueLemmaSearchItems: [],
-    selectedIssueLemma: null,
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
     storedLemmaFilters: [],
