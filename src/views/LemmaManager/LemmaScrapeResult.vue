@@ -109,6 +109,8 @@ export default class LemmaScrapeResult extends Vue {
 
 .list-item-label
   overflow: visible
+  white-space nowrap
+  margin-right 3px
 
 .longform-text
   font-size 15px !important
