@@ -152,7 +152,7 @@
                 <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
               </v-btn>
             </template>
-            <v-list color="background lighten-1 elevation-0" class="text-body-2" dense nav>
+            <v-list color="background lighten-2" class="elevation-0 rounded-lg text-body-2" dense nav>
               <v-list-item @click="addLemmaDialog = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-shape-square-plus</v-icon>
@@ -719,7 +719,7 @@ export default class LemmaManager extends Vue {
   transition: none
 
 .editable-title
-  min-width 150px
+  // min-width 150px
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
