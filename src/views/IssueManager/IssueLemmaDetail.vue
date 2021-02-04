@@ -130,10 +130,9 @@
             </v-btn>
           </template>
         </v-textarea>
-        <div class="rounded-lg background darken-2 pa-2 mb-1" v-for="(note, i) in notes" :key="i">
-          <div style="opacity: .7" class="px-1 caption note">su
-            ID: {{ note.user }}
-            — {{ formatTimeDistance(note.created) }}
+        <div class="rounded-lg background darken-1 pa-2 mb-1" v-for="(note, i) in notes" :key="i">
+          <div style="opacity: .7" class="px-1 caption note">
+            {{ store.editors.editorsById[note.user] ? store.editors.editorsById[note.user].name : note.user }} — {{ formatTimeDistance(note.created) }}
           </div>
           <div v-text="note.text" class="px-1 pb-2" />
         </div>
@@ -180,7 +179,7 @@ import de from 'date-fns/esm/locale/de'
     LoadingSpinner
   }
 })
-export default class LemmaDetail extends Vue {
+export default class IssueLemmaDetail extends Vue {
 
   @Prop({ required: true }) lemma!: IssueLemma
 
@@ -219,6 +218,15 @@ export default class LemmaDetail extends Vue {
     }
   }
 
+  getUserName(id: number): string {
+    const u = store.editors.getById(id)
+    if (u !== undefined) {
+      return u.name || ''
+    } else {
+      return ''
+    }
+  }
+
   @Watch('lemma', { immediate: true })
   async onSwitchLemma() {
     this.loadNotes()
@@ -235,7 +243,7 @@ export default class LemmaDetail extends Vue {
   updateLabels(labels: number[]) {
     console.log({labels})
     if (this.lemma.id) {
-      store.issue.updateLemma(this.lemma.id, { labels })
+      this.$emit('update', { labels })
     }
   }
 
