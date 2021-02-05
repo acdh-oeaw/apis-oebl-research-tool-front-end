@@ -164,8 +164,10 @@ export default class LemmaStore {
   }
 
   async addLemmasToList(id: number, ls: LemmaRow[]) {
-    // TODO:
-    // await ResearchService.
+    // FIXME:
+    return Promise.all(ls.map(l => {
+      return ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: {editor: 6, title: 'yolist'} })
+    }))
   }
 
   async deleteLemmaList(id: number) {
@@ -199,7 +201,7 @@ export default class LemmaStore {
         value: k,
         filterable: true,
         type: 'text' as 'text',
-        show: true,
+        show: false,
         isUserColumn: true
       }
     })
@@ -342,7 +344,7 @@ export default class LemmaStore {
     Vue.set(this.lemmaLists, i, newList)
   }
 
-  // TODO:
+  // FIXME:
   async createList(title: string): Promise<LemmaList> {
     const s = await ResearchService.researchApiV1ListresearchCreate({
       editor: 6,
