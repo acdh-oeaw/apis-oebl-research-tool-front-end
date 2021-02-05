@@ -10,15 +10,17 @@
     <v-row class="mt-2" no-gutters>
       <v-col>
         <v-avatar
-          class="ma-0"
+          color="secondary lighten-5"
+          class="id-img  ma-0"
           min-width="30"
           height="30"
           width="30"
           v-if="value.editor !== null && showEditor">
-          <img style="background: var(--v-background-lighten1)" :key="value.editor" :src="value.editor.profilePicture">
+          {{ editorInitials }}
+          <!-- <img style="background: var(--v-background-lighten1)" :key="value.editor" :src="value.editor.profilePicture"> -->
         </v-avatar>
         <v-avatar
-          class="author"
+          class="id-img author"
           color="background darken-2"
           min-width="30"
           height="30"
@@ -66,6 +68,15 @@ export default class IssueLemmaCard extends Vue {
       : this.value.labels!.map(id => this.labelsById[id])
   }
 
+  get editorInitials(): string {
+    if (this.value.editor) {
+      const editor = store.editors.getById(this.value.editor)
+      return editor?.name?.split(' ').map((n: string) => n[0]).join('') || '-'
+    } else {
+      return '-'
+    }
+  }
+
   get authorInitials(): string {
     if (this.value.author) {
       const author = store.authors.getById(this.value.author)
@@ -90,8 +101,8 @@ h5
 .label
   color white !important
   font-weight 600
-.author
-  margin-left -3px
-  // box-shadow 0 0 0 3px white
+.id-img
   font-size .8em
+  &.author
+    margin-left -3px
 </style>
