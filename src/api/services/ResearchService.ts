@@ -8,6 +8,7 @@ import type { ListEntry } from '../models/ListEntry';
 import type { ListRequest } from '../models/ListRequest';
 import type { PaginatedListEntryList } from '../models/PaginatedListEntryList';
 import type { PaginatedListList } from '../models/PaginatedListList';
+import type { PatchedListEntryRequest } from '../models/PatchedListEntryRequest';
 import type { PatchedListRequest } from '../models/PatchedListRequest';
 import { request as __request } from '../core/request';
 
@@ -72,6 +73,28 @@ export class ResearchService {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/lemmaresearch/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * APIView to process scraping requests
+     *
+     * Args:
+     * GenericAPIView ([type]): [description]
+     * @param id A unique integer value identifying this list entry.
+     * @param requestBody
+     * @returns ListEntry
+     * @throws ApiError
+     */
+    public static async researchApiV1LemmaresearchPartialUpdate(
+        id: number,
+        requestBody?: PatchedListEntryRequest,
+    ): Promise<ListEntry> {
+        const result = await __request({
+            method: 'PATCH',
+            path: `/research/api/v1/lemmaresearch/${id}/`,
+            body: requestBody,
         });
         return result.body;
     }

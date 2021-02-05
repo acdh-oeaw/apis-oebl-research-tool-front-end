@@ -58364,6 +58364,66 @@
                     }
                 }
             },
+            "patch": {
+                "operationId": "research_api_v1_lemmaresearch_partial_update",
+                "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this list entry.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "research"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListEntry"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
             "delete": {
                 "operationId": "research_api_v1_lemmaresearch_destroy",
                 "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
@@ -67407,6 +67467,30 @@
                     }
                 }
             },
+            "PatchedListEntryRequest": {
+                "type": "object",
+                "properties": {
+                    "list": {
+                        "$ref": "#/components/schemas/PatchedListSerializerLimitedRequest"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "columns_user": {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "nullable": true
+                    },
+                    "columns_scrape": {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "nullable": true
+                    }
+                }
+            },
             "PatchedListRequest": {
                 "type": "object",
                 "properties": {
@@ -67416,6 +67500,19 @@
                     "title": {
                         "type": "string",
                         "maxLength": 255
+                    }
+                }
+            },
+            "PatchedListSerializerLimitedRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "editor": {
+                        "type": "integer",
+                        "nullable": true
                     }
                 }
             },

@@ -180,7 +180,9 @@ export type { PatchedLabeltypeDetailRequest } from './models/PatchedLabeltypeDet
 export type { PatchedLemmaLabelRequest } from './models/PatchedLemmaLabelRequest';
 export type { PatchedLemmaNoteRequest } from './models/PatchedLemmaNoteRequest';
 export type { PatchedLemmaStatusRequest } from './models/PatchedLemmaStatusRequest';
+export type { PatchedListEntryRequest } from './models/PatchedListEntryRequest';
 export type { PatchedListRequest } from './models/PatchedListRequest';
+export type { PatchedListSerializerLimitedRequest } from './models/PatchedListSerializerLimitedRequest';
 export type { PatchedPersonDetailRequest } from './models/PatchedPersonDetailRequest';
 export type { PatchedPersoneventDetailRequest } from './models/PatchedPersoneventDetailRequest';
 export type { PatchedPersoneventrelationDetailRequest } from './models/PatchedPersoneventrelationDetailRequest';
