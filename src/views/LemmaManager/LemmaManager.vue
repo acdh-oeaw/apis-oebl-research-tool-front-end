@@ -58,12 +58,24 @@
         <v-btn style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
-        <v-flex shrink align-self-start class="mr-5">
+        <v-flex shrink align-self-start class="mr-5 lemma-view-title">
           <h1
-            v-bind="{ contenteditable: store.settings.selectedLemmaFilter !== '-1'}"
-            v-text="title"
-            @input="updateLemmaFilterName($event)"
-            class="mb-0 editable-title" />
+            v-if="
+              store.lemma.selectedLemmaFilterId === null &&
+              store.lemma.selectedLemmaIssueId === null &&
+              store.lemma.selectedLemmaListId === null">
+            Lemmabibliothek
+          </h1>
+          <h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
+            {{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
+          </h1>
+          <h1
+            v-else-if="store.lemma.selectedLemmaListId !== null"
+            @blur="updateListName(store.lemma.selectedLemmaListId, $event.target.textContent)"
+            @keyup.enter.prevent.stop="$event.target.blur()"
+            v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
+            contenteditable="true">
+          </h1>
           <div class="caption mt-1 text-no-wrap">
             <span style="opacity: .7">{{ filteredData.length }} Ergebnisse</span>
             <v-btn style="margin-top: -2px" rounded class="ml-2 pl-0 pr-2" small text @click="scrollToNextSelectedLemma" v-if="selectedRows.length > 0">
@@ -248,7 +260,7 @@
         v-if="selectedRows.length === 0"
         absolute
         color="background">
-        <span style="opacity: .7">Kein Lemma ausgewählt</span>
+        <span class="text-body-2">Kein Lemma ausgewählt</span>
       </v-overlay>
       <v-overlay
         v-else-if="selectedRows.length > 1"
@@ -279,8 +291,9 @@
         :height="tableHeight"
         :data="filteredData">
         <template v-slot:cell="{ item, index, column, value }">
+          <template v-if="item[column.value] === 'Not available'"></template>
           <!-- the star column -->
-          <template v-if="column.value === 'starred'">
+          <template v-else-if="column.value === 'starred'">
             <span v-if="value === true" style="color: var(--v-primary-base)">★</span>
             <span v-if="value === false" style="opacity: .5">☆</span>
           </template>
@@ -353,6 +366,10 @@ export default class LemmaManager extends Vue {
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
   title = 'Lemmabibliothek'
+
+  updateListName(id: number, name: string) {
+    store.lemma.updateList(id, { title: name })
+  }
 
   get selectedRows() {
     return store.lemma.selectedLemmas
@@ -678,10 +695,6 @@ export default class LemmaManager extends Vue {
 </script>
 <style lang="stylus">
 
-[contenteditable="true"]:hover
-  border-radius 3px
-  box-shadow inset 0px 0px 0px 1px var(--v-secondary-lighten5)
-
 .input-no-stroke .v-text-field>.v-input__control>.v-input__slot:after, .v-text-field>.v-input__control>.v-input__slot:before
   display none
 
@@ -718,11 +731,18 @@ export default class LemmaManager extends Vue {
 .transition-padding
   transition: none
 
-.editable-title
-  // min-width 150px
+.lemma-view-title
+  max-width 50%
+
+.lemma-view-title h1
+  min-width 150px
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   &:focus
     text-overflow clip
+
+[contenteditable="true"]:hover
+  border-radius 3px
+  box-shadow inset 0px 0px 0px 1px var(--v-secondary-lighten5)
 </style>
