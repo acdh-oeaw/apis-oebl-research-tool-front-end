@@ -100,8 +100,10 @@ export default class VirtualTable extends Vue {
       this.selectAll()
     }
     if (e.key === 'ArrowDown') {
+      e.preventDefault()
       this.selectNext()
     } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
       this.selectPrevious()
     }
   }
