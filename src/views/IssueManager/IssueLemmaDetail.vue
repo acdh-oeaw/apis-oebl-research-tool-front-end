@@ -84,7 +84,7 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 pl-5 background"
+        class="pt-2 pb-2 pl-5 background lighten-1"
         :style="{
           zIndex: 1,
           position: 'sticky',
@@ -97,7 +97,7 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pl-5 pt-2 pb-2 background"
+        class="pl-5 pt-2 pb-2 background lighten-1"
         :style="{
         zIndex: 1,
         position: 'sticky',
