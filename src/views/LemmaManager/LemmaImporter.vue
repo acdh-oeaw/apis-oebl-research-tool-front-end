@@ -23,11 +23,8 @@
             rounded
             class="ma-auto"
             style="width: 50%"
-            :value="this.importable.filter(i => i.loaded === true).length / this.importable.length * 100"
+            :value="importProgress"
           />
-          <div class="pt-3 caption pb-1">
-            {{ this.importable.filter(i => i.gnds && i.gnds.length > 0).length }} gefunden
-          </div>
         </v-window-item>
         <v-window-item class="align-content-center text-center">
           <h2 class="pt-4 pb-3 font-weight-regular">Wählen Sie einen Listennamen für den Import</h2>
@@ -95,6 +92,7 @@ export default class LemmaImporter extends Vue {
   @Prop({ required: true }) fileName!: string
   @Prop({ required: true }) buffer!: Buffer
 
+  importProgress = 0
   step = 0
   log = console.log
   importable: ImportablePerson[] = []
@@ -124,18 +122,18 @@ export default class LemmaImporter extends Vue {
           .then(lp => {
             return {
               ...p,
-              gnds: lp.map(l => {
+              gnd: lp.map(l => {
                 if (typeof l !== 'string') {
                   console.log(l)
                   return (l as any).gndIdentifier
                 } else {
                   return null
                 }
-              }),
-              loaded: true
+              })
             }
           })
       }))
+      this.importProgress = (chunkLength * chunkIndex) / this.importable.length * 100
       this.importable.splice(chunkIndex * chunkLength, chunkLength, ...rs)
       chunkIndex = chunkIndex + 1
       await this.$nextTick()
