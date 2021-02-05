@@ -190,6 +190,7 @@
         :selected-lemma="selectedLemma"
         @update-column="onUpdateColumn"
         @select-lemma="openLemma"
+        @end-drag="onEndDrag"
         @dblclick.native="showSideBar = !showSideBar"
         :view-options="viewOptions"
       />
