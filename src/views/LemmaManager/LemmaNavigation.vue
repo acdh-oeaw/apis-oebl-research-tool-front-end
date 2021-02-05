@@ -187,8 +187,7 @@ export default class LemmaNavigation extends Vue {
       const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
       const diff = newLemmaList.length - listItems.length
       if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`)) {
-        // TODO:
-        // store.lemma.addLemmasToList(list.id, lemmas)
+        store.lemma.addLemmasToList(list.id!, lemmas)
       }
     }
   }
