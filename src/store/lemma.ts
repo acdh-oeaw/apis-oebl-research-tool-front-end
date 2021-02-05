@@ -7,6 +7,7 @@ import { ImportablePerson, LemmaColumn, LemmaRow, ServerResearchLemma, UserColum
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { WithId } from '@/types'
+import Vue from 'vue'
 
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
@@ -338,7 +339,16 @@ export default class LemmaStore {
   async updateList(id: number, l: Partial<LemmaList>) {
     const i = this.lemmaLists.findIndex(l => l.id === id)
     const newList = await ResearchService.researchApiV1ListresearchPartialUpdate(id, l)
-    this.lemmaLists[i] = newList
+    Vue.set(this.lemmaLists, i, newList)
+  }
+
+  // TODO:
+  async createList(title: string): Promise<LemmaList> {
+    const s = await ResearchService.researchApiV1ListresearchCreate({
+      editor: 6,
+      title
+    } as any)
+    return s
   }
 
   async updateLemmasWith(ls: LemmaRow[]) {

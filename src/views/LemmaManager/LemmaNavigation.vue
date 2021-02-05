@@ -218,17 +218,7 @@ export default class LemmaNavigation extends Vue {
     const message = lemmas.length > 0 ? `Neue Liste mit ${lemmas.length} Einträgen erstellen` : 'Neue Liste anlegen'
     const name = await prompt.prompt(message, { placeholder: 'Listenname…', rules: lemmaNameRules })
     if (name !== null) {
-      store.settings = {
-        ...store.settings,
-        storedLemmaLists: [
-          ...store.settings.storedLemmaLists,
-          {
-            name,
-            id: uuid(),
-            items: lemmas.map(l => l.id)
-          }
-        ]
-      }
+      store.lemma.createList(name)
     }
   }
 
