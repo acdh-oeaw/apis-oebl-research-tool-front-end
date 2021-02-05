@@ -126,7 +126,6 @@ export default class ResizableDrawer extends Vue {
     } else if (this.width < this.minWidth) {
       this.width = this.minWidth
     }
-    // store.settings = { ...store.settings, drawerLeftWidth: this.width }
   }
 
   drag(e: MouseEvent) {
