@@ -17,7 +17,7 @@
       </v-btn>
       <v-container style="position: relative" class="pa-0">
         <transition name="roll">
-          <div :key="value.id" class="text-center" style="width: 100%">
+          <div :key="value.id" class="text-center px-5" style="width: 100%">
             {{ value.lastName }}, {{ value.firstName }}
           </div>
         </transition>
@@ -52,7 +52,11 @@
           top: 0,
           background: ''
         }">
-        Externe Ressourcen <v-badge color="blue-grey" inline :content="countScrapedResources(value.columns_scrape)" />
+        Externe Ressourcen <v-badge
+          v-if="countScrapedResources(value.columns_scrape) > 0"
+          color="blue-grey"
+          inline
+          :content="countScrapedResources(value.columns_scrape)" />
       </h4>
       <v-card-text class="pt-0">
         <v-list dense nav class="text-body-2 pa-0">
@@ -92,6 +96,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
+import store from '@/store'
 
 @Component({
   components: {
@@ -103,7 +108,7 @@ export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow
   log = console.log
-
+  store = store
   countScrapedResources(r: LemmaRow['columns_scrape']) {
     if (r === undefined) {
       return 0
