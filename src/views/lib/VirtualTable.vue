@@ -23,6 +23,7 @@
       </div>
     </draggable>
     <v-virtual-scroll
+      ref="scroller"
       :items="data"
       :height="height - rowHeight"
       :item-height="rowHeight">
@@ -108,21 +109,35 @@ export default class VirtualTable extends Vue {
     }
   }
 
-  selectPrevious() {
+  scrollToIndex(i: number) {
+    const elOffset = i * this.rowHeight
+    const el = (this.$refs.scroller as Vue).$el
+    const sTop = el.scrollTop
+    const sBottom = sTop + el.clientHeight
+    if (elOffset < sTop || elOffset > sBottom) {
+      el.scrollTo({ top: elOffset })
+    }
+  }
+
+  async selectPrevious() {
     const selectedIndexes = _.map(this.selected, v => this.data.findIndex(r => r.id === v.id))
-    const prevItem = this.data[ Math.min(...selectedIndexes) - 1 ]
+    const newIndex = Math.min(...selectedIndexes) - 1
+    const prevItem = this.data[ newIndex ]
     if (prevItem !== undefined) {
       this.selected = { [ prevItem.id ]: prevItem }
       this.$emit('change-selection', [ prevItem ])
+      this.scrollToIndex(newIndex)
     }
   }
 
   selectNext() {
     const selectedIndexes = _.map(this.selected, v => this.data.findIndex(r => r.id === v.id))
-    const nextItem = this.data[ Math.max(...selectedIndexes) + 1 ]
+    const newIndex = Math.max(...selectedIndexes) + 1
+    const nextItem = this.data[ newIndex ]
     if (nextItem !== undefined) {
       this.selected = { [nextItem.id]: nextItem }
       this.$emit('change-selection', [ nextItem ])
+      this.scrollToIndex(newIndex)
     }
   }
 
@@ -158,14 +173,6 @@ export default class VirtualTable extends Vue {
     this.$emit('change-selection', _.toArray(this.selected))
   }
 
-  isSelected(id: number): boolean {
-    if (this.selected[id]) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   get visibleColumns() {
     return this.columns.filter(c => c.show === true)
   }
@@ -197,6 +204,7 @@ export default class VirtualTable extends Vue {
 .header-row
 .table-row
   display flex
+  line-height 1.2
 
 .header-row
   align-items stretch
