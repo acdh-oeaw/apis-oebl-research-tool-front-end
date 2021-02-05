@@ -5,7 +5,7 @@
     v-if="value !== undefined">
     <v-card-title>
       <v-btn
-        style="position: absolute; left: 5px; top: 5px; font-size: 100%"
+        style="position: absolute; left: 5px; top: 5px; font-size: 100%; z-index: 1"
         width="48"
         height="48"
         tile
