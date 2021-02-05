@@ -26,14 +26,14 @@
           <v-btn x-large :to="'/issue/' + store.selectedIssue" class="mb-2 rounded-lg" icon tile>
             <v-icon size="22" color="" class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-btn>
-          <v-btn x-large :to="'/bio/' + store.selectedBiography" class="mb-2 rounded-lg" icon tile>
+          <v-btn disabled x-large :to="'/bio/' + store.selectedBiography" class="mb-2 rounded-lg" icon tile>
             <v-icon size="22" color="grey darken-1">mdi-pen</v-icon>
           </v-btn>
           <transition name="fade">
             <loading-spinner
               :color="$vuetify.theme.dark ? 'white' : 'grey'"
               class="ml-3 mt-5"
-              v-if="store.isLoading === true" />
+              v-if="requestState.isLoading === true" />
           </transition>
         </v-flex>
         <v-flex v-if="showDrawer" class="pr-2 pt-5" grow>
@@ -55,6 +55,8 @@ import store from './store'
 import LoginForm from './views/LoginForm.vue'
 import Confirm from './views/lib/Confirm.vue'
 import Prompt from './views/lib/Prompt.vue'
+import { requestState } from '@/store/request'
+
 @Component({
   components: {
     ResizableDrawer,
@@ -67,7 +69,7 @@ import Prompt from './views/lib/Prompt.vue'
 export default class App extends Vue {
 
   store = store
-
+  requestState = requestState
   get showDrawer(): boolean {
     if (
       this.$route.name === 'Issue' &&

@@ -54,7 +54,6 @@ class Store {
 
   private _selectedIssueId = 1
   private _selectedBiographyId = 1
-  private _isLoading = false
   private _settings: Settings = {
     darkTheme: false,
     issueLayout: 'board',
@@ -115,14 +114,6 @@ class Store {
 
   get selectedBiography() {
     return this._selectedBiographyId
-  }
-
-  get isLoading() {
-    return this._isLoading
-  }
-
-  set isLoading(b: boolean) {
-    this._isLoading = b
   }
 
   editors = new EditorStore()

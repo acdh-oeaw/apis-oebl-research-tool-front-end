@@ -26,7 +26,7 @@ class ConfirmStore {
     this.show = true
     this.abortText = options?.abortText || this.defaultAbortText
     this.confirmText = options?.confirmText || this.defaultConfirmText
-    this.showCancel = options?.showCancel || this.defaultShowCancel
+    this.showCancel = options?.showCancel === undefined ? this.defaultShowCancel : options.showCancel
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this
     return new Promise((resolve) => {

@@ -1,5 +1,4 @@
 import { WorkflowService, Author } from '@/api'
-import request from './request'
 
 export default class AuthorStore {
 
@@ -18,6 +17,6 @@ export default class AuthorStore {
   }
 
   async loadAuthors() {
-    this._authors = (await request(WorkflowService.workflowApiV1AuthorsList, undefined)).results || []
+    this._authors = (await WorkflowService.workflowApiV1AuthorsList()).results || []
   }
 }

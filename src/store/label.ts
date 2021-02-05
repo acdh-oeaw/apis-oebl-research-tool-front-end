@@ -1,5 +1,4 @@
 import { WorkflowService, Author, Lemma, LemmaLabel } from '@/api'
-import request from './request'
 import _ from 'lodash'
 
 export default class LabelStore {
@@ -11,7 +10,7 @@ export default class LabelStore {
   }
 
   async initLabels() {
-    this._labels = (await request(WorkflowService.workflowApiV1LemmaLabelList)).results || []
+    this._labels = (await WorkflowService.workflowApiV1LemmaLabelList()).results || []
   }
 
   get labels() {

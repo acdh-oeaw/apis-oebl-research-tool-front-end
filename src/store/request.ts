@@ -1,35 +1,35 @@
 import store from '.'
 import confirm from './confirm'
 
-export default async function request<T, A>(func: (...args: A[]) => Promise<T>, ...args: A[]): Promise<T> {
-  console.log('request args', func.name, args)
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve, reject) => {
-    let res
-    try {
-      if (store) {
-        store.isLoading = true
-      }
-      res = await func(...args)
-      if (store) {
-        store.isLoading = false
-      }
-      resolve(res)
-    } catch (e) {
-      if (e.message === 'Unauthorized') {
-        console.log('Unauthorized Access. Waiting for log-in before continuing.')
+const fetchOriginal = fetch
+
+export const requestState = {
+  isLoading: false,
+  hasErrored: false
+}
+
+window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+  requestState.isLoading = true
+  requestState.hasErrored = false
+  try {
+    const res = await fetchOriginal(input, init)
+    requestState.isLoading = false
+    return res
+  } catch (e) {
+    requestState.hasErrored = true
+    if (e.message === 'Unauthorized') {
+      console.log('Unauthorized Access. Waiting for log-in before continuing.')
+      return new Promise((resolve, reject) => {
         store.onLoginSuccess(async () => {
-          const x = await request(func, ...args)
-          resolve(x)
+          // recursion after login
+          const res = await fetch(input, init)
+          resolve(res)
         })
-      } else {
-        await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false })
-        console.error(e)
-        if (store) {
-          store.isLoading = false
-        }
-        reject(e)
-      }
+      })
+    } else {
+      console.error(e)
+      await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false })
+      return e
     }
-  })
+  }
 }

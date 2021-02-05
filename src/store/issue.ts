@@ -1,7 +1,6 @@
 import { Issue, WorkflowService, IssueLemma, LemmaStatus, LemmaLabel, LemmaNote } from '@/api'
 import { WithId } from '@/types'
 import { LemmaRow } from '@/types/lemma'
-import request from './request'
 export default class IssueStore {
 
   id: number|null = null
@@ -18,13 +17,13 @@ export default class IssueStore {
   }
 
   async createIssueLemma(issueId: number, lemma: LemmaRow): Promise<WithId<IssueLemma>> {
-    const newLemma = await (request(WorkflowService.workflowApiV1IssueLemmaCreate, {
+    const newLemma = await WorkflowService.workflowApiV1IssueLemmaCreate({
       author: null,
       editor: null,
       issue: issueId,
       labels: [],
       lemma: lemma.id,
-    })) as WithId<IssueLemma>
+    }) as WithId<IssueLemma>
     if (this.id === issueId) {
       this.issueLemmas.push(newLemma)
     }
@@ -39,11 +38,11 @@ export default class IssueStore {
   }
 
   async loadIssueList() {
-    this._issues = (await request(WorkflowService.workflowApiV1IssuesList, undefined)).results || []
+    this._issues = (await WorkflowService.workflowApiV1IssuesList()).results || []
   }
 
   async getIssueLemmas(id: number) {
-    return ((await request(WorkflowService.workflowApiV1IssueLemmaList, undefined, undefined, id)).results || []) as WithId<IssueLemma>[]
+    return ((await WorkflowService.workflowApiV1IssueLemmaList(undefined, undefined, id)).results || []) as WithId<IssueLemma>[]
   }
 
   async loadIssueLemmas(id: number) {
@@ -51,33 +50,37 @@ export default class IssueStore {
   }
 
   async createLabel(name: string, color: string): Promise<LemmaLabel> {
-    const l = await request(WorkflowService.workflowApiV1LemmaLabelCreate, {name, color})
+    const l = await WorkflowService.workflowApiV1LemmaLabelCreate({name, color})
     this.labels.push(l)
     return l
   }
 
   async getIssueLemmaNotes(issueLemmaId: number): Promise<LemmaNote[]> {
-    return (await request(WorkflowService.workflowApiV1LemmaNoteList, issueLemmaId)).results || []
+    return (await WorkflowService.workflowApiV1LemmaNoteList(issueLemmaId)).results || []
   }
 
   async loadStatuses(id: number) {
-    this._statuses = ((await request(WorkflowService.workflowApiV1LemmaStatusList, id)).results || []) as WithId<LemmaStatus>[]
+    this._statuses = ((await WorkflowService.workflowApiV1LemmaStatusList(id)).results || []) as WithId<LemmaStatus>[]
   }
 
   async loadLabels() {
-    this._labels = (await request(WorkflowService.workflowApiV1LemmaLabelList)).results || []
+    this._labels = (await WorkflowService.workflowApiV1LemmaLabelList()).results || []
   }
 
   async loadNotes(lemmaId: number) {
-    return (await request(WorkflowService.workflowApiV1LemmaNoteList, lemmaId)).results || []
+    return (await WorkflowService.workflowApiV1LemmaNoteList(lemmaId)).results || []
   }
 
   async addNote(lemmaId: number, text: string) {
-    return (await request(WorkflowService.workflowApiV1LemmaNoteCreate, {
+    return WorkflowService.workflowApiV1LemmaNoteCreate({
       lemma: lemmaId,
       text: text,
       user: 4
-    }))
+    })
+  }
+
+  getIssueById(id: number) {
+    return this.issues.find(i => i.id === id)
   }
 
   async updateLemma(id: number, l: Partial<IssueLemma>): Promise<IssueLemma|undefined> {

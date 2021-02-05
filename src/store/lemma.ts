@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList, IssueLemma } from '@/api'
-import request from './request'
 // eslint-disable-next-line @typescript-eslint/camelcase
 import random_name from 'node-random-name'
 import _ from 'lodash'
@@ -169,7 +168,7 @@ export default class LemmaStore {
   }
 
   async deleteLemmaList(id: number) {
-    await request(ResearchService.researchApiV1ListresearchDestroy, id)
+    await ResearchService.researchApiV1ListresearchDestroy(id)
     await this.loadRemoteLemmaLists()
   }
 
@@ -178,7 +177,7 @@ export default class LemmaStore {
   }
 
   async loadRemoteLemmaLists() {
-    this.lemmaLists = await (await request(ResearchService.researchApiV1ListresearchList, undefined)).results || []
+    this.lemmaLists = (await ResearchService.researchApiV1ListresearchList()).results || []
   }
 
   getAllUserColumns(lemmas: LemmaRow[]): LemmaColumn[] {
@@ -246,6 +245,10 @@ export default class LemmaStore {
     return new Date()
   }
 
+  getListById(id: number) {
+    return this.lemmaLists.find(i => i.id === id)
+  }
+
   async getLocalLemmaCache() {
     console.time('local cache')
     const x = await this.localDb.lemmas.toArray()
@@ -254,11 +257,10 @@ export default class LemmaStore {
   }
 
   async deleteLemma(ids: number[]) {
+    this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) === -1)
     const deleteRemote = await Promise.all(ids.map(id => {
-      return request(ResearchService.researchApiV1LemmaresearchDestroy, id)
+      return ResearchService.researchApiV1LemmaresearchDestroy(id)
     }))
-    // TODO:
-    // this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) > -1)
   }
 
   fakeLemma(seed: number): LemmaRow {
@@ -323,14 +325,20 @@ export default class LemmaStore {
       // TODO: get new ones.
       return []
     } else {
-      // @ts-ignore
-      return ((await request(ResearchService.researchApiV1LemmaresearchList, 1000)).results as ServerResearchLemma[] || [] as ServerResearchLemma[]).map(this.convertRemoteLemmaToLemmaRow)
+      return ((await ResearchService.researchApiV1LemmaresearchList(1000)).results as ServerResearchLemma[] || [])
+        .map(this.convertRemoteLemmaToLemmaRow)
       // get all (mock)
       // return _(_.range(0, 10000))
       //   .map(this.fakeLemma)
       //   .sortBy('birthYear')
       //   .value()
     }
+  }
+
+  async updateList(id: number, l: Partial<LemmaList>) {
+    const i = this.lemmaLists.findIndex(l => l.id === id)
+    const newList = await ResearchService.researchApiV1ListresearchPartialUpdate(id, l)
+    this.lemmaLists[i] = newList
   }
 
   async updateLemmasWith(ls: LemmaRow[]) {

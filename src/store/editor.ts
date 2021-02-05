@@ -1,6 +1,5 @@
 import { WorkflowService, Editor } from '@/api'
 import _ from 'lodash'
-import request from './request'
 
 export default class EditorStore {
 
@@ -12,7 +11,7 @@ export default class EditorStore {
   }
 
   async loadEditors() {
-    this._editors = (await request(WorkflowService.workflowApiV1EditorsList, undefined)).results || []
+    this._editors = (await WorkflowService.workflowApiV1EditorsList()).results || []
     this.editorsById = _.keyBy(this._editors, 'userId')
   }
 
