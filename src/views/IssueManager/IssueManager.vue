@@ -176,6 +176,7 @@
         :columns="columns"
         :animate="animateLemmas"
         :selected-lemma="selectedLemma"
+        @end-drag="onEndDrag"
         @update-column="onUpdateColumn"
         @select-lemma="openLemma"
         @dblclick.native="showSideBar = !showSideBar"
@@ -280,24 +281,6 @@ export default class IssueManager extends Vue {
     }
   }
 
-  labels = [
-    {
-      name: 'vorläufige zusage',
-      id: 1,
-      color: 'orange'
-    },
-    {
-      name: 'prioritär',
-      id: 2,
-      color: 'red'
-    },
-    {
-      name: 'KW 12',
-      id: 3,
-      color: '#6495ed'
-    }
-  ]
-
   convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
     if (this.issueStatus.find(s => s.id === l.status) === undefined) {
       return {...l, status: this.issueStatus[0]?.id}
@@ -318,11 +301,20 @@ export default class IssueManager extends Vue {
     return store.issue.statuses
   }
 
-  updateLemmaStatus(statusId: LemmaStatus['id'], lemma: IssueLemma) {
+  onEndDrag(e: any) {
+    if (e.to instanceof HTMLElement && e.item instanceof HTMLElement) {
+      const issueLemmaId = Number(e.item.dataset.issueLemmaId)
+      const statusId = Number(e.to.dataset.statusId)
+      store.issue.updateLemma(issueLemmaId, { status: statusId })
+    }
+  }
+
+  updateLemmaStatus(statusId: LemmaStatus['id'], lemma: WithId<IssueLemma>) {
     const index = this.issueLemmas.findIndex(i => i.id === lemma.id)
     if (index > -1) {
       this.animateLemmas = true
       this.issueLemmas[index].status = statusId
+      this.updateLemmaById(lemma.id, { status: statusId })
       setTimeout(() => { this.animateLemmas = false }, 300)
     }
   }

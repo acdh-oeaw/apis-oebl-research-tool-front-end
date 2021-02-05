@@ -15,16 +15,18 @@
           :value="column.items"
           :force-fallback="true"
           :scroll-sensitivity="200"
+          @end="$emit('end-drag', $event)"
           @input="$emit('update-column', {id: column.id, name: column.name, order: column.order}, $event)"
           animation="200"
           class="drop-target rounded-lg"
           ghost-class="ghost"
           group="people">
-          <transition-group tag="div" class="fill-height" type="transition" :name="animate ? 'flip-list' : null">
+          <transition-group :data-status-id="column.id" tag="div" class="fill-height" type="transition" :name="animate ? 'flip-list' : null">
             <v-card
               color="background lighten-2"
               :style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
               class="issue-lemma-card rounded-lg pa-3 mb-3"
+              :data-issue-lemma-id="item.id"
               @mousedown="$emit('select-lemma', item)"
               v-for="(item, itemIndex) in column.items"
               :tabindex=" (columnIndex + 1) * 100 + itemIndex"
@@ -70,7 +72,7 @@ export default class LemmaBoard extends Vue {
   @Prop({ default: null }) selectedLemma!: IssueLemma|null
 
   store = store
-
+  log = console.log
   selectedStyle = {
     boxShadow: `inset 0px 0px 0px 3px ${ this.$vuetify.theme.currentTheme.primary } !important`
   }
