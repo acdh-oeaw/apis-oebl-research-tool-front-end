@@ -37,7 +37,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-badge content="10,000+" color="blue-grey" inline />
+            <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
         <v-subheader
@@ -140,6 +140,7 @@ import _ from 'lodash'
 import confirm from '@/store/confirm'
 import prompt from '@/store/prompt'
 import { List as LemmaList } from '@/api/models/List'
+import { WithId } from '@/types'
 
 @Component
 export default class LemmaNavigation extends Vue {
@@ -149,11 +150,6 @@ export default class LemmaNavigation extends Vue {
   editingNameKey: string|null = null
   store = store
   log = console.log
-
-  async createList() {
-    const name = await prompt.prompt('Geben Sie einen Namen für die Liste ein')
-    console.log(name)
-  }
 
   selectLemmaFilter(i: string) {
     store.lemma.selectedLemmaFilterId = i
@@ -171,9 +167,9 @@ export default class LemmaNavigation extends Vue {
 
   async loadIssueLemmas(issueId: number|null) {
     if (issueId !== null) {
+      store.lemma.selectedLemmaIssueId = issueId
       const ls = await store.issue.getIssueLemmas(issueId)
       store.lemma.selectedIssueLemmas = ls
-      store.lemma.selectedLemmaIssueId = issueId
     }
   }
 
@@ -217,7 +213,8 @@ export default class LemmaNavigation extends Vue {
     const message = lemmas.length > 0 ? `Neue Liste mit ${lemmas.length} Einträgen erstellen` : 'Neue Liste anlegen'
     const name = await prompt.prompt(message, { placeholder: 'Listenname…', rules: lemmaNameRules })
     if (name !== null) {
-      store.lemma.createList(name)
+      const l = await store.lemma.createList(name) as WithId<LemmaList>
+      store.lemma.selectedLemmaListId = l.id
     }
   }
 
