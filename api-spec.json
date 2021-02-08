@@ -58220,6 +58220,31 @@
                 }
             }
         },
+        "/me/": {
+            "get": {
+                "operationId": "me_retrieve",
+                "description": "Viewset to show UserProfile of current User",
+                "tags": [
+                    "me"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/research/api/v1/lemmaresearch/": {
             "get": {
                 "operationId": "research_api_v1_lemmaresearch_list",
@@ -58366,7 +58391,7 @@
             },
             "patch": {
                 "operationId": "research_api_v1_lemmaresearch_partial_update",
-                "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
+                "description": "Endpoint that allows to POST a list of lemmas to the research pipeline for processing.\n        All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.\n        ",
                 "parameters": [
                     {
                         "in": "path",
@@ -58385,17 +58410,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                                "$ref": "#/components/schemas/PatchedLemmaResearchPatchAPIViewRequest"
                             }
                         },
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                                "$ref": "#/components/schemas/PatchedLemmaResearchPatchAPIViewRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedListEntryRequest"
+                                "$ref": "#/components/schemas/PatchedLemmaResearchPatchAPIViewRequest"
                             }
                         }
                     }
@@ -58528,7 +58553,7 @@
             },
             "post": {
                 "operationId": "research_api_v1_listresearch_create",
-                "description": "",
+                "description": "Endpoint that allows to create a Research Lemma List\n        ",
                 "tags": [
                     "research"
                 ],
@@ -58536,17 +58561,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ListRequest"
+                                "$ref": "#/components/schemas/CreateResearchListAPIViewRequest"
                             }
                         },
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/ListRequest"
+                                "$ref": "#/components/schemas/CreateResearchListAPIViewRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ListRequest"
+                                "$ref": "#/components/schemas/CreateResearchListAPIViewRequest"
                             }
                         }
                     },
@@ -60942,6 +60967,17 @@
                 },
                 "required": [
                     "name"
+                ]
+            },
+            "CreateResearchListAPIViewRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "title"
                 ]
             },
             "Editor": {
@@ -64795,7 +64831,6 @@
                     }
                 },
                 "required": [
-                    "editor",
                     "title"
                 ]
             },
@@ -64880,7 +64915,6 @@
                     }
                 },
                 "required": [
-                    "editor",
                     "title"
                 ]
             },
@@ -67458,6 +67492,35 @@
                     }
                 }
             },
+            "PatchedLemmaResearchPatchAPIViewRequest": {
+                "type": "object",
+                "properties": {
+                    "list": {
+                        "$ref": "#/components/schemas/PatchedLemmaresearchEditorRequest"
+                    },
+                    "gnd": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateOfDeath": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                }
+            },
             "PatchedLemmaStatusRequest": {
                 "type": "object",
                 "properties": {
@@ -67467,27 +67530,17 @@
                     }
                 }
             },
-            "PatchedListEntryRequest": {
+            "PatchedLemmaresearchEditorRequest": {
                 "type": "object",
                 "properties": {
-                    "list": {
-                        "$ref": "#/components/schemas/PatchedListSerializerLimitedRequest"
+                    "id": {
+                        "type": "integer"
                     },
-                    "firstName": {
+                    "editor": {
+                        "type": "integer"
+                    },
+                    "title": {
                         "type": "string"
-                    },
-                    "lastName": {
-                        "type": "string"
-                    },
-                    "columns_user": {
-                        "type": "object",
-                        "additionalProperties": {},
-                        "nullable": true
-                    },
-                    "columns_scrape": {
-                        "type": "object",
-                        "additionalProperties": {},
-                        "nullable": true
                     }
                 }
             },
@@ -67500,19 +67553,6 @@
                     "title": {
                         "type": "string",
                         "maxLength": 255
-                    }
-                }
-            },
-            "PatchedListSerializerLimitedRequest": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "maxLength": 255
-                    },
-                    "editor": {
-                        "type": "integer",
-                        "nullable": true
                     }
                 }
             },

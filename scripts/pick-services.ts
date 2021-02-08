@@ -5,7 +5,7 @@ import fs from 'fs'
 
 const allowedServices = process.argv.slice(2)
 const path = './src/api/index.ts'
-const serviceRegEx = /export { ((.\S)+Service) } .+;/g
+const serviceRegEx = /export \{ ((.)+Service) \} .+;/
 
 ;(async () => {
   const f = fs.readFileSync(path)
@@ -13,7 +13,7 @@ const serviceRegEx = /export { ((.\S)+Service) } .+;/g
   console.log('allowedServices:', allowedServices)
   const newLines = lines.map(l => {
     const matches = serviceRegEx.exec(l)
-    if (matches !== null && !allowedServices.includes(matches[1])) {
+    if (matches !== null && !allowedServices.includes(matches[1].trim())) {
       // remove/comment out
       return '// ' + l
     } else {

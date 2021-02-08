@@ -2,7 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PatchedListSerializerLimitedRequest = {
+export type PatchedLemmaresearchEditorRequest = {
+    id?: number;
+    editor?: number;
     title?: string;
-    editor?: number | null;
 }

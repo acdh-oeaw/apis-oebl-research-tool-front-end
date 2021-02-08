@@ -6,6 +6,6 @@ import type { Editor } from './Editor';
 
 export type List = {
     readonly id?: number;
-    editor: Editor;
+    editor?: Editor;
     title: string;
 }

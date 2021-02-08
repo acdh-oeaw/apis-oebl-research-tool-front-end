@@ -5,6 +5,6 @@
 import type { EditorRequest } from './EditorRequest';
 
 export type ListRequest = {
-    editor: EditorRequest;
+    editor?: EditorRequest;
     title: string;
 }

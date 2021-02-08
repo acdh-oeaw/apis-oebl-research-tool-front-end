@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CreateResearchListAPIViewRequest } from '../models/CreateResearchListAPIViewRequest';
 import type { List } from '../models/List';
 import type { ListCreateAPIViewRequest } from '../models/ListCreateAPIViewRequest';
 import type { ListCreateAPIViewResponse } from '../models/ListCreateAPIViewResponse';
@@ -8,7 +9,7 @@ import type { ListEntry } from '../models/ListEntry';
 import type { ListRequest } from '../models/ListRequest';
 import type { PaginatedListEntryList } from '../models/PaginatedListEntryList';
 import type { PaginatedListList } from '../models/PaginatedListList';
-import type { PatchedListEntryRequest } from '../models/PatchedListEntryRequest';
+import type { PatchedLemmaResearchPatchAPIViewRequest } from '../models/PatchedLemmaResearchPatchAPIViewRequest';
 import type { PatchedListRequest } from '../models/PatchedListRequest';
 import { request as __request } from '../core/request';
 
@@ -78,10 +79,9 @@ export class ResearchService {
     }
 
     /**
-     * APIView to process scraping requests
+     * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
+     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
      *
-     * Args:
-     * GenericAPIView ([type]): [description]
      * @param id A unique integer value identifying this list entry.
      * @param requestBody
      * @returns ListEntry
@@ -89,7 +89,7 @@ export class ResearchService {
      */
     public static async researchApiV1LemmaresearchPartialUpdate(
         id: number,
-        requestBody?: PatchedListEntryRequest,
+        requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
     ): Promise<ListEntry> {
         const result = await __request({
             method: 'PATCH',
@@ -146,12 +146,14 @@ export class ResearchService {
     }
 
     /**
+     * Endpoint that allows to create a Research Lemma List
+     *
      * @param requestBody
      * @returns List
      * @throws ApiError
      */
     public static async researchApiV1ListresearchCreate(
-        requestBody: ListRequest,
+        requestBody: CreateResearchListAPIViewRequest,
     ): Promise<List> {
         const result = await __request({
             method: 'POST',
