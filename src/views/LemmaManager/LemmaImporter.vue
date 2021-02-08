@@ -78,6 +78,8 @@ import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import { PersonField, ImportablePerson } from '@/types/lemma'
 import * as lobid from '../../service/lobid'
 import store from '../../store'
+import format from 'date-fns/format'
+import de from 'date-fns/locale/de'
 import _ from 'lodash'
 
 @Component({
@@ -97,7 +99,7 @@ export default class LemmaImporter extends Vue {
   log = console.log
   importable: ImportablePerson[] = []
   userColumnPrefix = 'user.'
-  importToListName = ''
+  importToListName = 'Import ' + format(new Date(), 'd MMM yyyy', { locale: de })
 
   get importableHeaders(): number {
     if (this.importable.length > 0) {
