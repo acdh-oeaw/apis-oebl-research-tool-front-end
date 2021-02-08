@@ -324,8 +324,8 @@ export type { WorkworkrelationDetail } from './models/WorkworkrelationDetail';
 export type { WorkworkrelationDetailRequest } from './models/WorkworkrelationDetailRequest';
 
 // export { ApiLoginService } from './services/ApiLoginService';
-export { ApisService } from './services/ApisService';
+// export { ApisService } from './services/ApisService';
 // export { EntityService } from './services/EntityService';
 export { MeService } from './services/MeService';
-// export { ResearchService } from './services/ResearchService';
+export { ResearchService } from './services/ResearchService';
 export { WorkflowService } from './services/WorkflowService';
