@@ -6,8 +6,7 @@
     ]"
     >
     <template v-slot:activator>
-      <v-list-item-title
-        style="text-transform: uppercase; letter-spacing: .1em">
+      <v-list-item-title style="text-transform: uppercase; letter-spacing: .1em">
         {{ title }}
       </v-list-item-title>
       <v-list-item-action-text class="ellipsis">
