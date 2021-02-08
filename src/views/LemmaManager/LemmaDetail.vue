@@ -9,7 +9,7 @@
         width="48"
         height="48"
         tile
-        @click="value.starred = !value.starred"
+        @click="$emit('update', { starred: !value.starred })"
         class="rounded-lg mr-2"
         icon>
         <span style="color: var(--v-primary-base)" v-if="value.starred">★</span>
@@ -38,10 +38,38 @@
         top: 0,
         background: ''
       }">
-        GND: {{ value.gnd[0] }}<v-spacer /><!--<v-btn rounded elevation="0" small>bearbeiten</v-btn>-->
+        GND: {{ value.gnd[0] }}<v-badge v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" color="blue-grey" inline />
       </h4>
-      <v-card-text class="pt-2">
-        <lobid-preview-card @update="log" :limit="1" :gnd="value.gnd" />
+      <v-card-text class="pt-1">
+        <div v-if="showGndSearch">
+          <lobid-gnd-search
+            :lemma="value"
+            :gnd="value.gnd"
+            @cancel="showGndSearch = false"
+            @input="selectGnd"
+          />
+        </div>
+        <div v-else>
+          <lobid-preview-card
+            class="mb-2"
+            v-if="value.gnd.length > 0"
+            @update="log"
+            :limit="1"
+            :gnd="value.gnd" />
+          <v-btn
+            @click="showGndSearch = true"
+            small
+            color="background lighten-2"
+            block
+            v-if="value.gnd.length === 0"
+            elevation="0">GND hinzufügen…</v-btn>
+          <v-btn
+            @click="showGndSearch = true"
+            small
+            color="background lighten-2"
+            block v-if="value.gnd.length > 0"
+            elevation="0">GND ändern…</v-btn>
+        </div>
       </v-card-text>
       <v-divider />
       <h4
@@ -53,10 +81,9 @@
           background: ''
         }">
         Externe Ressourcen <v-badge
-          v-if="countScrapedResources(value.columns_scrape) > 0"
           color="blue-grey"
           inline
-          :content="countScrapedResources(value.columns_scrape)" />
+          :content="countScrapedResources(value.columns_scrape).toString()" />
       </h4>
       <v-card-text class="pt-0">
         <v-list dense nav class="text-body-2 pa-0">
@@ -96,12 +123,14 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
+import LobidGndSearch from './LobidGndSearch.vue'
 import store from '@/store'
 
 @Component({
   components: {
     LemmaScrapeResult,
-    LobidPreviewCard
+    LobidPreviewCard,
+    LobidGndSearch
   }
 })
 export default class LemmaDetail extends Vue {
@@ -109,6 +138,7 @@ export default class LemmaDetail extends Vue {
   @Prop({ required: true }) value!: LemmaRow
   log = console.log
   store = store
+  showGndSearch = false
   countScrapedResources(r: LemmaRow['columns_scrape']) {
     if (r === undefined) {
       return 0
@@ -117,6 +147,10 @@ export default class LemmaDetail extends Vue {
     }
   }
 
+  selectGnd(gnd: string) {
+    this.showGndSearch = false
+    this.$emit('update', { gnd: [ gnd ] })
+  }
 
 }
 </script>
