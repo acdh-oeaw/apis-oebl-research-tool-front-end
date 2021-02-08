@@ -10,9 +10,9 @@
       offset-x
       content-class="soft-shadow"
       :position-y="previewPopupCoords[1]">
-      <v-card color="background darken-2" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
+      <v-card color="background lighten-1" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
         <v-card-text class="pb-3 pl-0 pt-4 pr-0">
-          <lobid-preview-card :gnd="lobidPreviewGnds" />
+          <lobid-preview-card :limit="3" :gnd="lobidPreviewGnds" />
         </v-card-text>
       </v-card>
     </v-menu>
@@ -70,7 +70,7 @@
             {{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
           </h1>
           <h1
-            v-else-if="store.lemma.selectedLemmaListId !== null"
+            v-else-if="store.lemma.selectedLemmaListId !== null && store.lemma.getListById(store.lemma.selectedLemmaListId) !== undefined"
             @blur="updateListName(store.lemma.selectedLemmaListId, $event.target.textContent)"
             @keyup.enter.prevent.stop="$event.target.blur()"
             v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
@@ -266,10 +266,11 @@
         v-else-if="selectedRows.length > 1"
         absolute
         color="background">
-        <span style="opacity: .7">{{ selectedRows.length }} Lemmata ausgewählt</span>
+        <span class="text--background darken-2" style="opacity: .7">{{ selectedRows.length }} Lemmata ausgewählt</span>
       </v-overlay>
       <lemma-detail
         @close="store.lemma.showSideBar = false"
+        @update="updateLemma(selectedRows[0], $event)"
         v-else
         :value="selectedRows[0]" />
     </resizable-drawer>
@@ -466,10 +467,15 @@ export default class LemmaManager extends Vue {
 
   filterItems: LemmaFilterItem[] = [ clone(this.defaultFilterItem) ]
 
+  async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
+    await store.lemma.updateLemmas([ l ], u)
+    this.filterData()
+  }
+
   async deleteList(id: number) {
     const list = store.lemma.lemmaLists.find(l => l.id === id)
     if (list !== undefined) {
-      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen?`)) {
+      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen? Die Lemmata in dieser Liste werden nicht gelöscht.`)) {
         await store.lemma.deleteLemmaList(id)
       }
     }
@@ -511,7 +517,12 @@ export default class LemmaManager extends Vue {
   async deleteSelectedLemmas() {
     const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) in den Papierkorb legen? Dies kann später rückgängig gemacht werden.`
     if (await confirm.confirm(msg)) {
+      const indexOfLastSelected = this.filteredData.findIndex(l => _.last(this.selectedRows)?.id === l.id)
       await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
+      // select the next row after the deleted ones
+      if (indexOfLastSelected > -1) {
+        this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+      }
     }
   }
 
@@ -526,7 +537,7 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  @Watch('store.settings.selectedLemmaFilter', { immediate: true })
+  @Watch('store.lemma.selectedLemmaFilterId', { immediate: true })
   async onSelectLemmaFilter(id: string) {
     if (id !== '-1') {
       const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
@@ -735,10 +746,11 @@ export default class LemmaManager extends Vue {
   max-width 50%
 
 .lemma-view-title h1
+  font-size 1.7em
   min-width 150px
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
   &:focus
     text-overflow clip
 
