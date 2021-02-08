@@ -28,10 +28,11 @@ export default class LemmaStore {
   private _selectedLemmaListId: null|number = null
   private _selectedLemmaFilterId: null|string = null
   private _selectedLemmaIssueId: null|number = null
+  private _selectedLemmas: LemmaRow[] = []
 
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
-  public selectedLemmas: LemmaRow[] = []
+
   public lemmaLists: LemmaList[] = []
   public columns: LemmaColumn[] = []
   public defaultColumns: LemmaColumn[] = [
@@ -133,6 +134,20 @@ export default class LemmaStore {
     this.loadRemoteLemmaLists()
   }
 
+  get lemmaCount() {
+    return this._lemmas.length
+  }
+
+  get selectedLemmas() {
+    this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]')
+    return this._selectedLemmas
+  }
+
+  set selectedLemmas(ls: LemmaRow[]) {
+    this._selectedLemmas = ls
+    localStorage.setItem('selectedLemmas', JSON.stringify(ls))
+  }
+
   get selectedLemmaIssueId() {
     return this._selectedLemmaIssueId
   }
@@ -164,10 +179,21 @@ export default class LemmaStore {
   }
 
   async addLemmasToList(id: number, ls: LemmaRow[]) {
-    // FIXME:
-    return Promise.all(ls.map(l => {
-      return ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: {editor: 6, title: 'yolist'} })
+    await this.updateLemmas(ls, { list: {id: id} } as any)
+  }
+
+  async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
+    await Promise.all(ls.map(async (l) => {
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
     }))
+    const ids = ls.map(l => l.id)
+    this._lemmas = this._lemmas.map((l) => {
+      if (ids.includes(l.id)) {
+        return {...l, ...u}
+      } else {
+        return l
+      }
+    })
   }
 
   async deleteLemmaList(id: number) {
@@ -288,8 +314,15 @@ export default class LemmaStore {
   }
 
   async importLemmas(ls: ImportablePerson[], listName: string|null) {
-    const x = await ResearchService.researchApiV1LemmaresearchCreate(({
-      list: 3,
+    await ResearchService.researchApiV1LemmaresearchCreate(({
+      list: await (async () => {
+        if (listName !== null && listName.trim() !== '') {
+          const l = await this.createList(listName)
+          return l.id
+        } else {
+          return undefined
+        }
+      })(),
       lemmas: ls.map(l => ({
         ...l,
         firstName: l.firstName || undefined,
@@ -344,12 +377,9 @@ export default class LemmaStore {
     Vue.set(this.lemmaLists, i, newList)
   }
 
-  // FIXME:
   async createList(title: string): Promise<LemmaList> {
-    const s = await ResearchService.researchApiV1ListresearchCreate({
-      editor: 6,
-      title
-    } as any)
+    const s = await ResearchService.researchApiV1ListresearchCreate({ title })
+    this.lemmaLists.push(s)
     return s
   }
 
@@ -360,7 +390,6 @@ export default class LemmaStore {
   }
 
   async updateLemmaById(id: number, data: Partial<LemmaRow>) {
-    console.log({id, data})
     const i = this.lemmas.findIndex(l => l.id === id)
     if (i > -1) {
       const newLemma = {...this.lemmas[i], ...data}
