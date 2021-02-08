@@ -10,7 +10,7 @@
     "start": "node ./server/index.js",
     "pick-services": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/pick-services.ts",
     "schema": "typescript-json-schema \"src/types/*ts\" \"Requests\" > src/types/schema.json",
-    "get-api-types": "export $(cat env-dev.env | xargs) && curl -L -v --insecure -H \"Accept: application/json\" \"$API_HOST/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService"
+    "get-api-types": "export $(cat env-dev.env | xargs) && curl -L -v --insecure -H \"Accept: application/json\" \"$API_HOST/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
