@@ -47,7 +47,7 @@ export async function findPerson(p: ImportablePerson, secondTry = false): Promis
   // const u = http://lobid.org/gnd/search?q=preferredName%3AFranz*%20AND%20dateOfDeath:1910*&filter=type%3APerson&format=json:preferredName,dateOfDeath,dateOfBirth,%20placeOfDeath,placeOfBirth&size=100
   let res: LdPerson[] = []
   const qp = new URLSearchParams({
-    q: makeLobidQueryString(p),
+    q: makeLobidQueryString(p).replaceAll(/\(|\)/g, ''),
     filter: 'type:Person',
     format: 'json',
     size: '100'
