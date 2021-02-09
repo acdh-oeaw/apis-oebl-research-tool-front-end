@@ -73,6 +73,14 @@
             v-else-if="store.lemma.selectedLemmaListId !== null && store.lemma.getListById(store.lemma.selectedLemmaListId) !== undefined"
             @blur="updateListName(store.lemma.selectedLemmaListId, $event.target.textContent)"
             @keyup.enter.prevent.stop="$event.target.blur()"
+            @keyup.esc.prevent.stop="cancelUpdateListName"
+            v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
+            contenteditable="true">
+          </h1>
+          <h1
+            v-else-if="store.lemma.selectedLemmaFilterId !== null"
+            @blur="updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)"
+            @keyup.enter.prevent.stop="$event.target.blur()"
             v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
             contenteditable="true">
           </h1>
@@ -243,6 +251,7 @@
       </div>
     </v-app-bar>
     <resizable-drawer
+      color="background"
       :card="true"
       :right="true"
       :value="store.lemma.showSideBar">
@@ -294,7 +303,7 @@
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
           <!-- the star column -->
-          <template v-else-if="column.value === 'starred'">
+          <template v-else-if="column.value === 'selected'">
             <span v-if="value === true" style="color: var(--v-primary-base)">★</span>
             <span v-if="value === false" style="opacity: .5">☆</span>
           </template>
@@ -467,7 +476,22 @@ export default class LemmaManager extends Vue {
 
   filterItems: LemmaFilterItem[] = [ clone(this.defaultFilterItem) ]
 
+  cancelUpdateListName(event: KeyboardEvent) {
+    if (
+      store.lemma.selectedLemmaListId !== null &&
+      event.target instanceof HTMLElement
+    ) {
+      event.target.textContent = store.lemma.getListById(store.lemma.selectedLemmaListId)?.title || 'Listenname'
+      event.target.blur()
+    }
+  }
+
   async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
+    // update selected lemma (cached)
+    if (this.selectedRows.length > 0 && this.selectedRows[0].id === l.id) {
+      this.selectedRows[0] = { ...l, ...u }
+    }
+    // update store and server
     await store.lemma.updateLemmas([ l ], u)
     this.filterData()
   }
@@ -538,8 +562,8 @@ export default class LemmaManager extends Vue {
   }
 
   @Watch('store.lemma.selectedLemmaFilterId', { immediate: true })
-  async onSelectLemmaFilter(id: string) {
-    if (id !== '-1') {
+  async onSelectLemmaFilter(id: string|null) {
+    if (id !== null) {
       const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
       if (lf !== undefined) {
         this.title = lf.name
@@ -548,7 +572,6 @@ export default class LemmaManager extends Vue {
         this.filterData()
       }
     } else {
-      this.title = 'Lemmabibliothek'
       this.filterItems = [ clone(this.defaultFilterItem) ]
       await this.$nextTick()
       this.filterData()
@@ -556,23 +579,24 @@ export default class LemmaManager extends Vue {
   }
 
   async deleteFilter(id: string|null) {
-    const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
-    if (lf !== undefined && await confirm.confirm(`Die Abfrage ”${ lf.name }” löschen?`)) {
-      store.settings = {
-        ...store.settings,
-        storedLemmaFilters: store.settings.storedLemmaFilters.filter(lf => lf.id !== id)
+    if (id !== null) {
+      const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
+      if (lf !== undefined && await confirm.confirm(`Die Abfrage ”${ lf.name }” löschen?`)) {
+        store.settings = {
+          ...store.settings,
+          storedLemmaFilters: store.settings.storedLemmaFilters.filter(lf => lf.id !== id)
+        }
+        store.lemma.selectedLemmaFilterId = null
       }
-      store.lemma.selectedLemmaFilterId = null
     }
   }
 
-  updateLemmaFilterName(e: Event) {
-    const t = (e.target as HTMLElement).textContent || ''
+  updateLemmaFilterName(id: string, name: string) {
     store.settings = {
       ...store.settings,
       storedLemmaFilters: store.settings.storedLemmaFilters.map((f, i) => {
         if (f.id === store.lemma.selectedLemmaFilterId) {
-          return {...f, name: t}
+          return {...f, name }
         } else {
           return f
         }
@@ -606,9 +630,9 @@ export default class LemmaManager extends Vue {
   onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, index: number) {
     // const s = store.lemma.getMostSimilarLemmas(item)
     // console.log(_.take(s, 10))
-    if (prop === 'starred') {
-      item.starred = !item.starred
-      store.lemma.updateLemmaById(item.id, { starred: !item.starred })
+    if (prop === 'selected') {
+      item.selected = !item.selected
+      store.lemma.updateLemmaById(item.id, { selected: !item.selected })
     }
   }
 

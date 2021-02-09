@@ -48,8 +48,21 @@
       <div v-else style="opacity: .7" class="caption text-center">(Nichts gefunden)</div>
     </div>
     <div class="background mt-3 pb-3" style="position: sticky; bottom: 0">
-      <v-btn @click="$emit('input', selectedGnd)" class="background lighten-2 mb-2" block elevation="0">{{ selectedGnd !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}</v-btn>
-      <v-btn @click="$emit('cancel')" class="background lighten-1" block elevation="0">abbrechen</v-btn>
+      <v-btn
+        @click="$emit('input', selectedGnd)"
+        color="background lighten-2"
+        class="mb-2"
+        block
+        elevation="0">
+        {{ selectedGnd !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}
+      </v-btn>
+      <v-btn
+        @click="$emit('cancel')"
+        color="background darken-1"
+        block
+        elevation="0">
+        abbrechen
+      </v-btn>
     </div>
   </div>
 </template>

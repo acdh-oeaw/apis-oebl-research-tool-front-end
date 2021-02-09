@@ -14,7 +14,7 @@ class LemmaDatabase extends Dexie {
   public constructor() {
     super('LemmaDb')
     this.version(2).stores({
-      lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,starred'
+      lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
   }
@@ -29,16 +29,16 @@ export default class LemmaStore {
   private _selectedLemmaFilterId: null|string = null
   private _selectedLemmaIssueId: null|number = null
   private _selectedLemmas: LemmaRow[] = []
+  private _lemmaLists: LemmaList[] = []
 
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
 
-  public lemmaLists: LemmaList[] = []
   public columns: LemmaColumn[] = []
   public defaultColumns: LemmaColumn[] = [
     {
       name: 'Markiert',
-      value: 'starred',
+      value: 'selected',
       type: 'boolean',
       filterable: true,
       show: true,
@@ -134,6 +134,19 @@ export default class LemmaStore {
     this.loadRemoteLemmaLists()
   }
 
+  get lemmaLists(): ({ count?: number } & LemmaList)[] {
+    return this._lemmaLists.map(ll => {
+      return {
+        ...ll,
+        count: this._lemmas.filter(l => l.list?.id === ll.id).length
+      }
+    })
+  }
+
+  set lemmaLists(ll) {
+    this._lemmaLists = ll
+  }
+
   get lemmaCount() {
     return this._lemmas.length
   }
@@ -183,9 +196,7 @@ export default class LemmaStore {
   }
 
   async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
-    await Promise.all(ls.map(async (l) => {
-      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
-    }))
+    // optimistic update
     const ids = ls.map(l => l.id)
     this._lemmas = this._lemmas.map((l) => {
       if (ids.includes(l.id)) {
@@ -194,9 +205,15 @@ export default class LemmaStore {
         return l
       }
     })
+    // actual update
+    await Promise.all(ls.map(async (l) => {
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
+    }))
   }
 
   async deleteLemmaList(id: number) {
+    this.lemmaLists = this.lemmaLists.filter(ll => ll.id !== id)
+    this.selectedLemmaListId = null
     await ResearchService.researchApiV1ListresearchDestroy(id)
     await this.loadRemoteLemmaLists()
   }
@@ -297,7 +314,7 @@ export default class LemmaStore {
     const bYear = _.random(1890, 1990, false)
     return {
       id: seed,
-      starred: _.random(0, 1, true) >= 0.95, // 5 percent should be starred
+      selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
       firstName: random_name({ first: true, seed }),
       lastName: random_name({ last: true, seed }),
       birthYear: bYear.toString(),
@@ -339,7 +356,7 @@ export default class LemmaStore {
     const dateOfDeath = _.get(rs, 'columns_scrape.wikidata.date_of_death')
     return {
       id: rs.id!,
-      starred: false,
+      selected: false,
       birthYear: dateOfBirth ? (new Date(dateOfBirth).getFullYear().toString()) : null,
       deathYear: dateOfDeath ? (new Date(dateOfDeath).getFullYear().toString()) : null,
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
@@ -363,11 +380,6 @@ export default class LemmaStore {
     } else {
       return ((await ResearchService.researchApiV1LemmaresearchList(1000)).results as ServerResearchLemma[] || [])
         .map(this.convertRemoteLemmaToLemmaRow)
-      // get all (mock)
-      // return _(_.range(0, 10000))
-      //   .map(this.fakeLemma)
-      //   .sortBy('birthYear')
-      //   .value()
     }
   }
 
@@ -379,7 +391,7 @@ export default class LemmaStore {
 
   async createList(title: string): Promise<LemmaList> {
     const s = await ResearchService.researchApiV1ListresearchCreate({ title })
-    this.lemmaLists.push(s)
+    this.lemmaLists = [ ...this.lemmaLists, s ]
     return s
   }
 

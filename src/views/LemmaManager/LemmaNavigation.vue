@@ -82,15 +82,17 @@
           </v-btn>
         </v-subheader>
         <v-list-item
-          dense
           v-for="list in filteredLemmaLists"
+          :key="list.id"
+          tabindex="-1"
+          :input-value="store.lemma.selectedLemmaListId === list.id"
+          :class="['rounded-lg', 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
+          dense
+          @keydown.delete="deleteList(list)"
           @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list.id, $event)"
-          :input-value="store.lemma.selectedLemmaListId === list.id"
-          :class="['rounded-lg', 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
-          @click="store.lemma.selectedLemmaListId = list.id || null"
-          :key="list.id">
+          @click="store.lemma.selectedLemmaListId = list.id || null">
           <v-list-item-avatar size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>
@@ -100,11 +102,15 @@
               {{ list.title }}
             </v-list-item-title>
           </v-list-item-content>
-          <!-- <v-list-item-action>
+          <v-list-item-action>
             <transition name="roll">
-              <v-badge :key="list.items.length" inline color="blue-grey" :content="list.items.length" />
+              <v-badge
+                :key="list.count"
+                inline
+                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                :content="list.count ? list.count.toString() : '0'" />
             </transition>
-          </v-list-item-action> -->
+          </v-list-item-action>
         </v-list-item>
         <v-subheader
           class="sticky"
@@ -173,6 +179,14 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
+  async deleteList(list: LemmaList) {
+    if (list.id !== undefined) {
+      if (await confirm.confirm(`Liste ”${list.title}” löschen?`)) {
+        store.lemma.deleteLemmaList(list.id)
+      }
+    }
+  }
+
   async copyLemmasToList(id: number, e: DragEvent) {
     this.highlightedKey = null
     const lemmas = JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[]
@@ -214,6 +228,9 @@ export default class LemmaNavigation extends Vue {
     const name = await prompt.prompt(message, { placeholder: 'Listenname…', rules: lemmaNameRules })
     if (name !== null) {
       const l = await store.lemma.createList(name) as WithId<LemmaList>
+      if (lemmas.length) {
+        await store.lemma.addLemmasToList(l.id, lemmas)
+      }
       store.lemma.selectedLemmaListId = l.id
     }
   }
@@ -226,7 +243,7 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
-  get filteredLemmaLists(): LemmaList[] {
+  get filteredLemmaLists() {
     if (this.searchQuery.trim() !== '') {
       return store.lemma.lemmaLists.filter(l => l.title.toLocaleLowerCase().includes(this.searchQuery))
     } else {

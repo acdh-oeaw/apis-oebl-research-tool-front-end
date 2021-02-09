@@ -9,10 +9,10 @@
         width="48"
         height="48"
         tile
-        @click="$emit('update', { starred: !value.starred })"
+        @click="$emit('update', { selected: !value.selected })"
         class="rounded-lg mr-2"
         icon>
-        <span style="color: var(--v-primary-base)" v-if="value.starred">★</span>
+        <span style="color: var(--v-primary-base)" v-if="value.selected">★</span>
         <span style="opacity: .5" v-else>☆</span>
       </v-btn>
       <v-container style="position: relative" class="pa-0">
@@ -23,7 +23,7 @@
         </transition>
         <v-row no-gutters>
           <v-col cols="12" class="text-caption text-center">
-            {{ value.birthYear }} - {{ value.deathYear }}
+            {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
           </v-col>
         </v-row>
       </v-container>
@@ -59,15 +59,16 @@
           <v-btn
             @click="showGndSearch = true"
             small
-            color="background lighten-2"
+            color="secondary"
             block
             v-if="value.gnd.length === 0"
             elevation="0">GND hinzufügen…</v-btn>
           <v-btn
+            v-if="value.gnd.length > 0"
             @click="showGndSearch = true"
             small
-            color="background lighten-2"
-            block v-if="value.gnd.length > 0"
+            color="secondary"
+            block
             elevation="0">GND ändern…</v-btn>
         </div>
       </v-card-text>
