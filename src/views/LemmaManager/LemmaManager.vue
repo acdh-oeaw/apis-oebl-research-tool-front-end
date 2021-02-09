@@ -98,9 +98,12 @@
             <v-card
               flat
               color="transparent"
-              class="text-body-2 row row--dense input-no-stroke px-3 py-0">
+              class="text-body-2 row row--dense input-no-stroke px-3 py-0 flex-nowrap">
               <div style="max-width: 120px" class="col col-2">
                 <v-select
+                  :menu-props="{
+                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
+                  }"
                   single-line
                   flat
                   hide-details
@@ -108,7 +111,7 @@
                   :items="columns.filter(c => c.filterable === true)"
                   @input="filterData"
                   item-text="name"
-                  append-icon="mdi-chevron-down"
+                  append-icon=""
                   item-value="value"
                   class="text-body-2"
                   v-model="filter.column"
@@ -118,6 +121,10 @@
               <v-divider class="my-1 mr-2" vertical />
               <div style="max-width: 120px" class="col-2">
                 <v-select
+                  :menu-props="{
+                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
+                  }"
+                  color="background darken-2"
                   single-line
                   flat
                   dense
@@ -125,7 +132,7 @@
                   @input="filterData"
                   item-text="name"
                   item-value="value"
-                  append-icon="mdi-chevron-down"
+                  append-icon=""
                   class="text-body-2"
                   v-model="filter.comparator"
                   :items="comparators"
@@ -134,7 +141,7 @@
               <v-divider class="my-1 mr-2" vertical />
               <div class="flex-grow-1">
                 <v-text-field
-                  @keydown.esc="filter.query = ''"
+                  @keydown.esc="() => { filter.query = ''; filterData() }"
                   placeholder="Abfrage…"
                   class="text-body-2 mt-1 ml-2"
                   v-model="filter.query"
@@ -143,7 +150,7 @@
                   hide-details
                 />
               </div>
-              <div style="margin-top: 3px">
+              <div class="flex-nowrap text-no-wrap" style="margin-top: 3px;">
                 <v-btn @click="removeFilterItem(i)" :disabled="filterItems.length === 1 && (filter.query === '' || filter.query === null)" icon small>
                   <v-icon v-if="filterItems.length === 1 && filter.query !== null && filter.query !== ''" style="transform: rotate(45deg)">mdi-plus-circle-outline</v-icon>
                   <v-icon v-else>mdi-minus-circle-outline</v-icon>
@@ -156,7 +163,7 @@
             <v-divider class="mx-2" v-if="filterItems.length > 1 && i !== filterItems.length - 1" />
           </div>
         </v-flex>
-        <v-flex shrink align-self-start class="pl-4 pr-1" style="margin-top: -3px">
+        <v-flex shrink align-self-start class="pl-2 pr-0" style="margin-top: -3px">
           <v-menu
             min-width="150"
             offset-y
