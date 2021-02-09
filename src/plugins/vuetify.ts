@@ -32,7 +32,9 @@ export default new Vuetify({
         sidebar: '#F1F5FA',
         // primary: '#6495ed',
         primary: colors.orange.darken1,
-        secondary: colors.blueGrey.darken3,
+        secondary: {
+          base: '#617e8a'
+        },
         // secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
@@ -51,7 +53,9 @@ export default new Vuetify({
         },
         sidebar: '#2D313B',
         primary: '#C09961',
-        secondary: colors.blueGrey.lighten3
+        secondary: {
+          base: '#393e4b'
+        }
       },
       // dark: {
       //   inset: '#2b2a2a',
