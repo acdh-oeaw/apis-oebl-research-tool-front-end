@@ -8,10 +8,23 @@ export const requestState = {
   hasErrored: false
 }
 
+function warnBeforeLeave(e: BeforeUnloadEvent): string {
+  e.returnValue = ''
+  return 'Synchronisierung läuft noch. Beim beending können Änderungen verloren gehen. Wirklich beenden?'
+}
+
+function isWriteCall(init?: RequestInit): boolean {
+  return init !== undefined && init.method !== undefined && init.method.toLowerCase() !== 'get'
+}
+
 window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
   requestState.isLoading = true
   requestState.hasErrored = false
+  if (isWriteCall(init)) {
+    window.addEventListener('beforeunload', warnBeforeLeave)
+  }
   const res = await fetchOriginal(input, init)
+  window.removeEventListener('beforeunload', warnBeforeLeave)
   if (res.ok) {
     requestState.isLoading = false
     return res
