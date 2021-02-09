@@ -13,7 +13,7 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
     super('LemmaDb')
-    this.version(2).stores({
+    this.version(3).stores({
       lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
@@ -352,8 +352,9 @@ export default class LemmaStore {
   }
 
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
-    const dateOfBirth = _.get(rs, 'columns_scrape.wikidata.date_of_birth')
-    const dateOfDeath = _.get(rs, 'columns_scrape.wikidata.date_of_death')
+    // TODO: remove options, use olny dateOfBirth/Death
+    const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'user_columns.dateOfBirth')
+    const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'user_columns.dateOfDeath')
     return {
       id: rs.id!,
       selected: false,
@@ -365,7 +366,8 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      gnd: rs.gnd,
+      // TODO: fix on server
+      gnd: rs.gnd.filter(g => g !== 'None'),
       columns_user: rs.columns_user,
       columns_scrape: rs.columns_scrape,
       // yuck
