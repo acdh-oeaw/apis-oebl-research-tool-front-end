@@ -2,7 +2,7 @@
   <v-card
     class="transparent flex-column d-flex fill-height"
     flat
-    v-if="value !== undefined">
+    v-if="value !== undefined && value !== null">
     <v-card-title>
       <v-btn
         style="position: absolute; left: 5px; top: 5px; font-size: 100%; z-index: 1"
