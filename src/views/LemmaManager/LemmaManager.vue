@@ -81,7 +81,7 @@
             v-else-if="store.lemma.selectedLemmaFilterId !== null"
             @blur="updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)"
             @keyup.enter.prevent.stop="$event.target.blur()"
-            v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
+            v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
             contenteditable="true">
           </h1>
           <div class="caption mt-1 text-no-wrap">
@@ -109,13 +109,13 @@
                   hide-details
                   return-object
                   :items="columns.filter(c => c.filterable === true)"
-                  @input="filterData"
                   item-text="name"
                   append-icon=""
                   item-value="value"
                   class="text-body-2"
                   v-model="filter.column"
                   dense
+                  @input="filterData"
                 />
               </div>
               <v-divider class="my-1 mr-2" vertical />
@@ -129,18 +129,38 @@
                   flat
                   dense
                   hide-details
-                  @input="filterData"
                   item-text="name"
                   item-value="value"
                   append-icon=""
                   class="text-body-2"
                   v-model="filter.comparator"
                   :items="comparators"
+                  @input="filterData"
                 />
               </div>
               <v-divider class="my-1 mr-2" vertical />
-              <div class="flex-grow-1">
+              <div
+                v-if="isFilterWithInput(filter)"
+                class="flex-grow-1">
+                <v-select
+                  v-if="filter.column.type === 'boolean'"
+                  :value="'true'"
+                  :items="[ { value: 'true', text: 'Ja' }, { value: 'false', text: 'Nein' } ]"
+                  :menu-props="{
+                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
+                  }"
+                  color="background darken-2"
+                  single-line
+                  flat
+                  dense
+                  hide-details
+                  append-icon=""
+                  class="text-body-2 mt-1"
+                  v-model="filter.query"
+                  @input="filterData"
+                />
                 <v-text-field
+                  v-else
                   @keydown.esc="() => { filter.query = ''; filterData() }"
                   placeholder="Abfrage…"
                   class="text-body-2 mt-1 ml-2"
@@ -247,11 +267,11 @@
           class="pl-0 ml-0 pr-3"
           style="margin-top: -3px">
           <v-btn
-            @click="store.lemma.showSideBar = !store.lemma.showSideBar"
             v-if="!store.lemma.showSideBar"
             tile
             class="rounded-lg"
-            icon>
+            icon
+            @click="store.lemma.showSideBar = !store.lemma.showSideBar">
             <v-icon>mdi-dock-right</v-icon>
           </v-btn>
         </v-flex>
@@ -268,8 +288,8 @@
         height="48"
         tile
         class="rounded-lg mr-2"
-        @click="store.lemma.showSideBar = false"
-        icon>
+        icon
+        @click="store.lemma.showSideBar = false">
         <v-icon>mdi-dock-right</v-icon>
       </v-btn>
       <v-overlay
@@ -285,10 +305,10 @@
         <span class="text--background darken-2" style="opacity: .7">{{ selectedRows.length }} Lemmata ausgewählt</span>
       </v-overlay>
       <lemma-detail
-        @close="store.lemma.showSideBar = false"
-        @update="updateLemma(selectedRows[0], $event)"
         v-else
-        :value="selectedRows[0]" />
+        :value="selectedRows[0]"
+        @close="store.lemma.showSideBar = false"
+        @update="updateLemma(selectedRows[0], $event)" />
     </resizable-drawer>
     <v-main class="full-width fill-height transition-padding">
       <virtual-table
@@ -297,6 +317,8 @@
         :columns="columns"
         :sortable-columns="true"
         :row-height="40"
+        :height="tableHeight"
+        :data="filteredData"
         @keyup.native.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
         @dblclick:row="store.lemma.showSideBar = !store.lemma.showSideBar"
@@ -304,9 +326,7 @@
         @click:header="sortLemmas"
         @mouseover:cell="onHoverCellDebounced"
         @change-selection="selectedRows = $event"
-        @update-columns="columns = $event"
-        :height="tableHeight"
-        :data="filteredData">
+        @update-columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
           <!-- the star column -->
@@ -475,6 +495,10 @@ export default class LemmaManager extends Vue {
     },
   ]
 
+  isFilterWithInput(f: LemmaFilterItem): boolean {
+    return f.comparator !== 'exists' && f.comparator !== 'exists-not'
+  }
+
   defaultFilterItem = {
     column: store.lemma.defaultColumns[1],
     comparator: this.comparators[0].value,
@@ -571,44 +595,25 @@ export default class LemmaManager extends Vue {
   @Watch('store.lemma.selectedLemmaFilterId', { immediate: true })
   async onSelectLemmaFilter(id: string|null) {
     if (id !== null) {
-      const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
-      if (lf !== undefined) {
-        this.title = lf.name
-        this.filterItems = lf.filterItems
-        await this.$nextTick()
+      const l = store.lemma.getStoredLemmaFilterById(id)
+      if (l !== undefined) {
+        this.filterItems = l.filterItems
         this.filterData()
       }
     } else {
       this.filterItems = [ clone(this.defaultFilterItem) ]
-      await this.$nextTick()
       this.filterData()
     }
   }
 
   async deleteFilter(id: string|null) {
     if (id !== null) {
-      const lf = store.settings.storedLemmaFilters.find(lf => lf.id === id)
-      if (lf !== undefined && await confirm.confirm(`Die Abfrage ”${ lf.name }” löschen?`)) {
-        store.settings = {
-          ...store.settings,
-          storedLemmaFilters: store.settings.storedLemmaFilters.filter(lf => lf.id !== id)
-        }
-        store.lemma.selectedLemmaFilterId = null
-      }
+      store.lemma.deleteStoredLemmaFilter(id)
     }
   }
 
   updateLemmaFilterName(id: string, name: string) {
-    store.settings = {
-      ...store.settings,
-      storedLemmaFilters: store.settings.storedLemmaFilters.map((f, i) => {
-        if (f.id === store.lemma.selectedLemmaFilterId) {
-          return {...f, name }
-        } else {
-          return f
-        }
-      })
-    }
+    store.lemma.updateStoredLemmaFilter(id, { name })
   }
 
   async importFile(f: File) {
@@ -677,17 +682,11 @@ export default class LemmaManager extends Vue {
   async saveFilter() {
     const name = await prompt.prompt('Filter speichern', { placeholder: 'Filtername eingeben…' })
     if (name !== null) {
-      this.store.settings = {
-        ...this.store.settings,
-        storedLemmaFilters: [
-          ...this.store.settings.storedLemmaFilters,
-          {
-            name: name,
-            id: uuid(),
-            filterItems: this.filterItems
-          }
-        ]
-      }
+      store.lemma.storedLemmaFilters = [ ...store.lemma.storedLemmaFilters, {
+        name: name,
+        id: uuid(),
+        filterItems: this.filterItems
+      }]
     }
   }
 
@@ -779,6 +778,7 @@ export default class LemmaManager extends Vue {
 .lemma-view-title h1
   font-size 1.7em
   min-width 150px
+  max-width 250px
   white-space nowrap
   overflow hidden
   text-overflow ellipsis

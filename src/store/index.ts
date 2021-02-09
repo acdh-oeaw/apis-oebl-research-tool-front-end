@@ -23,20 +23,12 @@ export interface StoredLemmaFilter {
   filterItems: LemmaFilterItem[]
 }
 
-export interface StoredLemmaList {
-  name: string,
-  id: string,
-  items: number[]
-}
-
 interface Settings {
   darkTheme: boolean
   issueLayout: 'board'|'list'
   issueLemmaSearchItems: any[]
   drawerRightWidth: number
   drawerLeftWidth: number
-  storedLemmaFilters: StoredLemmaFilter[]
-  storedLemmaLists: StoredLemmaList[]
   lemmaManagerNavVisible: boolean
   issueManagerNavVisible: boolean
   issueViewOptions: {
@@ -60,8 +52,6 @@ class Store {
     issueLemmaSearchItems: [],
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
-    storedLemmaFilters: [],
-    storedLemmaLists: [],
     lemmaManagerNavVisible: true,
     issueManagerNavVisible: false,
     issueViewOptions: {

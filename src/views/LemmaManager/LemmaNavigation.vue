@@ -237,9 +237,9 @@ export default class LemmaNavigation extends Vue {
 
   get filteredStoredLemmas() {
     if (this.searchQuery.trim() !== '') {
-      return store.settings.storedLemmaFilters.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery))
+      return store.lemma.storedLemmaFilters.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery))
     } else {
-      return store.settings.storedLemmaFilters
+      return store.lemma.storedLemmaFilters
     }
   }
 

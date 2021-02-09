@@ -3,11 +3,17 @@ import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList, Iss
 // eslint-disable-next-line @typescript-eslint/camelcase
 import random_name from 'node-random-name'
 import _ from 'lodash'
-import { ImportablePerson, LemmaColumn, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
+import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { WithId } from '@/types'
 import Vue from 'vue'
+
+interface LemmaFilter {
+  id: string
+  name: string
+  filterItems: LemmaFilterItem[]
+}
 
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
@@ -25,11 +31,13 @@ export default class LemmaStore {
   private lastViewDate: Date|null = null
   private localDb = new LemmaDatabase()
   private _lemmas: LemmaRow[] = []
+  private _lemmaLists: LemmaList[] = []
+  private _storedLemmaFilters: LemmaFilter[] = []
+
   private _selectedLemmaListId: null|number = null
   private _selectedLemmaFilterId: null|string = null
   private _selectedLemmaIssueId: null|number = null
   private _selectedLemmas: LemmaRow[] = []
-  private _lemmaLists: LemmaList[] = []
 
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
@@ -134,6 +142,16 @@ export default class LemmaStore {
     this.loadRemoteLemmaLists()
   }
 
+  get storedLemmaFilters() {
+    this._storedLemmaFilters = JSON.parse(localStorage.getItem('storedLemmaFilters') || '[]')
+    return this._storedLemmaFilters
+  }
+
+  set storedLemmaFilters(ls: LemmaFilter[]) {
+    this._storedLemmaFilters = ls
+    localStorage.setItem('storedLemmaFilters', JSON.stringify(ls))
+  }
+
   get lemmaLists(): ({ count?: number } & LemmaList)[] {
     return this._lemmaLists.map(ll => {
       return {
@@ -189,6 +207,21 @@ export default class LemmaStore {
     this._selectedLemmaIssueId = null
     this._selectedLemmaListId = null
     this._selectedLemmaFilterId = val
+  }
+
+  getStoredLemmaFilterById(id: string) {
+    return this._storedLemmaFilters.find(f => f.id === id)
+  }
+
+  deleteStoredLemmaFilter(id: string) {
+    this.storedLemmaFilters = this.storedLemmaFilters.filter(f => f.id !== id)
+  }
+
+  updateStoredLemmaFilter(id: string, u: Partial<LemmaFilter>): LemmaFilter|undefined {
+    this.storedLemmaFilters = this.storedLemmaFilters.map(f => {
+      return f.id === id ? { ...f, ...u } : f
+    })
+    return this.getStoredLemmaFilterById(id)
   }
 
   async addLemmasToList(id: number, ls: LemmaRow[]) {
@@ -303,8 +336,9 @@ export default class LemmaStore {
   }
 
   async deleteLemma(ids: number[]) {
-    this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) === -1)
-    const deleteRemote = await Promise.all(ids.map(id => {
+    console.log('delete ids', ids)
+    this._lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
+    await Promise.all(ids.map(id => {
       return ResearchService.researchApiV1LemmaresearchDestroy(id)
     }))
   }
@@ -353,8 +387,8 @@ export default class LemmaStore {
 
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
     // TODO: remove options, use olny dateOfBirth/Death
-    const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'user_columns.dateOfBirth')
-    const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'user_columns.dateOfDeath')
+    const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'columns_user.dateOfBirth')
+    const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'columns_user.dateOfDeath')
     return {
       id: rs.id!,
       selected: false,
