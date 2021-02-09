@@ -43,7 +43,9 @@
       </template>
     </v-text-field>
     <div class="results pt-3">
-      <v-overlay absolute v-if="loading"><loading-spinner /></v-overlay>
+      <v-overlay absolute v-if="loading">
+        <loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
+      </v-overlay>
       <lobid-preview-card v-if="resultGnds.length !== 0" @input="onSelectGnd" :gnd="resultGnds" />
       <div v-else style="opacity: .7" class="caption text-center">(Nichts gefunden)</div>
     </div>

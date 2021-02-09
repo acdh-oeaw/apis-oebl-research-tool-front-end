@@ -148,9 +148,13 @@ export default class LemmaDetail extends Vue {
     }
   }
 
-  selectGnd(gnd: string) {
+  selectGnd(gnd: string|null) {
     this.showGndSearch = false
-    this.$emit('update', { gnd: [ gnd ] })
+    if (gnd === null) {
+      this.$emit('update', { gnd: [] })
+    } else {
+      this.$emit('update', { gnd: [ gnd ] })
+    }
   }
 
 }
