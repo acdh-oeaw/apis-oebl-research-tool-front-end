@@ -30,10 +30,12 @@
             <v-icon size="22" color="grey darken-1">mdi-pen</v-icon>
           </v-btn>
           <transition name="fade">
-            <loading-spinner
-              :color="$vuetify.theme.dark ? 'white' : 'grey'"
-              class="ml-3 mt-5"
-              v-if="requestState.isLoading === true" />
+            <div class="pt-2" v-if="requestState.isLoading === true" >
+              <v-divider class="mb-2" />
+              <loading-spinner
+                :color="$vuetify.theme.dark ? 'white' : 'grey'"
+                class="ml-3 mt-5" />
+            </div>
           </transition>
         </v-flex>
         <v-flex v-if="showDrawer" class="pr-2 pt-5" grow>
