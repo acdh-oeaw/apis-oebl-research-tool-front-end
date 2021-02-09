@@ -49,7 +49,7 @@ export interface LemmaRow {
   }
   columns_user: UserColumn
   columns_scrape?: ServerResearchLemma['columns_scrape']
-  starred: boolean
+  selected: boolean
   firstName: string
   lastName: string
   birthYear: string|null

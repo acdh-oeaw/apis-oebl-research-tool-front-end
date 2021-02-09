@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    :style="{ '--v-color': color }"
+    :color="color"
     v-bind="{...$props, ...$attrs}"
     :right="right"
     stateless
@@ -162,7 +162,6 @@ export default class ResizableDrawer extends Vue {
 .nav-drawer:not(.v-navigation-drawer--custom-mini-variant)
   min-width 100px
   will-change width
-  background-color transparent !important
   overflow visible
   & /deep/ .v-navigation-drawer__content
     background-color var(--v-color)
