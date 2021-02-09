@@ -420,9 +420,10 @@ export default class LemmaStore {
   }
 
   async updateList(id: number, l: Partial<LemmaList>) {
-    const i = this.lemmaLists.findIndex(l => l.id === id)
+    this._lemmaLists = this._lemmaLists.map(l2 => {
+      return id === l2.id ? {...l2, ...l} : l2
+    })
     const newList = await ResearchService.researchApiV1ListresearchPartialUpdate(id, l)
-    Vue.set(this.lemmaLists, i, newList)
   }
 
   async createList(title: string): Promise<LemmaList> {
