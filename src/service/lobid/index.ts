@@ -15,7 +15,7 @@ export async function getPreviews(gnds: (string|null)[]): Promise<(string|null)[
         } else {
           return null
         }
-      })
+      }).catch(() => null)
       return previewCache[gnd]
     } else {
       return null
