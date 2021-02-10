@@ -29,7 +29,7 @@ function isQueryableValue(e?: string|null): boolean {
 
 function makeLobidQueryString(p: ImportablePerson): string {
   const lobidQ = {
-    preferredName: p.firstName + ' ' + p.lastName,
+    preferredName: (p.firstName || '') + ' ' + (p.lastName || ''),
     dateOfDeath: (p.dateOfDeath || '') + '*',
     dateOfBirth: (p.dateOfBirth || '') + '*',
   }
