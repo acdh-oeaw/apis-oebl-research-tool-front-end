@@ -32,8 +32,6 @@ function makeLobidQueryString(p: ImportablePerson): string {
     preferredName: p.firstName + ' ' + p.lastName,
     dateOfDeath: (p.dateOfDeath || '') + '*',
     dateOfBirth: (p.dateOfBirth || '') + '*',
-    placeOfBirth: p.placeOfBirth,
-    placeOfDeath: p.placeOfDeath
   }
   return _.reduce(lobidQ, (m, e, k) => {
     return m.concat(isQueryableValue(e)
@@ -62,8 +60,6 @@ export async function findPerson(p: ImportablePerson, secondTry = false): Promis
         lastName: p.lastName,
         dateOfBirth: null,
         dateOfDeath: null,
-        placeOfBirth: null,
-        placeOfDeath: null,
         gnd: []
       }, true)
     }

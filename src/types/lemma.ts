@@ -111,8 +111,6 @@ export interface ImportablePerson {
   lastName: string|null
   dateOfBirth: string|null
   dateOfDeath: string|null
-  placeOfBirth: string|null
-  placeOfDeath: string|null
   gnd: string[]
 }
 
