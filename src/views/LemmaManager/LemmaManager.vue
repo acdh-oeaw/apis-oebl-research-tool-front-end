@@ -26,6 +26,7 @@
       @input="addLemmaDialog = $event"
       max-width="1000px">
       <lemma-add
+        color="background lighten-1"
         v-if="addLemmaDialog"
         @confirm="addLemma"
         @cancel="addLemmaDialog = false"
@@ -247,7 +248,10 @@
                 </v-list-item-content>
               </v-list-item>
               <v-subheader>Spalten anzeigen</v-subheader>
-              <v-list-item @click.prevent.stop="column.show = !column.show" v-for="column in columns" :key="column.value" dense>
+              <v-list-item
+                v-for="column in columns"
+                :key="column.value" dense
+                @click.prevent.stop="updateColumn(column, { show: !column.show })">
                 <v-list-item-avatar size="15">
                   <v-icon v-if="column.show" small>mdi-check</v-icon>
                 </v-list-item-avatar>
@@ -324,7 +328,6 @@
         @dblclick:row="store.lemma.showSideBar = !store.lemma.showSideBar"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
-        @mouseover:cell="onHoverCellDebounced"
         @change-selection="selectedRows = $event"
         @update-columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
@@ -339,14 +342,16 @@
             <span style="opacity: .5" v-if="item.gnd.length === 0">
               n. v.
             </span>
-            <template v-else-if="item.gnd.length > 0">
-              {{ item.gnd[0] }}
-            </template>
             <span
-              class="badge blue-grey"
-              v-if="item.gnd.length > 1"
-              v-text="'+' + (item.gnd.length - 1)"
-            />
+              v-else-if="item.gnd.length > 0"
+              @mouseover="onHoverGndCellDebounced($event, item.gnd)">
+              {{ item.gnd[0] }}
+              <span
+                class="badge blue-grey"
+                v-if="item.gnd.length > 1"
+                v-text="'+' + (item.gnd.length - 1)"
+              />
+            </span>
           </template>
           <!-- all others -->
           <template v-else>
@@ -430,6 +435,12 @@ export default class LemmaManager extends Vue {
 
   set columns(cs) {
     store.lemma.columns = cs
+  }
+
+  updateColumn(c: LemmaColumn, u: Partial<LemmaColumn>) {
+    this.columns = this.columns.map(cl => {
+      return cl.value === c.value ? { ...cl, ...u } : cl
+    })
   }
 
   comparators: LemmaFilterComparator[] = [
@@ -565,7 +576,8 @@ export default class LemmaManager extends Vue {
     this.filteredData = _.orderBy(this.filteredData, l.value, sort)
   }
 
-  addLemma(l: Lemma) {
+  addLemma(l: ImportablePerson) {
+    this.addLemmaDialog = false
     this.store.lemma.addLemma(l)
   }
 
@@ -646,20 +658,14 @@ export default class LemmaManager extends Vue {
   }
 
   // PREVIEW
-  async onHoverCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, index: number) {
-    if (prop === 'gnd') {
-      if (e.target instanceof HTMLElement) {
-        this.previewPopupCoords = [ e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().bottom ]
-        this.lobidPreviewGnds = item.gnd
-        // this.lobidPreviewHtmlFragments = item.gnd.reduce((m, e, i) => {
-        //   m[e] = { html: results[i], selected: false}
-        //   return m
-        // }, {} as { [key: string]: {html: string, selected: boolean} })
-      }
+  async onHoverGndCell(e: MouseEvent, gnd: string[]) {
+    if (e.target instanceof HTMLElement) {
+      this.previewPopupCoords = [ e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().bottom ]
+      this.lobidPreviewGnds = gnd
     }
   }
 
-  onHoverCellDebounced = _.debounce(this.onHoverCell, 300)
+  onHoverGndCellDebounced = _.debounce(this.onHoverGndCell, 300)
 
   dragListener(item: LemmaRow, ev: DragEvent) {
     let dragImage: null|HTMLElement = null
