@@ -365,15 +365,15 @@ export default class LemmaStore {
   }
 
   async importLemmas(ls: ImportablePerson[], listName: string|null) {
+    const list = await (async () => {
+      if (listName !== null && listName.trim() !== '') {
+        return this.createList(listName)
+      } else {
+        return undefined
+      }
+    })()
     await ResearchService.researchApiV1LemmaresearchCreate(({
-      list: await (async () => {
-        if (listName !== null && listName.trim() !== '') {
-          const l = await this.createList(listName)
-          return l.id
-        } else {
-          return undefined
-        }
-      })(),
+      list: list ? list.id : undefined,
       lemmas: ls.map(l => ({
         ...l,
         firstName: l.firstName || undefined,
@@ -383,6 +383,7 @@ export default class LemmaStore {
         gnd: l.gnd
       }))
     }))
+    return list
   }
 
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
