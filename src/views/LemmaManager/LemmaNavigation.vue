@@ -71,7 +71,7 @@
           @drop.prevent="createLemmaList($event)"
           class="sticky background darken-2"
           :style="{ zIndex: 1}">
-          Meine Listen
+          Listen
           <v-spacer />
           <v-btn
             style="box-shadow: none"
@@ -101,6 +101,9 @@
             <v-list-item-title v-else>
               {{ list.title }}
             </v-list-item-title>
+            <v-list-item-subtitle style="font-size: 75%">
+              {{ list.editor ? list.editor.name : '' }}
+            </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <transition name="roll">
@@ -115,7 +118,7 @@
         <v-subheader
           class="sticky"
           :style="{ background: $vuetify.theme.currentTheme.inset, zIndex: 1}">
-          Gesicherte Abfragen
+          Meine Abfragen
         </v-subheader>
         <v-list-item
           dense
