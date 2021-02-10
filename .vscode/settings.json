@@ -5,6 +5,7 @@
     "Lemmaresearch",
     "Lobid",
     "Queryable",
+    "mixins",
     "viaf",
     "vuetify"
   ]
