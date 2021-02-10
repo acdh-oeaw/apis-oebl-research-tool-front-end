@@ -175,4 +175,6 @@ h1
   overflow auto
   max-height 90vh
 
+[tabindex="-1"]
+  outline none
 </style>
