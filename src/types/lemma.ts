@@ -14,6 +14,8 @@ export interface ServerResearchLemma {
   }
   firstName: string
   lastName: string
+  dateOfBirth: string
+  dateOfDeath: string
   selected?: boolean
   columns_user: UserColumn
   columns_scrape: {

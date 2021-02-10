@@ -64882,6 +64882,9 @@
                         },
                         "readOnly": true
                     },
+                    "selected": {
+                        "type": "boolean"
+                    },
                     "list": {
                         "$ref": "#/components/schemas/ListSerializerLimited"
                     },
@@ -64890,6 +64893,14 @@
                     },
                     "lastName": {
                         "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateOfDeath": {
+                        "type": "string",
+                        "format": "date"
                     },
                     "columns_user": {
                         "type": "object",
@@ -64903,6 +64914,8 @@
                     }
                 },
                 "required": [
+                    "dateOfBirth",
+                    "dateOfDeath",
                     "firstName",
                     "lastName",
                     "list"
@@ -67502,6 +67515,10 @@
                 "properties": {
                     "list": {
                         "$ref": "#/components/schemas/PatchedLemmaresearchEditorRequest"
+                    },
+                    "selected": {
+                        "type": "boolean",
+                        "default": false
                     },
                     "gnd": {
                         "type": "array",
