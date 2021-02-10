@@ -109,7 +109,8 @@ export default class LemmaImporter extends Vue {
     }
   }
 
-  async importLemmas(lemmas: ImportablePerson[], listName: string|null) {
+  // TODO: check string
+  async importLemmas(lemmas: ImportablePerson[], listName: string) {
     const maybeList = await store.lemma.importLemmas(lemmas, listName)
     if (maybeList !== undefined) {
       store.lemma.selectedLemmaListId = maybeList.id || null

@@ -364,16 +364,12 @@ export default class LemmaStore {
     }
   }
 
-  async importLemmas(ls: ImportablePerson[], listName: string|null) {
+  async importLemmas(ls: ImportablePerson[], listName: string) {
     const list = await (async () => {
-      if (listName !== null && listName.trim() !== '') {
-        return this.createList(listName)
-      } else {
-        return undefined
-      }
+      return this.createList(listName)
     })()
     await ResearchService.researchApiV1LemmaresearchCreate(({
-      list: list ? list.id : undefined,
+      listId: list.id!,
       lemmas: ls.map(l => ({
         ...l,
         firstName: l.firstName || undefined,

@@ -64799,6 +64799,10 @@
                             "format": "uri"
                         }
                     },
+                    "selected": {
+                        "type": "boolean",
+                        "default": false
+                    },
                     "firstName": {
                         "type": "string"
                     },
@@ -64837,7 +64841,7 @@
             "ListCreateAPIViewRequest": {
                 "type": "object",
                 "properties": {
-                    "list": {
+                    "listId": {
                         "type": "integer"
                     },
                     "lemmas": {
@@ -64848,7 +64852,8 @@
                     }
                 },
                 "required": [
-                    "lemmas"
+                    "lemmas",
+                    "listId"
                 ]
             },
             "ListCreateAPIViewResponse": {

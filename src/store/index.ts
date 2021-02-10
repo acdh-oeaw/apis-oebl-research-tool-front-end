@@ -9,7 +9,7 @@ import LabelStore from './label'
 import { IssueLemma, Lemma, OpenAPI } from '../api'
 import { LemmaFilterItem, LemmaRow } from '@/types/lemma'
 
-OpenAPI.BASE = 'https://acdh-oeaw-oebl-oebl-irs-devops.10.3.6.53.nip.io'
+OpenAPI.BASE = 'https://oebl-irs-backend.acdh-dev.oeaw.ac.at'
 OpenAPI.WITH_CREDENTIALS = true
 
 // FIXME: use tokens

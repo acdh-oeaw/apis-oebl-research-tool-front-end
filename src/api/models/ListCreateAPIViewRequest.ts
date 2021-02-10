@@ -5,6 +5,6 @@
 import type { LemmasCreateRequest } from './LemmasCreateRequest';
 
 export type ListCreateAPIViewRequest = {
-    list?: number;
+    listId: number;
     lemmas: Array<LemmasCreateRequest>;
 }
