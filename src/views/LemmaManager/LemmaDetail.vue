@@ -41,36 +41,40 @@
         GND: {{ value.gnd[0] }}<v-badge v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" color="blue-grey" inline />
       </h4>
       <v-card-text class="pt-1">
-        <div v-if="showGndSearch">
-          <lobid-gnd-search
-            :lemma="value"
-            :gnd="value.gnd"
-            @cancel="showGndSearch = false"
-            @input="selectGnd"
-          />
-        </div>
-        <div v-else>
-          <lobid-preview-card
-            class="mb-2"
-            v-if="value.gnd.length > 0"
-            @update="log"
-            :limit="1"
-            :gnd="value.gnd" />
-          <v-btn
-            @click="showGndSearch = true"
-            small
-            color="secondary"
-            block
-            v-if="value.gnd.length === 0"
-            elevation="0">GND hinzufügen…</v-btn>
-          <v-btn
-            v-if="value.gnd.length > 0"
-            @click="showGndSearch = true"
-            small
-            color="secondary"
-            block
-            elevation="0">GND ändern…</v-btn>
-        </div>
+        <v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
+          <v-window-item>
+            <lobid-preview-card
+              class="mb-2"
+              v-if="value.gnd.length > 0"
+              @update="log"
+              :limit="1"
+              :gnd="value.gnd" />
+            <v-btn
+              @click="showGndSearch = true"
+              small
+              color="secondary"
+              class="rounded-lg"
+              block
+              v-if="value.gnd.length === 0"
+              elevation="0">GND hinzufügen…</v-btn>
+            <v-btn
+              v-if="value.gnd.length > 0"
+              @click="showGndSearch = true"
+              small
+              class="rounded-lg"
+              color="secondary"
+              block
+              elevation="0">GND ändern…</v-btn>
+          </v-window-item>
+          <v-window-item>
+            <lobid-gnd-search
+              :lemma="value"
+              :gnd="value.gnd"
+              @cancel="showGndSearch = false"
+              @input="selectGnd"
+            />
+          </v-window-item>
+        </v-window>
       </v-card-text>
       <v-divider />
       <h4
@@ -106,15 +110,26 @@
           top: 0,
           background: ''
         }">
-        Importierte Daten <!--<v-badge color="blue-grey" inline :content="countImportedResources(value.columns_scrape)" />-->
+        Importierte Daten
       </h4>
       <v-card-text class="pt-0">
-        <v-list dense class="text-body-2 pt-0">
-          <v-list-item class="px-2" v-for="(userValue, userKey) in value.columns_user" :key="userKey">
-            <v-list-item-content>{{ userKey }}</v-list-item-content>
-            <v-list-item-action-text>{{ userValue }}</v-list-item-action-text>
-          </v-list-item>
-        </v-list>
+        <v-textarea
+          v-for="(userValue, userKey) in value.columns_user"
+          :key="userKey"
+          dense
+          solo
+          rows="1"
+          @input="debouncedUpdateUserColumns(userKey, $event)"
+          auto-grow
+          flat
+          background-color="background darken-2"
+          class="text-body-2 textarea pb-1 rounded-lg"
+          hide-details
+          :value="userValue">
+          <template v-slot:prepend-inner>
+            <span style="opacity: .7" class="caption">{{ userKey }}</span>
+          </template>
+        </v-textarea>
       </v-card-text>
     </div>
   </v-card>
@@ -126,6 +141,7 @@ import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
 import store from '@/store'
+import _ from 'lodash'
 
 @Component({
   components: {
@@ -140,6 +156,7 @@ export default class LemmaDetail extends Vue {
   log = console.log
   store = store
   showGndSearch = false
+
   countScrapedResources(r: LemmaRow['columns_scrape']) {
     if (r === undefined) {
       return 0
@@ -156,6 +173,19 @@ export default class LemmaDetail extends Vue {
       this.$emit('update', { gnd: [ gnd ] })
     }
   }
+
+  updateUserColumns(userKey: string, $event: string) {
+    this.$emit('update', {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      columns_user: {
+        ...this.value.columns_user,
+        [ userKey ]: $event
+      },
+      [ userKey ]: $event
+    })
+  }
+
+  debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300)
 
 }
 </script>
@@ -174,5 +204,8 @@ export default class LemmaDetail extends Vue {
   transform translateY(20px)
 .roll-leave-to
   transform translateY(-20px)
+
+.textarea /deep/ textarea
+  text-align right
 
 </style>
