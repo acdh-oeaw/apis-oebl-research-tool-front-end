@@ -36,8 +36,6 @@ export default class LobidGndSearchResults extends Vue {
     lastName: null,
     dateOfBirth: null,
     dateOfDeath: null,
-    placeOfBirth: null,
-    placeOfDeath: null,
     gnd: []
   }
 
