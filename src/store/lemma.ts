@@ -435,14 +435,6 @@ export default class LemmaStore {
     return this._lemmas
   }
 
-  async updateLemmaById(id: number, data: Partial<LemmaRow>) {
-    const i = this.lemmas.findIndex(l => l.id === id)
-    if (i > -1) {
-      const newLemma = {...this.lemmas[i], ...data}
-      await this.localDb.lemmas.put(newLemma)
-    }
-  }
-
   getLemmaById(id?: number) {
     return id === undefined ? undefined : this._lemmas.find(l => l.id === id)
   }
