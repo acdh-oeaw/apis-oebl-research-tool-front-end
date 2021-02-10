@@ -42,7 +42,8 @@ export default class LemmaStore {
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
 
-  public columns: LemmaColumn[] = []
+  private _columns: LemmaColumn[] = []
+
   public defaultColumns: LemmaColumn[] = [
     {
       name: 'Markiert',
@@ -140,6 +141,17 @@ export default class LemmaStore {
   constructor() {
     this.initLemmaData()
     this.loadRemoteLemmaLists()
+  }
+
+  get columns() {
+    const stored = JSON.parse(localStorage.getItem('columns') || 'null')
+    this._columns = stored || this.defaultColumns
+    return this._columns
+  }
+
+  set columns(cs) {
+    this._columns = cs
+    localStorage.setItem('columns', JSON.stringify(cs))
   }
 
   get storedLemmaFilters() {
@@ -251,8 +263,18 @@ export default class LemmaStore {
     await this.loadRemoteLemmaLists()
   }
 
-  addLemma(l: Lemma) {
-    console.log('add lemma', l)
+  async addLemma(l: ImportablePerson) {
+    await ResearchService.researchApiV1LemmaresearchCreate(({
+      listId: this.lemmaLists[0].id!,
+      lemmas: [ {
+        dateOfBirth: l.dateOfBirth || undefined,
+        dateOfDeath: l.dateOfDeath || undefined,
+        firstName: l.firstName || undefined,
+        lastName: l.lastName || undefined,
+        selected: false,
+        gnd: l.gnd
+      } ]
+    }))
   }
 
   async loadRemoteLemmaLists() {
@@ -288,15 +310,11 @@ export default class LemmaStore {
   async initLemmaData() {
     this._lemmas = await this.getLocalLemmaCache()
     this.lastViewDate = await this.getLastViewDate()
-    // if (this.lemmas.length === 0) {
     this.lemmas = await this.getRemoteLemmas()
-    this.columns = [ ...this.defaultColumns, ...this.getAllUserColumns(this.lemmas) ]
-    // } else {
-    //   const newLemmasSinceLastVisit = await this.getRemoteLemmas(this.lastViewDate)
-    //   if (newLemmasSinceLastVisit.length > 0) {
-    //     this.updateLemmasWith(newLemmasSinceLastVisit)
-    //   }
-    // }
+    this.columns = _.uniqBy([
+      ...this.columns,
+      ...this.getAllUserColumns(this.lemmas)
+    ], 'value')
   }
 
   getSumSimilarity(l: LemmaRow, lc: LemmaRow): number {
