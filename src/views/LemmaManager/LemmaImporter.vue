@@ -178,14 +178,6 @@ export default class LemmaImporter extends Vue {
       convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
     },
     {
-      value: 'placeOfDeath',
-      text: 'Sterbeort'
-    },
-    {
-      value: 'placeOfBirth',
-      text: 'Geburtsort'
-    },
-    {
       value: 'gnd',
       text: 'GND',
       rules: [ (e: any): boolean => !isNaN(e) ]
