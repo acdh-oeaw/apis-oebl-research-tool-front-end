@@ -170,11 +170,16 @@ export default class ColumnMatcher extends Vue {
   }
 
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
+    const targetColumnsByValue = _.keyBy(this.targetColumns, 'value')
     return t.map((r) => {
       return hs.reduce((m, e) => {
         // if the column is selected for import, and the value is not on the ignored list.
         if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
-          m[e.matchWith] = r[e.value]
+          if (targetColumnsByValue[e.value] !== undefined && targetColumnsByValue[e.value].convert !== undefined) {
+            m[e.matchWith] = targetColumnsByValue[e.value].convert!(r[e.value]) || ''
+          } else {
+            m[e.matchWith] = r[e.value]
+          }
         // if the column is ignored, and we should return the ignored columns with a prefix.
         } else if (this.returnIgnoredColumns && e.matchWith === null) {
           m[this.prefixIgnoredColumns + e.value] = r[e.value]

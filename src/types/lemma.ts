@@ -4,7 +4,7 @@ import { Person as LdPerson } from 'schema-dts'
 export interface UserColumn {
   [key: string]: string|number
 }
-
+// TODO: remove assertion
 export interface ServerResearchLemma {
   id: number
   gnd: string[]
@@ -88,8 +88,9 @@ export interface LemmaFilterComparator {
 }
 
 export interface Column {
-  value: string|null;
-  text: string;
+  value: string|null
+  text: string
+  convert?: (e: string|number) => number|string
 }
 
 export interface Header {
@@ -127,6 +128,7 @@ export interface PersonField {
   text: string
   hint?: string
   rules?: Array<(e: string) => boolean>
+  convert?: (e: string) => number|string|Date|null
 }
 
 export interface SelectOptions {

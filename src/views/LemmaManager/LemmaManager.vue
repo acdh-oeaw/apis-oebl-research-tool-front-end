@@ -640,11 +640,8 @@ export default class LemmaManager extends Vue {
   }
 
   onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, index: number) {
-    // const s = store.lemma.getMostSimilarLemmas(item)
-    // console.log(_.take(s, 10))
     if (prop === 'selected') {
-      item.selected = !item.selected
-      store.lemma.updateLemmaById(item.id, { selected: !item.selected })
+      this.updateLemma(item, { selected: !item.selected })
     }
   }
 

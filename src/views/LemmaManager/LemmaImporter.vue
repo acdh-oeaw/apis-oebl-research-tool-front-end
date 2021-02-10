@@ -10,12 +10,13 @@
             :target-columns="allowedPersonFields"
             :return-ignored-columns="true"
             :prefix-ignored-columns="userColumnPrefix"
-            @cancel="$emit('cancel')"
             color="background"
-            @update="importable = $event"
             :file-type="fileType"
             :file-name="fileName"
-            :buffer="buffer" />
+            :buffer="buffer"
+            @cancel="$emit('cancel')"
+            @update="importable = $event"
+            />
         </v-window-item>
         <v-window-item class="align-content-center text-center">
           <div class="mb-2 mt-5">Suche GNDs…</div>
@@ -109,6 +110,10 @@ export default class LemmaImporter extends Vue {
     }
   }
 
+  isValidDate (d: Date) {
+    return d instanceof Date && !isNaN(d as any)
+  }
+
   // TODO: check string
   async importLemmas(lemmas: ImportablePerson[], listName: string) {
     const maybeList = await store.lemma.importLemmas(lemmas, listName)
@@ -162,13 +167,15 @@ export default class LemmaImporter extends Vue {
       value: 'dateOfBirth',
       text: 'Geburtsdatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
-      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
+      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
+      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
     },
     {
       value: 'dateOfDeath',
       text: 'Sterbedatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
-      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ]
+      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
+      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
     },
     {
       value: 'placeOfDeath',
