@@ -8,13 +8,14 @@
       ghost-class="header-row-ghost"
       direction="horizontal"
       :disabled="sortableColumns === false"
-      @end.stop="$event.originalEvent.stopPropagation()"
+      @start.stop.prevent.capture=""
+      @end.stop.prevent.capture=""
       @input="updateColumnOrder"
       :value="visibleColumns">
       <div
         :class="['header-cell', $listeners['click:header'] && 'clickable']"
         v-for="column in visibleColumns"
-        @mousedown="$emit('click:header', column)"
+        @click="$emit('click:header', column)"
         :style="{width: column.width ? column.width + 'px' : defaultWidth, height: rowHeight}"
         :key="column.value">
         <span class="header-sort-arrow" v-if="column.sort === 'asc'">▲</span>
