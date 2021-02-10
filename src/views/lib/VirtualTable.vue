@@ -42,8 +42,7 @@
             :key="index + '__' + column.value"
             :style="{width: column.width ? column.width + 'px' : defaultWidth}"
             class="table-cell"
-            @click="$emit('click:cell', item, $event, column.value, index)"
-            @mouseover="$emit('mouseover:cell', item, $event, column.value, index)">
+            @click="$emit('click:cell', item, $event, column.value, index)" >
             <slot
               name="cell"
               draggable
