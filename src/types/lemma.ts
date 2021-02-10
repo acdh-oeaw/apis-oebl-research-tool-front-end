@@ -14,6 +14,7 @@ export interface ServerResearchLemma {
   }
   firstName: string
   lastName: string
+  selected?: boolean
   columns_user: UserColumn
   columns_scrape: {
     obv: {

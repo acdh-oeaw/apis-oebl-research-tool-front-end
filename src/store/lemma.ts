@@ -388,7 +388,7 @@ export default class LemmaStore {
     const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'columns_user.dateOfDeath')
     return {
       id: rs.id!,
-      selected: false,
+      selected: rs.selected || false,
       birthYear: dateOfBirth ? (new Date(dateOfBirth).getFullYear().toString()) : null,
       deathYear: dateOfDeath ? (new Date(dateOfDeath).getFullYear().toString()) : null,
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
