@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div tabindex="-1" @keyup.esc="$emit('cancel')">
     <v-text-field
       background-color="background darken-2"
-      class="text-body-2 mb-1"
-      @keyup="debouncedSearchGnd"
+      class="text-body-2 mb-1 rounded-lg"
+      @input="debouncedSearchGnd"
       v-model="localLemma.firstName"
       placeholder="Vorname"
       solo
@@ -16,8 +16,8 @@
     </v-text-field>
     <v-text-field
       background-color="background darken-2"
-      class="text-body-2 mb-1"
-      @keyup="debouncedSearchGnd"
+      class="text-body-2 mb-1 rounded-lg"
+      @input="debouncedSearchGnd"
       v-model="localLemma.lastName"
       placeholder="Nachname"
       solo
@@ -30,9 +30,9 @@
     </v-text-field>
     <v-text-field
       background-color="background darken-2"
-      class="text-body-2 mb-1"
+      class="text-body-2 mb-1 rounded-lg"
       v-model="selectedGnd"
-      @keyup="useCustomGnd"
+      @input="useCustomGnd($event.target.value)"
       placeholder="manuell wählen…"
       solo
       flat
@@ -52,15 +52,16 @@
     <div class="background mt-3 pb-3" style="position: sticky; bottom: 0">
       <v-btn
         @click="$emit('input', selectedGnd)"
-        color="background lighten-2"
-        class="mb-2"
+        color="secondary"
+        class="mb-2 rounded-lg"
         block
         elevation="0">
         {{ selectedGnd !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}
       </v-btn>
       <v-btn
         @click="$emit('cancel')"
-        color="background darken-1"
+        color="background darken-2"
+        class="rounded-lg"
         block
         elevation="0">
         abbrechen
@@ -125,8 +126,6 @@ export default class LobidGndSearch extends Vue {
       lastName: this.localLemma!.lastName,
       dateOfBirth: null,
       dateOfDeath: null,
-      placeOfBirth: null,
-      placeOfDeath: null,
       gnd: this.localLemma!.gnd
     })).map((l: any) => l.gndIdentifier)
     this.loading = false
