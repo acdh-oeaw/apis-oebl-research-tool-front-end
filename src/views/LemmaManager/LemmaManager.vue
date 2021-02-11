@@ -190,7 +190,7 @@
             min-width="150"
             offset-y
             left
-            content-class="soft-shadow scrollable">
+            content-class="soft-shadow scrollable background lighten-2">
             <template v-slot:activator="{ on, props }">
               <v-btn
                 v-on="on"
@@ -248,7 +248,13 @@
                   Diese Abfrage löschen
                 </v-list-item-content>
               </v-list-item>
-              <v-subheader>Spalten anzeigen</v-subheader>
+            </v-list>
+            <v-subheader class="pt-0 mt-0">Spalten anzeigen</v-subheader>
+            <v-list
+              style="max-height: 50vh; overflow: scroll"
+              color="background lighten-2"
+              class="elevation-0 rounded-lg text-body-2"
+              dense nav>
               <v-list-item
                 v-for="column in columns"
                 :key="column.value" dense
@@ -260,9 +266,9 @@
                   {{ column.name }}
                 </v-list-item-content>
               </v-list-item>
-              <v-subheader>Farbschema</v-subheader>
-              <theme-toggle />
             </v-list>
+            <v-subheader>Farbschema</v-subheader>
+            <theme-toggle class="mx-2 mb-2" />
           </v-menu>
         </v-flex>
         <v-flex
