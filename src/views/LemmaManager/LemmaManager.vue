@@ -99,7 +99,7 @@
             <v-card
               flat
               color="transparent"
-              class="text-body-2 row row--dense input-no-stroke px-3 py-0 flex-nowrap">
+              class="text-body-2 row row--dense input-no-stroke px-2 py-0 flex-nowrap">
               <div style="max-width: 120px" class="col col-2">
                 <v-select
                   :menu-props="{
@@ -119,7 +119,7 @@
                   @input="filterData"
                 />
               </div>
-              <v-divider class="my-1 mr-2" vertical />
+              <v-divider class="my-1 mr-1" vertical />
               <div style="max-width: 120px" class="col-2">
                 <v-select
                   :menu-props="{
@@ -162,9 +162,10 @@
                 />
                 <v-text-field
                   v-else
+                  style="min-width: 60px"
                   @keydown.esc="() => { filter.query = ''; filterData() }"
                   placeholder="Abfrage…"
-                  class="text-body-2 mt-1 ml-2"
+                  class="text-body-2 mt-1"
                   v-model="filter.query"
                   @input="filterDataDebounced"
                   dense
@@ -181,7 +182,7 @@
                 </v-btn>
               </div>
             </v-card>
-            <v-divider class="mx-2" v-if="filterItems.length > 1 && i !== filterItems.length - 1" />
+            <v-divider class="mx-1" v-if="filterItems.length > 1 && i !== filterItems.length - 1" />
           </div>
         </v-flex>
         <v-flex shrink align-self-start class="pl-2 pr-0" style="margin-top: -3px">
@@ -354,9 +355,12 @@
             </span>
           </template>
           <!-- all others -->
-          <template v-else>
+          <template v-else-if="value">
             {{ item[column.value] }}
           </template>
+          <span style="opacity: .5" v-else-if="!value">
+            n. v.
+          </span>
         </template>
       </virtual-table>
     </v-main>
