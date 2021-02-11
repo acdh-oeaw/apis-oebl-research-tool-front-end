@@ -57,7 +57,7 @@ import store from './store'
 import LoginForm from './views/LoginForm.vue'
 import Confirm from './views/lib/Confirm.vue'
 import Prompt from './views/lib/Prompt.vue'
-import { requestState } from '@/store/request'
+import { requestState } from '@/store/fetch'
 
 @Component({
   components: {

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './fetch'
 
 import IssueStore from './issue'
 import AuthorStore from './author'
