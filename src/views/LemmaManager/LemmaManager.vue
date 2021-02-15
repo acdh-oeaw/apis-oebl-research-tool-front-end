@@ -591,14 +591,52 @@ export default class LemmaManager extends Vue {
     this.store.lemma.addLemma(l)
   }
 
-  async deleteSelectedLemmas() {
-    const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) in den Papierkorb legen? Dies kann später rückgängig gemacht werden.`
-    if (await confirm.confirm(msg)) {
-      const indexOfLastSelected = this.filteredData.findIndex(l => _.last(this.selectedRows)?.id === l.id)
-      await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
-      // select the next row after the deleted ones
-      if (indexOfLastSelected > -1) {
-        this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+  async removeLemmasFromList(l: LemmaRow[]) {
+    // FIXME:
+    // backend method missing
+    await this.store.lemma.updateLemmas(l, { list: undefined })
+  }
+
+  async removeLemmasFromIssue(l: LemmaRow[]) {
+    // FIXME:
+    // backend method missing
+    // await this.store.issue.deleteLemma(l)
+  }
+
+  async deleteSelectedLemmas(e: KeyboardEvent) {
+    const indexOfLastSelected = this.filteredData.findIndex(l => _.last(this.selectedRows)?.id === l.id)
+    // A list is selected
+    // remove from list.
+    if (store.lemma.selectedLemmaListId !== null) {
+      const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) aus dieser Liste entfernen?`
+      if (await confirm.confirm(msg)) {
+        this.removeLemmasFromList(this.selectedRows)
+        // select the next row after the deleted ones
+        if (indexOfLastSelected > -1) {
+          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+        }
+      }
+    // An issue is selected
+    // remove from issue
+    } else if (store.lemma.selectedLemmaIssueId !== null) {
+      const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) aus dieser Abgabe entfernen?`
+      if (await confirm.confirm(msg)) {
+        this.removeLemmasFromIssue(this.selectedRows)
+        // select the next row after the deleted ones
+        if (indexOfLastSelected > -1) {
+          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+        }
+      }
+    } else {
+    // No issue or list is selected
+    // => actually delete it
+      const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) in den Papierkorb legen? Dies kann später rückgängig gemacht werden.`
+      if (await confirm.confirm(msg)) {
+        await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
+        // select the next row after the deleted ones
+        if (indexOfLastSelected > -1) {
+          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+        }
       }
     }
   }
