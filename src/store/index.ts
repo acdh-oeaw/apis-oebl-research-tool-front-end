@@ -6,9 +6,10 @@ import AuthorStore from './author'
 import EditorStore from './editor'
 import LemmaStore from './lemma'
 import LabelStore from './label'
+import UserStore from './user'
 
-import { IssueLemma, Lemma, OpenAPI } from '../api'
-import { LemmaFilterItem, LemmaRow } from '@/types/lemma'
+import { OpenAPI } from '../api'
+import { LemmaFilterItem } from '@/types/lemma'
 
 OpenAPI.BASE = 'https://oebl-irs-backend.acdh-dev.oeaw.ac.at'
 OpenAPI.WITH_CREDENTIALS = true
@@ -112,6 +113,7 @@ class Store {
   issue = new IssueStore(this.selectedIssue)
   authors = new AuthorStore()
   labels = new LabelStore()
+  user = new UserStore()
 }
 
 export default Vue.observable(new Store())
