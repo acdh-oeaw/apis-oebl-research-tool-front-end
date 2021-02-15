@@ -190,7 +190,7 @@
             min-width="150"
             offset-y
             left
-            content-class="soft-shadow scrollable background lighten-2">
+            content-class="soft-shadow scrollable background">
             <template v-slot:activator="{ on, props }">
               <v-btn
                 v-on="on"
@@ -201,7 +201,7 @@
                 <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
               </v-btn>
             </template>
-            <v-list color="background lighten-2" class="elevation-0 rounded-lg text-body-2" dense nav>
+            <v-list color="background" class="elevation-0 rounded-lg text-body-2" dense nav>
               <v-list-item @click="addLemmaDialog = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-shape-square-plus</v-icon>
@@ -252,7 +252,7 @@
             <v-subheader class="pt-0 mt-0">Spalten anzeigen</v-subheader>
             <v-list
               style="max-height: 50vh; overflow: scroll"
-              color="background lighten-2"
+              color="background"
               class="elevation-0 rounded-lg text-body-2"
               dense nav>
               <v-list-item
