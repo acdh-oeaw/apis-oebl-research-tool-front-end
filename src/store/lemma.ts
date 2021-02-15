@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList, IssueLemma } from '@/api'
 // eslint-disable-next-line @typescript-eslint/camelcase
-import random_name from 'node-random-name'
+// import random_name from 'node-random-name'
 import _ from 'lodash'
 import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
 import Dexie from 'dexie'
@@ -367,8 +367,8 @@ export default class LemmaStore {
     return {
       id: seed,
       selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
-      firstName: random_name({ first: true, seed }),
-      lastName: random_name({ last: true, seed }),
+      firstName: 'testname', // random_name({ first: true, seed }),
+      lastName: 'random_name', // ({ last: true, seed }),
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
       gnd: gnds,
