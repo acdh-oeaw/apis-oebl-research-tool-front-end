@@ -58437,11 +58437,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ListEntry"
+                                    "$ref": "#/components/schemas/ListPatchAPIViewResponse"
                                 }
                             }
                         },
@@ -64789,6 +64789,20 @@
                     "name"
                 ]
             },
+            "LemmaresearchEditor": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "editor": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            },
             "LemmasCreateRequest": {
                 "type": "object",
                 "properties": {
@@ -64918,6 +64932,58 @@
                     "dateOfDeath",
                     "firstName",
                     "lastName",
+                    "list"
+                ]
+            },
+            "ListPatchAPIViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "instance": {
+                        "$ref": "#/components/schemas/ListPatchAPIViewResponseInstance"
+                    }
+                },
+                "required": [
+                    "instance",
+                    "success"
+                ]
+            },
+            "ListPatchAPIViewResponseInstance": {
+                "type": "object",
+                "properties": {
+                    "list": {
+                        "$ref": "#/components/schemas/LemmaresearchEditor"
+                    },
+                    "selected": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "gnd": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateOfDeath": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "required": [
                     "list"
                 ]
             },

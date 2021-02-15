@@ -6,6 +6,7 @@ import type { List } from '../models/List';
 import type { ListCreateAPIViewRequest } from '../models/ListCreateAPIViewRequest';
 import type { ListCreateAPIViewResponse } from '../models/ListCreateAPIViewResponse';
 import type { ListEntry } from '../models/ListEntry';
+import type { ListPatchAPIViewResponse } from '../models/ListPatchAPIViewResponse';
 import type { ListRequest } from '../models/ListRequest';
 import type { PaginatedListEntryList } from '../models/PaginatedListEntryList';
 import type { PaginatedListList } from '../models/PaginatedListList';
@@ -84,13 +85,13 @@ export class ResearchService {
      *
      * @param id A unique integer value identifying this list entry.
      * @param requestBody
-     * @returns ListEntry
+     * @returns ListPatchAPIViewResponse
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchPartialUpdate(
         id: number,
         requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
-    ): Promise<ListEntry> {
+    ): Promise<ListPatchAPIViewResponse> {
         const result = await __request({
             method: 'PATCH',
             path: `/research/api/v1/lemmaresearch/${id}/`,
