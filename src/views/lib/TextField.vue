@@ -10,10 +10,13 @@
       class="text-body-2 textarea pb-1 rounded-lg"
       hide-details
       @input="checkValid"
+      v-on="$listeners"
       v-bind="$attrs"
       label="">
-      <template v-if="$attrs && $attrs.label" v-slot:prepend-inner>
-        <span style="opacity: .7" class="caption">{{ $attrs.label }}</span>
+      <template v-slot:prepend-inner>
+        <slot>
+          <div style="width: 120px; opacity: .7; padding-bottom: 7px" v-if="$attrs && $attrs.label" class="caption">{{ $attrs.label }}</div>
+        </slot>
       </template>
     </v-textarea>
     <div class="text-center caption" v-if="msg !== null" v-text="msg" />
@@ -36,7 +39,6 @@ export default class TextField extends Vue {
     if (r) {
       this.msg = r(e) || null
     } else {
-      this.$emit('input', e)
       this.msg = null
     }
   }
@@ -44,5 +46,6 @@ export default class TextField extends Vue {
 </script>
 <style lang="stylus" scoped>
 .textarea /deep/ textarea
-  text-align right
+  line-height 1.3em
+  padding-top 3px
 </style>
