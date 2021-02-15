@@ -20,12 +20,13 @@
       <v-list
         @dragleave.prevent="highlightedKey = null"
         subheader
-        class="mt-4 pr-0 pl-0"
+        class="mt-4 pr-0 pl-0 lemma-nav-list"
         color="transparent"
         expand
         nav
         dense>
         <v-list-item
+          :ripple="false"
           dense
           :input-value="store.lemma.selectedLemmaListId === null && store.lemma.selectedLemmaFilterId === null && store.lemma.selectedLemmaIssueId === null"
           @click="store.lemma.selectedLemmaListId = null">
@@ -41,7 +42,7 @@
             <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
-        <v-list-group color="currentColor" append-icon="" :value="true">
+        <v-list-group color="currentColor" append-icon="mdi-chevron-up" :value="true" :ripple="false">
           <template v-slot:activator>
             <v-list-item-title class="sticky" :style="{ zIndex: 1}">
               <v-subheader class="px-0">
@@ -50,6 +51,7 @@
             </v-list-item-title>
           </template>
           <v-list-item
+            :ripple="false"
             dense
             @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
             @dragover.prevent=""
@@ -70,7 +72,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" :value="true" append-icon="">
+        <v-list-group color="currentColor" :value="true" append-icon="" :ripple="false">
           <template v-slot:activator>
             <v-list-item-title
               @dragenter.prevent="highlightedKey = 'create-list'"
@@ -92,6 +94,7 @@
             </v-list-item-title>
           </template>
           <v-list-item
+            :ripple="false"
             v-for="list in filteredLemmaListsCurrentUser"
             :key="list.id"
             :input-value="store.lemma.selectedLemmaListId === list.id"
@@ -123,19 +126,20 @@
             </v-list-item-action>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" :value="true" append-icon="">
+        <v-list-group color="currentColor" :value="true" append-icon="mdi-chevron-up" :ripple="false">
           <template v-slot:activator>
-            <v-subheader
-              @dragenter.prevent="highlightedKey = 'create-list'"
-              @dragover.prevent=""
-              class="px-0"
-              @drop.prevent="createLemmaList($event)"
-              :style="{ zIndex: 1}">
-              Team-Listen
-              <v-spacer />
-            </v-subheader>
+            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
+              <v-subheader
+                @dragenter.prevent="highlightedKey = 'create-list'"
+                @dragover.prevent=""
+                class="px-0"
+                @drop.prevent="createLemmaList($event)">
+                Team-Listen
+              </v-subheader>
+            </v-list-item-title>
           </template>
           <v-list-item
+            :ripple="false"
             v-for="list in filteredLemmaListsOtherUsers"
             :key="list.id"
             tabindex="-1"
@@ -168,13 +172,16 @@
             </v-list-item-action>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" append-icon="" :value="true">
+        <v-list-group color="currentColor" append-icon="mdi-chevron-up" :value="true" :ripple="false">
           <template v-slot:activator>
-            <v-subheader class="sticky px-0">
-              Meine Abfragen
-            </v-subheader>
+            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
+              <v-subheader class="px-0">
+                Meine Abfragen
+              </v-subheader>
+            </v-list-item-title>
           </template>
           <v-list-item
+            :ripple="false"
             dense
             class="mb-0"
             :input-value="filter.id === store.lemma.selectedLemmaFilterId"
@@ -329,6 +336,18 @@ export default class LemmaNavigation extends Vue {
 
 .drag-over
   box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+
+.lemma-nav-list /deep/ .v-list-group__header
+  &:before
+    opacity 0 !important
+  .v-icon
+    opacity 0
+  &:hover .v-icon
+    opacity 1
+
+.lemma-nav-list
+.lemma-nav-list /deep/ *
+  cursor default !important
 
 .roll-enter-active, .roll-leave-active
   position relative

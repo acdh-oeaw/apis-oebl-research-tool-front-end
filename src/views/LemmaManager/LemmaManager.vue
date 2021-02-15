@@ -34,7 +34,6 @@
     </v-dialog>
     <v-dialog
       :value="fileToImport.file !== null"
-      @input="addLemmaDialog = $event"
       scrollable
       overlay-color="#000"
       max-width="1000px">
