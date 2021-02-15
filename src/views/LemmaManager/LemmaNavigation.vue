@@ -18,16 +18,17 @@
     </div>
     <div style="flex: 1" class="overflow-y-auto">
       <v-list
+        @dragleave.prevent="highlightedKey = null"
         subheader
         class="mt-4 pr-0 pl-0"
         color="transparent"
-        @dragleave.prevent="highlightedKey = null"
-        nav dense>
+        expand
+        nav
+        dense>
         <v-list-item
           dense
           :input-value="store.lemma.selectedLemmaListId === null && store.lemma.selectedLemmaFilterId === null && store.lemma.selectedLemmaIssueId === null"
-          @click="store.lemma.selectedLemmaListId = null"
-          class="rounded-lg">
+          @click="store.lemma.selectedLemmaListId = null">
           <v-list-item-avatar tile size="15">
             <v-icon small>mdi-bookshelf</v-icon>
           </v-list-item-avatar>
@@ -40,102 +41,156 @@
             <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
-        <v-subheader
-          class="sticky background darken-2"
-          :style="{ zIndex: 1}">
-          Abgaben
-        </v-subheader>
-        <v-list-item
-          dense
-          @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
-          @dragover.prevent=""
-          @drop.prevent="addLemmaToIssue(issue.id, $event)"
-          class="rounded-lg mb-0"
-          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
-          @click="loadIssueLemmas(issue.id || null)"
-          :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
-          v-for="issue in store.issue.issues"
-          :key="'issue-' + issue.id">
-          <v-list-item-avatar size="15" tile>
-            <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ issue.name }}
+        <v-list-group color="currentColor" append-icon="" :value="true">
+          <template v-slot:activator>
+            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
+              <v-subheader class="px-0">
+                Abgaben
+              </v-subheader>
             </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-subheader
-          @dragenter.prevent="highlightedKey = 'create-list'"
-          @dragover.prevent=""
-          @drop.prevent="createLemmaList($event)"
-          class="sticky background darken-2"
-          :style="{ zIndex: 1}">
-          Listen
-          <v-spacer />
-          <v-btn
-            style="box-shadow: none"
-            @click="createLemmaList"
-            rounded
-            :class="[highlightedKey === 'create-list' && 'drag-over']"
-            x-small>Liste erstellen
-          </v-btn>
-        </v-subheader>
-        <v-list-item
-          v-for="list in filteredLemmaLists"
-          :key="list.id"
-          tabindex="-1"
-          :input-value="store.lemma.selectedLemmaListId === list.id"
-          :class="['rounded-lg', 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
-          dense
-          @keydown.delete="deleteList(list)"
-          @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
-          @dragover.prevent=""
-          @drop.prevent="copyLemmasToList(list.id, $event)"
-          @click="store.lemma.selectedLemmaListId = list.id || null">
-          <v-list-item-avatar size="15" tile>
-            <v-icon small>mdi-format-list-bulleted</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <input v-if="editingNameKey === 'my-list_' + list.id" v-model="list.title">
-            <v-list-item-title v-else>
-              {{ list.title }}
+          </template>
+          <v-list-item
+            dense
+            @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
+            @dragover.prevent=""
+            @drop.prevent="addLemmaToIssue(issue.id, $event)"
+            class="mb-0"
+            :input-value="store.lemma.selectedLemmaIssueId === issue.id"
+            @click="loadIssueLemmas(issue.id || null)"
+            :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
+            v-for="issue in store.issue.issues"
+            :key="'issue-' + issue.id">
+            <v-list-item-avatar size="15" tile>
+              <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ issue.name }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group color="currentColor" :value="true" append-icon="">
+          <template v-slot:activator>
+            <v-list-item-title
+              @dragenter.prevent="highlightedKey = 'create-list'"
+              @dragover.prevent=""
+              @drop.prevent="createLemmaList($event)"
+              class="sticky"
+              :style="{ zIndex: 1}">
+              <v-subheader class="px-0">
+                Meine Listen
+                <v-spacer />
+                <v-btn
+                  style="box-shadow: none"
+                  @click.capture.prevent.stop="createLemmaList"
+                  rounded
+                  :class="[highlightedKey === 'create-list' && 'drag-over']"
+                  x-small>Liste erstellen
+                </v-btn>
+              </v-subheader>
             </v-list-item-title>
-            <v-list-item-subtitle style="font-size: 75%">
-              {{ list.editor ? list.editor.name : '' }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <transition name="roll">
-              <v-badge
-                :key="list.count"
-                inline
-                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
-                :content="list.count ? list.count.toString() : '0'" />
-            </transition>
-          </v-list-item-action>
-        </v-list-item>
-        <v-subheader
-          class="sticky"
-          :style="{ background: $vuetify.theme.currentTheme.inset, zIndex: 1}">
-          Meine Abfragen
-        </v-subheader>
-        <v-list-item
-          dense
-          class="rounded-lg mb-0"
-          :input-value="filter.id === store.lemma.selectedLemmaFilterId"
-          @click="selectLemmaFilter(filter.id)"
-          v-for="(filter, i) in filteredStoredLemmas"
-          :key="'l' + i">
-          <v-list-item-avatar size="15" tile>
-            <v-icon small>mdi-card-search-outline</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ filter.name }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          </template>
+          <v-list-item
+            v-for="list in filteredLemmaListsCurrentUser"
+            :key="list.id"
+            :input-value="store.lemma.selectedLemmaListId === list.id"
+            :class="[ 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over' ]"
+            dense
+            @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+            @dragover.prevent=""
+            @drop.prevent="copyLemmasToList(list.id, $event)"
+            @click="store.lemma.selectedLemmaListId = list.id || null">
+            <v-list-item-avatar size="15" tile>
+              <v-icon small>mdi-format-list-bulleted</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ list.title }}
+              </v-list-item-title>
+              <v-list-item-subtitle style="font-size: 75%">
+                {{ list.editor ? list.editor.name : '' }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <transition name="roll">
+                <v-badge
+                  :key="list.count"
+                  inline
+                  :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                  :content="list.count ? list.count.toString() : '0'" />
+              </transition>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group color="currentColor" :value="true" append-icon="">
+          <template v-slot:activator>
+            <v-subheader
+              @dragenter.prevent="highlightedKey = 'create-list'"
+              @dragover.prevent=""
+              class="px-0"
+              @drop.prevent="createLemmaList($event)"
+              :style="{ zIndex: 1}">
+              Team-Listen
+              <v-spacer />
+            </v-subheader>
+          </template>
+          <v-list-item
+            v-for="list in filteredLemmaListsOtherUsers"
+            :key="list.id"
+            tabindex="-1"
+            :input-value="store.lemma.selectedLemmaListId === list.id"
+            :class="['mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
+            dense
+            @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+            @dragover.prevent=""
+            @drop.prevent="copyLemmasToList(list.id, $event)"
+            @click="store.lemma.selectedLemmaListId = list.id || null">
+            <v-list-item-avatar size="15" tile>
+              <v-icon small>mdi-format-list-bulleted</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ list.title }}
+              </v-list-item-title>
+              <v-list-item-subtitle style="font-size: 75%">
+                {{ list.editor ? list.editor.name : '' }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <transition name="roll">
+                <v-badge
+                  :key="list.count"
+                  inline
+                  :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                  :content="list.count ? list.count.toString() : '0'" />
+              </transition>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group color="currentColor" append-icon="" :value="true">
+          <template v-slot:activator>
+            <v-subheader class="sticky px-0">
+              Meine Abfragen
+            </v-subheader>
+          </template>
+          <v-list-item
+            dense
+            class="mb-0"
+            :input-value="filter.id === store.lemma.selectedLemmaFilterId"
+            @click="selectLemmaFilter(filter.id)"
+            v-for="(filter, i) in filteredStoredLemmaFilters"
+            :key="'l' + i">
+            <v-list-item-avatar size="15" tile>
+              <v-icon small>mdi-card-search-outline</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ filter.name }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </div>
   </div>
@@ -238,7 +293,7 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
-  get filteredStoredLemmas() {
+  get filteredStoredLemmaFilters() {
     if (this.searchQuery.trim() !== '') {
       return store.lemma.storedLemmaFilters.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery))
     } else {
@@ -252,6 +307,14 @@ export default class LemmaNavigation extends Vue {
     } else {
       return store.lemma.lemmaLists
     }
+  }
+
+  get filteredLemmaListsCurrentUser() {
+    return this.filteredLemmaLists.filter(l => l.editor !== undefined && l.editor.userId === store.user.userProfile.userId)
+  }
+
+  get filteredLemmaListsOtherUsers() {
+    return this.filteredLemmaLists.filter(l => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId)
   }
 
 }
@@ -270,11 +333,9 @@ export default class LemmaNavigation extends Vue {
 .roll-enter-active, .roll-leave-active
   position relative
   transition: all .3s ease;
-
 .roll-enter, .roll-leave-to
   position absolute
   opacity: 0
-
 .roll-enter
   transform translateY(20px)
 .roll-leave-to
