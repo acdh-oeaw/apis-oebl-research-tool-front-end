@@ -110,26 +110,53 @@
           top: 0,
           background: ''
         }">
+        Basisdaten
+      </h4>
+      <v-card-text>
+        <text-field
+          label="Vorname"
+          :value="value.firstName"
+          @input="debouncedUpdateData({ firstName: $event })"
+        />
+        <text-field
+          label="Nachname"
+          :value="value.lastName"
+          @input="debouncedUpdateData({ lastName: $event })"
+        />
+        <text-field
+          label="Geburtsjahr"
+          :value="value.birthYear"
+          placeholder="YYYY"
+          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
+          @input="debouncedUpdateData({ birthYear: $event })"
+        />
+        <text-field
+          label="Sterbejahr"
+          :value="value.deathYear"
+          placeholder="YYYY"
+          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
+          @input="debouncedUpdateData({ deathYear: $event })"
+        />
+      </v-card-text>
+      <v-divider />
+      <h4
+        class="pt-2 pb-2 pl-5 background"
+        :style="{
+          zIndex: 1,
+          position: 'sticky',
+          top: 0,
+          background: ''
+        }">
         Importierte Daten
       </h4>
       <v-card-text class="pt-0">
-        <v-textarea
+        <text-field
           v-for="(userValue, userKey) in value.columns_user"
           :key="userKey"
-          dense
-          solo
-          rows="1"
+          :value="userValue"
           @input="debouncedUpdateUserColumns(userKey, $event)"
-          auto-grow
-          flat
-          background-color="background darken-2"
-          class="text-body-2 textarea pb-1 rounded-lg"
-          hide-details
-          :value="userValue">
-          <template v-slot:prepend-inner>
-            <span style="opacity: .7" class="caption">{{ userKey }}</span>
-          </template>
-        </v-textarea>
+          :label="userKey"
+        />
       </v-card-text>
     </div>
   </v-card>
@@ -140,6 +167,7 @@ import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
+import TextField from '../lib/TextField.vue'
 import store from '@/store'
 import _ from 'lodash'
 
@@ -147,7 +175,8 @@ import _ from 'lodash'
   components: {
     LemmaScrapeResult,
     LobidPreviewCard,
-    LobidGndSearch
+    LobidGndSearch,
+    TextField
   }
 })
 export default class LemmaDetail extends Vue {
@@ -187,6 +216,12 @@ export default class LemmaDetail extends Vue {
 
   debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300)
 
+  updateData(u: Partial<LemmaRow>) {
+    this.$emit('update', {...this.value, ...u})
+  }
+
+  debouncedUpdateData = _.debounce(this.updateData, 300)
+
 }
 </script>
 <style lang="stylus" scoped>
@@ -204,8 +239,5 @@ export default class LemmaDetail extends Vue {
   transform translateY(20px)
 .roll-leave-to
   transform translateY(-20px)
-
-.textarea /deep/ textarea
-  text-align right
 
 </style>
