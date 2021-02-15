@@ -40,9 +40,12 @@
           <div
             v-for="column in visibleColumns"
             :key="index + '__' + column.value"
-            :style="{width: column.width ? column.width + 'px' : defaultWidth}"
+            :style="{
+              width: column.width ? column.width + 'px' : defaultWidth,
+              maxHeight: (rowHeight - 5) + 'px'
+            }"
             class="table-cell"
-            @click="$emit('click:cell', item, $event, column.value, index)" >
+            @click="$emit('click:cell', item, $event, column.value, index)">
             <slot
               name="cell"
               draggable
