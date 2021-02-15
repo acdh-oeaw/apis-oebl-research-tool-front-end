@@ -303,7 +303,6 @@ export default class LemmaStore {
         isUserColumn: true
       }
     })
-    console.log({uc})
     return uc
   }
 
