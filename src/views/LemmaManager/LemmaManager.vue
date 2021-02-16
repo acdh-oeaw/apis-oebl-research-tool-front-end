@@ -4,12 +4,12 @@
       :value="lobidPreviewGnds.length > 0"
       @input="lobidPreviewGnds = []"
       :position-x="previewPopupCoords[0]"
+      :position-y="previewPopupCoords[1]"
       :close-on-content-click="false"
       absolute
       offset-y
       offset-x
-      content-class="soft-shadow"
-      :position-y="previewPopupCoords[1]">
+      content-class="soft-shadow">
       <v-card color="background lighten-1" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
         <v-card-text class="pb-3 pl-0 pt-4 pr-0">
           <lobid-preview-card :limit="3" :gnd="lobidPreviewGnds" />
