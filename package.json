@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "export $(cat env-dev.env | xargs) && vue-cli-service serve & nodemon ./server/index.js",
     "build": "npm run get-api-types && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -64,6 +64,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "nodemon": "^2.0.7",
     "openapi-typescript-codegen": "^0.7.2",
     "sass": "^1.32.4",
     "sass-loader": "^10.1.1",
