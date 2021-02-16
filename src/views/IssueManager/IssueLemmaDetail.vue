@@ -169,7 +169,7 @@ import LemmaLabels from './LemmaLabels.vue'
 import FormRow from '../lib/FormRow.vue'
 import store from '../../store'
 import { LemmaNote, IssueLemma } from '@/api'
-import { formatDistanceToNow } from 'date-fns'
+import formatDistanceToNow from 'date-fns/esm/formatDistanceToNow'
 import de from 'date-fns/esm/locale/de'
 
 @Component({
