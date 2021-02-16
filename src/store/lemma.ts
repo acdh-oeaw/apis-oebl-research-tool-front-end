@@ -7,6 +7,7 @@ import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearc
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { WithId } from '@/types'
+import notifyService from '@/service/notify/notify'
 import Vue from 'vue'
 
 interface LemmaFilter {
@@ -141,6 +142,10 @@ export default class LemmaStore {
   constructor() {
     this.initLemmaData()
     this.loadRemoteLemmaLists()
+    notifyService.on('updateLemmas', (ls, u) => {
+      console.log('updateLemmas from server!', ls)
+      this.updateLemmasLocally(ls, u)
+    })
   }
 
   get columns() {
@@ -240,8 +245,7 @@ export default class LemmaStore {
     await this.updateLemmas(ls, { list: {id: id} } as any)
   }
 
-  async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
-    // optimistic update
+  private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>) {
     const ids = ls.map(l => l.id)
     this._lemmas = this._lemmas.map((l) => {
       if (ids.includes(l.id)) {
@@ -250,10 +254,17 @@ export default class LemmaStore {
         return l
       }
     })
-    // actual update
+  }
+
+  async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
+    // optimistic update
+    this.updateLemmasLocally(ls, u)
+    // actual update on the server
     await Promise.all(ls.map(async (l) => {
       await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
     }))
+    // notify others
+    notifyService.emit('updateLemmas', ls, u)
   }
 
   async deleteLemmaList(id: number) {
