@@ -42,7 +42,11 @@
             <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
-        <v-list-group color="currentColor" append-icon="mdi-chevron-up" :value="true" :ripple="false">
+        <v-list-group
+          color="currentColor"
+          append-icon="mdi-chevron-up"
+          :value="searchQuery || true"
+          :ripple="false">
           <template v-slot:activator>
             <v-list-item-title class="sticky" :style="{ zIndex: 1}">
               <v-subheader class="px-0">
@@ -72,7 +76,11 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" :value="true" append-icon="" :ripple="false">
+        <v-list-group
+          color="currentColor"
+          :value="searchQuery || true"
+          append-icon=""
+          :ripple="false">
           <template v-slot:activator>
             <v-list-item-title
               @dragenter.prevent="highlightedKey = 'create-list'"
@@ -126,7 +134,11 @@
             </v-list-item-action>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" :value="true" append-icon="mdi-chevron-up" :ripple="false">
+        <v-list-group
+          color="currentColor"
+          :value="searchQuery || true"
+          append-icon="mdi-chevron-up"
+          :ripple="false">
           <template v-slot:activator>
             <v-list-item-title class="sticky" :style="{ zIndex: 1}">
               <v-subheader
@@ -172,7 +184,11 @@
             </v-list-item-action>
           </v-list-item>
         </v-list-group>
-        <v-list-group color="currentColor" append-icon="mdi-chevron-up" :value="true" :ripple="false">
+        <v-list-group
+          color="currentColor"
+          append-icon="mdi-chevron-up"
+          :value="searchQuery || true"
+          :ripple="false">
           <template v-slot:activator>
             <v-list-item-title class="sticky" :style="{ zIndex: 1}">
               <v-subheader class="px-0">
@@ -216,7 +232,7 @@ import { WithId } from '@/types'
 @Component
 export default class LemmaNavigation extends Vue {
 
-  searchQuery = ''
+  searchQuery: string|null = null
   highlightedKey: string|null = null
   editingNameKey: string|null = null
   store = store
@@ -227,8 +243,8 @@ export default class LemmaNavigation extends Vue {
   }
 
   onEscSearch(e: KeyboardEvent) {
-    if (this.searchQuery !== '') {
-      this.searchQuery = ''
+    if (this.searchQuery !== '' && this.searchQuery !== null) {
+      this.searchQuery = null
     } else {
       if (e.target instanceof HTMLInputElement) {
         e.target.blur()
@@ -301,16 +317,16 @@ export default class LemmaNavigation extends Vue {
   }
 
   get filteredStoredLemmaFilters() {
-    if (this.searchQuery.trim() !== '') {
-      return store.lemma.storedLemmaFilters.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery))
+    if (this.searchQuery !== null && this.searchQuery.trim() !== '') {
+      return store.lemma.storedLemmaFilters.filter(l => l.name.toLocaleLowerCase().includes(this.searchQuery || ''))
     } else {
       return store.lemma.storedLemmaFilters
     }
   }
 
   get filteredLemmaLists() {
-    if (this.searchQuery.trim() !== '') {
-      return store.lemma.lemmaLists.filter(l => l.title.toLocaleLowerCase().includes(this.searchQuery))
+    if (this.searchQuery !== null && this.searchQuery.trim() !== '') {
+      return store.lemma.lemmaLists.filter(l => l.title.toLocaleLowerCase().includes(this.searchQuery || ''))
     } else {
       return store.lemma.lemmaLists
     }
