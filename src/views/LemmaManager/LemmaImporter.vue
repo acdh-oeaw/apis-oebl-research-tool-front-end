@@ -84,8 +84,8 @@ import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import { PersonField, ImportablePerson } from '@/types/lemma'
 import * as lobid from '../../service/lobid'
 import store from '../../store'
-import format from 'date-fns/format'
-import de from 'date-fns/locale/de'
+import format from 'date-fns/esm/format'
+import de from 'date-fns/esm/locale/de'
 import _ from 'lodash'
 
 @Component({
