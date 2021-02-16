@@ -9,6 +9,7 @@
       background-color="background darken-2"
       class="text-body-2 textarea pb-1 rounded-lg"
       hide-details
+      @keydown="onKeyDown"
       @input="checkValid"
       v-on="$listeners"
       v-bind="$attrs"
@@ -29,6 +30,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 export default class TextField extends Vue {
 
   @Prop({ default: () => [] }) rules!: Array<(e: string|null) => string|false>
+  @Prop({ default: false }) allowNewLine!: boolean
+
   msg: string|null = null
 
   checkValid(e: string|null) {
@@ -40,6 +43,13 @@ export default class TextField extends Vue {
       this.msg = r(e) || null
     } else {
       this.msg = null
+    }
+  }
+
+  onKeyDown(e: KeyboardEvent) {
+    console.log(e)
+    if (e.key.toLowerCase() === 'enter' && this.allowNewLine === false) {
+      e.preventDefault()
     }
   }
 }
