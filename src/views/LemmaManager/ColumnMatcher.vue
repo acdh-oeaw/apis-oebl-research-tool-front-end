@@ -127,7 +127,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-// import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx'
 import * as _ from 'lodash'
 import neatCsv from 'neat-csv'
 import { Column, Header, Table, Row, SelectOptions } from '../../types/lemma'
@@ -254,7 +254,7 @@ export default class ColumnMatcher extends Vue {
   }
 
   async parseExcelToJson(b: ArrayBuffer, useSheetName: string|null = null): Promise<[ Header[], Table<Row> ]> {
-    const { default: XLSX } = await import(/* webpackPrefetch: false */'xlsx')
+    // const { default: XLSX } = await import('xlsx')
     const doc = XLSX.read(b, {type: 'buffer', WTF: false})
     const sheets = doc.SheetNames.map(s => XLSX.utils.sheet_to_json(doc.Sheets[s]))
     const useSheetIndex = doc.SheetNames.findIndex(s => s === useSheetName)
