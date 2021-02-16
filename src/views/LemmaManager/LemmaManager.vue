@@ -375,7 +375,6 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import _, { clone } from 'lodash'
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
-import LemmaImporter from './LemmaImporter.vue'
 import DragImage from './DragImage.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import ThemeToggle from '../ThemeToggle.vue'
@@ -395,7 +394,7 @@ import confirm from '@/store/confirm'
 @Component({
   components: {
     ResizableDrawer,
-    LemmaImporter,
+    LemmaImporter: () => import('./LemmaImporter.vue'),
     ThemeToggle,
     DragImage,
     LemmaAdd,
