@@ -11,7 +11,7 @@ import UserStore from './user'
 import { OpenAPI } from '../api'
 import { LemmaFilterItem } from '@/types/lemma'
 
-OpenAPI.BASE = 'https://oebl-irs-backend.acdh-dev.oeaw.ac.at'
+OpenAPI.BASE = process.env.VUE_APP_API_HOST || ''
 OpenAPI.WITH_CREDENTIALS = true
 
 // FIXME: use tokens

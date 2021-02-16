@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "export $(cat env-dev.env | xargs) && vue-cli-service serve & nodemon ./server/index.js",
+    "dev": "vue-cli-service serve & (export $(cat env-dev.env | xargs) && nodemon ./server/index.js)",
     "build": "npm run get-api-types && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -28,6 +28,7 @@
     "register-service-worker": "^1.7.1",
     "roboto-fontface": "*",
     "socket.io": "^3.1.1",
+    "socket.io-client": "^3.1.1",
     "typescript-json-schema": "^0.43.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",

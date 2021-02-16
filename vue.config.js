@@ -8,7 +8,10 @@ module.exports = {
   ],
   runtimeCompiler: true,
   configureWebpack: (config) => {
-    if (process.env.NODE_ENV !== 'production' && process.env.GITLAB_CI === undefined) {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.GITLAB_CI === undefined
+    ) {
       config
         .plugins
         .push(new BundleAnalyzerPlugin({
