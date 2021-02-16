@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="transparent flex-column d-flex fill-height"
+    class="transparent flex-column d-flex fill-height lemma-detail"
     flat
     v-if="value !== undefined && value !== null">
     <v-card-title>
@@ -222,3 +222,8 @@ export default class LemmaDetail extends Vue {
 
 }
 </script>
+<style lang="stylus" scope>
+// tell the browser not to cache this.
+.lemma-detail
+  will-change contents
+</style>

@@ -193,8 +193,12 @@ export default class VirtualTable extends Vue {
 
 <style lang="stylus" scoped>
 
-// header when sorting
+// tell browser NOT to cache the millions
+// of rows/DOM elements we’re gonna put here.
+/deep/ .v-virtual-scroll__container
+  will-change contents, scroll-position
 
+// header when sorting
 .header-row-drag
   background var(--v-background-darken2)
   border-radius 10px
