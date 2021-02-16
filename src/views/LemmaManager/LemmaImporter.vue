@@ -1,7 +1,39 @@
 <template>
-  <v-card color="background lighten-1" rounded="lg">
-    <v-card-title class="text-center text-caption">
-      <v-spacer />Datei ”{{ fileName }}” importieren…<v-spacer />
+  <v-card color="background" rounded="lg">
+    <v-card-title class="px-4 pb-4">
+      <v-row no-gutters>
+        <v-col>
+          <v-btn
+            class="px-4 rounded-lg"
+            color="background darken-2"
+            elevation="0"
+            @click="$emit('cancel')">
+            Abbrechen
+          </v-btn>
+        </v-col>
+        <v-col class="text-center caption align-self-center">
+          Datei ”{{ fileName }}” importieren…
+        </v-col>
+        <v-col class="text-right">
+          <v-btn
+            v-if="step === 0"
+            class="px-4 rounded-lg"
+            elevation="0"
+            :disabled="importableHeaders === 0"
+            color="primary"
+            @click="startLobidMatching">
+            {{ importableHeaders }} Spalte(n) importieren…
+          </v-btn>
+          <v-btn
+            v-if="step === 2"
+            class="px-4 rounded-lg"
+            elevation="0"
+            color="primary"
+            @click="importLemmas(importable, importToListName)">
+            Import abschließen
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-card-text class="pa-0">
       <v-window v-model="step">
@@ -10,7 +42,6 @@
             :target-columns="allowedPersonFields"
             :return-ignored-columns="true"
             :prefix-ignored-columns="userColumnPrefix"
-            color="background"
             :file-type="fileType"
             :file-name="fileName"
             :buffer="buffer"
@@ -42,34 +73,8 @@
         </v-window-item>
       </v-window>
     </v-card-text>
-    <v-card-actions class="pa-4">
-      <v-btn
-        class="px-4 rounded-lg"
-        elevation="0"
-        @click="$emit('cancel')">
-        Abbrechen
-      </v-btn>
-      <v-spacer />
-      <!-- <span class="caption grey--text">Schritt {{ step + 1 }} von 3</span> -->
-      <v-spacer />
-      <v-btn
-        v-if="step === 0"
-        class="px-4 rounded-lg"
-        elevation="0"
-        :disabled="importableHeaders === 0"
-        color="primary"
-        @click="startLobidMatching">
-        {{ importableHeaders }} Spalte(n) importieren
-      </v-btn>
-      <v-btn
-        v-if="step === 2"
-        class="px-4 rounded-lg"
-        elevation="0"
-        color="primary"
-        @click="importLemmas(importable, importToListName)">
-        Import abschließen
-      </v-btn>
-    </v-card-actions>
+    <!-- <v-card-actions class="pa-4">
+    </v-card-actions> -->
   </v-card>
 </template>
 <script lang="ts">

@@ -5,7 +5,6 @@
     dense
     disable-sort
     :page="tablePage"
-    :color="color"
     height="500"
     hide-default-footer
     :headers="headers"
@@ -22,7 +21,8 @@
           flat
           :value="h.matchWith"
           @input="matchHeaderWith(i, $event)"
-          class="col-select"
+          background-color="background darken-1"
+          :class="['col-select', h.matchWith === null ? 'not-selected' : '', 'rounded-lg']"
           dense
           :items="getTargetColumnsOptions(h)" />
       </div>
@@ -42,37 +42,51 @@
     </template>
     <template v-slot:footer="{}">
       <v-divider />
-      <v-row class="px-5 ma-0">
+      <v-row no-gutters class="pa-4 ma-0">
         <v-col cols="3">
           <v-select
             v-if="fileType === mimeTypeCsv"
             dense
             hide-details
-            label="Trennzeichen"
+            flat
+            background-color="background darken-1"
+            class="rounded-lg"
+            solo
             :value="separator"
             @change="updateSeparator"
             :items="allSeparators"
-          />
+          >
+            <template v-slot:prepend-inner>
+              <span class="caption">Trennzeichen</span>
+            </template>
+          </v-select>
           <v-select
             v-if="fileType === mimeTypeXls || fileType === mimeTypeXlsx"
             dense
             hide-details
             label="Tabellenblatt"
+            class="rounded-lg"
             :value="sheetName"
             @change="updateSheetName"
             :items="sheetNames"
           />
         </v-col>
-        <v-col cols="4">
+        <v-col cols="4" class="pl-4">
           <v-combobox
             hide-details
-            label="Werte ignorieren"
             v-model="nullValues"
             chips
             deletable-chips
             small-chips
             dense
+            solo
+            flat
+            class="rounded-lg"
+            background-color="background darken-1"
             multiple>
+            <template v-slot:prepend-inner>
+              <span class="caption text-no-wrap">Zellen Ignorieren</span>
+            </template>
           </v-combobox>
         </v-col>
         <v-col class="text-right">
@@ -119,7 +133,6 @@ export default class ColumnMatcher extends Vue {
   @Prop({ required: true }) fileName!: string
   @Prop({ required: true }) fileType!: string
   @Prop({ default: false }) returnIgnoredColumns!: boolean
-  @Prop({ default: undefined }) color!: string
   @Prop({ default: 'ignored.' }) prefixIgnoredColumns!: string
 
   mimeTypeCsv = 'text/csv'
@@ -285,12 +298,15 @@ export default class ColumnMatcher extends Vue {
 }
 .custom-header .initial-header {
   display: block
-  padding-left: 1em
+  padding-left: 0em
   padding-bottom: .3em
 }
 .custom-header .col-select {
   font-size: 13px
   font-weight: normal
+}
+.custom-header .col-select.not-selected {
+  opacity: .6
 }
 select {
   user-select none
