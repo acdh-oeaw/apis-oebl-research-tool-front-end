@@ -16,11 +16,9 @@
         <span style="opacity: .5" v-else>☆</span>
       </v-btn>
       <v-container style="position: relative" class="pa-0">
-        <transition name="roll">
-          <div :key="value.id" class="text-center px-5" style="width: 100%">
-            {{ value.lastName }}, {{ value.firstName }}
-          </div>
-        </transition>
+        <div :key="value.id" class="text-center px-5" style="width: 100%">
+          {{ value.lastName }}, {{ value.firstName }}
+        </div>
         <v-row no-gutters>
           <v-col cols="12" class="text-caption text-center">
             {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
@@ -91,7 +89,7 @@
           :content="countScrapedResources(value.columns_scrape).toString()" />
       </h4>
       <v-card-text class="pt-0">
-        <v-list dense nav class="text-body-2 pa-0">
+        <v-list color="transparent" dense nav class="text-body-2 pa-0">
           <template v-if="value.columns_scrape">
             <lemma-scrape-result
               v-for="(source, sourceName) in value.columns_scrape"
@@ -224,20 +222,3 @@ export default class LemmaDetail extends Vue {
 
 }
 </script>
-<style lang="stylus" scoped>
-
-.roll-enter-active, .roll-leave-active
-  position relative
-  transition: all .3s ease;
-
-.roll-enter, .roll-leave-to
-  width 100%
-  position absolute
-  opacity: 0
-
-.roll-enter
-  transform translateY(20px)
-.roll-leave-to
-  transform translateY(-20px)
-
-</style>
