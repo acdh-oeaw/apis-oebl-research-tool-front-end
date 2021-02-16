@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve & (export $(cat env-dev.env | xargs) && nodemon ./server/index.js)",
+    "dev": "vue-cli-service serve & (export $(cat .env.development | xargs) && nodemon ./server/index.js)",
     "build": "npm run get-api-types && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "start": "node ./server/index.js",
     "pick-services": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/pick-services.ts",
     "schema": "typescript-json-schema \"src/types/*ts\" \"Requests\" > src/types/schema.json",
-    "get-api-types": "export $(cat env-dev.env | xargs) && curl -L -v --insecure -H \"Accept: application/json\" \"$API_HOST/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService"
+    "get-api-types": "export $(cat .env.development | xargs) && curl -L -v --insecure -H \"Accept: application/json\" \"$API_HOST/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
