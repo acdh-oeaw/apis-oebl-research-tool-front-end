@@ -30,6 +30,9 @@ module.exports = {
       ]
     })
   },
+  chainWebpack: (config) => {
+    config.plugins.delete('prefetch')
+  },
   parallel: true,
   devServer: {
     open: 'Google Chrome',
