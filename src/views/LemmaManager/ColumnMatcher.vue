@@ -65,11 +65,18 @@
             dense
             hide-details
             label="Tabellenblatt"
+            solo
+            background-color="background darken-1"
             class="rounded-lg"
+            flat
             :value="sheetName"
             @change="updateSheetName"
             :items="sheetNames"
-          />
+          >
+            <template v-slot:prepend-inner>
+              <span class="caption">Tabellenblatt</span>
+            </template>
+          </v-select>
         </v-col>
         <v-col cols="4" class="pl-4">
           <v-combobox
@@ -120,7 +127,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import * as XLSX from 'xlsx'
+// import * as XLSX from 'xlsx'
 import * as _ from 'lodash'
 import neatCsv from 'neat-csv'
 import { Column, Header, Table, Row, SelectOptions } from '../../types/lemma'
@@ -171,9 +178,9 @@ export default class ColumnMatcher extends Vue {
     this.$emit('update', this.convertTable(this.initialTable, this.headers))
   }
 
-  updateSheetName(name: string): void {
+  async updateSheetName(name: string): Promise<void> {
     this.sheetName = name
-    const [h, c] = this.parseExcelToJson(this.buffer, name)
+    const [h, c] = await this.parseExcelToJson(this.buffer, name)
     this.headers = h
     this.initialTable = c
   }
@@ -246,7 +253,8 @@ export default class ColumnMatcher extends Vue {
     this.headers[headerIndex].matchWith = matchWith
   }
 
-  parseExcelToJson(b: ArrayBuffer, useSheetName: string|null = null): [ Header[], Table<Row> ] {
+  async parseExcelToJson(b: ArrayBuffer, useSheetName: string|null = null): Promise<[ Header[], Table<Row> ]> {
+    const { default: XLSX } = await import(/* webpackPrefetch: false */'xlsx')
     const doc = XLSX.read(b, {type: 'buffer', WTF: false})
     const sheets = doc.SheetNames.map(s => XLSX.utils.sheet_to_json(doc.Sheets[s]))
     const useSheetIndex = doc.SheetNames.findIndex(s => s === useSheetName)
@@ -270,7 +278,7 @@ export default class ColumnMatcher extends Vue {
       this.headers = h
       this.initialTable = c
     } else if (this.fileType === this.mimeTypeXls || this.fileType === this.mimeTypeXlsx) {
-      const [h, c] = this.parseExcelToJson(this.buffer)
+      const [h, c] = await this.parseExcelToJson(this.buffer)
       this.headers = h
       this.initialTable = c
     }
