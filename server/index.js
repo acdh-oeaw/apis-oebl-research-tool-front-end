@@ -8,13 +8,10 @@ const emitter = new Emitter()
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
 
-const websocket = socketIo({
-  origins: process.env.ORIGINS,
-  path: process.env.URL_PATH || '/updates'
-})
-
 const server = http.createServer(app)
-const io = websocket.listen(server)
+const io = socketIo(server, {
+  cors: true
+})
 
 const index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' })
 app.enable('trust proxy')
@@ -33,14 +30,18 @@ app.post('/message', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  console.log(socket)
+  console.log('a user connected', socket.id)
+  socket.send('message', 'yo')
   // when someone sends something, send it to all others.
-  socket.on('message', (m) => {
-    Object.values(socket.server.sockets.sockets).forEach((s) => {
-      if (s.id !== socket.id) {
-        s.send(m)
-      }
-    })
+  socket.onAny((name, ...m) => {
+    console.log(name, m)
+    socket.broadcast.emit(name, ...m)
+    // console.log('others:', Object.values(socket.server.sockets.sockets))
+    // Object.values(socket.server.sockets.sockets).forEach((s) => {
+    //   if (s.id !== socket.id) {
+    //     s.send(name, m)
+    //   }
+    // })
   })
   emitter.on('message', (m) => {
     socket.send(m)
