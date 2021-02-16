@@ -1,14 +1,11 @@
 <template>
   <v-card :color="color" rounded="lg" class="soft-shadow">
-    <v-card-title class="text-center text-caption">
-      <v-spacer />
-      Lemma hinzufügen
-      <v-spacer />
+    <v-card-title>
+      Lemma anlegen
     </v-card-title>
-    <v-divider />
-    <v-card-text class="pa-0">
+    <v-card-text class="pa-0 flex-grow-1">
       <v-row no-gutters>
-        <v-col style="height: 500px; overflow: scroll" class="pa-5">
+        <v-col class="pa-5">
           <h4 class="pb-4 px-1">Basisdaten</h4>
           <text-field
             autofocus
@@ -42,10 +39,10 @@
             :label="column.name"
           />
         </v-col>
-        <v-col cols="5" class="background darken-1 pa-5" style="height: 500px; position: relative;">
-          <v-window reverse :value="viewLemmaDetail === null ? 0 : 1">
+        <v-col cols="5" class="background darken-1 pa-4">
+          <v-window class="pt-1" reverse :value="viewLemmaDetail === null ? 0 : 1">
             <v-window-item :value="0">
-              <v-btn-toggle borderless style="width: 50%" class="mb-4">
+              <v-btn-toggle :value="window" borderless style="width: 50%" class="mb-4">
                 <v-btn rounded small @click="window = 0" block elevation="0" color="background darken-2">
                   ÖBL <v-badge offset-x="-3" color="secondary" v-if="filteredList.length > 0" :content="filteredList.length.toString()" />
                 </v-btn>
