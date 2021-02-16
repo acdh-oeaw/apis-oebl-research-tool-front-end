@@ -26,7 +26,7 @@
       @input="addLemmaDialog = $event"
       max-width="1000px">
       <lemma-add
-        color="background lighten-1"
+        color="background"
         v-if="addLemmaDialog"
         @confirm="addLemma"
         @cancel="addLemmaDialog = false"
