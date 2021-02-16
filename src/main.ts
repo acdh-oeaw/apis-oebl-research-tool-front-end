@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify'
 // import { VTextarea } from 'vuetify/lib'
 
 Vue.config.productionTip = false
-
+Vue.config.performance = true
 // const irsTextField: Vue.Component = {
 //   extends: VTextarea,
 //   mixins: [
