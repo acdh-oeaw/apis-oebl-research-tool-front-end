@@ -20,7 +20,7 @@
           :value="internalValue" />
       </div>
     </div>
-    <div class="text-center caption" v-if="msg !== null" v-text="msg" />
+    <div class="text-center caption hint" v-if="msg !== null" v-text="msg" />
   </div>
 </template>
 <script lang="ts">
@@ -41,11 +41,15 @@ export default class TextField extends Vue {
   }
 
   checkValid(e: string|null) {
-    const r = this.rules.find((r) => {
-      return r(e) !== false
-    })
-    if (r) {
-      this.msg = r(e) || null
+    if (e != null && e !== '') {
+      const r = this.rules.find((r) => {
+        return r(e) !== false
+      })
+      if (r) {
+        this.msg = r(e) || null
+      } else {
+        this.msg = null
+      }
     } else {
       this.msg = null
     }
@@ -66,7 +70,6 @@ export default class TextField extends Vue {
   }
 
   onKeyDown(e: KeyboardEvent) {
-    console.log(e)
     if (e.key.toLowerCase() === 'enter' && this.allowNewLine === false) {
       e.preventDefault()
     }
@@ -89,8 +92,13 @@ textarea
 .text-field-label
   word-break break-word
 
+.text-field-outer
+  overflow hidden
+
 .text-field-outer:focus-within .text-field-label
-  color var(--v-primary-base)
+  color var(--v-primary-darken1)
   opacity 1
 
+.hint
+  background rgba(255,255,255,.1)
 </style>
