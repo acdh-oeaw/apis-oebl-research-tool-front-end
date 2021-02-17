@@ -12,7 +12,7 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: '/issue/1'
+    redirect: '/lemmas'
   },
   {
     path: '/issue/:issueId',
