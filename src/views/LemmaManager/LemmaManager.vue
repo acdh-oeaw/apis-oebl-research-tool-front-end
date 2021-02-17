@@ -1,6 +1,17 @@
 <template>
-  <div class="fill-height" ref="container">
+  <div
+    @keydown="onKeyDown"
+    tabindex="-1"
+    class="fill-height"
+    ref="container"
+  >
+    <!-- GLOBAL SEARCH -->
+    <global-search
+      v-model="showSearchDialog"
+    />
+    <!-- LOBID HOVER PREVIEW -->
     <v-menu
+      v-if="lobidPreviewGnds.length > 0"
       :value="lobidPreviewGnds.length > 0"
       @input="lobidPreviewGnds = []"
       :position-x="previewPopupCoords[0]"
@@ -16,22 +27,25 @@
         </v-card-text>
       </v-card>
     </v-menu>
+    <!-- GHOST IMAGE WHEN DRAGGING -->
     <drag-image
       ref="dragGhost"
       :max-items="5"
       :rows="selectedRows" />
+    <!-- ADD LEMMA -->
     <v-dialog
-      :value="addLemmaDialog === true"
+      :value="showAddLemmaDialog === true"
       scrollable
-      @input="addLemmaDialog = $event"
+      @input="showAddLemmaDialog = $event"
       max-width="1000px">
       <lemma-add
         color="background"
-        v-if="addLemmaDialog"
+        v-if="showAddLemmaDialog"
         @confirm="addLemma"
-        @cancel="addLemmaDialog = false"
+        @cancel="showAddLemmaDialog = false"
       />
     </v-dialog>
+    <!-- IMPORT LEMMAS -->
     <v-dialog
       :value="fileToImport.file !== null"
       scrollable
@@ -71,7 +85,7 @@
           </h1>
           <h1
             v-else-if="store.lemma.selectedLemmaListId !== null && store.lemma.getListById(store.lemma.selectedLemmaListId) !== undefined"
-            @blur="updateListName(store.lemma.selectedLemmaListId, $event.target.textContent)"
+            @blur="store.lemma.updateList(store.lemma.selectedLemmaListId, { title: $event.target.textContent })"
             @keyup.enter.prevent.stop="$event.target.blur()"
             @keyup.esc.prevent.stop="cancelUpdateListName"
             v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
@@ -101,6 +115,7 @@
             </v-btn>
           </div>
         </v-flex>
+        <!-- FILTER: TODO: Convert to Component -->
         <v-flex align-self-start class="rounded-lg pa-1 flex-nowrap background darken-2">
           <div
             v-for="(filter, i) in filterItems"
@@ -194,7 +209,11 @@
             <v-divider class="mx-1" v-if="filterItems.length > 1 && i !== filterItems.length - 1" />
           </div>
         </v-flex>
-        <v-flex shrink align-self-start class="pl-2 pr-0" style="margin-top: -3px">
+        <v-flex
+          shrink
+          align-self-start
+          class="pl-2 pr-0"
+          style="margin-top: -3px">
           <v-menu
             min-width="150"
             offset-y
@@ -211,7 +230,7 @@
               </v-btn>
             </template>
             <v-list color="background" class="elevation-0 rounded-lg text-body-2" dense nav>
-              <v-list-item @click="addLemmaDialog = true" dense>
+              <v-list-item @click="showAddLemmaDialog = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-shape-square-plus</v-icon>
                 </v-list-item-avatar>
@@ -279,6 +298,15 @@
             <v-subheader>Farbschema</v-subheader>
             <theme-toggle class="mx-2 mb-2" />
           </v-menu>
+        </v-flex>
+        <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -3px">
+          <v-btn
+            @click="showSearchDialog = true"
+            tile
+            class="rounded-lg"
+            icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex
           v-if="!store.lemma.showSideBar"
@@ -393,24 +421,24 @@ import LemmaDetail from './LemmaDetail.vue'
 import LemmaAdd from './LemmaAdd.vue'
 
 import { fileToArrayBuffer } from '../../util'
-import store from '../../store'
-import { Lemma } from '../../api'
+import store from '@/store'
 import { LemmaFilterComparator, LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
+import GlobalSearch from '@/views/GlobalSearch.vue'
 import { v4 as uuid } from 'uuid'
-import * as lobidService from '../../service/lobid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
 
 @Component({
   components: {
     ResizableDrawer,
-    LemmaImporter: () => import('./LemmaImporter.vue'),
     ThemeToggle,
     DragImage,
     LemmaAdd,
     LemmaDetail,
     LobidPreviewCard,
-    VirtualTable
+    VirtualTable,
+    GlobalSearch,
+    LemmaImporter: () => import('./LemmaImporter.vue'),
   }
 })
 export default class LemmaManager extends Vue {
@@ -418,16 +446,21 @@ export default class LemmaManager extends Vue {
   @Prop({ default: null }) listId!: string|null
 
   store = store
-
   tableHeight = 0
-  addLemmaDialog = false
+
+  showAddLemmaDialog = false
+  showSearchDialog = false
 
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
   title = 'Lemmabibliothek'
 
-  updateListName(id: number, name: string) {
-    store.lemma.updateList(id, { title: name })
+  onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.showSearchDialog = !this.showSearchDialog
+    }
   }
 
   get selectedRows() {
@@ -610,7 +643,7 @@ export default class LemmaManager extends Vue {
   }
 
   addLemma(l: ImportablePerson) {
-    this.addLemmaDialog = false
+    this.showAddLemmaDialog = false
     this.store.lemma.addLemma(l)
   }
 
@@ -827,8 +860,10 @@ export default class LemmaManager extends Vue {
     box-shadow inset 0px 0px 0px 3px var(--v-secondary-lighten5)
 
 .virtual-table:focus .table-row.selected
-  background-color var(--v-background-lighten1) !important
-  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+  // background-color var(--v-background-lighten1) !important
+  // box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+  background-color var(--v-secondary-base) !important
+  color white
 
 .virtual-table .table-row
   border-bottom 1px solid var(--v-background-lighten1) !important
