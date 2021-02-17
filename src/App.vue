@@ -18,8 +18,8 @@
       class="pa-0"
       width="300"
       :mini-variant="!showDrawer">
-      <v-flex class="flex-row d-flex fill-height pa-0">
-        <v-flex class="pa-3" style="width: 73px" shrink>
+      <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
+        <!-- <v-flex class="pa-3" style="width: 73px" shrink>
           <v-btn x-large :to="'/lemmas'" class="mb-2 rounded-lg" icon tile>
             <v-icon size="22" color="grey darken-1">mdi-bookshelf</v-icon>
           </v-btn>
@@ -37,8 +37,8 @@
                 class="ml-3 mt-5" />
             </div>
           </transition>
-        </v-flex>
-        <v-flex v-if="showDrawer" class="pr-2 pt-5" grow>
+        </v-flex> -->
+        <v-flex v-if="showDrawer" class="" grow>
           <router-view name="sidebar" />
         </v-flex>
       </v-flex>
