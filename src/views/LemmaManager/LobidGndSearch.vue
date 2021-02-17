@@ -1,47 +1,21 @@
 <template>
   <div tabindex="-1" @keyup.esc="$emit('cancel')">
-    <v-text-field
-      background-color="background darken-2"
-      class="text-body-2 mb-1 rounded-lg"
+    <text-field
       @input="debouncedSearchGnd"
       v-model="localLemma.firstName"
-      placeholder="Vorname"
-      solo
-      flat
-      dense
-      hide-details>
-      <template v-slot:prepend-inner>
-        <span style="opacity: .7" class="caption">Vorname</span>
-      </template>
-    </v-text-field>
-    <v-text-field
-      background-color="background darken-2"
-      class="text-body-2 mb-1 rounded-lg"
+      label="Vorname">
+    </text-field>
+    <text-field
       @input="debouncedSearchGnd"
       v-model="localLemma.lastName"
-      placeholder="Nachname"
-      solo
-      flat
-      dense
-      hide-details>
-      <template v-slot:prepend-inner>
-        <span style="opacity: .7" class="caption">Nachname</span>
-      </template>
-    </v-text-field>
-    <v-text-field
-      background-color="background darken-2"
-      class="text-body-2 mb-1 rounded-lg"
+      label="Nachname">
+    </text-field>
+    <text-field
       v-model="selectedGnd"
       @input="useCustomGnd($event.target.value)"
       placeholder="manuell wählen…"
-      solo
-      flat
-      dense
-      hide-details>
-      <template v-slot:prepend-inner>
-        <span style="opacity: .7" class="caption">GND</span>
-      </template>
-    </v-text-field>
+      label="GND">
+    </text-field>
     <div class="results pt-3">
       <v-overlay absolute v-if="loading">
         <loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
@@ -76,11 +50,13 @@ import _, { clone } from 'lodash'
 import { findPerson } from '@/service/lobid'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
+import TextField from '@/views/lib/TextField.vue'
 
 @Component({
   components: {
     LobidPreviewCard,
-    LoadingSpinner
+    LoadingSpinner,
+    TextField
   }
 })
 export default class LobidGndSearch extends Vue {
