@@ -163,7 +163,7 @@ h1
   font-weight 900
   line-height 1em
 
-.full-width
+.fill-width
   width 100%
 
 // this is usually "0", i.e. the same as the __content.
