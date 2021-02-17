@@ -32,17 +32,12 @@ app.post('/message', (req, res) => {
 io.on('connection', (socket) => {
   console.log('a user connected', socket.id)
   socket.send('message', 'yo')
-  // when someone sends something, send it to all others.
+  // when someone sends any message, send it to all others.
   socket.onAny((name, ...m) => {
     console.log(name, m)
     socket.broadcast.emit(name, ...m)
-    // console.log('others:', Object.values(socket.server.sockets.sockets))
-    // Object.values(socket.server.sockets.sockets).forEach((s) => {
-    //   if (s.id !== socket.id) {
-    //     s.send(name, m)
-    //   }
-    // })
   })
+  // TODO: this creates a memory leak.
   emitter.on('message', (m) => {
     socket.send(m)
   })
