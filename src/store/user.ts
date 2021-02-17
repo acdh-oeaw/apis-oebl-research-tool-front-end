@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { MeService } from '../api'
 
-interface UserProfile {
+export interface UserProfile {
   email: string
   first_name: string
   last_name: string
@@ -19,12 +19,15 @@ export default class UserStore {
     userId: -1
   }
 
+  hasLoaded = false
+
   constructor() {
     this.loadUserData()
   }
 
   async loadUserData() {
     this.userProfile = await MeService.meRetrieve()
+    this.hasLoaded = true
   }
 
 }

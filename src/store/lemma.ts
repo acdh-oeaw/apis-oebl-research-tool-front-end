@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { WorkflowService, Author, Lemma, ResearchService, List as LemmaList, IssueLemma } from '@/api'
-// eslint-disable-next-line @typescript-eslint/camelcase
-// import random_name from 'node-random-name'
 import _ from 'lodash'
-import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma, UserColumn } from '@/types/lemma'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import { WithId } from '@/types'
+
+import { ResearchService, List as LemmaList, IssueLemma } from '@/api'
 import notifyService from '@/service/notify/notify'
-import Vue from 'vue'
+import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { WithId } from '@/types'
+import store from '.'
 
 interface LemmaFilter {
   id: string
@@ -31,19 +30,21 @@ export default class LemmaStore {
 
   private lastViewDate: Date|null = null
   private localDb = new LemmaDatabase()
+
   private _lemmas: LemmaRow[] = []
   private _lemmaLists: LemmaList[] = []
-  private _storedLemmaFilters: LemmaFilter[] = []
+  private _columns: LemmaColumn[] = []
 
   private _selectedLemmaListId: null|number = null
   private _selectedLemmaFilterId: null|string = null
   private _selectedLemmaIssueId: null|number = null
   private _selectedLemmas: LemmaRow[] = []
 
+  private _storedLemmaFilters: LemmaFilter[] = []
+
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
-
-  private _columns: LemmaColumn[] = []
+  public newLemmasInUserList: { [listId: number]: { [lemmaId: number]: LemmaRow } } = {}
 
   public defaultColumns: LemmaColumn[] = [
     {
@@ -142,9 +143,33 @@ export default class LemmaStore {
   constructor() {
     this.initLemmaData()
     this.loadRemoteLemmaLists()
+    this.listenForRemoteUpdates()
+  }
+
+  isMovementToUserList(update: Partial<LemmaRow>): boolean {
+    console.log('ismovement to user list', store.user.hasLoaded, update)
+    return (
+      store.user.hasLoaded &&
+      update.list !== undefined &&
+      update.list?.id !== undefined &&
+      this.lemmaLists
+        .filter(ll => ll.editor !== undefined && ll.editor.userId === store.user.userProfile.userId)
+        .map(ll => ll.id)
+        .includes(update.list.id)
+    )
+  }
+
+  listenForRemoteUpdates() {
     notifyService.on('updateLemmas', (ls, u) => {
-      console.log('updateLemmas from server!', ls)
-      this.updateLemmasLocally(ls, u)
+      const updatedLemmas = this.updateLemmasLocally(ls, u)
+      if (this.isMovementToUserList(u)) {
+        if (u.list?.id !== undefined) {
+          this.newLemmasInUserList[u.list?.id] = {
+            ...this.newLemmasInUserList[u.list?.id],
+            ..._.keyBy(updatedLemmas, 'id')
+          }
+        }
+      }
     })
   }
 
@@ -169,11 +194,12 @@ export default class LemmaStore {
     localStorage.setItem('storedLemmaFilters', JSON.stringify(ls))
   }
 
-  get lemmaLists(): ({ count?: number } & LemmaList)[] {
+  get lemmaLists(): ({ count?: number, countNew?: number } & LemmaList)[] {
     return this._lemmaLists.map(ll => {
       return {
         ...ll,
-        count: this._lemmas.filter(l => l.list?.id === ll.id).length
+        count: this._lemmas.filter(l => l.list?.id === ll.id).length,
+        countNew: ll.id !== undefined ? Object.keys(this.newLemmasInUserList[ll.id] || {}).length : 0
       }
     })
   }
@@ -241,19 +267,27 @@ export default class LemmaStore {
     return this.getStoredLemmaFilterById(id)
   }
 
-  async addLemmasToList(id: number, ls: LemmaRow[]) {
-    await this.updateLemmas(ls, { list: {id: id} } as any)
+  async addLemmasToList(list: LemmaRow['list'], ls: LemmaRow[]) {
+    this.updateLemmasLocally(ls, { list })
+    notifyService.emit('updateLemmas', ls, { list })
+    await Promise.all(ls.map(async (l) => {
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: ({pk: list?.id} as any) })
+    }))
   }
 
-  private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>) {
+  private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): LemmaRow[] {
     const ids = ls.map(l => l.id)
+    const updatedLemmas: LemmaRow[] = []
     this._lemmas = this._lemmas.map((l) => {
       if (ids.includes(l.id)) {
-        return {...l, ...u}
+        const nl = {...l, ...u}
+        updatedLemmas.push(nl)
+        return nl
       } else {
         return l
       }
     })
+    return updatedLemmas
   }
 
   async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
@@ -411,7 +445,7 @@ export default class LemmaStore {
   }
 
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
-    // TODO: remove options, use olny dateOfBirth/Death
+    // TODO: remove options, use only dateOfBirth/Death
     const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'columns_user.dateOfBirth')
     const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'columns_user.dateOfDeath')
     return {
