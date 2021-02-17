@@ -54,7 +54,7 @@
       :extension-height="filterItems.length * 32 "
       color="background"
       flat>
-      <div class="d-flex full-width flex-row align-stretch align-self-start mt-4">
+      <div class="d-flex fill-width flex-row align-stretch align-self-start mt-4">
         <v-btn style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
@@ -85,9 +85,19 @@
             contenteditable="true">
           </h1>
           <div class="caption mt-1 text-no-wrap">
-            <span style="opacity: .7">{{ filteredData.length }} Ergebnisse</span>
-            <v-btn style="margin-top: -2px" rounded class="ml-2 pl-0 pr-2" small text @click="scrollToNextSelectedLemma" v-if="selectedRows.length > 0">
-              <v-badge class="ml-0" :content="selectedRows.length" inline></v-badge> ausgewählt
+            <span style="opacity: .7">
+              {{ filteredLemmas.length }} Ergebnisse.
+              {{ selectedRows.length }} ausgewählt
+            </span>
+            <v-btn
+              v-if="newLemmas.length > 0"
+              style="margin-top: -2px"
+              rounded
+              elevation="0"
+              color="primary"
+              class="ml-2"
+              x-small>
+              {{ newLemmas.length }} neu
             </v-btn>
           </div>
         </v-flex>
@@ -320,7 +330,7 @@
         @close="store.lemma.showSideBar = false"
         @update="updateLemma(selectedRows[0], $event)" />
     </resizable-drawer>
-    <v-main class="full-width fill-height transition-padding">
+    <v-main class="fill-width fill-height transition-padding">
       <virtual-table
         ref="vTable"
         class="virtual-table text-body-2"
@@ -328,7 +338,7 @@
         :sortable-columns="true"
         :row-height="40"
         :height="tableHeight"
-        :data="filteredData"
+        :data="sortedFilteredLemmas"
         @keyup.native.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
         @dblclick:row="store.lemma.showSideBar = !store.lemma.showSideBar"
@@ -408,7 +418,6 @@ export default class LemmaManager extends Vue {
   @Prop({ default: null }) listId!: string|null
 
   store = store
-  log = console.log
 
   tableHeight = 0
   addLemmaDialog = false
@@ -429,7 +438,15 @@ export default class LemmaManager extends Vue {
     store.lemma.selectedLemmas = ls
   }
 
-  filteredData: LemmaRow[] = this.store.lemma.lemmas
+  get newLemmas(): LemmaRow[] {
+    if (store.lemma.selectedLemmaListId !== null) {
+      return Object.values(store.lemma.newLemmasInUserList[store.lemma.selectedLemmaListId] || {})
+    } else {
+      return []
+    }
+  }
+
+  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
   filterDataDebounced = _.debounce(this.filterData, 150)
 
   fileToImport = {
@@ -576,12 +593,20 @@ export default class LemmaManager extends Vue {
     return (window.innerHeight - 70) - (this.filterItems.length * 35)
   }
 
-  sortLemmas(l: LemmaColumn) {
-    const sort = (l.sort === null || l.sort === undefined || l.sort === 'desc')
+  sortLemmas(c: LemmaColumn) {
+    const sort = (c.sort === null || c.sort === undefined || c.sort === 'desc')
       ? 'asc'
       : 'desc'
-    this.columns = this.columns.map(c => ({ ...c, sort: c.value === l.value ? sort : undefined }))
-    this.filteredData = _.orderBy(this.filteredData, l.value, sort)
+    this.columns = this.columns.map(cO => ({ ...cO, sort: cO.value === c.value ? sort : undefined }))
+  }
+
+  get sortedFilteredLemmas(): LemmaRow[] {
+    const sortByColumn = this.columns.find(c => c.sort !== undefined && c.sort !== null)
+    if (sortByColumn !== undefined) {
+      return _.orderBy(this.filteredLemmas, sortByColumn.value, sortByColumn.sort || 'asc')
+    } else {
+      return this.filteredLemmas
+    }
   }
 
   addLemma(l: ImportablePerson) {
@@ -602,7 +627,7 @@ export default class LemmaManager extends Vue {
   }
 
   async deleteSelectedLemmas(e: KeyboardEvent) {
-    const indexOfLastSelected = this.filteredData.findIndex(l => _.last(this.selectedRows)?.id === l.id)
+    const indexOfLastSelected = this.sortedFilteredLemmas.findIndex(l => _.last(this.selectedRows)?.id === l.id)
     // A list is selected
     // remove from list.
     if (store.lemma.selectedLemmaListId !== null) {
@@ -611,7 +636,7 @@ export default class LemmaManager extends Vue {
         this.removeLemmasFromList(this.selectedRows)
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
         }
       }
     // An issue is selected
@@ -622,7 +647,7 @@ export default class LemmaManager extends Vue {
         this.removeLemmasFromIssue(this.selectedRows)
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
         }
       }
     } else {
@@ -633,7 +658,7 @@ export default class LemmaManager extends Vue {
         await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.filteredData[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
         }
       }
     }
@@ -642,7 +667,7 @@ export default class LemmaManager extends Vue {
   scrollToNextSelectedLemma() {
     if (this.selectedRows.length > 0) {
       const first = this.selectedRows[0]
-      const i = this.filteredData.findIndex(f => f.id === first.id);
+      const i = this.sortedFilteredLemmas.findIndex(f => f.id === first.id);
       (this.$refs.vTable as Vue).$el.querySelector('.v-virtual-scroller')!.scrollTo({
         top: i * 42,
         behavior: 'smooth'
@@ -762,11 +787,11 @@ export default class LemmaManager extends Vue {
   filterData() {
     const comparators = _.keyBy(this.comparators, 'value')
     if (this.usableFilterItems.length === 0) {
-      this.filteredData = store.lemma.lemmas
+      this.filteredLemmas = store.lemma.lemmas
     } else {
       console.time('filter lemmas')
       const filterItemsByColumn = _.groupBy(this.usableFilterItems, (i) => i.column.value + '__' + i.comparator)
-      this.filteredData = store.lemma.lemmas.filter(d => {
+      this.filteredLemmas = store.lemma.lemmas.filter(d => {
         return _.every(filterItemsByColumn, (fs) => {
           if (fs.length === 1) {
             // only one filter item for this column

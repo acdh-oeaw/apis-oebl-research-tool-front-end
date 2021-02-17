@@ -110,7 +110,7 @@
             dense
             @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
             @dragover.prevent=""
-            @drop.prevent="copyLemmasToList(list.id, $event)"
+            @drop.prevent="copyLemmasToList(list, $event)"
             @click="store.lemma.selectedLemmaListId = list.id || null">
             <v-list-item-avatar size="15" tile>
               <v-icon small>mdi-format-list-bulleted</v-icon>
@@ -131,6 +131,13 @@
                   :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
                   :content="list.count ? list.count.toString() : '0'" />
               </transition>
+            </v-list-item-action>
+            <v-list-item-action class="ml-0" v-if="list.countNew !== 0">
+              <v-badge
+                inline
+                class="font-weight-bold"
+                color="primary"
+                :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
             </v-list-item-action>
           </v-list-item>
         </v-list-group>
@@ -160,7 +167,7 @@
             dense
             @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
             @dragover.prevent=""
-            @drop.prevent="copyLemmasToList(list.id, $event)"
+            @drop.prevent="copyLemmasToList(list, $event)"
             @click="store.lemma.selectedLemmaListId = list.id || null">
             <v-list-item-avatar size="15" tile>
               <v-icon small>mdi-format-list-bulleted</v-icon>
@@ -226,7 +233,7 @@ import { LemmaRow } from '@/types/lemma'
 import _ from 'lodash'
 import confirm from '@/store/confirm'
 import prompt from '@/store/prompt'
-import { List as LemmaList } from '@/api/models/List'
+import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
 
 @Component
@@ -268,18 +275,14 @@ export default class LemmaNavigation extends Vue {
     }
   }
 
-  async copyLemmasToList(id: number, e: DragEvent) {
+  async copyLemmasToList(list: WithId<List>, e: DragEvent) {
     this.highlightedKey = null
     const lemmas = JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[]
-    const listIndex = store.lemma.lemmaLists.findIndex(l => l.id === id)
-    if (listIndex > -1) {
-      const list = store.lemma.lemmaLists[listIndex]
-      const listItems = store.lemma.getLemmasByList(list.id as number)
-      const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
-      const diff = newLemmaList.length - listItems.length
-      if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`)) {
-        store.lemma.addLemmasToList(list.id!, lemmas)
-      }
+    const listItems = store.lemma.getLemmasByList(list.id)
+    const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
+    const diff = newLemmaList.length - listItems.length
+    if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`)) {
+      store.lemma.addLemmasToList(list, lemmas)
     }
   }
 
@@ -310,7 +313,7 @@ export default class LemmaNavigation extends Vue {
     if (name !== null) {
       const l = await store.lemma.createList(name) as WithId<LemmaList>
       if (lemmas.length) {
-        await store.lemma.addLemmasToList(l.id, lemmas)
+        await store.lemma.addLemmasToList(l, lemmas)
       }
       store.lemma.selectedLemmaListId = l.id
     }
