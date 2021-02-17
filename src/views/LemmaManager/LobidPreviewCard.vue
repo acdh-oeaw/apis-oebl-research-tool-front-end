@@ -4,7 +4,7 @@
       v-for="(fragment, i) in fragments"
       :key="i"
       @click="selectOrDeselectFragment(fragment.gnd)"
-      style="font-size: 130%; line-height: 1.2;"
+      style="font-size: 130%; line-height: 1.2; height: 100px"
       :class="['fragment', $listeners['input'] !== undefined && 'clickable' ]"
       no-gutters>
       <slot />
