@@ -147,7 +147,7 @@
           top: 0,
           background: ''
         }">
-        Importierte Daten
+        Erweiterte Daten
       </h4>
       <v-card-text class="pt-0">
         <text-field
