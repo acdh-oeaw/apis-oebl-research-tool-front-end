@@ -14,7 +14,7 @@
             v-model="searchText"
             @keydown.esc.capture.prevent.stop="onEsc"
             ref="input"
-            class="pa-3 rounded-lg global-search background darken-1"
+            class="pa-4 rounded-lg global-search background darken-1"
             placeholder="Suchen…"
             type="text" />
         </v-card-title>
@@ -55,7 +55,7 @@ export default class GlobalSearch extends Vue {
 </script>
 <style lang="stylus" scoped>
 .global-search
-  font-size: 2em
+  font-size: 1.7em
   width: 100%
   outline: 0
 </style>
