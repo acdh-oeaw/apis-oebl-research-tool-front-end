@@ -5,7 +5,7 @@ import * as jaroWinkler from 'jaro-winkler'
 
 import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { ImportablePerson, isValidServerResearchLemma, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -303,14 +303,16 @@ export default class LemmaStore {
     }
   }
 
-  private insertLemmasLocally(ls: LemmaRow[]) {
-    this.lemmas = this._lemmas.concat(ls)
+  private async insertLemmasLocally(ls: LemmaRow[]) {
+    // this._lemmas = _.uniqBy(this._lemmas.concat(ls), 'id')
+    this._lemmas = this._lemmas.concat(ls)
+    await this.localDb.lemmas.bulkPut(ls)
   }
 
   private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): LemmaRow[] {
     const ids = ls.map(l => l.id)
     const updatedLemmas: LemmaRow[] = []
-    this.lemmas = this.lemmas.map((l) => {
+    this._lemmas = this._lemmas.map((l) => {
       if (ids.includes(l.id)) {
         const nl = {...l, ...u}
         updatedLemmas.push(nl)
@@ -319,6 +321,7 @@ export default class LemmaStore {
         return l
       }
     })
+    this.localDb.lemmas.bulkPut(updatedLemmas)
     return updatedLemmas
   }
 
@@ -520,12 +523,6 @@ export default class LemmaStore {
     const s = await ResearchService.researchApiV1ListresearchCreate({ title })
     this.lemmaLists = [ ...this.lemmaLists, s ]
     return s
-  }
-
-  async updateLemmasWith(ls: LemmaRow[]) {
-    await this.localDb.lemmas.bulkPut(ls)
-    this._lemmas = await this.localDb.lemmas.toArray()
-    return this._lemmas
   }
 
   getLemmaById(id?: number) {
