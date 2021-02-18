@@ -69,7 +69,7 @@
       color="background"
       flat>
       <div class="d-flex fill-width flex-row align-stretch align-self-start mt-4">
-        <v-btn style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
+        <v-btn v-if="!store.settings.lemmaManagerNavVisible" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
         <v-flex shrink align-self-start class="mr-5 lemma-view-title">

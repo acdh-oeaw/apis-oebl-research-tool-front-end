@@ -1,32 +1,41 @@
 <template>
   <div class="d-flex fill-height flex-column overflow-y-hidden">
     <div class="background darken-2" :style="{ zIndex: 1}">
-      <v-text-field
-        style="position: relative"
-        :placeholder="requestState.isLoading ? 'Lade…' : 'Lemmalisten suchen…'"
-        solo
-        autofocus
-        background-color="background lighten-1"
-        class="text-body-2 rounded-lg search-field"
-        dense
-        @keydown.esc="onEscSearch"
-        v-model="searchQuery"
-        hide-details
-        clearable
-        flat>
-        <template v-slot:prepend-inner>
-          <div v-if="requestState.isLoading === true">
-            <loading-spinner
-              :size="25"
-              :color="$vuetify.theme.dark ? 'white' : 'grey'"
-              class="" />
-          </div>
-          <v-icon v-else>
-            mdi-magnify
-          </v-icon>
-        </template>
-      </v-text-field>
-      <v-divider class="mt-3" />
+      <div class="d-flex pr-2 pb-2">
+        <v-btn
+          @click="toggleDrawer"
+          tile
+          class="rounded-lg mr-2"
+          icon>
+          <v-icon>mdi-dock-left</v-icon>
+        </v-btn>
+        <v-text-field
+          style="position: relative"
+          :placeholder="requestState.isLoading ? 'Lade…' : 'Lemmalisten suchen…'"
+          solo
+          autofocus
+          background-color="background lighten-1"
+          class="text-body-2 rounded-lg search-field"
+          dense
+          @keydown.esc="onEscSearch"
+          v-model="searchQuery"
+          hide-details
+          clearable
+          flat>
+          <template v-slot:prepend-inner>
+            <div v-if="requestState.isLoading === true">
+              <loading-spinner
+                :size="25"
+                :color="$vuetify.theme.dark ? 'white' : 'grey'"
+                class="" />
+            </div>
+            <v-icon v-else>
+              mdi-magnify
+            </v-icon>
+          </template>
+        </v-text-field>
+      </div>
+      <!-- <v-divider class="mt-3" /> -->
     </div>
     <div style="flex: 1" class="overflow-y-auto">
       <v-list
@@ -359,6 +368,10 @@ export default class LemmaNavigation extends Vue {
 
   get filteredLemmaListsOtherUsers() {
     return this.filteredLemmaLists.filter(l => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId)
+  }
+
+  toggleDrawer() {
+    this.store.settings = {...this.store.settings, lemmaManagerNavVisible: !this.store.settings.lemmaManagerNavVisible}
   }
 
 }
