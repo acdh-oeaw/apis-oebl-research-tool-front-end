@@ -39,7 +39,7 @@
         GND: {{ value.gnd[0] }}<v-badge v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" color="blue-grey" inline />
       </h4>
       <v-card-text class="pt-1">
-        <v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
+        <v-window style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
           <v-window-item>
             <lobid-preview-card
               class="mb-2"
