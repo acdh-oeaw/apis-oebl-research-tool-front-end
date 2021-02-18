@@ -12,12 +12,11 @@
       color="background darken-2"
       stateless
       app
-      :value="true"
+      :value="showDrawer"
       left
       mini-variant-width="73"
       class="pa-0"
-      width="300"
-      :mini-variant="!showDrawer">
+      width="300">
       <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
         <!-- <v-flex class="pa-3" style="width: 73px" shrink>
           <v-btn x-large :to="'/lemmas'" class="mb-2 rounded-lg" icon tile>
@@ -90,16 +89,6 @@ export default class App extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.fade-enter-active
-.fade-leave-active
-  transition: opacity .5s;
-
-.fade-enter
-.fade-leave-to
-  opacity: 0;
-
-</style>
 
 <style lang="stylus">
 @import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
