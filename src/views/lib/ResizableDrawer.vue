@@ -174,10 +174,10 @@ export default class ResizableDrawer extends Vue {
   border-radius 13px
 
 .nav-drawer.display-card /deep/ .v-navigation-drawer__content
-  margin 15px 0 15px 15px
+  margin 10px 0 10px 10px
 
 .nav-drawer.right.display-card /deep/ .v-navigation-drawer__content
-  margin 15px 15px 15px 0
+  margin 10px 10px 10px 0
 
 .resize-handle-outer
   position: absolute;
