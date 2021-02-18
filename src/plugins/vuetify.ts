@@ -32,9 +32,7 @@ export default new Vuetify({
         sidebar: '#F1F5FA',
         // primary: '#6495ed',
         primary: colors.orange.darken1,
-        secondary: {
-          base: '#617e8a'
-        },
+        secondary: '#617e8a',
         // secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
