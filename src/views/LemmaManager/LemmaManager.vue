@@ -649,9 +649,7 @@ export default class LemmaManager extends Vue {
   }
 
   async removeLemmasFromList(l: LemmaRow[]) {
-    // FIXME:
-    // backend method missing
-    await this.store.lemma.updateLemmas(l, { list: undefined })
+    await this.store.lemma.updateLemmas(l, { list: null })
   }
 
   async removeLemmasFromIssue(l: LemmaRow[]) {
