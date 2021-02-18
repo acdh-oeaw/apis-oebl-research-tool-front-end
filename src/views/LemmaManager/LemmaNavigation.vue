@@ -2,18 +2,30 @@
   <div class="d-flex fill-height flex-column overflow-y-hidden">
     <div class="background darken-2" :style="{ zIndex: 1}">
       <v-text-field
-        placeholder="Lemmalisten suchen…"
+        style="position: relative"
+        :placeholder="requestState.isLoading ? 'Lade…' : 'Lemmalisten suchen…'"
         solo
         autofocus
         background-color="background lighten-1"
         class="text-body-2 rounded-lg search-field"
         dense
-        prepend-inner-icon="mdi-magnify"
         @keydown.esc="onEscSearch"
         v-model="searchQuery"
         hide-details
         clearable
-        flat />
+        flat>
+        <template v-slot:prepend-inner>
+          <div v-if="requestState.isLoading === true">
+            <loading-spinner
+              :size="25"
+              :color="$vuetify.theme.dark ? 'white' : 'grey'"
+              class="" />
+          </div>
+          <v-icon v-else>
+            mdi-magnify
+          </v-icon>
+        </template>
+      </v-text-field>
       <v-divider class="mt-3" />
     </div>
     <div style="flex: 1" class="overflow-y-auto">
@@ -228,15 +240,20 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import store from '../../store'
-import { v4 as uuid } from 'uuid'
+import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
 import { LemmaRow } from '@/types/lemma'
 import _ from 'lodash'
 import confirm from '@/store/confirm'
 import prompt from '@/store/prompt'
 import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
+import { requestState } from '@/store/fetch'
 
-@Component
+@Component({
+  components: {
+    LoadingSpinner
+  }
+})
 export default class LemmaNavigation extends Vue {
 
   searchQuery: string|null = null
@@ -244,6 +261,7 @@ export default class LemmaNavigation extends Vue {
   editingNameKey: string|null = null
   store = store
   log = console.log
+  requestState = requestState
 
   selectLemmaFilter(i: string) {
     store.lemma.selectedLemmaFilterId = i
