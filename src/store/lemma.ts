@@ -3,11 +3,12 @@ import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 
-import { ResearchService, List as LemmaList, IssueLemma } from '@/api'
+import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { ImportablePerson, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
+import { UserProfile } from './user'
 
 interface LemmaFilter {
   id: string
@@ -147,16 +148,33 @@ export default class LemmaStore {
     this.listenForRemoteImports()
   }
 
-  isMovementToUserList(update: Partial<LemmaRow>): boolean {
-    console.log('ismovement to user list', store.user.hasLoaded, update)
+  updateDescribesListMovement(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
     return (
-      store.user.hasLoaded &&
+      update.list !== undefined &&
       update.list !== undefined &&
       update.list?.id !== undefined &&
-      this.lemmaLists
-        .filter(ll => ll.editor !== undefined && ll.editor.userId === store.user.userProfile.userId)
+      ls.length > 0 &&
+      ls[0].list !== undefined &&
+      ls[0].list.id !== update.list.id
+    )
+  }
+
+  getUserLists(lists: List[], u: UserProfile): List[] {
+    return lists
+      .filter(ll => {
+        return (
+          ll.editor !== undefined &&
+          ll.editor.userId === store.user.userProfile.userId
+        )
+      })
+  }
+
+  isMovementToUserList(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
+    return (
+      this.updateDescribesListMovement(ls, update) &&
+      this.getUserLists(this.lemmaLists, store.user.userProfile)
         .map(ll => ll.id)
-        .includes(update.list.id)
+        .includes(update.list?.id)
     )
   }
 
@@ -170,7 +188,7 @@ export default class LemmaStore {
   listenForRemoteUpdates() {
     notifyService.on('updateLemmas', (ls, u) => {
       const updatedLemmas = this.updateLemmasLocally(ls, u)
-      if (this.isMovementToUserList(u)) {
+      if (this.isMovementToUserList(ls, u)) {
         if (u.list?.id !== undefined) {
           this.newLemmasInUserList[u.list?.id] = {
             ...this.newLemmasInUserList[u.list?.id],
@@ -286,13 +304,13 @@ export default class LemmaStore {
   }
 
   private insertLemmasLocally(ls: LemmaRow[]) {
-    this._lemmas = this._lemmas.concat(ls)
+    this.lemmas = this._lemmas.concat(ls)
   }
 
   private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): LemmaRow[] {
     const ids = ls.map(l => l.id)
     const updatedLemmas: LemmaRow[] = []
-    this._lemmas = this._lemmas.map((l) => {
+    this.lemmas = this.lemmas.map((l) => {
       if (ids.includes(l.id)) {
         const nl = {...l, ...u}
         updatedLemmas.push(nl)
@@ -463,7 +481,7 @@ export default class LemmaStore {
     const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'columns_user.dateOfBirth')
     const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'columns_user.dateOfDeath')
     return {
-      id: rs.id!,
+      id: rs.id,
       selected: rs.selected || false,
       birthYear: dateOfBirth ? (new Date(dateOfBirth).getFullYear().toString()) : null,
       deathYear: dateOfDeath ? (new Date(dateOfDeath).getFullYear().toString()) : null,

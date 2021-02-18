@@ -112,11 +112,13 @@
       </h4>
       <v-card-text>
         <text-field
+          :required="true"
           label="Vorname"
           :value="value.firstName"
           @input="debouncedUpdateData({ firstName: $event })"
         />
         <text-field
+          :required="true"
           label="Nachname"
           :value="value.lastName"
           @input="debouncedUpdateData({ lastName: $event })"
@@ -161,7 +163,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { LemmaRow } from '@/types/lemma'
+import { LemmaRow, isValidServerResearchLemma } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
@@ -215,6 +217,7 @@ export default class LemmaDetail extends Vue {
   debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300)
 
   updateData(u: Partial<LemmaRow>) {
+    // console.log(isValidServerResearchLemma(u))
     this.$emit('update', {...this.value, ...u})
   }
 
