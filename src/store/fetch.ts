@@ -1,6 +1,8 @@
 import store from '.'
 import confirm from './confirm'
 import { OpenAPI } from '@/api'
+import { boolean } from 'io-ts'
+import _ from 'lodash'
 const fetchOriginal = fetch
 
 export const requestState = {
@@ -17,8 +19,10 @@ function isHttpWriteCall(init?: RequestInit): boolean {
   return init !== undefined && init.method !== undefined && init.method.toLowerCase() !== 'get'
 }
 
+const setIsLoading = _.debounce(() => { requestState.isLoading = true }, 100)
+const setIsNotLoading = _.debounce(() => { requestState.isLoading = false }, 200)
 window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-  requestState.isLoading = true
+  setIsLoading()
   requestState.hasErrored = false
   const isWriteCall = isHttpWriteCall(init)
   if (isWriteCall) {
@@ -30,7 +34,7 @@ window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response>
   }
   if (res.ok) {
     // success
-    requestState.isLoading = false
+    setIsNotLoading()
     return res
   } else {
     // error
