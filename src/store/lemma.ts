@@ -144,6 +144,7 @@ export default class LemmaStore {
     this.initLemmaData()
     this.loadRemoteLemmaLists()
     this.listenForRemoteUpdates()
+    this.listenForRemoteImports()
   }
 
   isMovementToUserList(update: Partial<LemmaRow>): boolean {
@@ -157,6 +158,13 @@ export default class LemmaStore {
         .map(ll => ll.id)
         .includes(update.list.id)
     )
+  }
+
+  listenForRemoteImports() {
+    notifyService.on('importLemmas', (ls) => {
+      console.log('importing lemmas', ls)
+      this.insertLemmasLocally(ls.map(this.convertRemoteLemmaToLemmaRow))
+    })
   }
 
   listenForRemoteUpdates() {
@@ -268,11 +276,17 @@ export default class LemmaStore {
   }
 
   async addLemmasToList(list: LemmaRow['list'], ls: LemmaRow[]) {
-    this.updateLemmasLocally(ls, { list })
-    notifyService.emit('updateLemmas', ls, { list })
-    await Promise.all(ls.map(async (l) => {
-      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: ({pk: list?.id} as any) })
-    }))
+    if (list !== undefined) {
+      this.updateLemmasLocally(ls, { list })
+      notifyService.emit('updateLemmas', ls, { list })
+      await Promise.all(ls.map(async (l) => {
+        await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: { id: list.id, title: list.title } })
+      }))
+    }
+  }
+
+  private insertLemmasLocally(ls: LemmaRow[]) {
+    this._lemmas = this._lemmas.concat(ls)
   }
 
   private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): LemmaRow[] {
@@ -463,7 +477,6 @@ export default class LemmaStore {
       gnd: rs.gnd.filter(g => g !== 'None'),
       columns_user: rs.columns_user,
       columns_scrape: rs.columns_scrape,
-      // yuck
       list: rs.list,
     }
   }
