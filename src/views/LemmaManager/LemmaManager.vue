@@ -99,20 +99,20 @@
             contenteditable="true">
           </h1>
           <div class="caption mt-1 text-no-wrap">
+            <v-btn
+              v-if="newLemmas.length > 0"
+              style="margin-top: -2px; letter-spacing: .1em"
+              rounded
+              elevation="0"
+              color="primary"
+              class="mr-2 font-weight-bold"
+              x-small>
+              {{ newLemmas.length }} NEU
+            </v-btn>
             <span style="opacity: .7">
               {{ filteredLemmas.length }} Ergebnisse.
               {{ selectedRows.length }} ausgewählt
             </span>
-            <v-btn
-              v-if="newLemmas.length > 0"
-              style="margin-top: -2px"
-              rounded
-              elevation="0"
-              color="primary"
-              class="ml-2"
-              x-small>
-              {{ newLemmas.length }} neu
-            </v-btn>
           </div>
         </v-flex>
         <!-- FILTER: TODO: Convert to Component -->
@@ -123,7 +123,7 @@
             <v-card
               flat
               color="transparent"
-              class="text-body-2 row row--dense input-no-stroke px-2 py-0 flex-nowrap">
+              class="text-body-2 row row--dense input-no-stroke px-2 py-1 flex-nowrap">
               <div style="max-width: 120px" class="col col-2">
                 <v-select
                   :menu-props="{
@@ -277,6 +277,7 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list>
+            <v-divider />
             <v-subheader class="pt-0 mt-0">Spalten anzeigen</v-subheader>
             <v-list
               style="max-height: 50vh; overflow: scroll"
@@ -847,17 +848,18 @@ export default class LemmaManager extends Vue {
   display none
 
 .virtual-table
+  padding-left 1em
   border 0 !important
   outline 0 !important
+  background var(--v-background-darken1)
   .v-virtual-scroll
-    background var(--v-background-darken1)
+    padding-right 1em
 
 .virtual-table .table-row
   transition background-color .1s
   &.selected
     border-radius 5px
-    background-color var(--v-background-lighten1) !important
-    box-shadow inset 0px 0px 0px 3px var(--v-secondary-lighten5)
+    background-color rgba(0,0,0,.15) !important
 
 .virtual-table:focus .table-row.selected
   // background-color var(--v-background-lighten1) !important
@@ -865,7 +867,10 @@ export default class LemmaManager extends Vue {
   background-color var(--v-secondary-base) !important
   color white
 
-.virtual-table .table-row
+.theme--light .virtual-table .table-row
+  border-bottom 1px solid rgba(0,0,0,.07) !important
+
+.theme--dark .virtual-table .table-row
   border-bottom 1px solid var(--v-background-lighten1) !important
 
 .virtual-table .table-cell,
