@@ -462,6 +462,12 @@ export default class LemmaManager extends Vue {
       e.stopPropagation()
       this.showSearchDialog = !this.showSearchDialog
     }
+    if (e.key.toLowerCase() === 'enter') {
+      e.preventDefault()
+      if (store.lemma.showSideBar === false) {
+        store.lemma.showSideBar = true
+      }
+    }
   }
 
   get selectedRows() {
@@ -649,7 +655,7 @@ export default class LemmaManager extends Vue {
   }
 
   async removeLemmasFromList(l: LemmaRow[]) {
-    await this.store.lemma.updateLemmas(l, { list: null })
+    await this.store.lemma.updateLemmas(l, { list: null as any })
   }
 
   async removeLemmasFromIssue(l: LemmaRow[]) {
