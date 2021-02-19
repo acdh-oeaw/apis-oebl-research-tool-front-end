@@ -305,7 +305,6 @@ export default class LemmaStore {
 
   private async insertLemmasLocally(ls: LemmaRow[]) {
     this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id')
-    this._lemmas = this._lemmas.concat(ls)
     await this.localDb.lemmas.bulkPut(ls)
   }
 
