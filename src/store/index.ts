@@ -75,15 +75,16 @@ class Store {
   }
 
   async logIn(user: string, pwd: string): Promise<boolean> {
+    // FIXME: use token
+    localStorage.setItem('user', btoa(user))
+    localStorage.setItem('pass', btoa(pwd))
     OpenAPI.USERNAME = user
     OpenAPI.PASSWORD = pwd
+    console.log(OpenAPI)
     try {
       await this.runCallbacks(this.loginCallbacks)
       this.loginCallbacks = []
       this.isLoggedIn = true
-      // FIXME: use token
-      localStorage.setItem('user', btoa(user))
-      localStorage.setItem('pass', btoa(pwd))
       return true
     } catch (e) {
       return false
@@ -108,12 +109,12 @@ class Store {
     return this._selectedBiographyId
   }
 
-  editors = new EditorStore()
+  user = new UserStore()
   lemma = new LemmaStore()
+  editors = new EditorStore()
   issue = new IssueStore(this.selectedIssue)
   authors = new AuthorStore()
   labels = new LabelStore()
-  user = new UserStore()
 }
 
 export default Vue.observable(new Store())
