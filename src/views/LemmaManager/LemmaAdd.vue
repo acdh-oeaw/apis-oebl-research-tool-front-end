@@ -69,7 +69,7 @@
           />
         </v-col>
         <v-col cols="5" class="background darken-1 pa-4 fill-height overflow-y-hidden">
-          <v-window class="pt-1 fill-height" :value="viewLemmaDetail === null ? 0 : 1">
+          <v-window reverse class="pt-1 fill-height" :value="viewLemmaDetail === null ? 0 : 1">
             <v-window-item class="fill-height" :value="0">
               <div class="d-flex flex-column fill-height">
                 <v-btn-toggle :value="window" borderless style="width: 50%" class="mb-4">
