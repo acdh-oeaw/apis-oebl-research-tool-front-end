@@ -123,7 +123,7 @@
             <v-card
               flat
               color="transparent"
-              class="text-body-2 row row--dense input-no-stroke px-2 py-1 flex-nowrap">
+              class="text-body-2 row row--dense input-no-stroke px-2 py-0 flex-nowrap">
               <div style="max-width: 120px" class="col col-2">
                 <v-select
                   :menu-props="{
@@ -330,6 +330,9 @@
       color="background"
       :card="true"
       :right="true"
+      :min-width="300"
+      :width="store.settings.drawerRightWidth"
+      @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
       :value="store.lemma.showSideBar">
       <v-btn
         style="position: absolute; right: 0px; top: 5px; z-index: 99"
@@ -366,6 +369,7 @@
         :columns="columns"
         :sortable-columns="true"
         :row-height="40"
+        :editable="true"
         :height="tableHeight"
         :data="sortedFilteredLemmas"
         @keyup.native.delete="deleteSelectedLemmas"
@@ -389,7 +393,7 @@
             </span>
             <span
               v-else-if="item.gnd.length > 0"
-              @mouseover="onHoverGndCellDebounced($event, item.gnd)">
+              @mouseover="onHoverGndCell($event, item.gnd)">
               {{ item.gnd[0] }}
               <span
                 class="badge blue-grey"
@@ -769,12 +773,21 @@ export default class LemmaManager extends Vue {
   // PREVIEW
   async onHoverGndCell(e: MouseEvent, gnd: string[]) {
     if (e.target instanceof HTMLElement) {
-      this.previewPopupCoords = [ e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().bottom ]
-      this.lobidPreviewGnds = gnd
+      const target = e.target
+      const timer = setTimeout(() => {
+        console.log('fired!')
+        this.lobidPreviewGnds = gnd
+        this.previewPopupCoords = [
+          target.getBoundingClientRect().left,
+          target.getBoundingClientRect().bottom
+        ]
+      }, 500)
+      e.target.addEventListener('mouseout', function onMouseOut() {
+        clearTimeout(timer)
+        target.removeEventListener('mouseout', onMouseOut)
+      })
     }
   }
-
-  onHoverGndCellDebounced = _.debounce(this.onHoverGndCell, 300)
 
   dragListener(item: LemmaRow, ev: DragEvent) {
     let dragImage: null|HTMLElement = null
