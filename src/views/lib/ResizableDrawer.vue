@@ -6,7 +6,7 @@
     stateless
     floating
     :clipped="clipped"
-    :width="width"
+    :width="localWidth"
     ref="drawer"
     :class="{
       'display-card': card,
@@ -35,7 +35,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import store from '../../store'
 
 @Component
 export default class ResizableDrawer extends Vue {
@@ -45,27 +44,34 @@ export default class ResizableDrawer extends Vue {
   @Prop({ default: false }) card!: boolean
   @Prop({ default: false }) mini!: boolean
   @Prop({ default: false }) clipped!: boolean
+  @Prop({ default: 250 }) minWidth!: number
+  @Prop({ default: 300 }) width!: number
   @Prop() color!: string
+
+  localWidth = this.width
+  transitionValues: {[selector: string]: string} = {}
+  maxWidth = 750
+  closeWidth = 225
+  willClose = false
+
+  @Watch('width')
+  onChangeWidthProp(w: number) {
+    this.localWidth = w
+  }
 
   cssVars() {
     return {'--bg-color': this.color}
   }
 
-  transitionValues: {[selector: string]: string} = {}
-  width = store.settings.drawerRightWidth
-  minWidth = 350
-  maxWidth = 750
-  closeWidth = 300
-  willClose = false
-
   expandOrShrink() {
     if (this.width === this.minWidth) {
-      this.width = this.maxWidth
+      this.localWidth = this.maxWidth
     } else if (this.width === this.maxWidth) {
-      this.width = this.minWidth
+      this.localWidth = this.minWidth
     } else {
-      this.width = this.maxWidth
+      this.localWidth = this.maxWidth
     }
+    this.$emit('update:width', this.localWidth)
   }
 
   disableUserSelect() {
@@ -118,29 +124,30 @@ export default class ResizableDrawer extends Vue {
     document.removeEventListener('mousemove', this.drag)
     document.removeEventListener('mouseup', this.endDrag)
     // if it’s too big or too small, bounce back.
-    if (this.width > this.maxWidth) {
-      this.width = this.maxWidth
+    if (this.localWidth > this.maxWidth) {
+      this.localWidth = this.maxWidth
     } else if (this.width < this.closeWidth) {
       this.$emit('close')
-      this.width = this.minWidth
+      this.localWidth = this.minWidth
     } else if (this.width < this.minWidth) {
-      this.width = this.minWidth
+      this.localWidth = this.minWidth
     }
+    this.$emit('update:width', this.width)
   }
 
   drag(e: MouseEvent) {
     const intendedWidth = this.right ? (document.body.clientWidth - e.pageX) : e.pageX
     if (intendedWidth < this.minWidth) {
-      this.width = intendedWidth - (intendedWidth - this.minWidth) / 1.5
-      if (this.width < this.closeWidth) {
+      this.localWidth = intendedWidth - (intendedWidth - this.minWidth) / 1.5
+      if (this.localWidth < this.closeWidth) {
         this.willClose = true
       }
     } else if (intendedWidth > this.maxWidth) {
       this.willClose = false
-      this.width = intendedWidth - (intendedWidth - this.maxWidth) / 1.5
+      this.localWidth = intendedWidth - (intendedWidth - this.maxWidth) / 1.5
     } else {
       this.willClose = false
-      this.width = intendedWidth
+      this.localWidth = intendedWidth
     }
   }
 
