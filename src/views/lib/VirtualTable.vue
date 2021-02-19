@@ -1,42 +1,56 @@
 <template>
-  <div tabindex="-1" @keydown="handleKey">
+  <div
+    class="virtual-table-outer"
+    tabindex="-1"
+    @keydown="handleKey">
     <draggable
+      :disabled="sortableColumns === false"
+      :value="visibleColumns"
+      @start.stop.prevent.capture=""
+      @end.stop.prevent.capture=""
+      @input="updateColumnOrder"
       tag="div"
       class="header-row"
       animation="200"
       drag-class="header-row-drag"
       ghost-class="header-row-ghost"
       direction="horizontal"
-      :disabled="sortableColumns === false"
-      @start.stop.prevent.capture=""
-      @end.stop.prevent.capture=""
-      @input="updateColumnOrder"
-      :value="visibleColumns">
+      >
       <div
-        :class="['header-cell', $listeners['click:header'] && 'clickable']"
         v-for="column in visibleColumns"
-        @click="$emit('click:header', column)"
+        :key="column.value"
         :style="{width: column.width ? column.width + 'px' : defaultWidth, height: rowHeight}"
-        :key="column.value">
-        <span class="header-sort-arrow" v-if="column.sort === 'asc'">▲</span>
-        <span class="header-sort-arrow" v-if="column.sort === 'desc'">▼</span>
+        :class="[
+          'header-cell',
+          $listeners['click:header'] && 'clickable',
+          (column.sort !== null && column.sort !== undefined) && 'sort-active'
+        ]"
+        @click="$emit('click:header', column)">
+        <span
+          v-if="column.sort === 'asc'"
+          class="header-sort-arrow">▲</span>
+        <span
+          v-if="column.sort === 'desc'"
+          class="header-sort-arrow">▼</span>
         {{ column.name }}
       </div>
     </draggable>
     <v-virtual-scroll
+      style="contain: content"
       ref="scroller"
+      class="virtual-scroller"
       :items="data"
       :height="height - rowHeight"
       :item-height="rowHeight">
       <template v-slot:default="{ item, index }">
         <div
           :draggable="$listeners['drag:row']"
+          :style="{ height: rowHeight + 'px' }"
+          :class="['table-row', selected[item.id] && 'selected']"
           @dragstart="$emit('drag:row', item, $event)"
           @click="selectItem(item, $event)"
-          @dblclick="$emit('dblclick:row', item, $event)"
-          :style="{ height: rowHeight + 'px' }"
-          @keydown="handleKey"
-          :class="['table-row', selected[item.id] && 'selected']">
+          @dblclick="onDblClick($event, item, index)"
+          @keydown="handleKey">
           <div
             v-for="column in visibleColumns"
             :key="index + '__' + column.value"
@@ -44,8 +58,8 @@
               width: column.width ? column.width + 'px' : defaultWidth,
               maxHeight: (rowHeight - 5) + 'px'
             }"
-            class="table-cell"
-            @click="$emit('click:cell', item, $event, column.value, index)">
+            @click="$emit('click:cell', item, $event, column.value, index)"
+            class="table-cell">
             <slot
               name="cell"
               draggable
@@ -93,6 +107,10 @@ export default class VirtualTable extends Vue {
 
   selected: { [key: number]: Row } = {}
   log = console.log
+
+  onDblClick(e: MouseEvent, item: Row, index: number) {
+    this.$emit('dblclick:row', item, e)
+  }
 
   handleKey(e: KeyboardEvent) {
     if (e.key === 'Escape') {
@@ -236,6 +254,8 @@ export default class VirtualTable extends Vue {
   user-select none
   &:hover
     opacity 1
+  &.sort-active
+    opacity: 1;
 
 .header-sort-arrow
   font-size 70%
