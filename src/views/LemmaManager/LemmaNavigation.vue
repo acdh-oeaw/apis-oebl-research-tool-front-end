@@ -75,13 +75,11 @@
         <v-list-item
           :ripple="false"
           dense
-          @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
-          @dragover.prevent=""
+          class="droppable mb-0"
+          @dragenter.prevent="onDragEnter($event, true)"
           @drop.prevent="addLemmaToIssue(issue.id, $event)"
-          class="mb-0"
-          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           @click="loadIssueLemmas(issue.id || null)"
-          :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
+          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
           <v-list-item-avatar size="15" tile>
@@ -95,10 +93,10 @@
         </v-list-item>
       </v-list>
       <v-subheader
-        @click="showMyLists = !showMyLists" :class="['px-0', showMyLists && 'active']"
-        @dragenter.prevent="highlightedKey = 'create-list'"
+        @click="showMyLists = !showMyLists"
+        :class="['px-0', showMyLists && 'active']"
+        @dragenter.prevent="onDragEnter($event)"
         @dragover.prevent=""
-        class="px-0"
         @drop.prevent="createLemmaList($event)">
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Listen
         <v-spacer />
@@ -106,8 +104,10 @@
           style="box-shadow: none"
           @click.capture.prevent.stop="createLemmaList"
           rounded
-          :class="[highlightedKey === 'create-list' && 'drag-over']"
-          x-small>Liste erstellen
+          class="droppable"
+          @dragenter.prevent="onDragEnter($event)"
+          x-small>
+          Liste erstellen
         </v-btn>
       </v-subheader>
       <v-list
@@ -122,9 +122,9 @@
           v-for="list in filteredLemmaListsCurrentUser"
           :key="list.id"
           :input-value="store.lemma.selectedLemmaListId === list.id"
-          :class="[ 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over' ]"
           dense
-          @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+          class="droppable"
+          @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)"
           @click="store.lemma.selectedLemmaListId = list.id || null">
@@ -174,9 +174,10 @@
           :key="list.id"
           tabindex="-1"
           :input-value="store.lemma.selectedLemmaListId === list.id"
-          :class="['mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
+          :class="['mb-0']"
           dense
-          @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+          class="droppable"
+          @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)"
           @click="store.lemma.selectedLemmaListId = list.id || null">
@@ -254,7 +255,6 @@ import { requestState } from '@/store/fetch'
 export default class LemmaNavigation extends Vue {
 
   searchQuery: string|null = null
-  highlightedKey: string|null = null
   editingNameKey: string|null = null
   store = store
   log = console.log
@@ -264,6 +264,29 @@ export default class LemmaNavigation extends Vue {
   showMyLists = true
   showTeamLists = true
   showQueries = true
+
+  onDragEnter(e: DragEvent, clickAfterLingering = false) {
+    if (e.currentTarget instanceof HTMLElement) {
+      const target = e.currentTarget
+      const timer = setTimeout(() => {
+        if (clickAfterLingering) {
+          target.click()
+        }
+      }, 1000)
+      target.classList.add('drag-over')
+      target.addEventListener('dragleave', function onDragLeave() {
+        clearTimeout(timer)
+        target.classList.remove('drag-over')
+        target.removeEventListener('dragleave', onDragLeave)
+      })
+    }
+  }
+
+  onDrop(e: DragEvent) {
+    if (e.currentTarget instanceof HTMLElement) {
+      e.currentTarget.classList.remove('drag-over')
+    }
+  }
 
   selectLemmaFilter(i: string) {
     store.lemma.selectedLemmaFilterId = i
@@ -296,7 +319,6 @@ export default class LemmaNavigation extends Vue {
   }
 
   async copyLemmasToList(list: WithId<List>, e: DragEvent) {
-    this.highlightedKey = null
     const lemmas = JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[]
     const listItems = store.lemma.getLemmasByList(list.id)
     const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
@@ -308,13 +330,13 @@ export default class LemmaNavigation extends Vue {
 
   async addLemmaToIssue(issueId: number, e: DragEvent) {
     const lemmas = e instanceof DragEvent ? JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[] : []
+    this.onDrop(e)
     const issueLemmas = await Promise.all(lemmas.map(l => {
       return store.issue.createIssueLemma(issueId, l)
     }))
   }
 
   async createLemmaList(e: DragEvent|MouseEvent) {
-    this.highlightedKey = null
     const lemmas = e instanceof DragEvent ? JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[] : []
     const lemmaNameRules = [
       (n: string|null) => n === null || (typeof n === 'string' && n.trim() === '') ? 'Geben Sie einen Namen ein.' : true,
@@ -369,7 +391,17 @@ export default class LemmaNavigation extends Vue {
 
 }
 </script>
+<style lang="stylus">
+
+.droppable *
+  pointer-events none !important
+
+</style>
 <style lang="stylus" scoped>
+
+.drag-over
+  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+
 .v-subheader
   font-size .75rem
   cursor default
@@ -385,9 +417,6 @@ export default class LemmaNavigation extends Vue {
 
 .v-list-item__action
   margin 10px 0
-
-.drag-over
-  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
 
 .lemma-nav-list /deep/ .v-list-group__header
   &:before
