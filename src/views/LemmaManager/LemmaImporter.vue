@@ -53,7 +53,7 @@
           <div class="mb-2 mt-5">Suche GNDs…</div>
           <v-progress-linear
             rounded
-            class="ma-auto"
+            class="mx-auto mb-5"
             style="width: 50%"
             :value="importProgress"
           />
