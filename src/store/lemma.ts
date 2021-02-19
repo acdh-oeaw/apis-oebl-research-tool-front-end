@@ -343,9 +343,9 @@ export default class LemmaStore {
     await this.loadRemoteLemmaLists()
   }
 
-  async addLemma(l: ImportablePerson) {
+  async addLemma(l: ImportablePerson, listId: number) {
     await ResearchService.researchApiV1LemmaresearchCreate(({
-      listId: this.lemmaLists[0].id!,
+      listId,
       lemmas: [ {
         dateOfBirth: l.dateOfBirth || undefined,
         dateOfDeath: l.dateOfDeath || undefined,

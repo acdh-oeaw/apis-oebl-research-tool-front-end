@@ -47,6 +47,20 @@
             label="GND"
             v-model="person.gnd"
           />
+          <h4 class="py-4 px-1">Zur Liste hinzufügen</h4>
+          <v-select
+            solo
+            background-color="background darken-2"
+            dense
+            hide-details
+            flat
+            class="text-body-2"
+            :items="lemmaLists"
+            v-model="importToList">
+            <template v-slot:prepend-inner>
+              <div style="opacity: .7" class="caption pr-2">Liste</div>
+            </template>
+          </v-select>
           <h4 class="py-4 px-1">Erweiterte Daten</h4>
           <text-field
             v-for="column in store.lemma.getAllUserColumns(store.lemma.lemmas)"
@@ -146,6 +160,7 @@ export default class LemmaAdd extends Vue {
 
   @Prop({ default: undefined }) color!: string|undefined
 
+  importToList: number = store.lemma.selectedLemmaListId || store.lemma.lemmaLists[0].id!
   window = 0
   showDivider = false
   store = store
@@ -173,6 +188,15 @@ export default class LemmaAdd extends Vue {
 
   searchPerson = _.debounce(this.onChangePerson, 500)
 
+  get lemmaLists() {
+    return this.store.lemma.lemmaLists.map(ll => {
+      return {
+        text: ll.title,
+        value: ll.id
+      }
+    })
+  }
+
   get filteredList() {
     return store.lemma.lemmas.filter((l) => {
       return l.firstName.toLowerCase().startsWith(this.person.firstName?.toLowerCase() || '~') || l.lastName.toLowerCase().startsWith(this.person.lastName?.toLowerCase() || '~')
@@ -180,7 +204,7 @@ export default class LemmaAdd extends Vue {
   }
 
   async addLemma() {
-    this.$emit('confirm', this.person)
+    this.$emit('confirm', this.person, this.importToList)
   }
 
   async onChangePerson() {
