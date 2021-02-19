@@ -24,6 +24,7 @@ app.use([ '/', '/css', '/img', '/js'], express.static('./dist'))
 
 app.post('/message/import-lemmas', (req, res) => {
   if (req.headers['x-secret'] === 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C') {
+    console.log('triggered importLemmas', req.body)
     io.sockets.emit('importLemmas', req.body)
     res.end()
   } else {
