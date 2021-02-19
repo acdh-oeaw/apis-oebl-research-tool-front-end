@@ -1,5 +1,10 @@
 <template>
-  <v-dialog overlay-color="#000" @input="modelClose" max-width="500px" :value="promptStore.show">
+  <v-dialog
+    v-if="promptStore.show"
+    overlay-color="#000"
+    @input="modelClose"
+    max-width="500px"
+    :value="promptStore.show">
     <v-card color="background" class="rounded-lg">
       <v-card-title class="pt-4 text-center pb-3 text-body-2 d-block">
         {{ promptStore.message }}
