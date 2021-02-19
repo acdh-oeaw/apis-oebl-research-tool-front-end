@@ -16,7 +16,8 @@
       left
       mini-variant-width="73"
       class="pa-0"
-      width="300">
+      @update:width="store.settings = {...store.settings, drawerLeftWidth: $event}"
+      :width="store.settings.drawerLeftWidth">
       <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
         <!-- <v-flex class="pa-3" style="width: 73px" shrink>
           <v-btn x-large :to="'/lemmas'" class="mb-2 rounded-lg" icon tile>
@@ -88,14 +89,16 @@ export default class App extends Vue {
   }
 }
 </script>
-
-
 <style lang="stylus">
-@import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
+  @import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
 </style>
 
 // GLOBAL STYLES
 <style lang="stylus">
+
+.v-navigation-drawer
+  max-height none !important
+  height 100% !important
 
 .theme--light.v-application
   font-family --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
