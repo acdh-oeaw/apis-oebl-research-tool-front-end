@@ -38,12 +38,10 @@
       <!-- <v-divider class="mt-3" /> -->
     </div>
     <div style="flex: 1" class="overflow-y-auto">
+      <!-- Lemma Lib -->
       <v-list
-        @dragleave.prevent="highlightedKey = null"
-        subheader
-        class="mt-4 pr-0 pl-0 lemma-nav-list"
+        class="ma-0 mt-4 pa-0 lemma-nav-list"
         color="transparent"
-        expand
         nav
         dense>
         <v-list-item
@@ -63,185 +61,175 @@
             <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
-        <v-list-group
-          color="currentColor"
-          append-icon="mdi-chevron-up"
-          :value="searchQuery || true"
-          :ripple="false">
-          <template v-slot:activator>
-            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
-              <v-subheader class="px-0">
-                Abgaben
-              </v-subheader>
+      </v-list>
+      <!-- Abgaben -->
+      <v-subheader @click="showIssues = !showIssues" :class="['px-0', showIssues && 'active']">
+        <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Abgaben
+      </v-subheader>
+      <v-list
+        v-show="showIssues"
+        class="pa-0 ma-0 lemma-nav-list"
+        color="transparent"
+        nav
+        dense>
+        <v-list-item
+          :ripple="false"
+          dense
+          @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
+          @dragover.prevent=""
+          @drop.prevent="addLemmaToIssue(issue.id, $event)"
+          class="mb-0"
+          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
+          @click="loadIssueLemmas(issue.id || null)"
+          :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
+          v-for="issue in store.issue.issues"
+          :key="'issue-' + issue.id">
+          <v-list-item-avatar size="15" tile>
+            <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ issue.name }}
             </v-list-item-title>
-          </template>
-          <v-list-item
-            :ripple="false"
-            dense
-            @dragenter.prevent="highlightedKey = 'issue_' + issue.id"
-            @dragover.prevent=""
-            @drop.prevent="addLemmaToIssue(issue.id, $event)"
-            class="mb-0"
-            :input-value="store.lemma.selectedLemmaIssueId === issue.id"
-            @click="loadIssueLemmas(issue.id || null)"
-            :class="[highlightedKey === 'issue_' + issue.id && 'drag-over']"
-            v-for="issue in store.issue.issues"
-            :key="'issue-' + issue.id">
-            <v-list-item-avatar size="15" tile>
-              <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ issue.name }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-        <v-list-group
-          color="currentColor"
-          :value="searchQuery || true"
-          append-icon=""
-          :ripple="false">
-          <template v-slot:activator>
-            <v-list-item-title
-              @dragenter.prevent="highlightedKey = 'create-list'"
-              @dragover.prevent=""
-              @drop.prevent="createLemmaList($event)"
-              class="sticky"
-              :style="{ zIndex: 1}">
-              <v-subheader class="px-0">
-                Meine Listen
-                <v-spacer />
-                <v-btn
-                  style="box-shadow: none"
-                  @click.capture.prevent.stop="createLemmaList"
-                  rounded
-                  :class="[highlightedKey === 'create-list' && 'drag-over']"
-                  x-small>Liste erstellen
-                </v-btn>
-              </v-subheader>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-subheader
+        @click="showMyLists = !showMyLists" :class="['px-0', showMyLists && 'active']"
+        @dragenter.prevent="highlightedKey = 'create-list'"
+        @dragover.prevent=""
+        class="px-0"
+        @drop.prevent="createLemmaList($event)">
+        <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Listen
+        <v-spacer />
+        <v-btn
+          style="box-shadow: none"
+          @click.capture.prevent.stop="createLemmaList"
+          rounded
+          :class="[highlightedKey === 'create-list' && 'drag-over']"
+          x-small>Liste erstellen
+        </v-btn>
+      </v-subheader>
+      <v-list
+        class="pa-0 ma-0 lemma-nav-list"
+        color="transparent"
+        nav
+        dense
+        v-show="showMyLists"
+      >
+        <v-list-item
+          :ripple="false"
+          v-for="list in filteredLemmaListsCurrentUser"
+          :key="list.id"
+          :input-value="store.lemma.selectedLemmaListId === list.id"
+          :class="[ 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over' ]"
+          dense
+          @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+          @dragover.prevent=""
+          @drop.prevent="copyLemmasToList(list, $event)"
+          @click="store.lemma.selectedLemmaListId = list.id || null">
+          <v-list-item-avatar size="15" tile>
+            <v-icon small>mdi-format-list-bulleted</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ list.title }}
             </v-list-item-title>
-          </template>
-          <v-list-item
-            :ripple="false"
-            v-for="list in filteredLemmaListsCurrentUser"
-            :key="list.id"
-            :input-value="store.lemma.selectedLemmaListId === list.id"
-            :class="[ 'mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over' ]"
-            dense
-            @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
-            @dragover.prevent=""
-            @drop.prevent="copyLemmasToList(list, $event)"
-            @click="store.lemma.selectedLemmaListId = list.id || null">
-            <v-list-item-avatar size="15" tile>
-              <v-icon small>mdi-format-list-bulleted</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ list.title }}
-              </v-list-item-title>
-              <v-list-item-subtitle style="font-size: 75%">
-                {{ list.editor ? list.editor.name : '' }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action>
-              <transition name="roll">
-                <v-badge
-                  :key="list.count"
-                  inline
-                  :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
-                  :content="list.count ? list.count.toString() : '0'" />
-              </transition>
-            </v-list-item-action>
-            <v-list-item-action class="ml-0" v-if="list.countNew !== 0">
+            <v-list-item-subtitle style="font-size: 75%">
+              {{ list.editor ? list.editor.name : '' }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-action>
+            <transition name="roll">
               <v-badge
+                :key="list.count"
                 inline
-                class="font-weight-bold"
-                color="primary"
-                :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-group>
-        <v-list-group
-          color="currentColor"
-          :value="searchQuery || true"
-          append-icon="mdi-chevron-up"
-          :ripple="false">
-          <template v-slot:activator>
-            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
-              <v-subheader
-                @dragenter.prevent="highlightedKey = 'create-list'"
-                @dragover.prevent=""
-                class="px-0"
-                @drop.prevent="createLemmaList($event)">
-                Team-Listen
-              </v-subheader>
+                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                :content="list.count ? list.count.toString() : '0'" />
+            </transition>
+          </v-list-item-action>
+          <v-list-item-action class="ml-0" v-if="list.countNew !== 0">
+            <v-badge
+              inline
+              class="font-weight-bold"
+              color="primary"
+              :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+      <v-subheader
+        @click="showTeamLists = !showTeamLists" :class="['px-0', showTeamLists && 'active']">
+        <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Team-Listen
+      </v-subheader>
+      <v-list
+        class="pa-0 ma-0 lemma-nav-list"
+        color="transparent"
+        nav
+        dense
+        v-show="showTeamLists"
+      >
+        <v-list-item
+          :ripple="false"
+          v-for="list in filteredLemmaListsOtherUsers"
+          :key="list.id"
+          tabindex="-1"
+          :input-value="store.lemma.selectedLemmaListId === list.id"
+          :class="['mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
+          dense
+          @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
+          @dragover.prevent=""
+          @drop.prevent="copyLemmasToList(list, $event)"
+          @click="store.lemma.selectedLemmaListId = list.id || null">
+          <v-list-item-avatar size="15" tile>
+            <v-icon small>mdi-format-list-bulleted</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ list.title }}
             </v-list-item-title>
-          </template>
-          <v-list-item
-            :ripple="false"
-            v-for="list in filteredLemmaListsOtherUsers"
-            :key="list.id"
-            tabindex="-1"
-            :input-value="store.lemma.selectedLemmaListId === list.id"
-            :class="['mb-0', highlightedKey === 'my-list_' + list.id && 'drag-over']"
-            dense
-            @dragenter.prevent="highlightedKey = 'my-list_' + list.id"
-            @dragover.prevent=""
-            @drop.prevent="copyLemmasToList(list, $event)"
-            @click="store.lemma.selectedLemmaListId = list.id || null">
-            <v-list-item-avatar size="15" tile>
-              <v-icon small>mdi-format-list-bulleted</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ list.title }}
-              </v-list-item-title>
-              <v-list-item-subtitle style="font-size: 75%">
-                {{ list.editor ? list.editor.name : '' }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action>
-              <transition name="roll">
-                <v-badge
-                  :key="list.count"
-                  inline
-                  :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
-                  :content="list.count ? list.count.toString() : '0'" />
-              </transition>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-group>
-        <v-list-group
-          color="currentColor"
-          append-icon="mdi-chevron-up"
-          :value="searchQuery || true"
-          :ripple="false">
-          <template v-slot:activator>
-            <v-list-item-title class="sticky" :style="{ zIndex: 1}">
-              <v-subheader class="px-0">
-                Meine Abfragen
-              </v-subheader>
+            <v-list-item-subtitle style="font-size: 75%">
+              {{ list.editor ? list.editor.name : '' }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-action>
+            <transition name="roll">
+              <v-badge
+                :key="list.count"
+                inline
+                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                :content="list.count ? list.count.toString() : '0'" />
+            </transition>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+      <v-subheader
+        @click="showQueries = !showQueries" :class="['px-0', showQueries && 'active']"
+        class="px-0">
+        <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Abfragen
+      </v-subheader>
+      <v-list
+        class="pa-0 ma-0 lemma-nav-list"
+        color="transparent"
+        nav
+        v-show="showQueries"
+        dense>
+        <v-list-item
+          :ripple="false"
+          dense
+          class="mb-0"
+          :input-value="filter.id === store.lemma.selectedLemmaFilterId"
+          @click="selectLemmaFilter(filter.id)"
+          v-for="(filter, i) in filteredStoredLemmaFilters"
+          :key="'l' + i">
+          <v-list-item-avatar size="15" tile>
+            <v-icon small>mdi-card-search-outline</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ filter.name }}
             </v-list-item-title>
-          </template>
-          <v-list-item
-            :ripple="false"
-            dense
-            class="mb-0"
-            :input-value="filter.id === store.lemma.selectedLemmaFilterId"
-            @click="selectLemmaFilter(filter.id)"
-            v-for="(filter, i) in filteredStoredLemmaFilters"
-            :key="'l' + i">
-            <v-list-item-avatar size="15" tile>
-              <v-icon small>mdi-card-search-outline</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ filter.name }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </div>
   </div>
@@ -271,6 +259,11 @@ export default class LemmaNavigation extends Vue {
   store = store
   log = console.log
   requestState = requestState
+
+  showIssues = true
+  showMyLists = true
+  showTeamLists = true
+  showQueries = true
 
   selectLemmaFilter(i: string) {
     store.lemma.selectedLemmaFilterId = i
@@ -377,6 +370,15 @@ export default class LemmaNavigation extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
+.v-subheader
+  font-size .75rem
+  cursor default
+
+.v-subheader .v-icon
+  transform rotate(-90deg)
+
+.v-subheader.active .v-icon
+  transform rotate(0deg)
 
 .search-field /deep/ .v-icon.v-icon
   font-size 130%
