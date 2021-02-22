@@ -901,7 +901,7 @@ export default class LemmaManager extends Vue {
   right 0px
 
 .transition-padding
-  transition: none
+  transition: none !important
 
 .lemma-view-title
   max-width 50%
