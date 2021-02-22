@@ -132,7 +132,7 @@ export default class ResizableDrawer extends Vue {
     } else if (this.width < this.minWidth) {
       this.localWidth = this.minWidth
     }
-    this.$emit('update:width', this.width)
+    this.$emit('update:width', this.localWidth)
   }
 
   drag(e: MouseEvent) {
