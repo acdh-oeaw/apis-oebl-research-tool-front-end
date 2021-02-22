@@ -1,10 +1,11 @@
 <template>
   <div class="d-flex fill-height flex-column overflow-y-hidden">
     <div class="background darken-2" :style="{ zIndex: 1}">
-      <div class="d-flex pr-2 pb-2">
+      <div class="d-flex pb-2">
         <v-btn
           @click="toggleDrawer"
           tile
+          depressed
           class="rounded-lg mr-2"
           icon>
           <v-icon>mdi-dock-left</v-icon>
