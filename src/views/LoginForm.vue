@@ -10,12 +10,14 @@
           hide-details
           v-model="user"
           flat
+          :autocomplete="false"
           autofocus
           placeholder="User Name" />
         <v-divider />
         <v-text-field
           class="input-no-stroke mt-1 pt-0"
           hide-details
+          :autocomplete="false"
           name="password"
           v-model="password"
           type="password"
@@ -45,11 +47,25 @@ export default class LoginForm extends Vue {
   password = ''
   loading = false
   async login() {
-    this.loading = true
-    await store.logIn(this.user, this.password)
-    this.loading = false
+    if (this.user && this.password) {
+      this.loading = true
+      await store.logIn(this.user, this.password)
+      this.loading = false
+    }
   }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
+@-webkit-keyframes autofill {
+  0%,100% {
+    color: #666;
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
 </style>
