@@ -121,7 +121,7 @@ export default class App extends Vue {
 
 ::-webkit-scrollbar-track
   padding 3px
-  background: transparent        /* color of the tracking area */
+  background: transparent /* color of the tracking area */
 
 ::-webkit-scrollbar
   width 8px
