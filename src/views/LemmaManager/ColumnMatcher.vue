@@ -212,14 +212,14 @@ export default class ColumnMatcher extends Vue {
   getTargetColumnsOptions(h: Header): SelectOptions[] {
     return [
       {
-        text: 'nicht importieren',
+        text: this.returnIgnoredColumns ? 'erweitertes Feld' : 'nicht importieren',
         value: null
       },
       ...this.targetColumns.map(c => {
         return {
           ...c,
           // it’s disabled if it’s already been used in another select/column.
-          disabled: h.matchWith !== c.value && this.headers.find(he => he.matchWith === c.value) !== undefined
+          disabled: h.matchWith !== c.value && this.headers.some(he => he.matchWith === c.value)
         }
       })
     ]
@@ -238,7 +238,7 @@ export default class ColumnMatcher extends Vue {
   }
 
   async updateSeparator(s: string): Promise<void> {
-    const [h, c] = await this.parseCsvToJson(await this.getTextFromBuffer(this.buffer), s)
+    const [h, c] = await this.parseCsvToJson(this.getTextFromBuffer(this.buffer), s)
     this.headers = h
     this.initialTable = c
   }
