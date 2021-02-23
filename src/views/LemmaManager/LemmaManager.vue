@@ -282,7 +282,7 @@
             <v-list
               style="max-height: 50vh; overflow: scroll"
               color="background"
-              class="elevation-0 rounded-lg text-body-2"
+              class="elevation-0 rounded-lg text-body-2 mb-0 pb-0"
               dense nav>
               <v-list-item
                 v-for="column in columns"
@@ -296,6 +296,7 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list>
+            <v-divider class="mt-0 pt-0" />
             <v-subheader>Farbschema</v-subheader>
             <theme-toggle class="mx-2 mb-2" />
           </v-menu>
@@ -374,10 +375,10 @@
         :data="sortedFilteredLemmas"
         @keyup.native.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
-        @dblclick:row="store.lemma.showSideBar = !store.lemma.showSideBar"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
         @change-selection="selectedRows = $event"
+        @update-item="updateLemmaFromTable"
         @update-columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
@@ -541,13 +542,13 @@ export default class LemmaManager extends Vue {
       name: 'ist vorhanden',
       value: 'exists',
       icon: '.',
-      predicate: (e: string|number|null|number[], q: unknown) => e !== null && e !== undefined && (Array.isArray(e) && e.length !== 0)
+      predicate: (e: string|number|null|number[], q: unknown) => !!e
     },
     {
       name: 'ist nicht vorhanden',
       value: 'exists-not',
       icon: '.',
-      predicate: (e: string|number|null|number[], q: unknown) => e === null || e === undefined || (Array.isArray(e) && e.length === 0)
+      predicate: (e: string|number|null|number[], q: unknown) => !e
     },
     {
       name: 'größer als',
@@ -595,6 +596,23 @@ export default class LemmaManager extends Vue {
       event.target.textContent = store.lemma.getListById(store.lemma.selectedLemmaListId)?.title || 'Listenname'
       event.target.blur()
     }
+  }
+
+  updateLemmaFromTable(l: LemmaRow, u: Partial<LemmaRow>) {
+    const update: Partial<LemmaRow> = {}
+    _.mapValues(u, (v, k) => {
+      if (k.includes('user.')) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        update.columns_user = {
+          ...l.columns_user,
+          [ k ]: v
+        }
+      } else {
+        update[k] = v
+      }
+    })
+    console.log({update})
+    this.updateLemma(l, update)
   }
 
   async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
@@ -775,7 +793,6 @@ export default class LemmaManager extends Vue {
     if (e.target instanceof HTMLElement) {
       const target = e.target
       const timer = setTimeout(() => {
-        console.log('fired!')
         this.lobidPreviewGnds = gnd
         this.previewPopupCoords = [
           target.getBoundingClientRect().left,
