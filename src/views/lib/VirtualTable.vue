@@ -3,6 +3,32 @@
     class="virtual-table-outer"
     tabindex="-1"
     @keydown="handleKey">
+    <v-menu
+      :close-on-content-click="false"
+      min-width="300"
+      max-width="400"
+      class="soft-shadow"
+      v-if="editPopUp !== null"
+      :value="editPopUp !== null"
+      @input="(e) => e === false && (editPopUp = null)"
+      @keydown.tab="editNextField"
+      :position-x="editPopUp.x - 3"
+      :position-y="editPopUp.y - 10">
+      <v-card elevation="0" color="background lighten-2" rounded="lg">
+        <text-field
+          class="mx-2"
+          color="background lighten-2"
+          :selected="true"
+          @keydown.native.enter="onEditItem"
+          v-model="editPopUp.value" />
+        <v-divider />
+        <v-card-actions>
+          <v-btn @click="editPopUp = null" text rounded x-small>Abbrechen</v-btn>
+          <v-spacer />
+          <v-btn @click="onEditItem" elevation="0" rounded x-small>Speichern</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
     <draggable
       :disabled="sortableColumns === false"
       :value="visibleColumns"
@@ -49,7 +75,7 @@
           :class="['table-row', selected[item.id] && 'selected']"
           @dragstart="$emit('drag:row', item, $event)"
           @click="selectItem(item, $event)"
-          @dblclick="onDblClick($event, item, index)"
+          @dblclick="onDblClickRow($event, item, index)"
           @keydown="handleKey">
           <div
             v-for="column in visibleColumns"
@@ -59,6 +85,7 @@
               maxHeight: (rowHeight - 5) + 'px'
             }"
             @click="$emit('click:cell', item, $event, column.value, index)"
+            @dblclick="onDblClickCell(item, $event, column, index)"
             class="table-cell">
             <slot
               name="cell"
@@ -76,6 +103,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Draggable from 'vuedraggable'
+import TextField from '@/views/lib/TextField.vue'
 import _ from 'lodash'
 
 interface Row {
@@ -87,13 +115,15 @@ interface Column {
   value: keyof Row
   name: string
   width?: number
+  editable?: boolean
   show?: boolean
   sort?: null|'desc'|'asc'
 }
 
 @Component({
   components: {
-    Draggable
+    Draggable,
+    TextField
   }
 })
 export default class VirtualTable extends Vue {
@@ -108,7 +138,34 @@ export default class VirtualTable extends Vue {
   selected: { [key: number]: Row } = {}
   log = console.log
 
-  onDblClick(e: MouseEvent, item: Row, index: number) {
+  editPopUp: {x: number, y: number, label: string, value: string|null, item: Row, fieldName: string}|null = null
+
+  editNextField() {
+    console.log('next')
+  }
+
+  onEditItem() {
+    if (this.editPopUp !== null) {
+      this.$emit('update-item', this.editPopUp.item, { [this.editPopUp.fieldName]: this.editPopUp.value })
+      this.editPopUp = null
+    }
+  }
+
+  onDblClickCell(item: Row, e: MouseEvent, column: Column, index: number) {
+    if (column.editable === true && e.currentTarget instanceof HTMLElement) {
+      console.log('yo')
+      this.editPopUp = {
+        x: e.currentTarget.getBoundingClientRect().left,
+        y: e.currentTarget.getBoundingClientRect().top,
+        value: item[column.value],
+        label: column.name,
+        fieldName: column.value as string,
+        item
+      }
+    }
+  }
+
+  onDblClickRow(e: MouseEvent, item: Row, index: number) {
     this.$emit('dblclick:row', item, e)
   }
 
