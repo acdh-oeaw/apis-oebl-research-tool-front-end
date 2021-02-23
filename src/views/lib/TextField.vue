@@ -1,5 +1,8 @@
 <template>
-  <div class="background darken-2 rounded-lg mb-1 text-field-outer">
+  <div :class="[
+    'rounded-lg mb-1 text-field-outer',
+    color || 'background darken-2'
+  ]">
     <div class="d-flex">
       <div
         @click="selectAll"
@@ -12,6 +15,7 @@
       <div style="position: relative" class="fill-width">
         <div class="text-body-2 fill-height fill-width fake-textarea mt-2 mr-2" v-text="localValue" />
         <textarea
+          ref="textarea"
           class="fill-height fill-width mt-2 mr-2 text-body-2 "
           style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
           @keydown="onKeyDown"
@@ -24,7 +28,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import _ from 'lodash'
 
 @Component
 export default class TextField extends Vue {
@@ -33,6 +36,8 @@ export default class TextField extends Vue {
   @Prop({ default: false }) allowNewLine!: boolean
   @Prop({ default: '' }) value!: string
   @Prop({ default: false }) required!: boolean
+  @Prop({ default: false }) selected!: boolean
+  @Prop() color?: string
 
   msg: string|null = null
 
@@ -41,6 +46,18 @@ export default class TextField extends Vue {
   @Watch('value')
   onChangeValue() {
     this.localValue = this.value
+  }
+
+  @Watch('selected', {immediate: true})
+  async onChangeSelected(shouldSelect: boolean) {
+    await this.$nextTick()
+    setTimeout(async () => {
+      if (shouldSelect === true && this.$refs.textarea instanceof HTMLTextAreaElement) {
+        await this.$nextTick()
+        this.$refs.textarea.focus()
+        this.$refs.textarea.select()
+      }
+    }, 100)
   }
 
   selectAll() {
