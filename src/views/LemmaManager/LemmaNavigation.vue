@@ -12,7 +12,7 @@
         </v-btn>
         <v-text-field
           style="position: relative"
-          :placeholder="requestState.isLoading ? 'Lade…' : 'Lemmalisten suchen…'"
+          :placeholder="showLoader ? 'Lade…' : 'Lemmalisten suchen…'"
           solo
           autofocus
           background-color="background lighten-1"
@@ -24,7 +24,7 @@
           clearable
           flat>
           <template v-slot:prepend-inner>
-            <div v-if="requestState.isLoading === true">
+            <div v-if="showLoader === true">
               <loading-spinner
                 :size="25"
                 :color="$vuetify.theme.dark ? 'white' : 'grey'"
@@ -261,10 +261,25 @@ export default class LemmaNavigation extends Vue {
   log = console.log
   requestState = requestState
 
+  showLoader = false
+
   showIssues = true
   showMyLists = true
   showTeamLists = true
   showQueries = true
+
+  @Watch('requestState.isLoading')
+  onChangeIsLoading(v: boolean, oldV: boolean) {
+    if (v !== oldV) {
+      setTimeout(() => {
+        // if the loading value is still the same after
+        // a set time, actually update the value.
+        if (requestState.isLoading === v) {
+          this.showLoader = v
+        }
+      }, 300)
+    }
+  }
 
   onDragEnter(e: DragEvent, clickAfterLingering = false) {
     if (e.currentTarget instanceof HTMLElement) {
@@ -275,11 +290,14 @@ export default class LemmaNavigation extends Vue {
         }
       }, 1000)
       target.classList.add('drag-over')
-      target.addEventListener('dragleave', function onDragLeave() {
+      const onLeaveOrDrop = () => {
         clearTimeout(timer)
         target.classList.remove('drag-over')
-        target.removeEventListener('dragleave', onDragLeave)
-      })
+        target.removeEventListener('dragleave', onLeaveOrDrop)
+        target.removeEventListener('drop', onLeaveOrDrop)
+      }
+      target.addEventListener('dragleave', onLeaveOrDrop)
+      target.addEventListener('drop', onLeaveOrDrop)
     }
   }
 
