@@ -1,44 +1,48 @@
 import store from '.'
 import confirm from './confirm'
 import { OpenAPI } from '@/api'
-import { boolean } from 'io-ts'
 import _ from 'lodash'
 const fetchOriginal = fetch
 
 export const requestState = {
-  isLoading: false,
+  writeCallsRunning: 0,
+  allCallsRunning: 0,
+  get isLoading() {
+    return this.writeCallsRunning > 0 || this.allCallsRunning > 0
+  },
   hasErrored: false
 }
 
-function warnBeforeLeave(e: BeforeUnloadEvent): string {
-  e.returnValue = ''
-  return 'Synchronisierung läuft noch. Beim beending können Änderungen verloren gehen. Wirklich beenden?'
+function warnBeforeLeave(e: BeforeUnloadEvent): string|undefined {
+  if (requestState.writeCallsRunning > 0) {
+    e.returnValue = ''
+    return 'Synchronisierung läuft noch. Beim beending können Änderungen verloren gehen. Wirklich beenden?'
+  }
 }
 
 function isHttpWriteCall(init?: RequestInit): boolean {
   return init !== undefined && init.method !== undefined && init.method.toLowerCase() !== 'get'
 }
 
-const setIsLoading = _.debounce(() => { requestState.isLoading = true }, 100)
-const setIsNotLoading = _.debounce(() => { requestState.isLoading = false }, 200)
+window.addEventListener('beforeunload', warnBeforeLeave)
+
 window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-  setIsLoading()
   requestState.hasErrored = false
   const isWriteCall = isHttpWriteCall(init)
   if (isWriteCall) {
-    window.addEventListener('beforeunload', warnBeforeLeave)
+    requestState.writeCallsRunning = requestState.writeCallsRunning + 1
   }
+  requestState.allCallsRunning = requestState.allCallsRunning + 1
   const res = await fetchOriginal(input, init)
   if (isWriteCall) {
-    window.removeEventListener('beforeunload', warnBeforeLeave)
+    requestState.writeCallsRunning = requestState.writeCallsRunning - 1
   }
+  requestState.allCallsRunning = requestState.allCallsRunning - 1
   if (res.ok) {
     // success
-    setIsNotLoading()
     return res
   } else {
     // error
-    requestState.isLoading = false
     // if it was a request to our api
     if (res.url.includes(OpenAPI.BASE)) {
       // not logged in: show login prompt and queue promise.
