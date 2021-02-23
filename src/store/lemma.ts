@@ -55,7 +55,8 @@ export default class LemmaStore {
       filterable: true,
       show: true,
       width: 70,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     },
     {
       name: 'Nachname',
@@ -64,7 +65,8 @@ export default class LemmaStore {
       filterable: true,
       show: true,
       getSimilarityFactor: (a, b) => jaroWinkler(a.lastName, b.lastName) * 3,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: true
     },
     {
       name: 'Vorname',
@@ -73,7 +75,8 @@ export default class LemmaStore {
       filterable: true,
       show: true,
       getSimilarityFactor: (a, b) => jaroWinkler(a.firstName, b.firstName) * 2,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: true
     },
     {
       name: 'Geburtsjahr',
@@ -88,7 +91,8 @@ export default class LemmaStore {
       //     return 0
       //   }
       // },
-      isUserColumn: false
+      isUserColumn: false,
+      editable: true
     },
     {
       name: 'Sterbejahr',
@@ -97,7 +101,8 @@ export default class LemmaStore {
       filterable: true,
       show: true,
       // getSimilarityFactor: (a, b) => Math.abs(a.deathYear - b.deathYear) <= 10 ? 2 : 0,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: true
     },
     {
       name: 'GND',
@@ -105,7 +110,8 @@ export default class LemmaStore {
       type: 'array',
       filterable: true,
       show: true,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     },
     {
       name: 'Library of Congress',
@@ -113,7 +119,8 @@ export default class LemmaStore {
       type: 'link',
       filterable: true,
       show: true,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     },
     {
       name: 'VIAF ID',
@@ -121,7 +128,8 @@ export default class LemmaStore {
       type: 'link',
       filterable: true,
       show: true,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     },
     {
       name: 'Wikipedia Edits',
@@ -129,7 +137,8 @@ export default class LemmaStore {
       type: 'number',
       filterable: true,
       show: true,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     },
     {
       name: 'id',
@@ -137,7 +146,8 @@ export default class LemmaStore {
       type: 'number',
       filterable: true,
       show: false,
-      isUserColumn: false
+      isUserColumn: false,
+      editable: false
     }
   ]
 
@@ -148,7 +158,7 @@ export default class LemmaStore {
     this.listenForRemoteImports()
   }
 
-  updateDescribesListMovement(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
+  updateDescribesListChange(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
     return (
       update.list !== undefined &&
       update.list !== undefined &&
@@ -164,17 +174,15 @@ export default class LemmaStore {
       .filter(ll => {
         return (
           ll.editor !== undefined &&
-          ll.editor.userId === store.user.userProfile.userId
+          ll.editor.userId === u.userId
         )
       })
   }
 
   isMovementToUserList(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
     return (
-      this.updateDescribesListMovement(ls, update) &&
-      this.getUserLists(this.lemmaLists, store.user.userProfile)
-        .map(ll => ll.id)
-        .includes(update.list?.id)
+      this.updateDescribesListChange(ls, update) &&
+      this.getUserLists(this.lemmaLists, store.user.userProfile).some(ll => ll.id === update.list?.id)
     )
   }
 
@@ -379,7 +387,8 @@ export default class LemmaStore {
         filterable: true,
         type: 'text' as 'text',
         show: false,
-        isUserColumn: true
+        isUserColumn: true,
+        editable: true
       }
     })
     return uc

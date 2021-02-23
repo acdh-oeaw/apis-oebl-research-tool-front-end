@@ -100,6 +100,7 @@ export interface LemmaColumn {
   width?: number
   sort?: null|'asc'|'desc',
   isUserColumn: boolean
+  editable: boolean
 }
 
 export interface LemmaFilterItem {
