@@ -5,20 +5,23 @@
     @keydown="handleKey">
     <v-menu
       :close-on-content-click="false"
-      min-width="300"
+      min-width="130"
       max-width="400"
       class="soft-shadow"
       v-if="editPopUp !== null"
       :value="editPopUp !== null"
       @input="(e) => e === false && (editPopUp = null)"
-      @keydown.tab="editNextField"
       :position-x="editPopUp.x - 3"
       :position-y="editPopUp.y - 10">
       <v-card elevation="0" color="background lighten-2" rounded="lg">
         <text-field
           class="mx-2"
+          style="min-height: 1em"
           color="background lighten-2"
           :selected="true"
+          :placeholder="editPopUp.column.name"
+          @keydown.native.tab.exact.prevent="editNextField(1)"
+          @keydown.native.tab.shift.exact.prevent="editNextField(-1)"
           @keydown.native.enter="onEditItem"
           v-model="editPopUp.value" />
         <v-divider />
@@ -86,7 +89,7 @@
             }"
             @click="$emit('click:cell', item, $event, column.value, index)"
             @dblclick="onDblClickCell(item, $event, column, index)"
-            class="table-cell">
+            :class="['table-cell', column.editable && 'editable']">
             <slot
               name="cell"
               draggable
@@ -105,6 +108,31 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Draggable from 'vuedraggable'
 import TextField from '@/views/lib/TextField.vue'
 import _ from 'lodash'
+
+function getNextSibling(el: HTMLElement, selector: string): HTMLElement|undefined {
+  // Get the next sibling element
+  let sib = el.nextElementSibling
+  // If the sibling matches our selector, use it
+  // If not, jump to the next sibling and continue the loop
+  while (sib) {
+    if (sib.matches(selector) && sib instanceof HTMLElement) {
+      return sib
+    } else {
+      sib = sib.nextElementSibling
+    }
+  }
+}
+function getPreviousSibling(el: HTMLElement, selector: string): HTMLElement|undefined {
+  // see above
+  let sib = el.previousElementSibling
+  while (sib) {
+    if (sib.matches(selector) && sib instanceof HTMLElement) {
+      return sib
+    } else {
+      sib = sib.previousElementSibling
+    }
+  }
+}
 
 interface Row {
   id: number
@@ -138,29 +166,55 @@ export default class VirtualTable extends Vue {
   selected: { [key: number]: Row } = {}
   log = console.log
 
-  editPopUp: {x: number, y: number, label: string, value: string|null, item: Row, fieldName: string}|null = null
+  editPopUp: {
+    x: number,
+    y: number,
+    value: string|null,
+    item: Row,
+    column: Column,
+    el: HTMLElement
+  }|null = null
 
-  editNextField() {
-    console.log('next')
+  editNextField(dir: -1 | 1) {
+    if (this.editPopUp !== null) {
+      const currentColumIndex = this.editableColumns.findIndex(c => c.value === this.editPopUp?.column.value)
+      const nextColumn = this.editableColumns[currentColumIndex + dir]
+      const nextSiblingEl = dir === 1 ? getNextSibling(this.editPopUp.el, '.table-cell.editable') : getPreviousSibling(this.editPopUp.el, '.table-cell.editable')
+      if (nextSiblingEl && nextColumn) {
+        this.editPopUp = {
+          x: nextSiblingEl.getBoundingClientRect().left,
+          y: nextSiblingEl.getBoundingClientRect().top,
+          value: this.editPopUp.item[nextColumn.value],
+          item: this.editPopUp.item,
+          column: nextColumn,
+          el: nextSiblingEl
+        }
+      }
+    }
+  }
+
+  get editableColumns() {
+    return this.visibleColumns.filter(c => c.editable === true)
   }
 
   onEditItem() {
     if (this.editPopUp !== null) {
-      this.$emit('update-item', this.editPopUp.item, { [this.editPopUp.fieldName]: this.editPopUp.value })
+      this.$emit('update-item', this.editPopUp.item, {
+        [ this.editPopUp.column.value ]: this.editPopUp.value
+      })
       this.editPopUp = null
     }
   }
 
   onDblClickCell(item: Row, e: MouseEvent, column: Column, index: number) {
     if (column.editable === true && e.currentTarget instanceof HTMLElement) {
-      console.log('yo')
       this.editPopUp = {
         x: e.currentTarget.getBoundingClientRect().left,
         y: e.currentTarget.getBoundingClientRect().top,
         value: item[column.value],
-        label: column.name,
-        fieldName: column.value as string,
-        item
+        el: e.currentTarget,
+        column,
+        item,
       }
     }
   }
