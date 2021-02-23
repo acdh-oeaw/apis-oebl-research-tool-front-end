@@ -20,6 +20,7 @@
           style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
           @keydown="onKeyDown"
           @input="onInput"
+          :placeholder="placeholder"
           :value="localValue" />
       </div>
     </div>
@@ -37,6 +38,7 @@ export default class TextField extends Vue {
   @Prop({ default: '' }) value!: string
   @Prop({ default: false }) required!: boolean
   @Prop({ default: false }) selected!: boolean
+  @Prop({ default: null }) placeholder!: string|null
   @Prop() color?: string
 
   msg: string|null = null
@@ -111,6 +113,7 @@ textarea
   outline 0
 
 .fake-textarea
+  min-height 1.6em
   visibility hidden
   will-change contents, height
 
