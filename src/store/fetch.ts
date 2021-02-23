@@ -16,7 +16,7 @@ export const requestState = {
 function warnBeforeLeave(e: BeforeUnloadEvent): string|undefined {
   if (requestState.writeCallsRunning > 0) {
     e.returnValue = ''
-    return 'Synchronisierung läuft noch. Beim beending können Änderungen verloren gehen. Wirklich beenden?'
+    return 'Synchronisierung läuft noch. Beim Beenden können Änderungen verloren gehen. Wirklich beenden?'
   }
 }
 
@@ -48,10 +48,17 @@ window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response>
       // not logged in: show login prompt and queue promise.
       if (res.status === 401) {
         console.log('Unauthorized Access. Waiting for log-in before continuing.')
+        store.isLoggedIn = false
         return new Promise((resolve, reject) => {
           store.onLoginSuccess(async () => {
             // recursion after login
-            const res = await fetch(input, init)
+            const res = await fetch(input, {
+              ...init,
+              headers: {
+                ...init?.headers,
+                authorization: `Basic ${ btoa(OpenAPI.USERNAME + ':' + OpenAPI.PASSWORD) }`
+              }
+            })
             resolve(res)
           })
         })
