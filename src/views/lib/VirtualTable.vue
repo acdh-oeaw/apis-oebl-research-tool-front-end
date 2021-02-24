@@ -7,6 +7,7 @@
       :close-on-content-click="false"
       min-width="130"
       max-width="400"
+      content-class="transition-left"
       class="soft-shadow"
       v-if="editPopUp !== null"
       :value="editPopUp !== null"
@@ -356,6 +357,9 @@ export default class VirtualTable extends Vue {
 </script>
 
 <style lang="stylus" scoped>
+
+.transition-left
+  transition left .1s
 
 // tell browser NOT to cache the millions
 // of rows/DOM elements we’re gonna put here.
