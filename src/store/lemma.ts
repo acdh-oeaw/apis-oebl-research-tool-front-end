@@ -29,7 +29,6 @@ class LemmaDatabase extends Dexie {
 
 export default class LemmaStore {
 
-  private lastViewDate: Date|null = null
   private localDb = new LemmaDatabase()
 
   private _lemmas: LemmaRow[] = []
@@ -205,6 +204,14 @@ export default class LemmaStore {
         }
       }
     })
+  }
+
+  set lastLemmaFetchDate(d) {
+    localStorage.setItem('lastLemmaFetchDate', JSON.stringify(d))
+  }
+
+  get lastLemmaFetchDate(): Date|null {
+    return JSON.parse(localStorage.getItem('lastLemmaFetchDate') || 'null')
   }
 
   get columns() {
@@ -396,8 +403,8 @@ export default class LemmaStore {
 
   async initLemmaData() {
     this._lemmas = await this.getLocalLemmaCache()
-    this.lastViewDate = await this.getLastViewDate()
-    this.lemmas = await this.getRemoteLemmas()
+    this.lemmas = await this.getRemoteLemmas(this.lastLemmaFetchDate)
+    this.lastLemmaFetchDate = new Date()
     this.columns = _.uniqBy([
       ...this.columns,
       ...this.getAllUserColumns(this.lemmas)
@@ -511,13 +518,13 @@ export default class LemmaStore {
   }
 
   async getRemoteLemmas(modifiedAfter: Date|null = null): Promise<LemmaRow[]> {
-    if (modifiedAfter !== null) {
-      // TODO: get new ones.
-      return []
-    } else {
-      return ((await ResearchService.researchApiV1LemmaresearchList(1000)).results as ServerResearchLemma[] || [])
-        .map(this.convertRemoteLemmaToLemmaRow)
-    }
+    // if (modifiedAfter !== null) {
+    //   // TODO: get new ones.
+    //   return []
+    // } else {
+    return ((await ResearchService.researchApiV1LemmaresearchList(1000)).results as ServerResearchLemma[] || [])
+      .map(this.convertRemoteLemmaToLemmaRow)
+    // }
   }
 
   async updateList(id: number, l: Partial<LemmaList>) {
