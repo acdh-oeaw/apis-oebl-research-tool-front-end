@@ -236,15 +236,20 @@ export default class VirtualTable extends Vue {
   }
 
   handleKey(e: KeyboardEvent) {
+    const mod = (e.ctrlKey || e.metaKey)
     if (e.key === 'Escape') {
       e.preventDefault()
       this.selectNone()
-    }
-    if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
+    } else if (e.key === 'a' && mod) {
       e.preventDefault()
       this.selectAll()
-    }
-    if (e.key === 'ArrowDown') {
+    } else if (e.key === 'ArrowDown' && mod) {
+      e.preventDefault()
+      this.selectLast()
+    } else if (e.key === 'ArrowUp' && mod) {
+      e.preventDefault()
+      this.selectFirst()
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault()
       this.selectNext()
     } else if (e.key === 'ArrowUp') {
@@ -263,7 +268,7 @@ export default class VirtualTable extends Vue {
     }
   }
 
-  async selectPrevious() {
+  selectPrevious() {
     const selectedIndexes = _.map(this.selected, v => this.data.findIndex(r => r.id === v.id))
     const newIndex = Math.min(...selectedIndexes) - 1
     const prevItem = this.data[ newIndex ]
@@ -282,6 +287,24 @@ export default class VirtualTable extends Vue {
       this.selected = { [nextItem.id]: nextItem }
       this.$emit('change-selection', [ nextItem ])
       this.scrollToIndex(newIndex)
+    }
+  }
+
+  selectFirst() {
+    const firstItem = this.data[0]
+    if (firstItem !== undefined) {
+      this.selected = { [firstItem.id]: firstItem }
+      this.$emit('change-selection', [ firstItem ])
+      this.scrollToIndex(0)
+    }
+  }
+
+  selectLast() {
+    const lastItem = this.data[this.data.length - 1]
+    if (lastItem !== undefined) {
+      this.selected = { [lastItem.id]: lastItem }
+      this.$emit('change-selection', [ lastItem ])
+      this.scrollToIndex(this.data.length - 1)
     }
   }
 
