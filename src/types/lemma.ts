@@ -75,6 +75,7 @@ export interface LemmaRow {
   list?: {
     id: number
     title: string
+    editor?: number
   }
   columns_user: UserColumn
   columns_scrape?: ServerResearchLemma['columns_scrape']
