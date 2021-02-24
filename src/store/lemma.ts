@@ -42,6 +42,34 @@ export default class LemmaStore {
 
   private _storedLemmaFilters: LemmaFilter[] = []
 
+  public importStatus = {
+
+    target: 0,
+    status: 0,
+
+    incrementTarget(n: number) {
+      this.target = this.target + n
+    },
+
+    incrementStatus(ls: LemmaRow[]) {
+      const userLemmasCount = ls.filter(l => l.list !== undefined && l.list.editor === store.user.userProfile.userId).length
+      this.status = this.status + userLemmasCount
+      // reset if we’re finished
+      if (this.target === this.status) {
+        this.target = 0
+        this.status = 0
+      }
+    },
+
+    get progress() {
+      return this.status / this.target
+    },
+
+    get isImporting() {
+      return this.target !== 0 && !isNaN(this.progress) && this.progress !== 1
+    }
+  }
+
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
   public newLemmasInUserList: { [listId: number]: { [lemmaId: number]: LemmaRow } } = {}
@@ -188,7 +216,12 @@ export default class LemmaStore {
   listenForRemoteImports() {
     notifyService.on('importLemmas', (ls) => {
       console.log('importing lemmas', ls)
-      this.insertLemmasLocally(ls.map(this.convertRemoteLemmaToLemmaRow))
+      // convert to local type
+      const rows = ls.map(this.convertRemoteLemmaToLemmaRow)
+      // insert the lemmas
+      this.insertLemmasLocally(rows)
+      // update the status
+      this.importStatus.incrementStatus(rows)
     })
   }
 
@@ -477,9 +510,11 @@ export default class LemmaStore {
   }
 
   async importLemmas(ls: ImportablePerson[], listName: string) {
+    // create list
     const list = await (async () => {
       return this.createList(listName)
     })()
+    // trigger import to list
     await ResearchService.researchApiV1LemmaresearchCreate(({
       listId: list.id!,
       lemmas: ls.map(l => ({
@@ -491,6 +526,8 @@ export default class LemmaStore {
         gnd: l.gnd
       }))
     }))
+    // register the lemmas that we’re waiting for
+    this.importStatus.incrementTarget(ls.length)
     return list
   }
 
@@ -534,7 +571,7 @@ export default class LemmaStore {
     const newList = await ResearchService.researchApiV1ListresearchPartialUpdate(id, l)
   }
 
-  async createList(title: string): Promise<LemmaList> {
+  async createList(title: string) {
     const s = await ResearchService.researchApiV1ListresearchCreate({ title })
     this.lemmaLists = [ ...this.lemmaLists, s ]
     return s
