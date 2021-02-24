@@ -4,14 +4,19 @@ const fs = require('fs')
 const http = require('http')
 const socketIo = require('socket.io')
 const Emitter = require('events')
-const emitter = new Emitter()
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
 const bodyParser = require('body-parser')
 
 const server = http.createServer(app)
 const io = socketIo(server, {
-  cors: true
+  cors: {
+    origin: [
+      'http://localhost:8080',
+      'https://localhost:8080',
+      'https://oebl-research.acdh-dev.oeaw.ac.at'
+    ]
+  }
 })
 
 const index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' })
