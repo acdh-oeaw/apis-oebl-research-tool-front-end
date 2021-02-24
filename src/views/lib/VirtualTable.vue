@@ -41,6 +41,7 @@
       tag="div"
       class="header-row"
       animation="200"
+      :style="{ transform: `translateX(-${ this.scrollLeft }px)` }"
       drag-class="header-row-drag"
       ghost-class="header-row-ghost"
       direction="horizontal"
@@ -67,6 +68,7 @@
     <v-virtual-scroll
       style="contain: content"
       ref="scroller"
+      @scroll.passive="onScroll"
       class="virtual-scroller"
       :items="data"
       :height="height - rowHeight"
@@ -165,6 +167,7 @@ export default class VirtualTable extends Vue {
 
   selected: { [key: number]: Row } = {}
   log = console.log
+  scrollLeft = 0
 
   editPopUp: {
     x: number,
@@ -221,6 +224,15 @@ export default class VirtualTable extends Vue {
 
   onDblClickRow(e: MouseEvent, item: Row, index: number) {
     this.$emit('dblclick:row', item, e)
+  }
+
+  onScroll(e: MouseEvent) {
+    requestAnimationFrame(() => {
+      const l = (e.target as HTMLElement).scrollLeft
+      if (l !== this.scrollLeft) {
+        this.scrollLeft = l
+      }
+    })
   }
 
   handleKey(e: KeyboardEvent) {
@@ -344,7 +356,6 @@ export default class VirtualTable extends Vue {
 
 .header-row
   align-items stretch
-  overflow hidden
   padding-bottom 5px
   // the scrollbar width
   padding-right 8px
@@ -363,6 +374,8 @@ export default class VirtualTable extends Vue {
   opacity .5
   align-items flex-end
   user-select none
+  overflow hidden
+  text-overflow ellipsis
   &:hover
     opacity 1
   &.sort-active
@@ -377,6 +390,7 @@ export default class VirtualTable extends Vue {
 
 .header-cell
 .table-cell
+  min-width 60px
   overflow hidden
   text-overflow ellipsis
 
