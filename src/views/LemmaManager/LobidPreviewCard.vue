@@ -68,7 +68,7 @@ export default class LobidPreviewCard extends Vue {
 
   @Watch('gnd', { immediate: true })
   async onChangeGnd(gnd: string[]) {
-    this.allFragments = await this.loadPreviews(gnd)
+    this.allFragments = await this.loadPreviews(_.take(gnd, this.limit))
   }
 }
 </script>
