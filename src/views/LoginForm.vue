@@ -8,6 +8,7 @@
         <v-text-field
           class="input-no-stroke"
           hide-details
+          dark
           v-model="user"
           flat
           :autocomplete="false"
@@ -19,9 +20,10 @@
           hide-details
           :autocomplete="false"
           name="password"
+          dark
           v-model="password"
           type="password"
-          style="box-shadow: inset 0 0 20px 20px"
+          style="box-shadow: inset 0 0 20px 20px #252525"
           flat
           placeholder="Password" />
         <v-btn
