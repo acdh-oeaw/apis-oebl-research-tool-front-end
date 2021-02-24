@@ -234,6 +234,14 @@
         </v-list-item>
       </v-list>
     </div>
+    <div v-if="store.lemma.importStatus.isImporting">
+      <v-divider />
+      <div class="px-4 pb-5">
+        <v-subheader class="px-0"><div>Importiere …</div> <v-spacer /><div>({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})</div></v-subheader>
+        <v-progress-linear class="mt-0 rounded" :value="store.lemma.importStatus.progress * 100" />
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -343,7 +351,11 @@ export default class LemmaNavigation extends Vue {
     const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
     const diff = newLemmaList.length - listItems.length
     if (diff !== 0 && await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`)) {
-      store.lemma.addLemmasToList(list, lemmas)
+      store.lemma.addLemmasToList({
+        id: list.id,
+        title: list.title,
+        editor: store.user.userProfile.userId
+      }, lemmas)
     }
   }
 
@@ -374,9 +386,13 @@ export default class LemmaNavigation extends Vue {
     if (name !== null) {
       const l = await store.lemma.createList(name) as WithId<LemmaList>
       if (lemmas.length) {
-        await store.lemma.addLemmasToList(l, lemmas)
+        await store.lemma.addLemmasToList({
+          id: l.id,
+          title: l.title,
+          editor: store.user.userProfile.userId
+        }, lemmas)
       }
-      store.lemma.selectedLemmaListId = l.id
+      store.lemma.selectedLemmaListId = l.id || null
     }
   }
 
