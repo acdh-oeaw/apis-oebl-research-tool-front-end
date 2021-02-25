@@ -63,12 +63,11 @@
     <v-app-bar
       data-deskgap-drag="true"
       app
-      extended
-      style="transition: none"
-      :extension-height="filterItems.length * 32 "
+      :style="{transition: 'none', padding: `${toolbarPaddingY}px 0`}"
+      :height="toolbarHeight"
       color="background"
       flat>
-      <div class="d-flex fill-width flex-row align-stretch align-self-start mt-4">
+      <div class="d-flex fill-width flex-row align-stretch align-self-start">
         <v-btn v-if="!store.settings.lemmaManagerNavVisible" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
@@ -85,7 +84,7 @@
           </h1>
           <h1
             v-else-if="store.lemma.selectedLemmaListId !== null && store.lemma.getListById(store.lemma.selectedLemmaListId) !== undefined"
-            @blur="store.lemma.updateList(store.lemma.selectedLemmaListId, { title: $event.target.textContent })"
+            @blur="updateListName"
             @keyup.enter.prevent.stop="$event.target.blur()"
             @keyup.esc.prevent.stop="cancelUpdateListName"
             v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
@@ -115,105 +114,19 @@
             </span>
           </div>
         </v-flex>
-        <!-- FILTER: TODO: Convert to Component -->
-        <v-flex align-self-start class="rounded-lg pa-1 flex-nowrap background darken-2">
-          <div
-            v-for="(filter, i) in filterItems"
-            :key="i">
-            <v-card
-              flat
-              color="transparent"
-              class="text-body-2 row row--dense input-no-stroke px-2 py-0 flex-nowrap">
-              <div style="max-width: 120px" class="col col-2">
-                <v-select
-                  :menu-props="{
-                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
-                  }"
-                  single-line
-                  flat
-                  hide-details
-                  return-object
-                  :items="columns.filter(c => c.filterable === true)"
-                  item-text="name"
-                  append-icon=""
-                  item-value="value"
-                  class="text-body-2"
-                  v-model="filter.column"
-                  dense
-                  @input="filterData"
-                />
-              </div>
-              <v-divider class="my-1 mr-1" vertical />
-              <div style="max-width: 120px" class="col-2">
-                <v-select
-                  :menu-props="{
-                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
-                  }"
-                  color="background darken-2"
-                  single-line
-                  flat
-                  dense
-                  hide-details
-                  item-text="name"
-                  item-value="value"
-                  append-icon=""
-                  class="text-body-2"
-                  v-model="filter.comparator"
-                  :items="comparators"
-                  @input="filterData"
-                />
-              </div>
-              <v-divider class="my-1 mr-2" vertical />
-              <div
-                v-if="isFilterWithInput(filter)"
-                class="flex-grow-1">
-                <v-select
-                  v-if="filter.column.type === 'boolean'"
-                  :value="'true'"
-                  :items="[ { value: 'true', text: 'Ja' }, { value: 'false', text: 'Nein' } ]"
-                  :menu-props="{
-                    contentClass: 'rounded-lg soft-shadow background darken-2 v-list--nav'
-                  }"
-                  color="background darken-2"
-                  single-line
-                  flat
-                  dense
-                  hide-details
-                  append-icon=""
-                  class="text-body-2 mt-1"
-                  v-model="filter.query"
-                  @input="filterData"
-                />
-                <v-text-field
-                  v-else
-                  style="min-width: 60px"
-                  @keydown.esc="() => { filter.query = ''; filterData() }"
-                  placeholder="Abfrage…"
-                  class="text-body-2 mt-1"
-                  v-model="filter.query"
-                  @input="filterDataDebounced"
-                  dense
-                  hide-details
-                />
-              </div>
-              <div class="flex-nowrap text-no-wrap" style="margin-top: 3px;">
-                <v-btn @click="removeFilterItem(i)" :disabled="filterItems.length === 1 && (filter.query === '' || filter.query === null)" icon small>
-                  <v-icon v-if="filterItems.length === 1 && filter.query !== null && filter.query !== ''" style="transform: rotate(45deg)">mdi-plus-circle-outline</v-icon>
-                  <v-icon v-else>mdi-minus-circle-outline</v-icon>
-                </v-btn>
-                <v-btn @click="addFilterItem" icon small>
-                  <v-icon>mdi-plus-circle-outline</v-icon>
-                </v-btn>
-              </div>
-            </v-card>
-            <v-divider class="mx-1" v-if="filterItems.length > 1 && i !== filterItems.length - 1" />
-          </div>
+        <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2">
+          <data-filter
+            :comparators="comparators"
+            :columns="columns"
+            :value="filterItems"
+            @input="onUpdateFilterItems"
+          />
         </v-flex>
         <v-flex
           shrink
           align-self-start
           class="pl-2 pr-0"
-          style="margin-top: -3px">
+          style="margin-top: -5px">
           <v-menu
             min-width="150"
             offset-y
@@ -301,7 +214,7 @@
             <theme-toggle class="mx-2 mb-2" />
           </v-menu>
         </v-flex>
-        <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -3px">
+        <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
             @click="showSearchDialog = true"
             tile
@@ -345,18 +258,12 @@
         @click="store.lemma.showSideBar = false">
         <v-icon>mdi-dock-right</v-icon>
       </v-btn>
-      <v-overlay
-        v-if="selectedRows.length === 0"
-        absolute
-        color="background">
-        <span class="text-body-2">Kein Lemma ausgewählt</span>
-      </v-overlay>
-      <v-overlay
-        v-else-if="selectedRows.length > 1"
-        absolute
-        color="background">
-        <span class="text--background darken-2" style="opacity: .7">{{ selectedRows.length }} Lemmata ausgewählt</span>
-      </v-overlay>
+      <div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">
+        Kein Lemma ausgewählt
+      </div>
+      <div v-else-if="selectedRows.length > 1" class="fill-height justify-center d-flex align-center">
+        {{ selectedRows.length }} Lemmata ausgewählt
+      </div>
       <lemma-detail
         v-else
         :value="selectedRows[0]"
@@ -373,6 +280,7 @@
         :editable="true"
         :height="tableHeight"
         :data="sortedFilteredLemmas"
+        header-color="background"
         @keyup.native.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
@@ -425,10 +333,11 @@ import ThemeToggle from '../ThemeToggle.vue'
 import VirtualTable from '../lib/VirtualTable.vue'
 import LemmaDetail from './LemmaDetail.vue'
 import LemmaAdd from './LemmaAdd.vue'
+import DataFilter from '../lib/DataFilter.vue'
 
 import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
-import { LemmaFilterComparator, LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
+import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
 import GlobalSearch from '@/views/GlobalSearch.vue'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
@@ -444,6 +353,7 @@ import confirm from '@/store/confirm'
     LobidPreviewCard,
     VirtualTable,
     GlobalSearch,
+    DataFilter,
     LemmaImporter: () => import('./LemmaImporter.vue'),
   }
 })
@@ -453,13 +363,18 @@ export default class LemmaManager extends Vue {
 
   store = store
   tableHeight = 0
-
+  toolbarMinHeight = 80
+  toolbarPaddingY = 15
   showAddLemmaDialog = false
   showSearchDialog = false
+
+  comparators = store.lemma.comparators
+  filterItems: LemmaFilterItem[] = []
 
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
   title = 'Lemmabibliothek'
+  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
 
   onKeyDown(e: KeyboardEvent) {
     if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
@@ -491,7 +406,6 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
   filterDataDebounced = _.debounce(this.filterData, 150)
 
   fileToImport = {
@@ -513,81 +427,6 @@ export default class LemmaManager extends Vue {
     })
   }
 
-  comparators: LemmaFilterComparator[] = [
-    {
-      icon: '∈',
-      name: 'enthält',
-      value: 'contains',
-      predicate: (e: string|number|null, q: string) => String(e).toLocaleLowerCase().indexOf(q) > -1
-    },
-    {
-      name: 'enthält nicht',
-      value: 'not-contains',
-      icon: '∉',
-      predicate: (e: string|number|null, q: string) => String(e).toLocaleLowerCase().indexOf(q) === -1
-    },
-    {
-      name: 'ist',
-      value: 'equals',
-      icon: '=',
-      predicate: (e: string|number|null, q: string|number|null) => String(e).toLocaleLowerCase() === String(q).toLocaleLowerCase()
-    },
-    {
-      name: 'ist nicht',
-      value: 'not',
-      icon: '≠',
-      predicate: (e: string|number|null, q: string|number|null) => String(e).toLocaleLowerCase() !== String(q).toLocaleLowerCase()
-    },
-    {
-      name: 'ist vorhanden',
-      value: 'exists',
-      icon: '.',
-      predicate: (e: string|number|null|number[], q: unknown) => !!e
-    },
-    {
-      name: 'ist nicht vorhanden',
-      value: 'exists-not',
-      icon: '.',
-      predicate: (e: string|number|null|number[], q: unknown) => !e
-    },
-    {
-      name: 'größer als',
-      value: 'gt',
-      icon: '>',
-      predicate: (e: number, q: number) => e > q
-    },
-    {
-      name: 'größer gleich',
-      value: 'gte',
-      icon: '≥',
-      predicate: (e: number, q: number) => e >= q
-    },
-    {
-      name: 'kleiner als',
-      value: 'lt',
-      icon: '<',
-      predicate: (e: number, q: number) => e < q
-    },
-    {
-      name: 'kleiner gleich',
-      value: 'lte',
-      icon: '≤',
-      predicate: (e: number, q: number) => e <= q
-    },
-  ]
-
-  isFilterWithInput(f: LemmaFilterItem): boolean {
-    return f.comparator !== 'exists' && f.comparator !== 'exists-not'
-  }
-
-  defaultFilterItem = {
-    column: store.lemma.defaultColumns[1],
-    comparator: this.comparators[0].value,
-    query: ''
-  }
-
-  filterItems: LemmaFilterItem[] = [ clone(this.defaultFilterItem) ]
-
   cancelUpdateListName(event: KeyboardEvent) {
     if (
       store.lemma.selectedLemmaListId !== null &&
@@ -595,6 +434,17 @@ export default class LemmaManager extends Vue {
     ) {
       event.target.textContent = store.lemma.getListById(store.lemma.selectedLemmaListId)?.title || 'Listenname'
       event.target.blur()
+    }
+  }
+
+  updateListName(event: Event) {
+    if (
+      event.currentTarget instanceof HTMLElement &&
+      store.lemma.selectedLemmaListId !== null &&
+      event.currentTarget.textContent !== null
+    ) {
+      store.lemma.updateList(store.lemma.selectedLemmaListId, { title: event.currentTarget.textContent })
+      event.currentTarget.scrollLeft = 0
     }
   }
 
@@ -651,8 +501,12 @@ export default class LemmaManager extends Vue {
     this.store.settings = {...this.store.settings, lemmaManagerNavVisible: !this.store.settings.lemmaManagerNavVisible}
   }
 
+  get toolbarHeight() {
+    return Math.max(((this.filterItems.length) * 38) + this.toolbarPaddingY * 2, 80)
+  }
+
   getTableHeight() {
-    return (window.innerHeight - 70) - (this.filterItems.length * 35)
+    return window.innerHeight - this.toolbarHeight
   }
 
   sortLemmas(c: LemmaColumn) {
@@ -724,17 +578,6 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  scrollToNextSelectedLemma() {
-    if (this.selectedRows.length > 0) {
-      const first = this.selectedRows[0]
-      const i = this.sortedFilteredLemmas.findIndex(f => f.id === first.id);
-      (this.$refs.vTable as Vue).$el.querySelector('.v-virtual-scroller')!.scrollTo({
-        top: i * 42,
-        behavior: 'smooth'
-      })
-    }
-  }
-
   @Watch('store.lemma.selectedLemmaFilterId', { immediate: true })
   async onSelectLemmaFilter(id: string|null) {
     if (id !== null) {
@@ -744,7 +587,7 @@ export default class LemmaManager extends Vue {
         this.filterData()
       }
     } else {
-      this.filterItems = [ clone(this.defaultFilterItem) ]
+      this.filterItems = []
       this.filterData()
     }
   }
@@ -832,16 +675,9 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  addFilterItem() {
-    this.filterItems.push(clone(this.defaultFilterItem))
-  }
-
-  removeFilterItem(i: number) {
-    if (this.filterItems.length === 1) {
-      this.filterItems[0].query = ''
-    } else {
-      this.filterItems.splice(i, 1)
-    }
+  onUpdateFilterItems(fis: LemmaFilterItem[]) {
+    this.filterItems = fis
+    this.updateTableHeight()
     this.filterData()
   }
 
@@ -859,14 +695,14 @@ export default class LemmaManager extends Vue {
     } else {
       console.time('filter lemmas')
       const filterItemsByColumn = _.groupBy(this.usableFilterItems, (i) => i.column.value + '__' + i.comparator)
-      this.filteredLemmas = store.lemma.lemmas.filter(d => {
+      this.filteredLemmas = store.lemma.lemmas.filter(lemma => {
         return _.every(filterItemsByColumn, (fs) => {
           if (fs.length === 1) {
             // only one filter item for this column
-            return comparators[fs[0].comparator].predicate(d[fs[0].column.value], fs[0].query)
+            return comparators[fs[0].comparator].predicate(lemma[fs[0].column.value], fs[0].query)
           } else {
             // multiple filter items for query => use some (equivalent to "OR")
-            return fs.some(f => comparators[f.comparator].predicate(d[f.column.value], f.query))
+            return fs.some(f => comparators[f.comparator].predicate(lemma[f.column.value], f.query))
           }
         })
       })
@@ -882,10 +718,10 @@ export default class LemmaManager extends Vue {
   display none
 
 .virtual-table
-  padding-left 1em
   border 0 !important
   outline 0 !important
   background var(--v-background-darken1)
+  padding-left 1em
   .v-virtual-scroll
     padding-right 1em
 
