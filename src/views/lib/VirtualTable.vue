@@ -40,7 +40,7 @@
       @end.stop.prevent.capture=""
       @input="updateColumnOrder"
       tag="div"
-      class="header-row"
+      :class="['header-row', headerColor]"
       animation="200"
       :style="{ transform: `translateX(-${ this.scrollLeft }px)` }"
       drag-class="header-row-drag"
@@ -165,6 +165,7 @@ export default class VirtualTable extends Vue {
   @Prop({ default: 40 }) rowHeight!: number
   @Prop({ default: true }) sortableColumns!: boolean
   @Prop({ default: true }) keyboardSelection!: boolean
+  @Prop({ default: '' }) headerColor!: string
 
   selected: { [key: number]: Row } = {}
   log = console.log
