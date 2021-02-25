@@ -7,7 +7,7 @@
         small
         :width="width"
         text
-        class="px-1 ellipsis select-button"
+        class="px-1 ellipsis select-button caption"
         @click="onClickActivator"
         v-bind="attrs"
         v-on="on">
@@ -15,7 +15,7 @@
       </v-btn>
     </template>
     <v-card class="pa-0 fill-height d-flex flex-column" color="background" style="max-height: inherit;">
-      <v-card-title class="py-2 px-3">
+      <v-card-title class="py-2 px-3 d-flex flex-row flex-nowrap">
         <input
           ref="input"
           placeholder="Suchen …"
@@ -23,9 +23,17 @@
           v-model.trim="searchText"
           @keydown="onKeyDownSearch"
           @click.prevent.stop="" />
+        <v-btn color="primary" @click="searchText =  ''" v-if="searchText !== null && searchText !== ''" icon x-small text>
+          <v-icon small>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
       <v-divider class="ma-0" />
-      <v-list color="transparent" class="text-body-2 overflow-y-auto" nav dense>
+      <v-list
+        v-if="filteredItems.length > 0"
+        color="transparent"
+        class="text-body-2 overflow-y-auto"
+        nav
+        dense>
         <v-list-item
           @click="selectItem(item)"
           dense
@@ -37,6 +45,16 @@
           <v-list-item-content class="text-body-2">
             {{ item[keyName] }}
           </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-list
+        v-else
+        color="transparent"
+        class="text-body-2 overflow-y-auto"
+        nav
+        dense>
+        <v-list-item>
+          <v-list-item-content style="opacity: .7" class="caption text-center">nichts gefunden</v-list-item-content>
         </v-list-item>
       </v-list>
     </v-card>
