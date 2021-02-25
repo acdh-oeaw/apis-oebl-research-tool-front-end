@@ -5,7 +5,7 @@ import * as jaroWinkler from 'jaro-winkler'
 
 import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { ImportablePerson, isValidServerResearchLemma, LemmaColumn, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -73,6 +73,69 @@ export default class LemmaStore {
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
   public newLemmasInUserList: { [listId: number]: { [lemmaId: number]: LemmaRow } } = {}
+
+  readonly comparators: LemmaFilterComparator[] = [
+    {
+      icon: '∈',
+      name: 'enthält',
+      value: 'contains',
+      predicate: (e: string|number|null, q: string) => String(e).toLocaleLowerCase().indexOf(q) > -1
+    },
+    {
+      name: 'enthält nicht',
+      value: 'not-contains',
+      icon: '∉',
+      predicate: (e: string|number|null, q: string) => String(e).toLocaleLowerCase().indexOf(q) === -1
+    },
+    {
+      name: 'ist',
+      value: 'equals',
+      icon: '=',
+      predicate: (e: string|number|null, q: string|number|null) => String(e).toLocaleLowerCase() === String(q).toLocaleLowerCase()
+    },
+    {
+      name: 'ist nicht',
+      value: 'not',
+      icon: '≠',
+      predicate: (e: string|number|null, q: string|number|null) => String(e).toLocaleLowerCase() !== String(q).toLocaleLowerCase()
+    },
+    {
+      name: 'ist vorhanden',
+      value: 'exists',
+      icon: '.',
+      predicate: (e: string|number|null|number[], q: unknown) => !!e
+    },
+    {
+      name: 'ist nicht vorhanden',
+      value: 'exists-not',
+      icon: '.',
+      predicate: (e: string|number|null|number[], q: unknown) => !e
+    },
+    {
+      name: 'größer als',
+      value: 'gt',
+      icon: '>',
+      predicate: (e: number, q: number) => e > q
+    },
+    {
+      name: 'größer gleich',
+      value: 'gte',
+      icon: '≥',
+      predicate: (e: number, q: number) => e >= q
+    },
+    {
+      name: 'kleiner als',
+      value: 'lt',
+      icon: '<',
+      predicate: (e: number, q: number) => e < q
+    },
+    {
+      name: 'kleiner gleich',
+      value: 'lte',
+      icon: '≤',
+      predicate: (e: number, q: number) => e <= q
+    },
+  ]
 
   public defaultColumns: LemmaColumn[] = [
     {
@@ -181,8 +244,7 @@ export default class LemmaStore {
   constructor() {
     this.initLemmaData()
     this.loadRemoteLemmaLists()
-    this.listenForRemoteUpdates()
-    this.listenForRemoteImports()
+    this.listenForRemoteEvents()
   }
 
   updateDescribesListChange(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
@@ -213,6 +275,18 @@ export default class LemmaStore {
     )
   }
 
+  listenForRemoteEvents() {
+    this.listenForRemoteLemmaUpdates()
+    this.listenForRemoteListUpdates()
+    this.listenForRemoteImports()
+  }
+
+  listenForRemoteListUpdates() {
+    notifyService.on('deleteLemmaList', (l) => this.deleteLemmaListLocally(l.id!))
+    notifyService.on('createLemmaList', (l) => this.addLemmaListLocally(l))
+    notifyService.on('updateLemmaList', (l) => this.updateLemmaListLocally(l.id!, l))
+  }
+
   listenForRemoteImports() {
     notifyService.on('importLemmas', (ls) => {
       console.log('importing lemmas', ls)
@@ -225,7 +299,7 @@ export default class LemmaStore {
     })
   }
 
-  listenForRemoteUpdates() {
+  listenForRemoteLemmaUpdates() {
     notifyService.on('updateLemmas', (ls, u) => {
       const updatedLemmas = this.updateLemmasLocally(ls, u)
       if (this.isMovementToUserList(ls, u)) {
@@ -237,6 +311,7 @@ export default class LemmaStore {
         }
       }
     })
+    notifyService.on('deleteLemmas', (ls) => this.deleteLemmasLocally(ls))
   }
 
   set lastLemmaFetchDate(d) {
@@ -383,10 +458,18 @@ export default class LemmaStore {
     notifyService.emit('updateLemmas', ls, u)
   }
 
-  async deleteLemmaList(id: number) {
+  deleteLemmaListLocally(id: number) {
     this.lemmaLists = this.lemmaLists.filter(ll => ll.id !== id)
+  }
+
+  async deleteLemmaList(id: number) {
+    const list = this.lemmaLists.find(ll => ll.id === id)
+    this.deleteLemmaListLocally(id)
     this.selectedLemmaListId = null
     await ResearchService.researchApiV1ListresearchDestroy(id)
+    if (list !== undefined) {
+      notifyService.emit('deleteLemmaList', list)
+    }
     await this.loadRemoteLemmaLists()
   }
 
@@ -480,9 +563,13 @@ export default class LemmaStore {
     return x
   }
 
+  deleteLemmasLocally(ids: number[]) {
+    this.lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
+  }
+
   async deleteLemma(ids: number[]) {
     console.log('delete ids', ids)
-    this._lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
+    this.deleteLemmasLocally(ids)
     await Promise.all(ids.map(id => {
       return ResearchService.researchApiV1LemmaresearchDestroy(id)
     }))
@@ -564,16 +651,26 @@ export default class LemmaStore {
     // }
   }
 
-  async updateList(id: number, l: Partial<LemmaList>) {
+  updateLemmaListLocally(id: number, l: Partial<LemmaList>) {
     this._lemmaLists = this._lemmaLists.map(l2 => {
       return id === l2.id ? {...l2, ...l} : l2
     })
+  }
+
+  async updateList(id: number, l: Partial<LemmaList>) {
+    this.updateLemmaListLocally(id, l)
     const newList = await ResearchService.researchApiV1ListresearchPartialUpdate(id, l)
+    notifyService.emit('updateLemmaList', newList)
+  }
+
+  addLemmaListLocally(l: LemmaList) {
+    this.lemmaLists = [ ...this.lemmaLists, l ]
   }
 
   async createList(title: string) {
     const s = await ResearchService.researchApiV1ListresearchCreate({ title })
-    this.lemmaLists = [ ...this.lemmaLists, s ]
+    this.addLemmaListLocally(s)
+    notifyService.emit('createLemmaList', s)
     return s
   }
 
