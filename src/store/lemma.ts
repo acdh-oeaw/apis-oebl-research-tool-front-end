@@ -703,4 +703,11 @@ export default class LemmaStore {
     this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkAdd(ls))
   }
 
+  get lemmaSearchIndex(): Array<LemmaRow & { searchIndex: string }> {
+    return this._lemmas.map(l => {
+      return {...l, searchIndex: `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()}
+    })
+  }
+
+
 }
