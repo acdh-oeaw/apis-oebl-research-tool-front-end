@@ -169,4 +169,9 @@ h1
 
 [tabindex="-1"]
   outline none
+
+.ellipsis
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 </style>
