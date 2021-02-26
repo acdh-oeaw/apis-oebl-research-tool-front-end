@@ -119,6 +119,7 @@
                   <v-window-item class="fill-height">
                     <lobid-preview-card
                       class="fill-height overflow-y-auto"
+                      :value="person.gnd"
                       @input="person.gnd = $event"
                       :gnd="possibleGnds" />
                     <v-overlay v-if="possibleGnds.length === 0" absolute>Keine GNDs bei Lobid gefunden</v-overlay>
