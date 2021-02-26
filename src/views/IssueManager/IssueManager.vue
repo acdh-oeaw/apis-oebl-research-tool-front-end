@@ -3,11 +3,19 @@
     <v-app-bar
       app
       color="background"
-      class="elevation-0 pt-2 pr-3">
-        <v-btn @click="toggleDrawer" tile class="rounded-lg" icon>
+      class="elevation-0 pt-3 pr-3">
+        <v-btn v-if="!store.settings.showNavDrawer" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
-        <h1>{{ store.issue.activeIssue ? store.issue.activeIssue.name : '…' }}</h1>
+        <div>
+          <h1>{{ store.issue.activeIssue ? store.issue.activeIssue.name : '…' }}</h1>
+          <div class="caption mt-1 text-no-wrap">
+          <span style="opacity: .7">
+              {{ this.issueLemmas.length }} Ergebnisse.
+              {{this.filteredIssues.length }} angezeigt
+            </span>
+          </div>
+        </div>
       <v-spacer />
       <v-autocomplete
         single-line
@@ -158,9 +166,19 @@
     <resizable-drawer
       :card="true"
       :right="true"
-      :color="$vuetify.theme.currentTheme.sidebar"
+      color="background"
       :value="showSideBar"
       @close="showSideBar = false">
+      <v-btn
+        style="position: absolute; right: 0px; top: 5px; z-index: 1"
+        width="48"
+        height="48"
+        tile
+        class="rounded-lg mr-2"
+        @click="showSideBar = false"
+        icon>
+        <v-icon>mdi-dock-right</v-icon>
+      </v-btn>
       <issue-lemma-detail
         v-if="selectedLemma !== null"
         :lemma="selectedLemma"
@@ -263,7 +281,7 @@ export default class IssueManager extends Vue {
   toggleDrawer() {
     this.store.settings = {
       ...this.store.settings,
-      issueManagerNavVisible: !this.store.settings.issueManagerNavVisible
+      showNavDrawer: !this.store.settings.showNavDrawer
     }
   }
 

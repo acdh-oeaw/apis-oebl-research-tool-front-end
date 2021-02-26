@@ -1,16 +1,6 @@
 <template>
   <v-card class="transparent flex-column d-flex fill-height" flat v-if="lemma">
     <v-card-title v-if="researchLemma !== null">
-      <v-btn
-        style="position: absolute; right: 0px; top: 5px;"
-        width="48"
-        height="48"
-        tile
-        class="rounded-lg mr-2"
-        @click="$emit('close')"
-        icon>
-        <v-icon>mdi-dock-right</v-icon>
-      </v-btn>
       <v-container class="pa-0">
         <v-row no-gutters>
           <v-col cols="1"></v-col>
