@@ -42,7 +42,7 @@
                     {{ result.birthYear }} - {{ result.deathYear }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 100px">
+                <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 40%">
                   {{ Object.values(result.columns_user).join(', ') }}
                 </v-list-item-action-text>
               </v-list-item>
@@ -130,7 +130,7 @@ export default class GlobalSearch extends Vue {
   get results() {
     console.time('search')
     const sts = this.searchText.split(' ').map(s => s.toLowerCase().replaceAll('*', ''))
-    const r = _(store.lemma.lemmas)
+    const r = _(store.lemma.allLemmas)
       .filter((l, i) => {
         const searchIndex = `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()
         return sts.every(st => searchIndex.includes(st))
