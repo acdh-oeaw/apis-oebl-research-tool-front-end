@@ -66,6 +66,7 @@
           </v-window-item>
           <v-window-item>
             <lobid-gnd-search
+              :value="value.gnd.length === 1 ? value.gnd[0] : null"
               :lemma="value"
               :gnd="value.gnd"
               @cancel="showGndSearch = false"
