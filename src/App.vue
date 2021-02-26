@@ -33,7 +33,7 @@
       :width="store.settings.drawerLeftWidth">
       <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
         <v-flex v-if="showDrawer" class="" grow>
-          <router-view name="sidebar" />
+          <lemma-navigation />
         </v-flex>
       </v-flex>
     </resizable-drawer>
@@ -45,14 +45,16 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import LoadingSpinner from './views/lib/LoadingSpinner.vue'
-import ResizableDrawer from './views/lib/ResizableDrawer.vue'
-import store from './store'
-import LoginForm from './views/LoginForm.vue'
-import Confirm from './views/lib/Confirm.vue'
-import Prompt from './views/lib/Prompt.vue'
+import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
+import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
+import store from '@/store'
+import LoginForm from '@/views/LoginForm.vue'
+import Confirm from '@/views/lib/Confirm.vue'
+import Prompt from '@/views/lib/Prompt.vue'
 import { requestState } from '@/store/fetch'
 import GlobalSearch from '@/views/GlobalSearch.vue'
+import LemmaNavigation from '@/views/LemmaManager/LemmaNavigation.vue'
+
 @Component({
   components: {
     ResizableDrawer,
@@ -60,7 +62,8 @@ import GlobalSearch from '@/views/GlobalSearch.vue'
     LoadingSpinner,
     LoginForm,
     Confirm,
-    Prompt
+    Prompt,
+    LemmaNavigation
   }
 })
 export default class App extends Vue {
@@ -81,19 +84,7 @@ export default class App extends Vue {
   }
 
   get showDrawer(): boolean {
-    if (
-      this.$route.name === 'Issue' &&
-      this.store.settings.issueManagerNavVisible === true
-    ) {
-      return true
-    } else if (
-      this.$route.name === 'Lemmas' &&
-      this.store.settings.lemmaManagerNavVisible === true
-    ) {
-      return true
-    } else {
-      return false
-    }
+    return this.store.settings.showNavDrawer
   }
 }
 </script>
@@ -163,6 +154,13 @@ h1
   opacity .85
   font-weight 900
   line-height 1em
+  font-size 1.7em
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+  &:focus
+    text-overflow clip
+
 
 .fill-width
   width 100%

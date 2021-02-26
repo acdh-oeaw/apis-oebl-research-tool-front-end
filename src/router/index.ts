@@ -1,11 +1,9 @@
+import store from '@/store'
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import IssueManager from '../views/IssueManager/IssueManager.vue'
-import IssueNavigation from '../views/IssueManager/IssueNavigation.vue'
-
 import LemmaManager from '../views/LemmaManager/LemmaManager.vue'
-import LemmaNavigation from '../views/LemmaManager/LemmaNavigation.vue'
 
 Vue.use(VueRouter)
 
@@ -18,8 +16,7 @@ const routes: Array<RouteConfig> = [
     path: '/issue/:issueId',
     name: 'Issue',
     components: {
-      default: IssueManager,
-      sidebar: IssueNavigation
+      default: IssueManager
     },
     props: (route) => ({ ...route.params, ...route.query }),
   },
@@ -27,28 +24,21 @@ const routes: Array<RouteConfig> = [
     path: '/lemmas',
     name: 'Lemmas',
     components: {
-      default: LemmaManager,
-      sidebar: LemmaNavigation
+      default: LemmaManager
     },
     props: (route) => ({ ...route.params, ...route.query }),
     children: [
       {
-        path: '/lemmas/:lemmaListId',
-        name: 'LemmaList',
-        components: {
-          default: LemmaManager,
-          sidebar: LemmaNavigation
-        },
-        props: (route) => ({ ...route.params, ...route.query })
+        path: '/lemmas/list/:lemmaListId',
+        beforeEnter(route) {
+          store.lemma.selectedLemmaListId = Number(route.params.lemmaListId) || null
+        }
       },
       {
         path: '/lemmas/filter/:lemmaFilterId',
-        name: 'LemmaFilter',
-        components: {
-          default: LemmaManager,
-          sidebar: LemmaNavigation
-        },
-        props: (route) => ({ ...route.params, ...route.query })
+        beforeEnter(route) {
+          store.lemma.selectedLemmaFilterId = route.params.lemmaFilterId || null
+        }
       }
     ]
     // route level code-splitting

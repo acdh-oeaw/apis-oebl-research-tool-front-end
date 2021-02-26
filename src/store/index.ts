@@ -31,8 +31,7 @@ interface Settings {
   issueLemmaSearchItems: any[]
   drawerRightWidth: number
   drawerLeftWidth: number
-  lemmaManagerNavVisible: boolean
-  issueManagerNavVisible: boolean
+  showNavDrawer: boolean
   issueViewOptions: {
     showDescription: boolean
     showEditor: boolean
@@ -54,8 +53,7 @@ class Store {
     issueLemmaSearchItems: [],
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
-    lemmaManagerNavVisible: true,
-    issueManagerNavVisible: false,
+    showNavDrawer: true,
     issueViewOptions: {
       showDescription: true,
       showEditor: true,
