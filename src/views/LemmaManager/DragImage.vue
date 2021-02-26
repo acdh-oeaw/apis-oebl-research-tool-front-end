@@ -1,9 +1,8 @@
 <template>
   <v-card class="rounded-lg soft-shadow" style="position: absolute; left: -1000px">
-    <v-badge
+    <badge
       color="primary darken-2"
       style="position: absolute; right: -6px; top: -6px;"
-      inline
       :content="rows.length" />
     <v-list class="text-body-2" dense>
       <v-list-item v-for="(s, i) in limitedRows" :key="i">
@@ -22,8 +21,13 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import _ from 'lodash'
+import Badge from '../lib/Badge.vue'
 
-@Component
+@Component({
+  components: {
+    Badge
+  }
+})
 export default class DragImage extends Vue {
   @Prop({ default: [] }) rows!: any[]
   @Prop({ default: 5 }) maxItems!: number

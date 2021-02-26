@@ -48,7 +48,7 @@
         <v-list-item
           :ripple="false"
           dense
-          :input-value="store.lemma.selectedLemmaListId === null && store.lemma.selectedLemmaFilterId === null && store.lemma.selectedLemmaIssueId === null"
+          to="/lemmas"
           @click="store.lemma.selectedLemmaListId = null">
           <v-list-item-avatar tile size="15">
             <v-icon small>mdi-bookshelf</v-icon>
@@ -59,12 +59,14 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-badge :content="store.lemma.lemmaCountReadable" color="blue-grey" inline />
+            <badge :content="store.lemma.lemmaCount" color="blue-grey" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
       <!-- Abgaben -->
-      <v-subheader @click="showIssues = !showIssues" :class="['px-0', showIssues && 'active']">
+      <v-subheader
+        @click="showIssues = !showIssues"
+        :class="['px-0', showIssues && 'active']">
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Abgaben
       </v-subheader>
       <v-list
@@ -80,6 +82,7 @@
           @dragenter.prevent="onDragEnter($event, true)"
           @drop.prevent="addLemmaToIssue(issue.id, $event)"
           @click="loadIssueLemmas(issue.id || null)"
+          :to="'/issue/' + issue.id"
           :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
@@ -123,12 +126,12 @@
           v-for="list in filteredLemmaListsCurrentUser"
           :key="list.id"
           :input-value="store.lemma.selectedLemmaListId === list.id"
+          :to="'/lemmas/list/' + list.id"
           dense
           class="droppable"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
-          @drop.prevent="copyLemmasToList(list, $event)"
-          @click="store.lemma.selectedLemmaListId = list.id || null">
+          @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>
@@ -142,16 +145,14 @@
           </v-list-item-content>
           <v-list-item-action>
             <transition name="roll">
-              <v-badge
+              <badge
                 :key="list.count"
-                inline
                 :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
-                :content="list.count ? list.count.toString() : '0'" />
+                :content="list.count" />
             </transition>
           </v-list-item-action>
           <v-list-item-action class="ml-0" v-if="list.countNew !== 0">
-            <v-badge
-              inline
+            <badge
               class="font-weight-bold"
               color="primary"
               :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
@@ -195,11 +196,11 @@
           </v-list-item-content>
           <v-list-item-action>
             <transition name="roll">
-              <v-badge
+              <badge
                 :key="list.count"
                 inline
                 :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
-                :content="list.count ? list.count.toString() : '0'" />
+                :content="list.count" />
             </transition>
           </v-list-item-action>
         </v-list-item>
@@ -255,10 +256,12 @@ import prompt from '@/store/prompt'
 import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
 import { requestState } from '@/store/fetch'
+import Badge from '../lib/Badge.vue'
 
 @Component({
   components: {
-    LoadingSpinner
+    LoadingSpinner,
+    Badge
   }
 })
 export default class LemmaNavigation extends Vue {
@@ -421,7 +424,7 @@ export default class LemmaNavigation extends Vue {
   }
 
   toggleDrawer() {
-    this.store.settings = {...this.store.settings, lemmaManagerNavVisible: !this.store.settings.lemmaManagerNavVisible}
+    this.store.settings = {...this.store.settings, showNavDrawer: !this.store.settings.showNavDrawer }
   }
 
 }

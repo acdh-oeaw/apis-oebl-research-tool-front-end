@@ -2,7 +2,6 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import HRNumbers from 'human-readable-numbers'
 import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
@@ -361,10 +360,6 @@ export default class LemmaStore {
     return this._lemmas.length
   }
 
-  get lemmaCountReadable() {
-    return HRNumbers.toHumanString(this._lemmas.length)
-  }
-
   get selectedLemmas() {
     this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]')
     return this._selectedLemmas
@@ -705,6 +700,10 @@ export default class LemmaStore {
   set lemmas(ls: LemmaRow[]) {
     this._lemmas = ls
     this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkAdd(ls))
+  }
+
+  get allLemmas() {
+    return this._lemmas
   }
 
 }
