@@ -5,10 +5,6 @@
     class="fill-height"
     ref="container"
   >
-    <!-- GLOBAL SEARCH -->
-    <global-search
-      v-model="showSearchDialog"
-    />
     <!-- LOBID HOVER PREVIEW -->
     <v-menu
       v-if="lobidPreviewGnds.length > 0"
@@ -216,7 +212,7 @@
         </v-flex>
         <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
-            @click="showSearchDialog = true"
+            @click="store.showSearchDialog = true"
             tile
             class="rounded-lg"
             icon>
@@ -338,7 +334,6 @@ import DataFilter from '../lib/DataFilter.vue'
 import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
 import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
-import GlobalSearch from '@/views/GlobalSearch.vue'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
@@ -352,7 +347,6 @@ import confirm from '@/store/confirm'
     LemmaDetail,
     LobidPreviewCard,
     VirtualTable,
-    GlobalSearch,
     DataFilter,
     LemmaImporter: () => import('./LemmaImporter.vue'),
   }
@@ -366,7 +360,6 @@ export default class LemmaManager extends Vue {
   toolbarMinHeight = 80
   toolbarPaddingY = 15
   showAddLemmaDialog = false
-  showSearchDialog = false
 
   comparators = store.lemma.comparators
   filterItems: LemmaFilterItem[] = []
@@ -377,11 +370,6 @@ export default class LemmaManager extends Vue {
   filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
 
   onKeyDown(e: KeyboardEvent) {
-    if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
-      e.stopPropagation()
-      this.showSearchDialog = !this.showSearchDialog
-    }
     if (e.key.toLowerCase() === 'enter') {
       e.preventDefault()
       if (store.lemma.showSideBar === false) {

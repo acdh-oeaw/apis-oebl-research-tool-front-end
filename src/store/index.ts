@@ -64,6 +64,8 @@ class Store {
     }
   }
 
+  public showSearchDialog = false
+
   public onLoginSuccess(cb: () => any) {
     this.loginCallbacks.push(cb)
   }

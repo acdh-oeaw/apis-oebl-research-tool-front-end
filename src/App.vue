@@ -1,10 +1,23 @@
 <template>
-  <v-app :style="{ background: 'var(--v-background-base)' }">
-    <v-overlay :value="store.isLoggedIn === false" opacity="1" z-index="99" absolute>
+  <v-app
+    :style="{ background: 'var(--v-background-base)' }"
+  >
+    <!-- LOGIN FORM -->
+    <v-overlay
+      :value="store.isLoggedIn === false"
+      opacity="1"
+      z-index="99"
+      absolute>
       <login-form />
     </v-overlay>
+    <!-- GLOBAL SEARCH -->
+    <global-search
+      v-model="store.showSearchDialog"
+    />
+    <!-- CONFIRM AND PROMPT -->
     <confirm />
     <prompt />
+    <!-- LEFT NAVIGATION -->
     <resizable-drawer
       :card="false"
       :right="false"
@@ -19,25 +32,6 @@
       @update:width="store.settings = {...store.settings, drawerLeftWidth: $event}"
       :width="store.settings.drawerLeftWidth">
       <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
-        <!-- <v-flex class="pa-3" style="width: 73px" shrink>
-          <v-btn x-large :to="'/lemmas'" class="mb-2 rounded-lg" icon tile>
-            <v-icon size="22" color="grey darken-1">mdi-bookshelf</v-icon>
-          </v-btn>
-          <v-btn x-large :to="'/issue/' + store.selectedIssue" class="mb-2 rounded-lg" icon tile>
-            <v-icon size="22" color="" class="rotate-180">mdi-chart-box-outline</v-icon>
-          </v-btn>
-          <v-btn disabled x-large :to="'/bio/' + store.selectedBiography" class="mb-2 rounded-lg" icon tile>
-            <v-icon size="22" color="grey darken-1">mdi-pen</v-icon>
-          </v-btn>
-          <transition name="fade">
-            <div class="pt-2" v-if="requestState.isLoading === true" >
-              <v-divider class="mb-2" />
-              <loading-spinner
-                :color="$vuetify.theme.dark ? 'white' : 'grey'"
-                class="ml-3 mt-5" />
-            </div>
-          </transition>
-        </v-flex> -->
         <v-flex v-if="showDrawer" class="" grow>
           <router-view name="sidebar" />
         </v-flex>
@@ -58,10 +52,11 @@ import LoginForm from './views/LoginForm.vue'
 import Confirm from './views/lib/Confirm.vue'
 import Prompt from './views/lib/Prompt.vue'
 import { requestState } from '@/store/fetch'
-
+import GlobalSearch from '@/views/GlobalSearch.vue'
 @Component({
   components: {
     ResizableDrawer,
+    GlobalSearch,
     LoadingSpinner,
     LoginForm,
     Confirm,
@@ -72,6 +67,19 @@ export default class App extends Vue {
 
   store = store
   requestState = requestState
+
+  onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault()
+      e.stopPropagation()
+      store.showSearchDialog = !store.showSearchDialog
+    }
+  }
+
+  mounted() {
+    window.addEventListener('keydown', this.onKeyDown)
+  }
+
   get showDrawer(): boolean {
     if (
       this.$route.name === 'Issue' &&
@@ -120,6 +128,7 @@ export default class App extends Vue {
   background: transparent;
 
 ::-webkit-scrollbar-track
+::-moz-scrol
   padding 3px
   background: transparent /* color of the tracking area */
 
