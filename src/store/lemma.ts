@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-
+import HRNumbers from 'human-readable-numbers'
 import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
@@ -361,6 +361,10 @@ export default class LemmaStore {
     return this._lemmas.length
   }
 
+  get lemmaCountReadable() {
+    return HRNumbers.toHumanString(this._lemmas.length)
+  }
+
   get selectedLemmas() {
     this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]')
     return this._selectedLemmas
@@ -646,7 +650,7 @@ export default class LemmaStore {
     //   // TODO: get new ones.
     //   return []
     // } else {
-    return ((await ResearchService.researchApiV1LemmaresearchList(1000)).results as ServerResearchLemma[] || [])
+    return ((await ResearchService.researchApiV1LemmaresearchList(2000)).results as ServerResearchLemma[] || [])
       .map(this.convertRemoteLemmaToLemmaRow)
     // }
   }
@@ -702,12 +706,5 @@ export default class LemmaStore {
     this._lemmas = ls
     this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkAdd(ls))
   }
-
-  get lemmaSearchIndex(): Array<LemmaRow & { searchIndex: string }> {
-    return this._lemmas.map(l => {
-      return {...l, searchIndex: `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()}
-    })
-  }
-
 
 }

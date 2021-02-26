@@ -59,7 +59,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-badge :content="store.lemma.lemmaCount" color="blue-grey" inline />
+            <v-badge :content="store.lemma.lemmaCountReadable" color="blue-grey" inline />
           </v-list-item-action>
         </v-list-item>
       </v-list>
