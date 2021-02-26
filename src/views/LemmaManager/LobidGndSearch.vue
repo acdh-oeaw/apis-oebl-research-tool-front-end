@@ -11,26 +11,38 @@
       label="Nachname">
     </text-field>
     <text-field
-      v-model="selectedGnd"
-      @input="useCustomGnd($event.target.value)"
+      v-model="localValue"
+      @input="useCustomGnd($event)"
       placeholder="manuell wählen…"
       label="GND">
     </text-field>
     <div class="results pt-3">
-      <v-overlay absolute v-if="loading">
-        <loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
+      <v-overlay
+        v-if="loading"
+        absolute>
+        <loading-spinner
+          :color="$vuetify.theme.dark ? 'white' : undefined" />
       </v-overlay>
-      <lobid-preview-card v-if="resultGnds.length !== 0" @input="onSelectGnd" :gnd="resultGnds" />
-      <div v-else style="opacity: .7" class="caption text-center">(Nichts gefunden)</div>
+      <lobid-preview-card
+        v-if="resultGnds.length !== 0"
+        @input="onSelectGnd"
+        :value="localValue"
+        :gnd="resultGnds" />
+      <div
+        v-else
+        style="opacity: .7"
+        class="caption text-center">
+        (Nichts gefunden)
+      </div>
     </div>
     <div class="background mt-3 pb-3" style="position: sticky; bottom: 0">
       <v-btn
-        @click="$emit('input', selectedGnd)"
+        @click="$emit('input', localValue)"
         color="secondary"
         class="mb-2 rounded-lg"
         block
         elevation="0">
-        {{ selectedGnd !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}
+        {{ localValue !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}
       </v-btn>
       <v-btn
         @click="$emit('cancel')"
@@ -46,7 +58,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
-import _, { clone } from 'lodash'
+import { clone, debounce } from 'lodash'
 import { findPerson } from '@/service/lobid'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
@@ -63,15 +75,21 @@ export default class LobidGndSearch extends Vue {
 
   @Prop({ required: true }) lemma!: LemmaRow
   @Prop({ default: () => [] }) gnd!: string[]
+  @Prop({ default: null }) value: string|null = null
 
   loading = false
-  selectedGnd: string|null = null
   localLemma: LemmaRow = clone(this.lemma)
-  debouncedSearchGnd = _.debounce(this.searchGnd, 150)
+  localValue: string|null = clone(this.value)
+  debouncedSearchGnd = debounce(this.searchGnd, 150)
   resultGnds: string[] = []
 
+  @Watch('value', { immediate: true })
+  onChangeValue() {
+    this.localValue = this.value
+  }
+
   onSelectGnd(gnd: string|null) {
-    this.selectedGnd = gnd
+    this.localValue = gnd
   }
 
   saveGnd(gnd: string) {

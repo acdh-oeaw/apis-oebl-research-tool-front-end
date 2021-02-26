@@ -9,7 +9,7 @@
       no-gutters>
       <slot />
       <v-col class="align-self-center text-center" cols="2" v-if="$listeners['input'] !== undefined">
-        <v-icon color="primary" v-if="fragment.selected">mdi-check-decagram</v-icon>
+        <v-icon color="primary" v-if="fragment.gnd === value">mdi-check-decagram</v-icon>
         <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
       </v-col>
       <v-col
@@ -27,7 +27,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import * as lobidService from '../../service/lobid'
-import _, { initial } from 'lodash'
+import _ from 'lodash'
 
 type Fragment = {
   html: string | null,
@@ -40,15 +40,17 @@ export default class LobidPreviewCard extends Vue {
 
   @Prop({ default: [] }) gnd!: string[]
   @Prop({ default: Infinity }) limit!: number
+  @Prop({ default: null }) value!: string|null
 
   allFragments: Fragment[] = []
   loading = false
 
   selectOrDeselectFragment(gnd: string) {
-    this.allFragments = this.allFragments.map(f => {
-      return { ...f, selected: f.gnd === gnd && f.selected === false }
-    })
-    this.$emit('input', this.allFragments.find(f => f.selected === true)?.gnd || null)
+    if (gnd === this.value) {
+      this.$emit('input', null)
+    } else {
+      this.$emit('input', gnd)
+    }
   }
 
   get fragments() {
