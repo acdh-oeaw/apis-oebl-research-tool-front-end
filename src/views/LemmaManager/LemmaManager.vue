@@ -64,7 +64,7 @@
       color="background"
       flat>
       <div class="d-flex fill-width flex-row align-stretch align-self-start">
-        <v-btn v-if="!store.settings.lemmaManagerNavVisible" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
+        <v-btn v-if="!store.settings.showNavDrawer" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
         <v-flex shrink align-self-start class="mr-5 lemma-view-title">
@@ -366,7 +366,6 @@ export default class LemmaManager extends Vue {
 
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
-  title = 'Lemmabibliothek'
   filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
 
   onKeyDown(e: KeyboardEvent) {
@@ -486,7 +485,7 @@ export default class LemmaManager extends Vue {
   }
 
   toggleDrawer() {
-    this.store.settings = {...this.store.settings, lemmaManagerNavVisible: !this.store.settings.lemmaManagerNavVisible}
+    this.store.settings = {...this.store.settings, showNavDrawer: !this.store.settings.showNavDrawer }
   }
 
   get toolbarHeight() {
@@ -745,17 +744,8 @@ export default class LemmaManager extends Vue {
   transition: none !important
 
 .lemma-view-title
-  max-width 50%
-
-.lemma-view-title h1
-  font-size 1.7em
   min-width 150px
   max-width 250px
-  white-space nowrap
-  overflow hidden
-  text-overflow ellipsis
-  &:focus
-    text-overflow clip
 
 [contenteditable="true"]:hover
   border-radius 3px
