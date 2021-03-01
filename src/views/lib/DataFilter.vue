@@ -25,9 +25,7 @@
           :return-value="true"
           @input="emitInput"
         />
-        <div
-          v-if="isFilterWithInput(filter)"
-          class="flex-grow-1 pl-2">
+        <div class="flex-grow-1 pl-2">
           <v-select
             v-if="filter.column.type === 'boolean'"
             :value="'true'"
@@ -46,6 +44,7 @@
             @input="emitInput"
           />
           <v-text-field
+            :disabled="!isFilterWithInput(filter)"
             v-else
             autocomplete="false"
             style="min-width: 60px"
