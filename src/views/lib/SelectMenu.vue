@@ -23,7 +23,13 @@
           v-model.trim="searchText"
           @keydown="onKeyDownSearch"
           @click.prevent.stop="" />
-        <v-btn color="primary" @click="searchText =  ''" v-if="searchText !== null && searchText !== ''" icon x-small text>
+        <v-btn
+          v-if="searchText !== null && searchText !== ''"
+          color="primary"
+          @click.prevent.stop="searchText =  ''"
+          icon
+          x-small
+          text>
           <v-icon small>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -94,7 +100,7 @@ export default class SelectMenu extends Vue {
     }
   }
 
-  async onClickActivator() {
+  async focusInput() {
     await this.$nextTick()
     setTimeout(() => {
       if (this.$refs.input instanceof HTMLInputElement) {
@@ -103,6 +109,10 @@ export default class SelectMenu extends Vue {
         this.$refs.input.select()
       }
     }, 100)
+  }
+
+  async onClickActivator() {
+    this.focusInput()
   }
 
   get displayValue() {
