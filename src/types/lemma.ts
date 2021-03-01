@@ -121,6 +121,7 @@ export interface Column {
   value: string|null
   text: string
   convert?: (e: string|number) => number|string
+  type?: 'date'
 }
 
 export interface Header {
@@ -154,9 +155,8 @@ export interface PersonMatchable extends ImportablePerson {
 export interface PersonField {
   value: keyof ImportablePerson
   text: string
-  hint?: string
+  type?: 'date',
   rules?: Array<(e: string) => boolean>
-  convert?: (e: string) => number|string|Date|null
 }
 
 export interface SelectOptions {

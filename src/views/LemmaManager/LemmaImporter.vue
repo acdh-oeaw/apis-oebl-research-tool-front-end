@@ -171,16 +171,12 @@ export default class LemmaImporter extends Vue {
     {
       value: 'dateOfBirth',
       text: 'Geburtsdatum oder -jahr',
-      hint: 'YYYY oder YYYY-MM-DD',
-      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
-      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
+      type: 'date'
     },
     {
       value: 'dateOfDeath',
       text: 'Sterbedatum oder -jahr',
-      hint: 'YYYY oder YYYY-MM-DD',
-      rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
-      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
+      type: 'date'
     },
     {
       value: 'gnd',

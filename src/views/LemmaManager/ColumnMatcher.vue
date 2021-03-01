@@ -33,7 +33,9 @@
           v-for="(h, i) in headers"
           :class="[
             isIgnoredValue(item[h.value]) && 'is-null-equivalent',
-            (h.matchWith === null) && 'do-not-import']
+            (h.matchWith === null) && 'do-not-import',
+            isDateField(h) && !isParsableDate(item[h.value]) && 'error'
+            ]
           "
           :key="i">
           {{ item[h.value] }}
@@ -57,7 +59,7 @@
             :items="allSeparators"
           >
             <template v-slot:prepend-inner>
-              <span class="caption">Trennzeichen</span>
+              <span class="caption text-no-wrap muted">Trennzeichen</span>
             </template>
           </v-select>
           <v-select
@@ -74,11 +76,11 @@
             :items="sheetNames"
           >
             <template v-slot:prepend-inner>
-              <span class="caption">Tabellenblatt</span>
+              <span class="muted caption text-no-wrap">Tabellenblatt</span>
             </template>
           </v-select>
         </v-col>
-        <v-col cols="4" class="pl-4">
+        <v-col cols="3" class="pl-4">
           <v-combobox
             hide-details
             v-model="nullValues"
@@ -92,9 +94,24 @@
             background-color="background darken-1"
             multiple>
             <template v-slot:prepend-inner>
-              <span class="caption text-no-wrap">Zellen Ignorieren</span>
+              <span class="muted caption text-no-wrap">Zellen Ignorieren</span>
             </template>
           </v-combobox>
+        </v-col>
+        <v-col cols="3" class="pl-4">
+          <v-text-field
+            solo
+            flat
+            dense
+            background-color="background darken-1"
+            class="rounded-lg text-body-2"
+            v-model="dateFormat"
+            placeholder="z.B. DD. MM. YYYY"
+            hide-details>
+            <template v-slot:prepend-inner>
+              <span class="muted caption text-no-wrap">Datumsformat</span>
+            </template>
+          </v-text-field>
         </v-col>
         <v-col class="text-right">
           <v-btn
@@ -128,7 +145,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import * as XLSX from 'xlsx'
-import * as _ from 'lodash'
+import _ from 'lodash'
+import parseDate from 'date-fns/esm/parse'
 import neatCsv from 'neat-csv'
 import { Column, Header, Table, Row, SelectOptions } from '../../types/lemma'
 
@@ -152,6 +170,7 @@ export default class ColumnMatcher extends Vue {
   separator = ';'
   sheetName = ''
   sheetNames: string[] = []
+  dateFormat = 'YYYY'
 
   allSeparators: SelectOptions[] = [
     {
@@ -185,18 +204,79 @@ export default class ColumnMatcher extends Vue {
     this.initialTable = c
   }
 
+  isValidDate(d: Date) {
+    return d instanceof Date && !isNaN(d as any)
+  }
+
+  isDateField(h: Header): boolean {
+    if (h.matchWith === null) {
+      return false
+    } else {
+      return this.targetColumns.some(c => c.value === h.matchWith && c.type === 'date')
+    }
+  }
+
+  isParsableDate(d: string|null|undefined): boolean {
+    const defaultDate = new Date()
+    if (d === undefined || d === null || d.trim() === '') {
+      return false
+    } else {
+      try {
+        const pd = parseDate(d, this.dateFormat.toLowerCase(), defaultDate, {
+          useAdditionalWeekYearTokens: true,
+          useAdditionalDayOfYearTokens: true
+        })
+        if (pd === defaultDate || !this.isValidDate(pd)) {
+          return false
+        } else {
+          return true
+        }
+      } catch (e) {
+        return false
+      }
+    }
+  }
+
+  parseDate(d: string|null|undefined|number, format: string): string {
+    if (d === null || d === undefined || d.toString().trim() === '') {
+      return ''
+    } else {
+      try {
+        const defaultDate = new Date()
+        const pd = parseDate(d.toString(), format.toLowerCase(), defaultDate, {
+          useAdditionalWeekYearTokens: true,
+          useAdditionalDayOfYearTokens: true
+        })
+        if (pd === defaultDate || !this.isValidDate(pd)) {
+          return ''
+        } else {
+          return pd.toISOString()
+        }
+      } catch (e) {
+        return ''
+      }
+    }
+  }
+
   isIgnoredValue(v: string): boolean {
     return this.nullValues.indexOf(v) > -1
   }
 
   convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
     const targetColumnsByValue = _.keyBy(this.targetColumns, 'value')
+    console.log(targetColumnsByValue)
     return t.map((r) => {
       return hs.reduce((m, e) => {
         // if the column is selected for import, and the value is not on the ignored list.
         if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
-          if (targetColumnsByValue[e.value] !== undefined && targetColumnsByValue[e.value].convert !== undefined) {
-            m[e.matchWith] = targetColumnsByValue[e.value].convert!(r[e.value]) || ''
+          if (targetColumnsByValue[e.matchWith] !== undefined) {
+            if (targetColumnsByValue[e.matchWith].convert !== undefined) {
+              m[e.matchWith] = targetColumnsByValue[e.matchWith].convert!(r[e.value]) || ''
+            } else if (targetColumnsByValue[e.matchWith].type === 'date') {
+              m[e.matchWith] = this.parseDate(r[e.matchWith], this.dateFormat)
+            } else {
+              m[e.matchWith] = r[e.value]
+            }
           } else {
             m[e.matchWith] = r[e.value]
           }
@@ -325,4 +405,7 @@ select {
 }
 .theme--dark select
   color white
+
+.muted
+  opacity .7
 </style>
