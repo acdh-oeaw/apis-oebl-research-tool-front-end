@@ -15,37 +15,29 @@ const routes: Array<RouteConfig> = [
   {
     path: '/issue/:issueId',
     name: 'Issue',
-    components: {
-      default: IssueManager
-    },
+    component: IssueManager,
     props: (route) => ({ ...route.params, ...route.query }),
   },
   {
     path: '/lemmas',
     name: 'Lemmas',
-    components: {
-      default: LemmaManager
-    },
-    props: (route) => ({ ...route.params, ...route.query }),
-    children: [
-      {
-        path: '/lemmas/list/:lemmaListId',
-        beforeEnter(route) {
-          store.lemma.selectedLemmaListId = Number(route.params.lemmaListId) || null
-        }
-      },
-      {
-        path: '/lemmas/filter/:lemmaFilterId',
-        beforeEnter(route) {
-          store.lemma.selectedLemmaFilterId = route.params.lemmaFilterId || null
-        }
-      }
-    ]
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: LemmaManager
+  },
+  {
+    path: '/lemmas/list/:lemmaListId',
+    component: LemmaManager,
+    props: (route) => {
+      return { lemmaListId: Number(route.params.lemmaListId) || null }
+    }
+  },
+  {
+    path: '/lemmas/filter/:lemmaFilterId',
+    component: LemmaManager
   }
+  // route level code-splitting
+  // this generates a separate chunk (about.[hash].js) for this route
+  // which is lazy-loaded when the route is visited.
+  // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 ]
 
 const router = new VueRouter({

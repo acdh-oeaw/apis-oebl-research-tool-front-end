@@ -38,7 +38,7 @@
       </v-flex>
     </resizable-drawer>
     <keep-alive>
-      <router-view :key="$route.fullPath" />
+      <router-view />
     </keep-alive>
   </v-app>
 </template>
@@ -94,6 +94,9 @@ export default class App extends Vue {
 
 // GLOBAL STYLES
 <style lang="stylus">
+
+.v-icon
+  transition none
 
 .v-navigation-drawer
   max-height none !important
@@ -176,6 +179,9 @@ h1
 
 [tabindex="-1"]
   outline none
+
+.transition-none
+  transition: none !important
 
 .ellipsis
   overflow: hidden;

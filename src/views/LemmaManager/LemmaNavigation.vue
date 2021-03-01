@@ -49,6 +49,7 @@
           :ripple="false"
           dense
           to="/lemmas"
+          exact
           @click="store.lemma.selectedLemmaListId = null">
           <v-list-item-avatar tile size="15">
             <v-icon small>mdi-bookshelf</v-icon>
@@ -178,11 +179,11 @@
           :input-value="store.lemma.selectedLemmaListId === list.id"
           :class="['mb-0']"
           dense
+          :to="`/lemmas/list/${ list.id }`"
           class="droppable"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
-          @drop.prevent="copyLemmasToList(list, $event)"
-          @click="store.lemma.selectedLemmaListId = list.id || null">
+          @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>

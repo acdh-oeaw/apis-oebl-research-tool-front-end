@@ -72,18 +72,18 @@
             v-if="
               store.lemma.selectedLemmaFilterId === null &&
               store.lemma.selectedLemmaIssueId === null &&
-              store.lemma.selectedLemmaListId === null">
+              lemmaListId === null">
             Lemmabibliothek
           </h1>
           <h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
             {{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
           </h1>
           <h1
-            v-else-if="store.lemma.selectedLemmaListId !== null && store.lemma.getListById(store.lemma.selectedLemmaListId) !== undefined"
+            v-else-if="selectedList !== null"
             @blur="updateListName"
             @keyup.enter.prevent.stop="$event.target.blur()"
             @keyup.esc.prevent.stop="cancelUpdateListName"
-            v-text="store.lemma.getListById(store.lemma.selectedLemmaListId).title"
+            v-text="selectedList.title"
             contenteditable="true">
           </h1>
           <h1
@@ -156,8 +156,8 @@
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
-                v-if="store.lemma.selectedLemmaListId !== null"
-                @click="deleteList(store.lemma.selectedLemmaListId)">
+                v-if="lemmaListId !== null"
+                @click="deleteList(lemmaListId)">
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-delete-outline</v-icon>
                 </v-list-item-avatar>
@@ -266,7 +266,7 @@
         @close="store.lemma.showSideBar = false"
         @update="updateLemma(selectedRows[0], $event)" />
     </resizable-drawer>
-    <v-main class="fill-width fill-height transition-padding">
+    <v-main class="fill-width fill-height transition-none">
       <virtual-table
         ref="vTable"
         class="virtual-table text-body-2"
@@ -277,7 +277,7 @@
         :height="tableHeight"
         :data="sortedFilteredLemmas"
         header-color="background"
-        @keyup.native.delete="deleteSelectedLemmas"
+        @keyup.native.delete.prevent.stop="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
@@ -337,6 +337,7 @@ import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/type
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
+import VueRouter from 'vue-router'
 
 @Component({
   components: {
@@ -353,7 +354,20 @@ import confirm from '@/store/confirm'
 })
 export default class LemmaManager extends Vue {
 
-  @Prop({ default: null }) listId!: string|null
+  @Prop({ default: null }) lemmaListId!: number|null
+
+  @Watch('lemmaListId')
+  onUpdateLemmaListId() {
+    store.lemma.selectedLemmaListId = this.lemmaListId
+  }
+
+  get selectedList() {
+    if (this.lemmaListId !== null) {
+      return store.lemma.getListById(this.lemmaListId) || null
+    } else {
+      return null
+    }
+  }
 
   store = store
   tableHeight = 0
@@ -377,6 +391,18 @@ export default class LemmaManager extends Vue {
     }
   }
 
+  beforeRouteLeave (to: any, from: any, next: any) {
+    console.log('before leave', to)
+  }
+
+  beforeRouteEnter (to: any, from: any, next: any) {
+    console.log({to, from, next})
+  }
+
+  beforeRouteUpdate(route: any) {
+    console.log(route)
+  }
+
   get selectedRows() {
     return store.lemma.selectedLemmas
   }
@@ -386,8 +412,8 @@ export default class LemmaManager extends Vue {
   }
 
   get newLemmas(): LemmaRow[] {
-    if (store.lemma.selectedLemmaListId !== null) {
-      return Object.values(store.lemma.newLemmasInUserList[store.lemma.selectedLemmaListId] || {})
+    if (this.lemmaListId !== null) {
+      return Object.values(store.lemma.newLemmasInUserList[this.lemmaListId] || {})
     } else {
       return []
     }
@@ -416,10 +442,10 @@ export default class LemmaManager extends Vue {
 
   cancelUpdateListName(event: KeyboardEvent) {
     if (
-      store.lemma.selectedLemmaListId !== null &&
+      this.lemmaListId !== null &&
       event.target instanceof HTMLElement
     ) {
-      event.target.textContent = store.lemma.getListById(store.lemma.selectedLemmaListId)?.title || 'Listenname'
+      event.target.textContent = store.lemma.getListById(this.lemmaListId)?.title || 'Listenname'
       event.target.blur()
     }
   }
@@ -427,10 +453,10 @@ export default class LemmaManager extends Vue {
   updateListName(event: Event) {
     if (
       event.currentTarget instanceof HTMLElement &&
-      store.lemma.selectedLemmaListId !== null &&
+      this.lemmaListId !== null &&
       event.currentTarget.textContent !== null
     ) {
-      store.lemma.updateList(store.lemma.selectedLemmaListId, { title: event.currentTarget.textContent })
+      store.lemma.updateList(this.lemmaListId, { title: event.currentTarget.textContent })
       event.currentTarget.scrollLeft = 0
     }
   }
@@ -531,7 +557,7 @@ export default class LemmaManager extends Vue {
     const indexOfLastSelected = this.sortedFilteredLemmas.findIndex(l => _.last(this.selectedRows)?.id === l.id)
     // A list is selected
     // remove from list.
-    if (store.lemma.selectedLemmaListId !== null) {
+    if (this.lemmaListId !== null) {
       const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) aus dieser Liste entfernen?`
       if (await confirm.confirm(msg)) {
         this.removeLemmasFromList(this.selectedRows)
@@ -739,9 +765,6 @@ export default class LemmaManager extends Vue {
   position fixed
   bottom 10px
   right 0px
-
-.transition-padding
-  transition: none !important
 
 .lemma-view-title
   min-width 150px
