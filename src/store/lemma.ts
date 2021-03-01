@@ -102,7 +102,7 @@ export default class LemmaStore {
       name: 'ist vorhanden',
       value: 'exists',
       icon: '.',
-      predicate: (e: string|number|null|number[], q: unknown) => !!e
+      predicate: (e: string|number|null|number[], q: unknown) => e !== '' && e !== null && e !== undefined && e !== 'Not available' && e !== 'None' && (Array.isArray(e) ? e : []).length > 0
     },
     {
       name: 'ist nicht vorhanden',

@@ -8,7 +8,9 @@
       content-class="elevation-0"
       :value="value"
       @input="$emit('input', $event)">
-      <v-card class="pa-0 rounded-lg" color="transparent" v-if="value" flat>
+      <v-card
+        v-if="value"
+        class="pa-0 rounded-lg" color="transparent" flat>
         <v-card-title class="pa-0 background rounded-tl-lg rounded-tr-lg d-flex flex-nowrap">
           <v-icon style="opacity: .5" class="ml-3" large>mdi-magnify</v-icon>
           <input
@@ -22,11 +24,22 @@
             placeholder="Suchen…"
             type="text" />
         </v-card-title>
-        <v-card-text class="overflow-hidden pa-0" style="height: 450px; position: relative; background: transparent">
+        <v-card-text
+          class="overflow-hidden pa-0"
+          style="height: 450px; position: relative; background: transparent">
           <v-divider />
-          <div v-if="searchText !== ''" class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
-            <v-list ref="list" style="width: 60%" class="overflow-y-auto fill-height pa-0" color="background darken-2" dense>
-              <v-subheader class="sticky px-2 ma-0" style="z-index: 1; background: var(--v-background-darken2)">
+          <div
+            v-if="searchText !== ''"
+            class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
+            <v-list
+              ref="list"
+              style="width: 60%"
+              class="overflow-y-auto fill-height pa-0"
+              color="background darken-2"
+              dense>
+              <v-subheader
+                class="sticky px-2 ma-0"
+                style="z-index: 1; background: var(--v-background-darken2)">
                 Lemmata
               </v-subheader>
               <v-list-item
@@ -131,7 +144,7 @@ export default class GlobalSearch extends Vue {
     console.time('search')
     const sts = this.searchText.split(' ').map(s => s.toLowerCase().replaceAll('*', ''))
     const r = _(store.lemma.allLemmas)
-      .filter((l, i) => {
+      .filter((l) => {
         const searchIndex = `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()
         return sts.every(st => searchIndex.includes(st))
       })
