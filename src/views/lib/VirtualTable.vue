@@ -78,7 +78,11 @@
         <div
           :draggable="$listeners['drag:row']"
           :style="{ height: rowHeight + 'px' }"
-          :class="['table-row', selected[item.id] && 'selected']"
+          :class="[
+            'table-row',
+            selected[item.id] && 'selected',
+            scrollToRow === index && 'scroll-to-row'
+          ]"
           @dragstart="$emit('drag:row', item, $event)"
           @click="selectItem(item, $event)"
           @dblclick="onDblClickRow($event, item, index)"
@@ -166,6 +170,8 @@ export default class VirtualTable extends Vue {
   @Prop({ default: true }) sortableColumns!: boolean
   @Prop({ default: true }) keyboardSelection!: boolean
   @Prop({ default: '' }) headerColor!: string
+  @Prop({ default: null }) scrollToRow!: number|null
+  @Prop({ default: () => [] }) selectedRows!: Row[]
 
   selected: { [key: number]: Row } = {}
   log = console.log
@@ -202,9 +208,23 @@ export default class VirtualTable extends Vue {
     return this.visibleColumns.filter(c => c.editable === true)
   }
 
+  @Watch('scrollToRow')
+  onChangeScrollToRow() {
+    if (this.scrollToRow !== null && this.$refs.scroller instanceof Vue) {
+      (this.$refs.scroller as Vue).$el.scrollTo({
+        top: this.scrollToRow * this.rowHeight
+      })
+    }
+  }
+
+  @Watch('selectedRows')
+  onChangeSelectedRows() {
+    this.selected = _.keyBy(this.selectedRows, 'id')
+  }
+
   onEditItem() {
     if (this.editPopUp !== null) {
-      this.$emit('update-item', this.editPopUp.item, {
+      this.$emit('update:item', this.editPopUp.item, {
         [ this.editPopUp.column.value ]: this.editPopUp.value
       })
       this.editPopUp = null
@@ -276,7 +296,7 @@ export default class VirtualTable extends Vue {
     const prevItem = this.data[ newIndex ]
     if (prevItem !== undefined) {
       this.selected = { [ prevItem.id ]: prevItem }
-      this.$emit('change-selection', [ prevItem ])
+      this.$emit('update:selection', [ prevItem ])
       this.scrollToIndex(newIndex)
     }
   }
@@ -287,7 +307,7 @@ export default class VirtualTable extends Vue {
     const nextItem = this.data[ newIndex ]
     if (nextItem !== undefined) {
       this.selected = { [nextItem.id]: nextItem }
-      this.$emit('change-selection', [ nextItem ])
+      this.$emit('update:selection', [ nextItem ])
       this.scrollToIndex(newIndex)
     }
   }
@@ -296,7 +316,7 @@ export default class VirtualTable extends Vue {
     const firstItem = this.data[0]
     if (firstItem !== undefined) {
       this.selected = { [firstItem.id]: firstItem }
-      this.$emit('change-selection', [ firstItem ])
+      this.$emit('update:selection', [ firstItem ])
       this.scrollToIndex(0)
     }
   }
@@ -305,19 +325,19 @@ export default class VirtualTable extends Vue {
     const lastItem = this.data[this.data.length - 1]
     if (lastItem !== undefined) {
       this.selected = { [lastItem.id]: lastItem }
-      this.$emit('change-selection', [ lastItem ])
+      this.$emit('update:selection', [ lastItem ])
       this.scrollToIndex(this.data.length - 1)
     }
   }
 
   selectNone() {
     this.selected = {}
-    this.$emit('change-selection', [])
+    this.$emit('update:selection', [])
   }
 
   selectAll() {
     this.selected = _.keyBy(this.data, 'id')
-    this.$emit('change-selection', this.data)
+    this.$emit('update:selection', this.data)
   }
 
   selectItem(item: Row, event: MouseEvent) {
@@ -339,7 +359,7 @@ export default class VirtualTable extends Vue {
         this.selected = { [item.id]: item }
       }
     }
-    this.$emit('change-selection', _.toArray(this.selected))
+    this.$emit('update:selection', _.toArray(this.selected))
   }
 
   get visibleColumns() {
@@ -351,7 +371,7 @@ export default class VirtualTable extends Vue {
   }
 
   updateColumnOrder(cs: Column[]) {
-    this.$emit('update-columns', [...cs, ...this.columns.filter(c => c.show === false)])
+    this.$emit('update:columns', [...cs, ...this.columns.filter(c => c.show === false)])
   }
 
 }

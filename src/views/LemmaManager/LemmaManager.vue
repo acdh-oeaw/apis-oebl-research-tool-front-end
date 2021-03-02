@@ -100,7 +100,7 @@
               rounded
               elevation="0"
               color="primary"
-              class="mr-2 font-weight-bold"
+              class="mr-1 font-weight-bold"
               x-small>
               {{ newLemmas.length }} NEU
             </v-btn>
@@ -273,17 +273,19 @@
         :columns="columns"
         :sortable-columns="true"
         :row-height="40"
+        :scroll-to-row="scrollToRow"
         :editable="true"
         :height="tableHeight"
         :data="sortedFilteredLemmas"
+        :selected-rows="selectedRows"
         header-color="background"
         @keyup.native.delete.prevent.stop="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
-        @change-selection="selectedRows = $event"
-        @update-item="updateLemmaFromTable"
-        @update-columns="columns = $event" >
+        @update:selection="selectedRows = $event"
+        @update:item="updateLemmaFromTable"
+        @update:columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
           <!-- the star column -->
@@ -321,7 +323,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import _, { clone } from 'lodash'
+import _, { clone, indexOf } from 'lodash'
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
 import DragImage from './DragImage.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -337,7 +339,6 @@ import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/type
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
-import VueRouter from 'vue-router'
 
 @Component({
   components: {
@@ -355,20 +356,9 @@ import VueRouter from 'vue-router'
 export default class LemmaManager extends Vue {
 
   @Prop({ default: null }) lemmaListId!: number|null
+  @Prop({ default: null }) highlightId!: number|null
 
-  @Watch('lemmaListId')
-  onUpdateLemmaListId() {
-    store.lemma.selectedLemmaListId = this.lemmaListId
-  }
-
-  get selectedList() {
-    if (this.lemmaListId !== null) {
-      return store.lemma.getListById(this.lemmaListId) || null
-    } else {
-      return null
-    }
-  }
-
+  scrollToRow: number|null = null
   store = store
   tableHeight = 0
   toolbarMinHeight = 80
@@ -391,18 +381,6 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  beforeRouteLeave (to: any, from: any, next: any) {
-    console.log('before leave', to)
-  }
-
-  beforeRouteEnter (to: any, from: any, next: any) {
-    console.log({to, from, next})
-  }
-
-  beforeRouteUpdate(route: any) {
-    console.log(route)
-  }
-
   get selectedRows() {
     return store.lemma.selectedLemmas
   }
@@ -413,7 +391,7 @@ export default class LemmaManager extends Vue {
 
   get newLemmas(): LemmaRow[] {
     if (this.lemmaListId !== null) {
-      return Object.values(store.lemma.newLemmasInUserList[this.lemmaListId] || {})
+      return Object.values(store.lemma.newLemmasInUserList[this.lemmaListId] || {}).map(e => e.item)
     } else {
       return []
     }
@@ -424,6 +402,30 @@ export default class LemmaManager extends Vue {
   fileToImport = {
     file: null as null|File,
     buffer: null as null|ArrayBuffer
+  }
+
+  @Watch('lemmaListId')
+  onUpdateLemmaListId() {
+    this.filterItems = []
+    store.lemma.selectedLemmaListId = this.lemmaListId
+  }
+
+  @Watch('highlightId', { immediate: true })
+  async onChangeHighlightId() {
+    if (this.highlightId !== null) {
+      this.filterItems = []
+      await this.$nextTick()
+      const index = this.sortedFilteredLemmas.findIndex(l => l.id === this.highlightId)
+      this.scrollToRow = index > -1 ? index : null
+    }
+  }
+
+  get selectedList() {
+    if (this.lemmaListId !== null) {
+      return store.lemma.getListById(this.lemmaListId) || null
+    } else {
+      return null
+    }
   }
 
   get columns() {
