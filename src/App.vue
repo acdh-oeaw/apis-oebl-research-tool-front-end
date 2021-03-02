@@ -2,8 +2,43 @@
   <v-app
     :style="{ background: 'var(--v-background-base)' }"
   >
+    <!-- <v-overlay
+      :value="showHelpOverlay"
+      z-index="99"
+      absolute
+      color="#000000"
+      opacity=".8"
+    >
+      <v-list style="font-size: 1.75em" color="transparent">
+        <v-list-item>
+          <v-list-item-title>
+            Globale Suche aktivieren
+          </v-list-item-title>
+          <v-list-item-action-text class="pl-2 text-no-wrap">
+            STRG + F
+          </v-list-item-action-text>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>
+            Lemma Anlegen
+          </v-list-item-title>
+          <v-list-item-action-text class="pl-2 text-no-wrap">
+            STRG + N
+          </v-list-item-action-text>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>
+            Lemma löschen
+          </v-list-item-title>
+          <v-list-item-action-text class="pl-2 text-no-wrap">
+            Backspace/Entfernen
+          </v-list-item-action-text>
+        </v-list-item>
+      </v-list>
+    </v-overlay> -->
     <!-- LOGIN FORM -->
     <v-overlay
+      v-if="store.isLoggedIn === false"
       :value="store.isLoggedIn === false"
       opacity="1"
       z-index="99"
@@ -70,12 +105,24 @@ export default class App extends Vue {
 
   store = store
   requestState = requestState
+  showHelpOverlay = false
 
   onKeyDown(e: KeyboardEvent) {
     if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault()
       e.stopPropagation()
       store.showSearchDialog = !store.showSearchDialog
+    } else if (e.key === 'Control' || e.key === 'Meta') {
+      const timer = setTimeout(() => {
+        this.showHelpOverlay = true
+      }, 1000)
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const vm = this
+      window.addEventListener('keyup', function clearHandler() {
+        clearTimeout(timer)
+        vm.showHelpOverlay = false
+        window.removeEventListener('keyup', clearHandler)
+      })
     }
   }
 
@@ -164,6 +211,8 @@ h1
   &:focus
     text-overflow clip
 
+.muted
+  opacity .7
 
 .fill-width
   width 100%
