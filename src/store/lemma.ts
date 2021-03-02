@@ -568,11 +568,11 @@ export default class LemmaStore {
   }
 
   async deleteLemma(ids: number[]) {
-    console.log('delete ids', ids)
     this.deleteLemmasLocally(ids)
     await Promise.all(ids.map(id => {
       return ResearchService.researchApiV1LemmaresearchDestroy(id)
     }))
+    notifyService.emit('deleteLemmas', ids)
   }
 
   fakeLemma(seed: number): LemmaRow {
