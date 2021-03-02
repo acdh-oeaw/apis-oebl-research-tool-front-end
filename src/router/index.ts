@@ -21,7 +21,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/lemmas',
     name: 'Lemmas',
-    component: LemmaManager
+    component: LemmaManager,
+    props: (route) => {
+      return {
+        highlightId: Number(route.query.focus) || null
+      }
+    }
   },
   {
     path: '/lemmas/list/:lemmaListId',
@@ -29,7 +34,7 @@ const routes: Array<RouteConfig> = [
     props: (route) => {
       return {
         lemmaListId: Number(route.params.lemmaListId) || null,
-        highlightId: Number(route.query.focus)
+        highlightId: Number(route.query.focus) || null
       }
     }
   },
