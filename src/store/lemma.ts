@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import { ResearchService, List as LemmaList, IssueLemma, List } from '@/api'
+import { ResearchService, List as LemmaList, IssueLemma, List, Editor } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
@@ -71,7 +71,7 @@ export default class LemmaStore {
 
   public showSideBar = true
   public selectedIssueLemmas: WithId<IssueLemma>[] = []
-  public newLemmasInUserList: { [listId: number]: { [lemmaId: number]: LemmaRow } } = {}
+  public newLemmasInUserList: { [listId: number]: { [lemmaId: number]: { editor: Editor, item: LemmaRow } } } = {}
 
   readonly comparators: LemmaFilterComparator[] = [
     {
@@ -299,13 +299,14 @@ export default class LemmaStore {
   }
 
   listenForRemoteLemmaUpdates() {
-    notifyService.on('updateLemmas', (ls, u) => {
+    notifyService.on('updateLemmas', (ls, u, e) => {
       const updatedLemmas = this.updateLemmasLocally(ls, u)
       if (this.isMovementToUserList(ls, u)) {
         if (u.list?.id !== undefined) {
+          const lemmasWithEditor = ls.map(l => ({ editor: e, item: l }))
           this.newLemmasInUserList[u.list?.id] = {
             ...this.newLemmasInUserList[u.list?.id],
-            ..._.keyBy(updatedLemmas, 'id')
+            ..._.keyBy(lemmasWithEditor, e => e.item.id)
           }
         }
       }
@@ -418,7 +419,7 @@ export default class LemmaStore {
   async addLemmasToList(list: LemmaRow['list'], ls: LemmaRow[]) {
     if (list !== undefined) {
       this.updateLemmasLocally(ls, { list })
-      notifyService.emit('updateLemmas', ls, { list })
+      notifyService.emit('updateLemmas', ls, { list }, store.user.userProfile)
       await Promise.all(ls.map(async (l) => {
         await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: { id: list.id, title: list.title } })
       }))
@@ -454,7 +455,7 @@ export default class LemmaStore {
       await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
     }))
     // notify others
-    notifyService.emit('updateLemmas', ls, u)
+    notifyService.emit('updateLemmas', ls, u, store.user.userProfile)
   }
 
   deleteLemmaListLocally(id: number) {
