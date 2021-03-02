@@ -113,7 +113,7 @@ export default class DataFilter extends Vue {
   }
 
   addFilterItem() {
-    this.$emit('input', this.value.concat(clone(this.defaultFilterItem)))
+    this.$emit('input', this.localFilterItems.concat(clone(this.defaultFilterItem)))
   }
 
   removeFilterItem(i: number) {
