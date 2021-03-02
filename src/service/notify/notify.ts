@@ -1,11 +1,12 @@
 import { LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { io, Socket } from 'socket.io-client'
 import { List as LemmaList } from '@/api/models/List'
+import { Editor } from '@/api'
 
 export interface NotifyEvents {
   message: (a: any) => void
   disconnect: () => void
-  updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>) => void
+  updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>, e: Editor) => void
   importLemmas: (ls: ServerResearchLemma[]) => void
   deleteLemmas: (ids: number[]) => void
   createLemmaList: (l: LemmaList) => void
