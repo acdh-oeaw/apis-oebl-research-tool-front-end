@@ -7,8 +7,11 @@
         small
         :width="width"
         text
-        class="px-1 ellipsis select-button"
-        :class="btnClass"
+        class="px-1 ellipsis select-button rounded-lg"
+        :class="[
+          btnClass,
+          value === null && 'muted'
+        ]"
         @click="onClickActivator"
         v-bind="attrs"
         v-on="on">
@@ -21,8 +24,9 @@
         <v-icon small v-if="showCaret">mdi-chevron-down</v-icon>
       </v-btn>
     </template>
-    <v-card class="pa-0 fill-height d-flex flex-column" color="background" style="max-height: inherit;">
+    <v-card class="pa-0 fill-height d-flex flex-column rounded-lg" color="background" style="max-height: inherit;">
       <v-card-title class="py-2 px-3 d-flex flex-row flex-nowrap">
+        <v-icon class="mr-2" small>mdi-magnify</v-icon>
         <input
           ref="input"
           placeholder="Suchen …"
@@ -53,7 +57,7 @@
           v-for="item in filteredItems"
           :key="item[keyValue]">
           <v-list-item-avatar class="mr-2" size="15">
-            <v-icon small v-if="value === item[keyValue] || value[keyValue] === item[keyValue]">mdi-check</v-icon>
+            <v-icon small v-if="value === item[keyValue] || value !== null && value[keyValue] === item[keyValue]">mdi-check</v-icon>
           </v-list-item-avatar>
           <v-list-item-content class="text-body-2">
               {{ item[keyName] }}
@@ -178,4 +182,5 @@ export default class SelectMenu extends Vue {
   text-overflow: ellipsis;
   max-width: 100%;
   display: block;
+
 </style>
