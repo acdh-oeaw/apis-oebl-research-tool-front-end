@@ -224,7 +224,7 @@
           shrink
           align-self-start
           class="pl-0 ml-0 pr-3"
-          style="margin-top: -3px">
+          style="margin-top: -5px">
           <v-btn
             v-if="!store.lemma.showSideBar"
             tile
