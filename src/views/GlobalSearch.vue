@@ -17,6 +17,7 @@
             @keydown.down.prevent="selectResult(1)"
             @keydown.up.prevent="selectResult(-1)"
             @keydown.esc.capture.prevent.stop="onEsc"
+            @keydown.enter.prevent="openSelectedResult"
             v-model="searchText"
             @input="onInput"
             ref="input"
@@ -29,7 +30,6 @@
           style="height: 450px; position: relative; background: transparent">
           <v-divider />
           <div
-            v-if="searchText !== ''"
             class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
             <v-list
               ref="list"
@@ -40,23 +40,28 @@
               <v-subheader
                 class="sticky px-2 ma-0"
                 style="z-index: 1; background: var(--v-background-darken2)">
-                Lemmata
+                {{ searchText === '' ? 'Zuletzt gesucht' : 'Lemmata'}}
               </v-subheader>
               <v-list-item
                 @click="selectedResult = i"
                 :input-value="i === selectedResult"
                 v-for="(result, i) in results"
                 :key="i">
+                <v-list-item-avatar width="15">
+                  <span v-if="result.item.selected === true" style="color: var(--v-primary-base)">★</span>
+                  <span v-if="result.item.selected === false" style="opacity: .5">☆</span>
+                </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
-                    {{ result.firstName }} {{ result.lastName }}
+                    {{ result.item.firstName }} {{ result.item.lastName }}
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    {{ result.birthYear }} - {{ result.deathYear }}
+                    {{ result.item.birthYear }} - {{ result.item.deathYear }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 40%">
-                  {{ Object.values(result.columns_user).join(', ') }}
+                <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 50%">
+                  <div class="text-right font-weight-bold">{{ (result.item.list || {}).title }}</div>
+                  <div>{{ Object.values(result.item.columns_user).filter(l => !!l && l !== '?').join(', ') }}</div>
                 </v-list-item-action-text>
               </v-list-item>
             </v-list>
@@ -64,7 +69,7 @@
               <lemma-detail
                 @update="updateLemma"
                 v-if="selectedLemma !== null"
-                :value="selectedLemma" />
+                :value="selectedLemma.item" />
             </div>
           </div>
         </v-card-text>
@@ -78,6 +83,7 @@ import store from '@/store'
 import _ from 'lodash'
 import LemmaDetail from './LemmaManager/LemmaDetail.vue'
 import { LemmaRow } from '@/types/lemma'
+import { SearchItem } from '@/store/search'
 
 @Component({
   components: {
@@ -104,6 +110,20 @@ export default class GlobalSearch extends Vue {
     (this.$refs.list as Vue).$el.scrollBy({top: 50 * dir, behavior: 'smooth'})
   }
 
+  openSelectedResult() {
+    if (this.selectedLemma.item.list !== undefined) {
+      this.$emit('input', false)
+      store.lemma.selectedLemmas = [ this.selectedLemma.item ]
+      this.$router.push({
+        path: `/lemmas/list/${ this.selectedLemma.item.list.id }`,
+        query: {
+          focus: String(this.selectedLemma.item.id)
+        }
+      }).catch(console.log)
+      // store.search.addRecentSearchItem(this.selectedLemma)
+    }
+  }
+
   @Watch('value')
   async onChangeVisibility() {
     await this.$nextTick()
@@ -116,7 +136,7 @@ export default class GlobalSearch extends Vue {
 
   updateLemma(u: Partial<LemmaRow>) {
     if (this.selectedLemma !== null) {
-      store.lemma.updateLemmas([ this.selectedLemma ], u)
+      store.lemma.updateLemmas([ this.selectedLemma.item ], u)
     }
   }
 
@@ -140,18 +160,23 @@ export default class GlobalSearch extends Vue {
     }
   }
 
-  get results() {
-    console.time('search')
-    const sts = this.searchText.split(' ').map(s => s.toLowerCase().replaceAll('*', ''))
-    const r = _(store.lemma.allLemmas)
-      .filter((l) => {
-        const searchIndex = `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()
-        return sts.every(st => searchIndex.includes(st))
-      })
-      .take(40)
-      .value()
-    console.timeEnd('search')
-    return r
+  get results(): SearchItem[] {
+    if (this.searchText !== '' && this.searchText !== null) {
+      console.time('search')
+      const sts = this.searchText.split(' ').map(s => s.toLowerCase().replaceAll('*', ''))
+      const r = _(store.lemma.allLemmas)
+        .filter((l) => {
+          const searchIndex = `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()
+          return sts.every(st => searchIndex.includes(st))
+        })
+        .take(40)
+        .map((l) => ({ type: 'lemmma' as SearchItem['type'], item: l }))
+        .value()
+      console.timeEnd('search')
+      return r
+    } else {
+      return store.search.recentSearchItems
+    }
   }
 
 }
