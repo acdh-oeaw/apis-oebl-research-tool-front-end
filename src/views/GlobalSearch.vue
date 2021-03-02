@@ -60,7 +60,11 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 50%">
-                  <div class="text-right font-weight-bold">{{ (result.item.list || {}).title }}</div>
+                  <div
+                    v-if="result.item.list"
+                    class="text-right font-weight-bold">
+                      <v-icon x-small>mdi-format-list-bulleted</v-icon> {{ result.item.list.title }}
+                    </div>
                   <div>{{ Object.values(result.item.columns_user).filter(l => !!l && l !== '?').join(', ') }}</div>
                 </v-list-item-action-text>
               </v-list-item>
