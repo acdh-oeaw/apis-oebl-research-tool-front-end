@@ -29,7 +29,7 @@
     <v-divider />
     <div class="overflow-y-auto flex-grow-1">
       <h4
-        class="pt-2 pb-2 pl-5 pr-5 background d-flex"
+        class="py-2 px-5 background d-flex"
         :style="{
           zIndex: 1,
           position: 'sticky',
@@ -80,7 +80,7 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 px-5 background d-flex"
+        class="py-2 px-5 background d-flex"
         :style="{
         zIndex: 1,
         position: 'sticky',
@@ -130,14 +130,16 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 pl-5 background"
+        class="py-2 px-5 background d-flex"
         :style="{
           zIndex: 1,
           position: 'sticky',
           top: 0,
           background: ''
         }">
-        Externe Ressourcen <v-badge
+        Externe Ressourcen
+        <v-spacer />
+        <v-badge
           color="blue-grey"
           inline
           :content="countScrapedResources(value.columns_scrape).toString()" />
@@ -155,7 +157,7 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 pl-5 background"
+        class="py-2 px-5 background"
         :style="{
           zIndex: 1,
           position: 'sticky',
