@@ -29,7 +29,7 @@
     <v-divider />
     <div class="overflow-y-auto flex-grow-1">
       <h4
-        class="pt-2 pb-2 pl-5 background"
+        class="pt-2 pb-2 pl-5 pr-5 background d-flex"
         :style="{
           zIndex: 1,
           position: 'sticky',
@@ -37,6 +37,18 @@
           background: ''
         }">
         Basisdaten
+        <v-spacer />
+        <select-menu
+          btn-class="px-2 background darken-2"
+          prepend-icon="mdi-format-list-bulleted"
+          :show-caret="true"
+          :value="value.list || null"
+          :items="store.lemma.lemmaLists"
+          @input="updateList"
+          key-name="title"
+          key-description="editor.name"
+          key-value="id"
+        />
       </h4>
       <v-card-text>
         <text-field
@@ -169,15 +181,18 @@ import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
 import TextField from '../lib/TextField.vue'
+import SelectMenu from '../lib/SelectMenu.vue'
 import store from '@/store'
 import _ from 'lodash'
+import { List } from '@/api'
 
 @Component({
   components: {
     LemmaScrapeResult,
     LobidPreviewCard,
     LobidGndSearch,
-    TextField
+    TextField,
+    SelectMenu
   }
 })
 export default class LemmaDetail extends Vue {
@@ -216,6 +231,16 @@ export default class LemmaDetail extends Vue {
   }
 
   debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300)
+
+  updateList(l: List) {
+    this.updateData({
+      list: {
+        id: l.id!,
+        title: l.title,
+        editor: l.editor?.userId,
+      }
+    })
+  }
 
   updateData(u: Partial<LemmaRow>) {
     // console.log(isValidServerResearchLemma(u))

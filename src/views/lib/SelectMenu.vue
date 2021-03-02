@@ -7,11 +7,18 @@
         small
         :width="width"
         text
-        class="px-1 ellipsis select-button caption"
+        class="px-1 ellipsis select-button"
+        :class="btnClass"
         @click="onClickActivator"
         v-bind="attrs"
         v-on="on">
+        <v-icon
+          class="mr-1"
+          v-if="prependIcon !== null"
+          small>{{ prependIcon }}</v-icon>
+        {{ label ? label + ': ' : '' }}
         {{ displayValue }}
+        <v-icon small v-if="showCaret">mdi-chevron-down</v-icon>
       </v-btn>
     </template>
     <v-card class="pa-0 fill-height d-flex flex-column" color="background" style="max-height: inherit;">
@@ -46,10 +53,13 @@
           v-for="item in filteredItems"
           :key="item[keyValue]">
           <v-list-item-avatar class="mr-2" size="15">
-            <v-icon small v-if="value === item[keyValue] || value.value === item[keyValue]">mdi-check</v-icon>
+            <v-icon small v-if="value === item[keyValue] || value[keyValue] === item[keyValue]">mdi-check</v-icon>
           </v-list-item-avatar>
           <v-list-item-content class="text-body-2">
-            {{ item[keyName] }}
+              {{ item[keyName] }}
+            <v-list-item-action-text v-if="keyDescription !== null">
+              {{ get(item, keyDescription) }}
+            </v-list-item-action-text>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -68,6 +78,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import _ from 'lodash';
 
 type Item = any;
 
@@ -78,10 +89,19 @@ export default class SelectMenu extends Vue {
   @Prop({ default: null }) value!: Item|null
   @Prop({ default: 'name' }) keyName!: string
   @Prop({ default: 'value' }) keyValue!: string
+  @Prop({ default: null }) keyDescription!: string|null
   @Prop({ default: false }) returnValue!: boolean
   @Prop({ default: null }) width!: number
+  @Prop({ default: '' }) btnClass!: string
+  @Prop({ default: null }) label!: string|null
+  @Prop({ default: false }) showCaret!: boolean
+  @Prop({ default: null }) prependIcon!: string|null
 
   searchText: string|null = null
+
+  get(item: any, path: string) {
+    return _.get(item, path)
+  }
 
   onKeyDownSearch(e: KeyboardEvent) {
     if (e.key === 'Escape' && this.searchText !== '' && this.searchText !== null) {
@@ -133,7 +153,10 @@ export default class SelectMenu extends Vue {
   get filteredItems() {
     if (this.searchText !== null) {
       const searchTextLow = this.searchText.toLowerCase()
-      return this.items.filter(i => i[this.keyName].toLowerCase().indexOf(searchTextLow) > -1)
+      return this.items.filter(i => {
+        return i[this.keyName].toLowerCase().indexOf(searchTextLow) > -1 ||
+          (this.keyDescription !== null && this.get(i, this.keyDescription).toLowerCase().indexOf(searchTextLow) > -1)
+      })
     } else {
       return this.items
     }

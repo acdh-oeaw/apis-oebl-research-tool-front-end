@@ -9,6 +9,7 @@
         height="38"
         class="text-body-2 input-no-stroke d-flex pa-1 pr-2 flex-nowrap align-center">
         <select-menu
+          btn-class="caption"
           :width="80"
           :items="columns.filter(c => c.filterable === true)"
           v-model="filter.column"
@@ -17,6 +18,7 @@
           key-value="value"
         />
         <select-menu
+          btn-class="caption"
           :width="70"
           :items="comparators"
           v-model="filter.comparator"
