@@ -115,17 +115,30 @@ export default class GlobalSearch extends Vue {
   }
 
   openSelectedResult() {
-    if (this.selectedLemma.item.list !== undefined) {
-      this.$emit('input', false)
-      store.lemma.selectedLemmas = [ this.selectedLemma.item ]
+    this.$emit('input', false)
+    store.lemma.selectedLemmas = [ this.selectedLemma.item ]
+    console.log(this.selectedLemma.item.list, 'this.selectedLemma.item.list')
+    // open a list
+    if (
+      this.selectedLemma.item.list !== undefined &&
+      this.selectedLemma.item.list !== null
+    ) {
       this.$router.push({
         path: `/lemmas/list/${ this.selectedLemma.item.list.id }`,
         query: {
           focus: String(this.selectedLemma.item.id)
         }
       }).catch(console.log)
-      // store.search.addRecentSearchItem(this.selectedLemma)
+    // open all lemmas
+    } else {
+      this.$router.push({
+        path: '/lemmas',
+        query: {
+          focus: String(this.selectedLemma.item.id)
+        }
+      })
     }
+    store.search.addRecentSearchItem(this.selectedLemma)
   }
 
   @Watch('value')
