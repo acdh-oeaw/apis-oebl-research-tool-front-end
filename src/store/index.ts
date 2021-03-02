@@ -7,6 +7,7 @@ import EditorStore from './editor'
 import LemmaStore from './lemma'
 import LabelStore from './label'
 import UserStore from './user'
+import SearchStore from './search'
 
 import { OpenAPI } from '../api'
 import { LemmaFilterItem } from '@/types/lemma'
@@ -112,6 +113,7 @@ class Store {
   user = new UserStore()
   lemma = new LemmaStore()
   editors = new EditorStore()
+  search = new SearchStore()
   issue = new IssueStore(this.selectedIssue)
   authors = new AuthorStore()
   labels = new LabelStore()
