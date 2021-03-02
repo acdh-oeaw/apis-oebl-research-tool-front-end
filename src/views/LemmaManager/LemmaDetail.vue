@@ -80,14 +80,16 @@
       </v-card-text>
       <v-divider />
       <h4
-        class="pt-2 pb-2 pl-5 background"
+        class="pt-2 pb-2 px-5 background d-flex"
         :style="{
         zIndex: 1,
         position: 'sticky',
         top: 0,
         background: ''
       }">
-        GND: {{ value.gnd[0] }}<v-badge v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" color="blue-grey" inline />
+        GND: {{ value.gnd[0] }}
+        <v-spacer />
+        <v-badge color="blue-grey" v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" inline />
       </h4>
       <v-card-text class="pt-1">
         <v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
