@@ -31,6 +31,45 @@
       <h4
         class="pt-2 pb-2 pl-5 background"
         :style="{
+          zIndex: 1,
+          position: 'sticky',
+          top: 0,
+          background: ''
+        }">
+        Basisdaten
+      </h4>
+      <v-card-text>
+        <text-field
+          :required="true"
+          label="Vorname"
+          :value="value.firstName"
+          @input="debouncedUpdateData({ firstName: $event })"
+        />
+        <text-field
+          :required="true"
+          label="Nachname"
+          :value="value.lastName"
+          @input="debouncedUpdateData({ lastName: $event })"
+        />
+        <text-field
+          label="Geburtsjahr"
+          :value="value.birthYear"
+          placeholder="YYYY"
+          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
+          @input="debouncedUpdateData({ birthYear: $event })"
+        />
+        <text-field
+          label="Sterbejahr"
+          :value="value.deathYear"
+          placeholder="YYYY"
+          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
+          @input="debouncedUpdateData({ deathYear: $event })"
+        />
+      </v-card-text>
+      <v-divider />
+      <h4
+        class="pt-2 pb-2 pl-5 background"
+        :style="{
         zIndex: 1,
         position: 'sticky',
         top: 0,
@@ -99,45 +138,6 @@
               :title="sourceName" />
           </template>
         </v-list>
-      </v-card-text>
-      <v-divider />
-      <h4
-        class="pt-2 pb-2 pl-5 background"
-        :style="{
-          zIndex: 1,
-          position: 'sticky',
-          top: 0,
-          background: ''
-        }">
-        Basisdaten
-      </h4>
-      <v-card-text>
-        <text-field
-          :required="true"
-          label="Vorname"
-          :value="value.firstName"
-          @input="debouncedUpdateData({ firstName: $event })"
-        />
-        <text-field
-          :required="true"
-          label="Nachname"
-          :value="value.lastName"
-          @input="debouncedUpdateData({ lastName: $event })"
-        />
-        <text-field
-          label="Geburtsjahr"
-          :value="value.birthYear"
-          placeholder="YYYY"
-          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
-          @input="debouncedUpdateData({ birthYear: $event })"
-        />
-        <text-field
-          label="Sterbejahr"
-          :value="value.deathYear"
-          placeholder="YYYY"
-          :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
-          @input="debouncedUpdateData({ deathYear: $event })"
-        />
       </v-card-text>
       <v-divider />
       <h4
