@@ -30,6 +30,13 @@ export default class IssueStore {
     return newLemma
   }
 
+  async addLemmaToIssue(id: number, ls: LemmaRow[]): Promise<void> {
+    await WorkflowService.workflowApiV1Research2WorkflowCreate({
+      lemmas: ls.map(l => l.id),
+      issue: id
+    })
+  }
+
   async loadIssue(id: number) {
     this.id = id
     await this.loadIssueLemmas(id)
