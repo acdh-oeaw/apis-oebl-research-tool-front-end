@@ -6,6 +6,8 @@
     "Lobid",
     "Queryable",
     "mixins",
+    "upsert",
+    "upserted",
     "viaf",
     "vuetify"
   ]
