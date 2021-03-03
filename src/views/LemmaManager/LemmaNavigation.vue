@@ -81,6 +81,7 @@
           dense
           class="droppable mb-0"
           @dragenter.prevent="onDragEnter($event, true)"
+          @dragover.prevent=""
           @drop.prevent="addLemmaToIssue(issue.id, $event)"
           @click="loadIssueLemmas(issue.id || null)"
           :to="'/issue/' + issue.id"
@@ -365,10 +366,7 @@ export default class LemmaNavigation extends Vue {
 
   async addLemmaToIssue(issueId: number, e: DragEvent) {
     const lemmas = e instanceof DragEvent ? JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[] : []
-    this.onDrop(e)
-    const issueLemmas = await Promise.all(lemmas.map(l => {
-      return store.issue.createIssueLemma(issueId, l)
-    }))
+    store.issue.addLemmaToIssue(issueId, lemmas)
   }
 
   async createLemmaList(e: DragEvent|MouseEvent) {
