@@ -12,7 +12,7 @@
         </v-btn>
         <v-text-field
           style="position: relative"
-          :placeholder="showLoader ? 'Lade…' : 'Lemmalisten suchen…'"
+          :placeholder="showLoader ? 'Lade…' : 'Listen filtern…'"
           solo
           autofocus
           background-color="background lighten-1"
