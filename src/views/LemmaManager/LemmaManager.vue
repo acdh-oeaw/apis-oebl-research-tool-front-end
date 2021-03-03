@@ -44,6 +44,7 @@
     <!-- IMPORT LEMMAS -->
     <v-dialog
       :value="fileToImport.file !== null"
+      @input="fileToImport = { file: null, buffer: null }"
       scrollable
       overlay-color="#000"
       max-width="1000px">
@@ -618,6 +619,7 @@ export default class LemmaManager extends Vue {
   }
 
   async importFile(f: File) {
+    console.log('import file called.')
     const b = await fileToArrayBuffer(f)
     this.fileToImport = {
       file: f,
@@ -626,16 +628,15 @@ export default class LemmaManager extends Vue {
   }
 
   openFileDialog(cb: (f: File) => unknown) {
-    let input: HTMLInputElement|null = document.createElement('input')
+    const input: HTMLInputElement = document.createElement('input')
     input.type = 'file'
     input.accept = 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     input.addEventListener('change', () => {
-      if (input !== null) {
-        if (input.files !== null && input.files[0] !== undefined) {
-          cb(input.files[0])
-        }
-        input = null
+      console.log('input change', input.files)
+      if (input.files !== null && input.files[0] !== undefined) {
+        cb(input.files[0])
       }
+      input.value = ''
     })
     input.click()
   }
