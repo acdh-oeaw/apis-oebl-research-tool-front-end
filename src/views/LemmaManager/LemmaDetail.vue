@@ -180,7 +180,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { LemmaRow, isValidServerResearchLemma } from '@/types/lemma'
+import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
@@ -247,7 +247,6 @@ export default class LemmaDetail extends Vue {
   }
 
   updateData(u: Partial<LemmaRow>) {
-    // console.log(isValidServerResearchLemma(u))
     this.$emit('update', {...this.value, ...u})
   }
 

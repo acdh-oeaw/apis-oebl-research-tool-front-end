@@ -1,79 +1,77 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import { Person as LdPerson } from 'schema-dts'
-import * as t from 'io-ts'
-import { PathReporter } from 'io-ts/PathReporter'
+import { ListEntry } from '@/api/models/ListEntry'
 
 export interface UserColumn {
   [key: string]: string|number
 }
 
-const serverResearchLemma = t.type({
-  id: t.number,
-  gnd: t.array(t.string),
-  list: t.union([t.undefined, t.type({
-    id: t.number,
-    title: t.string
-  })]),
-  firstName: t.string,
-  lastName: t.string,
-  dateOfBirth: t.string,
-  dateOfDeath: t.string,
-  selected: t.boolean,
-  // columns_user: UserColumn,
-  columns_user: t.record(t.string, t.union([t.string, t.number])),
-  columns_scrape: t.type({
-    obv: t.union([
-      t.UnknownArray,
-      t.type({
-        count_obv: t.number,
-        count_topic: t.number,
-        count_author: t.number,
-        count_coauthor: t.number,
-        list_coauthors: t.array(t.string),
-        count_topic_authors: t.number
-      })
-    ]),
-    wikidata: t.union([
-      t.UnknownArray,
-      t.type({
-        p: t.string,
-        loc: t.string,
-        viaf: t.string,
-        pLabel: t.string,
-        wiki_de: t.string,
-        date_of_birth: t.string,
-        auszeichnungen: t.string,
-      })
-    ])
-  }),
-  wikipedia: t.union([
-    t.UnknownArray,
-    t.type({
-      txt: t.string,
-      edits_count: t.string,
-      number_of_editors: t.string,
-    })
-  ])
-})
-
-export const isValidServerResearchLemma = (l: any) => {
-  const result = t.partial(serverResearchLemma.props).decode(l)
-  console.log(PathReporter.report(result))
-  return t.partial(serverResearchLemma.props).is(t)
+export interface ServerResearchLemma extends ListEntry {
+  id: number,
+  columns_user: {
+    [key: string]: string|number
+  },
+  columns_scrape: {
+    [source: string]: ({
+      [key: string]: string|number|string[]
+    } | [])
+  }
 }
 
-console.log('is partial', t.partial(serverResearchLemma.props).is({
-  firstName: 'arnold'
-}))
-
-// TODO: remove assertion
-export type ServerResearchLemma = t.TypeOf<typeof serverResearchLemma>
+// const serverResearchLemma = t.type({
+//   id: t.number,
+//   gnd: t.array(t.string),
+//   list: t.union([t.undefined, t.type({
+//     id: t.number,
+//     title: t.string
+//   })]),
+//   firstName: t.string,
+//   lastName: t.string,
+//   dateOfBirth: t.string,
+//   dateOfDeath: t.string,
+//   selected: t.boolean,
+//   // columns_user: UserColumn,
+//   columns_user: t.record(t.string, t.union([t.string, t.number])),
+//   columns_scrape: t.type({
+//     obv: t.union([
+//       t.UnknownArray,
+//       t.type({
+//         count_obv: t.number,
+//         count_topic: t.number,
+//         count_author: t.number,
+//         count_coauthor: t.number,
+//         list_coauthors: t.array(t.string),
+//         count_topic_authors: t.number
+//       })
+//     ]),
+//     wikidata: t.union([
+//       t.UnknownArray,
+//       t.type({
+//         p: t.string,
+//         loc: t.string,
+//         viaf: t.string,
+//         pLabel: t.string,
+//         wiki_de: t.string,
+//         date_of_birth: t.string,
+//         auszeichnungen: t.string,
+//       })
+//     ])
+//   }),
+//   wikipedia: t.union([
+//     t.UnknownArray,
+//     t.type({
+//       txt: t.string,
+//       edits_count: t.string,
+//       number_of_editors: t.string,
+//     })
+//   ])
+// })
 
 export interface LemmaRow {
   id: number
   list?: {
-    id: number
+    id?: number
     title: string
     editor?: number
   }

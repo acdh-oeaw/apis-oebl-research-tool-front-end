@@ -15,6 +15,9 @@ interface LemmaFilter {
   filterItems: LemmaFilterItem[]
 }
 
+// if incremented, the local DBs will be wiped and repopulated from the server.
+const currentDbVersion = '1.1'
+
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
@@ -153,7 +156,6 @@ export default class LemmaStore {
       type: 'text',
       filterable: true,
       show: true,
-      getSimilarityFactor: (a, b) => jaroWinkler(a.lastName, b.lastName) * 3,
       isUserColumn: false,
       editable: true
     },
@@ -163,7 +165,6 @@ export default class LemmaStore {
       type: 'text',
       filterable: true,
       show: true,
-      getSimilarityFactor: (a, b) => jaroWinkler(a.firstName, b.firstName) * 2,
       isUserColumn: false,
       editable: true
     },
@@ -173,13 +174,6 @@ export default class LemmaStore {
       type: 'number',
       filterable: true,
       show: true,
-      // getSimilarityFactor: (a, b) => {
-      //   if (a.birthYear !== null && b.birthYear !== null) {
-      //     return Math.abs(a.birthYear - b.birthYear) <= 10 ? 2 : 0
-      //   } else {
-      //     return 0
-      //   }
-      // },
       isUserColumn: false,
       editable: true
     },
@@ -189,7 +183,6 @@ export default class LemmaStore {
       type: 'number',
       filterable: true,
       show: true,
-      // getSimilarityFactor: (a, b) => Math.abs(a.deathYear - b.deathYear) <= 10 ? 2 : 0,
       isUserColumn: false,
       editable: true
     },
@@ -292,7 +285,7 @@ export default class LemmaStore {
       // convert to local type
       const rows = ls.map(this.convertRemoteLemmaToLemmaRow)
       // insert the lemmas
-      this.insertLemmasLocally(rows)
+      this.upsertLemmasLocally(rows)
       // update the status
       this.importStatus.incrementStatus(rows)
     })
@@ -319,7 +312,12 @@ export default class LemmaStore {
   }
 
   get lastLemmaFetchDate(): Date|null {
-    return JSON.parse(localStorage.getItem('lastLemmaFetchDate') || 'null')
+    const stored = JSON.parse(localStorage.getItem('lastLemmaFetchDate') || 'null')
+    if (stored !== null) {
+      return new Date(stored)
+    } else {
+      return null
+    }
   }
 
   get columns() {
@@ -426,7 +424,7 @@ export default class LemmaStore {
     }
   }
 
-  private async insertLemmasLocally(ls: LemmaRow[]) {
+  private async upsertLemmasLocally(ls: LemmaRow[]) {
     this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id')
     await this.localDb.lemmas.bulkPut(ls)
   }
@@ -519,7 +517,7 @@ export default class LemmaStore {
 
   async initLemmaData() {
     this._lemmas = await this.getLocalLemmaCache()
-    this.lemmas = await this.getRemoteLemmas(this.lastLemmaFetchDate)
+    await this.getAndApplyRemoteLemmas(this.lastLemmaFetchDate)
     this.lastLemmaFetchDate = new Date()
     this.columns = _.uniqBy([
       ...this.columns,
@@ -563,8 +561,9 @@ export default class LemmaStore {
     return x
   }
 
-  deleteLemmasLocally(ids: number[]) {
-    this.lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
+  async deleteLemmasLocally(ids: number[]) {
+    console.log('lemmas to delete:', ids)
+    this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) === -1)
   }
 
   async deleteLemma(ids: number[]) {
@@ -633,22 +632,91 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      // TODO: fix on server
-      gnd: rs.gnd.filter(g => g !== 'None'),
+      dateOfBirth: rs.dateOfBirth,
+      dateOfDeath: rs.dateOfDeath,
+      updated: rs.last_updated,
+      gnd: rs.gnd !== undefined ? rs.gnd.filter(g => g !== 'None') : [],
       columns_user: rs.columns_user,
       columns_scrape: rs.columns_scrape,
-      list: rs.list,
+      // TODO: yuck.
+      list: rs.list ? {
+        id: rs.list.id,
+        title: rs.list.title,
+        editor: rs.list.editor || undefined
+      } : undefined
     }
   }
 
-  async getRemoteLemmas(modifiedAfter: Date|null = null): Promise<LemmaRow[]> {
-    // if (modifiedAfter !== null) {
-    //   // TODO: get new ones.
-    //   return []
-    // } else {
-    return ((await ResearchService.researchApiV1LemmaresearchList(undefined, 2000)).results as ServerResearchLemma[] || [])
-      .map(this.convertRemoteLemmaToLemmaRow)
-    // }
+  async getLemmasIncrementally(
+    deleted: boolean|undefined,
+    modifiedAfter: string|undefined,
+    chunkSize: number,
+    onProgress?: (ls: LemmaRow[]) => any
+  ): Promise<LemmaRow[]> {
+    // get the first page
+    const deletedParam = deleted !== undefined ? deleted.toString() : undefined
+    const firstRes = await ResearchService.researchApiV1LemmaresearchList(
+      deletedParam,
+      chunkSize,
+      modifiedAfter
+    )
+    // call progress handler if available
+    if (onProgress !== undefined) {
+      await onProgress((firstRes.results as ServerResearchLemma[] || []).map(this.convertRemoteLemmaToLemmaRow))
+    }
+    // if there’s more than on page: loop from second page until we have all items and return
+    if (firstRes.count !== undefined && firstRes.count > chunkSize) {
+      const chunks = Math.ceil(firstRes.count / chunkSize)
+      let lemmaAgg: LemmaRow[] = []
+      for (let i = 1; i < chunks; i++) {
+        const res = (await ResearchService.researchApiV1LemmaresearchList(
+          deletedParam,
+          chunkSize,
+          modifiedAfter, i * chunkSize
+        )).results as ServerResearchLemma[] || []
+        const converted = res.map(this.convertRemoteLemmaToLemmaRow)
+        if (onProgress !== undefined) {
+          await onProgress(converted)
+        }
+        lemmaAgg = lemmaAgg.concat(converted)
+      }
+      return lemmaAgg
+    // if there’s only one page: return
+    } else {
+      return (firstRes.results as ServerResearchLemma[] || []).map(this.convertRemoteLemmaToLemmaRow)
+    }
+  }
+
+  shouldClearDb() {
+    const dbVersionLocal = localStorage.getItem('currentDbVersion')
+    if (currentDbVersion !== dbVersionLocal) {
+      localStorage.setItem('currentDbVersion', currentDbVersion)
+      return true
+    } else {
+      return false
+    }
+  }
+
+  async getAndApplyRemoteLemmas(modifiedAfter: Date|null = null): Promise<void> {
+    const currentLemmasLength = (await this.localDb.lemmas.count())
+    // there are no lemmas, or no last modified date, or the DB must be cleared => get all lemmas
+    if (
+      modifiedAfter === null ||
+      currentLemmasLength === 0 ||
+      this.shouldClearDb()
+    ) {
+      this._lemmas = []
+      await this.localDb.lemmas.clear()
+      this.getLemmasIncrementally(false, undefined, 100, async (ls) => {
+        await this.upsertLemmasLocally(ls)
+      })
+    // just get the updates since last time
+    } else {
+      const upserted = await this.getLemmasIncrementally(false, modifiedAfter.toISOString(), 100)
+      const deleted = await this.getLemmasIncrementally(true, modifiedAfter.toISOString(), 100)
+      await this.deleteLemmasLocally(deleted.map(l => l.id!))
+      await this.upsertLemmasLocally(upserted)
+    }
   }
 
   updateLemmaListLocally(id: number, l: Partial<LemmaList>) {
