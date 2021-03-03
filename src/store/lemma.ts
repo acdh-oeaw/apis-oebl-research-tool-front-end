@@ -646,7 +646,7 @@ export default class LemmaStore {
     //   // TODO: get new ones.
     //   return []
     // } else {
-    return ((await ResearchService.researchApiV1LemmaresearchList(2000)).results as ServerResearchLemma[] || [])
+    return ((await ResearchService.researchApiV1LemmaresearchList(undefined, 2000)).results as ServerResearchLemma[] || [])
       .map(this.convertRemoteLemmaToLemmaRow)
     // }
   }
