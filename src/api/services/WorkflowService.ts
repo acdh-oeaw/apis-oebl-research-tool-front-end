@@ -27,6 +27,8 @@ import type { PatchedIssueRequest } from '../models/PatchedIssueRequest';
 import type { PatchedLemmaLabelRequest } from '../models/PatchedLemmaLabelRequest';
 import type { PatchedLemmaNoteRequest } from '../models/PatchedLemmaNoteRequest';
 import type { PatchedLemmaStatusRequest } from '../models/PatchedLemmaStatusRequest';
+import type { ResearchLemma2WorkfloweResponse } from '../models/ResearchLemma2WorkfloweResponse';
+import type { ResearchLemma2WorkflowLemmaRequest } from '../models/ResearchLemma2WorkflowLemmaRequest';
 import { request as __request } from '../core/request';
 
 export class WorkflowService {
@@ -690,6 +692,25 @@ export class WorkflowService {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
+     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
+     *
+     * @param requestBody
+     * @returns ResearchLemma2WorkfloweResponse
+     * @throws ApiError
+     */
+    public static async workflowApiV1Research2WorkflowCreate(
+        requestBody: ResearchLemma2WorkflowLemmaRequest,
+    ): Promise<ResearchLemma2WorkfloweResponse> {
+        const result = await __request({
+            method: 'POST',
+            path: `/workflow/api/v1/research2workflow/`,
+            body: requestBody,
         });
         return result.body;
     }

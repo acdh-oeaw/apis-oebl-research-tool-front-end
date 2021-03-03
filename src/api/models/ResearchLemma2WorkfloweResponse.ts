@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type EditorRequest = {
-    userId: number;
-    email: string;
+export type ResearchLemma2WorkfloweResponse = {
+    success: string;
 }

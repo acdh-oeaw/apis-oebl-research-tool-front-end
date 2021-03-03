@@ -281,6 +281,8 @@ export type { Professiontype } from './models/Professiontype';
 export type { ProfessiontypeDetail } from './models/ProfessiontypeDetail';
 export type { ProfessiontypeDetailRequest } from './models/ProfessiontypeDetailRequest';
 export type { RelationObjectSerializer2 } from './models/RelationObjectSerializer2';
+export type { ResearchLemma2WorkfloweResponse } from './models/ResearchLemma2WorkfloweResponse';
+export type { ResearchLemma2WorkflowLemmaRequest } from './models/ResearchLemma2WorkflowLemmaRequest';
 export type { Source } from './models/Source';
 export type { SourceDetail } from './models/SourceDetail';
 export type { SourceDetailRequest } from './models/SourceDetailRequest';

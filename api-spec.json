@@ -58251,12 +58251,30 @@
                 "description": "APIView to process scraping requests\n\nArgs:\n    GenericAPIView ([type]): [description]",
                 "parameters": [
                     {
+                        "name": "deleted",
+                        "required": false,
+                        "in": "query",
+                        "description": "deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "limit",
                         "required": false,
                         "in": "query",
                         "description": "Number of results to return per page.",
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "modified_after",
+                        "required": false,
+                        "in": "query",
+                        "description": "modified_after",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -60681,6 +60699,58 @@
                     }
                 }
             }
+        },
+        "/workflow/api/v1/research2workflow/": {
+            "post": {
+                "operationId": "workflow_api_v1_research2workflow_create",
+                "description": "Endpoint that allows to POST a list of lemmas to the research pipeline for processing.\n        All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.\n        ",
+                "tags": [
+                    "workflow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResearchLemma2WorkflowLemmaRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResearchLemma2WorkflowLemmaRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResearchLemma2WorkflowLemmaRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResearchLemma2WorkfloweResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -60988,8 +61058,7 @@
                     },
                     "email": {
                         "type": "string",
-                        "format": "email",
-                        "maxLength": 254
+                        "format": "email"
                     },
                     "name": {
                         "type": "string",
@@ -60997,6 +61066,7 @@
                     }
                 },
                 "required": [
+                    "email",
                     "userId"
                 ]
             },
@@ -61008,11 +61078,11 @@
                     },
                     "email": {
                         "type": "string",
-                        "format": "email",
-                        "maxLength": 254
+                        "format": "email"
                     }
                 },
                 "required": [
+                    "email",
                     "userId"
                 ]
             },
@@ -64900,7 +64970,12 @@
                         "type": "boolean"
                     },
                     "list": {
-                        "$ref": "#/components/schemas/ListSerializerLimited"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ListSerializerLimited"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "firstName": {
                         "type": "string"
@@ -64925,14 +65000,22 @@
                         "type": "object",
                         "additionalProperties": {},
                         "nullable": true
+                    },
+                    "deleted": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "last_updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
                     }
                 },
                 "required": [
                     "dateOfBirth",
                     "dateOfDeath",
                     "firstName",
-                    "lastName",
-                    "list"
+                    "lastName"
                 ]
             },
             "ListPatchAPIViewResponse": {
@@ -66794,8 +66877,7 @@
                     },
                     "email": {
                         "type": "string",
-                        "format": "email",
-                        "maxLength": 254
+                        "format": "email"
                     }
                 }
             },
@@ -73171,6 +73253,35 @@
                         "readOnly": true
                     }
                 }
+            },
+            "ResearchLemma2WorkflowLemmaRequest": {
+                "type": "object",
+                "properties": {
+                    "issue": {
+                        "type": "integer"
+                    },
+                    "lemmas": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "required": [
+                    "lemmas"
+                ]
+            },
+            "ResearchLemma2WorkfloweResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "required": [
+                    "success"
+                ]
             },
             "Source": {
                 "type": "object",

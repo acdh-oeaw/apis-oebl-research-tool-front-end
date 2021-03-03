@@ -4,6 +4,6 @@
 
 export type Editor = {
     userId: number;
-    email?: string;
+    email: string;
     readonly name?: string;
 }

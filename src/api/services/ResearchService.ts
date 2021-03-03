@@ -21,20 +21,26 @@ export class ResearchService {
      *
      * Args:
      * GenericAPIView ([type]): [description]
+     * @param deleted deleted
      * @param limit Number of results to return per page.
+     * @param modifiedAfter modified_after
      * @param offset The initial index from which to return the results.
      * @returns PaginatedListEntryList
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchList(
+        deleted?: string,
         limit?: number,
+        modifiedAfter?: string,
         offset?: number,
     ): Promise<PaginatedListEntryList> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/lemmaresearch/`,
             query: {
+                'deleted': deleted,
                 'limit': limit,
+                'modified_after': modifiedAfter,
                 'offset': offset,
             },
         });
