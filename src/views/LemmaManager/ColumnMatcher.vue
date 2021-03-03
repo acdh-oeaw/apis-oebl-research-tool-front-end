@@ -195,8 +195,13 @@ export default class ColumnMatcher extends Vue {
       return hs.reduce((m, e) => {
         // if the column is selected for import, and the value is not on the ignored list.
         if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
-          if (targetColumnsByValue[e.value] !== undefined && targetColumnsByValue[e.value].convert !== undefined) {
-            m[e.matchWith] = targetColumnsByValue[e.value].convert!(r[e.value]) || ''
+          if (
+            targetColumnsByValue[e.matchWith] !== undefined &&
+            targetColumnsByValue[e.matchWith].convert !== undefined &&
+            r[e.value] !== undefined
+          ) {
+            // console.log(targetColumnsByValue[e.matchWith], r[e.value])
+            m[e.matchWith] = targetColumnsByValue[e.matchWith].convert!(r[e.value].toString()) || ''
           } else {
             m[e.matchWith] = r[e.value]
           }

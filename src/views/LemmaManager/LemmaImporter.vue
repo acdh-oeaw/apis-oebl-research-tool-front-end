@@ -129,6 +129,7 @@ export default class LemmaImporter extends Vue {
   }
 
   async startLobidMatching(rs: any[]) {
+    // console.log(this.importable)
     this.step = this.step + 1
     const chunkLength = 30
     let chunkIndex = 0
@@ -173,14 +174,14 @@ export default class LemmaImporter extends Vue {
       text: 'Geburtsdatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
-      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
+      convert: (e?: string) => ((e || '').match(/\d\d\d\d/) || [''])[0]
     },
     {
       value: 'dateOfDeath',
       text: 'Sterbedatum oder -jahr',
       hint: 'YYYY oder YYYY-MM-DD',
       rules: [ (e?: string): boolean => e !== undefined && (e.trim() === '' || /^(\d{4}-\d{2}-\d{2})|(\d{4})$/.test(e)) ],
-      convert: (e: string) => this.isValidDate(new Date(e)) ? new Date(e).toISOString() : ''
+      convert: (e?: string) => ((e || '').match(/\d\d\d\d/) || [''])[0]
     },
     {
       value: 'gnd',
