@@ -23,7 +23,7 @@ const index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' })
 app.enable('trust proxy')
 
 app.use(compression())
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '100mb'}))
 
 app.use([ '/', '/css', '/img', '/js'], express.static('./dist'))
 
