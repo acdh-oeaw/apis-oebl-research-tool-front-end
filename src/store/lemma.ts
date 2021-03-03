@@ -22,7 +22,7 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
     super('LemmaDb')
-    this.version(3).stores({
+    this.version(4).stores({
       lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
