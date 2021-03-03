@@ -116,6 +116,7 @@ textarea
   min-height 1.6em
   visibility hidden
   will-change contents, height
+  word-break break-word
 
 .text-field-label
   word-break break-word
