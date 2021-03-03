@@ -1,5 +1,6 @@
 import { Issue, WorkflowService, IssueLemma, LemmaStatus, LemmaLabel, LemmaNote } from '@/api'
 import { WithId } from '@/types'
+import notifyService from '@/service/notify/notify'
 import { LemmaRow } from '@/types/lemma'
 export default class IssueStore {
 
@@ -13,7 +14,14 @@ export default class IssueStore {
   constructor(id: number) {
     this.loadIssueList()
     this.loadLabels()
+    this.listenForUpdates()
     this.loadIssue(id)
+  }
+
+  listenForUpdates() {
+    notifyService.on('importIssueLemmas', (ls) => {
+      this._issueLemmas = this._issueLemmas.concat(ls)
+    })
   }
 
   async createIssueLemma(issueId: number, lemma: LemmaRow): Promise<WithId<IssueLemma>> {
