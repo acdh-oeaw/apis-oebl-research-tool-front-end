@@ -3,17 +3,15 @@
     <v-card-title v-if="researchLemma !== null">
       <v-container class="pa-0">
         <v-row no-gutters>
-          <v-col cols="1"></v-col>
-          <transition name="roll">
-            <v-col :key="lemma.id" class="text-center" cols="10">
+          <v-col cols="2"></v-col>
+            <v-col :key="lemma.id" class="text-center" cols="8">
               {{ researchLemma.lastName }}, {{ researchLemma.firstName }}
             </v-col>
-          </transition>
-          <v-col cols="1"></v-col>
+          <v-col cols="2"></v-col>
         </v-row>
         <v-row no-gutters>
           <v-col cols="12" class="text-caption text-center">
-            {{ researchLemma.birthYear }} - {{ researchLemma.deathYear }}
+            {{ dateToYear(researchLemma.dateOfBirth) }} - {{ dateToYear(researchLemma.dateOfDeath) }}
           </v-col>
         </v-row>
       </v-container>
@@ -25,43 +23,42 @@
     <div class="flex-grow-1 overflow-y-auto">
       <v-card-text class="px-5 py-2 flex-grow-1">
         <form-row label="Status">
-          <v-select
-            class="mt-0"
-            hide-details
-            dense
-            solo
-            flat
+          <select-menu
+            :show-caret="true"
+            btn-class="px-4 float-right background lighten-2"
+            :items="lemmaStatuses"
+            :value="lemmaStatus"
+            key-value="id"
+            key-name="name"
+            :return-value="true"
+            @input="updateLemma({ status: $event })"
             background-color="transparent"
-            return-object
-            @change="$emit('update-status', $event.value, lemma)"
-            :value="lemma.status"
-            :items="lemmaStatusSelectable" />
+          />
         </form-row>
         <form-row label="Redakteur">
-          <v-select
-            class="mt-0"
-            hide-details
-            dense
-            solo
-            flat
+          <select-menu
+            :show-caret="true"
+            btn-class="px-4 float-right background lighten-2"
+            :items="store.editors.editors"
+            :value="lemmaEditor"
+            key-value="userId"
+            key-name="name"
+            @input="updateLemma({ editor: $event.userId })"
             background-color="transparent"
-            item-text="name"
-            item-value="userId"
-            :value="lemma.editor"
-            :items="store.editors.editors" />
+          />
         </form-row>
         <form-row label="Autor">
-          <v-select
-            class="mt-0"
-            hide-details
-            dense
-            solo
-            flat
+          <select-menu
+            :show-caret="true"
+            btn-class="px-4 float-right background lighten-2"
+            :items="store.authors.authors"
+            :value="lemmaAuthor"
+            add-null-option="Kein Autor"
+            key-value="userId"
+            :return-value="true"
+            @input="updateLemma({ author: $event })"
             background-color="transparent"
-            item-text="name"
-            item-value="userId"
-            :value="lemma.author"
-            :items="store.authors.authors" />
+          />
         </form-row>
         <form-row label="Wortanzahl">
           <!-- FIXME: -->
@@ -133,13 +130,12 @@
       <v-row dense>
         <v-col>
           <v-btn
-            :disabled="lemma.lemma === null"
             class="rounded-lg"
             color="background darken-2"
             elevation="0"
-            @click="openInLemmaManager"
+            @click="deleteIssueLemma"
             block>
-            <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon>Lemma anzeigen
+            <!-- <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon>-->löschen
           </v-btn>
         </v-col>
         <v-col>
@@ -153,37 +149,28 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { Label, LemmaStatus } from '@/types/issue'
+import { LemmaStatus } from '@/types/issue'
 import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import LemmaLabels from './LemmaLabels.vue'
 import FormRow from '../lib/FormRow.vue'
 import store from '../../store'
-import { LemmaNote, IssueLemma } from '@/api'
+import { LemmaNote, IssueLemma, Editor, Author } from '@/api'
+import SelectMenu from '@/views/lib/SelectMenu.vue'
 import formatDistanceToNow from 'date-fns/esm/formatDistanceToNow'
+import format from 'date-fns/esm/format'
 import de from 'date-fns/esm/locale/de'
 
 @Component({
   components: {
     FormRow,
     LemmaLabels,
-    LoadingSpinner
+    LoadingSpinner,
+    SelectMenu
   }
 })
 export default class IssueLemmaDetail extends Vue {
 
   @Prop({ required: true }) lemma!: IssueLemma
-
-  get lemmaStatus(): LemmaStatus[] {
-    return store.issue.statuses
-  }
-
-  get researchLemma() {
-    if (this.lemma.lemma) {
-      return store.lemma.getLemmaById(this.lemma.lemma) || null
-    } else {
-      return null
-    }
-  }
 
   notes: LemmaNote[] = []
   newNote = ''
@@ -192,12 +179,40 @@ export default class IssueLemmaDetail extends Vue {
   isAddingNote = false
   isLoadingNotes = false
 
-  openInLemmaManager() {
-    if (this.researchLemma !== null) {
-      store.lemma.selectedLemmas = [ this.researchLemma ]
-      store.lemma.showSideBar = true
-      this.$router.push('/lemmas')
+  dateToYear(d: string|null|undefined): string|null {
+    if (d !== null && d !== undefined) {
+      return format(new Date(d), 'yyyy')
+    } else {
+      return null
     }
+  }
+
+  get lemmaStatuses(): LemmaStatus[] {
+    return store.issue.statuses
+  }
+
+  get lemmaStatus(): LemmaStatus|null {
+    return store.issue.statuses.find(s => s.id === this.lemma.status) || null
+  }
+
+  get lemmaEditor(): Editor|null {
+    if (this.lemma.editor) {
+      return store.editors.getById(this.lemma.editor) || null
+    } else {
+      return null
+    }
+  }
+
+  get lemmaAuthor(): Author|null {
+    if (this.lemma.author) {
+      return store.authors.getById(this.lemma.author) || null
+    } else {
+      return null
+    }
+  }
+
+  get researchLemma() {
+    return this.lemma.lemma || null
   }
 
   formatTimeDistance(d: string|undefined): string {
@@ -230,11 +245,16 @@ export default class IssueLemmaDetail extends Vue {
     }
   }
 
+  deleteIssueLemma() {
+    this.$emit('delete-issue-lemma', this.lemma.id)
+  }
+
+  updateLemma(l: Partial<IssueLemma>) {
+    this.$emit('update', this.lemma.id, l)
+  }
+
   updateLabels(labels: number[]) {
-    console.log({labels})
-    if (this.lemma.id) {
-      this.$emit('update', { labels })
-    }
+    this.updateLemma({ labels })
   }
 
   async addNote() {
@@ -252,10 +272,6 @@ export default class IssueLemmaDetail extends Vue {
 
   get labels() {
     return store.labels.labels
-  }
-
-  get lemmaStatusSelectable() {
-    return this.lemmaStatus.map(s => ({ text: s.name, value: s.id }))
   }
 
 }

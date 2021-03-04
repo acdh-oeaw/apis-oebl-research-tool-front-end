@@ -30,7 +30,7 @@
               v-ripple="false"
               :style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
               class="pa-5 cursor-grab rounded-lg"
-              @mousedown="$emit('select-lemma', item)"
+              @select-lemma="$emit('select-lemma', item)"
               :data-issue-lemma-id="item.id"
               @dragstart="onDragStart($event, item)"
               :tabindex=" (columnIndex + 1) * 100 + itemIndex"

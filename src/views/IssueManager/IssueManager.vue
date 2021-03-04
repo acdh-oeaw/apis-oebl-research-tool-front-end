@@ -115,16 +115,6 @@
               v-model="viewAs"
             />
           </v-list-item>
-          <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showDescription: !store.settings.issueViewOptions.showDescription }}">
-            <v-list-item-avatar size="15">
-              <v-icon v-if="store.settings.issueViewOptions.showDescription">mdi-check</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                Beschreibung anzeigen
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showAuthor: !store.settings.issueViewOptions.showAuthor }}">
             <v-list-item-avatar size="15">
               <v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
@@ -183,8 +173,9 @@
         v-if="selectedLemma !== null"
         :lemma="selectedLemma"
         :value="selectedLemma !== null"
-        @update="updateLemmaById(selectedLemma.id, $event)"
+        @update="updateLemmaById"
         @update-status="updateLemmaStatus"
+        @delete-issue-lemma="deleteIssueLemma"
         @close="showSideBar = false" />
     </resizable-drawer>
     <v-main class="fill-height rounded-lg">
@@ -213,12 +204,6 @@
         :view-options="viewOptions"
       />
     </v-main>
-    <!-- <v-divider class="ml-5 mr-5 my-0" />
-    <v-footer class="pa-0" color="background" app>
-      <div>
-        status
-      </div>
-    </v-footer> -->
   </div>
 </template>
 <script lang="ts">
@@ -234,6 +219,7 @@ import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import IssueLemmaList from './IssueLemmaList.vue'
 import SwitchButton from '../lib/SwitchButton.vue'
 import store from '@/store'
+import confirm from '@/store/confirm'
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -444,6 +430,12 @@ export default class IssueManager extends Vue {
         description: e.description
       }))
     ]
+  }
+
+  async deleteIssueLemma(id: number) {
+    if (await confirm.confirm('Wollen Sie dieses Lemma aus der Abgabe entfernen?')) {
+      store.issue.deleteIssueLemma(id)
+    }
   }
 
   get filteredIssues(): WithId<IssueLemma>[] {

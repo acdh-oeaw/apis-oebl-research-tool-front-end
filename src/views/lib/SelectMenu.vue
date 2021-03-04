@@ -66,6 +66,15 @@
             </v-list-item-action-text>
           </v-list-item-content>
         </v-list-item>
+        <v-divider v-if="addNullOption" />
+        <v-list-item @click="returnNull" v-if="addNullOption" dense>
+          <v-list-item-avatar class="mr-2" size="15">
+            <v-icon v-if="value === null || value[keyValue] === null" small>mdi-check</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            {{ addNullOption }}
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <v-list
         v-else
@@ -100,6 +109,7 @@ export default class SelectMenu extends Vue {
   @Prop({ default: null }) label!: string|null
   @Prop({ default: false }) showCaret!: boolean
   @Prop({ default: null }) prependIcon!: string|null
+  @Prop({ default: null }) addNullOption!: string|null
 
   searchText: string|null = null
 
@@ -115,10 +125,21 @@ export default class SelectMenu extends Vue {
     }
   }
 
+  returnNull() {
+    if (this.returnValue === true) {
+      return null
+    } else {
+      return {
+        [ this.keyValue ]: null,
+        [ this.keyName ]: this.addNullOption
+      }
+    }
+  }
+
   selectItem(item: Item) {
     console.log(item[this.keyName])
     if (this.returnValue) {
-      this.$emit('input', item.value)
+      this.$emit('input', item[this.keyValue])
     } else {
       this.$emit('input', item)
     }

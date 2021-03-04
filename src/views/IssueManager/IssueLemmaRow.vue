@@ -1,28 +1,19 @@
 <template>
-  <tr class="background lighten-2">
+  <tr class="background lighten-2 rounded-lg" @click="$emit('select-lemma', value)">
     <td class="pr-0 text-no-wrap" style="width: 80px">
-      <v-avatar
-        v-if="value.editor"
-        min-width="30"
-        width="30"
-        height="30"><img style="background: var(--v-background-darken1)" :src="value.editor.profilePicture" /></v-avatar>
-      <v-avatar
-        style="margin-left: -5px"
-        class="author"
-        color="background darken-2"
-        min-width="30"
-        height="30"
-        width="30">
-        {{ authorInitials }}
-      </v-avatar>
+      <user-avatar :value="editor" />
+      <user-avatar :value="author" style="margin-left: -5px" />
     </td>
-    <td style="font-weight: 500" class="pr-1">
+    <td style="font-weight: 500; width: 20%" class="pr-1">
       <template v-if="value.lemma">
         {{ lemma.lastName }} {{ lemma.firstName }}
       </template>
       <span v-else>
         Lemma nicht gefunden.
       </span>
+    </td>
+    <td>
+      {{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}
     </td>
     <td>
       <div class="float-right fill-height d-flex">
@@ -35,29 +26,42 @@
           {{ label.name }}
         </v-chip>
       </div>
-      <template v-if="value.lemma">
-        {{ value.lemma.description }}
-      </template>
     </td>
   </tr>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { IssueLemma, Label } from '../../types/issue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { IssueLemma } from '../../types/issue'
 import _ from 'lodash'
-import { LemmaLabel } from '@/api'
+import { LemmaLabel, Editor, Author } from '@/api'
 import store from '@/store'
-import { LemmaRow } from '@/types/lemma'
+import UserAvatar from '@/views/lib/UserAvatar.vue'
+import format from 'date-fns/esm/format'
 
-@Component
+@Component({
+  components: {
+    UserAvatar
+  }
+})
 export default class IssueLemmaRow extends Vue {
 
   @Prop({ required: true }) value!: IssueLemma
-  @Prop({ required: true }) lemma!: LemmaRow
   @Prop({ default: null }) maxLabels!: number|null
   @Prop({ default: true }) showEditor!: boolean
   @Prop({ default: true }) showAuthor!: boolean
   @Prop({ default: true }) showDescription!: boolean
+
+  dateToYear(d: string|null|undefined): string|null {
+    if (d !== null && d !== undefined) {
+      return format(new Date(d), 'yyyy')
+    } else {
+      return null
+    }
+  }
+
+  get lemma() {
+    return this.value.lemma
+  }
 
   get labelsById() {
     return _.keyBy(store.issue.labels, 'id')
@@ -69,12 +73,19 @@ export default class IssueLemmaRow extends Vue {
       : this.value.labels.map(id => this.labelsById[id])
   }
 
-  get authorInitials(): string {
-    if (this.value.author) {
-      const author = store.authors.getById(this.value.author)
-      return author?.name?.split(' ').map((n: string) => n[0]).join('') || '-'
+  get editor(): Editor|null {
+    if (this.value.editor) {
+      return store.editors.getById(this.value.editor) || null
     } else {
-      return '-'
+      return null
+    }
+  }
+
+  get author(): Author|null {
+    if (this.value.editor) {
+      return store.authors.getById(this.value.editor) || null
+    } else {
+      return null
     }
   }
 }

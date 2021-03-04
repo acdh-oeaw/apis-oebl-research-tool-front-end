@@ -2,32 +2,15 @@
   <div style="user-select: none" @click="$emit('select-lemma', value)">
     <template v-if="value.lemma">
       <h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
-      <h5 class="pa-0 ma-0" v-if="showDescription">{{ lemma.description }}</h5>
+      <h5 class="pa-0 ma-0" v-if="showDescription">{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}</h5>
     </template>
     <span class="caption" v-else>
       Lemma nicht gefunden.
     </span>
     <v-row class="mt-2" no-gutters>
       <v-col>
-        <v-avatar
-          color="secondary lighten-5"
-          class="id-img  ma-0"
-          min-width="30"
-          height="30"
-          width="30"
-          v-if="value.editor !== null && showEditor">
-          {{ editorInitials }}
-          <!-- <img style="background: var(--v-background-lighten1)" :key="value.editor" :src="value.editor.profilePicture"> -->
-        </v-avatar>
-        <v-avatar
-          class="id-img author"
-          color="background darken-2"
-          min-width="30"
-          height="30"
-          width="30"
-          v-if="showAuthor">
-          {{ authorInitials }}
-        </v-avatar>
+        <user-avatar v-if="showEditor" :value="editor" />
+        <user-avatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
       </v-col>
       <v-col class="text-right">
         <v-chip
@@ -47,12 +30,17 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import store from '@/store'
 import _ from 'lodash'
 import { LemmaLabel, IssueLemma } from '@/api'
-import { LemmaRow } from '@/types/lemma'
-@Component
+import UserAvatar from '@/views/lib/UserAvatar.vue'
+import format from 'date-fns/esm/format'
+
+@Component({
+  components: {
+    UserAvatar
+  }
+})
 export default class IssueLemmaCard extends Vue {
 
   @Prop({ required: true }) value!: IssueLemma
-  @Prop({ required: true }) lemma!: LemmaRow
   @Prop({ default: null }) maxLabels!: number|null
   @Prop({ default: true }) showEditor!: boolean
   @Prop({ default: true }) showAuthor!: boolean
@@ -62,27 +50,37 @@ export default class IssueLemmaCard extends Vue {
     return _.keyBy(store.issue.labels, 'id')
   }
 
+  get lemma() {
+    return this.value.lemma
+  }
+
+  dateToYear(d: string|null|undefined): string|null {
+    if (d !== null && d !== undefined) {
+      return format(new Date(d), 'yyyy')
+    } else {
+      return null
+    }
+  }
+
   get labelsLimited(): LemmaLabel[] {
     return this.maxLabels !== null
       ? _.take(this.value.labels, this.maxLabels).map(id => this.labelsById[id])
       : this.value.labels!.map(id => this.labelsById[id])
   }
 
-  get editorInitials(): string {
+  get editor() {
     if (this.value.editor) {
-      const editor = store.editors.getById(this.value.editor)
-      return editor?.name?.split(' ').map((n: string) => n[0]).join('') || '-'
+      return store.editors.getById(this.value.editor) || null
     } else {
-      return '-'
+      return null
     }
   }
 
-  get authorInitials(): string {
+  get author() {
     if (this.value.author) {
-      const author = store.authors.getById(this.value.author)
-      return author?.name?.split(' ').map((n: string) => n[0]).join('') || '-'
+      return store.authors.getById(this.value.author) || null
     } else {
-      return '-'
+      return null
     }
   }
 }

@@ -24,20 +24,6 @@ export default class IssueStore {
     })
   }
 
-  async createIssueLemma(issueId: number, lemma: LemmaRow): Promise<WithId<IssueLemma>> {
-    const newLemma = await WorkflowService.workflowApiV1IssueLemmaCreate({
-      author: null,
-      editor: null,
-      issue: issueId,
-      labels: [],
-      lemma: lemma.id,
-    }) as WithId<IssueLemma>
-    if (this.id === issueId) {
-      this.issueLemmas.push(newLemma)
-    }
-    return newLemma
-  }
-
   async addLemmaToIssue(id: number, ls: LemmaRow[]): Promise<void> {
     await WorkflowService.workflowApiV1Research2WorkflowCreate({
       lemmas: ls.map(l => l.id),
@@ -101,13 +87,29 @@ export default class IssueStore {
   async updateLemma(id: number, l: Partial<IssueLemma>): Promise<IssueLemma|undefined> {
     const index = this.issueLemmas.findIndex(l => l.id === id)
     if (index > -1) {
-      this.issueLemmas[index] = { ...this.issueLemmas[index], ...l }
+      const newIssueLemma = { ...this.issueLemmas[index], ...l }
       if (this.selectedLemma !== null && this.issueLemmas[index].id === this.selectedLemma.id) {
         this.selectedLemma = this.issueLemmas[index]
       }
-      await WorkflowService.workflowApiV1IssueLemmaUpdate(id, this.issueLemmas[index])
+      this.issueLemmas = this.issueLemmas.map(il => {
+        if (il.id === id) {
+          return newIssueLemma
+        } else {
+          return il
+        }
+      })
+      await WorkflowService.workflowApiV1IssueLemmaPartialUpdate(id, { lemma: newIssueLemma.lemma, ...l })
       return this.issueLemmas[index]
     }
+  }
+
+  async deleteIssueLemmaLocally(id: number) {
+    this.issueLemmas = this.issueLemmas.filter(il => il.id !== id)
+  }
+
+  async deleteIssueLemma(id: number) {
+    this.deleteIssueLemmaLocally(id)
+    await WorkflowService.workflowApiV1IssueLemmaDestroy(id)
   }
 
   getLabelById(id: number) {

@@ -750,17 +750,9 @@ export default class LemmaStore {
     return this._lemmas.filter(l => l.list?.id === listId)
   }
 
-  getLemmasByIssue(issueId: number) {
-    return _(this.selectedIssueLemmas).map(l => {
-      return this.getLemmaById(l.lemma || undefined)
-    }).compact().value()
-  }
-
   get lemmas() {
     if (this.selectedLemmaListId !== null) {
       return this.getLemmasByList(this.selectedLemmaListId)
-    } else if (this.selectedLemmaIssueId !== null) {
-      return this.getLemmasByIssue(this.selectedLemmaIssueId)
     } else {
       return this._lemmas
     }
