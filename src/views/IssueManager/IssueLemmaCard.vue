@@ -15,7 +15,7 @@
       <v-col class="text-right">
         <v-chip
           small
-          class="label"
+          class="label px-2 ml-1"
           v-for="label in labelsLimited"
           :color="label.color"
           :key="label.id">
@@ -56,7 +56,11 @@ export default class IssueLemmaCard extends Vue {
 
   dateToYear(d: string|null|undefined): string|null {
     if (d !== null && d !== undefined) {
-      return format(new Date(d), 'yyyy')
+      try {
+        return format(new Date(d), 'yyyy')
+      } catch (e) {
+        return null
+      }
     } else {
       return null
     }
