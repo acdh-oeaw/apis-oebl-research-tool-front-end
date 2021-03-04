@@ -22,6 +22,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import _ from 'lodash'
 import Badge from '../lib/Badge.vue'
+import { LemmaRow } from '@/types/lemma'
 
 @Component({
   components: {
@@ -29,11 +30,11 @@ import Badge from '../lib/Badge.vue'
   }
 })
 export default class DragImage extends Vue {
-  @Prop({ default: [] }) rows!: any[]
+  @Prop({ default: [] }) rows!: LemmaRow[]
   @Prop({ default: 5 }) maxItems!: number
 
   get limitedRows() {
-    return _.takeRight(this.rows, this.maxItems)
+    return _(this.rows).compact().takeRight(this.maxItems).value()
   }
 
 }
