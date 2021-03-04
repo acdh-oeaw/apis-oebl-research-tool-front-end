@@ -53,7 +53,11 @@ export default class IssueLemmaRow extends Vue {
 
   dateToYear(d: string|null|undefined): string|null {
     if (d !== null && d !== undefined) {
-      return format(new Date(d), 'yyyy')
+      try {
+        return format(new Date(d), 'yyyy')
+      } catch (e) {
+        return null
+      }
     } else {
       return null
     }
@@ -92,6 +96,6 @@ export default class IssueLemmaRow extends Vue {
 </script>
 <style lang="stylus" scoped>
 .label
-  color white
+  color white !important
   margin-left 1px
 </style>
