@@ -50,9 +50,25 @@ export default class IssueStore {
     this._issueLemmas = await this.getIssueLemmas(id)
   }
 
+  async updateLabel(id: number, color: string, name: string): Promise<LemmaLabel> {
+    this.labels = this.labels.map(l => {
+      if (l.id === id) {
+        return { id, color, name }
+      } else {
+        return l
+      }
+    })
+    return await WorkflowService.workflowApiV1LemmaLabelPartialUpdate(id, { color, name})
+  }
+
+  async deleteLabel(id: number) {
+    this.labels = this.labels.filter(l => l.id !== id)
+    return await WorkflowService.workflowApiV1LemmaLabelDestroy(id)
+  }
+
   async createLabel(name: string, color: string): Promise<LemmaLabel> {
     const l = await WorkflowService.workflowApiV1LemmaLabelCreate({name, color})
-    this.labels.push(l)
+    this.labels = this.labels.concat(l)
     return l
   }
 
@@ -122,6 +138,10 @@ export default class IssueStore {
 
   get labels() {
     return this._labels
+  }
+
+  set labels(ls) {
+    this._labels = ls
   }
 
   get issueLemmas() {
