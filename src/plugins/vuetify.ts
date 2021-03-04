@@ -22,6 +22,7 @@ export default new Vuetify({
     },
     themes: {
       light: {
+        textcolor: '#333333',
         background: {
           lighten2: '#F9FBFE',
           lighten1: '#f2f8ff',
@@ -42,6 +43,7 @@ export default new Vuetify({
       },
       // NORD:
       dark: {
+        textcolor: '#ffffff',
         background: {
           lighten2: '#393e4b',
           lighten1: '#2D313B',
