@@ -119,7 +119,7 @@
         </v-textarea>
         <div class="rounded-lg background darken-1 pa-2 mb-1" v-for="(note, i) in notes" :key="i">
           <div style="opacity: .7" class="px-1 caption note">
-            {{ store.editors.editorsById[note.user] ? store.editors.editorsById[note.user].name : note.user }} — {{ formatTimeDistance(note.created) }}
+            {{ getUserName(note.user) }} — {{ formatTimeDistance(note.created) }}
           </div>
           <div v-text="note.text" class="px-1 pb-2" />
         </div>
@@ -129,14 +129,14 @@
     <v-card-actions>
       <v-row dense>
         <v-col>
-          <v-btn
+          <!-- <v-btn
             class="rounded-lg"
             color="background darken-2"
             elevation="0"
             @click="deleteIssueLemma"
             block>
-            <!-- <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon>-->löschen
-          </v-btn>
+            <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon> löschen
+          </v-btn> -->
         </v-col>
         <v-col>
           <v-btn class="rounded-lg" elevation="0" block color="primary">
@@ -181,7 +181,11 @@ export default class IssueLemmaDetail extends Vue {
 
   dateToYear(d: string|null|undefined): string|null {
     if (d !== null && d !== undefined) {
-      return format(new Date(d), 'yyyy')
+      try {
+        return format(new Date(d), 'yyyy')
+      } catch (e) {
+        return null
+      }
     } else {
       return null
     }
@@ -217,7 +221,7 @@ export default class IssueLemmaDetail extends Vue {
 
   formatTimeDistance(d: string|undefined): string {
     if (d !== undefined) {
-      return `vor ${ formatDistanceToNow(new Date(d), { locale: de }) }`
+      return `${ formatDistanceToNow(new Date(d), { locale: de, addSuffix: true }) }`
     } else {
       return ''
     }
@@ -238,7 +242,7 @@ export default class IssueLemmaDetail extends Vue {
   }
 
   async loadNotes() {
-    if (this.lemma.id) {
+    if (this.lemma.id && this.lemma.notes !== undefined && this.lemma.notes.length > 0) {
       this.isLoadingNotes = true
       this.notes = (await store.issue.loadNotes(this.lemma.id)).reverse()
       this.isLoadingNotes = false
