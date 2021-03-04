@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve & (export $(cat .env.development | xargs) && nodemon ./server/index.js)",
+    "template-type-check": "vue-type-check --workspace . --srcDir ./src --onlyTemplate",
     "build": "npm run get-api-types && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -39,6 +40,7 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.5.1",
     "vue-router": "^3.2.0",
+    "vue-type-check": "^1.1.0",
     "vue-virtual-table": "^0.2.17",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.3.19",
