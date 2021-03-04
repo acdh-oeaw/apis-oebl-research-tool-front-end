@@ -25,7 +25,7 @@
         <form-row label="Status">
           <select-menu
             :show-caret="true"
-            btn-class="px-4 float-right background lighten-2"
+            btn-class="px-4 float-right background darken-2"
             :items="lemmaStatuses"
             :value="lemmaStatus"
             key-value="id"
@@ -38,7 +38,7 @@
         <form-row label="Redakteur">
           <select-menu
             :show-caret="true"
-            btn-class="px-4 float-right background lighten-2"
+            btn-class="px-4 float-right background darken-2"
             :items="store.editors.editors"
             :value="lemmaEditor"
             key-value="userId"
@@ -50,7 +50,7 @@
         <form-row label="Autor">
           <select-menu
             :show-caret="true"
-            btn-class="px-4 float-right background lighten-2"
+            btn-class="px-4 float-right background darken-2"
             :items="store.authors.authors"
             :value="lemmaAuthor"
             add-null-option="Kein Autor"
