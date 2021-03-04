@@ -7,11 +7,11 @@
           :content="column.items.length.toString()"
           inline
           :style="{opacity: column.items.length === 0 ? '.5' : 1}"
-          class="mr-2"
-          color="rgba(0,0,0,.4)" />
+          class="mr-2 ml-0"
+          color="blue-grey" />
         {{ column.name }}
       </v-subheader>
-      <v-simple-table style="width: 100%">
+      <v-simple-table class="rounded-lg overflow-hidden" style="width: 100%">
         <draggable
           :disabled="false"
           :value="column.items"
