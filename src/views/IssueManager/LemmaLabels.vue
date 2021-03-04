@@ -15,51 +15,38 @@
       item-value="id"
       :menu-props="{
         rounded: 'lg',
-        contentClass: 'soft-shadow text-body-2 v-list--dense'
+        contentClass: 'soft-shadow text-body-2 v-list--dense background lighten-1'
       }"
       :search-input.sync="searchText"
       :value="selectedLabels"
       :items="labels">
       <template v-slot:selection="{ selected, select, item }">
-        <!-- <v-menu top offset-y content-class="rounded-lg soft-shadow">
-          <template v-slot:activator="{ on }"> v-on="on" -->
-            <v-chip
-              :key="item.id"
-              :input-value="selected"
-              @click="select"
-              close
-              small
-              class="font-weight-medium label"
-              text-color="white"
-              close-icon="mdi-close"
-              @click:close="onRemove(item)"
-              :color="item.color">
-              {{ item.name }}
-            </v-chip>
-          <!-- </template>
-          <v-list class="text-body-2" dense nav>
-            <v-list-item dense @click="editLabel(item)">
-              <v-list-item-content>
-                Label bearbeiten…
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="deleteLabel(item)" dense>
-              <v-list-item-content>Label löschen</v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu> -->
+        <v-chip
+          :key="item.id"
+          :input-value="selected"
+          @click="select"
+          close
+          small
+          class="font-weight-medium label"
+          text-color="white"
+          close-icon="mdi-close"
+          @click:close="onRemove(item)"
+          :color="item.color">
+          {{ item.name }}
+        </v-chip>
       </template>
       <template v-slot:item="{ item, on, props }">
-        <v-list-item v-bind="props" v-on="on">
+        <v-list-item :ripple="false" class="label-list-item" v-bind="props" v-on="on">
           <v-list-item-avatar size="15">
             <v-icon v-if="value.find(id => id === item.id) !== undefined" :color="item.color">mdi-checkbox-marked-circle</v-icon>
             <v-icon v-else :color="item.color">mdi-checkbox-blank-circle</v-icon>
           </v-list-item-avatar>
-          <v-list-item-content size="15">
-            <v-list-item-title>
+          <v-list-item-content>
               {{ item.name }}
-            </v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action-text class="action">
+            <v-btn @click.stop.capture.prevent="editLabel(item)" depressed small rounded>bearbeiten</v-btn>
+          </v-list-item-action-text>
         </v-list-item>
       </template>
       <template v-slot:prepend-item>
@@ -69,22 +56,34 @@
           <v-list-item-avatar size="15">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              Label erstellen…
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-content>Label erstellen…</v-list-item-content>
         </v-list-item>
+        <v-divider />
       </template>
     </v-combobox>
     <v-dialog
       scrollable
-      max-width="400"
-      :value="newLabel !== null"
-      v-if="newLabel !== null">
+      max-width="620"
+      :value="editingLabel !== null"
+      v-if="editingLabel !== null">
       <v-card color="background" class="rounded-lg elevation-25">
-        <v-card-title class="text-center">
-          <v-spacer />Label erstellen<v-spacer />
+        <v-card-title class="px-2">
+          <v-row dense>
+            <v-col class="">
+              <v-btn color="background darken-2" class="rounded-lg px-4" @click="editingLabel = null" elevation="0">Abbrechen</v-btn>
+            </v-col>
+            <v-col class="text-center">
+              Label erstellen
+            </v-col>
+            <v-col class="text-right">
+              <v-btn
+                class="rounded-lg px-4"
+                @click="saveLabel"
+                color="primary"
+                :disabled="!editingLabel.name"
+                elevation="0">Speichern</v-btn>
+            </v-col>
+          </v-row>
         </v-card-title>
         <v-card-title class="pt-0 px-2">
           <v-text-field
@@ -95,7 +94,11 @@
             autofocus
             :rules="labelNameRules"
             label="Label Name"
-            v-model="newLabel.name" />
+            v-model="editingLabel.name">
+            <template v-slot:prepend-inner>
+              <span class="caption pr-2">Labelname</span>
+            </template>
+          </v-text-field>
         </v-card-title>
         <v-divider />
         <v-card-text class="overflow-y-auto pt-3 background lighten-2" style="height: 300px">
@@ -105,7 +108,7 @@
               icon
               v-for="(shade, shadeName) in color"
               :key="shadeName"
-              @click="newLabel.color = shade"
+              @click="editingLabel.color = shade"
               class="mr-1 mb-1"
               :style="{ backgroundColor: shade}"
             />
@@ -113,18 +116,25 @@
         </v-card-text>
         <v-divider />
         <v-card-actions>
-          <v-chip
-            style="color: white; font-weight: 500"
-            class="label mx-auto"
-            :color="newLabel.color">
-            {{ newLabel.name }}
-          </v-chip>
-        </v-card-actions>
-        <v-divider class="ml-3 mr-3" />
-        <v-card-actions>
-          <v-btn color="background darken-2" class="rounded-lg px-4" @click="newLabel = null" elevation="0">Abbrechen</v-btn>
-          <v-spacer />
-          <v-btn class="rounded-lg px-4" @click="createLabel" color="primary" elevation="0">Speichern</v-btn>
+          <v-row dense>
+            <v-col cols="2">
+              <v-btn
+                v-if="editingLabel !== undefined && editingLabel.id !== undefined && editingLabel.id > -1"
+                @click="deleteEditingLabel"
+                class="rounded-lg"
+                color="background darken-2">Löschen</v-btn>
+            </v-col>
+            <v-col cols="8" class="text-center">
+              <v-chip
+                style="color: white; font-weight: 500"
+                class="label mx-auto"
+                :color="editingLabel.color">
+                {{ editingLabel.name }}
+              </v-chip>
+            </v-col>
+            <v-col cols="2">
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -144,7 +154,7 @@ export default class LemmaLabels extends Vue {
   @Prop({ default: [] }) value!: number[]
 
   searchText: string|null = null
-  newLabel: Label|null = null
+  editingLabel: Label|null = null
   defaultLabelColor = colors.blueGrey.base
 
   labelNameRules = [
@@ -159,7 +169,6 @@ export default class LemmaLabels extends Vue {
   get selectedLabels() {
     return this.value
       .map(id => this.labels.find(l => l.id === id))
-      .concat(this.newLabel || [])
       .filter(v => v !== undefined)
   }
 
@@ -172,10 +181,10 @@ export default class LemmaLabels extends Vue {
   }
 
   addLabel(name: string) {
-    this.newLabel = {
+    this.editingLabel = {
       name: name,
       color: this.defaultLabelColor,
-      id: Math.floor(Math.random() * 1000)
+      id: -1
     }
   }
 
@@ -188,24 +197,31 @@ export default class LemmaLabels extends Vue {
     this.$emit('update', ls.filter((l): l is Label => !this.isNewLabel(l)).map(l => l.id))
   }
 
-  async deleteLabel(item: Label) {
-    if (await confirm.confirm('Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.')) {
-      // store.labels.deleteLabel(item)
+  async deleteEditingLabel() {
+    const i = this.editingLabel
+    if (i !== null && i.id !== undefined && i.id > -1) {
+      if (await confirm.confirm('Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.')) {
+        store.issue.deleteLabel(i.id)
+        this.editingLabel = null
+      }
     }
   }
 
   async editLabel(item: Label) {
-    
+    this.editingLabel = item
   }
 
-  async createLabel() {
-    if (this.newLabel !== null) {
-      const { id } = await store.issue.createLabel(this.newLabel.name, this.newLabel.color || this.defaultLabelColor)
-      console.log(id)
-      if (id !== undefined) {
-        this.$emit('update', this.value.concat(id))
-        this.newLabel = null
+  async saveLabel() {
+    if (this.editingLabel !== null) {
+      if (this.editingLabel.id === -1) {
+        const { id } = await store.issue.createLabel(this.editingLabel.name, this.editingLabel.color || this.defaultLabelColor)
+        if (id !== undefined) {
+          this.$emit('update', this.value.concat(id))
+        }
+      } else {
+        await store.issue.updateLabel(this.editingLabel.id!, this.editingLabel.color || this.defaultLabelColor, this.editingLabel.name)
       }
+      this.editingLabel = null
     }
   }
 
@@ -222,4 +238,10 @@ export default class LemmaLabels extends Vue {
 
 .label-box /deep/ .v-input__slot
   padding 3px 3px !important
+
+.label-list-item .action
+  opacity 0
+
+.label-list-item:hover .action
+  opacity 1
 </style>
