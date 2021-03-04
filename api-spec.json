@@ -59132,7 +59132,8 @@
                                 "$ref": "#/components/schemas/IssueLemmaRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -59177,66 +59178,6 @@
                 "tags": [
                     "workflow"
                 ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "cookieAuth": []
-                    },
-                    {
-                        "basicAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/IssueLemma"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "put": {
-                "operationId": "workflow_api_v1_issue_lemma_update",
-                "description": "",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "A unique integer value identifying this issue lemma.",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "workflow"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
-                            }
-                        }
-                    }
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -64447,6 +64388,9 @@
                         },
                         "readOnly": true
                     },
+                    "lemma": {
+                        "$ref": "#/components/schemas/Lemma"
+                    },
                     "order": {
                         "type": "integer",
                         "maximum": 2147483647,
@@ -64465,10 +64409,6 @@
                         "type": "integer",
                         "nullable": true
                     },
-                    "lemma": {
-                        "type": "integer",
-                        "nullable": true
-                    },
                     "author": {
                         "type": "integer",
                         "nullable": true
@@ -64483,11 +64423,17 @@
                             "type": "integer"
                         }
                     }
-                }
+                },
+                "required": [
+                    "lemma"
+                ]
             },
             "IssueLemmaRequest": {
                 "type": "object",
                 "properties": {
+                    "lemma": {
+                        "$ref": "#/components/schemas/LemmaRequest"
+                    },
                     "order": {
                         "type": "integer",
                         "maximum": 2147483647,
@@ -64501,10 +64447,6 @@
                         "type": "integer",
                         "nullable": true
                     },
-                    "lemma": {
-                        "type": "integer",
-                        "nullable": true
-                    },
                     "author": {
                         "type": "integer",
                         "nullable": true
@@ -64519,7 +64461,10 @@
                             "type": "integer"
                         }
                     }
-                }
+                },
+                "required": [
+                    "lemma"
+                ]
             },
             "IssueLemmaSerializerOpenApi": {
                 "type": "object",
@@ -64724,6 +64669,10 @@
             "Lemma": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
                     "firstName": {
                         "type": "string"
                     },
@@ -64829,6 +64778,25 @@
                     "lemma",
                     "text",
                     "user"
+                ]
+            },
+            "LemmaRequest": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "info": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName"
                 ]
             },
             "LemmaStatus": {
@@ -67562,6 +67530,9 @@
             "PatchedIssueLemmaRequest": {
                 "type": "object",
                 "properties": {
+                    "lemma": {
+                        "$ref": "#/components/schemas/PatchedLemmaRequest"
+                    },
                     "order": {
                         "type": "integer",
                         "maximum": 2147483647,
@@ -67572,10 +67543,6 @@
                         "nullable": true
                     },
                     "status": {
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "lemma": {
                         "type": "integer",
                         "nullable": true
                     },
@@ -67655,6 +67622,21 @@
                     },
                     "lemma": {
                         "type": "integer"
+                    }
+                }
+            },
+            "PatchedLemmaRequest": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "info": {
+                        "type": "string",
+                        "nullable": true
                     }
                 }
             },

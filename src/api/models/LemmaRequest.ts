@@ -2,11 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Lemma = {
-    readonly id?: number;
+export type LemmaRequest = {
     firstName: string;
     lastName: string;
-    readonly dateOfBirth?: string;
-    readonly dateOfDeath?: string;
     info?: string | null;
 }

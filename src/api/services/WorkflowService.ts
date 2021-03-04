@@ -154,7 +154,7 @@ export class WorkflowService {
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaCreate(
-        requestBody?: IssueLemmaRequest,
+        requestBody: IssueLemmaRequest,
     ): Promise<IssueLemma> {
         const result = await __request({
             method: 'POST',
@@ -175,24 +175,6 @@ export class WorkflowService {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
-        });
-        return result.body;
-    }
-
-    /**
-     * @param id A unique integer value identifying this issue lemma.
-     * @param requestBody
-     * @returns IssueLemma
-     * @throws ApiError
-     */
-    public static async workflowApiV1IssueLemmaUpdate(
-        id: number,
-        requestBody?: IssueLemmaRequest,
-    ): Promise<IssueLemma> {
-        const result = await __request({
-            method: 'PUT',
-            path: `/workflow/api/v1/issue-lemma/${id}/`,
-            body: requestBody,
         });
         return result.body;
     }
