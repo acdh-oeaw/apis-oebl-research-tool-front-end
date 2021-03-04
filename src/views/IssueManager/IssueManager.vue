@@ -157,6 +157,9 @@
       :card="true"
       :right="true"
       color="background"
+      :min-width="300"
+      :width="store.settings.drawerRightWidth"
+      @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
       :value="showSideBar"
       @close="showSideBar = false">
       <v-btn
