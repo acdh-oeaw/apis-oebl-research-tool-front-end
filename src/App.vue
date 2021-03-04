@@ -195,6 +195,7 @@ export default class App extends Vue {
   margin-left 3px
   border-radius 10px
   padding 0 5px
+  text-decoration none
   font-size 12px
   color white
 
