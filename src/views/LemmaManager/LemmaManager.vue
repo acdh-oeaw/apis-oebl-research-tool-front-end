@@ -310,6 +310,26 @@
               />
             </span>
           </template>
+          <a
+            v-else-if="value && column.value === 'loc'"
+            target="_blank"
+            :href="'https://id.loc.gov/authorities/names/' + value"
+            class="table-external-link background lighten-2">
+            {{ value }}
+          </a>
+          <a
+            v-else-if="value && column.value === 'viaf_id'"
+            target="_blank"
+            :href="'https://viaf.org/viaf/' + value"
+            class="table-external-link background lighten-2">
+            {{ value }}
+          </a>
+          <a
+            v-else-if="value && column.value === 'wiki_edits'"
+            class="table-external-link background lighten-2"
+            @click.prevent="openWikipedia(item)">
+            {{ value }}
+          </a>
           <!-- all others -->
           <template v-else-if="value">
             {{ item[column.value] }}
@@ -435,6 +455,13 @@ export default class LemmaManager extends Vue {
 
   set columns(cs) {
     store.lemma.columns = cs
+  }
+
+  openWikipedia(item: LemmaRow) {
+    const link = _.get(item, 'columns_scrape.wikidata.wiki_de')
+    if (link !== undefined) {
+      window.open(link)
+    }
   }
 
   updateColumn(c: LemmaColumn, u: Partial<LemmaColumn>) {
@@ -768,6 +795,15 @@ export default class LemmaManager extends Vue {
   position fixed
   bottom 10px
   right 0px
+
+.table-external-link
+  display inline-block
+  padding 3px 0px
+  text-decoration none
+  color var(--v-textcolor-base) !important
+  padding 3px 5px
+  border-radius 5px
+  font-size 90%
 
 .lemma-view-title
   min-width 150px
