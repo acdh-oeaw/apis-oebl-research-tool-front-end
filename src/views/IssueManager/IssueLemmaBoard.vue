@@ -74,7 +74,7 @@ export default class LemmaBoard extends Vue {
   store = store
   log = console.log
   selectedStyle = {
-    boxShadow: `inset 0px 0px 0px 3px ${ this.$vuetify.theme.currentTheme.secondary } !important`
+    boxShadow: `inset 0px 0px 0px 3px ${ this.$vuetify.theme.currentTheme.primary } !important`
   }
 
   // onUpdate(
