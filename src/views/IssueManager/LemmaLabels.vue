@@ -45,7 +45,7 @@
               {{ item.name }}
           </v-list-item-content>
           <v-list-item-action-text class="action">
-            <v-btn @click.stop.capture.prevent="editLabel(item)" depressed small rounded>bearbeiten</v-btn>
+            <v-btn @click.stop.prevent="editLabel(item)" depressed small rounded>bearbeiten</v-btn>
           </v-list-item-action-text>
         </v-list-item>
       </template>
@@ -58,16 +58,17 @@
           </v-list-item-avatar>
           <v-list-item-content>Label erstellen…</v-list-item-content>
         </v-list-item>
-        <v-divider />
+        <!-- <v-divider /> -->
       </template>
     </v-combobox>
     <v-dialog
       scrollable
       max-width="620"
+      @input="editingLabel = null"
       :value="editingLabel !== null"
       v-if="editingLabel !== null">
       <v-card color="background" class="rounded-lg elevation-25">
-        <v-card-title class="px-2">
+        <v-card-title class="px-3 py-2">
           <v-row dense>
             <v-col class="">
               <v-btn color="background darken-2" class="rounded-lg px-4" @click="editingLabel = null" elevation="0">Abbrechen</v-btn>
@@ -85,7 +86,7 @@
             </v-col>
           </v-row>
         </v-card-title>
-        <v-card-title class="pt-0 px-2">
+        <v-card-title class="pt-0 px-3 pb-0">
           <v-text-field
             solo
             flat
@@ -121,8 +122,9 @@
               <v-btn
                 v-if="editingLabel !== undefined && editingLabel.id !== undefined && editingLabel.id > -1"
                 @click="deleteEditingLabel"
+                depressed
                 class="rounded-lg"
-                color="background darken-2">Löschen</v-btn>
+                color="background darken-2">Label löschen</v-btn>
             </v-col>
             <v-col cols="8" class="text-center">
               <v-chip
