@@ -34,7 +34,7 @@ interface Settings {
   drawerLeftWidth: number
   showNavDrawer: boolean
   issueViewOptions: {
-    showDescription: boolean
+    showBirthAndDeath: boolean
     showEditor: boolean
     showAuthor: boolean
     showLabels: number
@@ -56,7 +56,7 @@ class Store {
     drawerLeftWidth: 370,
     showNavDrawer: true,
     issueViewOptions: {
-      showDescription: true,
+      showBirthAndDeath: true,
       showEditor: true,
       showAuthor: true,
       showLabels: 3

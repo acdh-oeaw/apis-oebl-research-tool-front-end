@@ -2,7 +2,7 @@
   <div style="user-select: none" @click="$emit('select-lemma', value)">
     <template v-if="value.lemma">
       <h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
-      <h5 class="pa-0 ma-0" v-if="showDescription">{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}</h5>
+      <h5 class="pa-0 ma-0" v-if="showBirthAndDeath">{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}</h5>
     </template>
     <span class="caption" v-else>
       Lemma nicht gefunden.
@@ -44,7 +44,7 @@ export default class IssueLemmaCard extends Vue {
   @Prop({ default: null }) maxLabels!: number|null
   @Prop({ default: true }) showEditor!: boolean
   @Prop({ default: true }) showAuthor!: boolean
-  @Prop({ default: true }) showDescription!: boolean
+  @Prop({ default: true }) showBirthAndDeath!: boolean
 
   get labelsById() {
     return _.keyBy(store.issue.labels, 'id')

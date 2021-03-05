@@ -35,7 +35,7 @@
                 :max-labels="store.settings.issueViewOptions.showLabels"
                 :show-editor="store.settings.issueViewOptions.showEditor"
                 :show-author="store.settings.issueViewOptions.showAuthor"
-                :show-description="store.settings.issueViewOptions.showDescription"
+                :show-birth-and-death="store.settings.issueViewOptions.showBirthAndDeath"
                 :lemma="store.lemma.getLemmaById(item.lemma)"
                 :value="item"
               />
