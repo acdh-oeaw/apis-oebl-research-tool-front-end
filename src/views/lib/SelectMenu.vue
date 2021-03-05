@@ -29,7 +29,7 @@
         <v-icon class="mr-2" small>mdi-magnify</v-icon>
         <input
           ref="input"
-          placeholder="Suchen …"
+          :placeholder="searchPlaceholder"
           class="search-input text-body-2"
           v-model.trim="searchText"
           @keydown="onKeyDownSearch"
@@ -110,6 +110,7 @@ export default class SelectMenu extends Vue {
   @Prop({ default: false }) showCaret!: boolean
   @Prop({ default: null }) prependIcon!: string|null
   @Prop({ default: null }) addNullOption!: string|null
+  @Prop({ default: 'Suchen …'}) searchPlaceholder!: string
 
   searchText: string|null = null
 
