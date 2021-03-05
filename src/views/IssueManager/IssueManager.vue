@@ -120,9 +120,7 @@
               <v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title>
-                Autor anzeigen
-              </v-list-item-title>
+              Autor anzeigen
             </v-list-item-content>
           </v-list-item>
           <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showEditor: !store.settings.issueViewOptions.showEditor }}">
@@ -130,9 +128,15 @@
               <v-icon v-if="store.settings.issueViewOptions.showEditor">mdi-check</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title>
-                Redakteur anzeigen
-              </v-list-item-title>
+              Redakteur anzeigen
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="store.settings = {...store.settings, issueViewOptions: { ...store.settings.issueViewOptions, showBirthAndDeath: !store.settings.issueViewOptions.showBirthAndDeath }}">
+            <v-list-item-avatar size="15">
+              <v-icon v-if="store.settings.issueViewOptions.showBirthAndDeath">mdi-check</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              Geburtsdaten anzeigen
             </v-list-item-content>
           </v-list-item>
           <v-divider />
