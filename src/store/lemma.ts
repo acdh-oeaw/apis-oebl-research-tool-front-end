@@ -760,7 +760,10 @@ export default class LemmaStore {
 
   set lemmas(ls: LemmaRow[]) {
     this._lemmas = ls
-    this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkAdd(ls))
+    // TODO: fixme: that’s bad.
+    // async ops should always be awaitable, especially
+    // when they modify this most basic/important state
+    this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkPut(ls))
   }
 
   get allLemmas() {
