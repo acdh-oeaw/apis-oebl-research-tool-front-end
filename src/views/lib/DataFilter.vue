@@ -13,6 +13,7 @@
           :width="80"
           :items="columns.filter(c => c.filterable === true)"
           v-model="filter.column"
+          search-placeholder="Spalte suchen …"
           @input="emitInput"
           key-name="name"
           key-value="value"

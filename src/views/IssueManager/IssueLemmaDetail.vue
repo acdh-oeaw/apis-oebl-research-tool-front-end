@@ -27,6 +27,7 @@
             :show-caret="true"
             btn-class="px-4 float-right background darken-2"
             :items="lemmaStatuses"
+            search-placeholder="Status suchen …"
             :value="lemmaStatus"
             key-value="id"
             key-name="name"
@@ -40,6 +41,7 @@
             :show-caret="true"
             btn-class="px-4 float-right background darken-2"
             :items="store.editors.editors"
+            search-placeholder="Redakteur suchen …"
             :value="lemmaEditor"
             key-value="userId"
             key-name="name"
@@ -52,6 +54,7 @@
             :show-caret="true"
             btn-class="px-4 float-right background darken-2"
             :items="store.authors.authors"
+            search-placeholder="Autor suchen …"
             :value="lemmaAuthor"
             add-null-option="Kein Autor"
             key-value="userId"
@@ -129,14 +132,14 @@
     <v-card-actions>
       <v-row dense>
         <v-col>
-          <!-- <v-btn
+          <v-btn
             class="rounded-lg"
             color="background darken-2"
             elevation="0"
             @click="deleteIssueLemma"
             block>
             <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon> löschen
-          </v-btn> -->
+          </v-btn>
         </v-col>
         <v-col>
           <v-btn class="rounded-lg" elevation="0" block color="primary">

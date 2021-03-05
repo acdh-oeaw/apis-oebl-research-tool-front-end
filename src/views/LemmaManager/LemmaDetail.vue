@@ -41,6 +41,7 @@
         <select-menu
           btn-class="px-2 background darken-2"
           prepend-icon="mdi-format-list-bulleted"
+          search-placeholder="Liste suchen …"
           :show-caret="true"
           :value="value.list || null"
           :items="store.lemma.lemmaLists"
@@ -247,7 +248,7 @@ export default class LemmaDetail extends Vue {
   }
 
   updateData(u: Partial<LemmaRow>) {
-    this.$emit('update', {...this.value, ...u})
+    this.$emit('update', u)
   }
 
   debouncedUpdateData = _.debounce(this.updateData, 300)
