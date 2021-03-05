@@ -69,6 +69,7 @@
     <v-virtual-scroll
       style="contain: content"
       ref="scroller"
+      :bench="10"
       @scroll.passive="onScroll"
       class="virtual-scroller"
       :items="data"
