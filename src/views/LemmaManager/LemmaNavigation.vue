@@ -130,7 +130,7 @@
           :input-value="store.lemma.selectedLemmaListId === list.id"
           :to="'/lemmas/list/' + list.id"
           dense
-          class="droppable"
+          class="mb-0 droppable"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
@@ -141,9 +141,6 @@
             <v-list-item-title>
               {{ list.title }}
             </v-list-item-title>
-            <v-list-item-subtitle style="font-size: 75%">
-              {{ list.editor ? list.editor.name : '' }}
-            </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <transition name="roll">
@@ -178,10 +175,9 @@
           :key="list.id"
           tabindex="-1"
           :input-value="store.lemma.selectedLemmaListId === list.id"
-          :class="['mb-0']"
           dense
           :to="`/lemmas/list/${ list.id }`"
-          class="droppable"
+          class="droppable mb-0"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
@@ -201,6 +197,7 @@
               <badge
                 :key="list.count"
                 inline
+                class="muted"
                 :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
                 :content="list.count" />
             </transition>
