@@ -429,7 +429,7 @@ export default class LemmaStore {
     await this.localDb.lemmas.bulkPut(ls)
   }
 
-  private updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): LemmaRow[] {
+  private async updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): Promise<LemmaRow[]> {
     const ids = ls.map(l => l.id)
     const updatedLemmas: LemmaRow[] = []
     this._lemmas = this._lemmas.map((l) => {
@@ -441,13 +441,13 @@ export default class LemmaStore {
         return l
       }
     })
-    this.localDb.lemmas.bulkPut(updatedLemmas)
+    await this.localDb.lemmas.bulkPut(updatedLemmas)
     return updatedLemmas
   }
 
   async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
     // optimistic update
-    this.updateLemmasLocally(ls, u)
+    await this.updateLemmasLocally(ls, u)
     // actual update on the server
     await Promise.all(ls.map(async (l) => {
       await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
@@ -517,8 +517,9 @@ export default class LemmaStore {
 
   async initLemmaData() {
     this._lemmas = await this.getLocalLemmaCache()
-    await this.getAndApplyRemoteLemmas(this.lastLemmaFetchDate)
+    const fetchUpdatesFrom = _.clone(this.lastLemmaFetchDate)
     this.lastLemmaFetchDate = new Date()
+    await this.getAndApplyRemoteLemmas(fetchUpdatesFrom)
     this.columns = _.uniqBy([
       ...this.columns,
       ...this.getAllUserColumns(this.lemmas)
@@ -563,14 +564,13 @@ export default class LemmaStore {
 
   async deleteLemmasLocally(ids: number[]) {
     console.log('lemmas to delete:', ids)
-    this.lemmas = this.lemmas.filter(l => ids.indexOf(l.id) === -1)
+    this._lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
+    await this.localDb.lemmas.bulkDelete(ids)
   }
 
   async deleteLemma(ids: number[]) {
-    this.deleteLemmasLocally(ids)
-    await Promise.all(ids.map(id => {
-      return ResearchService.researchApiV1LemmaresearchDestroy(id)
-    }))
+    await this.deleteLemmasLocally(ids)
+    await Promise.all(ids.map(id => ResearchService.researchApiV1LemmaresearchDestroy(id)))
     notifyService.emit('deleteLemmas', ids)
   }
 
@@ -699,7 +699,8 @@ export default class LemmaStore {
 
   async getAndApplyRemoteLemmas(modifiedAfter: Date|null = null): Promise<void> {
     const currentLemmasLength = (await this.localDb.lemmas.count())
-    // there are no lemmas, or no last modified date, or the DB must be cleared => get all lemmas
+    // there are no lemmas, or no last modified date,
+    // or the DB must be cleared => get all lemmas
     if (
       modifiedAfter === null ||
       currentLemmasLength === 0 ||
@@ -714,6 +715,7 @@ export default class LemmaStore {
     } else {
       const upserted = await this.getLemmasIncrementally(false, modifiedAfter.toISOString(), 100)
       const deleted = await this.getLemmasIncrementally(true, modifiedAfter.toISOString(), 100)
+      console.log({upserted, deleted})
       await this.deleteLemmasLocally(deleted.map(l => l.id!))
       await this.upsertLemmasLocally(upserted)
     }
@@ -760,10 +762,6 @@ export default class LemmaStore {
 
   set lemmas(ls: LemmaRow[]) {
     this._lemmas = ls
-    // TODO: fixme: that’s bad.
-    // async ops should always be awaitable, especially
-    // when they modify this most basic/important state
-    this.localDb.lemmas.clear().then(() => this.localDb.lemmas.bulkPut(ls))
   }
 
   get allLemmas() {
