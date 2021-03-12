@@ -585,15 +585,16 @@ export default class LemmaManager extends Vue {
 
   async deleteSelectedLemmas(e: KeyboardEvent) {
     const indexOfLastSelected = this.sortedFilteredLemmas.findIndex(l => _.last(this.selectedRows)?.id === l.id)
+    console.log(e)
     // A list is selected
     // remove from list.
-    if (this.lemmaListId !== null) {
+    if (this.lemmaListId !== null || !(e.ctrlKey || e.metaKey)) {
       const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) aus dieser Liste entfernen?`
       if (await confirm.confirm(msg)) {
         this.removeLemmasFromList(this.selectedRows)
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected] ]
         }
       }
     // An issue is selected
@@ -604,7 +605,7 @@ export default class LemmaManager extends Vue {
         this.removeLemmasFromIssue(this.selectedRows)
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected] ]
         }
       }
     } else {
@@ -615,7 +616,7 @@ export default class LemmaManager extends Vue {
         await this.store.lemma.deleteLemma(this.selectedRows.map(r => r.id))
         // select the next row after the deleted ones
         if (indexOfLastSelected > -1) {
-          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected + 1] ]
+          this.selectedRows = [ this.sortedFilteredLemmas[indexOfLastSelected] ]
         }
       }
     }
