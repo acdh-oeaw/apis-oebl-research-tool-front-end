@@ -250,12 +250,10 @@ export default class VirtualTable extends Vue {
   }
 
   onScroll(e: MouseEvent) {
-    requestAnimationFrame(() => {
-      const l = (e.target as HTMLElement).scrollLeft
-      if (l !== this.scrollLeft) {
-        this.scrollLeft = l
-      }
-    })
+    const l = (e.target as HTMLElement).scrollLeft
+    if (l !== this.scrollLeft) {
+      this.scrollLeft = l
+    }
   }
 
   handleKey(e: KeyboardEvent) {
