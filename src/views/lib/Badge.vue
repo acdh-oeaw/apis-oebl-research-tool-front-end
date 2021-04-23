@@ -23,8 +23,8 @@ export default class Badge extends Vue {
 .badge
   border-radius 10px
   color #fff
-  font-size 12px
-  height 20px
+  font-size 11px
+  height 18px
   letter-spacing 0
   min-width 20px
   padding 1px 6px
