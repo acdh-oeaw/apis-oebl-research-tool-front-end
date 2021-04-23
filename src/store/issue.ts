@@ -22,6 +22,19 @@ export default class IssueStore {
     notifyService.on('importIssueLemmas', (ls) => {
       this._issueLemmas = this._issueLemmas.concat(ls)
     })
+    notifyService.on('updateIssueLemmas', (ids, ls) => {
+      this.updateIssueLemmasLocally(ids, ls)
+    })
+  }
+
+  updateIssueLemmasLocally(ids: number[], update: Partial<IssueLemma>) {
+    this._issueLemmas = this._issueLemmas.map(il => {
+      if (ids.indexOf(il.id) > -1) {
+        return {...il, ...update}
+      } else {
+        return il
+      }
+    })
   }
 
   async addLemmaToIssue(id: number, ls: LemmaRow[]): Promise<void> {
@@ -107,14 +120,9 @@ export default class IssueStore {
       if (this.selectedLemma !== null && this.issueLemmas[index].id === this.selectedLemma.id) {
         this.selectedLemma = this.issueLemmas[index]
       }
-      this.issueLemmas = this.issueLemmas.map(il => {
-        if (il.id === id) {
-          return newIssueLemma
-        } else {
-          return il
-        }
-      })
+      this.updateIssueLemmasLocally([ id ], l)
       await WorkflowService.workflowApiV1IssueLemmaPartialUpdate(id, { lemma: newIssueLemma.lemma, ...l })
+      notifyService.emit('updateIssueLemmas', [id], l)
       return this.issueLemmas[index]
     }
   }

@@ -6,8 +6,8 @@ import { IssueLemma } from '@/api/models/IssueLemma'
 import { WithId } from '@/types'
 
 export interface NotifyEvents {
-  message: (a: any) => void
   disconnect: () => void
+  updateIssueLemmas: (ids: number[], ils: Partial<IssueLemma>) => void
   updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>, e: Editor) => void
   importLemmas: (ls: ServerResearchLemma[]) => void
   importIssueLemmas: (ls: (WithId<IssueLemma>)[]) => void
