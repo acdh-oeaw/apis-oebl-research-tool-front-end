@@ -51,7 +51,7 @@
           to="/lemmas"
           exact
           @click="store.lemma.selectedLemmaListId = null">
-          <v-list-item-avatar tile size="15">
+          <v-list-item-avatar class="mr-2" tile size="15">
             <v-icon small>mdi-bookshelf</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -67,7 +67,7 @@
       <!-- Abgaben -->
       <v-subheader
         @click="showIssues = !showIssues"
-        :class="['px-0', showIssues && 'active']">
+        :class="['pl-1', showIssues && 'active']">
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Abgaben
       </v-subheader>
       <v-list
@@ -88,7 +88,7 @@
           :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
-          <v-list-item-avatar size="15" tile>
+          <v-list-item-avatar class="mr-2" size="15" tile>
             <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -100,7 +100,7 @@
       </v-list>
       <v-subheader
         @click="showMyLists = !showMyLists"
-        :class="['px-0', showMyLists && 'active']"
+        :class="['pl-1', 'pr-0', showMyLists && 'active']"
         @dragenter.prevent="onDragEnter($event)"
         @dragover.prevent=""
         @drop.prevent="createLemmaList($event)">
@@ -134,7 +134,7 @@
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
-          <v-list-item-avatar size="15" tile>
+          <v-list-item-avatar class="mr-2" size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -159,7 +159,8 @@
         </v-list-item>
       </v-list>
       <v-subheader
-        @click="showTeamLists = !showTeamLists" :class="['px-0', showTeamLists && 'active']">
+        @click="showTeamLists = !showTeamLists"
+        :class="['pl-1', showTeamLists && 'active']">
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Team-Listen
       </v-subheader>
       <v-list
@@ -181,7 +182,7 @@
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
-          <v-list-item-avatar size="15" tile>
+          <v-list-item-avatar class="mr-2" size="15" tile>
             <v-icon small>mdi-format-list-bulleted</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -206,7 +207,7 @@
       </v-list>
       <v-subheader
         @click="showQueries = !showQueries" :class="['px-0', showQueries && 'active']"
-        class="px-0">
+        class="pl-1">
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Abfragen
       </v-subheader>
       <v-list
@@ -223,7 +224,7 @@
           @click="selectLemmaFilter(filter.id)"
           v-for="(filter, i) in filteredStoredLemmaFilters"
           :key="'l' + i">
-          <v-list-item-avatar size="15" tile>
+          <v-list-item-avatar class="mr-2" size="15" tile>
             <v-icon small>mdi-card-search-outline</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -237,7 +238,7 @@
     <div v-if="store.lemma.importStatus.isImporting">
       <v-divider />
       <div class="px-4 pb-5">
-        <v-subheader class="px-0"><div>Importiere …</div> <v-spacer /><div>({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})</div></v-subheader>
+        <v-subheader class="pl-1"><div>Importiere …</div> <v-spacer /><div>({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})</div></v-subheader>
         <v-progress-linear class="mt-0 rounded" :value="store.lemma.importStatus.progress * 100" />
       </div>
     </div>
@@ -439,9 +440,18 @@ export default class LemmaNavigation extends Vue {
 .v-subheader
   font-size .75rem
   cursor default
+  height 24px
+  margin-top 14px
+  margin-bottom 3px
 
 .v-subheader .v-icon
+  width 0
+  opacity 0
   transform rotate(-90deg)
+
+.v-subheader:hover .v-icon
+  opacity 1
+  width 10px
 
 .v-subheader.active .v-icon
   transform rotate(0deg)
@@ -449,8 +459,14 @@ export default class LemmaNavigation extends Vue {
 .search-field /deep/ .v-icon.v-icon
   font-size 130%
 
+.v-list-item
+  min-height 32px !important
+
+.v-list-item .v-list-item__content
+  opacity .8
+
 .v-list-item__action
-  margin 10px 0
+  margin 0 0
 
 .lemma-nav-list /deep/ .v-list-group__header
   &:before
