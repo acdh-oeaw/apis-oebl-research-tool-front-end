@@ -23,6 +23,9 @@
           :placeholder="placeholder"
           :value="localValue" />
       </div>
+      <div>
+        <slot />
+      </div>
     </div>
     <div class="text-center caption hint" v-if="msg !== null" v-text="msg" />
   </div>
