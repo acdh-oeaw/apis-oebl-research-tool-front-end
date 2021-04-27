@@ -25,7 +25,9 @@
       </v-btn>
     </template>
     <v-card class="pa-0 fill-height d-flex flex-column rounded-lg" color="background" style="max-height: inherit;">
-      <v-card-title class="py-2 px-3 d-flex flex-row flex-nowrap">
+      <v-card-title
+        v-if="!hideSearchbar"
+        class="py-2 px-3 d-flex flex-row flex-nowrap">
         <v-icon class="mr-2" small>mdi-magnify</v-icon>
         <input
           ref="input"
@@ -108,6 +110,7 @@ export default class SelectMenu extends Vue {
   @Prop({ default: '' }) btnClass!: string
   @Prop({ default: null }) label!: string|null
   @Prop({ default: false }) showCaret!: boolean
+  @Prop({ default: false }) hideSearchbar!: boolean
   @Prop({ default: null }) prependIcon!: string|null
   @Prop({ default: null }) addNullOption!: string|null
   @Prop({ default: 'Suchen …'}) searchPlaceholder!: string

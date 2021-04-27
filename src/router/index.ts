@@ -1,9 +1,9 @@
-import store from '@/store'
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import IssueManager from '../views/IssueManager/IssueManager.vue'
 import LemmaManager from '../views/LemmaManager/LemmaManager.vue'
+import Article from '../views/ArticleManager/Article.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +41,15 @@ const routes: Array<RouteConfig> = [
   {
     path: '/lemmas/filter/:lemmaFilterId',
     component: LemmaManager
+  },
+  {
+    path: '/article/:issueLemmaId',
+    component: Article,
+    props: (route) => {
+      return {
+        issueLemmaId: Number(route.params.issueLemmaId) || null
+      }
+    }
   }
   // route level code-splitting
   // this generates a separate chunk (about.[hash].js) for this route

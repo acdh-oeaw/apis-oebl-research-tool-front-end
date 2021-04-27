@@ -127,6 +127,17 @@ export default class IssueStore {
     }
   }
 
+  async getIssueLemmaById(id: number): Promise<IssueLemma|undefined> {
+    const local = this.issueLemmas.find(il => il.id === id)
+    if (local === undefined) {
+      try {
+        return await WorkflowService.workflowApiV1IssueLemmaRetrieve(id)
+      } catch (e) {
+        return undefined
+      }
+    }
+  }
+
   async deleteIssueLemmaLocally(id: number) {
     this.issueLemmas = this.issueLemmas.filter(il => il.id !== id)
   }
