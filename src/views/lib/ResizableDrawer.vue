@@ -177,7 +177,7 @@ export default class ResizableDrawer extends Vue {
   paddding-left 100px
 
 .nav-drawer.display-card /deep/ .v-navigation-drawer__content
-  box-shadow 10px 10px 100px rgba(0,0,50,.3)
+  box-shadow 10px 10px 100px rgba(0,0,50,.15)
   border-radius 13px
 
 .nav-drawer.display-card /deep/ .v-navigation-drawer__content
