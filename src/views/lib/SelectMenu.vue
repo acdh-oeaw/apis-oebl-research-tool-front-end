@@ -167,7 +167,7 @@ export default class SelectMenu extends Vue {
   get displayValue() {
     if (this.value === null) {
       return 'nichts ausgewählt'
-    } if (typeof this.value === 'string') {
+    } if (typeof this.value === 'string' || typeof this.value === 'number') {
       const item = this.items.find(i => i[this.keyValue] === this.value)
       if (item && item[this.keyName]) {
         return item[this.keyName]
