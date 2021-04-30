@@ -8,6 +8,7 @@ import LemmaStore from './lemma'
 import LabelStore from './label'
 import UserStore from './user'
 import SearchStore from './search'
+import ArticleStore from './article'
 
 import { OpenAPI } from '../api'
 import { LemmaFilterItem } from '@/types/lemma'
@@ -117,6 +118,7 @@ class Store {
   issue = new IssueStore(this.selectedIssue)
   authors = new AuthorStore()
   labels = new LabelStore()
+  article = new ArticleStore(null)
 }
 
 export default Vue.observable(new Store())
