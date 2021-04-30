@@ -4,6 +4,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import IssueManager from '../views/IssueManager/IssueManager.vue'
 import LemmaManager from '../views/LemmaManager/LemmaManager.vue'
 import Article from '../views/ArticleManager/Article.vue'
+import store from '@/store'
+import ArticleStore from '@/store/article'
 
 Vue.use(VueRouter)
 
@@ -46,6 +48,7 @@ const routes: Array<RouteConfig> = [
     path: '/article/:issueLemmaId',
     component: Article,
     props: (route) => {
+      store.article = new ArticleStore(Number(route.params.issueLemmaId))
       return {
         issueLemmaId: Number(route.params.issueLemmaId) || null
       }
