@@ -149,7 +149,8 @@ export default class App extends Vue {
   max-height none !important
   height 100% !important
 
-.theme--light.v-application
+body
+.v-application
   font-family --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 
 .rotate-180
