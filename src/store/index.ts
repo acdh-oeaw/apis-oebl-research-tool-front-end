@@ -34,6 +34,7 @@ interface Settings {
   drawerRightWidth: number
   drawerLeftWidth: number
   showNavDrawer: boolean
+  articleZoomFactor: number
   issueViewOptions: {
     showBirthAndDeath: boolean
     showEditor: boolean
@@ -52,6 +53,7 @@ class Store {
   private _settings: Settings = {
     darkTheme: false,
     issueLayout: 'board',
+    articleZoomFactor: 1,
     issueLemmaSearchItems: [],
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
