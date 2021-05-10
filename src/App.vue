@@ -200,7 +200,7 @@ body
   font-size 12px
   color white
 
-h1
+header h1
   text-transform none
   letter-spacing normal
   opacity .85
@@ -238,4 +238,23 @@ h1
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+// tippy.js theme
+.tippy-box
+  border-radius 13px !important
+  background var(--v-background-base) !important
+  box-shadow 0 5px 55px rgba(0,0,50,.2) !important
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before
+  border-top-color var(--v-background-base) !important
+
+.tippy-box[data-placement^='bottom'] > .tippy-arrow::before
+  border-bottom-color var(--v-background-base) !important
+
+.tippy-box[data-placement^='left'] > .tippy-arrow::before
+  border-left-color var(--v-background-base) !important
+
+.tippy-box[data-placement^='right'] > .tippy-arrow::before
+  border-right-color var(--v-background-base) !important
+
 </style>
