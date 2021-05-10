@@ -10,23 +10,46 @@
       <v-btn v-if="!store.settings.showNavDrawer" @click="toggleDrawer" tile class="rounded-lg" icon>
         <v-icon>mdi-dock-left</v-icon>
       </v-btn>
-      <h1 v-if="issueLemma">{{ issueLemma.lemma.firstName }} {{ issueLemma.lemma.lastName }}</h1>
+      <div v-if="issueLemma">
+        <h1 style="margin-bottom: -3px">{{ issueLemma.lemma.lastName }}, {{ issueLemma.lemma.firstName }} </h1>
+        <div class="caption text-no-wrap muted">
+          Biographie
+        </div>
+      </div>
       <v-spacer />
       <div v-if="editor">
         <select-menu
           :hide-searchbar="true"
-          :show-caret="false"
-          prepend-icon="mdi-magnify"
+          :show-caret="true"
           class="rounded-lg"
-          v-model="selectedZoomLevel"
+          btn-class="pl-2"
+          :value="store.settings.articleZoomFactor"
+          :return-value="true"
+          @input="store.settings = { ...store.settings, articleZoomFactor: $event }"
           :items="zoomSteps" />
-        <v-btn
+        <select-menu
+          :hide-searchbar="true"
+          :show-caret="true"
           class="rounded-lg"
-          tile
-          icon
-          @click="editor.chain().focus().toggleFootnote().run()">
-          <v-icon>mdi-pencil-circle-outline</v-icon>
-        </v-btn>
+          btn-class="pl-2"
+          :items="formattingItems"
+          :value="activeFormatting"
+          @input="onSelectFormatting"
+        />
+        <v-tooltip transition="none" bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="rounded-lg"
+              tile
+              v-on="on"
+              v-bind="attrs"
+              icon
+              @click="editor.chain().focus().toggleCitation().run()">
+              <v-icon>mdi-book-open-page-variant-outline</v-icon>
+            </v-btn>
+            </template>
+          <span>Zitat einfügen</span>
+        </v-tooltip>
         <v-btn
           class="rounded-lg"
           tile
@@ -34,12 +57,31 @@
           @click="editor.chain().focus().toggleComment().run()">
           <v-icon>mdi-message-outline</v-icon>
         </v-btn>
-        <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().undo().run()">
+        <!-- <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().undo().run()">
           <v-icon>mdi-undo</v-icon>
         </v-btn>
-        <v-btn class="rounded-lg mr-3" tile icon @click="editor.chain().focus().redo().run()">
+        <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().redo().run()">
           <v-icon>mdi-redo</v-icon>
-        </v-btn>
+        </v-btn> -->
+        <v-menu
+          content-class="soft-shadow"
+          offset-y
+          left
+          bottom
+          :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              tile
+              class="rounded-lg mr-3"
+              icon>
+              <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
+            </v-btn>
+          </template>
+          <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
+          </v-list>
+          </v-menu>
       </div>
     </v-app-bar>
     <resizable-drawer
@@ -50,11 +92,11 @@
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
       :value="store.lemma.showSideBar">
-      <issue-lemma-detail :lemma="issueLemma" />
+      <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
     </resizable-drawer>
     <v-main style="max-height: calc(100vh - 75px); overflow: auto">
-      <div class="pa-5 outer-editor mx-auto" v-if="issueLemma !== null">
-        <div :style="{ fontSize: (16 * this.selectedZoomLevel.value) + 'px' }">
+      <div class="px-5 outer-editor mx-auto">
+        <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
             class="mt-3 tiptap-editor"
             :editor="editor" />
@@ -74,7 +116,7 @@ import SelectMenu from '@/views/lib/SelectMenu.vue'
 import { Editor, EditorContent } from '@tiptap/vue-2'
 import { defaultExtensions } from '@tiptap/starter-kit'
 import { Comment } from './extensionComment'
-import { Footnote } from './extensionFootnote'
+import { Citation } from './extensionCitation'
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
 // import { findChildrenByMark } from 'prosemirror-utils'
 import Highlight from '@tiptap/extension-highlight'
@@ -96,15 +138,44 @@ export default class Article extends Vue {
   issueLemma: IssueLemma|null = null
   editor: Editor|null = null
 
+  formattingItems = [
+    {
+      name: 'Text',
+      value: 'paragraph',
+      isActive: (e: Editor) => e.isActive('paragraph'),
+      onSelect: (e: Editor) => e.chain().focus().setParagraph().run(),
+    },
+    {
+      name: 'Überschrift 1',
+      value: 'heading-1',
+      isActive: (e: Editor) => e.isActive('heading', { level: 1 }),
+      onSelect: (e: Editor) => e.chain().focus().setHeading({ level: 1 }).run()
+    },
+    {
+      name: 'Überschrift 2',
+      value: 'heading-2',
+      isActive: (e: Editor) => e.isActive('heading', { level: 2 }),
+      onSelect: (e: Editor) => e.chain().focus().setHeading({ level: 2 }).run()
+    }
+  ]
+
+  activeFormatting: any = this.formattingItems[0]
+
+  onSelectFormatting(v: any) {
+    console.log(v, this.editor)
+    v.onSelect(this.editor)
+  }
+
   async mounted() {
-    this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
+    // this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
     await store.article.loadArticle(this.issueLemmaId)
-    await store.article.loadComments(this.issueLemmaId)
+    // await store.article.loadComments(this.issueLemmaId)
+    const vm = this
     this.editor = new Editor({
       content: store.article.article,
       extensions: [
         Highlight,
-        Footnote,
+        Citation,
         Comment,
         ...defaultExtensions()
       ],
@@ -126,19 +197,15 @@ export default class Article extends Vue {
         // console.log({ selectedComments })
         // console.log({ box })
         // console.log({ comments, footnotes })
+        vm.activeFormatting = vm.formattingItems.find(fi => fi.isActive(vm.editor!))
       },
-      onUpdate(a) {
-        // console.log(a)
+      onUpdate() {
       }
     })
   }
 
   store = store
   toolbarPaddingY = 15
-  selectedZoomLevel = {
-    name: '100%',
-    value: 1
-  }
 
   zoomSteps = [
     {
@@ -168,27 +235,49 @@ export default class Article extends Vue {
 </script>
 <style lang="stylus" scoped>
 .outer-editor
+  --comment-color: #ffe1ab
+  --footnote-color: rgba(0,0,20,.07)
   max-width: 60em
   line-height 1.6
+  counter-resset prosemirror-footnote
+
+// .tiptap-editor /deep/ *
+//   color #333
 
 .tiptap-editor /deep/ [contenteditable]
   outline 0 !important
 
+.tiptap-editor /deep/ h1
+  line-height 1.1em
+  padding-bottom .4em
+
+.tiptap-editor /deep/ h2
+  padding-bottom .4em
+
 .tiptap-editor /deep/ comment
   border-radius 4px
-  background #ffc864
+  background var(--comment-color)
   padding 4px
 
 .tiptap-editor /deep/ footnote
-  display inline-block
-  position relative
-  cursor pointer
-  border-bottom 2px dashed rgba(0,0,20, .2)
+  border-radius 4px
+  background var(--footnote-color)
+  padding 4px
 
-.tiptap-editor /deep/ footnote::after
+.tiptap-editor /deep/ footnote:after
   content counter(prosemirror-footnote)
   vertical-align super
   font-size 75%
   counter-increment prosemirror-footnote
+
+.tiptap-editor /deep/ footnote > comment
+.tiptap-editor /deep/ comment > footnote
+  background: repeating-linear-gradient(
+    45deg,
+    var(--comment-color),
+    var(--comment-color) 10px,
+    var(--footnote-color) 10px,
+    var(--footnote-color) 20px
+  );
 
 </style>
