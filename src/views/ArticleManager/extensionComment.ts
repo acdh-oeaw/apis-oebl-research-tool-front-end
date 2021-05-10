@@ -4,16 +4,22 @@ import {
   markInputRule,
   markPasteRule,
   mergeAttributes,
+  Editor
 } from '@tiptap/core'
 
 import { v4 as uuid } from 'uuid'
 import { VueRenderer } from '@tiptap/vue-2'
-import tippy, { Instance as TippyInstance, hideAll } from 'tippy.js'
+import tippy, { Instance as TippyInstance, hideAll, sticky } from 'tippy.js'
+
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/scale.css'
 import 'tippy.js/themes/light.css'
-import store from '@/store'
+import 'tippy.js/dist/backdrop.css';
+import 'tippy.js/animations/shift-away.css';
+
+import { findChildrenByMark } from 'prosemirror-utils'
 import CommentThread from './CommentThread.vue'
+import store from '@/store'
 
 export interface CommentOptions {
   HTMLAttributes: Record<string, any>,
@@ -37,9 +43,6 @@ declare module '@tiptap/core' {
     }
   }
 }
-
-export const inputRegex = /(?:^|\s)((?:==)((?:[^~]+))(?:==))$/gm
-export const pasteRegex = /(?:^|\s)((?:==)((?:[^~]+))(?:==))/gm
 
 export const Comment = Mark.create<CommentOptions>({
   name: 'comment',
@@ -87,8 +90,7 @@ export const Comment = Mark.create<CommentOptions>({
         return commands.setMark('comment', { id: uuid() })
       },
       toggleComment: (attributes) => ({ commands }) => {
-        console.log('toggle', attributes, commands)
-        const command = commands.toggleMark('comment', { id: attributes ? attributes.id : uuid() })
+        const command = commands.toggleMark('comment', { id: store.article.createThread() })
         return command
       },
       unsetComment: () => ({ commands }) => {
@@ -97,15 +99,34 @@ export const Comment = Mark.create<CommentOptions>({
     }
   },
 
+  // getAllComments() {
+  //   return null
+  // },
+
+  onUpdate(...a: any[]) {
+    const [ { editor, transaction } ] = a
+    const comments = findChildrenByMark(transaction.doc, editor.schema.marks.comment, true)
+      .map((n) => {
+        return {
+          pos: n.pos,
+          mark: n.node.marks.find((m: any) => m.type.name === 'comment')
+        }
+      })
+      .filter(m => m.mark !== undefined)
+    console.log({ comments })
+  },
+
   onSelectionUpdate() {
     if (this.editor.isActive(this.name)) {
       const { id } = this.editor.getMarkAttributes(this.name)
       if (typeof id === 'string') {
         console.log('comment id', id)
-        const el = document.querySelector(`[data-id="${ id }"]`)
+        const el = document.querySelector(`comment[data-id="${ id }"]`)
         if (el instanceof HTMLElement) {
+          // it has already been created: show.
           if ((el as any)._tippy) {
             ((el as any)._tippy as TippyInstance).show()
+          // it must be created: create and show.
           } else {
             const component = new VueRenderer(CommentThread, { parent: this.parent, propsData: { id } })
             tippy(el, {
@@ -137,15 +158,4 @@ export const Comment = Mark.create<CommentOptions>({
     }
   },
 
-  addInputRules() {
-    return [
-      markInputRule(inputRegex, this.type),
-    ]
-  },
-
-  addPasteRules() {
-    return [
-      markPasteRule(inputRegex, this.type),
-    ]
-  }
 })
