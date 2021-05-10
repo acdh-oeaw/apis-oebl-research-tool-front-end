@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex fill-height flex-column overflow-y-hidden">
-    <div class="background darken-2" :style="{ zIndex: 1}">
+    <div :style="{ zIndex: 1}">
       <div class="d-flex pb-2">
         <v-btn
           @click="toggleDrawer"
