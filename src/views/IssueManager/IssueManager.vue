@@ -183,7 +183,25 @@
         @update="updateLemmaById"
         @update-status="updateLemmaStatus"
         @delete-issue-lemma="deleteIssueLemma"
-        @close="showSideBar = false" />
+        @close="showSideBar = false">
+        <v-row dense>
+          <v-col>
+            <v-btn
+              class="rounded-lg"
+              color="background darken-2"
+              elevation="0"
+              @click="deleteIssueLemma"
+              block>
+              <v-icon style="opacity: .7" left>mdi-bookshelf</v-icon> löschen
+            </v-btn>
+          </v-col>
+          <v-col>
+            <v-btn class="rounded-lg" elevation="0" block color="primary">
+              <v-icon style="opacity: .7" left>mdi-pen</v-icon> Artikel anzeigen
+            </v-btn>
+          </v-col>
+        </v-row>
+      </issue-lemma-detail>
     </resizable-drawer>
     <v-main class="fill-height rounded-lg">
       <issue-lemma-board
