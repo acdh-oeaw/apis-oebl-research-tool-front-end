@@ -1,5 +1,3 @@
-import { WorkflowService, Editor } from '@/api'
-import _ from 'lodash'
 import { v4 as uuid } from 'uuid'
 
 interface Comment {
@@ -27,7 +25,6 @@ export default class ArticleStore {
   }
 
   async loadComments(articleId: number) {
-    console.log('loaded comments', articleId)
   }
 
   async loadArticle(articleId: number) {
@@ -43,7 +40,7 @@ export default class ArticleStore {
       Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="2">excepteur</comment>
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
       <p>Non labore occaecat deserunt dolor aliquip
-      consectetur fugiat <footnote data-id="9cee2f2b-212d-43eb-b351-0ad4098c6834">laboris</footnote> velit adipisicing laboris
+      consectetur fugiat <footnote data-id="9cee2f2b-212d-43eb-b351-0ad4098c6835">laboris</footnote> velit adipisicing laboris
       aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
       Est ut cupidatat exercitation et ea quis commodo.</p>
       Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua. Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.
@@ -92,20 +89,18 @@ export default class ArticleStore {
     }
   }
 
-  createThread(userId: number): ThreadId {
+  createThread(): ThreadId {
     const threadId = uuid()
     this._commentThreads.push({
       threadId,
       status: 'open',
-      comments: [
-        {
-          commentId: uuid(),
-          date: new Date(),
-          text: '',
-          user: userId
-        }
-      ]
+      comments: []
     })
     return threadId
   }
+
+  createCitation() {
+    return uuid()
+  }
+
 }
