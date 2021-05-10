@@ -1,21 +1,30 @@
 <template>
-  <div>
-    <div class="thread-container pa-1" v-if="thread !== undefined">
-      <div class="comment-container pa-1" v-for="(comment, i) in thread.comments" :key="comment.commentId">
-        <div class="comment-header caption d-flex row no-gutters muted">
-        {{ comment.user }} <v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
+  <div style="min-width: 220px">
+    <div class="thread-header row no-gutters pt-1">
+      <v-btn class="rounded-lg pl-1 muted" text small><v-icon small>mdi-menu-down</v-icon>Status: offen</v-btn>
+      <v-spacer />
+      <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-left</v-icon></v-btn>
+      <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-right</v-icon></v-btn>
+    </div>
+    <div ref="threadContainer" class="thread-container" v-if="thread !== undefined">
+      <div class="comment-container" v-for="(comment, i) in thread.comments" :key="comment.commentId">
+        <div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
+          User {{ comment.user }} <v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
         </div>
-        {{ comment.text }}
-        <v-divider v-if="i !== thread.comments.length - 1" />
+        <div class="px-2">
+          {{ comment.text }}
+        </div>
+        <v-divider class="mt-2" v-if="thread !== undefined && i !== thread.comments.length - 1" />
       </div>
     </div>
+    <v-divider v-if="thread !== undefined && thread.comments.length > 0" class="my-2" />
     <text-field
       v-model="newMessage"
       @keydown.meta.enter="appendComment"
-      class="py-1 px-2 mt-1"
+      class="py-0 px-2 mt-1"
       :allow-new-line="true"
-      placeholder="Nachricht …">
-      <v-btn @click="appendComment" icon tile text><v-icon>mdi-check</v-icon></v-btn>
+      placeholder="Kommentar hinzufügen …">
+      <v-btn class="rounded-lg" @click="appendComment" icon tile text><v-icon small>mdi-send</v-icon></v-btn>
     </text-field>
   </div>
 </template>
@@ -34,18 +43,34 @@ import { v4 as uuid } from 'uuid'
 })
 export default class CommentThread extends Vue {
 
-  @Prop({ required: true }) id!: string
+  @Prop({ default: null }) id!: string|null
   newMessage = ''
   store = store
 
   appendComment() {
-    this.store.article.addComment(this.id, {
-      commentId: uuid(),
-      date: new Date(),
-      user: 4,
-      text: this.newMessage
-    })
-    this.newMessage = ''
+    if (this.id !== null) {
+      this.store.article.addComment(this.id, {
+        commentId: uuid(),
+        date: new Date(),
+        user: 4,
+        text: this.newMessage
+      })
+      this.newMessage = ''
+    } else {
+      throw new Error('Can’t append comment. No Thread Id given.')
+    }
+  }
+
+  @Watch('id')
+  onChangeThreadId() {
+    console.log('changed', this.id)
+    const el = this.$refs.threadContainer
+    if (el instanceof HTMLElement) {
+      el.scrollTo({
+        top: el.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
   }
 
   mounted() {
@@ -53,7 +78,9 @@ export default class CommentThread extends Vue {
   }
 
   get thread() {
-    return this.store.article.getThread(this.id)
+    if (this.id !== null) {
+      return this.store.article.getThread(this.id)
+    }
   }
 
   formatTimeDistance(d: string|undefined): string {
