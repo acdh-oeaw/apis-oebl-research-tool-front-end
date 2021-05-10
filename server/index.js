@@ -3,11 +3,13 @@ const compression = require('compression')
 const fs = require('fs')
 const http = require('http')
 const socketIo = require('socket.io')
+const fetch = require('node-fetch')
 const app = express()
-const port = process.env.NODE_PORT || process.env.PORT || 3333
 const bodyParser = require('body-parser')
+const cors = require('cors')
+const port = process.env.NODE_PORT || process.env.PORT || 3333
 
-const secret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C'
+const serviceSecret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C'
 
 const server = http.createServer(app)
 const io = socketIo(server, {
@@ -22,14 +24,14 @@ const io = socketIo(server, {
 
 const index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' })
 app.enable('trust proxy')
-
+app.use(cors())
 app.use(compression())
 app.use(bodyParser.json({limit: '100mb'}))
 
 app.use([ '/', '/css', '/img', '/js'], express.static('./dist'))
 
 app.post('/message/import-issue-lemmas', (req, res) => {
-  if (req.headers['x-secret'] === secret) {
+  if (req.headers['x-secret'] === serviceSecret) {
     console.log('triggered importIssueLemmas', req.body)
     io.sockets.emit('importIssueLemmas', req.body)
     res.end()
@@ -40,7 +42,7 @@ app.post('/message/import-issue-lemmas', (req, res) => {
 })
 
 app.post('/message/import-lemmas', (req, res) => {
-  if (req.headers['x-secret'] === secret) {
+  if (req.headers['x-secret'] === serviceSecret) {
     console.log('triggered importLemmas', req.body)
     io.sockets.emit('importLemmas', req.body)
     res.end()
@@ -48,6 +50,16 @@ app.post('/message/import-lemmas', (req, res) => {
     res.status(402)
     res.end('out.')
   }
+})
+
+app.get('/zotero/search/:query', async (req, res) => {
+  const x = await (await fetch('https://api.zotero.org/users/7926651/items?q=' + req.params.query, {
+    headers: {
+      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+    }
+  })).json()
+  console.log(x)
+  res.send(JSON.stringify(x))
 })
 
 app.use('*', (req, res) => res.send(index))
