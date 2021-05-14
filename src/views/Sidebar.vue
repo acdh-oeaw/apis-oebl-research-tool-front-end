@@ -15,7 +15,7 @@
           :placeholder="showLoader ? 'Lade…' : 'Listen filtern…'"
           solo
           autofocus
-          background-color="background lighten-1"
+          background-color="background darken-2"
           class="text-body-2 rounded-lg search-field"
           dense
           @keydown.esc="onEscSearch"
@@ -38,7 +38,7 @@
       </div>
       <!-- <v-divider class="mt-3" /> -->
     </div>
-    <div style="flex: 1" class="overflow-y-auto">
+    <div style="flex: 1" class="overflow-y-auto pr-2">
       <!-- Lemma Lib -->
       <v-list
         class="ma-0 mt-4 pa-0 lemma-nav-list"
@@ -60,7 +60,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <badge :content="store.lemma.lemmaCount" color="blue-grey" />
+            <badge :content="store.lemma.lemmaCount" color="primary darken-1" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -146,7 +146,7 @@
             <transition name="roll">
               <badge
                 :key="list.count"
-                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                :color="list.count !== undefined && list.count > 0 ? 'primary darken-1' : 'background'"
                 :content="list.count" />
             </transition>
           </v-list-item-action>
@@ -198,8 +198,8 @@
               <badge
                 :key="list.count"
                 inline
-                class="muted"
-                :color="list.count !== undefined && list.count > 0 ? 'blue-grey' : 'background'"
+                class="grey--text text--darken-2"
+                color="background darken-2"
                 :content="list.count" />
             </transition>
           </v-list-item-action>
@@ -247,7 +247,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import store from '../../store'
+import store from '../store'
 import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
 import { LemmaRow } from '@/types/lemma'
 import _ from 'lodash'
@@ -256,7 +256,7 @@ import prompt from '@/store/prompt'
 import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
 import { requestState } from '@/store/fetch'
-import Badge from '../lib/Badge.vue'
+import Badge from './lib/Badge.vue'
 
 @Component({
   components: {
@@ -264,7 +264,7 @@ import Badge from '../lib/Badge.vue'
     Badge
   }
 })
-export default class LemmaNavigation extends Vue {
+export default class Sidebar extends Vue {
 
   searchQuery: string|null = null
   editingNameKey: string|null = null
@@ -445,13 +445,8 @@ export default class LemmaNavigation extends Vue {
   margin-bottom 3px
 
 .v-subheader .v-icon
-  width 0
-  opacity 0
-  transform rotate(-90deg)
-
-.v-subheader:hover .v-icon
-  opacity 1
   width 10px
+  transform rotate(-90deg)
 
 .v-subheader.active .v-icon
   transform rotate(0deg)
