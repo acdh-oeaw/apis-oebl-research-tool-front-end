@@ -28,9 +28,10 @@ export default new Vuetify({
           lighten1: '#f2f8ff',
           base: '#F1F5FA',
           darken1: '#ECF2F9',
-          darken2: '#E5EAF1' // => inset
+          darken2: '#E5EAF1', // => inset
+          darken3: '#D7DDE4', // => inset
+          darken4: '#C6CBD2' // => inset
         },
-        sidebar: '#F1F5FA',
         // primary: '#6495ed',
         primary: colors.orange.darken1,
         secondary: '#617e8a',
@@ -51,8 +52,7 @@ export default new Vuetify({
           darken1: '#252831',
           darken2: '#1C2025'
         },
-        sidebar: '#2D313B',
-        primary: '#C09961',
+        primary: '#d3892d',
         secondary: {
           base: '#393e4b'
         }

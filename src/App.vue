@@ -56,8 +56,8 @@
     <resizable-drawer
       :card="false"
       :right="false"
-      floating
-      color="background darken-2"
+      :floating="true"
+      color="background darken-1"
       stateless
       app
       :value="showDrawer"
@@ -66,11 +66,7 @@
       class="pa-0"
       @update:width="store.settings = {...store.settings, drawerLeftWidth: $event}"
       :width="store.settings.drawerLeftWidth">
-      <v-flex class="flex-row d-flex fill-height pr-3 pt-5 pl-3">
-        <v-flex v-if="showDrawer" class="" grow>
-          <lemma-navigation />
-        </v-flex>
-      </v-flex>
+      <sidebar v-if="showDrawer" class="px-3 pt-5" />
     </resizable-drawer>
     <keep-alive>
       <router-view />
@@ -88,7 +84,7 @@ import Confirm from '@/views/lib/Confirm.vue'
 import Prompt from '@/views/lib/Prompt.vue'
 import { requestState } from '@/store/fetch'
 import GlobalSearch from '@/views/GlobalSearch.vue'
-import LemmaNavigation from '@/views/LemmaManager/LemmaNavigation.vue'
+import Sidebar from '@/views/Sidebar.vue'
 
 @Component({
   components: {
@@ -98,7 +94,7 @@ import LemmaNavigation from '@/views/LemmaManager/LemmaNavigation.vue'
     LoginForm,
     Confirm,
     Prompt,
-    LemmaNavigation
+    Sidebar
   }
 })
 export default class App extends Vue {
@@ -142,12 +138,23 @@ export default class App extends Vue {
 // GLOBAL STYLES
 <style lang="stylus">
 
+:focus-visible
+  outline var(--v-primary-base) auto 1px
+
+::selection
+  background var(--v-primary-lighten2) !important
+  color rgba(0,0,0,.7)
+
 .v-icon
   transition none
 
 .v-navigation-drawer
   max-height none !important
   height 100% !important
+
+body .v-application .text-body-3
+body .v-application .text-body-2
+  font-size .8rem !important
 
 body
 .v-application

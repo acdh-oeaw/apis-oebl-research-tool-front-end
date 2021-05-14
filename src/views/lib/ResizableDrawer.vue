@@ -4,7 +4,6 @@
     v-bind="{...$props, ...$attrs}"
     :right="right"
     stateless
-    floating
     :clipped="clipped"
     :width="localWidth"
     ref="drawer"
@@ -14,6 +13,7 @@
       'will-close': willClose,
       'right': right
     }"
+    :floating="floating"
     :value="value"
     @input="handleInput"
     app>
@@ -46,6 +46,7 @@ export default class ResizableDrawer extends Vue {
   @Prop({ default: false }) clipped!: boolean
   @Prop({ default: 250 }) minWidth!: number
   @Prop({ default: 300 }) width!: number
+  @Prop({ default: true }) floating!: boolean
   @Prop() color!: string
 
   localWidth = this.width

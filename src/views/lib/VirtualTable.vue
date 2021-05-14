@@ -55,15 +55,17 @@
           'header-cell',
           $listeners['click:header'] && 'clickable',
           (column.sort !== null && column.sort !== undefined) && 'sort-active'
-        ]"
-        @click="$emit('click:header', column)">
-        <span
+        ]">
+        <div class="column-name" @click="$emit('click:header', column)">
+          <span
           v-if="column.sort === 'asc'"
           class="header-sort-arrow">▲</span>
-        <span
-          v-if="column.sort === 'desc'"
-          class="header-sort-arrow">▼</span>
-        {{ column.name }}
+          <span
+            v-if="column.sort === 'desc'"
+            class="header-sort-arrow">▼</span>
+          {{ column.name }}
+        </div>
+        <input type="text" placeholder="Suchen…" />
       </div>
     </draggable>
     <v-virtual-scroll
@@ -81,6 +83,7 @@
           :style="{ height: rowHeight + 'px' }"
           :class="[
             'table-row',
+            index % 2 === 0 ? 'even' : 'odd',
             selected[item.id] && 'selected',
             scrollToRow === index && 'scroll-to-row'
           ]"
@@ -402,7 +405,6 @@ export default class VirtualTable extends Vue {
   line-height 1.2
 
 .header-row
-  align-items stretch
   padding-bottom 5px
   // the scrollbar width
   padding-right 8px
@@ -418,19 +420,34 @@ export default class VirtualTable extends Vue {
   transition opacity .2s, border-color .2s
   border-right 1px solid transparent
   display flex
+  padding-bottom 1px
+  flex-direction column
+  align-self flex-end
   opacity .5
-  align-items flex-end
   user-select none
   overflow hidden
   text-overflow ellipsis
+  &:focus-within
+    opacity 1
   &:hover
     opacity 1
   &.sort-active
-    opacity: 1;
+    opacity 1
+  input
+    border-top 1px solid #ccc
+    padding 0 4px
+    border-bottom 1px solid #ccc
+    height 20px
+    margin-botttom 1px
+    width 100%
+    &::placeholder
+      margin-left -4px
 
 .header-sort-arrow
+  float left
   font-size 70%
   margin-right 2px
+  margin-top 2px
 
 .table-row
   align-items center

@@ -126,10 +126,10 @@ textarea
 
 .text-field-outer
   overflow hidden
+  transition .2s box-shadow
 
-.text-field-outer:focus-within .text-field-label
-  color var(--v-primary-darken1)
-  opacity 1
+.text-field-outer:focus-within
+  box-shadow 0 0 0 1px var(--v-primary-base), inset 0 0 0 2px var(--v-primary-base)
 
 .hint
   background rgba(255,255,255,.1)

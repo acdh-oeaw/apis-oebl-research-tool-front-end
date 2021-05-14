@@ -61,8 +61,7 @@
       data-deskgap-drag="true"
       app
       :style="{transition: 'none', padding: `${toolbarPaddingY}px 0`}"
-      :height="toolbarHeight"
-      color="background"
+      color="background darken-1"
       flat>
       <div class="d-flex fill-width flex-row align-stretch align-self-start">
         <v-btn v-if="!store.settings.showNavDrawer" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
@@ -112,17 +111,26 @@
           </div>
         </v-flex>
         <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2">
-          <data-filter
+          <!-- <data-filter
             :comparators="comparators"
             :columns="columns"
             :value="filterItems"
             @input="onUpdateFilterItems"
-          />
+          /> -->
+        </v-flex>
+        <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
+          <v-btn
+            @click="store.showSearchDialog = true"
+            tile
+            class="rounded-lg"
+            icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex
           shrink
           align-self-start
-          class="pl-2 pr-0"
+          class="pr-0"
           style="margin-top: -5px">
           <v-menu
             min-width="150"
@@ -211,15 +219,6 @@
             <theme-toggle class="mx-2 mb-2" />
           </v-menu>
         </v-flex>
-        <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
-          <v-btn
-            @click="store.showSearchDialog = true"
-            tile
-            class="rounded-lg"
-            icon>
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </v-flex>
         <v-flex
           v-if="!store.lemma.showSideBar"
           shrink
@@ -270,7 +269,7 @@
     <v-main class="fill-width fill-height transition-none">
       <virtual-table
         ref="vTable"
-        class="virtual-table text-body-2"
+        class="virtual-table text-body-3"
         :columns="columns"
         :sortable-columns="true"
         :row-height="40"
@@ -279,7 +278,7 @@
         :height="tableHeight"
         :data="sortedFilteredLemmas"
         :selected-rows="selectedRows"
-        header-color="background"
+        header-color="background darken-1"
         @keyup.native.delete.prevent.stop="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
@@ -292,22 +291,23 @@
           <!-- the star column -->
           <template v-else-if="column.value === 'selected'">
             <span v-if="value === true" style="color: var(--v-primary-base)">★</span>
-            <span v-if="value === false" style="opacity: .5">☆</span>
+            <span v-if="value === false" style="opacity: .7">☆</span>
           </template>
           <!-- the gnd column -->
           <template v-else-if="column.value === 'gnd'">
             <span style="opacity: .5" v-if="item.gnd.length === 0">
-              n. v.
+              ⊘
             </span>
             <span
+              style="white-space: nowrap;"
               v-else-if="item.gnd.length > 0"
               @mouseover="onHoverGndCell($event, item.gnd)">
-              {{ item.gnd[0] }}
               <span
-                class="badge blue-grey"
+                class="badge primary"
                 v-if="item.gnd.length > 1"
-                v-text="'+' + (item.gnd.length - 1)"
+                v-text="(item.gnd.length)"
               />
+              {{ item.gnd[0] }}
             </span>
           </template>
           <a
@@ -334,8 +334,8 @@
           <template v-else-if="value">
             {{ item[column.value] }}
           </template>
-          <span style="opacity: .5" v-else-if="!value">
-            n. v.
+          <span style="opacity: .5" v-else-if="!value || value === '?'">
+            ⊘
           </span>
         </template>
       </virtual-table>
@@ -519,9 +519,9 @@ export default class LemmaManager extends Vue {
   }
 
   async deleteList(id: number) {
-    const list = store.lemma.lemmaLists.find(l => l.id === id)
+    const list = store.lemma.getListById(id)
     if (list !== undefined) {
-      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen? Die Lemmata in dieser Liste werden nicht gelöscht.`)) {
+      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`)) {
         await store.lemma.deleteLemmaList(id)
       }
     }
@@ -765,27 +765,30 @@ export default class LemmaManager extends Vue {
   border 0 !important
   outline 0 !important
   background var(--v-background-darken1)
-  padding-left 1em
-  .v-virtual-scroll
-    padding-right 1em
+  padding-left .75em
+  padding-right .75em
+  // .v-virtual-scroll
 
 .virtual-table .table-row
-  transition background-color .1s
+  // transition background-color .1s
+  border-radius 5px
   &.selected
-    border-radius 5px
     background-color rgba(0,0,0,.15) !important
 
 .virtual-table:focus .table-row.selected
   // background-color var(--v-background-lighten1) !important
   // box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
-  background-color var(--v-secondary-base) !important
+  background-color var(--v-primary-darken1) !important
   color white
 
-.theme--light .virtual-table .table-row
-  border-bottom 1px solid rgba(0,0,0,.07) !important
+.theme--light .virtual-table .table-row.odd
+  background var(--v-background-darken2)
 
-.theme--dark .virtual-table .table-row
-  border-bottom 1px solid var(--v-background-lighten1) !important
+// .theme--light .virtual-table .table-row
+//   border-bottom 1px solid rgba(0,0,0,.07) !important
+
+// .theme--dark .virtual-table .table-row
+//   border-bottom 1px solid var(--v-background-lighten1) !important
 
 .virtual-table .table-cell,
 .virtual-table .header-cell
