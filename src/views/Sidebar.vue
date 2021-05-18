@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex fill-height flex-column overflow-y-hidden">
+  <div tabindex="-1" class="d-flex fill-height flex-column overflow-y-hidden sidebar">
     <div :style="{ zIndex: 1}">
       <div class="d-flex pb-2">
         <v-btn
@@ -18,6 +18,7 @@
           background-color="background darken-2"
           class="text-body-2 rounded-lg search-field"
           dense
+          autocomplete="off"
           @keydown.esc="onEscSearch"
           v-model="searchQuery"
           hide-details
@@ -52,7 +53,7 @@
           exact
           @click="store.lemma.selectedLemmaListId = null">
           <v-list-item-avatar class="mr-2" tile size="15">
-            <v-icon small>mdi-bookshelf</v-icon>
+            <v-icon color="primary darken-1" small>mdi-bookshelf</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -60,7 +61,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <badge :content="store.lemma.lemmaCount" color="primary darken-1" />
+            <badge :content="store.lemma.lemmaCount" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -89,7 +90,7 @@
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
           <v-list-item-avatar class="mr-2" size="15" tile>
-            <v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
+            <v-icon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -107,13 +108,15 @@
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Listen
         <v-spacer />
         <v-btn
-          style="box-shadow: none"
           @click.capture.prevent.stop="createLemmaList"
-          rounded
-          class="droppable"
+          class="droppable rounded-lg pr-0 mr-2"
           @dragenter.prevent="onDragEnter($event)"
-          x-small>
-          Liste erstellen
+          elevation="0"
+          text
+          small
+          color="primary darken-1">
+          Liste anlegen
+          <v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
         </v-btn>
       </v-subheader>
       <v-list
@@ -135,7 +138,7 @@
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar class="mr-2" size="15" tile>
-            <v-icon small>mdi-format-list-bulleted</v-icon>
+            <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -146,14 +149,11 @@
             <transition name="roll">
               <badge
                 :key="list.count"
-                :color="list.count !== undefined && list.count > 0 ? 'primary darken-1' : 'background'"
                 :content="list.count" />
             </transition>
           </v-list-item-action>
           <v-list-item-action class="ml-0" v-if="list.countNew !== 0">
             <badge
-              class="font-weight-bold"
-              color="primary"
               :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
           </v-list-item-action>
         </v-list-item>
@@ -183,7 +183,8 @@
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar class="mr-2" size="15" tile>
-            <v-icon small>mdi-format-list-bulleted</v-icon>
+            <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle-outline</v-icon>
+            <!-- <v-icon color="primary darken-1" small>mdi-rhombus-split</v-icon> -->
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -197,9 +198,6 @@
             <transition name="roll">
               <badge
                 :key="list.count"
-                inline
-                class="grey--text text--darken-2"
-                color="background darken-2"
                 :content="list.count" />
             </transition>
           </v-list-item-action>
@@ -225,7 +223,7 @@
           v-for="(filter, i) in filteredStoredLemmaFilters"
           :key="'l' + i">
           <v-list-item-avatar class="mr-2" size="15" tile>
-            <v-icon small>mdi-card-search-outline</v-icon>
+            <v-icon color="primary darken-1" small>mdi-filter-variant</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -238,7 +236,9 @@
     <div v-if="store.lemma.importStatus.isImporting">
       <v-divider />
       <div class="px-4 pb-5">
-        <v-subheader class="pl-1"><div>Importiere …</div> <v-spacer /><div>({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})</div></v-subheader>
+        <v-subheader class="pl-1">
+          <div>Importiere …</div> <v-spacer /><div>({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})</div>
+        </v-subheader>
         <v-progress-linear class="mt-0 rounded" :value="store.lemma.importStatus.progress * 100" />
       </div>
     </div>
@@ -434,6 +434,11 @@ export default class Sidebar extends Vue {
 </style>
 <style lang="stylus" scoped>
 
+.sidebar:focus .v-list-item--active
+.v-list-item--active:focus
+  background var(--v-primary-base)
+  color white
+
 .drag-over
   box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
 
@@ -443,6 +448,7 @@ export default class Sidebar extends Vue {
   height 24px
   margin-top 14px
   margin-bottom 3px
+  user-select none
 
 .v-subheader .v-icon
   width 10px
