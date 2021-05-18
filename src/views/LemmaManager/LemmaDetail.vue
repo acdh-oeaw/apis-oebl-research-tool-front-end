@@ -28,18 +28,20 @@
       <v-btn-toggle
         class="mx-auto mt-2 mb-0"
         max
+        active-class="white--text primary darken-1"
         v-model="detailPage"
+        mandatory
         borderless
         dense
         color="primary"
-        background-color="background">
-        <v-btn class="rounded-lg" small>
+        background-color="transparent">
+        <v-btn text class="rounded-lg" small>
           Details
         </v-btn>
-        <v-btn class="rounded-lg mx-1" small>
+        <v-btn text class="rounded-lg mx-1" small>
           Externe Ressourcen <template v-if="countScrapedResources(value.columns_scrape) > 0">({{ countScrapedResources(value.columns_scrape) }})</template>
         </v-btn>
-        <v-btn class="rounded-lg" small>Workflow</v-btn>
+        <v-btn text class="rounded-lg" small>Workflow</v-btn>
       </v-btn-toggle>
     </v-card-title>
     <v-divider />
