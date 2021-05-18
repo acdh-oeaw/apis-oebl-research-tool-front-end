@@ -46,9 +46,7 @@
       <login-form />
     </v-overlay>
     <!-- GLOBAL SEARCH -->
-    <global-search
-      v-model="store.showSearchDialog"
-    />
+    <global-search v-model="store.showSearchDialog" />
     <!-- CONFIRM AND PROMPT -->
     <confirm />
     <prompt />

@@ -28,9 +28,9 @@ export default new Vuetify({
           lighten1: '#f2f8ff',
           base: '#F1F5FA',
           darken1: '#ECF2F9',
-          darken2: '#E5EAF1', // => inset
-          darken3: '#D7DDE4', // => inset
-          darken4: '#C6CBD2' // => inset
+          darken2: '#E5EAF1',
+          darken3: '#D7DDE4',
+          darken4: '#C6CBD2'
         },
         // primary: '#6495ed',
         primary: colors.orange.darken1,
