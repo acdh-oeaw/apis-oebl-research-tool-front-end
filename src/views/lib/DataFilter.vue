@@ -50,7 +50,7 @@
           <v-text-field
             :disabled="!isFilterWithInput(filter)"
             v-else
-            autocomplete="false"
+            autocomplete="off"
             style="min-width: 60px"
             @keydown.esc="() => { filter.query = ''; emitInput() }"
             placeholder="Abfrage…"
