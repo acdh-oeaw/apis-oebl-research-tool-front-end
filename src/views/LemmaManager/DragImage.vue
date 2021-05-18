@@ -1,7 +1,7 @@
 <template>
   <v-card class="rounded-lg soft-shadow" style="position: absolute; left: -1000px">
     <badge
-      color="primary darken-2"
+      color="primary darken-2 white--text"
       style="position: absolute; right: -6px; top: -6px;"
       :content="rows.length" />
     <v-list class="text-body-2" dense>
