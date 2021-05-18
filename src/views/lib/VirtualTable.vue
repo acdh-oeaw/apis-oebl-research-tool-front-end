@@ -40,7 +40,7 @@
       @end.stop.prevent.capture=""
       @input="updateColumnOrder"
       tag="div"
-      :class="['header-row', headerColor]"
+      :class="['header-row', 'rounded-lg', headerColor]"
       animation="200"
       :style="{ transform: `translateX(-${ this.scrollLeft }px)` }"
       drag-class="header-row-drag"
@@ -56,16 +56,35 @@
           $listeners['click:header'] && 'clickable',
           (column.sort !== null && column.sort !== undefined) && 'sort-active'
         ]">
-        <div class="column-name" @click="$emit('click:header', column)">
+        <div
+          class="column-name"
+          @click="$emit('click:header', column)">
           <span
           v-if="column.sort === 'asc'"
-          class="header-sort-arrow">▲</span>
+          class="header-sort-arrow">
+            <v-icon x-small>mdi-chevron-up</v-icon>
+          </span>
           <span
             v-if="column.sort === 'desc'"
-            class="header-sort-arrow">▼</span>
+            class="header-sort-arrow">
+              <v-icon x-small>mdi-chevron-down</v-icon>
+          </span>
           {{ column.name }}
         </div>
-        <input type="text" placeholder="Suchen…" />
+        <text-field
+          v-if="showFilter && column.type !== 'boolean'"
+          placeholder="Suchen…"
+          @input="emitFilterEvent(column, $event)"
+          @keyup.stop=""
+          @keydown.stop=""
+          class="mb-0"
+          color="background darken-3 mx-0" />
+        <select-menu
+          v-else-if="showFilter && column.type === 'boolean'"
+          :hide-searchbar="true"
+          @input="emitFilterEvent(column, $event.value)"
+          :items="[{ name: 'egal', value: null }, {name: 'ja', value: true}, { name: 'nein', value: false }]" />
+        <!-- <input @keyup.stop="" v-show="showFilter" type="text" placeholder="☉ Suchen…" /> -->
       </div>
     </draggable>
     <v-virtual-scroll
@@ -118,6 +137,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Draggable from 'vuedraggable'
 import TextField from '@/views/lib/TextField.vue'
+import SelectMenu from '@/views/lib/SelectMenu.vue'
 import _ from 'lodash'
 
 function getNextSibling(el: HTMLElement, selector: string): HTMLElement|undefined {
@@ -157,12 +177,14 @@ interface Column {
   editable?: boolean
   show?: boolean
   sort?: null|'desc'|'asc'
+  type?: 'boolean'|'text'|'number'|'array'|'link'
 }
 
 @Component({
   components: {
     Draggable,
-    TextField
+    TextField,
+    SelectMenu
   }
 })
 export default class VirtualTable extends Vue {
@@ -176,10 +198,13 @@ export default class VirtualTable extends Vue {
   @Prop({ default: '' }) headerColor!: string
   @Prop({ default: null }) scrollToRow!: number|null
   @Prop({ default: () => [] }) selectedRows!: Row[]
+  @Prop({ default: false }) showFilter!: boolean
 
   selected: { [key: number]: Row } = {}
   log = console.log
   scrollLeft = 0
+
+  columnQueries: { [key: string]: string|boolean|null } = {}
 
   editPopUp: {
     x: number,
@@ -206,6 +231,15 @@ export default class VirtualTable extends Vue {
         }
       }
     }
+  }
+
+  emitFilterEvent(c: Column, ev?: string|boolean|null) {
+    if (ev !== undefined && ev !== null && ev !== '') {
+      this.columnQueries[c.value] = ev
+    } else {
+      Vue.delete(this.columnQueries, c.value)
+    }
+    this.$emit('update:filter', this.columnQueries)
   }
 
   get editableColumns() {
@@ -405,43 +439,47 @@ export default class VirtualTable extends Vue {
   line-height 1.2
 
 .header-row
-  padding-bottom 5px
   // the scrollbar width
   padding-right 8px
+  background var(--v-background-darken3)
+  z-index 5
+  position relative
 
 .header-cell:first-child,
 .table-cell:first-child
   text-align right
 
-.header-row:hover .header-cell
-  border-right 1px solid #aaa
-
 .header-cell
-  transition opacity .2s, border-color .2s
   border-right 1px solid transparent
   display flex
-  padding-bottom 1px
+  padding 4px
   flex-direction column
-  align-self flex-end
-  opacity .5
+  opacity .7
   user-select none
   overflow hidden
-  text-overflow ellipsis
+  .column-name
+    padding 2px
+    text-overflow ellipsis
+    white-space nowrap
+    overflow hidden
+    width 100%
   &:focus-within
     opacity 1
   &:hover
     opacity 1
   &.sort-active
     opacity 1
+    font-weight 500
+    background var(--v-background-darken3)
   input
-    border-top 1px solid #ccc
-    padding 0 4px
-    border-bottom 1px solid #ccc
+    padding 0 3px
     height 20px
-    margin-botttom 1px
+    margin-bottom 1px
+    margin 0 -3px 1px -3px
     width 100%
-    &::placeholder
-      margin-left -4px
+    background var(--v-primary-base)
+    &:empty
+      background transparent
 
 .header-sort-arrow
   float left
