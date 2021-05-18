@@ -42,17 +42,16 @@
     <div style="flex: 1" class="overflow-y-auto pr-2">
       <!-- Lemma Lib -->
       <v-list
-        class="ma-0 mt-4 pa-0 lemma-nav-list"
+        class="ma-0 mt-4 pa-0 lemma-nav-list x-dense"
         color="transparent"
         nav
-        dense>
+        >
         <v-list-item
           :ripple="false"
-          dense
           to="/lemmas"
           exact
           @click="store.lemma.selectedLemmaListId = null">
-          <v-list-item-avatar class="mr-2" tile size="15">
+          <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small>mdi-bookshelf</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -73,13 +72,11 @@
       </v-subheader>
       <v-list
         v-show="showIssues"
-        class="pa-0 ma-0 lemma-nav-list"
+        class="pa-0 ma-0 lemma-nav-list x-dense"
         color="transparent"
-        nav
-        dense>
+        nav>
         <v-list-item
           :ripple="false"
-          dense
           class="droppable mb-0"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
@@ -89,7 +86,7 @@
           :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           v-for="issue in store.issue.issues"
           :key="'issue-' + issue.id">
-          <v-list-item-avatar class="mr-2" size="15" tile>
+          <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -120,10 +117,9 @@
         </v-btn>
       </v-subheader>
       <v-list
-        class="pa-0 ma-0 lemma-nav-list"
+        class="pa-0 ma-0 lemma-nav-list x-dense"
         color="transparent"
         nav
-        dense
         v-show="showMyLists"
       >
         <v-list-item
@@ -132,12 +128,11 @@
           :key="list.id"
           :input-value="store.lemma.selectedLemmaListId === list.id"
           :to="'/lemmas/list/' + list.id"
-          dense
           class="mb-0 droppable"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
-          <v-list-item-avatar class="mr-2" size="15" tile>
+          <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -164,25 +159,25 @@
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Team-Listen
       </v-subheader>
       <v-list
-        class="pa-0 ma-0 lemma-nav-list"
+        two-line
+        class="pa-0 ma-0 lemma-nav-list x-dense"
         color="transparent"
         nav
-        dense
         v-show="showTeamLists"
       >
         <v-list-item
+          two-line
           :ripple="false"
           v-for="list in filteredLemmaListsOtherUsers"
           :key="list.id"
           tabindex="-1"
           :input-value="store.lemma.selectedLemmaListId === list.id"
-          dense
           :to="`/lemmas/list/${ list.id }`"
           class="droppable mb-0"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
-          <v-list-item-avatar class="mr-2" size="15" tile>
+          <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle-outline</v-icon>
             <!-- <v-icon color="primary darken-1" small>mdi-rhombus-split</v-icon> -->
           </v-list-item-avatar>
@@ -190,7 +185,7 @@
             <v-list-item-title>
               {{ list.title }}
             </v-list-item-title>
-            <v-list-item-subtitle style="font-size: 75%">
+            <v-list-item-subtitle>
               {{ list.editor ? list.editor.name : '' }}
             </v-list-item-subtitle>
           </v-list-item-content>
@@ -209,20 +204,18 @@
         <v-icon class="mr-1" small>mdi-chevron-down</v-icon>Meine Abfragen
       </v-subheader>
       <v-list
-        class="pa-0 ma-0 lemma-nav-list"
+        class="pa-0 ma-0 lemma-nav-list x-dense"
         color="transparent"
         nav
-        v-show="showQueries"
-        dense>
+        v-show="showQueries">
         <v-list-item
           :ripple="false"
-          dense
           class="mb-0"
           :input-value="filter.id === store.lemma.selectedLemmaFilterId"
           @click="selectLemmaFilter(filter.id)"
           v-for="(filter, i) in filteredStoredLemmaFilters"
           :key="'l' + i">
-          <v-list-item-avatar class="mr-2" size="15" tile>
+          <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small>mdi-filter-variant</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -444,6 +437,8 @@ export default class Sidebar extends Vue {
 
 .v-subheader
   font-size .75rem
+  font-weight 500
+  opacity .8
   cursor default
   height 24px
   margin-top 14px

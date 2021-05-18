@@ -262,4 +262,20 @@ header h1
 .tippy-box[data-placement^='right'] > .tippy-arrow::before
   border-right-color var(--v-background-base) !important
 
+.v-list.x-dense .v-list-item
+.v-list-item.x-dense
+  max-height 32px
+  .v-list-item__action
+    margin 0 0
+  .v-list-item__title
+  .v-list-item__subtitle
+    font-size 13px
+  .v-list-item__avatar
+    min-width 15px !important
+    width 15px !important
+
+.v-list.x-dense.v-list--two-line .v-list-item
+.v-list-item.x-dense.v-list-item--two-line
+  max-height 42px
+
 </style>
