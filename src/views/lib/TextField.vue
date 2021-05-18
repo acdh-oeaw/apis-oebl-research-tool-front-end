@@ -13,10 +13,10 @@
         {{ $attrs.label }}
       </div>
       <div style="position: relative" class="fill-width">
-        <div class="text-body-2 fill-height fill-width fake-textarea mt-2 mr-2" v-text="localValue" />
+        <div class="text-body-2 pa-2 fill-height fill-width fake-textarea" v-text="localValue || '&nbsp;'" />
         <textarea
           ref="textarea"
-          class="fill-height fill-width mt-2 mr-2 text-body-2 "
+          class="fill-height fill-width pa-2 text-body-2 "
           style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
           @keydown="onKeyDown"
           @input="onInput"
@@ -122,7 +122,7 @@ textarea
   word-break break-word
 
 .text-field-label
-  word-break break-word
+  hyphens auto
 
 .text-field-outer
   overflow hidden
