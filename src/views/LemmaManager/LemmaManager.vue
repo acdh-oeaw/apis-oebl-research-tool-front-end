@@ -60,6 +60,7 @@
     <v-app-bar
       data-deskgap-drag="true"
       app
+      height="79"
       :style="{transition: 'none', padding: `${toolbarPaddingY}px 0`}"
       color="background darken-1"
       flat>
@@ -93,7 +94,7 @@
             v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
             contenteditable="true">
           </h1>
-          <div class="caption mt-1 text-no-wrap">
+          <span class="caption text-no-wrap">
             <v-btn
               v-if="newLemmas.length > 0"
               style="margin-top: -2px; letter-spacing: .1em"
@@ -108,15 +109,15 @@
               {{ filteredLemmas.length }} Ergebnisse.
               {{ selectedRows.length }} ausgewählt
             </span>
-          </div>
+          </span>
         </v-flex>
-        <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2">
-          <!-- <data-filter
+        <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2 mr-2">
+          <data-filter
             :comparators="comparators"
             :columns="columns"
             :value="filterItems"
             @input="onUpdateFilterItems"
-          /> -->
+          />
         </v-flex>
         <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
@@ -127,6 +128,20 @@
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
         </v-flex>
+        <!-- <v-flex
+          shrink
+          align-self-start
+          class="pl-0 ml-0 pr-0"
+          style="margin-top: -5px">
+          <v-btn
+            tile
+            @click="showFilter = !showFilter"
+            :color="showFilter ? 'primary' : undefined"
+            class="rounded-lg"
+            icon>
+            <v-icon>mdi-filter-variant</v-icon>
+          </v-btn>
+        </v-flex> -->
         <v-flex
           shrink
           align-self-start
@@ -136,7 +151,7 @@
             min-width="150"
             offset-y
             left
-            content-class="soft-shadow scrollable background">
+            content-class="soft-shadow scrollable background rounded-lg">
             <template v-slot:activator="{ on, props }">
               <v-btn
                 v-on="on"
@@ -270,15 +285,16 @@
       <virtual-table
         ref="vTable"
         class="virtual-table text-body-3"
+        :show-filter="showFilter"
         :columns="columns"
         :sortable-columns="true"
-        :row-height="40"
+        :row-height="38"
         :scroll-to-row="scrollToRow"
         :editable="true"
         :height="tableHeight"
         :data="sortedFilteredLemmas"
         :selected-rows="selectedRows"
-        header-color="background darken-1"
+        header-color="background darken-2"
         @keyup.native.delete.prevent.stop="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
@@ -385,6 +401,7 @@ export default class LemmaManager extends Vue {
   toolbarMinHeight = 80
   toolbarPaddingY = 15
   showAddLemmaDialog = false
+  showFilter = false
 
   comparators = store.lemma.comparators
   filterItems: LemmaFilterItem[] = []
