@@ -441,7 +441,7 @@ export default class Sidebar extends Vue {
   opacity .8
   cursor default
   height 24px
-  margin-top 14px
+  margin-top 16px
   margin-bottom 3px
   user-select none
 
