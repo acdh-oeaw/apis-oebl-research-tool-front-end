@@ -47,7 +47,7 @@ export default class CommentThread extends Vue {
   newMessage = ''
   store = store
 
-  appendComment() {
+  async appendComment() {
     if (this.id !== null) {
       this.store.article.addComment(this.id, {
         commentId: uuid(),
@@ -56,14 +56,31 @@ export default class CommentThread extends Vue {
         text: this.newMessage
       })
       this.newMessage = ''
+      await this.repositionTooltip()
+      this.scrollToBottom()
     } else {
       throw new Error('Can’t append comment. No Thread Id given.')
     }
   }
 
+  async repositionTooltip() {
+    await this.$nextTick()
+    // trigger resize to reposition the tooltip
+    window.dispatchEvent(new Event('resize'))
+  }
+
+  scrollToBottom() {
+    const el = this.$refs.threadContainer
+    if (el instanceof HTMLElement) {
+      el.scrollTo({
+        top: el.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }
+
   @Watch('id')
   onChangeThreadId() {
-    console.log('changed', this.id)
     const el = this.$refs.threadContainer
     if (el instanceof HTMLElement) {
       el.scrollTo({
