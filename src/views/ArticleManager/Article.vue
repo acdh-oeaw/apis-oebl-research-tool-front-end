@@ -1,6 +1,6 @@
 @@ -0,0 +1,89 @@
 <template>
-  <div>
+  <div class="fill-height">
     <v-app-bar
       app
       :style="{transition: 'none'}"
@@ -94,14 +94,14 @@
       :value="store.lemma.showSideBar">
       <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
     </resizable-drawer>
-    <v-main style="max-height: calc(100vh - 75px); overflow: auto">
+    <v-main style="height: calc(100vh - 75px); overflow: auto">
       <div class="px-5 outer-editor mx-auto">
         <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
             class="mt-3 tiptap-editor"
             :editor="editor" />
           <v-divider class="mb-5 mx-5 mt-5" />
-          <sup>1</sup> Arnold Graf: A credible Theory of Everything. 2022. Hubris & Sons Publishing.
+          <citation-display @click.native="jumpToCitationText" v-for="citation in citations" :key="citation.citationId" :value="citation" />
         </div>
       </div>
     </v-main>
@@ -116,18 +116,21 @@ import SelectMenu from '@/views/lib/SelectMenu.vue'
 import { Editor, EditorContent } from '@tiptap/vue-2'
 import { defaultExtensions } from '@tiptap/starter-kit'
 import { Comment } from './extensionComment'
-import { Citation } from './extensionCitation'
+import { Citation as CitationExtension} from './extensionCitation'
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
 // import { findChildrenByMark } from 'prosemirror-utils'
 import Highlight from '@tiptap/extension-highlight'
+import CitationDisplay from './CitationDisplay.vue'
 
 import store from '@/store'
 import { IssueLemma } from '@/api'
+import { Citation } from '@/store/article'
 
 @Component({
   components: {
     ResizableDrawer,
     SelectMenu,
+    CitationDisplay,
     EditorContent,
     IssueLemmaDetail
   }
@@ -166,6 +169,14 @@ export default class Article extends Vue {
     v.onSelect(this.editor)
   }
 
+  get citations() {
+    return store.article.citations
+  }
+
+  jumpToCitationText(c: Citation) {
+    (this.editor?.chain() as any).focus().setTextSelection({from: c.quotedRange, to: c.quotedRange})!.run()
+  }
+
   async mounted() {
     // this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
     await store.article.loadArticle(this.issueLemmaId)
@@ -175,7 +186,7 @@ export default class Article extends Vue {
       content: store.article.article,
       extensions: [
         Highlight,
-        Citation,
+        CitationExtension,
         Comment,
         ...defaultExtensions()
       ],
