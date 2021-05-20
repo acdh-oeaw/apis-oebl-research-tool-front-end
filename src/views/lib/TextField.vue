@@ -4,27 +4,34 @@
     color || 'background darken-2'
   ]">
     <div class="d-flex">
-      <div
-        @click="selectAll"
-        v-if="$attrs && $attrs.label"
-        class="caption pa-2 text-field-label"
-        v-text="$attrs.label"
-        style="width: 120px; opacity: .7; padding-bottom: 7px">
-        {{ $attrs.label }}
-      </div>
+      <slot name="prepend">
+        <div
+          @click="selectAll"
+          v-if="$attrs && $attrs.label"
+          class="caption pa-2 text-field-label"
+          v-text="$attrs.label"
+          style="width: 120px; opacity: .7; padding-bottom: 7px" />
+      </slot>
       <div style="position: relative" class="fill-width">
-        <div class="text-body-2 pa-2 fill-height fill-width fake-textarea" v-text="localValue || '&nbsp;'" />
-        <textarea
-          ref="textarea"
-          class="fill-height fill-width pa-2 text-body-2 "
-          style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
-          @keydown="onKeyDown"
-          @input="onInput"
-          :placeholder="placeholder"
-          :value="localValue" />
+        <slot name="input">
+          <div class="text-body-2 pa-2 fill-height fill-width fake-textarea" v-text="localValue || '&nbsp;'" />
+          <textarea
+            ref="textarea"
+            class="fill-height fill-width pa-2 text-body-2 "
+            style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
+            @keydown="onKeyDown"
+            @input="onInput"
+            :placeholder="placeholder"
+            :value="localValue" />
+        </slot>
       </div>
       <div>
         <slot />
+      </div>
+      <div v-if="clearable === true && value !== null && value !== ''">
+        <v-btn small icon tile class="rounded-lg mt-1 mr-1" @click="clearInput">
+          <v-icon size="16" color="primary">mdi-close</v-icon>
+        </v-btn>
       </div>
     </div>
     <div class="text-center caption hint" v-if="msg !== null" v-text="msg" />
@@ -39,6 +46,7 @@ export default class TextField extends Vue {
   @Prop({ default: () => [] }) rules!: Array<(e: string|null) => string|false>
   @Prop({ default: false }) allowNewLine!: boolean
   @Prop({ default: '' }) value!: string
+  @Prop({ default: false }) clearable!: boolean
   @Prop({ default: false }) required!: boolean
   @Prop({ default: false }) selected!: boolean
   @Prop({ default: null }) placeholder!: string|null
@@ -63,6 +71,15 @@ export default class TextField extends Vue {
         this.$refs.textarea.select()
       }
     }, 100)
+  }
+
+  async clearInput() {
+    this.$emit('input', '')
+    await this.$nextTick()
+    const t = this.$refs.textarea
+    if (t instanceof HTMLTextAreaElement) {
+      t.focus()
+    }
   }
 
   selectAll() {
