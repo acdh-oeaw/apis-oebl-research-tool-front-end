@@ -95,17 +95,25 @@ export const Citation = Mark.create<CitationOptions>({
   //   return null
   // },
 
-  onUpdate(...a: any[]) {
-    const [ { editor, transaction } ] = a
-    const comments = findChildrenByMark(transaction.doc, editor.schema.marks.comment, true)
+  onUpdate() {
+    const doc = this.editor.state.doc
+    const commentMark = this.editor.schema.marks.comment
+    const commentsWithPos = findChildrenByMark(doc, commentMark, true)
       .map((n) => {
+        console.log(n)
         return {
           pos: n.pos,
           mark: n.node.marks.find((m: any) => m.type.name === 'comment')
         }
       })
       .filter(m => m.mark !== undefined)
-    console.log({ comments })
+      .reduce((m, e) => {
+        if (e.mark.attrs !== undefined && typeof e.mark.attrs.id === 'string') {
+          m[e.mark.attrs.id] = e.pos
+        }
+        return m
+      }, {} as { [id: string]: number })
+    store.article.updateCommentOffsets(commentsWithPos)
   },
 
   onSelectionUpdate() {
@@ -113,10 +121,10 @@ export const Citation = Mark.create<CitationOptions>({
       const { id } = this.editor.getMarkAttributes(this.name)
       if (typeof id === 'string') {
         const el = document.querySelector(`footnote[data-id="${ id }"]`)
-        console.log(el)
         if (el instanceof HTMLElement) {
           // it has already been created: show.
           if ((el as any)._tippy) {
+            console.log((el as any)._tippy);
             ((el as any)._tippy as TippyInstance).show()
           // it must be created: create and show.
           } else {
@@ -128,9 +136,10 @@ export const Citation = Mark.create<CitationOptions>({
               interactive: true,
               trigger: 'manual',
               animation: 'scale',
+              placement: 'right',
               theme: 'light',
               maxWidth: 350,
-              appendTo: document.querySelector('#app') as Element,
+              appendTo: document.querySelector('.v-application--wrap') as Element,
               inertia: true,
               moveTransition: 'transform 0.2s ease-out'
             })
