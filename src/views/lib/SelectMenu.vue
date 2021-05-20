@@ -50,42 +50,48 @@
       <v-list
         v-if="filteredItems.length > 0"
         color="transparent"
-        class="text-body-2 overflow-y-auto"
-        nav
-        dense>
+        class="overflow-y-auto x-dense"
+        :two-line="keyDescription !== null"
+        nav>
         <v-list-item
           @click="selectItem(item)"
-          dense
           v-for="item in filteredItems"
           :key="item[keyValue]">
-          <v-list-item-avatar class="mr-2" size="15">
+          <v-list-item-avatar>
             <v-icon small v-if="value === item[keyValue] || value !== null && value[keyValue] === item[keyValue]">mdi-check</v-icon>
           </v-list-item-avatar>
-          <v-list-item-content class="text-body-2">
+          <v-list-item-content>
+            <v-list-item-title>
               {{ item[keyName] }}
-            <v-list-item-action-text v-if="keyDescription !== null">
+            </v-list-item-title>
+            <v-list-item-subtitle v-if="keyDescription !== null">
               {{ get(item, keyDescription) }}
-            </v-list-item-action-text>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider v-if="addNullOption" />
-        <v-list-item @click="returnNull" v-if="addNullOption" dense>
-          <v-list-item-avatar class="mr-2" size="15">
+        <v-list-item @click="returnNull" v-if="addNullOption">
+          <v-list-item-avatar>
             <v-icon v-if="value === null || value[keyValue] === null" small>mdi-check</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            {{ addNullOption }}
+            <v-list-item-title>
+              {{ addNullOption }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
       <v-list
         v-else
         color="transparent"
-        class="text-body-2 overflow-y-auto"
-        nav
-        dense>
+        class="overflow-y-auto x-dense"
+        nav>
         <v-list-item>
-          <v-list-item-content style="opacity: .7" class="caption text-center">nichts gefunden</v-list-item-content>
+          <v-list-item-content class="caption text-center muted">
+            <v-list-item-title>
+              nichts gefunden
+            </v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-card>
@@ -93,9 +99,9 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import _ from 'lodash';
+import _ from 'lodash'
 
-type Item = any;
+type Item = any
 
 @Component
 export default class SelectMenu extends Vue {
