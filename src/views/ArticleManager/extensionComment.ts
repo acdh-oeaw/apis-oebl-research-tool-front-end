@@ -135,6 +135,7 @@ export const Comment = Mark.create<CommentOptions>({
               allowHTML: true,
               interactive: true,
               trigger: 'manual',
+              placement: 'right',
               animation: 'scale',
               theme: 'light',
               maxWidth: 350,
