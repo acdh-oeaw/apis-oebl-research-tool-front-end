@@ -3,30 +3,38 @@
     class="transparent flex-column d-flex fill-height lemma-detail"
     flat
     v-if="value !== undefined && value !== null">
-    <v-card-title class="pb-2">
-      <v-btn
-        style="position: absolute; left: 5px; top: 5px; font-size: 100%; z-index: 1"
-        width="48"
-        height="48"
-        tile
-        @click="$emit('update', { selected: !value.selected })"
-        class="rounded-lg mr-2"
-        icon>
-        <span style="color: var(--v-primary-base)" v-if="value.selected">★</span>
-        <span style="opacity: .5" v-else>☆</span>
-      </v-btn>
-      <v-container style="position: relative" class="pa-0">
-        <div :key="value.id" class="text-center px-5" style="width: 100%">
+    <v-card-title class="flex-column pb-2">
+      <div class="d-flex flex-row align-self-stretch">
+        <v-btn
+          style="margin-top: -8px; margin-left: -10px; "
+          width="48"
+          height="48"
+          tile
+          @click="$emit('update', { selected: !value.selected })"
+          class="rounded-lg"
+          icon>
+          <span style="color: var(--v-primary-base)" v-if="value.selected">★</span>
+          <span style="opacity: .5" v-else>☆</span>
+        </v-btn>
+        <div :key="value.id" class="text-center flex-grow-1" >
           {{ value.lastName }}, {{ value.firstName }}
         </div>
-        <v-row no-gutters>
-          <v-col cols="12" class="text-caption text-center">
-            {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
-          </v-col>
-        </v-row>
-      </v-container>
+        <v-btn
+          style="margin-top: -8px; margin-right: -10px;"
+          width="48"
+          height="48"
+          tile
+          class="rounded-lg"
+          icon
+          @click="store.lemma.showSideBar = false">
+          <v-icon>mdi-dock-right</v-icon>
+        </v-btn>
+      </div>
+      <div style="margin-top: -5px" class="text-caption text-center">
+        {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
+      </div>
       <v-btn-toggle
-        class="mx-auto mt-2 mb-0"
+        class="mx-auto mt-1 mb-0"
         max
         active-class="white--text primary darken-1"
         v-model="detailPage"

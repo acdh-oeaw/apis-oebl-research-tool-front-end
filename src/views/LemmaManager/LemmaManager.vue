@@ -259,16 +259,6 @@
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
       :value="store.lemma.showSideBar">
-      <v-btn
-        style="position: absolute; right: 0px; top: 5px; z-index: 99"
-        width="48"
-        height="48"
-        tile
-        class="rounded-lg mr-2"
-        icon
-        @click="store.lemma.showSideBar = false">
-        <v-icon>mdi-dock-right</v-icon>
-      </v-btn>
       <div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">
         Kein Lemma ausgewählt
       </div>
