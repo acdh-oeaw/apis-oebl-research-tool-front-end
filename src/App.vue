@@ -265,14 +265,18 @@ header h1
 .v-list.x-dense .v-list-item
 .v-list-item.x-dense
   max-height 32px
+  min-height auto
+  margin-bottom 1px !important
   .v-list-item__action
     margin 0 0
   .v-list-item__title
   .v-list-item__subtitle
     font-size 13px
+    margin-bottom 0 !important
   .v-list-item__avatar
     min-width 15px !important
     width 15px !important
+    margin-right 8px
 
 .v-list.x-dense.v-list--two-line .v-list-item
 .v-list-item.x-dense.v-list-item--two-line
