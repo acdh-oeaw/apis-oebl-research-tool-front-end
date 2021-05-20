@@ -10,7 +10,26 @@
           icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
-        <v-text-field
+        <text-field
+          class="flex-grow-1"
+          :clearable="true"
+          @keydown.esc.native="onEscSearch"
+          v-model="searchQuery"
+          :placeholder="showLoader === true ? 'Lade…' : 'Listen filtern…'">
+          <template v-slot:prepend>
+            <div
+              v-if="showLoader === true"
+              class="ml-2 mt-1">
+              <loading-spinner
+                :size="25"
+                :color="$vuetify.theme.dark === true ? 'white' : 'grey'" />
+            </div>
+            <v-icon size="16" class="ml-2 mr-0" v-else>
+              mdi-magnify
+            </v-icon>
+          </template>
+        </text-field>
+        <!-- <v-text-field
           style="position: relative"
           :placeholder="showLoader ? 'Lade…' : 'Listen filtern…'"
           solo
@@ -35,7 +54,7 @@
               mdi-magnify
             </v-icon>
           </template>
-        </v-text-field>
+        </v-text-field> -->
       </div>
       <!-- <v-divider class="mt-3" /> -->
     </div>
@@ -249,12 +268,14 @@ import prompt from '@/store/prompt'
 import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
 import { requestState } from '@/store/fetch'
+import TextField from './lib/TextField.vue'
 import Badge from './lib/Badge.vue'
 
 @Component({
   components: {
     LoadingSpinner,
-    Badge
+    Badge,
+    TextField
   }
 })
 export default class Sidebar extends Vue {
