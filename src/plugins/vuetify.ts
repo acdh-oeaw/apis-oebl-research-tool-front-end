@@ -28,7 +28,7 @@ export default new Vuetify({
           lighten1: '#f2f8ff',
           base: '#F1F5FA',
           darken1: '#ECF2F9',
-          darken2: '#E5EAF1',
+          darken2: '#e1e8f1',
           darken3: '#D7DDE4',
           darken4: '#C6CBD2'
         },
