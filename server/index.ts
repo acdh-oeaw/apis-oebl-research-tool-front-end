@@ -12,7 +12,7 @@ const port = process.env.NODE_PORT || process.env.PORT || 3333
 const serviceSecret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C'
 
 const server = http.createServer(app)
-// @ts-ignore: Unreachable code error
+// @ts-ignore
 const io = socketIo(server, {
   cors: {
     origin: [
@@ -71,10 +71,10 @@ app.get('/zotero/item/:id', async (req, res) => {
   res.send(JSON.stringify(x))
 })
 
-app.put('/zotero/item/:id', async (req, res) => {
+app.patch('/zotero/item/:id', async (req, res) => {
   console.log(req.body)
   const x = await fetch('https://api.zotero.org/users/7926651/items/' + req.params.id, {
-    method: 'PUT',
+    method: 'PATCH',
     body: JSON.stringify(req.body),
     headers: {
       'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'

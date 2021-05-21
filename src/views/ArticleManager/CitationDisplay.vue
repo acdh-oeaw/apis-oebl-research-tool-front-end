@@ -22,7 +22,7 @@ import { Citation } from '@/store/article'
 export default class CitationDisplay extends Vue {
   @Prop({ required: true }) value!: Citation
   get title() {
-    return this.value.zoteroTitleCached
+    return this.value.zoteroItemCached
   }
 }
 </script>

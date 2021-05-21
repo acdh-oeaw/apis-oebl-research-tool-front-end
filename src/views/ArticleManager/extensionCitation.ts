@@ -118,7 +118,7 @@ export const Citation = Mark.create<CitationOptions>({
 
   onSelectionUpdate() {
     if (this.editor.isActive(this.name)) {
-      const { id } = this.editor.getMarkAttributes(this.name)
+      const { id } = this.editor.getAttributes(this.name)
       if (typeof id === 'string') {
         const el = document.querySelector(`footnote[data-id="${ id }"]`)
         if (el instanceof HTMLElement) {
