@@ -245,6 +245,9 @@ header h1
   text-overflow: ellipsis;
 
 // tippy.js theme
+.tippy-content
+  padding 9px !important
+
 .tippy-box
   border-radius 13px !important
   background var(--v-background-base) !important
