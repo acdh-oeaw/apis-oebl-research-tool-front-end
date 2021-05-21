@@ -118,7 +118,7 @@ export const Comment = Mark.create<CommentOptions>({
 
   onSelectionUpdate() {
     if (this.editor.isActive(this.name)) {
-      const { id } = this.editor.getMarkAttributes(this.name)
+      const { id } = this.editor.getAttributes(this.name)
       if (typeof id === 'string') {
         console.log('comment id', id)
         const el = document.querySelector(`comment[data-id="${ id }"]`)

@@ -1,7 +1,7 @@
 <template>
   <div style="min-width: 220px">
-    <div class="thread-header row no-gutters pt-1">
-      <v-btn class="rounded-lg pl-1 muted" text small><v-icon small>mdi-menu-down</v-icon>Status: offen</v-btn>
+    <div class="thread-header row no-gutters">
+      <v-btn class="rounded-lg pl-1 muted" text small><v-icon small>mdi-chevron-down</v-icon>Status: offen</v-btn>
       <v-spacer />
       <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-left</v-icon></v-btn>
       <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-right</v-icon></v-btn>
@@ -21,7 +21,7 @@
     <text-field
       v-model="newMessage"
       @keydown.meta.enter="appendComment"
-      class="py-0 px-2 mt-1"
+      class="py-0 px-2 mt-1 mb-0"
       :allow-new-line="true"
       placeholder="Kommentar hinzufügen …">
       <v-btn class="rounded-lg" @click="appendComment" icon tile text><v-icon small>mdi-send</v-icon></v-btn>
