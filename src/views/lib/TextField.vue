@@ -83,7 +83,10 @@ export default class TextField extends Vue {
   }
 
   selectAll() {
-    (this.$el.querySelector('textarea') as HTMLTextAreaElement).select()
+    const t = this.$refs.textarea
+    if (t instanceof HTMLTextAreaElement) {
+      t.select()
+    }
   }
 
   checkValid(e: string|null): boolean {
