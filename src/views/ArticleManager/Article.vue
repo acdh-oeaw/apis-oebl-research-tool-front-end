@@ -18,6 +18,7 @@
       </div>
       <v-spacer />
       <div v-if="editor">
+        <!-- <v-btn @click="logHTML">log html</v-btn> -->
         <select-menu
           :hide-searchbar="true"
           :show-caret="true"
@@ -101,7 +102,9 @@
             class="mt-3 tiptap-editor"
             :editor="editor" />
           <v-divider class="mb-5 mx-5 mt-5" />
-          <citation-display @click.native="jumpToCitationText" v-for="citation in citations" :key="citation.citationId" :value="citation" />
+          <div class="d-flex text-body-1" v-for="(citation, i) in citations" :key="citation.citationId">
+            <sup v-text="i + 1" /> <citation-display @click.native="jumpToCitationText" :value="citation" />
+          </div>
         </div>
       </div>
     </v-main>
@@ -114,11 +117,11 @@ import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
 import SelectMenu from '@/views/lib/SelectMenu.vue'
 
 import { Editor, EditorContent } from '@tiptap/vue-2'
-import { defaultExtensions } from '@tiptap/starter-kit'
+import StarterKit from '@tiptap/starter-kit'
 import { Comment } from './extensionComment'
 import { Citation as CitationExtension} from './extensionCitation'
+import { Image as ImageExtension } from './extensionImage'
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
-// import { findChildrenByMark } from 'prosemirror-utils'
 import Highlight from '@tiptap/extension-highlight'
 import CitationDisplay from './CitationDisplay.vue'
 
@@ -177,6 +180,12 @@ export default class Article extends Vue {
     (this.editor?.chain() as any).focus().setTextSelection({from: c.quotedRange, to: c.quotedRange})!.run()
   }
 
+  logHTML() {
+    if (this.editor) {
+      console.log(this.editor.getHTML())
+    }
+  }
+
   async mounted() {
     // this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
     await store.article.loadArticle(this.issueLemmaId)
@@ -188,7 +197,8 @@ export default class Article extends Vue {
         Highlight,
         CitationExtension,
         Comment,
-        ...defaultExtensions()
+        ImageExtension,
+        StarterKit
       ],
       onTransaction(a) {
         // const commentNodes = findChildrenByMark(a.transaction.doc, a.editor.schema.marks.comment)
@@ -250,7 +260,7 @@ export default class Article extends Vue {
   --footnote-color: rgba(0,0,20,.07)
   max-width: 60em
   line-height 1.6
-  counter-resset prosemirror-footnote
+  counter-reset prosemirror-footnote
 
 // .tiptap-editor /deep/ *
 //   color #333
