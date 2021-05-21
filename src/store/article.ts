@@ -1,4 +1,4 @@
-import zotero, { Title } from '@/service/zotero'
+import zotero, { ZoteroItem } from '@/service/zotero'
 import { v4 as uuid } from 'uuid'
 
 interface Comment {
@@ -18,7 +18,7 @@ interface CommentThread {
 export interface Citation {
   citationId: string
   zoteroKey: string|null
-  zoteroTitleCached: Title|null
+  zoteroItemCached: ZoteroItem|null
   quotedRange: string|null
 }
 
@@ -72,12 +72,12 @@ export default class ArticleStore {
       {
         citationId: '9cee2f2a-212d-43eb-b351-0ad4098c6834',
         zoteroKey: 'ZSRWJPWF',
-        zoteroTitleCached: null,
+        zoteroItemCached: null,
         quotedRange: null
       }
     ]
     this._citations = await Promise.all(this._citations.map(async (c) => {
-      return {...c, zoteroTitleCached: await zotero.getTitle('ZSRWJPWF')}
+      return {...c, zoteroItemCached: await zotero.getTitle('ZSRWJPWF')}
     }))
   }
 
@@ -96,7 +96,7 @@ export default class ArticleStore {
       Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
       Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="2">excepteur</comment>
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
-      <h1>Or possibly like this.</h1>
+      <h2>Or possibly like this.</h2>
       <p>Non labore occaecat deserunt dolor aliquip
       consectetur fugiat <footnote data-id="9cee2f2b-212d-43eb-b351-0ad4098c6835">laboris</footnote> velit adipisicing laboris
       aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
@@ -171,7 +171,7 @@ export default class ArticleStore {
       citationId: id,
       quotedRange: null,
       zoteroKey: null,
-      zoteroTitleCached: null
+      zoteroItemCached: null
     })
     return id
   }
