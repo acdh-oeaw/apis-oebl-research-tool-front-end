@@ -4,7 +4,6 @@ import * as fs from 'fs'
 import * as http from 'http'
 import * as socketIo from 'socket.io'
 import fetch from 'node-fetch'
-import * as bodyParser from 'body-parser'
 import * as cors from 'cors'
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
@@ -27,7 +26,7 @@ const index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' })
 app.enable('trust proxy')
 app.use(cors())
 app.use(compression())
-app.use(bodyParser.json({limit: '100mb'}))
+app.use(express.json({limit: '100mb'}))
 
 app.use([ '/', '/css', '/img', '/js'], express.static('./dist'))
 
@@ -93,6 +92,23 @@ app.patch('/zotero/item/:id', async (req, res) => {
     console.log({
       version: x.headers.get('Last-Modified-Version')
     })
+    res.sendStatus(500)
+  }
+})
+
+app.post('/zotero/item', async (req, res) => {
+  console.log(req.body)
+  const x = await fetch('https://api.zotero.org/users/7926651/items/', {
+    method: 'POST',
+    body: JSON.stringify(req.body),
+    headers: {
+      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+    }
+  })
+  if (x.ok) {
+    res.send(JSON.stringify(await x.json()))
+  } else {
+    console.log(await x.text())
     res.sendStatus(500)
   }
 })
