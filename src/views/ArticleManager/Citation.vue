@@ -22,16 +22,16 @@
         <div class="d-flex flex-row fill-width pt-1">
           <text-field
             @input="searchBook"
-            class="px-2 flex-grow-1"
+            class="flex-grow-1"
             :clearable="true"
             placeholder="Werk suchen …">
             <template v-slot:prepend>
             <div
               v-if="loading === true"
-              class="mt-1">
+              class="mt-1 ml-2">
               <loading-spinner :size="25" />
             </div>
-            <v-icon size="16" class="ml-1" v-else>
+            <v-icon size="16" class="ml-3" v-else>
               mdi-magnify
             </v-icon>
           </template>
@@ -80,25 +80,28 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
-        <div v-if="page === 0" class="text-right">
+        <div v-if="page === 0">
           <v-btn
             @click="page = 1"
             class="rounded-lg"
             text
+            block
             color="primary">
-            <v-icon small class="mr-1">mdi-plus-circle-outline</v-icon>Neue Ressource anlegen
+            <v-icon block small class="mr-1">mdi-plus-circle-outline</v-icon>Neues Werk anlegen
           </v-btn>
         </div>
       </v-window-item>
       <v-window-item>
-        <zotero-form :value="{ data: { creators: [] } }" />
+        <zotero-form
+          @input="newItem = { ...newItem, data: {...newItem.data, ...$event}}"
+          :value="newItem" />
       </v-window-item>
       <v-window-item>
-        <zotero-form @input="updateZoteroTitleDebounced" :value="showTitleDetails" />
+        <zotero-form @input="updateZoteroItem" :value="showTitleDetails" />
       </v-window-item>
     </v-window>
     <div class="py-1" v-if="page === 1">
-      <v-btn elevation="0" block class="rounded-lg" color="primary">Speichern</v-btn>
+      <v-btn @click="createZoteroItem" elevation="0" block class="rounded-lg" color="primary">Speichern</v-btn>
     </div>
   </div>
 </template>
@@ -113,6 +116,8 @@ import store from '@/store'
 import confirm from '@/store/confirm'
 import _ from 'lodash'
 
+const newItem = { data: { creators: [], itemType: 'book' } }
+
 @Component({
   components: {
     TextField,
@@ -124,7 +129,8 @@ import _ from 'lodash'
 export default class Citation extends Vue {
 
   @Prop({ default: null }) id!: string|null
-
+  searchQuery = ''
+  newItem = _.clone(newItem)
   page = 0
   loading = false
   showTitleDetails: ZoteroItem|null = null
@@ -159,16 +165,25 @@ export default class Citation extends Vue {
     }
   }
 
-  async searchBook(e: string|null) {
+  async searchBook(e: string) {
     this.loading = true
     if (e !== null && e.trim().length > 0) {
-      this.results = await zotero.searchTitle(e)
+      this.results = await zotero.searchItem(e)
     } else {
       if (this.currentCitation?.zoteroItemCached !== null && this.currentCitation?.zoteroItemCached !== undefined) {
         this.results = [ this.currentCitation?.zoteroItemCached ]
       }
     }
     this.loading = false
+  }
+
+  async createZoteroItem() {
+    const template = await zotero.getItemTemplate(newItem.data.itemType)
+    const i = {
+      ...template,
+      ...this.newItem.data
+    }
+    zotero.createItem(i)
   }
 
   updateZoteroResultsLocally(t: ZoteroItem) {
@@ -181,9 +196,22 @@ export default class Citation extends Vue {
     })
   }
 
-  updateZoteroTitleDebounced = _.debounce(this.updateZoteroTitle, 300)
+  sendZoteroUpdateRequestDebounced = _.debounce(this.sendZoteroUpdateRequest, 300)
 
-  async updateZoteroTitle(p: Partial<ZoteroItem['data']>, curVersion: number) {
+  async sendZoteroUpdateRequest(p: Partial<ZoteroItem['data']>, t: ZoteroItem, v: number) {
+    try {
+      const { version } = await zotero.updateTitle(t.key, {...p, version: v})
+      console.log('got version', version)
+      this.showTitleDetails = { ...t, data: { ...t.data, version } }
+      this.updateZoteroResultsLocally(this.showTitleDetails)
+    } catch (e) {
+      const serverTitle = await zotero.getItem(t.key)
+      this.updateZoteroResultsLocally({ ...t, data: { ...t.data, version: serverTitle.data.version } })
+      this.showTitleDetails = { ...t, data: { ...t.data, version: serverTitle.data.version } }
+    }
+  }
+
+  updateZoteroItem(p: Partial<ZoteroItem['data']>, curVersion: number) {
     if (this.showTitleDetails !== null) {
       const t = {
         ...this.showTitleDetails,
@@ -194,16 +222,7 @@ export default class Citation extends Vue {
       }
       this.showTitleDetails = t
       this.updateZoteroResultsLocally(this.showTitleDetails)
-      try {
-        const { version } = await zotero.updateTitle(this.showTitleDetails.key, {...p, version: curVersion})
-        console.log('got version', version)
-        this.showTitleDetails = { ...t, data: { ...t.data, version } }
-        this.updateZoteroResultsLocally(this.showTitleDetails)
-      } catch (e) {
-        const serverTitle = await zotero.getTitle(t.key)
-        this.updateZoteroResultsLocally({ ...t, data: { ...t.data, version: serverTitle.data.version } })
-        this.showTitleDetails = { ...t, data: { ...t.data, version: serverTitle.data.version } }
-      }
+      this.sendZoteroUpdateRequestDebounced(p, t, curVersion)
     }
   }
 
