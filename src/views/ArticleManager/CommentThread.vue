@@ -6,7 +6,10 @@
       <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-left</v-icon></v-btn>
       <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-right</v-icon></v-btn>
     </div>
-    <div ref="threadContainer" class="thread-container" v-if="thread !== undefined">
+    <div
+      v-if="thread !== undefined"
+      ref="threadContainer"
+      class="thread-container">
       <div class="comment-container" v-for="(comment, i) in thread.comments" :key="comment.commentId">
         <div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
           User {{ comment.user }} <v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
