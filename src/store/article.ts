@@ -77,7 +77,7 @@ export default class ArticleStore {
       }
     ]
     this._citations = await Promise.all(this._citations.map(async (c) => {
-      return {...c, zoteroItemCached: await zotero.getTitle('ZSRWJPWF')}
+      return {...c, zoteroItemCached: await zotero.getItem('ZSRWJPWF')}
     }))
   }
 

@@ -63,24 +63,34 @@ export interface ZoteroItem {
 class ZoteroStore {
 
   constructor() {
-    this.loadItemTypes()
+    this.init()
   }
 
   itemTypes: ZoteroItemType[] = []
   itemTypeFields: { [key: string]: ZoteroItemTypeField[] } = {}
   itemTypeCreators: { [key: string]: ZoteroItemCreatorType[] } = {}
 
-  async loadItemTypes() {
+  async init() {
     this.itemTypes = await this.getItemTypes()
     this.itemTypeFields = await this.getItemTypeFields(this.itemTypes)
     this.itemTypeCreators = await this.getItemTypeCreators(this.itemTypes)
   }
 
-  async searchTitle(q: string): Promise<ZoteroItem[]> {
+  async createItem(i: ZoteroItem['data']) {
+    return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/item', {
+      method: 'POST',
+      body: JSON.stringify([i]),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })).json()
+  }
+
+  async searchItem(q: string): Promise<ZoteroItem[]> {
     return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/search/' + q)).json()
   }
 
-  async getTitle(key: string): Promise<ZoteroItem> {
+  async getItem(key: string): Promise<ZoteroItem> {
     return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/item/' + key)).json()
   }
 
@@ -96,6 +106,10 @@ class ZoteroStore {
 
   async getItemTypes(): Promise<Array<{itemType: string, localized: string}>> {
     return await (await (fetch('https://api.zotero.org/itemTypes?locale=' + (navigator.language || 'de-DE')))).json()
+  }
+
+  async getItemTemplate(itemType: string): Promise<ZoteroItem['data']> {
+    return await (await (fetch(`https://api.zotero.org/items/new?itemType=${ itemType }`))).json()
   }
 
   async getItemTypeFields(itemTypes: ZoteroItemType[]): Promise<{ [itemType: string]: ZoteroItemTypeField[] }> {
