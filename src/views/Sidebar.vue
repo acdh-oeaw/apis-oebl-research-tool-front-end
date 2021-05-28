@@ -6,13 +6,14 @@
           @click="toggleDrawer"
           tile
           depressed
-          class="rounded-lg mr-2"
+          class="rounded-lg mr-1"
           icon>
           <v-icon>mdi-dock-left</v-icon>
         </v-btn>
         <text-field
-          class="flex-grow-1"
+          class="flex-grow-1 mr-2"
           :clearable="true"
+          color="background darken-3"
           @keydown.esc.native="onEscSearch"
           v-model="searchQuery"
           :placeholder="showLoader === true ? 'Lade…' : 'Listen filtern…'">
@@ -152,7 +153,7 @@
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar tile>
-            <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle</v-icon>
+            <v-icon color="primary darken-1" small>mdi-folder-text</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -197,7 +198,7 @@
           @dragover.prevent=""
           @drop.prevent="copyLemmasToList(list, $event)">
           <v-list-item-avatar tile>
-            <v-icon color="primary darken-1" small>mdi-alpha-{{ list.title[0].toLowerCase() }}-circle-outline</v-icon>
+            <v-icon color="primary darken-1" small>mdi-folder-text-outline</v-icon>
             <!-- <v-icon color="primary darken-1" small>mdi-rhombus-split</v-icon> -->
           </v-list-item-avatar>
           <v-list-item-content>

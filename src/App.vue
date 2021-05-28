@@ -55,7 +55,7 @@
       :card="false"
       :right="false"
       :floating="true"
-      color="background darken-1"
+      color="background darken-2"
       stateless
       app
       :value="showDrawer"
@@ -146,9 +146,9 @@ export default class App extends Vue {
 .v-icon
   transition none
 
-.v-navigation-drawer
-  max-height none !important
-  height 100% !important
+// .v-navigation-drawer
+//   max-height none !important
+//   height 100% !important
 
 body .v-application .text-body-3
 body .v-application .text-body-2
