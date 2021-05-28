@@ -1,5 +1,5 @@
 <template>
-  <div class="fill-height">
+  <div class="fill-height background darken-1">
     <v-app-bar
       app
       color="background"
