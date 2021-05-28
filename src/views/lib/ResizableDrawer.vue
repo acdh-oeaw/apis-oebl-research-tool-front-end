@@ -10,7 +10,6 @@
     :class="{
       'display-card': card,
       'nav-drawer': true,
-      'will-close': willClose,
       'right': right
     }"
     :floating="floating"
@@ -21,10 +20,11 @@
       v-if="!mini"
       @dblclick="expandOrShrink"
       @mousedown="startDrag"
-      :class="{
-        'resize-handle-outer': true,
-        'right': right
-      }">
+      :class="[
+        'resize-handle-outer',
+        isDragging && 'dragging',
+        right && 'right'
+      ]">
       <div
         class="resize-handle"
         :style="{ backgroundColor: $vuetify.theme.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)' }"
@@ -52,8 +52,7 @@ export default class ResizableDrawer extends Vue {
   localWidth = this.width
   transitionValues: {[selector: string]: string} = {}
   maxWidth = 750
-  closeWidth = 225
-  willClose = false
+  isDragging = false
 
   @Watch('width')
   onChangeWidthProp(w: number) {
@@ -114,23 +113,22 @@ export default class ResizableDrawer extends Vue {
   startDrag() {
     this.disableUserSelect()
     this.disableTransitions('.nav-drawer', '.v-main', '.v-toolbar')
+    this.isDragging = true
     document.addEventListener('mousemove', this.drag)
     document.addEventListener('mouseup', this.endDrag)
   }
 
   endDrag() {
-    this.willClose = false
+    this.isDragging = false
     this.enableUserSelect()
     this.enableAllTransitions()
     document.removeEventListener('mousemove', this.drag)
     document.removeEventListener('mouseup', this.endDrag)
+    console.log(this.width, this.localWidth, this.minWidth)
     // if it’s too big or too small, bounce back.
     if (this.localWidth > this.maxWidth) {
       this.localWidth = this.maxWidth
-    } else if (this.width < this.closeWidth) {
-      this.$emit('close')
-      this.localWidth = this.minWidth
-    } else if (this.width < this.minWidth) {
+    } else if (this.localWidth < this.minWidth) {
       this.localWidth = this.minWidth
     }
     this.$emit('update:width', this.localWidth)
@@ -139,15 +137,10 @@ export default class ResizableDrawer extends Vue {
   drag(e: MouseEvent) {
     const intendedWidth = this.right ? (document.body.clientWidth - e.pageX) : e.pageX
     if (intendedWidth < this.minWidth) {
-      this.localWidth = intendedWidth - (intendedWidth - this.minWidth) / 1.5
-      if (this.localWidth < this.closeWidth) {
-        this.willClose = true
-      }
+      this.localWidth = intendedWidth - (intendedWidth - this.minWidth) / 2
     } else if (intendedWidth > this.maxWidth) {
-      this.willClose = false
-      this.localWidth = intendedWidth - (intendedWidth - this.maxWidth) / 1.5
+      this.localWidth = intendedWidth - (intendedWidth - this.maxWidth) / 2
     } else {
-      this.willClose = false
       this.localWidth = intendedWidth
     }
   }
@@ -188,27 +181,28 @@ export default class ResizableDrawer extends Vue {
   margin 10px 10px 10px 0
 
 .resize-handle-outer
-  position: absolute;
-  width 8px
-  height: 100%
-  right: 5px
-  cursor: ew-resize;
-  z-index: 6;
+  position absolute
+  width 12px
+  height 100%
+  right -6px
+  cursor ew-resize;
+  z-index 6
   &.right
-    left: 2px
+    right auto
+    left -6px
+  &:hover .resize-handle
+  &.dragging .resize-handle
+    opacity 1
 
 .resize-handle
-  position: absolute;
-  height: 80px;
-  width: 5px;
-  border-radius: 2px;
-  top: calc(50% - 40px);
-  left: 3px;
+  transition .2s
+  opacity 0
+  position absolute
+  width 1px
+  top 0
+  bottom 0
+  left 6px;
 
 .theme--light
   color rgba(0,0,0,.7)
-
-.will-close /deep/ .v-navigation-drawer__content
-  transition transform .2s
-  transform translateX(50px) scale(.9)
 </style>
