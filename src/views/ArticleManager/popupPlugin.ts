@@ -7,37 +7,6 @@ import 'tippy.js/animations/scale.css'
 import 'tippy.js/themes/light.css'
 import 'tippy.js/dist/backdrop.css'
 
-const tippyOpts = {
-  content: '',
-  showOnCreate: true,
-  allowHTML: true,
-  interactive: true,
-  trigger: 'manual',
-  animation: 'scale',
-  theme: 'light',
-  maxWidth: 350,
-  appendTo: document.querySelector('#app') as Element,
-  inertia: true,
-  moveTransition: 'transform 0.2s ease-out',
-  popperOptions: {
-    modifiers: [
-      {
-        name: 'flip',
-        options: {
-          fallbackPlacements: ['bottom', 'right'],
-        },
-      },
-      {
-        name: 'preventOverflow',
-        options: {
-          altAxis: true,
-          tether: false,
-        },
-      },
-    ],
-  },
-}
-
 function showPopUp(
   id: string,
   shouldFocus: boolean,
@@ -54,8 +23,36 @@ function showPopUp(
     if ((el as any)._tippy !== undefined) {
       ((el as any)._tippy as TippyInstance).show()
     } else {
-      const t = tippy(el, tippyOpts)
-      t.setContent(component.element)
+      const t = tippy(el, {
+        content: component.element,
+        showOnCreate: true,
+        allowHTML: true,
+        interactive: true,
+        trigger: 'manual',
+        animation: 'scale',
+        theme: 'light',
+        maxWidth: 350,
+        appendTo: document.querySelector('#app') as Element,
+        inertia: true,
+        moveTransition: 'transform 0.2s ease-out',
+        popperOptions: {
+          modifiers: [
+            {
+              name: 'flip',
+              options: {
+                fallbackPlacements: ['bottom', 'right'],
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                altAxis: true,
+                tether: false,
+              }
+            }
+          ]
+        }
+      })
       if (shouldFocus) {
         requestAnimationFrame(() => {
           // eslint-disable-next-line no-unused-expressions
