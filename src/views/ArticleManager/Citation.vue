@@ -48,7 +48,7 @@
             </template>
           </text-field>
         </div>
-        <v-list two-line dense nav color="background" class="px-0 x-dense" v-if="results.length > 0">
+        <v-list two-line dense nav color="background" class="pa-0 x-dense" v-if="results.length > 0">
           <v-list-item
             nav
             :input-value="currentCitation !== null && result.key === currentCitation.zoteroKey"
@@ -145,9 +145,9 @@ export default class Citation extends Vue {
   @Watch('page')
   onChangePage() {
     // so that we can reposition the Pop up after the size has changed.
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'))
-    }, 200)
+    // setTimeout(() => {
+    //   window.dispatchEvent(new Event('resize'))
+    // }, 200)
   }
 
   get currentCitation() {

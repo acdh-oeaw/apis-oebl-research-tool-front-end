@@ -28,7 +28,7 @@
       <div>
         <slot />
       </div>
-      <div v-if="clearable === true && value !== null && value !== ''">
+      <div v-if="clearable === true && localValue !== null && localValue !== ''">
         <v-btn small icon tile class="rounded-lg mt-1 mr-1" @click="clearInput">
           <v-icon size="16" color="primary">mdi-close</v-icon>
         </v-btn>
@@ -75,11 +75,11 @@ export default class TextField extends Vue {
 
   async clearInput() {
     this.$emit('input', '')
-    await this.$nextTick()
-    const t = this.$refs.textarea
-    if (t instanceof HTMLTextAreaElement) {
-      t.focus()
+    if (this.$refs.textarea instanceof HTMLTextAreaElement) {
+      this.$refs.textarea.value = ''
     }
+    await this.$nextTick()
+    this.focusInput()
   }
 
   selectAll() {
@@ -110,11 +110,21 @@ export default class TextField extends Vue {
     }
   }
 
+  focusInput() {
+    const t = this.$refs.textarea
+    if (t instanceof HTMLTextAreaElement) {
+      t.focus()
+    }
+  }
+
   onInput(e: InputEvent) {
     if (e.target instanceof HTMLTextAreaElement) {
       this.localValue = e.target.value
       if (this.checkValid(e.target.value)) {
         this.$emit('input', e.target.value)
+        this.$nextTick(() => {
+          this.focusInput()
+        })
       }
     }
   }

@@ -1,24 +1,22 @@
 import {
   Command,
   Mark,
-  markInputRule,
-  markPasteRule,
   mergeAttributes,
-  Editor
 } from '@tiptap/core'
 
 import { v4 as uuid } from 'uuid'
 import { VueRenderer } from '@tiptap/vue-2'
-import tippy, { Instance as TippyInstance, hideAll, sticky } from 'tippy.js'
+import tippy, { Instance as TippyInstance, hideAll } from 'tippy.js'
 
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/scale.css'
 import 'tippy.js/themes/light.css'
-import 'tippy.js/dist/backdrop.css';
-import 'tippy.js/animations/shift-away.css';
+import 'tippy.js/dist/backdrop.css'
 
 import { findChildrenByMark } from 'prosemirror-utils'
 import CommentThread from './CommentThread.vue'
+import popupMark from './popupPlugin'
+
 import store from '@/store'
 
 export interface CommentOptions {
@@ -40,15 +38,18 @@ declare module '@tiptap/core' {
        * Unset a mark
        */
       unsetComment: () => Command,
+      showCommentPopUp: (attributes: { id: string, shouldFocus: boolean }) => Command
     }
   }
 }
 
-export const Comment = Mark.create<CommentOptions>({
+export const Comment = popupMark.extend({
   name: 'comment',
 
   defaultOptions: {
     HTMLAttributes: {},
+    component: CommentThread,
+    tagName: 'comment'
   },
 
   addAttributes() {
@@ -90,12 +91,60 @@ export const Comment = Mark.create<CommentOptions>({
         return commands.setMark('comment', { id: uuid() })
       },
       toggleComment: (attributes) => ({ commands }) => {
-        const command = commands.toggleMark('comment', { id: store.article.createThread() })
-        return command
+        if (this.editor.isActive(this.name)) {
+          return commands.unsetMark('comment')
+        } else {
+          const id = store.article.createThread()
+          const command = commands.toggleMark('comment', { id })
+          requestAnimationFrame(() => {
+            this.editor.commands.showCommentPopUp({ id, shouldFocus: true })
+          })
+          return command
+        }
       },
       unsetComment: () => ({ commands }) => {
         return commands.unsetMark('comment')
       },
+      // showCommentPopUp: (attributes) => ({ commands }) => {
+      //   const el = document.querySelector(`comment[data-id="${ attributes.id }"]`)
+      //   if (el instanceof HTMLElement) {
+      //     // it has already been created: show.
+      //     if ((el as any)._tippy) {
+      //       ((el as any)._tippy as TippyInstance).show()
+      //     // it must be created: create and show.
+      //     } else {
+      //       const component = new VueRenderer(CommentThread, { parent: this.parent, propsData: { id: attributes.id } })
+      //       const t = tippy(el, {
+      //         content: component.element,
+      //         showOnCreate: true,
+      //         allowHTML: true,
+      //         interactive: true,
+      //         trigger: 'manual',
+      //         placement: 'auto',
+      //         animation: 'scale',
+      //         theme: 'light',
+      //         maxWidth: 350,
+      //         appendTo: document.querySelector('#app') as Element,
+      //         inertia: true,
+      //         moveTransition: 'transform 0.2s ease-out'
+      //       })
+      //       if (attributes.shouldFocus) {
+      //         requestAnimationFrame(() => {
+      //           // eslint-disable-next-line no-unused-expressions
+      //           t.popper.querySelector('textarea')?.focus()
+      //         })
+      //       }
+      //       t.popper.addEventListener('keyup', (e) => {
+      //         if (e.key === 'Escape') {
+      //           e.stopPropagation()
+      //           t.hide()
+      //           this.editor.chain().focus().run()
+      //         }
+      //       })
+      //     }
+      //   }
+      //   return true
+      // }
     }
   },
 
@@ -113,49 +162,24 @@ export const Comment = Mark.create<CommentOptions>({
         }
       })
       .filter(m => m.mark !== undefined)
-    console.log({ comments })
   },
 
-  onSelectionUpdate() {
-    if (this.editor.isActive(this.name)) {
-      const { id } = this.editor.getAttributes(this.name)
-      if (typeof id === 'string') {
-        console.log('comment id', id)
-        const el = document.querySelector(`comment[data-id="${ id }"]`)
-        if (el instanceof HTMLElement) {
-          // it has already been created: show.
-          if ((el as any)._tippy) {
-            ((el as any)._tippy as TippyInstance).show()
-          // it must be created: create and show.
-          } else {
-            const component = new VueRenderer(CommentThread, { parent: this.parent, propsData: { id } })
-            tippy(el, {
-              content: component.element,
-              showOnCreate: true,
-              allowHTML: true,
-              interactive: true,
-              trigger: 'manual',
-              placement: 'right',
-              animation: 'scale',
-              theme: 'light',
-              maxWidth: 350,
-              appendTo: document.querySelector('#app') as Element,
-              inertia: true,
-              moveTransition: 'transform 0.2s ease-out'
-            })
-          }
-        }
-      } else {
-        hideAll()
-      }
-    } else {
-      hideAll()
-    }
-  },
+  // onSelectionUpdate() {
+  //   if (this.editor.isActive(this.name)) {
+  //     const { id } = this.editor.getAttributes(this.name)
+  //     if (typeof id === 'string') {
+  //       this.editor.commands.showCommentPopUp({ id, shouldFocus: false })
+  //     } else {
+  //       hideAll()
+  //     }
+  //   } else {
+  //     hideAll()
+  //   }
+  // },
 
   addKeyboardShortcuts() {
     return {
-      'Mod-Shift-k': () => this.editor.commands.toggleComment(),
+      'Mod-k': () => this.editor.commands.toggleComment(),
     }
   },
 

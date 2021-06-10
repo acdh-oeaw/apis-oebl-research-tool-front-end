@@ -58,12 +58,6 @@
           @click="editor.chain().focus().toggleComment().run()">
           <v-icon>mdi-message-outline</v-icon>
         </v-btn>
-        <!-- <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().undo().run()">
-          <v-icon>mdi-undo</v-icon>
-        </v-btn>
-        <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().redo().run()">
-          <v-icon>mdi-redo</v-icon>
-        </v-btn> -->
         <v-menu
           content-class="soft-shadow"
           offset-y
@@ -80,8 +74,29 @@
               <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
             </v-btn>
           </template>
-          <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
-          </v-list>
+          <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0 x-dense" dense nav>
+            <v-list-item @click="editor.chain().focus().undo().run()">
+              <v-list-item-avatar><v-icon small>mdi-undo</v-icon></v-list-item-avatar>
+              <v-list-item-content>Rückgängig </v-list-item-content>
+              <v-list-item-action-text class="ml-3">STRG+Z</v-list-item-action-text>
+            </v-list-item>
+            <v-list-item @click="editor.chain().focus().redo().run()">
+              <v-list-item-avatar><v-icon small>mdi-redo</v-icon></v-list-item-avatar>
+              <v-list-item-content>Wiederholen</v-list-item-content>
+              <v-list-item-action-text class="ml-3">STRG+Y</v-list-item-action-text>
+            </v-list-item>
+            <v-divider />
+            <v-list-item @click="">
+              <v-list-item-avatar><v-icon small>mdi-file-image-outline</v-icon></v-list-item-avatar>
+              <v-list-item-content>Bild einfügen…</v-list-item-content>
+            </v-list-item>
+            <!-- <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().undo().run()">
+          <v-icon>mdi-undo</v-icon>
+        </v-btn>
+        <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().redo().run()">
+          <v-icon>mdi-redo</v-icon>
+        </v-btn> -->
+            </v-list>
           </v-menu>
       </div>
     </v-app-bar>
@@ -92,14 +107,14 @@
       :min-width="300"
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
-      :value="store.lemma.showSideBar">
+      :value="false">
       <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
     </resizable-drawer>
-    <v-main style="height: calc(100vh - 75px); overflow: auto">
+    <v-main style="height: calc(100vh - 75px); margin-top: 75px; overflow: auto; padding-top: 0; padding-bottom: 20px">
       <div class="px-5 outer-editor mx-auto">
         <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
-            class="mt-3 tiptap-editor"
+            class="tiptap-editor"
             :editor="editor" />
           <v-divider class="mb-5 mx-5 mt-5" />
           <div class="d-flex text-body-1" v-for="(citation, i) in citations" :key="citation.citationId">

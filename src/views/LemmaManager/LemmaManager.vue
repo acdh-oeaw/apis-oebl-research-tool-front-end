@@ -112,12 +112,12 @@
           </span>
         </v-flex>
         <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2 mr-2">
-          <data-filter
+          <!-- <data-filter
             :comparators="comparators"
             :columns="columns"
             :value="filterItems"
             @input="onUpdateFilterItems"
-          />
+          /> -->
         </v-flex>
         <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
@@ -128,7 +128,7 @@
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
         </v-flex>
-        <!-- <v-flex
+        <v-flex
           shrink
           align-self-start
           class="pl-0 ml-0 pr-0"
@@ -141,7 +141,7 @@
             icon>
             <v-icon>mdi-filter-variant</v-icon>
           </v-btn>
-        </v-flex> -->
+        </v-flex>
         <v-flex
           shrink
           align-self-start
@@ -252,8 +252,8 @@
       </div>
     </v-app-bar>
     <resizable-drawer
-      color="background"
-      :card="true"
+      color="background darken-1"
+      :card="false"
       :right="true"
       :min-width="300"
       :width="store.settings.drawerRightWidth"

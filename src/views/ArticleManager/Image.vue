@@ -1,13 +1,17 @@
 <template>
   <node-view-wrapper class="vue-component image-wrapper">
-    <figure>
+    <figure tabindex="-1">
       <img
         contenteditable="false"
         draggable="true"
         data-drag-handle
         :src="node.attrs.src">
       <figcaption>
-        <node-view-content @input="updateAlt" class="image-description">{{ node.attrs.alt || 'Bildunterschrift' }}</node-view-content>
+        <div class="image-description">
+          <div draggable="true" contenteditable="false" class="caption muted">Abbildung</div>
+          <node-view-content />
+        </div>
+        <!-- <text-field contenteditable="false" label="copyright" /> -->
       </figcaption>
     </figure>
   </node-view-wrapper>
@@ -16,10 +20,12 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { NodeViewWrapper, nodeViewProps, NodeViewContent } from '@tiptap/vue-2'
 import { Node } from 'prosemirror-model'
+import TextField from '../lib/TextField.vue'
 @Component({
   components: {
     NodeViewWrapper,
-    NodeViewContent
+    NodeViewContent,
+    TextField
   }
 })
 export default class ProsemirrorImage extends Vue {
@@ -46,33 +52,21 @@ export default class ProsemirrorImage extends Vue {
   text-align center
 
 .image-description
-  margin 1em 0 1em 0
+  margin .5em 0 1em 0
   font-size 90%
-  padding 0.5rem
+  padding 0.25rem
   border 2px dashed #0D0D0D20
   border-radius 0.5rem
 
 img
-  max-height 50vh
-
-.drag-handle {
-  flex: 0 0 auto;
-  position: relative;
-  width: 1rem;
-  height: 1rem;
-  top: 0.3rem;
-  margin-right: 0.5rem;
-  cursor: grab;
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 16"><path fill-opacity="0.2" d="M4 14c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM2 6C.9 6 0 6.9 0 8s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6C.9 0 0 .9 0 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
+  max-height 40vh
+  border-radius 10px
 
 .image-description:empty:before
   content 'Bildunterschrift'
   pointer-events none
   color: #ced4da;
+
 // .ProseMirror p.is-editor-empty:first-child::before {
 //     content: attr(data-placeholder);
 //     float: left;

@@ -5,6 +5,7 @@
     "Lemmaresearch",
     "Lobid",
     "Queryable",
+    "irs",
     "mixins",
     "upsert",
     "upserted",

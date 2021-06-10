@@ -1,10 +1,13 @@
 <template>
-  <div style="min-width: 220px">
-    <div class="thread-header row no-gutters">
-      <v-btn class="rounded-lg pl-1 muted" text small><v-icon small>mdi-chevron-down</v-icon>Status: offen</v-btn>
-      <v-spacer />
-      <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-left</v-icon></v-btn>
-      <v-btn class="rounded-lg" tile small icon><v-icon small>mdi-chevron-right</v-icon></v-btn>
+  <div style="width: 320px">
+    <div v-if="thread !== undefined" class="d-flex flex-row align-self-stretch">
+      <v-btn icon tile class="rounded-lg" small style="opacity: 0"></v-btn>
+      <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
+        Kommentar
+      </div>
+      <v-btn icon tile class="rounded-lg" small>
+        <v-icon>mdi-dots-horizontal</v-icon>
+      </v-btn>
     </div>
     <div
       v-if="thread !== undefined"
@@ -23,12 +26,34 @@
     <v-divider v-if="thread !== undefined && thread.comments.length > 0" class="my-2" />
     <text-field
       v-model="newMessage"
-      @keydown.meta.enter="appendComment"
-      class="py-0 px-2 mt-1 mb-0"
-      :allow-new-line="true"
+      @keydown.enter="appendComment"
+      @input.native="storeLastCaretPos"
+      class="py-0 pl-1 pr-1 mt-1 mb-0"
       placeholder="Kommentar hinzufügen …">
+      <template v-slot:prepend>
+        <v-btn
+          small
+          class="rounded-lg mt-1 mr-0"
+          @click="toggleEmojiPicker" icon tile text>
+          <v-icon :color="shouldShowEmojiPicker ? 'primary' : ''" small>
+            mdi-emoticon-outline
+          </v-icon>
+        </v-btn>
+      </template>
       <v-btn class="rounded-lg" @click="appendComment" icon tile text><v-icon small>mdi-send</v-icon></v-btn>
     </text-field>
+    <div class="emoji-picker" v-if="shouldShowEmojiPicker">
+      <span v-for="(group, i) in groups" :key="i">
+        <div class="emoji-group caption pl-2">
+          <span class="muted"> {{ group.group }} </span>
+        </div>
+        <span v-for="(subgroup, i) in group.subgroups" :key="'sg' + i">
+          <span class="emoji" @click="insertEmoji(lastCaretPos, toEmoji(emoji[0]))" v-for="(emoji, i) in subgroup.emojis" :key="'em' + i">
+            {{ toEmoji(emoji[0]) }}
+          </span>
+        </span>
+      </span>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -38,6 +63,7 @@ import store from '@/store'
 import formatDistanceToNow from 'date-fns/esm/formatDistanceToNow'
 import de from 'date-fns/esm/locale/de'
 import { v4 as uuid } from 'uuid'
+import { emoji } from '@/service/emoji'
 
 @Component({
   components: {
@@ -49,8 +75,24 @@ export default class CommentThread extends Vue {
   @Prop({ default: null }) id!: string|null
   newMessage = ''
   store = store
+  groups = emoji.groups
+  shouldShowEmojiPicker = false
+  lastCaretPos = 0
+
+  storeLastCaretPos(e: Event) {
+    console.log(e, e.target)
+    if (e.target instanceof HTMLTextAreaElement) {
+      console.log(this.lastCaretPos, e.target.selectionStart)
+      this.lastCaretPos = e.target.selectionStart
+    }
+  }
+
+  insertEmoji(pos: number, emoji: string) {
+    this.newMessage = [this.newMessage.slice(0, pos), emoji, this.newMessage.slice(pos)].join('')
+  }
 
   async appendComment() {
+    this.shouldShowEmojiPicker = false
     if (this.id !== null) {
       this.store.article.addComment(this.id, {
         commentId: uuid(),
@@ -64,6 +106,16 @@ export default class CommentThread extends Vue {
     } else {
       throw new Error('Can’t append comment. No Thread Id given.')
     }
+  }
+
+  toggleEmojiPicker() {
+    this.shouldShowEmojiPicker = !this.shouldShowEmojiPicker
+  }
+
+  toEmoji(s: string) {
+    const nums = s.split('_').map(val => parseInt(val, 16))
+    // eslint-disable-next-line prefer-spread
+    return String.fromCodePoint.apply(String, nums)
   }
 
   async repositionTooltip() {
@@ -115,6 +167,23 @@ export default class CommentThread extends Vue {
 </script>
 <style lang="stylus" scoped>
 .thread-container
+.emoji-picker
   max-height 300px
   overflow auto
+
+.emoji-picker
+  max-height 200px
+
+.emoji-picker .emoji
+  font-size: 1.6em;
+  cursor: pointer;
+  width: 39px;
+  display: inline-block;
+  text-align: center;
+.emoji-group
+  position sticky
+  top 0
+  left 0
+  background var(--v-background-base)
+  z-index 1
 </style>
