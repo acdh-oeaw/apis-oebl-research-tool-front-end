@@ -1,7 +1,9 @@
 <template>
   <div style="width: 320px">
     <div v-if="thread !== undefined" class="d-flex flex-row align-self-stretch">
-      <v-btn icon tile class="rounded-lg" small style="opacity: 0"></v-btn>
+      <v-btn icon tile class="rounded-lg" disabled small>
+        <v-icon small>mdi-message-outline</v-icon>
+      </v-btn>
       <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
         Kommentar
       </div>
@@ -27,7 +29,8 @@
     <text-field
       v-model="newMessage"
       @keydown.enter="appendComment"
-      @input.native="storeLastCaretPos"
+      @keyup.native="storeLastCaretPos"
+      @mouseup.native="storeLastCaretPos"
       class="py-0 pl-1 pr-1 mt-1 mb-0"
       placeholder="Kommentar hinzufügen …">
       <template v-slot:prepend>
@@ -112,10 +115,14 @@ export default class CommentThread extends Vue {
     this.shouldShowEmojiPicker = !this.shouldShowEmojiPicker
   }
 
-  toEmoji(s: string) {
-    const nums = s.split('_').map(val => parseInt(val, 16))
-    // eslint-disable-next-line prefer-spread
-    return String.fromCodePoint.apply(String, nums)
+  toEmoji(s: string|number): string {
+    if (typeof s === 'string') {
+      const nums = s.split('_').map(val => parseInt(val, 16))
+      // eslint-disable-next-line prefer-spread
+      return String.fromCodePoint.apply(String, nums)
+    } else {
+      return ''
+    }
   }
 
   async repositionTooltip() {
