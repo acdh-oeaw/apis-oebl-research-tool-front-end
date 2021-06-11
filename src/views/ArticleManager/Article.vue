@@ -55,6 +55,13 @@
           class="rounded-lg"
           tile
           icon
+          @click="editor.chain().focus().toggleAnnotation().run()">
+          <v-icon>mdi-earth</v-icon>
+        </v-btn>
+        <v-btn
+          class="rounded-lg"
+          tile
+          icon
           @click="editor.chain().focus().toggleComment().run()">
           <v-icon>mdi-message-outline</v-icon>
         </v-btn>
@@ -86,7 +93,7 @@
               <v-list-item-action-text class="ml-3">STRG+Y</v-list-item-action-text>
             </v-list-item>
             <v-divider />
-            <v-list-item @click="">
+            <v-list-item @click="insertImage">
               <v-list-item-avatar><v-icon small>mdi-file-image-outline</v-icon></v-list-item-avatar>
               <v-list-item-content>Bild einfügen…</v-list-item-content>
             </v-list-item>
@@ -136,10 +143,11 @@ import StarterKit from '@tiptap/starter-kit'
 import { Comment } from './extensionComment'
 import { Citation as CitationExtension} from './extensionCitation'
 import { Image as ImageExtension } from './extensionImage'
+import { Annotation as AnnotationExtension } from './extensionAnnotation'
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
 import Highlight from '@tiptap/extension-highlight'
 import CitationDisplay from './CitationDisplay.vue'
-
+import fileDialog from 'file-dialog'
 import store from '@/store'
 import { IssueLemma } from '@/api'
 import { Citation } from '@/store/article'
@@ -180,6 +188,16 @@ export default class Article extends Vue {
     }
   ]
 
+  async insertImage() {
+    const files = await fileDialog({ multiple: false, accept: 'image/*' })
+    if (files.item(0) !== null) {
+      const src = URL.createObjectURL(files.item(0))
+      if (this.editor !== null) {
+        const l = this.editor?.commands.setImage({src})
+      }
+    }
+  }
+
   activeFormatting: any = this.formattingItems[0]
 
   onSelectFormatting(v: any) {
@@ -213,6 +231,7 @@ export default class Article extends Vue {
         CitationExtension,
         Comment,
         ImageExtension,
+        AnnotationExtension,
         StarterKit
       ],
       onTransaction(a) {
@@ -255,6 +274,10 @@ export default class Article extends Vue {
     {
       name: '120%',
       value: 1.2
+    },
+    {
+      name: '150%',
+      value: 1.5
     }
   ]
 
@@ -273,6 +296,7 @@ export default class Article extends Vue {
 .outer-editor
   --comment-color: #ffe1ab
   --footnote-color: rgba(0,0,20,.07)
+  --annotation-color: rgba(0,200,0,.15)
   max-width: 60em
   line-height 1.6
   counter-reset prosemirror-footnote
@@ -305,6 +329,11 @@ export default class Article extends Vue {
   vertical-align super
   font-size 75%
   counter-increment prosemirror-footnote
+
+.tiptap-editor /deep/ mark
+  border-radius 4px
+  background var(--annotation-color)
+  padding 4px
 
 .tiptap-editor /deep/ footnote > comment
 .tiptap-editor /deep/ comment > footnote
