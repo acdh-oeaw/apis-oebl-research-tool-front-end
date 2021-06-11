@@ -114,7 +114,6 @@ export const Image = Node.create<ImageOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    console.log({HTMLAttributes})
     return [
       'img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)
     ]
