@@ -121,6 +121,20 @@ export default class ArticleStore {
     })
   }
 
+  unsetCitation(id: string) {
+    this._citations = this._citations.map(c => {
+      if (id === c.citationId) {
+        return {
+          ...c,
+          zoteroItemCached: null,
+          zoteroKey: null
+        }
+      } else {
+        return c
+      }
+    })
+  }
+
   selectCitationZotero(citationId: string, zoteroKey: string) {
     this._citations = this._citations.map(c => {
       if (c.citationId === citationId) {
@@ -154,7 +168,11 @@ export default class ArticleStore {
     }
   }
 
-  createThread(): ThreadId {
+  createAnnotation() {
+    return uuid()
+  }
+
+  createCommentThread(): ThreadId {
     const threadId = uuid()
     this._commentThreads.push({
       threadId,
