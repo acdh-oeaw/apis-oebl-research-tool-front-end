@@ -41,6 +41,17 @@ function makeLobidQueryString(p: ImportablePerson): string {
   }, [] as string[]).join(' AND ')
 }
 
+export async function searchAny(q: string) {
+  const res = await (await fetch('https://lobid.org/gnd/search?q=' + encodeURIComponent(q) + '&format=json')).json()
+  return res.member.map((m: any) => {
+    return {
+      name: m.preferredName,
+      id: m.gndIdentifier,
+      type: m.type.map(_.startCase).join(', ')
+    }
+  })
+}
+
 export async function findPerson(p: ImportablePerson, secondTry = false): Promise<LdPerson[]> {
   // const u = http://lobid.org/gnd/search?q=preferredName%3AFranz*%20AND%20dateOfDeath:1910*&filter=type%3APerson&format=json:preferredName,dateOfDeath,dateOfBirth,%20placeOfDeath,placeOfBirth&size=100
   let res: LdPerson[] = []
