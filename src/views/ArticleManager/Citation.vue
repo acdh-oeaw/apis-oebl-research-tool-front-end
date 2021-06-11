@@ -3,11 +3,19 @@
     <div>
       <div
         v-if="page === 0"
-        class="text-center muted caption mb-1">
-        Referenz bearbeiten
+        class="d-flex flex-row align-self-stretch">
+        <v-btn icon tile class="rounded-lg" small>
+        </v-btn>
+        <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
+          <v-icon small>mdi-book-open-page-variant-outline</v-icon>
+          Referenz bearbeiten
+        </div>
+        <v-btn icon tile class="rounded-lg" small>
+          <v-icon>mdi-dots-horizontal</v-icon>
+        </v-btn>
       </div>
       <v-btn
-        v-else
+        v-if="page !== 0"
         elevation="0"
         color="primary"
         text
@@ -23,18 +31,19 @@
           <text-field
             @input="searchBook"
             class="flex-grow-1"
+            v-model="searchQuery"
             :clearable="true"
             placeholder="Werk suchen …">
             <template v-slot:prepend>
-            <div
-              v-if="loading === true"
-              class="mt-1 ml-2">
-              <loading-spinner :size="25" />
-            </div>
-            <v-icon size="16" class="ml-3" v-else>
-              mdi-magnify
-            </v-icon>
-          </template>
+              <div
+                v-if="loading === true"
+                class="mt-1 ml-2">
+                <loading-spinner :size="25" />
+              </div>
+              <v-icon size="16" class="ml-3" v-else>
+                mdi-magnify
+              </v-icon>
+            </template>
           </text-field>
           <text-field
             style="width: 100px"
@@ -48,17 +57,28 @@
             </template>
           </text-field>
         </div>
-        <v-list two-line dense nav color="background" class="pa-0 x-dense" v-if="results.length > 0">
+        <v-list dense nav color="background" class="pa-0" v-if="results.length > 0">
           <v-list-item
+            dense
             nav
+            class="px-0"
             :input-value="currentCitation !== null && result.key === currentCitation.zoteroKey"
             v-for="(result, i) in results"
-            :key="i"
-            @click="selectTitle(result)">
-            <v-list-item-avatar style="min-width: 20px" width="15">
-              <v-icon v-if="currentCitation !== null && result.key === currentCitation.zoteroKey" small>mdi-check</v-icon>
+            :key="i">
+            <v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
+              <template v-if="currentCitation !== null">
+                <v-btn
+                  @click.stop.prevent.capture="selectTitle(result)"
+                  tile
+                  icon
+                  class="rounded-lg"
+                  elevation="0">
+                  <v-icon v-if="result.key === currentCitation.zoteroKey" color="primary">mdi-check-circle</v-icon>
+                  <v-icon v-else>mdi-circle-outline</v-icon>
+                </v-btn>
+              </template>
             </v-list-item-avatar>
-            <v-list-item-content>
+            <v-list-item-content @click.stop.prevent.capture="showDetails(result)" class="cursor-pointer">
               <v-list-item-title>
                 {{ result.data.creators.map(c => c.firstName + ', ' + c.lastName).join(' / ') }} ({{ result.data.date }})
               </v-list-item-title>
@@ -73,8 +93,8 @@
                 elevation="0"
                 @click.stop.prevent.capture="showDetails(result)"
                 tile>
-                <v-icon size="18" color="primary">
-                  mdi-playlist-edit
+                <v-icon color="primary">
+                  mdi-chevron-right
                 </v-icon>
               </v-btn>
             </v-list-item-action>
@@ -232,9 +252,14 @@ export default class Citation extends Vue {
     }
   }
 
-  selectTitle(zoteroTitle: ZoteroItem) {
+  selectTitle(zoteroItem: ZoteroItem) {
     if (this.id !== null) {
-      store.article.updateCitation(this.id, { zoteroKey: zoteroTitle.key, zoteroItemCached: zoteroTitle })
+      const currentCitation = store.article.getCitationById(this.id)
+      if (currentCitation?.zoteroKey === zoteroItem.key) {
+        store.article.unsetCitation(this.id)
+      } else {
+        store.article.updateCitation(this.id, { zoteroKey: zoteroItem.key, zoteroItemCached: zoteroItem })
+      }
     } else {
       confirm.confirm('not citation selected')
     }
