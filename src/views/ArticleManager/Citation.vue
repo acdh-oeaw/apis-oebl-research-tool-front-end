@@ -7,8 +7,7 @@
         <v-btn icon tile class="rounded-lg" small>
         </v-btn>
         <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
-          <v-icon small>mdi-book-open-page-variant-outline</v-icon>
-          Referenz bearbeiten
+          Zitat
         </div>
         <v-btn icon tile class="rounded-lg" small>
           <v-icon>mdi-dots-horizontal</v-icon>
@@ -101,6 +100,7 @@
           </v-list-item>
         </v-list>
         <div v-if="page === 0">
+          <v-divider class="mb-1" />
           <v-btn
             @click="page = 1"
             class="rounded-lg"
