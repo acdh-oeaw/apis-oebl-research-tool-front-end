@@ -2,6 +2,17 @@
   <div style="width: 320px">
     <v-window reverse v-model="page">
       <v-window-item>
+        <div
+          class="d-flex flex-row align-self-stretch">
+          <v-btn icon tile class="rounded-lg" small>
+        </v-btn>
+          <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
+            Annotation
+          </div>
+          <v-btn icon tile class="rounded-lg" small>
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </div>
         <text-field
           @input="debouncedSearchEntity"
           v-model="searchQuery"
@@ -34,7 +45,7 @@
                 </v-btn>
               </template>
             </v-list-item-avatar>
-            <v-list-item-content>
+            <v-list-item-content class="cursor-pointer" @click="showDetailsForGnd = result.id; page = 1">
               <v-list-item-title>
                 {{ result.name }}
               </v-list-item-title>
