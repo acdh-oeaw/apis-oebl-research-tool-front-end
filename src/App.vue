@@ -285,4 +285,25 @@ header h1
 .v-list-item.x-dense.v-list-item--two-line
   max-height 42px
 
+.cursor-pointer
+  cursor pointer
+
+select
+  // A reset of styles, including removing the default dropdown arrow
+  appearance: none;
+  // Additional resets for further consistency
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  outline: none;
+select::after
+  content "\F0140"
+  font normal normal normal 24px/1 "Material Design Icons"
+  display block
 </style>
