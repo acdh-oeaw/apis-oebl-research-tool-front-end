@@ -2,7 +2,7 @@
   <div class="fill-height background darken-1">
     <v-app-bar
       app
-      color="background"
+      color="background darken-1"
       class="elevation-0 pt-3 pr-3">
         <v-btn v-if="!store.settings.showNavDrawer" style="margin-top: -7px" @click="toggleDrawer" tile class="rounded-lg" icon>
           <v-icon>mdi-dock-left</v-icon>
