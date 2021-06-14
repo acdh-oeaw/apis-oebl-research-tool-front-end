@@ -129,10 +129,6 @@ export const Annotation = popupMark.extend({
 
   addCommands() {
     return {
-      updateAnnotation: (attrs) => ({ commands }) => {
-        const x = commands.unsetMark('annotation')
-        return commands.toggleMark('annotation', attrs)
-      },
       setAnnotation: (attributes) => ({ commands }) => {
         return commands.setMark('annotation', { id: store.article.createAnnotation() })
       },
