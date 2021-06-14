@@ -5,120 +5,169 @@
       app
       :style="{transition: 'none'}"
       height="75"
+      class="px-2"
       color="background"
       flat>
       <v-btn v-if="!store.settings.showNavDrawer" @click="toggleDrawer" tile class="rounded-lg" icon>
         <v-icon>mdi-dock-left</v-icon>
       </v-btn>
-      <div v-if="issueLemma">
-        <h1 style="margin-bottom: -3px">{{ issueLemma.lemma.lastName }}, {{ issueLemma.lemma.firstName }} </h1>
-        <div class="caption text-no-wrap muted">
+      <div>
+        <h1 style="margin-bottom: -3px">Testartikel</h1>
+        <div class="caption text-no-wrap muted pl-1">
           Biographie
         </div>
       </div>
       <v-spacer />
-      <div v-if="editor">
-        <!-- <v-btn @click="logHTML">log html</v-btn> -->
-        <select-menu
-          :hide-searchbar="true"
-          :show-caret="true"
-          class="rounded-lg"
-          btn-class="pl-2"
-          :value="store.settings.articleZoomFactor"
-          :return-value="true"
-          @input="store.settings = { ...store.settings, articleZoomFactor: $event }"
-          :items="zoomSteps" />
-        <select-menu
-          :hide-searchbar="true"
-          :show-caret="true"
-          class="rounded-lg"
-          btn-class="pl-2"
-          :items="formattingItems"
-          :value="activeFormatting"
-          @input="onSelectFormatting"
-        />
-        <v-tooltip transition="none" bottom>
-          <template v-slot:activator="{ on, attrs }">
+      <!-- <div v-if="editor" class="editor-toolbar d-flex"> -->
+          <v-card color="background darken-2" elevation="0" class="rounded-lg pa-1">
+            <select-menu
+              :hide-searchbar="true"
+              :show-caret="true"
+              class="rounded-lg"
+              btn-class="pl-2"
+              :value="store.settings.articleZoomFactor"
+              :return-value="true"
+              @input="store.settings = { ...store.settings, articleZoomFactor: $event }"
+              :items="zoomSteps" />
+          </v-card>
+          <v-card color="background darken-2" elevation="0" class="ml-5 rounded-lg pa-1">
+            <select-menu
+              :hide-searchbar="true"
+              :show-caret="true"
+              class="rounded-lg"
+              btn-class="pl-2"
+              style="width: 100px"
+              :items="formattingItems"
+              :value="activeFormatting"
+              @input="onSelectFormatting"
+            />
             <v-btn
               class="rounded-lg"
-              tile
-              v-on="on"
-              v-bind="attrs"
+              small
+              text
               icon
-              @click="editor.chain().focus().toggleCitation().run()">
-              <v-icon>mdi-book-open-page-variant-outline</v-icon>
+              @click="editor.chain().focus().toggleItalic().run()">
+              <v-icon small>mdi-format-italic</v-icon>
             </v-btn>
-            </template>
-          <span>Zitat einfügen</span>
-        </v-tooltip>
-        <v-btn
-          class="rounded-lg"
-          tile
-          icon
-          @click="editor.chain().focus().toggleAnnotation().run()">
-          <v-icon>mdi-earth</v-icon>
-        </v-btn>
-        <v-btn
-          class="rounded-lg"
-          tile
-          icon
-          @click="editor.chain().focus().toggleComment().run()">
-          <v-icon>mdi-message-outline</v-icon>
-        </v-btn>
-        <v-menu
-          content-class="soft-shadow"
-          offset-y
-          left
-          bottom
-          :close-on-content-click="false">
-          <template v-slot:activator="{ on, attrs }">
             <v-btn
-              v-bind="attrs"
-              v-on="on"
-              tile
-              class="rounded-lg mr-3"
-              icon>
-              <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
+              class="rounded-lg"
+              small
+              text
+              icon
+              @click="editor.chain().focus().toggleBold()">
+              <v-icon small>mdi-format-bold</v-icon>
             </v-btn>
-          </template>
-          <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0 x-dense" dense nav>
-            <v-list-item @click="editor.chain().focus().undo().run()">
-              <v-list-item-avatar><v-icon small>mdi-undo</v-icon></v-list-item-avatar>
-              <v-list-item-content>Rückgängig </v-list-item-content>
-              <v-list-item-action-text class="ml-3">STRG+Z</v-list-item-action-text>
-            </v-list-item>
-            <v-list-item @click="editor.chain().focus().redo().run()">
-              <v-list-item-avatar><v-icon small>mdi-redo</v-icon></v-list-item-avatar>
-              <v-list-item-content>Wiederholen</v-list-item-content>
-              <v-list-item-action-text class="ml-3">STRG+Y</v-list-item-action-text>
-            </v-list-item>
-            <v-divider />
-            <v-list-item @click="insertImage">
-              <v-list-item-avatar><v-icon small>mdi-file-image-outline</v-icon></v-list-item-avatar>
-              <v-list-item-content>Bild einfügen…</v-list-item-content>
-            </v-list-item>
-            <!-- <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().undo().run()">
-          <v-icon>mdi-undo</v-icon>
+          </v-card>
+          <v-card color="background darken-2" elevation="0" class="rounded-lg pa-1 ml-5 mr-5">
+            <v-btn
+              class="rounded-lg"
+              small
+              text
+              @click="editor.chain().focus().toggleCitation().run()">
+              <v-icon small left>mdi-book-open-page-variant-outline</v-icon>
+              Zitat
+            </v-btn>
+            <v-btn
+              class="rounded-lg"
+              small
+              text
+              @click="editor.chain().focus().toggleAnnotation().run()">
+              <v-icon small left>mdi-earth</v-icon>
+              Annotation
+            </v-btn>
+            <v-btn
+              class="rounded-lg"
+              small
+              text
+              @click="editor.chain().focus().toggleComment().run()">
+              <v-icon small left>mdi-message-outline</v-icon>
+              Kommentar
+            </v-btn>
+          </v-card>
+      <v-menu
+        content-class="soft-shadow"
+        offset-y
+        left
+        bottom
+        :close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            tile
+            class="rounded-lg ml-5"
+            icon>
+            <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
+          </v-btn>
+        </template>
+        <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0 x-dense" dense nav>
+          <v-list-item @click="editor.chain().focus().undo().run()">
+            <v-list-item-avatar><v-icon small>mdi-undo</v-icon></v-list-item-avatar>
+            <v-list-item-content>Rückgängig </v-list-item-content>
+            <v-list-item-action-text class="ml-3">STRG+Z</v-list-item-action-text>
+          </v-list-item>
+          <v-list-item @click="editor.chain().focus().redo().run()">
+            <v-list-item-avatar><v-icon small>mdi-redo</v-icon></v-list-item-avatar>
+            <v-list-item-content>Wiederholen</v-list-item-content>
+            <v-list-item-action-text class="ml-3">STRG+Y</v-list-item-action-text>
+          </v-list-item>
+          <v-divider />
+          <v-list-item @click="insertImage">
+            <v-list-item-avatar><v-icon small>mdi-file-image-outline</v-icon></v-list-item-avatar>
+            <v-list-item-content>Bild einfügen…</v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="insertAudio">
+            <v-list-item-avatar><v-icon small>mdi-volume-source</v-icon></v-list-item-avatar>
+            <v-list-item-content>Tondatei einfügen…</v-list-item-content>
+          </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn
+          @click="store.article.showSidebar = !store.article.showSidebar"
+          :color="store.article.showSidebar ? 'primary' : ''"
+          tile
+          class="rounded-lg"
+          icon>
+          <v-icon>mdi-information-outline</v-icon>
         </v-btn>
-        <v-btn class="rounded-lg" tile icon @click="editor.chain().focus().redo().run()">
-          <v-icon>mdi-redo</v-icon>
-        </v-btn> -->
-            </v-list>
-          </v-menu>
-      </div>
     </v-app-bar>
     <resizable-drawer
-      color="background"
-      :card="true"
+      color="background darken-2"
+      :card="false"
       :right="true"
       :min-width="300"
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
-      :value="false">
-      <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
+      :value="store.article.showSidebar">
+      <!-- <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" /> -->
+      <v-card
+        class="transparent flex-column d-flex fill-height lemma-detail"
+        flat>
+        <v-card-title class="flex-column pb-2">
+          <v-btn-toggle
+            class="mx-auto mt-1 mb-0 d-inline-block text-center"
+            max
+            active-class="white--text primary darken-1"
+            mandatory
+            borderless
+            dense
+            color="primary"
+            background-color="transparent">
+            <v-btn text class="rounded-lg" small>Lemma-Details</v-btn>
+            <v-btn text class="rounded-lg" small>Annotationen</v-btn>
+            <v-btn text class="rounded-lg" small>Kommentare</v-btn>
+            <v-btn text class="rounded-lg" small>Versionsgeschichte</v-btn>
+          </v-btn-toggle>
+        </v-card-title>
+        <v-divider class="mx-5" />
+        <v-card-text class="overflow-y-auto">
+        </v-card-text>
+        <v-card-actions>
+        </v-card-actions>
+      </v-card>
     </resizable-drawer>
     <v-main style="height: calc(100vh - 75px); margin-top: 75px; overflow: auto; padding-top: 0; padding-bottom: 20px">
-      <div class="px-5 outer-editor mx-auto">
+      <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
         <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
             class="tiptap-editor"
@@ -194,6 +243,16 @@ export default class Article extends Vue {
       const src = URL.createObjectURL(files.item(0))
       if (this.editor !== null) {
         const l = this.editor?.commands.setImage({src})
+      }
+    }
+  }
+
+  async insertAudio() {
+    const files = await fileDialog({ multiple: false, accept: 'audio/*' })
+    if (files.item(0) !== null) {
+      const src = URL.createObjectURL(files.item(0))
+      if (this.editor !== null) {
+        // const l = this.editor?.commands.setAudio({src})
       }
     }
   }
@@ -301,6 +360,10 @@ export default class Article extends Vue {
   line-height 1.6
   counter-reset prosemirror-footnote
 
+.editor-toolbar
+  position sticky
+  z-index 99
+  top 0
 // .tiptap-editor /deep/ *
 //   color #333
 
