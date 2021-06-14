@@ -39,6 +39,8 @@ export default class ArticleStore {
   private _citations: Citation[] = []
   public article = ''
 
+  showSidebar = false
+
   async loadComments(articleId: number) {
     this._commentThreads = [
       {
