@@ -162,7 +162,7 @@
                 <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
               </v-btn>
             </template>
-            <v-list color="background" class="elevation-0 rounded-lg text-body-2" dense nav>
+            <v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
               <v-list-item @click="showAddLemmaDialog = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-shape-square-plus</v-icon>
@@ -211,11 +211,11 @@
               </v-list-item>
             </v-list>
             <v-divider />
-            <v-subheader class="pt-0 mt-0">Spalten anzeigen</v-subheader>
+            <div class="caption muted px-3 pt-2">Spalten anzeigen</div>
             <v-list
               style="max-height: 50vh; overflow: scroll"
               color="background"
-              class="elevation-0 rounded-lg text-body-2 mb-0 pb-0"
+              class="elevation-0 rounded-lg text-body-2 mb-0 pb-0 x-dense"
               dense nav>
               <v-list-item
                 v-for="column in columns"
@@ -230,7 +230,7 @@
               </v-list-item>
             </v-list>
             <v-divider class="mt-0 pt-0" />
-            <v-subheader>Farbschema</v-subheader>
+            <div class="caption muted px-3 pt-2">Farbschema</div>
             <theme-toggle class="mx-2 mb-2" />
           </v-menu>
         </v-flex>
@@ -289,6 +289,8 @@
         @drag:row="dragListener"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
+        @dblclick:row="store.lemma.showSideBar = true"
+        @dblclick:cell="store.lemma.showSideBar = true"
         @update:selection="selectedRows = $event"
         @update:item="updateLemmaFromTable"
         @update:columns="columns = $event" >
