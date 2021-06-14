@@ -6,12 +6,17 @@
         draggable="true"
         data-drag-handle
         :src="node.attrs.src">
-      <figcaption>
-        <div class="image-description">
-          <div draggable="true" contenteditable="false" class="caption muted">Abbildung</div>
+      <figcaption class="image-description text-right">
+        <div class="text-center">
+          <div class="clearfix" draggable="true" contenteditable="false">
+            <span class="muted caption">Abbildung</span>
+            <v-btn
+              @click="editCopyright"
+              style="position: absolute; right: 0; top: 2px;" small text color="primary"><v-icon left>mdi-copyright</v-icon>Copyright hinzufügen…</v-btn>
+          </div>
           <node-view-content />
         </div>
-        <!-- <text-field contenteditable="false" label="copyright" /> -->
+        <!-- <text-field class="mt-1" :color="'transparent'" contenteditable="false" label="copyright" /> -->
       </figcaption>
     </figure>
   </node-view-wrapper>
@@ -21,6 +26,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { NodeViewWrapper, nodeViewProps, NodeViewContent } from '@tiptap/vue-2'
 import { Node } from 'prosemirror-model'
 import TextField from '../lib/TextField.vue'
+import prompt from '@/store/prompt'
 @Component({
   components: {
     NodeViewWrapper,
@@ -45,6 +51,11 @@ export default class ProsemirrorImage extends Vue {
       })
     }
   }
+
+  async editCopyright() {
+    const x = await prompt.prompt('Copyright', { placeholder: 'Copyright' })
+    console.log(x)
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -54,13 +65,15 @@ export default class ProsemirrorImage extends Vue {
 .image-description
   margin .5em 0 1em 0
   font-size 90%
-  padding 0.25rem
+  padding .25rem
   border 2px dashed #0D0D0D20
   border-radius 0.5rem
+  position relative
 
 img
   max-height 40vh
   border-radius 10px
+  max-width 100%
 
 .image-description:empty:before
   content 'Bildunterschrift'
