@@ -21,7 +21,7 @@
           small>{{ prependIcon }}</v-icon>
         {{ label ? label + ': ' : '' }}
         {{ displayValue }}
-        <v-icon small v-if="showCaret">mdi-chevron-down</v-icon>
+        <v-icon small v-if="showCaret">mdi-unfold-more-horizontal</v-icon>
       </v-btn>
     </template>
     <v-card class="pa-0 fill-height d-flex flex-column rounded-lg" color="background" style="max-height: inherit;">
