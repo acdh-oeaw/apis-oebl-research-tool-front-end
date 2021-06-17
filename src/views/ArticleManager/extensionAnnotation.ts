@@ -12,7 +12,7 @@ export interface AnnotationOptions {
   HTMLAttributes: Record<string, any>,
 }
 
-interface AnnotationAttributes {
+export interface AnnotationAttributes {
   id: string,
   entityId: string|null,
   relationTypeId: string|null
@@ -136,6 +136,7 @@ export const Annotation = popupMark.extend({
         if (this.editor.isActive(this.name)) {
           return commands.unsetMark('annotation')
         } else {
+          console.log('this.editor.state.selection', this.editor.state.selection)
           const id = store.article.createAnnotation()
           const command = commands.toggleMark('annotation', { id })
           return command
