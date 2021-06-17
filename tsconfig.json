@@ -8,6 +8,9 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/leader-line-types"
+    ],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
