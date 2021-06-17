@@ -52,6 +52,15 @@ export async function searchAny(q: string) {
   })
 }
 
+export async function get(gnd: string) {
+  const res = await (await fetch('https://lobid.org/gnd/' + encodeURIComponent(gnd) + '.json')).json()
+  return {
+    name: res.preferredName,
+    id: res.gndIdentifier,
+    type: res.type.map(_.startCase).join(', ')
+  }
+}
+
 export async function findPerson(p: ImportablePerson, secondTry = false): Promise<LdPerson[]> {
   // const u = http://lobid.org/gnd/search?q=preferredName%3AFranz*%20AND%20dateOfDeath:1910*&filter=type%3APerson&format=json:preferredName,dateOfDeath,dateOfBirth,%20placeOfDeath,placeOfBirth&size=100
   let res: LdPerson[] = []
