@@ -803,12 +803,9 @@ export default class LemmaManager extends Vue {
 .virtual-table .header-cell
   padding 0 5px
 
-.status-bar
-  overflow hidden
-  position fixed
-  bottom 10px
-  right 0px
+</style>
 
+<style lang="stylus" scoped>
 .table-external-link
   display inline-block
   padding 3px 0px
