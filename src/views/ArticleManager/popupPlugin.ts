@@ -47,7 +47,6 @@ function showPopUp(
         ...attributes,
         editor
       })
-      t.setContent(vueComponents[name].element)
     } else {
       vueComponents[name] = new VueRenderer(vueComp, {
         propsData: {
@@ -56,9 +55,8 @@ function showPopUp(
         },
         parent
       })
-      console.log('rendered vue instance', vueComponents[name])
-      t.setContent(vueComponents[name].element)
     }
+    t.setContent(vueComponents[name].element)
     if (shouldFocus) {
       requestAnimationFrame(() => {
         // eslint-disable-next-line no-unused-expressions
@@ -88,7 +86,6 @@ const ex = Mark.create({
       allowHTML: true,
       interactive: true,
       ignoreAttributes: true,
-      inlinePositioning: true,
       trigger: 'manual',
       animation: 'scale',
       sticky: true,
@@ -153,6 +150,19 @@ const ex = Mark.create({
               return el.getBoundingClientRect()
             }
           })
+        }
+      }
+    }
+  },
+  addKeyboardShortcuts() {
+    return {
+      Escape: () => {
+        console.log('esc!', t)
+        if (t !== null && t.state.isVisible) {
+          t.hide()
+          return true
+        } else {
+          return false
         }
       }
     }
