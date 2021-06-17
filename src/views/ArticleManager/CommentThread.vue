@@ -1,6 +1,6 @@
 <template>
-  <div style="width: 320px">
-    <div v-if="thread !== undefined" class="d-flex flex-row align-self-stretch">
+  <div style="width: 300px">
+    <div v-if="showHeader" class="d-flex flex-row align-self-stretch">
       <v-btn icon tile class="rounded-lg" disabled small>
         <v-icon small>mdi-message-outline</v-icon>
       </v-btn>
@@ -14,7 +14,7 @@
     <div
       v-if="thread !== undefined"
       ref="threadContainer"
-      class="thread-container">
+      :class="['thread-container', scrollable && 'scrollable']">
       <div class="comment-container" v-for="(comment, i) in thread.comments" :key="comment.commentId">
         <div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
           User {{ comment.user }} <v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
@@ -32,6 +32,7 @@
       @keyup.native="storeLastCaretPos"
       @mouseup.native="storeLastCaretPos"
       class="py-0 pl-1 pr-1 mt-1 mb-0"
+      style="background: rgba(0,0,0,.05) !important;"
       placeholder="Kommentar hinzufügen …">
       <template v-slot:prepend>
         <v-btn
@@ -45,7 +46,7 @@
       </template>
       <v-btn class="rounded-lg" @click="appendComment" icon tile text><v-icon small>mdi-send</v-icon></v-btn>
     </text-field>
-    <div class="emoji-picker" v-if="shouldShowEmojiPicker">
+    <div class="emoji-picker scrollable" v-if="shouldShowEmojiPicker">
       <span v-for="(group, i) in groups" :key="i">
         <div class="emoji-group caption pl-2">
           <span class="muted"> {{ group.group }} </span>
@@ -76,6 +77,9 @@ import { emoji } from '@/service/emoji'
 export default class CommentThread extends Vue {
 
   @Prop({ default: null }) id!: string|null
+  @Prop({ default: true }) scrollable!: boolean
+  @Prop({ default: true }) showHeader!: boolean
+
   newMessage = ''
   store = store
   groups = emoji.groups
@@ -83,9 +87,7 @@ export default class CommentThread extends Vue {
   lastCaretPos = 0
 
   storeLastCaretPos(e: Event) {
-    console.log(e, e.target)
     if (e.target instanceof HTMLTextAreaElement) {
-      console.log(this.lastCaretPos, e.target.selectionStart)
       this.lastCaretPos = e.target.selectionStart
     }
   }
@@ -173,8 +175,7 @@ export default class CommentThread extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
-.thread-container
-.emoji-picker
+.scrollable
   max-height 300px
   overflow auto
 
