@@ -48,7 +48,6 @@ const routes: Array<RouteConfig> = [
     path: '/article/:issueLemmaId',
     component: Article,
     props: (route) => {
-      store.article = new ArticleStore(Number(route.params.issueLemmaId))
       return {
         issueLemmaId: Number(route.params.issueLemmaId) || null
       }
