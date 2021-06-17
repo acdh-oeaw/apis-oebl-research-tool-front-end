@@ -3,7 +3,7 @@
     'rounded-lg mb-1 text-field-outer',
     color || 'background darken-2'
   ]">
-    <div class="d-flex">
+    <div class="d-flex flex-grow-1">
       <slot name="prepend">
         <div
           @click="selectAll"
@@ -145,6 +145,11 @@ textarea
   resize none
   outline 0
 
+:placeholder
+  text-overflow ellipsis
+  overflow hidden
+  white-space nowrap
+
 .fake-textarea
   min-height 1.6em
   visibility hidden
@@ -155,6 +160,7 @@ textarea
   hyphens auto
 
 .text-field-outer
+  display flex
   overflow hidden
   transition .2s box-shadow
 
