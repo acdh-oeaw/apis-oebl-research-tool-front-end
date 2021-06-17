@@ -1,6 +1,30 @@
-@@ -0,0 +1,89 @@
 <template>
   <div class="fill-height">
+    <v-dialog max-width="800" v-model="showSendWindow">
+      <v-card class="rounded-lg soft-shadow">
+        <v-card-title>
+          <v-btn class="rounded-lg" color="background darken-2" elevation="0" @click="showSendWindow = false">
+            Abbrechen
+          </v-btn>
+          <v-spacer />
+          Artikel an "Autor" schicken
+          <v-spacer />
+          <v-btn class="rounded-lg" color="primary" elevation="0" @click="showSendWindow = false">
+            <v-icon small left>mdi-send</v-icon>
+            Senden
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <text-field
+            class="pa-3"
+            style="min-height: 200px"
+            :allowNewLine="true"
+            placeholder="Persönliche Nachricht eingeben…" />
+        </v-card-text>
+        <v-card-actions>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-app-bar
       app
       :style="{transition: 'none'}"
@@ -12,14 +36,17 @@
         <v-icon>mdi-dock-left</v-icon>
       </v-btn>
       <div>
-        <h1 style="margin-bottom: -3px">Testartikel</h1>
+        <h1 style="margin-bottom: -3px">
+          {{ issueLemma ? issueLemma.lemma.firstName + ' ' + issueLemma.lemma.lastName : 'Lade…' }}</h1>
         <div class="caption text-no-wrap muted pl-1">
           Biographie
         </div>
       </div>
       <v-spacer />
-      <!-- <div v-if="editor" class="editor-toolbar d-flex"> -->
+      <v-slide-group class="ml-2">
+        <v-slide-item>
           <v-card color="background darken-2" elevation="0" class="rounded-lg pa-1">
+            <div class="tb-tooltip caption muted">Zoom</div>
             <select-menu
               :hide-searchbar="true"
               :show-caret="true"
@@ -30,7 +57,10 @@
               @input="store.settings = { ...store.settings, articleZoomFactor: $event }"
               :items="zoomSteps" />
           </v-card>
+        </v-slide-item>
+        <v-slide-item>
           <v-card color="background darken-2" elevation="0" class="ml-5 rounded-lg pa-1">
+            <div class="tb-tooltip caption muted">Format</div>
             <select-menu
               :hide-searchbar="true"
               :show-caret="true"
@@ -58,7 +88,10 @@
               <v-icon small>mdi-format-bold</v-icon>
             </v-btn>
           </v-card>
+        </v-slide-item>
+        <v-slide-item>
           <v-card color="background darken-2" elevation="0" class="rounded-lg pa-1 ml-5 mr-5">
+            <div class="tb-tooltip caption muted">Einfügen</div>
             <v-btn
               class="rounded-lg"
               small
@@ -84,6 +117,8 @@
               Kommentar
             </v-btn>
           </v-card>
+        </v-slide-item>
+      </v-slide-group>
       <v-menu
         content-class="soft-shadow"
         offset-y
@@ -139,7 +174,6 @@
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
       :value="store.article.showSidebar">
-      <!-- <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" /> -->
       <v-card
         class="transparent flex-column d-flex fill-height lemma-detail"
         flat>
@@ -149,20 +183,42 @@
             max
             active-class="white--text primary darken-1"
             mandatory
+            v-model="sidebarTab"
             borderless
             dense
             color="primary"
             background-color="transparent">
-            <v-btn text class="rounded-lg" small>Lemma-Details</v-btn>
+            <v-btn text class="rounded-lg" small>Info</v-btn>
             <v-btn text class="rounded-lg" small>Annotationen</v-btn>
             <v-btn text class="rounded-lg" small>Kommentare</v-btn>
             <v-btn text class="rounded-lg" small>Versionsgeschichte</v-btn>
+            <v-btn text class="rounded-lg" small>Personen-Details</v-btn>
           </v-btn-toggle>
         </v-card-title>
         <v-divider class="mx-5" />
-        <v-card-text class="overflow-y-auto">
+        <v-card-text class="sidebar-content overflow-y-auto flex-grow-1">
+          <v-window :value="sidebarTab">
+            <v-window-item>
+              <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
+            </v-window-item>
+            <v-window-item>
+              <annotation-sidebar :editor="editor" />
+            </v-window-item>
+            <v-window-item>
+              <comments-sidebar
+                :show-lines="store.article.showSidebar === true && sidebarTab === 2"
+              />
+            </v-window-item>
+            <v-window-item>
+              Versionsgeschichte
+            </v-window-item>
+          </v-window>
         </v-card-text>
         <v-card-actions>
+          <v-btn @click="showSendWindow = true" block elevation="0" color="primary" class="rounded-lg">
+            <v-icon left>mdi-share</v-icon>
+            Absenden …
+          </v-btn>
         </v-card-actions>
       </v-card>
     </resizable-drawer>
@@ -184,22 +240,29 @@
 <script lang="ts">
 
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
-import SelectMenu from '@/views/lib/SelectMenu.vue'
-
 import { Editor, EditorContent } from '@tiptap/vue-2'
 import StarterKit from '@tiptap/starter-kit'
-import { Comment } from './extensionComment'
+import fileDialog from 'file-dialog'
+
+import { Comment as CommentExtension } from './extensionComment'
 import { Citation as CitationExtension} from './extensionCitation'
 import { Image as ImageExtension } from './extensionImage'
 import { Annotation as AnnotationExtension } from './extensionAnnotation'
+
+import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
+import SelectMenu from '@/views/lib/SelectMenu.vue'
+import TextField from '@/views/lib/TextField.vue'
+import AnnotationSidebar from './AnnotationSidebar.vue'
+
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
-import Highlight from '@tiptap/extension-highlight'
+
+import CommentsSidebar from './CommentsSidebar.vue'
+
 import CitationDisplay from './CitationDisplay.vue'
-import fileDialog from 'file-dialog'
+
 import store from '@/store'
+import ArticleStore, { Citation } from '@/store/article'
 import { IssueLemma } from '@/api'
-import { Citation } from '@/store/article'
 
 @Component({
   components: {
@@ -207,15 +270,22 @@ import { Citation } from '@/store/article'
     SelectMenu,
     CitationDisplay,
     EditorContent,
-    IssueLemmaDetail
+    IssueLemmaDetail,
+    CommentsSidebar,
+    AnnotationSidebar,
+    TextField
   }
 })
 export default class Article extends Vue {
 
   @Prop({ required: true }) issueLemmaId!: number
+
   issueLemma: IssueLemma|null = null
   editor: Editor|null = null
-
+  showSendWindow = false
+  sidebarTab = 0
+  store = store
+  toolbarPaddingY = 15
   formattingItems = [
     {
       name: 'Text',
@@ -237,6 +307,32 @@ export default class Article extends Vue {
     }
   ]
 
+  activeFormatting: any = this.formattingItems[0]
+
+  zoomSteps = [
+    {
+      name: '80%',
+      value: .8
+    },
+    {
+      name: '100%',
+      value: 1
+    },
+    {
+      name: '120%',
+      value: 1.2
+    },
+    {
+      name: '150%',
+      value: 1.5
+    }
+  ]
+
+  @Watch('issueLemmaId', { immediate: true })
+  onChangeIssueLemmaId() {
+    store.article = new ArticleStore(Number(this.issueLemmaId))
+  }
+
   async insertImage() {
     const files = await fileDialog({ multiple: false, accept: 'image/*' })
     if (files.item(0) !== null) {
@@ -257,10 +353,7 @@ export default class Article extends Vue {
     }
   }
 
-  activeFormatting: any = this.formattingItems[0]
-
   onSelectFormatting(v: any) {
-    console.log(v, this.editor)
     v.onSelect(this.editor)
   }
 
@@ -279,16 +372,15 @@ export default class Article extends Vue {
   }
 
   async mounted() {
-    // this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
+    this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
     await store.article.loadArticle(this.issueLemmaId)
     // await store.article.loadComments(this.issueLemmaId)
     const vm = this
     this.editor = new Editor({
       content: store.article.article,
       extensions: [
-        Highlight,
         CitationExtension,
-        Comment,
+        CommentExtension,
         ImageExtension,
         AnnotationExtension,
         StarterKit
@@ -318,28 +410,6 @@ export default class Article extends Vue {
     })
   }
 
-  store = store
-  toolbarPaddingY = 15
-
-  zoomSteps = [
-    {
-      name: '80%',
-      value: .8
-    },
-    {
-      name: '100%',
-      value: 1
-    },
-    {
-      name: '120%',
-      value: 1.2
-    },
-    {
-      name: '150%',
-      value: 1.5
-    }
-  ]
-
   toggleDrawer() {
     this.store.settings = { ...this.store.settings, showNavDrawer: !this.store.settings.showNavDrawer }
   }
@@ -352,6 +422,18 @@ export default class Article extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
+
+.tb-tooltip
+  z-index 9
+  opacity 0
+  transform translateY(-110%)
+  position absolute
+  transition opacity .2s
+
+.v-card:hover .tb-tooltip
+  z-index 9
+  opacity .7
+
 .outer-editor
   --comment-color: #ffe1ab
   --footnote-color: rgba(0,0,20,.07)
@@ -380,12 +462,12 @@ export default class Article extends Vue {
 .tiptap-editor /deep/ comment
   border-radius 4px
   background var(--comment-color)
-  padding 4px
+  padding 2px
 
 .tiptap-editor /deep/ footnote
   border-radius 4px
   background var(--footnote-color)
-  padding 4px
+  padding 2px
 
 .tiptap-editor /deep/ footnote:after
   content counter(prosemirror-footnote)
@@ -396,7 +478,7 @@ export default class Article extends Vue {
 .tiptap-editor /deep/ mark
   border-radius 4px
   background var(--annotation-color)
-  padding 4px
+  padding 2px
 
 .tiptap-editor /deep/ footnote > comment
 .tiptap-editor /deep/ comment > footnote
