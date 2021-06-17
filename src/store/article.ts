@@ -1,4 +1,5 @@
 import zotero, { ZoteroItem } from '@/service/zotero'
+import { AnnotationAttributes } from '@/views/ArticleManager/extensionAnnotation'
 import { v4 as uuid } from 'uuid'
 
 interface Comment {
@@ -35,11 +36,12 @@ export default class ArticleStore {
     }
   }
 
+  showSidebar = false
+
   private _commentThreads: CommentThread[] = []
   private _citations: Citation[] = []
+  private _annotations: AnnotationAttributes[] = []
   public article = ''
-
-  showSidebar = false
 
   async loadComments(articleId: number) {
     this._commentThreads = [
@@ -58,11 +60,34 @@ export default class ArticleStore {
             date: new Date(),
             commentId: '2',
             user: 2,
-            text: 'Exercitation officia ad mollit cillum duis culpa est anim voluptate occaecat nostrud.'
+            text: 'Nostrud duis minim et laboris labore.'
+          }
+        ]
+      },
+      {
+        threadId: '2',
+        status: 'open',
+        offset: 0,
+        comments: [
+          {
+            date: new Date(),
+            commentId: '1',
+            user: 1,
+            text: 'Aliquip nisi et Lorem anim dolore ut eiusmod tempor velit minim.'
+          },
+          {
+            date: new Date(),
+            commentId: '2',
+            user: 2,
+            text: 'Pariatur ut eu dolor enim duis deserunt.'
           }
         ]
       }
     ]
+  }
+
+  get annotations() {
+    return this._annotations
   }
 
   get citations() {
@@ -96,7 +121,7 @@ export default class ArticleStore {
       aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
       Est ut cupidatat exercitation et ea quis commodo.</p>
       Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
-      Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="2">excepteur</comment>
+      Culpa cupidatat anim qui adipisicing ea <comment data-id="2">consectetur qui Lorem culpa excepteur</comment>
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
       <h2>Or possibly like this.</h2>
       <p>Non labore occaecat deserunt dolor aliquip
@@ -171,7 +196,23 @@ export default class ArticleStore {
   }
 
   createAnnotation() {
-    return uuid()
+    const annotationId = uuid()
+    this._annotations.push({
+      id: annotationId,
+      entityId: null,
+      relationTypeId: null
+    })
+    return annotationId
+  }
+
+  updateAnnotation(id: string, p: Partial<AnnotationAttributes>) {
+    this._annotations = this._annotations.map(a => {
+      if (a.id === id) {
+        return { ...a, ...p }
+      } else {
+        return a
+      }
+    })
   }
 
   createCommentThread(): ThreadId {
