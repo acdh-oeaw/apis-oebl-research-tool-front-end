@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 320px">
+  <div style="width: 320px; min-height: 250px">
     <v-window reverse v-model="page">
       <v-window-item>
         <div
@@ -30,7 +30,7 @@
             </v-icon>
           </template>
         </text-field>
-        <v-list dense nav color="background" class="pa-0 result-list">
+        <v-list v-if="results.length > 0" dense nav color="transparent" class="pa-0 result-list">
           <v-list-item v-for="result in results" :key="result.id">
             <v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
               <template>
@@ -67,6 +67,15 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() !== '' && loading === true">
+          Suche …
+        </div>
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() === ''">
+          Suchen Sie nach einer Entität
+        </div>
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() !== ''">
+          Nichts gefunden.
+        </div>
       </v-window-item>
       <v-window-item>
         <div>
@@ -82,24 +91,45 @@
         </div>
         <lobid-preview-card class="mb-3" :gnd="[ showDetailsForGnd ]" />
       </v-window-item>
-      <v-divider />
-        <div>
-          <v-icon>mdi-chevron-down</v-icon>
-          <select style="width: 100%">
-            <option>
-              Befreundet mit
-            </option>
-            <option>
-              Verheiratet mit
-            </option>
-            <option>
-              Arbeitet bei
-            </option>
-            <option>
-              (andere)
-            </option>
-          </select>
-        </div>
+      <div class="d-flex flex-row rounded-lg background darken-2 pa-2 mt-1">
+        <v-icon small>mdi-chevron-down</v-icon>
+        <select
+          :value="relationTypeId"
+          @input="updateProps({ relationTypeId: $event.target.value })"
+          class="flex-grow-1 text-center">
+          <option value="null">
+            (Beziehung Wählen)
+          </option>
+          <option value="1">
+            wohnte in
+          </option>
+          <option value="2">
+            Befreundet mit
+          </option>
+          <option value="3">
+            Verheiratet mit
+          </option>
+          <option value="4">
+            Arbeitet bei
+          </option>
+          <option value="5">
+            (andere)
+          </option>
+        </select>
+      </div>
+      <div class="d-flex flex-row mt-1">
+        <text-field
+          placeholder="YYYY"
+          class="mr-1"
+          style="width: 49.5%"
+          label="von"
+        />
+        <text-field
+          placeholder="YYYY"
+          label="bis"
+          style="width: 49.5%"
+        />
+      </div>
     </v-window>
   </div>
 </template>
@@ -111,6 +141,9 @@ import _ from 'lodash'
 import { searchAny } from '../../service/lobid'
 import LobidPreviewCard from '../LemmaManager/LobidPreviewCard.vue'
 import { Editor } from '@tiptap/vue-2'
+import { AnnotationAttributes } from './extensionAnnotation'
+import store from '@/store'
+
 @Component({
   components: {
     TextField,
@@ -124,6 +157,7 @@ export default class Entity extends Vue {
   @Prop({ default: null }) entityId!: string|null
   @Prop({ default: null }) relationTypeId!: string|null
   @Prop({ required: true }) editor!: Editor
+  @Prop({ default: null }) cachedEntity!: {type: string, name: string, id: string}|null
 
   page = 0
   searchQuery = ''
@@ -134,12 +168,30 @@ export default class Entity extends Vue {
     entityId: null,
   }
 
-  selectEntity(id: string) {
+  updateProps(p: Partial<AnnotationAttributes>) {
     this.editor.commands.updateAttributes('annotation', {
+      entityId: this.entityId,
       id: this.id,
-      entityId: id,
-      releationTypId: 'hello!!!'
+      relationTypeId: this.relationTypeId,
+      ...p
     })
+    if (this.id !== null) {
+      store.article.updateAnnotation(this.id, p)
+    }
+  }
+
+  selectEntity(id: string) {
+    this.updateProps({ entityId: id })
+  }
+
+  @Watch('id', { immediate: true })
+  onChangeId() {
+    console.log('onChangeId', this.entityId, this.relationTypeId)
+    if (this.entityId === null && this.relationTypeId === null) {
+      const selectedText = this.editor.state.doc.textBetween(this.editor.state.selection.from, this.editor.state.selection.to)
+      this.searchQuery = selectedText
+      this.searchEntity(selectedText)
+    }
   }
 
   @Watch('entityId')
@@ -150,11 +202,13 @@ export default class Entity extends Vue {
   debouncedSearchEntity = _.debounce(this.searchEntity, 300)
 
   async searchEntity(v: string|null) {
+    this.loading = true
     if (v !== null && v?.trim() !== '') {
       this.results = await searchAny(v)
     } else {
       this.results = []
     }
+    this.loading = false
   }
 
   mounted() {
@@ -172,6 +226,8 @@ export default class Entity extends Vue {
 </script>
 <style lang="stylus" scoped>
 .result-list
-  max-height 500px
+  height 300px
   overflow-y auto
+select
+  outline 0
 </style>
