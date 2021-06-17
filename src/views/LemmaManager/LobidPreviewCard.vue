@@ -46,6 +46,7 @@ export default class LobidPreviewCard extends Vue {
   loading = false
 
   selectOrDeselectFragment(gnd: string) {
+    this.$emit('click', gnd)
     if (gnd === this.value) {
       this.$emit('input', null)
     } else {
@@ -79,13 +80,6 @@ export default class LobidPreviewCard extends Vue {
   position relative
   border-radius 6px
   &.clickable:hover
-    background var(--v-background-lighten1)
-  &:after
-    position absolute
-    content ' '
-    width 80%
-    left 10%
-    height 1px
     background var(--v-background-lighten1)
 
 .fragment /deep/ img
