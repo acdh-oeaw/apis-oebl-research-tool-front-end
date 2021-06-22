@@ -139,9 +139,9 @@ export default class App extends Vue {
 :focus-visible
   outline var(--v-primary-base) auto 1px
 
-::selection
-  background var(--v-primary-lighten2) !important
-  color rgba(0,0,0,.7)
+// ::selection
+//   background var(--v-primary-lighten2) !important
+//   color rgba(0,0,0,.7)
 
 .v-icon
   transition none
@@ -211,7 +211,7 @@ header h1
   opacity .85
   font-weight 900
   line-height 1em
-  font-size 1.7em
+  font-size 1.5em
   white-space nowrap
   overflow hidden
   text-overflow ellipsis
