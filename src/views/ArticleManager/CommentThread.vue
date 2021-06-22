@@ -1,14 +1,52 @@
 <template>
   <div style="width: 300px">
+    <v-overlay
+      v-if="showOverlay"
+      opacity=".9"
+      style="border-radius: 11px"
+      color="background darken-1">
+      <v-btn
+        @click="removeComment"
+        elevation="0"
+        class="mb-1 rounded-lg"
+        block
+        color="red">
+        Kommentar entfernen
+      </v-btn>
+      <v-btn
+        v-if="comment !== undefined"
+        block
+        @click="toggleStatus(); showOverlay = false"
+        outlined
+        class="mb-1 rounded-lg"
+        color="grey">
+        <v-icon left v-if="comment.status === 'private'">mdi-check</v-icon>
+        Als “Privat” markieren
+      </v-btn>
+      <v-btn
+        block
+        @click="showOverlay = false"
+        outlined
+        class="rounded-lg"
+        color="grey">
+        Abbrechen
+      </v-btn>
+    </v-overlay>
     <div v-if="showHeader" class="d-flex flex-row align-self-stretch">
       <v-btn icon tile class="rounded-lg" disabled small>
-        <v-icon small>mdi-message-outline</v-icon>
       </v-btn>
-      <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
+      <div
+        class="text-center muted caption mb-1 flex-grow-1 align-self-end">
         Kommentar
       </div>
-      <v-btn icon tile class="rounded-lg" small>
-        <v-icon>mdi-dots-horizontal</v-icon>
+      <v-btn
+        @click="showOverlay = true"
+        icon
+        tile
+        class="rounded-lg"
+        small>
+        <v-icon v-if="comment.status === 'open'">mdi-dots-horizontal</v-icon>
+        <v-icon small v-else-if="comment.status === 'private'">mdi-lock</v-icon>
       </v-btn>
     </div>
     <div
@@ -68,6 +106,7 @@ import formatDistanceToNow from 'date-fns/esm/formatDistanceToNow'
 import de from 'date-fns/esm/locale/de'
 import { v4 as uuid } from 'uuid'
 import { emoji } from '@/service/emoji'
+import { Editor } from '@tiptap/vue-2'
 
 @Component({
   components: {
@@ -79,12 +118,20 @@ export default class CommentThread extends Vue {
   @Prop({ default: null }) id!: string|null
   @Prop({ default: true }) scrollable!: boolean
   @Prop({ default: true }) showHeader!: boolean
+  @Prop({ required: true }) editor!: Editor
 
   newMessage = ''
   store = store
   groups = emoji.groups
   shouldShowEmojiPicker = false
   lastCaretPos = 0
+  showOverlay = false
+
+  get comment() {
+    if (this.id !== null) {
+      return this.store.article.getThread(this.id)
+    }
+  }
 
   storeLastCaretPos(e: Event) {
     if (e.target instanceof HTMLTextAreaElement) {
@@ -94,6 +141,21 @@ export default class CommentThread extends Vue {
 
   insertEmoji(pos: number, emoji: string) {
     this.newMessage = [this.newMessage.slice(0, pos), emoji, this.newMessage.slice(pos)].join('')
+  }
+
+  toggleStatus() {
+    if (this.comment !== undefined) {
+      if (this.comment?.status === 'open') {
+        this.comment.status = 'private'
+      } else {
+        this.comment.status = 'open'
+      }
+    }
+  }
+
+  removeComment() {
+    this.editor.commands.unsetMark('comment')
+    this.editor.commands.focus()
   }
 
   async appendComment() {
@@ -133,7 +195,8 @@ export default class CommentThread extends Vue {
     window.dispatchEvent(new Event('resize'))
   }
 
-  scrollToBottom() {
+  async scrollToBottom() {
+    await this.$nextTick()
     const el = this.$refs.threadContainer
     if (el instanceof HTMLElement) {
       el.scrollTo({
@@ -145,13 +208,7 @@ export default class CommentThread extends Vue {
 
   @Watch('id')
   onChangeThreadId() {
-    const el = this.$refs.threadContainer
-    if (el instanceof HTMLElement) {
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: 'smooth'
-      })
-    }
+    this.scrollToBottom()
   }
 
   mounted() {
