@@ -57,7 +57,8 @@ export async function get(gnd: string) {
   return {
     name: res.preferredName,
     id: res.gndIdentifier,
-    type: res.type.map(_.startCase).join(', ')
+    type: res.type.map(_.startCase).join(', '),
+    picture: res.depiction ? res.depiction[0]?.thumbnail : null
   }
 }
 
