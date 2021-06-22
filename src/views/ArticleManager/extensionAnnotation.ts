@@ -2,11 +2,10 @@ import {
   Command,
   mergeAttributes,
 } from '@tiptap/core'
+import { v4 as uuid } from 'uuid'
 
 import AnnotationComponent from './Annotation.vue'
 import popupMark from './popupPlugin'
-
-import store from '@/store'
 
 export interface AnnotationOptions {
   HTMLAttributes: Record<string, any>,
@@ -15,7 +14,10 @@ export interface AnnotationOptions {
 export interface AnnotationAttributes {
   id: string,
   entityId: string|null,
-  relationTypeId: string|null
+  relationTypeId: string|null,
+  relationStartTime: string|null,
+  relationEndTime: string|null,
+  isConfirmed: 'true'|'false'
 }
 
 declare module '@tiptap/core' {
@@ -110,6 +112,19 @@ export const Annotation = popupMark.extend({
             'data-relation-end-time': attrs.relationEndTime
           }
         }
+      },
+      isConfirmed: {
+        default: 'true',
+        parseHTML(el) {
+          return {
+            isConfirmed: el.getAttribute('data-is-confirmed')
+          }
+        },
+        renderHTML(attrs) {
+          return {
+            'data-is-confirmed': attrs.isConfirmed
+          }
+        }
       }
     }
   },
@@ -130,15 +145,13 @@ export const Annotation = popupMark.extend({
   addCommands() {
     return {
       setAnnotation: (attributes) => ({ commands }) => {
-        return commands.setMark('annotation', { id: store.article.createAnnotation() })
+        return commands.setMark('annotation', { id: uuid() })
       },
       toggleAnnotation: (attributes) => ({ commands }) => {
         if (this.editor.isActive(this.name)) {
           return commands.unsetMark('annotation')
         } else {
-          console.log('this.editor.state.selection', this.editor.state.selection)
-          const id = store.article.createAnnotation()
-          const command = commands.toggleMark('annotation', { id })
+          const command = commands.toggleMark('annotation', { id: uuid() })
           return command
         }
       },
@@ -150,7 +163,7 @@ export const Annotation = popupMark.extend({
 
   addKeyboardShortcuts() {
     return {
-      'Mod-e': () => this.editor.commands.toggleAnnotation(),
+      'Mod-Shift-e': () => this.editor.commands.toggleAnnotation(),
     }
   },
 
