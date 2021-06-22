@@ -29,7 +29,7 @@ export default new Vuetify({
           base: '#F1F5FA',
           darken1: '#ECF2F9',
           darken2: '#e1e8f1',
-          darken3: '#D7DDE4',
+          darken3: '#D0DBE9',
           darken4: '#C6CBD2'
         },
         // primary: '#6495ed',
