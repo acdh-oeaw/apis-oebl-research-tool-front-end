@@ -1,6 +1,9 @@
 <template>
   <div class="fill-height">
-    <v-dialog max-width="800" v-model="showSendWindow">
+    <v-dialog
+      max-width="800"
+      transition="dialog-bottom-transition"
+      v-model="showSendWindow">
       <v-card class="rounded-lg soft-shadow">
         <v-card-title>
           <v-btn class="rounded-lg" color="background darken-2" elevation="0" @click="showSendWindow = false">
@@ -27,7 +30,7 @@
     </v-dialog>
     <v-app-bar
       app
-      :style="{transition: 'none'}"
+      :style="{transition: 'none', zIndex: 7}"
       height="75"
       class="px-2"
       color="background"
@@ -38,7 +41,7 @@
       <div>
         <h1 style="margin-bottom: -3px">
           {{ issueLemma ? issueLemma.lemma.firstName + ' ' + issueLemma.lemma.lastName : 'Lade…' }}</h1>
-        <div class="caption text-no-wrap muted pl-1">
+        <div class="caption text-no-wrap muted">
           Biographie
         </div>
       </div>
@@ -135,13 +138,22 @@
             <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
           </v-btn>
         </template>
-        <v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0 x-dense" dense nav>
-          <v-list-item @click="editor.chain().focus().undo().run()">
+        <v-list
+          v-if="editor !== null"
+          color="background lighten-2"
+          class="text-body-2 rounded-lg elevation-0 x-dense"
+          dense
+          nav>
+          <v-list-item
+            :disabled="!editor.can().undo()"
+            @click="editor.chain().focus().undo().run()">
             <v-list-item-avatar><v-icon small>mdi-undo</v-icon></v-list-item-avatar>
             <v-list-item-content>Rückgängig </v-list-item-content>
             <v-list-item-action-text class="ml-3">STRG+Z</v-list-item-action-text>
           </v-list-item>
-          <v-list-item @click="editor.chain().focus().redo().run()">
+          <v-list-item
+            :disabled="!editor.can().redo()"
+            @click="editor.chain().focus().redo().run()">
             <v-list-item-avatar><v-icon small>mdi-redo</v-icon></v-list-item-avatar>
             <v-list-item-content>Wiederholen</v-list-item-content>
             <v-list-item-action-text class="ml-3">STRG+Y</v-list-item-action-text>
@@ -157,6 +169,15 @@
           </v-list-item>
           </v-list>
         </v-menu>
+        <!-- SEND BUTTON -->
+        <v-btn
+          @click="showSendWindow = true"
+          tile
+          class="rounded-lg"
+          icon>
+          <v-icon>mdi-share</v-icon>
+        </v-btn>
+        <!-- SHOW SIDEBAR BUTTON -->
         <v-btn
           @click="store.article.showSidebar = !store.article.showSidebar"
           :color="store.article.showSidebar ? 'primary' : ''"
@@ -181,43 +202,44 @@
           <v-btn-toggle
             class="mx-auto mt-1 mb-0 d-inline-block text-center"
             max
-            active-class="white--text primary darken-1"
+            active-class="background darken-2 black--text"
             mandatory
             v-model="sidebarTab"
             borderless
             dense
-            color="primary"
             background-color="transparent">
-            <v-btn text class="rounded-lg" small>Info</v-btn>
-            <v-btn text class="rounded-lg" small>Annotationen</v-btn>
-            <v-btn text class="rounded-lg" small>Kommentare</v-btn>
-            <v-btn text class="rounded-lg" small>Versionsgeschichte</v-btn>
-            <v-btn text class="rounded-lg" small>Personen-Details</v-btn>
+            <v-btn value="info" text class="rounded-lg" small>Info</v-btn>
+            <v-btn value="annotations" text class="rounded-lg" small>Annotationen</v-btn>
+            <v-btn value="comments" text class="rounded-lg" small>Kommentare</v-btn>
+            <v-btn value="person-details" text class="rounded-lg" small>Personen-Details</v-btn>
           </v-btn-toggle>
         </v-card-title>
         <v-divider class="mx-5" />
         <v-card-text class="sidebar-content overflow-y-auto flex-grow-1">
           <v-window :value="sidebarTab">
-            <v-window-item>
+            <v-window-item value="info">
               <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
             </v-window-item>
-            <v-window-item>
-              <annotation-sidebar :editor="editor" />
-            </v-window-item>
-            <v-window-item>
-              <comments-sidebar
-                :show-lines="store.article.showSidebar === true && sidebarTab === 2"
+            <v-window-item value="annotations">
+              <annotation-sidebar
+                :editor="editor"
+                :show-lines="store.article.showSidebar === true && sidebarTab === 'annotations'"
               />
             </v-window-item>
-            <v-window-item>
-              Versionsgeschichte
+            <v-window-item value="comments">
+              <comments-sidebar
+                :editor="editor"
+                :show-lines="store.article.showSidebar === true && sidebarTab === 'comments'"
+              />
+            </v-window-item>
+            <v-window-item value="person-details">
             </v-window-item>
           </v-window>
         </v-card-text>
-        <v-card-actions>
-          <v-btn @click="showSendWindow = true" block elevation="0" color="primary" class="rounded-lg">
+        <v-card-actions class="pa-4">
+          <v-btn @click="showSendWindow = true" block elevation="0" color="background darken-3" class="rounded-lg">
             <v-icon left>mdi-share</v-icon>
-            Absenden …
+            Artikel absenden …
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -226,6 +248,7 @@
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
         <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
+            spellcheck="false"
             class="tiptap-editor"
             :editor="editor" />
           <v-divider class="mb-5 mx-5 mt-5" />
@@ -247,7 +270,10 @@ import fileDialog from 'file-dialog'
 import { Comment as CommentExtension } from './extensionComment'
 import { Citation as CitationExtension} from './extensionCitation'
 import { Image as ImageExtension } from './extensionImage'
+import { Audio as AudioExtension } from './extensionAudio'
 import { Annotation as AnnotationExtension } from './extensionAnnotation'
+
+import applyDevTools from 'prosemirror-dev-tools'
 
 import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
 import SelectMenu from '@/views/lib/SelectMenu.vue'
@@ -283,7 +309,7 @@ export default class Article extends Vue {
   issueLemma: IssueLemma|null = null
   editor: Editor|null = null
   showSendWindow = false
-  sidebarTab = 0
+  sidebarTab: 'info'|'annotations'|'comments'|'person-details' = 'info'
   store = store
   toolbarPaddingY = 15
   formattingItems = [
@@ -338,7 +364,7 @@ export default class Article extends Vue {
     if (files.item(0) !== null) {
       const src = URL.createObjectURL(files.item(0))
       if (this.editor !== null) {
-        const l = this.editor?.commands.setImage({src})
+        const l = this.editor.commands.setImage({src})
       }
     }
   }
@@ -348,7 +374,7 @@ export default class Article extends Vue {
     if (files.item(0) !== null) {
       const src = URL.createObjectURL(files.item(0))
       if (this.editor !== null) {
-        // const l = this.editor?.commands.setAudio({src})
+        const l = this.editor.commands.setAudio({src})
       }
     }
   }
@@ -362,7 +388,11 @@ export default class Article extends Vue {
   }
 
   jumpToCitationText(c: Citation) {
-    (this.editor?.chain() as any).focus().setTextSelection({from: c.quotedRange, to: c.quotedRange})!.run()
+    if (this.editor) {
+      this.editor.commands.focus()
+      // this.editor.commands.setTextSelection(c.quotedRange)
+      this.editor.commands.scrollIntoView()
+    }
   }
 
   logHTML() {
@@ -382,32 +412,15 @@ export default class Article extends Vue {
         CitationExtension,
         CommentExtension,
         ImageExtension,
+        AudioExtension,
         AnnotationExtension,
         StarterKit
       ],
       onTransaction(a) {
-        // const commentNodes = findChildrenByMark(a.transaction.doc, a.editor.schema.marks.comment)
-        // const comments = commentNodes.map((n) => {
-        //   return n.node.marks.find((m: any) => m.type.name === 'comment')
-        // }).filter(m => m !== undefined)
-        // const footnoteNodes = findChildrenByMark(a.transaction.doc, a.editor.schema.marks.footnote)
-        // const footnotes = footnoteNodes.map(n => {
-        //   return n.node.marks.find((m: any) => m.type.name === 'footnote')
-        // }).filter(m => m !== undefined)
-
-        // const $pos = a.transaction.doc.resolve(a.editor.state.selection.$from.pos)
-        // const box = a.editor.view.coordsAtPos(a.transaction.selection.$from.pos - $pos.textOffset)
-        // const parent = $pos.parent
-        // const start = parent.childAfter($pos.parentOffset)
-        // const selectedComments = start.node?.marks.find(mark => mark.type.name === 'comment')
-        // console.log({ selectedComments })
-        // console.log({ box })
-        // console.log({ comments, footnotes })
         vm.activeFormatting = vm.formattingItems.find(fi => fi.isActive(vm.editor!))
-      },
-      onUpdate() {
       }
     })
+    // applyDevTools(this.editor.view)
   }
 
   toggleDrawer() {
@@ -437,7 +450,7 @@ export default class Article extends Vue {
 .outer-editor
   --comment-color: #ffe1ab
   --footnote-color: rgba(0,0,20,.07)
-  --annotation-color: rgba(0,200,0,.15)
+  --annotation-color: rgba(0,200,0,.2)
   max-width: 60em
   line-height 1.6
   counter-reset prosemirror-footnote
@@ -448,6 +461,9 @@ export default class Article extends Vue {
   top 0
 // .tiptap-editor /deep/ *
 //   color #333
+
+.tiptap-editor /deep/ .ProseMirror
+  z-index 7
 
 .tiptap-editor /deep/ [contenteditable]
   outline 0 !important
@@ -477,8 +493,28 @@ export default class Article extends Vue {
 
 .tiptap-editor /deep/ mark
   border-radius 4px
-  background var(--annotation-color)
   padding 2px
+  background transparent
+  border 3px dashed rgba(0,200,0,.5)
+  &[data-is-confirmed="false"]:after
+    font-weight: bold;
+    content: '?';
+    position: absolute;
+    margin-left: -8px;
+    margin-top: -4px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.5);
+    display: inline-block;
+    width: 15px;
+    line-height: 17px;
+    height: 15px;
+    text-align: center;
+    border-radius: 100%;
+    background: #83eaa1;
+
+.tiptap-editor /deep/ mark[data-entity-id]
+  background var(--annotation-color)
+  border none
 
 .tiptap-editor /deep/ footnote > comment
 .tiptap-editor /deep/ comment > footnote
