@@ -97,17 +97,17 @@ export const Comment = popupMark.extend({
     }
   },
 
-  onUpdate(...a: any[]) {
-    const [ { editor, transaction } ] = a
-    const comments = findChildrenByMark(transaction.doc, editor.schema.marks.comment, true)
-      .map((n) => {
-        return {
-          pos: n.pos,
-          mark: n.node.marks.find((m: any) => m.type.name === 'comment')
-        }
-      })
-      .filter(m => m.mark !== undefined)
-  },
+  // onUpdate(...a: any[]) {
+  // const [ { editor, transaction } ] = a
+  // const comments = findChildrenByMark(transaction.doc, editor.schema.marks.comment, true)
+  //   .map((n) => {
+  //     return {
+  //       pos: n.pos,
+  //       mark: n.node.marks.find((m: any) => m.type.name === 'comment')
+  //     }
+  //   })
+  //   .filter(m => m.mark !== undefined)
+  // },
 
   addKeyboardShortcuts() {
     return {
