@@ -3,11 +3,12 @@
     <comment-thread
       class="comment-thread pt-1 pb-0 mb-1"
       style="width: 100% !important;"
-      v-for="thread in store.article.threads"
+      v-for="thread in visibleComments"
       @click.native="scrollIntoView(thread.threadId)"
       :key="thread.threadId"
       :id="thread.threadId"
       :data-id="thread.threadId"
+      :editor="editor"
       :scrollable="false"
       :show-header="false"
       ref="comments"
@@ -19,9 +20,17 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import CommentThread from './CommentThread.vue'
+import { CommentThread as CommentThreadType } from '@/store/article'
 import store from '@/store'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import LeaderLine from 'leader-line'
+import { Editor } from '@tiptap/vue-2'
+import _ from 'lodash'
+import { Transaction } from 'prosemirror-state'
+import { findChildrenByMark } from 'prosemirror-utils'
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
 
 @Component({
   components: {
@@ -31,33 +40,39 @@ import LeaderLine from 'leader-line'
 export default class CommentsSidebar extends Vue {
 
   @Prop({ default: false }) showLines!: boolean
+  @Prop({ required: true }) editor!: Editor
 
   store = store
   lines: { [id: string]: any } = {}
+
+  visibleComments: CommentThreadType[] = []
 
   @Watch('showLines', { immediate: true })
   onChangeLineVisibility(sl: boolean) {
     if (sl === true) {
       this.$nextTick(() => {
-        store.article.threads.map(t => {
-          this.showLine(t.threadId)
-        })
+        Object.values(this.lines).forEach(t => t.show())
       })
     } else {
-      store.article.threads.map(t => {
-        this.hideLine(t.threadId)
-      })
+      Object.values(this.lines).forEach(t => t.hide())
     }
   }
 
-  @Watch('store.article.threads')
-  onChangeThreads() {
+  removeAllLines() {
+    Object.values(this.lines).forEach(l => l.remove())
+    this.lines = {}
+  }
+
+  addAllLines(cs: CommentThreadType[]) {
+    this.lines = _(cs).keyBy('threadId').mapValues(c => this.addLine(c.threadId)).value()
+  }
+
+  @Watch('visibleComments')
+  async onChangeThreads() {
     if (this.showLines) {
-      this.$nextTick(() => {
-        store.article.threads.map(t => {
-          this.showLine(t.threadId)
-        })
-      })
+      this.removeAllLines()
+      await this.$nextTick()
+      this.addAllLines(this.visibleComments)
     }
   }
 
@@ -84,25 +99,29 @@ export default class CommentsSidebar extends Vue {
     }
   }
 
-  showLine(threadId: string) {
+  addLine(threadId: string) {
     const els = document.querySelectorAll(`[data-id="${ threadId }"]`)
-    if (this.lines[threadId]) {
-      this.lines[threadId].show()
-    } else {
-      if (els.length === 2) {
-        this.lines[threadId] = new LeaderLine({
-          startPlug: 'disc',
-          endPlug: 'disc',
-          startSocket: 'left',
-          endSocket: 'right',
-          // path: 'grid',
-          start: els[0],
-          end: els[1],
-          color: '#ffe1ab'
-        })
-      }
+    console.log(els)
+    if (els.length === 2) {
+      const l = new LeaderLine({
+        startPlug: 'disc',
+        endPlug: 'disc',
+        startSocket: 'left',
+        endSocket: 'right',
+        path: 'magnet',
+        start: els[0],
+        end: els[1],
+        color: '#ffe1ab'
+      })
+      return l
     }
-    return this.lines[threadId]
+  }
+
+  findCommentIdsInDoc() {
+    const comments = findChildrenByMark(this.editor.state.doc, this.editor.schema.marks.comment, true)
+    return comments.map(c => {
+      return c.node.marks[0].attrs.id
+    })
   }
 
   updatePositions() {
@@ -118,6 +137,20 @@ export default class CommentsSidebar extends Vue {
       m.addEventListener('scroll', this.updatePositions)
       o.addEventListener('scroll', this.updatePositions)
     }
+    this.visibleComments = this.findCommentIdsInDoc()
+      .map((c) => store.article.getThread(c))
+      .filter(notEmpty)
+    this.editor.on('transaction', ({ transaction }: { transaction: Transaction }) => {
+      const hasCommentMarks = transaction.steps.filter(s => {
+        const t = s.toJSON()
+        return (t.stepType === 'addMark' || t.stepType === 'removeMark') && t.mark.type === 'comment'
+      })
+      if (hasCommentMarks.length > 0) {
+        this.visibleComments = this.findCommentIdsInDoc()
+          .map((c) => store.article.getThread(c))
+          .filter(notEmpty)
+      }
+    })
   }
 
   beforeDestroy() {
@@ -131,9 +164,6 @@ export default class CommentsSidebar extends Vue {
     }
   }
 
-  updated() {
-    this.updatePositions()
-  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -144,3 +174,12 @@ export default class CommentsSidebar extends Vue {
   &:hover
     border 3px solid #f0c26f
 </style>
+
+<style lang="stylus">
+// make sure the leader lines
+// don’t get cut off by the 
+// navigation bar
+.leader-line
+  z-index 6
+</style>
+
