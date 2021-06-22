@@ -4,8 +4,8 @@
       v-for="(fragment, i) in fragments"
       :key="i"
       @click="selectOrDeselectFragment(fragment.gnd)"
-      style="font-size: 130%; line-height: 1.2; height: 100px"
-      :class="['fragment', $listeners['input'] !== undefined && 'clickable' ]"
+      style="overflow: hidden"
+      :class="['fragment', $listeners['input'] !== undefined && 'clickable', 'rounded-lg', 'mt-1' ]"
       no-gutters>
       <slot />
       <v-col class="align-self-center text-center" cols="2" v-if="$listeners['input'] !== undefined">
@@ -14,13 +14,21 @@
       </v-col>
       <v-col
         v-if="fragment.html !== null"
-        style="height: 100px; overflow: hidden"
-        class="pt-1 pb-1"
-        v-html="fragment.html"
-        cols="10" />
-      <v-col style="opacity: .5" class="pa-0 text-center caption" v-else>
-        (nicht gefunden)
+        style="height: 100px; overflow: hidden;"
+        class="pt-1 pb-1 text-center"
+        cols="3" >
+        <img v-if="fragment.data.picture" :src="fragment.data.picture" />
+        <v-icon class="mt-5 ml-5 pt-4 pl-2" v-else>mdi-image-broken-variant</v-icon>
       </v-col>
+      <v-col style="line-height: 1.2" class="pt-1 pl-2 caption">
+        <b>{{ fragment.data.name }}</b>
+        <br /> {{ fragment.data.type }}
+        <br /><a class="mt-2 d-inline-block text-decoration-none" target="_blank" :href="'https://lobid.org/gnd/' + fragment.gnd">
+        &rarr; {{ fragment.gnd }}</a>
+      </v-col>
+      <!-- <v-col style="opacity: .5" class="pa-0 text-center caption">
+        (nicht gefunden)
+      </v-col> -->
     </v-row>
   </div>
 </template>
@@ -33,6 +41,12 @@ type Fragment = {
   html: string | null,
   selected: boolean,
   gnd: string
+  data: {
+    name: string
+    id: string
+    type: string
+    picture: string|null
+  }
 }
 
 @Component
@@ -59,11 +73,13 @@ export default class LobidPreviewCard extends Vue {
   }
 
   async loadPreviews(gnd: string[]) {
-    const results = await lobidService.getPreviews(gnd)
+    // const results = await lobidService.getPreviews(gnd)
+    const results = await Promise.all(gnd.map(g => lobidService.get(g)))
     return gnd.map((e, i) => {
       return {
         gnd: e,
-        html: results[i],
+        html: '',
+        data: results[i],
         selected: false
       }
     })
