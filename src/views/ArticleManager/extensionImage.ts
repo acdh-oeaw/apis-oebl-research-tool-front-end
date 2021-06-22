@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { VueNodeViewRenderer } from '@tiptap/vue-2'
-import ImageComponent from './Image.vue'
+import ImageComponent from './ImageNode.vue'
 import {
   Command,
   Node,
