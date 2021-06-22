@@ -1,5 +1,27 @@
 <template>
   <div style="min-width: 300px; max-height: 500px" class="d-flex flex-column">
+    <v-overlay
+      v-if="showOverlay"
+      opacity=".9"
+      style="border-radius: 11px"
+      color="background darken-1">
+      <v-btn
+        @click="removeCitation"
+        elevation="0"
+        class="mb-1 rounded-lg"
+        block
+        color="red">
+        Zitat entfernen
+      </v-btn>
+      <v-btn
+        block
+        @click="showOverlay = false"
+        outlined
+        class="rounded-lg"
+        color="grey">
+        Abbrechen
+      </v-btn>
+    </v-overlay>
     <div>
       <div
         v-if="page === 0"
@@ -9,7 +31,7 @@
         <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
           Zitat
         </div>
-        <v-btn icon tile class="rounded-lg" small>
+        <v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
           <v-icon>mdi-dots-horizontal</v-icon>
         </v-btn>
       </div>
@@ -135,6 +157,7 @@ import ZoteroForm from './ZoteroForm.vue'
 import store from '@/store'
 import confirm from '@/store/confirm'
 import _ from 'lodash'
+import { Editor } from '@tiptap/vue-2'
 
 const newItem = { data: { creators: [], itemType: 'book' } }
 
@@ -149,12 +172,20 @@ const newItem = { data: { creators: [], itemType: 'book' } }
 export default class Citation extends Vue {
 
   @Prop({ default: null }) id!: string|null
+  @Prop({ required: true}) editor!: Editor
+
   searchQuery = ''
   newItem = _.clone(newItem)
   page = 0
   loading = false
   showTitleDetails: ZoteroItem|null = null
   results: ZoteroItem[] = []
+  showOverlay = false
+
+  removeCitation() {
+    this.editor.commands.unsetMark('footnote')
+    this.editor.commands.focus()
+  }
 
   showDetails(t: ZoteroItem) {
     this.page = 2
