@@ -107,7 +107,11 @@ export const Citation = popupExtension.extend({
       })
       .filter(m => m.mark !== undefined)
       .reduce((m, e) => {
-        if (e.mark.attrs !== undefined && typeof e.mark.attrs.id === 'string') {
+        if (
+          e.mark !== undefined &&
+          e.mark.attrs !== undefined &&
+          typeof e.mark.attrs.id === 'string'
+        ) {
           m[e.mark.attrs.id] = e.pos
         }
         return m
