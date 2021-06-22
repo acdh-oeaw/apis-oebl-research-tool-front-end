@@ -1,5 +1,13 @@
 <template>
-  <div style="width: 320px; min-height: 250px">
+  <div class="pb-1" style="width: 320px; min-height: 250px;">
+    <v-overlay
+      opacity=".9"
+      style="border-radius: 11px"
+      color="background darken-1"
+      v-if="showOverlay">
+      <v-btn @click="removeAnnotation" elevation="0" class="mb-1 rounded-lg" block color="red">Annotation entfernen</v-btn>
+      <v-btn block @click="showOverlay = false" outlined class="rounded-lg" color="grey">Abbrechen</v-btn>
+    </v-overlay>
     <v-window reverse v-model="page">
       <v-window-item>
         <div
@@ -9,13 +17,13 @@
           <div class="text-center muted caption mb-1 flex-grow-1 align-self-end">
             Annotation
           </div>
-          <v-btn icon tile class="rounded-lg" small>
+          <v-btn @click="showOverlay = true" icon tile class="rounded-lg" small>
             <v-icon>mdi-dots-horizontal</v-icon>
           </v-btn>
         </div>
         <text-field
           @input="debouncedSearchEntity"
-          v-model="searchQuery"
+          v-model="searchTerm"
           class="flex-grow-1"
           :clearable="true"
           placeholder="Enität suchen …">
@@ -67,13 +75,13 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
-        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() !== '' && loading === true">
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchTerm.trim() !== '' && loading === true">
           Suche …
         </div>
-        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() === ''">
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchTerm.trim() === ''">
           Suchen Sie nach einer Entität
         </div>
-        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchQuery.trim() !== ''">
+        <div class="pa-5 my-5 text-center caption muted" v-else-if="results.length === 0 && searchTerm.trim() !== ''">
           Nichts gefunden.
         </div>
       </v-window-item>
@@ -91,46 +99,66 @@
         </div>
         <lobid-preview-card class="mb-3" :gnd="[ showDetailsForGnd ]" />
       </v-window-item>
-      <div class="d-flex flex-row rounded-lg background darken-2 pa-2 mt-1">
-        <v-icon small>mdi-chevron-down</v-icon>
-        <select
-          :value="relationTypeId"
-          @input="updateProps({ relationTypeId: $event.target.value })"
-          class="flex-grow-1 text-center">
-          <option value="null">
-            (Beziehung Wählen)
-          </option>
-          <option value="1">
-            wohnte in
-          </option>
-          <option value="2">
-            Befreundet mit
-          </option>
-          <option value="3">
-            Verheiratet mit
-          </option>
-          <option value="4">
-            Arbeitet bei
-          </option>
-          <option value="5">
-            (andere)
-          </option>
-        </select>
-      </div>
-      <div class="d-flex flex-row mt-1">
-        <text-field
-          placeholder="YYYY"
-          class="mr-1"
-          style="width: 49.5%"
-          label="von"
-        />
-        <text-field
-          placeholder="YYYY"
-          label="bis"
-          style="width: 49.5%"
-        />
-      </div>
     </v-window>
+    <div class="d-flex flex-row rounded-lg background darken-2 pa-2 mt-1">
+      <v-icon small>mdi-chevron-down</v-icon>
+      <select
+        :value="relationTypeId"
+        @input="updateProps({ relationTypeId: $event.target.value })"
+        class="flex-grow-1 text-center">
+        <option value="null">
+          (Beziehung Wählen)
+        </option>
+        <option value="1">
+          wohnte in
+        </option>
+        <option value="2">
+          Befreundet mit
+        </option>
+        <option value="3">
+          Verheiratet mit
+        </option>
+        <option value="4">
+          Arbeitet bei
+        </option>
+        <option value="5">
+          (andere)
+        </option>
+      </select>
+    </div>
+    <div class="d-flex flex-row mt-1">
+      <text-field
+        placeholder="YYYY"
+        class="mr-1"
+        style="width: 49.5%"
+        label="von"
+      />
+      <text-field
+        placeholder="YYYY"
+        label="bis"
+        style="width: 49.5%"
+      />
+    </div>
+    <div v-if="isConfirmedAnnotation === false">
+      <v-divider class="mb-2 mt-1" />
+      <v-btn
+        elevation="0"
+        block
+        class="rounded-lg white--text"
+        @click="updateProps({ isConfirmed: 'true' })"
+        color="green lighten-1">
+        Vorschlag annehmen
+      </v-btn>
+      <v-btn
+        v-if="isConfirmedAnnotation === false"
+        elevation="0"
+        block
+        class="rounded-lg mt-1"
+        @click="removeAnnotation"
+        color="background darken-2">
+        Vorschlag ablehen
+      </v-btn>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -138,11 +166,10 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import TextField from '../lib/TextField.vue'
 import LoadingSpinner from '../lib/LoadingSpinner.vue'
 import _ from 'lodash'
-import { searchAny } from '../../service/lobid'
+import * as lobid from '../../service/lobid'
 import LobidPreviewCard from '../LemmaManager/LobidPreviewCard.vue'
 import { Editor } from '@tiptap/vue-2'
 import { AnnotationAttributes } from './extensionAnnotation'
-import store from '@/store'
 
 @Component({
   components: {
@@ -156,11 +183,16 @@ export default class Entity extends Vue {
   @Prop({ default: null }) id!: string|null
   @Prop({ default: null }) entityId!: string|null
   @Prop({ default: null }) relationTypeId!: string|null
+  @Prop({ default: null }) relationEndTime!: string|null
+  @Prop({ default: null }) relationStartTime!: string|null
+  @Prop({ default: false }) isConfirmed!: string
+
   @Prop({ required: true }) editor!: Editor
   @Prop({ default: null }) cachedEntity!: {type: string, name: string, id: string}|null
 
+  showOverlay = false
   page = 0
-  searchQuery = ''
+  searchQueries: { [annotationId: string]: string} = {}
   loading = false
   showDetailsForGnd: string|null = null
   results: Array<{type: string, name: string, id: string}> = []
@@ -168,30 +200,66 @@ export default class Entity extends Vue {
     entityId: null,
   }
 
+  get isConfirmedAnnotation() {
+    return this.isConfirmed === 'true'
+  }
+
+  get searchTerm(): string {
+    // if possible, use the cached search term
+    if (
+      this.id !== null &&
+      this.searchQueries[this.id] !== undefined
+    ) {
+      return this.searchQueries[this.id]
+    // otherwise it’s empty
+    } else {
+      return ''
+    }
+  }
+
+  set searchTerm(t: string) {
+    // cache it
+    this.searchQueries[this.id!] = t
+  }
+
   updateProps(p: Partial<AnnotationAttributes>) {
-    this.editor.commands.updateAttributes('annotation', {
+    const res = this.editor.commands.updateAttributes('annotation', {
       entityId: this.entityId,
       id: this.id,
       relationTypeId: this.relationTypeId,
+      relationStartTime: this.relationStartTime,
+      relationEndTime: this.relationEndTime,
+      isConfirmed: this.isConfirmed,
       ...p
-    })
-    if (this.id !== null) {
-      store.article.updateAnnotation(this.id, p)
-    }
+    } as AnnotationAttributes)
   }
 
   selectEntity(id: string) {
-    this.updateProps({ entityId: id })
+    if (this.entityId !== id) {
+      this.updateProps({ entityId: id })
+    } else {
+      this.updateProps({ entityId: null })
+    }
+  }
+
+  removeAnnotation() {
+    this.editor.commands.unsetMark('annotation')
+    this.editor.commands.focus()
   }
 
   @Watch('id', { immediate: true })
-  onChangeId() {
-    console.log('onChangeId', this.entityId, this.relationTypeId)
+  async onChangeId() {
+    // update search to the selected text
     if (this.entityId === null && this.relationTypeId === null) {
       const selectedText = this.editor.state.doc.textBetween(this.editor.state.selection.from, this.editor.state.selection.to)
-      this.searchQuery = selectedText
+      this.searchTerm = selectedText
       this.searchEntity(selectedText)
     }
+    if (this.entityId !== null) {
+      this.results = [ await lobid.get(this.entityId) ]
+    }
+    // reset overlay
+    this.showOverlay = false
   }
 
   @Watch('entityId')
@@ -204,15 +272,12 @@ export default class Entity extends Vue {
   async searchEntity(v: string|null) {
     this.loading = true
     if (v !== null && v?.trim() !== '') {
-      this.results = await searchAny(v)
+      this.results = await lobid.searchAny(v)
     } else {
+      this.searchTerm = ''
       this.results = []
     }
     this.loading = false
-  }
-
-  mounted() {
-    console.log(this.$props, this.$attrs)
   }
 
   @Watch('results')
