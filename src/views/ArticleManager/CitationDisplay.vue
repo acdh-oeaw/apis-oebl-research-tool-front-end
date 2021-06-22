@@ -7,7 +7,7 @@
       ({{ title.data.date }}):
     </span>
     <span>
-      {{ title.data.title }}
+      {{ title.data.title }}.
     </span>
     <span v-if="value.quotedRange !== null">
       {{ value.quotedRange }}.
