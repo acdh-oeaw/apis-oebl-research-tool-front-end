@@ -116,41 +116,48 @@ const ex = Mark.create({
     })
   },
   onTransaction({ transaction }) {
-    // when adding a mark of this class, open the pop up
-    const isAddingTypeMark = transaction.steps.find(s => s.toJSON().stepType === 'addMark' && s.toJSON().mark.type === this.name)
-    if (isAddingTypeMark) {
-      const isUpdate = transaction.steps.find(s => s.toJSON().stepType === 'removeMark' && s.toJSON().mark.type === this.name)
-      const attrs = this.editor.getAttributes(this.name)
-      // but don’t do it if it’s just an update (i. e. when it’s removed in the same transaction)
-      if (!isUpdate) {
-        if (typeof attrs.id === 'string') {
-          showPopUp(
-            this.name,
-            attrs.id,
-            true,
-            this.options.component,
-            attrs,
-            this.editor,
-            this.parent,
-            this.options.tagName
-          )
-        }
-      } else {
-        updateComponent(
+    // parse the transaction
+    const isAddingTypeMark = transaction.steps.some(s => s.toJSON().stepType === 'addMark' && s.toJSON().mark.type === this.name)
+    const isRemovingTypeMark = transaction.steps.some(s => s.toJSON().stepType === 'removeMark' && s.toJSON().mark.type === this.name)
+
+    // when adding a mark of this type, open the pop up
+    const attrs = this.editor.getAttributes(this.name)
+    if (isAddingTypeMark && !isRemovingTypeMark) {
+      if (typeof attrs.id === 'string') {
+        showPopUp(
           this.name,
           attrs.id,
+          true,
+          this.options.component,
           attrs,
-          this.options.tagName,
-          this.editor
+          this.editor,
+          this.parent,
+          this.options.tagName
         )
-        const el = document.querySelector(`[data-id="${ attrs.id }"]`)
-        if (t !== null && el !== null) {
-          t.setProps({
-            getReferenceClientRect() {
-              return el.getBoundingClientRect()
-            }
-          })
-        }
+      }
+    // when adding and removing a mark in the same transaction,
+    // we call it an update.
+    } else if (isAddingTypeMark && isRemovingTypeMark) {
+      updateComponent(
+        this.name,
+        attrs.id,
+        attrs,
+        this.options.tagName,
+        this.editor
+      )
+      const el = document.querySelector(`${this.options.tagName}[data-id="${ attrs.id }"]`)
+      if (t !== null && el !== null) {
+        t.setProps({
+          getReferenceClientRect() {
+            return el.getBoundingClientRect()
+          }
+        })
+      }
+    // when the transaction only removes a mark of this type,
+    // close the popup
+    } else if (!isAddingTypeMark && isRemovingTypeMark) {
+      if (t !== null) {
+        t.hide()
       }
     }
   },
