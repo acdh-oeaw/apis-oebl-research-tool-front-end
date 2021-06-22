@@ -1,5 +1,4 @@
 import zotero, { ZoteroItem } from '@/service/zotero'
-import { AnnotationAttributes } from '@/views/ArticleManager/extensionAnnotation'
 import { v4 as uuid } from 'uuid'
 
 interface Comment {
@@ -9,9 +8,9 @@ interface Comment {
   text: string
 }
 
-interface CommentThread {
+export interface CommentThread {
   threadId: ThreadId
-  status: 'open'|'closed'
+  status: 'open'|'private'
   offset: number
   comments: Comment[]
 }
@@ -40,7 +39,6 @@ export default class ArticleStore {
 
   private _commentThreads: CommentThread[] = []
   private _citations: Citation[] = []
-  private _annotations: AnnotationAttributes[] = []
   public article = ''
 
   async loadComments(articleId: number) {
@@ -86,10 +84,6 @@ export default class ArticleStore {
     ]
   }
 
-  get annotations() {
-    return this._annotations
-  }
-
   get citations() {
     return this._citations
   }
@@ -113,7 +107,12 @@ export default class ArticleStore {
     this.loadComments(articleId)
     this.article = `
       <h1>Test Headlines look like this</h1>
-      <p>Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
+      <p>Non labore occaecat
+        <mark
+          data-id="67b86600-2550-43be-957e-23d7c3034a24"
+          data-entity-id="4074335-4"
+          data-relation-type-id="1"
+          data-is-confirmed="false">London</mark> dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
       Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="1">excepteur</comment>
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
       <p>Non labore occaecat deserunt dolor aliquip
@@ -193,26 +192,6 @@ export default class ArticleStore {
     } else {
       throw new Error('Can’t add comment. Thread not found.')
     }
-  }
-
-  createAnnotation() {
-    const annotationId = uuid()
-    this._annotations.push({
-      id: annotationId,
-      entityId: null,
-      relationTypeId: null
-    })
-    return annotationId
-  }
-
-  updateAnnotation(id: string, p: Partial<AnnotationAttributes>) {
-    this._annotations = this._annotations.map(a => {
-      if (a.id === id) {
-        return { ...a, ...p }
-      } else {
-        return a
-      }
-    })
   }
 
   createCommentThread(): ThreadId {
