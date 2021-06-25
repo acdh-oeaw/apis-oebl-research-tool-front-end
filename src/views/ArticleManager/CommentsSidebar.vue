@@ -12,8 +12,7 @@
       :scrollable="false"
       :show-header="false"
       ref="comments"
-      @mouseover.native="highlightLine(thread.threadId)"
-      @mouseout.native="unhighlightLine(thread.threadId)"
+      @mouseenter.native="showLine(thread.threadId)"
     />
   </div>
 </template>
@@ -22,11 +21,10 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import CommentThread from './CommentThread.vue'
 import { CommentThread as CommentThreadType } from '@/store/article'
 import store from '@/store'
-import LeaderLine from 'leader-line'
 import { Editor } from '@tiptap/vue-2'
-import _ from 'lodash'
 import { Transaction } from 'prosemirror-state'
 import { findChildrenByMark } from 'prosemirror-utils'
+import { hideAllLines, showLine, hideLine } from '../lib/lines'
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -43,36 +41,22 @@ export default class CommentsSidebar extends Vue {
   @Prop({ required: true }) editor!: Editor
 
   store = store
-  lines: { [id: string]: any } = {}
-
   visibleComments: CommentThreadType[] = []
 
-  @Watch('showLines', { immediate: true })
-  onChangeLineVisibility(sl: boolean) {
-    if (sl === true) {
-      this.$nextTick(() => {
-        Object.values(this.lines).forEach(t => t.show())
+  showLine(id: string) {
+    const els = document.querySelectorAll(`[data-id="${ id }"]`)
+    hideAllLines(id)
+    if (els.length === 2) {
+      showLine({
+        key: id,
+        start: els[0],
+        end: els[1],
+        color: '#f0c26f'
       })
-    } else {
-      Object.values(this.lines).forEach(t => t.hide())
-    }
-  }
-
-  removeAllLines() {
-    Object.values(this.lines).forEach(l => l.remove())
-    this.lines = {}
-  }
-
-  addAllLines(cs: CommentThreadType[]) {
-    this.lines = _(cs).keyBy('threadId').mapValues(c => this.addLine(c.threadId)).value()
-  }
-
-  @Watch('visibleComments')
-  async onChangeThreads() {
-    if (this.showLines) {
-      this.removeAllLines()
-      await this.$nextTick()
-      this.addAllLines(this.visibleComments)
+      els[0].addEventListener('mouseleave', function onLeave() {
+        hideLine(id)
+        els[0].removeEventListener('mouseleave', onLeave)
+      })
     }
   }
 
@@ -87,36 +71,6 @@ export default class CommentsSidebar extends Vue {
     }
   }
 
-  highlightLine(id: string) {
-    if (this.lines[id] !== undefined) {
-      this.lines[id].setOptions({ color: '#f0c26f' })
-    }
-  }
-
-  unhighlightLine(id: string) {
-    if (this.lines[id] !== undefined) {
-      this.lines[id].setOptions({ color: '#ffe1ab' })
-    }
-  }
-
-  addLine(threadId: string) {
-    const els = document.querySelectorAll(`[data-id="${ threadId }"]`)
-    console.log(els)
-    if (els.length === 2) {
-      const l = new LeaderLine({
-        startPlug: 'disc',
-        endPlug: 'disc',
-        startSocket: 'left',
-        endSocket: 'right',
-        path: 'magnet',
-        start: els[0],
-        end: els[1],
-        color: '#ffe1ab'
-      })
-      return l
-    }
-  }
-
   findCommentIdsInDoc() {
     const comments = findChildrenByMark(this.editor.state.doc, this.editor.schema.marks.comment, true)
     return comments.map(c => {
@@ -124,46 +78,24 @@ export default class CommentsSidebar extends Vue {
     })
   }
 
-  updatePositions() {
-    if (this.showLines) {
-      Object.values(this.lines).forEach((l: any) => l.position())
-    }
-  }
-
   mounted() {
-    const m = document.querySelector('.v-main')
-    const o = document.querySelector('.sidebar-content')
-    if (m instanceof HTMLElement && o instanceof HTMLElement) {
-      m.addEventListener('scroll', this.updatePositions)
-      o.addEventListener('scroll', this.updatePositions)
-    }
     this.visibleComments = this.findCommentIdsInDoc()
       .map((c) => store.article.getThread(c))
       .filter(notEmpty)
     this.editor.on('transaction', ({ transaction }: { transaction: Transaction }) => {
-      const hasCommentMarks = transaction.steps.filter(s => {
-        const t = s.toJSON()
-        return (t.stepType === 'addMark' || t.stepType === 'removeMark') && t.mark.type === 'comment'
-      })
-      if (hasCommentMarks.length > 0) {
+      if (transaction.docChanged) {
         this.visibleComments = this.findCommentIdsInDoc()
           .map((c) => store.article.getThread(c))
           .filter(notEmpty)
       }
+      // const hasCommentMarks = transaction.steps.filter(s => {
+      //   const t = s.toJSON()
+      //   return (t.stepType === 'addMark' || t.stepType === 'removeMark') && t.mark.type === 'comment'
+      // })
+      // if (hasCommentMarks.length > 0) {
+      // }
     })
   }
-
-  beforeDestroy() {
-    Object.values(this.lines).forEach(l => l.remove())
-    this.lines = {}
-  }
-
-  hideLine(threadId: string) {
-    if (this.lines[threadId]) {
-      this.lines[threadId].hide()
-    }
-  }
-
 }
 </script>
 <style lang="stylus" scoped>
