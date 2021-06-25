@@ -4,7 +4,7 @@ import { Person as LdPerson } from 'schema-dts'
 import { ListEntry } from '@/api/models/ListEntry'
 
 export interface UserColumn {
-  [key: string]: string|number
+  [key: string]: string|number|string[]
 }
 
 export interface ServerResearchLemma extends ListEntry {
