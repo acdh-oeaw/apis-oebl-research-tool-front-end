@@ -52,7 +52,7 @@
             <div class="tb-tooltip caption muted">Zoom</div>
             <select-menu
               :hide-searchbar="true"
-              :show-caret="true"
+              :show-chevron="true"
               class="rounded-lg"
               btn-class="pl-2"
               :value="store.settings.articleZoomFactor"
@@ -66,7 +66,7 @@
             <div class="tb-tooltip caption muted">Format</div>
             <select-menu
               :hide-searchbar="true"
-              :show-caret="true"
+              :show-chevron="true"
               class="rounded-lg"
               btn-class="pl-2"
               style="width: 100px"
@@ -198,7 +198,7 @@
       <v-card
         class="transparent flex-column d-flex fill-height lemma-detail"
         flat>
-        <v-card-title class="flex-column pb-2">
+        <v-card-title class="flex-column pb-4">
           <v-btn-toggle
             class="mx-auto mt-1 mb-0 d-inline-block text-center"
             max
@@ -214,7 +214,6 @@
             <v-btn value="person-details" text class="rounded-lg" small>Personen-Details</v-btn>
           </v-btn-toggle>
         </v-card-title>
-        <v-divider class="mx-5" />
         <v-card-text class="sidebar-content overflow-y-auto flex-grow-1">
           <v-window :value="sidebarTab">
             <v-window-item value="info">
