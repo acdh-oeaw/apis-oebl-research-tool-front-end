@@ -193,13 +193,6 @@ export default class Citation extends Vue {
     console.log({t})
   }
 
-  @Watch('page')
-  onChangePage() {
-    // so that we can reposition the Pop up after the size has changed.
-    // setTimeout(() => {
-    //   window.dispatchEvent(new Event('resize'))
-    // }, 200)
-  }
 
   get currentCitation() {
     if (this.id !== null) {
