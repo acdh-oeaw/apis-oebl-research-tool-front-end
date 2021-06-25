@@ -4,7 +4,7 @@
       <div class="outer">
         <select-menu
           :show-chevron="true"
-          btn-class="mt-1"
+          btn-class="mt-1 mr-2 ml-1"
           :value="parsedValue.modifier"
           :items="modifiers"
           @input="updateValue({ modifier: $event })"
@@ -13,7 +13,7 @@
           maxlength="2"
           :value="parsedValue.day"
           class="pa-1"
-          style="width: 40px"
+          style="width: 35px"
           placeholder="TT"
           @input="updateValue({ day: $event.target.value })"
         />
@@ -21,7 +21,7 @@
           maxlength="2"
           :value="parsedValue.month"
           class="pa-1"
-          style="width: 40px"
+          style="width: 35px"
           placeholder="MM"
           @input="updateValue({ month: $event.target.value })"
         />
@@ -30,11 +30,10 @@
           maxlength="4"
           :value="parsedValue.year"
           class="pa-1"
-          style="width: 60px"
+          style="width: 50px"
           placeholder="YYYY"
           @input="updateValue({ month: $event.target.value })"
           />
-        <!-- {{ parsedValue }} -->
       </div>
     </template>
     <slot />
@@ -52,7 +51,7 @@ interface DateValue {
   modifier: {
     value: string|null
     name: string
-  }|null
+  }
 }
 
 @Component({
@@ -64,7 +63,7 @@ interface DateValue {
 export default class DateField extends Vue {
 
   @Prop({ default: null }) label!: string|null
-  @Prop({ required: true }) value!: string
+  @Prop({ default: '' }) value!: string
 
   modifiers = [
     {
@@ -106,15 +105,16 @@ export default class DateField extends Vue {
   }
 
   get parsedValue(): DateValue {
-    const yearMatches = this.value.match(/\d\d\d\d/) || [ null ]
-    const monthMatches = this.value.match(/(?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
-    const dayMatches = this.value.match(/(\d\d?). (?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
-    const modifierMatches = this.modifiers.find(m => this.value.indexOf(m.name) > -1)
+    const v = this.value || ''
+    const yearMatches = v.match(/\d\d\d\d/) || [ null ]
+    const monthMatches = v.match(/(?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
+    const dayMatches = v.match(/(\d\d?). (?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
+    const modifierMatches = this.modifiers.find(m => v.indexOf(m.name) > -1)
     return {
       year: yearMatches[0],
       month: monthMatches[1],
       day: dayMatches[1],
-      modifier: modifierMatches || null
+      modifier: modifierMatches || this.modifiers[0]
     }
   }
 
@@ -124,4 +124,6 @@ export default class DateField extends Vue {
 .outer
   display flex
   height 100%
+input
+  text-align center
 </style>
