@@ -34,22 +34,23 @@
         {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
       </div>
       <v-btn-toggle
-        class="mx-auto mt-1 mb-0"
+        class="mx-auto mt-1 mb-0 rounded-lg"
         max
-        active-class="white--text primary darken-1"
+        active-class="background darken-1 black--text"
         v-model="detailPage"
         mandatory
         borderless
         dense
         color="primary"
         background-color="transparent">
-        <v-btn text class="rounded-lg" small>
+        <v-btn text class="rounded-lg mx-1" small>
           Details
         </v-btn>
+        <v-btn text class="rounded-lg mx-1" small>Dateien (3)</v-btn>
+        <v-btn text class="rounded-lg mx-1" small>Literatur</v-btn>
         <v-btn text class="rounded-lg mx-1" small>
           Externe Ressourcen <template v-if="countScrapedResources(value.columns_scrape) > 0">({{ countScrapedResources(value.columns_scrape) }})</template>
         </v-btn>
-        <v-btn text class="rounded-lg" small>Workflow</v-btn>
       </v-btn-toggle>
     </v-card-title>
     <v-divider />
@@ -57,7 +58,7 @@
       <v-window reverse :value="detailPage">
         <v-window-item>
           <h4
-            class="py-2 px-5 background d-flex"
+            class="py-2 px-5 background darken-1 d-flex"
             :style="{
               zIndex: 1,
               position: 'sticky',
@@ -70,7 +71,7 @@
               btn-class="px-2 background darken-2"
               prepend-icon="mdi-format-list-bulleted"
               search-placeholder="Liste suchen …"
-              :show-caret="true"
+              :show-chevron="true"
               :value="value.list || null"
               :items="store.lemma.lemmaLists"
               @input="updateList"
@@ -85,28 +86,106 @@
               label="Vorname"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
+            >
+              <v-btn
+                @click="updateUserColumns('alternativeFirstName', [''].concat(value.columns_user.alternativeFirstName || []))"
+                tile
+                class="rounded-lg mt-1 mr-1"
+                tabindex="-1"
+                icon
+                small><v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </text-field>
+            <text-field-alternatives
+              label="Vorname"
+              :value="value.columns_user.alternativeFirstName"
+              @input="updateUserColumns('alternativeFirstName', $event)"
             />
             <text-field
               :required="true"
               label="Nachname"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
+            >
+              <v-btn
+                @click="updateUserColumns('alternativeLastName', [''].concat(value.columns_user.alternativeLastName || []))"
+                tile
+                tabindex="-1"
+                class="rounded-lg mt-1 mr-1"
+                icon
+                small><v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </text-field>
+            <text-field-alternatives
+              label="Nachname"
+              :value="value.columns_user.alternativeLastName"
+              @input="updateUserColumns('alternativeLastName', $event)"
             />
+            <text-field label="Geschlecht">
+              <template v-slot:input>
+                <v-btn-toggle
+                  class="transparent mt-1 ml-1"
+                  active-class="background darken-3"
+                  borderless
+                  max="1"
+                  mandatory>
+                  <v-btn value="m" text class="rounded-lg" small>männlich</v-btn>
+                  <v-btn value="f" text class="rounded-lg" small>weiblich</v-btn>
+                  <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
+                </v-btn-toggle>
+              </template>
+            </text-field>
             <text-field
-              label="Geburtsjahr"
+              tabindex="-1"
+              label="Adelsprädikat"
+              placeholder="(kein)"
+              @input="updateUserColumns('nobleTitle', $event)"
+              :value="value.columns_user.nobleTitle"
+            >
+              <v-btn
+                @click="updateUserColumns('alternativeNobleTitle', [''].concat(value.columns_user.alternativeNobleTitle || []))"
+                tile
+                tabindex="-1"
+                class="rounded-lg mt-1 mr-1"
+                icon
+                small><v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </text-field>
+            <text-field-alternatives
+              label="Adelsprädikat"
+              :value="value.columns_user.alternativeNobleTitle"
+              @input="updateUserColumns('alternativeNobleTitle', $event)"
+            />
+            <v-spacer class="my-5" />
+            <date-field
+              label="Geburtsdatum"
               :value="value.birthYear"
-              placeholder="YYYY"
-              :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
               @input="debouncedUpdateData({ birthYear: $event })"
-            />
-            <text-field
-              label="Sterbejahr"
-              :value="value.deathYear"
-              placeholder="YYYY"
-              :rules="[ (e) => (e === null || e.toString().length !== 4 || isNaN(e)) && 'ungültiges Jahr' ]"
+            >
+              <v-btn
+                @click=""
+                tile
+                tabindex="-1"
+                class="rounded-lg mt-1 mr-1"
+                icon
+                small><v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </date-field>
+            <date-field
+              label="Sterbedatum"
+              :value="value.birthYear"
               @input="debouncedUpdateData({ deathYear: $event })"
-            />
-            <v-divider class="my-4" />
+            >
+              <v-btn
+                @click=""
+                tile
+                tabindex="-1"
+                class="rounded-lg mt-1 mr-1"
+                icon
+                small><v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </date-field>
+            <v-spacer class="my-5" />
             <text-field
               style="min-height: 100px"
               label="Verwandtschaft"
@@ -149,7 +228,7 @@
           }">
             GND: {{ value.gnd[0] }}
             <v-spacer />
-            <v-badge color="primary" v-if="value.gnd.length > 1" :content="'+' + (value.gnd.length - 1).toString()" inline />
+            <v-badge color="primary" v-if="value.gnd.length > 1" :content="value.gnd.length.toString()" inline />
           </h4>
           <v-card-text class="pt-1">
             <v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
@@ -223,6 +302,8 @@ import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
 import TextField from '../lib/TextField.vue'
+import DateField from '../lib/DateField.vue'
+import TextFieldAlternatives from '../lib/TextFieldAlternatives.vue'
 import SelectMenu from '../lib/SelectMenu.vue'
 import store from '@/store'
 import _ from 'lodash'
@@ -234,7 +315,9 @@ import { List } from '@/api'
     LobidPreviewCard,
     LobidGndSearch,
     TextField,
-    SelectMenu
+    SelectMenu,
+    TextFieldAlternatives,
+    DateField
   }
 })
 export default class LemmaDetail extends Vue {
@@ -262,7 +345,7 @@ export default class LemmaDetail extends Vue {
     }
   }
 
-  updateUserColumns(userKey: string, $event: string) {
+  updateUserColumns(userKey: string, $event: string|number|string[]) {
     this.$emit('update', {
       // eslint-disable-next-line @typescript-eslint/camelcase
       columns_user: {
