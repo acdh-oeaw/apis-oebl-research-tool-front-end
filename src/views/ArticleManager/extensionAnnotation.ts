@@ -34,8 +34,7 @@ declare module '@tiptap/core' {
       /**
        * Unset a mark
        */
-      unsetAnnotation: () => Command,
-      updateAnnotation: (attributes: AnnotationAttributes) => Command
+      unsetAnnotation: () => Command
     }
   }
 }
@@ -138,7 +137,6 @@ export const Annotation = popupMark.extend({
   },
 
   renderHTML(props) {
-    console.log({props})
     return ['mark', mergeAttributes(this.options.HTMLAttributes, props.HTMLAttributes), 0]
   },
 
@@ -157,7 +155,7 @@ export const Annotation = popupMark.extend({
       },
       unsetAnnotation: () => ({ commands }) => {
         return commands.unsetMark('annotation')
-      },
+      }
     }
   },
 
