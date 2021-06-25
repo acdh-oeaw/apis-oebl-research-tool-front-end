@@ -173,7 +173,7 @@
             </date-field>
             <date-field
               label="Sterbedatum"
-              :value="value.birthYear"
+              :value="value.deathYear"
               @input="debouncedUpdateData({ deathYear: $event })"
             >
               <v-btn
@@ -187,12 +187,12 @@
             </date-field>
             <v-spacer class="my-5" />
             <text-field
-              style="min-height: 100px"
+              style="min-height: 60px"
               label="Verwandtschaft"
               :allow-new-line="true"
             />
             <text-field
-              style="min-height: 100px"
+              style="min-height: 60px"
               label="Lebenslauf"
               :allow-new-line="true"
             />
