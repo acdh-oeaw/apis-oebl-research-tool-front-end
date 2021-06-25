@@ -8,27 +8,26 @@
       :class="['fragment', $listeners['input'] !== undefined && 'clickable', 'rounded-lg', 'mt-1' ]"
       no-gutters>
       <slot />
-      <v-col class="align-self-center text-center" cols="2" v-if="$listeners['input'] !== undefined">
+      <div style="flex: 0 0 40px" class="align-self-center text-center" v-if="$listeners['input'] !== undefined">
         <v-icon color="primary" v-if="fragment.gnd === value">mdi-check-decagram</v-icon>
         <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
-      </v-col>
-      <v-col
+      </div>
+      <div
         v-if="fragment.html !== null"
-        style="height: 100px; overflow: hidden;"
+        style="height: 100px; overflow: hidden; flex: 0 0 100px;"
         class="pt-1 pb-1 text-center"
         cols="3" >
         <img v-if="fragment.data.picture" :src="fragment.data.picture" />
         <v-icon class="mt-5 ml-5 pt-4 pl-2" v-else>mdi-image-broken-variant</v-icon>
-      </v-col>
-      <v-col style="line-height: 1.2" class="pt-1 pl-2 caption">
-        <b>{{ fragment.data.name }}</b>
-        <br /> {{ fragment.data.type }}
-        <br /><a class="mt-2 d-inline-block text-decoration-none" target="_blank" :href="'https://lobid.org/gnd/' + fragment.gnd">
+      </div>
+      <div style="line-height: 1.2; flex: 1" class="pt-1 pl-2 caption">
+        <div class="description">
+          <b>{{ fragment.data.name }}</b>
+          <br /> {{ fragment.data.description || fragment.data.type }}
+        </div>
+        <a class="mt-2 d-inline-block text-decoration-none" target="_blank" :href="'https://lobid.org/gnd/' + fragment.gnd">
         &rarr; {{ fragment.gnd }}</a>
-      </v-col>
-      <!-- <v-col style="opacity: .5" class="pa-0 text-center caption">
-        (nicht gefunden)
-      </v-col> -->
+      </div>
     </v-row>
   </div>
 </template>
@@ -46,6 +45,7 @@ type Fragment = {
     id: string
     type: string
     picture: string|null
+    description: string|null
   }
 }
 
@@ -98,11 +98,18 @@ export default class LobidPreviewCard extends Vue {
   &.clickable:hover
     background var(--v-background-lighten1)
 
-.fragment /deep/ img
+.fragment img
   border-radius 7px
   max-width 80px
+  max-height 100%
   background var(--v-background-lighten2)
 
-.fragment /deep/ a
+.fragment a
   font-weight 700
+
+.fragment .description
+  -webkit-line-clamp 5
+  -webkit-box-orient vertical
+  display -webkit-box
+  overflow hidden
 </style>
