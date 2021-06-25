@@ -5,6 +5,8 @@ import * as http from 'http'
 import * as socketIo from 'socket.io'
 import fetch from 'node-fetch'
 import * as cors from 'cors'
+import zotero from './zotero'
+
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
 
@@ -111,6 +113,15 @@ app.post('/zotero/item', async (req, res) => {
     console.log(await x.text())
     res.sendStatus(500)
   }
+})
+
+app.get('/zotero/initial-data', async (req, res) => {
+  const itemTypes = await zotero.getItemTypes()
+  res.send(JSON.stringify({
+    itemTypes,
+    itemTypeFields: await zotero.getItemTypeFields(itemTypes),
+    itemTypeCreators: await zotero.getItemTypeCreators(itemTypes)
+  }))
 })
 
 app.use('*', (req, res) => res.send(index))

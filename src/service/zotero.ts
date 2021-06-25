@@ -71,9 +71,15 @@ class ZoteroStore {
   itemTypeCreators: { [key: string]: ZoteroItemCreatorType[] } = {}
 
   async init() {
-    this.itemTypes = await this.getItemTypes()
-    this.itemTypeFields = await this.getItemTypeFields(this.itemTypes)
-    this.itemTypeCreators = await this.getItemTypeCreators(this.itemTypes)
+    const initialData = await this.getInitialData()
+    this.itemTypes = initialData.itemTypes
+    this.itemTypeFields = initialData.itemTypeFields
+    this.itemTypeCreators = initialData.itemTypeCreators
+    console.log(this)
+  }
+
+  async getInitialData() {
+    return (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/initial-data')).json()
   }
 
   async createItem(i: ZoteroItem['data']) {
@@ -104,40 +110,8 @@ class ZoteroStore {
     })).json()
   }
 
-  async getItemTypes(): Promise<Array<{itemType: string, localized: string}>> {
-    return await (await (fetch('https://api.zotero.org/itemTypes?locale=' + (navigator.language || 'de-DE')))).json()
-  }
-
   async getItemTemplate(itemType: string): Promise<ZoteroItem['data']> {
     return await (await (fetch(`https://api.zotero.org/items/new?itemType=${ itemType }`))).json()
-  }
-
-  async getItemTypeFields(itemTypes: ZoteroItemType[]): Promise<{ [itemType: string]: ZoteroItemTypeField[] }> {
-    return Promise.all(itemTypes.map(async (it) => {
-      return {
-        itemType: it.itemType,
-        fields: await (await fetch(`https://api.zotero.org/itemTypeFields?itemType=${ it.itemType }&locale=${ (navigator.language || 'de-DE') }`)).json()
-      }
-    })).then(its => {
-      return its.reduce((m, e) => {
-        m[e.itemType] = e.fields
-        return m
-      }, {} as { [itemType: string]: ZoteroItemTypeField[] })
-    })
-  }
-
-  async getItemTypeCreators(itemTypes: ZoteroItemType[]): Promise<{ [itemType: string]: ZoteroItemCreatorType[] }> {
-    return Promise.all(itemTypes.map(async (it) => {
-      return {
-        itemType: it.itemType,
-        creators: await (await fetch(`https://api.zotero.org/itemTypeCreatorTypes?itemType=${ it.itemType }&locale=${ (navigator.language || 'de-DE') }`)).json()
-      }
-    })).then(its => {
-      return its.reduce((m, e) => {
-        m[e.itemType] = e.creators
-        return m
-      }, {} as { [itemType: string]: ZoteroItemCreatorType[] })
-    })
   }
 
 }
