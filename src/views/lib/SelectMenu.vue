@@ -21,7 +21,7 @@
           small>{{ prependIcon }}</v-icon>
         {{ label ? label + ': ' : '' }}
         {{ displayValue }}
-        <v-icon small v-if="showCaret">mdi-unfold-more-horizontal</v-icon>
+        <v-icon small v-if="showChevron">mdi-unfold-more-horizontal</v-icon>
       </v-btn>
     </template>
     <v-card class="pa-0 fill-height d-flex flex-column rounded-lg" color="background" style="max-height: inherit;">
@@ -115,7 +115,7 @@ export default class SelectMenu extends Vue {
   @Prop({ default: null }) width!: number
   @Prop({ default: '' }) btnClass!: string
   @Prop({ default: null }) label!: string|null
-  @Prop({ default: false }) showCaret!: boolean
+  @Prop({ default: false }) showChevron!: boolean
   @Prop({ default: false }) hideSearchbar!: boolean
   @Prop({ default: null }) prependIcon!: string|null
   @Prop({ default: null }) addNullOption!: string|null
