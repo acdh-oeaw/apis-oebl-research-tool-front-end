@@ -58,6 +58,7 @@ export async function get(gnd: string) {
     name: res.preferredName,
     id: res.gndIdentifier,
     type: res.type.map(_.startCase).join(', '),
+    description: res.biographicalOrHistoricalInformation ? res.biographicalOrHistoricalInformation[0] : null,
     picture: res.depiction ? res.depiction[0]?.thumbnail : null
   }
 }
