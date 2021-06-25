@@ -10,7 +10,7 @@
           v-if="$attrs && $attrs.label"
           class="caption pa-2 text-field-label"
           v-text="$attrs.label"
-          style="width: 120px; opacity: .7; padding-bottom: 7px" />
+        />
       </slot>
       <div style="position: relative" class="fill-width">
         <slot name="input">
@@ -157,6 +157,8 @@ textarea
   word-break break-word
 
 .text-field-label
+  flex 0 0 100px
+  opacity .7
   hyphens auto
 
 .text-field-outer
