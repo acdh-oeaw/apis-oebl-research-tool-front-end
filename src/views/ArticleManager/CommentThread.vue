@@ -65,12 +65,13 @@
     </div>
     <v-divider v-if="thread !== undefined && thread.comments.length > 0" class="my-2" />
     <text-field
+      v-if="thread !== undefined"
       v-model="newMessage"
       @keydown.enter="appendComment"
       @keyup.native="storeLastCaretPos"
       @mouseup.native="storeLastCaretPos"
       class="py-0 pl-1 pr-1 mt-1 mb-0"
-      style="background: rgba(0,0,0,.05) !important;"
+      :style="{ background: 'rgba(0,0,0,.05) !important' }"
       placeholder="Kommentar hinzufügen …">
       <template v-slot:prepend>
         <v-btn
