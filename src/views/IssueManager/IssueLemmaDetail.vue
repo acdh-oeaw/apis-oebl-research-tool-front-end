@@ -24,7 +24,7 @@
       <v-card-text class="px-5 py-2 flex-grow-1">
         <form-row label="Status">
           <select-menu
-            :show-caret="true"
+            :show-chevron="true"
             btn-class="px-4 float-right background darken-2"
             :items="lemmaStatuses"
             search-placeholder="Status suchen …"
@@ -38,7 +38,7 @@
         </form-row>
         <form-row label="Redakteur">
           <select-menu
-            :show-caret="true"
+            :show-chevron="true"
             btn-class="px-4 float-right background darken-2"
             :items="store.editors.editors"
             search-placeholder="Redakteur suchen …"
@@ -51,7 +51,7 @@
         </form-row>
         <form-row label="Autor">
           <select-menu
-            :show-caret="true"
+            :show-chevron="true"
             btn-class="px-4 float-right background darken-2"
             :items="store.authors.authors"
             search-placeholder="Autor suchen …"
