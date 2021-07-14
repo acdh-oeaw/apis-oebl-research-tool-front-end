@@ -34,15 +34,12 @@
         {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
       </div>
       <v-btn-toggle
-        class="mx-auto mt-1 mb-0 rounded-lg"
         max
-        active-class="background darken-1 black--text"
+        class="transparent mx-auto mt-1 mb-0"
+        active-class="background darken-3"
         v-model="detailPage"
         mandatory
-        borderless
-        dense
-        color="primary"
-        background-color="transparent">
+        borderless>
         <v-btn text class="rounded-lg mx-1" small>
           Details
         </v-btn>
