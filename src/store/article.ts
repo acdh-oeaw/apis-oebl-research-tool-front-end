@@ -11,7 +11,6 @@ interface Comment {
 export interface CommentThread {
   threadId: ThreadId
   status: 'open'|'private'
-  offset: number
   comments: Comment[]
 }
 
@@ -46,7 +45,6 @@ export default class ArticleStore {
       {
         threadId: '1',
         status: 'open',
-        offset: 0,
         comments: [
           {
             date: new Date(),
@@ -65,7 +63,6 @@ export default class ArticleStore {
       {
         threadId: '2',
         status: 'open',
-        offset: 0,
         comments: [
           {
             date: new Date(),
@@ -199,8 +196,7 @@ export default class ArticleStore {
     this._commentThreads.push({
       threadId,
       status: 'open',
-      comments: [],
-      offset: 0
+      comments: []
     })
     return threadId
   }
