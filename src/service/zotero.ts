@@ -1,3 +1,6 @@
+
+import fetch from 'node-fetch'
+
 export interface ZoteroItemCreator {
   creatorType: string
   firstName: string

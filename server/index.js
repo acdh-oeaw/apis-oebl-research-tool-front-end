@@ -43,20 +43,20 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 exports.__esModule = true;
-var express_1 = require("express");
-var compression_1 = require("compression");
-var fs_1 = require("fs");
-var http_1 = require("http");
-var socket_io_1 = require("socket.io");
+var express = require("express");
+var compression = require("compression");
+var fs = require("fs");
+var http = require("http");
+var socketIo = require("socket.io");
 var node_fetch_1 = require("node-fetch");
-var body_parser_1 = require("body-parser");
-var cors_1 = require("cors");
-var app = express_1["default"]();
+var cors = require("cors");
+var zotero_1 = require("./zotero");
+var app = express();
 var port = process.env.NODE_PORT || process.env.PORT || 3333;
 var serviceSecret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C';
-var server = http_1["default"].createServer(app);
-// @ts-ignore: Unreachable code error
-var io = socket_io_1["default"](server, {
+var server = http.createServer(app);
+// @ts-ignore
+var io = socketIo(server, {
     cors: {
         origin: [
             'http://localhost:8080',
@@ -65,12 +65,12 @@ var io = socket_io_1["default"](server, {
         ]
     }
 });
-var index = fs_1["default"].readFileSync('./dist/index.html', { encoding: 'utf-8' });
+var index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' });
 app.enable('trust proxy');
-app.use(cors_1["default"]());
-app.use(compression_1["default"]());
-app.use(body_parser_1["default"].json({ limit: '100mb' }));
-app.use(['/', '/css', '/img', '/js'], express_1["default"].static('./dist'));
+app.use(cors());
+app.use(compression());
+app.use(express.json({ limit: '100mb' }));
+app.use(['/', '/css', '/img', '/js'], express.static('./dist'));
 app.post('/message/import-issue-lemmas', function (req, res) {
     if (req.headers['x-secret'] === serviceSecret) {
         console.log('triggered importIssueLemmas', req.body);
@@ -127,30 +127,97 @@ app.get('/zotero/item/:id', function (req, res) { return __awaiter(void 0, void 
         }
     });
 }); });
-app.put('/zotero/item/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var x, t;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/' + req.params.id, {
-                    method: 'PUT',
-                    body: JSON.stringify(req.body),
-                    headers: {
-                        'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
-                    }
-                })];
+app.patch('/zotero/item/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var x, _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                console.log(req.body);
+                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/' + req.params.id, {
+                        method: 'PATCH',
+                        body: JSON.stringify(req.body),
+                        headers: {
+                            'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                        }
+                    })];
             case 1:
-                x = _a.sent();
+                x = _c.sent();
+                if (!x.ok) return [3 /*break*/, 2];
+                console.log({
+                    version: x.headers.get('Last-Modified-Version')
+                });
+                res.send(JSON.stringify({
+                    version: x.headers.get('Last-Modified-Version')
+                }));
+                return [3 /*break*/, 4];
+            case 2:
+                console.log('ERROR');
+                _b = (_a = console).log;
+                return [4 /*yield*/, x.text()];
+            case 3:
+                _b.apply(_a, [_c.sent()]);
+                console.log({
+                    version: x.headers.get('Last-Modified-Version')
+                });
+                res.sendStatus(500);
+                _c.label = 4;
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.post('/zotero/item', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var x, _a, _b, _c, _d, _e, _f;
+    return __generator(this, function (_g) {
+        switch (_g.label) {
+            case 0:
+                console.log(req.body);
+                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/', {
+                        method: 'POST',
+                        body: JSON.stringify(req.body),
+                        headers: {
+                            'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                        }
+                    })];
+            case 1:
+                x = _g.sent();
                 if (!x.ok) return [3 /*break*/, 3];
+                _b = (_a = res).send;
+                _d = (_c = JSON).stringify;
                 return [4 /*yield*/, x.json()];
             case 2:
-                t = _a.sent();
-                console.log('response', t);
-                res.send(t);
-                return [3 /*break*/, 4];
+                _b.apply(_a, [_d.apply(_c, [_g.sent()])]);
+                return [3 /*break*/, 5];
             case 3:
+                _f = (_e = console).log;
+                return [4 /*yield*/, x.text()];
+            case 4:
+                _f.apply(_e, [_g.sent()]);
                 res.sendStatus(500);
-                _a.label = 4;
-            case 4: return [2 /*return*/];
+                _g.label = 5;
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/zotero/initial-data', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var itemTypes, _a, _b, _c, _d, _e;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
+            case 0: return [4 /*yield*/, zotero_1["default"].getItemTypes()];
+            case 1:
+                itemTypes = _f.sent();
+                _b = (_a = res).send;
+                _d = (_c = JSON).stringify;
+                _e = {
+                    itemTypes: itemTypes
+                };
+                return [4 /*yield*/, zotero_1["default"].getItemTypeFields(itemTypes)];
+            case 2:
+                _e.itemTypeFields = _f.sent();
+                return [4 /*yield*/, zotero_1["default"].getItemTypeCreators(itemTypes)];
+            case 3:
+                _b.apply(_a, [_d.apply(_c, [(_e.itemTypeCreators = _f.sent(),
+                            _e)])]);
+                return [2 /*return*/];
         }
     });
 }); });
