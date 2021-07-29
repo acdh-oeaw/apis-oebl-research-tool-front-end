@@ -1,7 +1,10 @@
 <template>
   <v-card
     class="transparent flex-column d-flex fill-height lemma-detail"
-    flat
+    @dragover.prevent=""
+    @dragenter.prevent.capture.stop="onDragEnter"
+    @dragleave.prevent.capture.stop="onDragLeave"
+    @drop.prevent.capture.stop="onDrop"
     v-if="value !== undefined && value !== null">
     <v-card-title class="flex-column pb-2">
       <div class="d-flex flex-row align-self-stretch">
@@ -43,7 +46,7 @@
         <v-btn text class="rounded-lg mx-1" small>
           Details
         </v-btn>
-        <v-btn text class="rounded-lg mx-1" small>Dateien (3)</v-btn>
+        <v-btn text class="rounded-lg mx-1" small>Dateien {{ files.length > 0 ? `(${files.length})` : '' }}</v-btn>
         <v-btn text class="rounded-lg mx-1" small>Literatur</v-btn>
         <v-btn text class="rounded-lg mx-1" small>
           Externe Ressourcen <template v-if="countScrapedResources(value.columns_scrape) > 0">({{ countScrapedResources(value.columns_scrape) }})</template>
@@ -52,7 +55,7 @@
     </v-card-title>
     <v-divider />
     <div class="overflow-y-auto flex-grow-1">
-      <v-window reverse :value="detailPage">
+      <v-window :value="detailPage">
         <v-window-item>
           <h4
             class="py-2 px-5 background darken-1 d-flex"
@@ -215,14 +218,23 @@
           </v-card-text>
         </v-window-item>
         <v-window-item>
-          <h4
-            class="py-2 px-5 background d-flex"
-            :style="{
-            zIndex: 1,
-            position: 'sticky',
-            top: 0,
-            background: ''
-          }">
+          <h4 class="py-2 px-5 background d-flex">
+            Dateien
+          </h4>
+          <v-card-text>
+            <div class="file-icon" v-for="(file, i) in files" :key="i">
+              <img :src="`/img/file-icons/${ file.name.toLowerCase().split('.').pop() }.svg`" />
+              <div class="caption grey--text">{{ file.name }}</div>
+            </div>
+          </v-card-text>
+        </v-window-item>
+        <v-window-item>
+          <h4 class="py-2 px-5 background d-flex">
+            Literatur
+          </h4>
+        </v-window-item>
+        <v-window-item>
+          <h4 class="py-2 px-5 background d-flex">
             GND: {{ value.gnd[0] }}
             <v-spacer />
             <v-badge color="primary" v-if="value.gnd.length > 1" :content="value.gnd.length.toString()" inline />
@@ -266,13 +278,7 @@
           </v-card-text>
           <v-divider />
           <h4
-            class="py-2 px-5 background d-flex"
-            :style="{
-              zIndex: 1,
-              position: 'sticky',
-              top: 0,
-              background: ''
-            }">
+            class="py-2 px-5 background d-flex">
             Externe Ressourcen
             <v-spacer />
           </h4>
@@ -293,6 +299,7 @@
   </v-card>
 </template>
 <script lang="ts">
+
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
@@ -305,6 +312,8 @@ import SelectMenu from '../lib/SelectMenu.vue'
 import store from '@/store'
 import _ from 'lodash'
 import { List } from '@/api'
+import confirm from '@/store/confirm'
+const DRAG_CLASS = 'drag-over'
 
 @Component({
   components: {
@@ -324,6 +333,57 @@ export default class LemmaDetail extends Vue {
   store = store
   showGndSearch = false
   detailPage = 0
+  dragEventDepth = 0
+  files: File[] = []
+
+  onDragEnter(event: DragEvent) {
+    if (
+      event.currentTarget !== null &&
+      event.dataTransfer !== null &&
+      // during the "drag" phase, the "files" prop is still empty
+      // so we use the items prop instead, to check what’s being dragged.
+      event.dataTransfer.items[0] !== null &&
+      event.dataTransfer.items[0].kind === 'file'
+    ) {
+      const target = event.currentTarget as HTMLElement
+      this.dragEventDepth = this.dragEventDepth + 1
+      target.classList.add(DRAG_CLASS)
+      this.detailPage = 1
+    }
+  }
+
+  onDragLeave(event: DragEvent) {
+    this.dragEventDepth = this.dragEventDepth - 1
+    if (this.dragEventDepth === 0 && event.currentTarget) {
+      const target = event.currentTarget as HTMLElement
+      target.classList.remove(DRAG_CLASS)
+    }
+  }
+
+  onDrop(event: DragEvent) {
+    if (
+      event.currentTarget !== null &&
+      event.dataTransfer !== null &&
+      event.dataTransfer.files.length > 0
+    ) {
+      const target = event.currentTarget as HTMLElement
+      target.classList.remove(DRAG_CLASS)
+      this.uploadFiles(event.dataTransfer.files)
+    }
+  }
+
+  isValidFile(f: File): boolean {
+    return f.type !== ''
+  }
+
+  uploadFiles(fs: FileList) {
+    const [valid, inValid] = _.partition([...fs], (f) => this.isValidFile(f))
+    console.log({ valid, inValid })
+    if (inValid.length > 0) {
+      confirm.confirm(`${inValid.length} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${ inValid.map(f => f.name).join(', ') }).`)
+    }
+    this.files = this.files.concat(valid)
+  }
 
   countScrapedResources(r: LemmaRow['columns_scrape']) {
     if (r === undefined) {
@@ -373,8 +433,30 @@ export default class LemmaDetail extends Vue {
 
 }
 </script>
-<style lang="stylus" scope>
+<style lang="stylus" scoped>
 // tell the browser not to cache this.
 .lemma-detail
   will-change contents
+
+.drag-over
+  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+
+.file-icon
+  width 120px
+  text-align center
+  display inline-block
+  height 180
+  .caption
+    text-align center
+    max-height 40px
+    text-overflow ellipsis
+    -webkit-line-clamp 2
+    display -webkit-box
+    overflow hidden
+
+h4
+  zIndex: 1
+  position: sticky
+  top: 0
+  background: transparent
 </style>
