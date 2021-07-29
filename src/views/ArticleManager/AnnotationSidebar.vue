@@ -13,7 +13,7 @@
         <lobid-preview-card
           @click="openAnnotation(annotation)"
           :gnd="[ getAttrsFromNode(annotation).entityId ]" />
-        <div v-if="getAttrsFromNode(annotation).isConfirmed === 'false'" class="text-right confirm-btns mr-4">
+        <div v-if="getAttrsFromNode(annotation).isConfirmed === 'false'" class="text-right mr-4">
           <v-btn @click="removeAnnotation(annotation)" elevation="0" class="rounded-lg" color="background darken-3 mr-1" small>
             ablehnen
           </v-btn>
