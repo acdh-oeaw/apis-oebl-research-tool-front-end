@@ -327,12 +327,6 @@ export default class Sidebar extends Vue {
     }
   }
 
-  onDrop(e: DragEvent) {
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.classList.remove('drag-over')
-    }
-  }
-
   selectLemmaFilter(i: string) {
     store.lemma.selectedLemmaFilterId = i
   }
