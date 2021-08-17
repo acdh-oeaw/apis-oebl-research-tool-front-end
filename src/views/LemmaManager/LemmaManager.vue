@@ -402,6 +402,13 @@ export default class LemmaManager extends Vue {
   lobidPreviewGnds: string[] = []
   filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
 
+  filterDataDebounced = _.debounce(this.filterData, 150)
+
+  fileToImport = {
+    file: null as null|File,
+    buffer: null as null|ArrayBuffer
+  }
+
   onKeyDown(e: KeyboardEvent) {
     if (e.key.toLowerCase() === 'enter') {
       e.preventDefault()
@@ -425,13 +432,6 @@ export default class LemmaManager extends Vue {
     } else {
       return []
     }
-  }
-
-  filterDataDebounced = _.debounce(this.filterData, 150)
-
-  fileToImport = {
-    file: null as null|File,
-    buffer: null as null|ArrayBuffer
   }
 
   @Watch('lemmaListId')
