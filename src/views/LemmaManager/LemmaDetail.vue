@@ -455,7 +455,7 @@ export default class LemmaDetail extends Vue {
     overflow hidden
 
 h4
-  zIndex: 1
+  z-index: 1
   position: sticky
   top: 0
   background: transparent
