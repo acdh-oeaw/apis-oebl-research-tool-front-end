@@ -126,7 +126,8 @@
         <v-spacer />
         <v-btn
           @click.capture.prevent.stop="createLemmaList"
-          class="droppable rounded-lg pr-0 mr-2"
+          class="droppable rounded-lg"
+          style="margin-right: -2px"
           @dragenter.prevent="onDragEnter($event)"
           elevation="0"
           text
