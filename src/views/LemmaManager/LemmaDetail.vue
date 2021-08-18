@@ -220,12 +220,20 @@
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
             Dateien
+            <v-spacer />
+            <v-btn
+              @click.capture.prevent.stop="pickFile"
+              class="droppable rounded-lg mr-2"
+              elevation="0"
+              text
+              small
+              color="primary darken-1">
+              Datei hinzufügen
+              <v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
+            </v-btn>
           </h4>
-          <v-card-text>
-            <div class="file-icon" v-for="(file, i) in files" :key="i">
-              <img :src="`/img/file-icons/${ file.name.toLowerCase().split('.').pop() }.svg`" />
-              <div class="caption grey--text">{{ file.name }}</div>
-            </div>
+          <v-card-text class="flex-grow-1">
+            <vue-file-list :value="files" @input="files = $event" />
           </v-card-text>
         </v-window-item>
         <v-window-item>
@@ -305,14 +313,16 @@ import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LobidGndSearch from './LobidGndSearch.vue'
-import TextField from '../lib/TextField.vue'
-import DateField from '../lib/DateField.vue'
-import TextFieldAlternatives from '../lib/TextFieldAlternatives.vue'
-import SelectMenu from '../lib/SelectMenu.vue'
+import TextField from '@/views/lib/TextField.vue'
+import DateField from '@/views/lib/DateField.vue'
+import TextFieldAlternatives from '@/views/lib/TextFieldAlternatives.vue'
+import SelectMenu from '@/views/lib/SelectMenu.vue'
+import VueFileList from './FileList.vue'
 import store from '@/store'
 import _ from 'lodash'
 import { List } from '@/api'
 import confirm from '@/store/confirm'
+import fileDialog from 'file-dialog'
 const DRAG_CLASS = 'drag-over'
 
 @Component({
@@ -323,7 +333,8 @@ const DRAG_CLASS = 'drag-over'
     TextField,
     SelectMenu,
     TextFieldAlternatives,
-    DateField
+    DateField,
+    VueFileList
   }
 })
 export default class LemmaDetail extends Vue {
@@ -372,17 +383,21 @@ export default class LemmaDetail extends Vue {
     }
   }
 
+  async pickFile() {
+    const files = await fileDialog({ multiple: true })
+    this.files = this.files.concat(Array.from(files))
+  }
+
   isValidFile(f: File): boolean {
     return f.type !== ''
   }
 
   uploadFiles(fs: FileList) {
-    const [valid, inValid] = _.partition([...fs], (f) => this.isValidFile(f))
-    console.log({ valid, inValid })
-    if (inValid.length > 0) {
-      confirm.confirm(`${inValid.length} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${ inValid.map(f => f.name).join(', ') }).`)
+    const [validFiles, inValidFiles] = _.partition([...fs], (f) => this.isValidFile(f))
+    if (inValidFiles.length > 0) {
+      confirm.confirm(`${inValidFiles.length} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${ inValidFiles.map(f => f.name).join(', ') }).`)
     }
-    this.files = this.files.concat(valid)
+    this.files = this.files.concat(validFiles)
   }
 
   countScrapedResources(r: LemmaRow['columns_scrape']) {
@@ -440,19 +455,6 @@ export default class LemmaDetail extends Vue {
 
 .drag-over
   box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
-
-.file-icon
-  width 120px
-  text-align center
-  display inline-block
-  height 180
-  .caption
-    text-align center
-    max-height 40px
-    text-overflow ellipsis
-    -webkit-line-clamp 2
-    display -webkit-box
-    overflow hidden
 
 h4
   z-index: 1
