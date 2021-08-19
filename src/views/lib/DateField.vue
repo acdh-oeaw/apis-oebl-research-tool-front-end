@@ -12,7 +12,7 @@
         <input
           maxlength="2"
           :value="parsedValue.day"
-          class="pa-1"
+          class="pa-1 text--primary"
           style="width: 35px"
           placeholder="TT"
           @input="updateValue({ day: $event.target.value })"
@@ -20,7 +20,7 @@
         <input
           maxlength="2"
           :value="parsedValue.month"
-          class="pa-1"
+          class="pa-1 text--primary"
           style="width: 35px"
           placeholder="MM"
           @input="updateValue({ month: $event.target.value })"
@@ -29,10 +29,10 @@
           minlength="4"
           maxlength="4"
           :value="parsedValue.year"
-          class="pa-1"
+          class="pa-1 text--primary"
           style="width: 50px"
           placeholder="YYYY"
-          @input="updateValue({ month: $event.target.value })"
+          @input="updateValue({ year: $event.target.value })"
           />
       </div>
     </template>
@@ -65,7 +65,7 @@ export default class DateField extends Vue {
   @Prop({ default: null }) label!: string|null
   @Prop({ default: '' }) value!: string
 
-  modifiers = [
+  readonly modifiers = [
     {
       name: 'genau',
       value: null
