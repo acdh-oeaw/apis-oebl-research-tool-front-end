@@ -141,7 +141,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import confirm from '../../store/confirm'
 import { findPerson } from '@/service/lobid'
 import { ImportablePerson, LemmaRow } from '@/types/lemma'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -175,6 +174,8 @@ export default class LemmaAdd extends Vue {
     gnd: []
   }
 
+  person: ImportablePerson = this.emptyPerson
+
   onScroll(e: MouseEvent) {
     if (e.target instanceof HTMLElement && e.target.scrollTop > 0) {
       this.showDivider = true
@@ -182,12 +183,6 @@ export default class LemmaAdd extends Vue {
       this.showDivider = false
     }
   }
-
-  person: ImportablePerson = this.emptyPerson
-
-  log = console.log
-
-  searchPerson = _.debounce(this.onChangePerson, 500)
 
   get lemmaLists() {
     return this.store.lemma.lemmaLists.map(ll => {
@@ -211,6 +206,8 @@ export default class LemmaAdd extends Vue {
   async onChangePerson() {
     this.possibleGnds = (await findPerson(this.person)).map(p => (p as any).gndIdentifier)
   }
+
+  searchPerson = _.debounce(this.onChangePerson, 500)
 
 }
 </script>
