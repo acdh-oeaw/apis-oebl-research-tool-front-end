@@ -2,7 +2,7 @@
 
 import { expect } from 'chai'
 import { mount, createLocalVue, Wrapper } from '@vue/test-utils'
-import ColumnMatcher from '@/src/views/LemmaManager/ColumnMatcher.vue'
+import ColumnMatcher from '../../../src/views/LemmaManager/ColumnMatcher.vue'
 import { readFileSync } from 'fs'
 import flushPromises from 'flush-promises'
 import Vuetify from 'vuetify'
