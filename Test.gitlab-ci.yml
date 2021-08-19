@@ -1,0 +1,27 @@
+test:
+  stage: test
+  image: registry.gitlab.com/acdh-oeaw/docker/herokuish-for-cypress/master:latest
+  needs: []
+  script:
+    - cp -R . /tmp/app
+    - export CYPRESS_VIDEOS_FOLDER=${CI_PROJECT_DIR}/cypress/videos
+    - export CYPRESS_SCREENSHOTS_FOLDER=${CI_PROJECT_DIR}/cypress/videos
+    - /bin/herokuish buildpack test
+    - TEST_STATUS=$?
+    - cp -Rv /app/coverage /app/tests/e2e . || true
+    - echo "Test exit code $TEST_STATUS"
+    - exit $TEST_STATUS
+  rules:
+    - if: '$TEST_DISABLED'
+      when: never
+    - if: '$CI_COMMIT_TAG || $CI_COMMIT_BRANCH'
+  artifacts:
+    when: always
+    paths:
+      # save both cypress artifacts and coverage results
+      - coverage
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+      - e2e/videos/**/*.mp4
+      - e2e/screenshots/**/*.png
+    expire_in: 10 days
