@@ -337,7 +337,7 @@ export default class Article extends Vue {
   zoomSteps = [
     {
       name: '80%',
-      value: .8
+      value: 0.8
     },
     {
       name: '100%',

@@ -163,7 +163,7 @@
               @input="debouncedUpdateData({ birthYear: $event })"
             >
               <v-btn
-                @click=""
+                @click="log"
                 tile
                 tabindex="-1"
                 class="rounded-lg mt-1 mr-1"
@@ -177,7 +177,7 @@
               @input="debouncedUpdateData({ deathYear: $event })"
             >
               <v-btn
-                @click=""
+                @click="log"
                 tile
                 tabindex="-1"
                 class="rounded-lg mt-1 mr-1"

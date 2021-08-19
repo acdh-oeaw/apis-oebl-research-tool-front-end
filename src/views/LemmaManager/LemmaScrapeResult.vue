@@ -15,10 +15,9 @@
     </template>
     <v-list-item
       dense
-      v-for="(scrapeDataValue, key) in value" :key="key"
+      v-for="(scrapeDataValue, key) in nonArrayable(value)" :key="key"
       :href="maybeLinkItem(key, scrapeDataValue)"
-      target="_blank"
-      v-if="!Array.isArray(scrapeDataValue)">
+      target="_blank">
       <v-list-item-content class="list-item-label">{{ formatKey(key) }}</v-list-item-content>
       <v-list-item-action-text
         :class="[
@@ -30,8 +29,7 @@
     </v-list-item>
     <v-list-group
       sub-group
-      v-for="(scrapeDataValue, key) in value" :key="key"
-      v-if="Array.isArray(scrapeDataValue)"
+      v-for="(scrapeDataValue, key) in arrayable(value)" :key="key"
       :class="[scrapeDataValue.length === 0 && 'list-disabled']">
       <template v-slot:activator>
         <v-list-item-title>{{ formatKey(key) }}</v-list-item-title>
@@ -63,21 +61,23 @@ import { maybeParseDate, isValidHttpUrl } from '@/util'
 import formatDate from 'date-fns/esm/format'
 import de from 'date-fns/esm/locale/de'
 
+type ScrapeValue = ServerResearchLemma['columns_scrape'][keyof ServerResearchLemma['columns_scrape']]
+
 @Component
 export default class LemmaScrapeResult extends Vue {
 
-  @Prop({ required: true }) value!: ServerResearchLemma['columns_scrape'][keyof ServerResearchLemma['columns_scrape']]
+  @Prop({ required: true }) value!: ScrapeValue
   @Prop({ required: true }) title!: string
 
   keyNamesReadable: { [key: string]: string } = {
     txt: ''
   }
 
-  formatKey(s: string) {
-    if (this.keyNamesReadable[s] !== undefined) {
+  formatKey(s: string|number) {
+    if (this.keyNamesReadable[String(s)] !== undefined) {
       return ''
     } else {
-      return _.startCase(s)
+      return _.startCase(String(s))
     }
   }
 
@@ -88,6 +88,14 @@ export default class LemmaScrapeResult extends Vue {
     } else {
       return value
     }
+  }
+
+  arrayable(v: ScrapeValue) {
+    return Object.values(v).filter(Array.isArray)
+  }
+
+  nonArrayable(v: ScrapeValue) {
+    return Object.values(v).filter(a => !Array.isArray(a))
   }
 
   maybeLinkItem(key: string|number, value: any): string|undefined {

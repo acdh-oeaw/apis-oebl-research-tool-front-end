@@ -17,6 +17,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'space-before-function-paren': 'off',
     'object-curly-spacing': 'off',
     'no-trailing-spaces': 'warn',
@@ -25,7 +26,7 @@ module.exports = {
     'template-curly-spacing': 'off',
     'array-bracket-spacing': 'off',
     'vue/valid-v-slot': 'off',
-    camelcase: 'off',
+    'camelcase': 'off',
     'comma-dangle': 'off',
     'no-mixed-operators': 'off'
   },

@@ -193,7 +193,6 @@ export default class Citation extends Vue {
     console.log({t})
   }
 
-
   get currentCitation() {
     if (this.id !== null) {
       return store.article.getCitationById(this.id) || null

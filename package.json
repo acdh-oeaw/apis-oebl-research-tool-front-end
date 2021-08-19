@@ -3,36 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -r \"vue-cli-service serve\" \"env-cmd -f .env.development npm run dev:server\"",
-    "dev:server": "ts-node-dev --project ./server/tsconfig.json ./server/index.ts",
-    "template-type-check": "vue-type-check --workspace . --srcDir ./src --onlyTemplate",
     "build": "npm run get-api-types && vue-cli-service build && npm run build:server",
-    "build:server": "tsc ./server/index.ts",
-    "test": "NODE_ENV=production vue-cli-service test:e2e --headless --env PORT=8080",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "start": "node ./server/index.js",
+    "build:server": "tsc ./server/index.ts",
+    "dev": "concurrently -r \"vue-cli-service serve\" \"env-cmd -f .env.development npm run dev:server\"",
+    "dev:server": "ts-node-dev --project ./server/tsconfig.json ./server/index.ts",
+    "get-api-types": "curl -L -v --insecure -H \"Accept: application/json\" \"https://oebl-irs-backend.acdh-dev.oeaw.ac.at/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService",
     "pick-services": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/pick-services.ts",
     "schema": "typescript-json-schema \"src/types/*ts\" \"Requests\" > src/types/schema.json",
-    "get-api-types": "curl -L -v --insecure -H \"Accept: application/json\" \"https://oebl-irs-backend.acdh-dev.oeaw.ac.at/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService"
-  },
-  "engines": {
-    "node": "12.x",
-    "npm": "6.14.x"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "json",
-      "vue"
-    ],
-    "transform": {
-      ".*\\.(vue)$": "vue-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testURL": "http://localhost/:8080"
+    "start": "node ./server/index.js",
+    "template-type-check": "vue-type-check --workspace . --srcDir ./src --onlyTemplate",
+    "test": "NODE_ENV=production vue-cli-service test:e2e --headless --env PORT=8080"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -41,7 +24,6 @@
     "@tiptap/starter-kit": "^2.0.0-beta.59",
     "@tiptap/vue-2": "^2.0.0-beta.29",
     "@types/lodash": "^4.14.168",
-    "@vue/cli-plugin-e2e-cypress": "^4.5.13",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "core-js": "^3.6.5",
@@ -97,6 +79,7 @@
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
@@ -132,5 +115,22 @@
     "vue-cli-plugin-vuetify": "~2.0.7",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.11"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testURL": "http://localhost/:8080"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "6.14.x"
   }
 }

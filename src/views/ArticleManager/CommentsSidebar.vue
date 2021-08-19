@@ -109,9 +109,8 @@ export default class CommentsSidebar extends Vue {
 
 <style lang="stylus">
 // make sure the leader lines
-// don’t get cut off by the 
+// don’t get cut off by the
 // navigation bar
 .leader-line
   z-index 6
 </style>
-

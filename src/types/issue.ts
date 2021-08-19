@@ -107,4 +107,4 @@ export interface Editor extends User {
   profilePicture: string|null
 }
 
-export interface Author extends User {}
+export type Author = User

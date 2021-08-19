@@ -191,7 +191,7 @@ export default class LemmaImporter extends Vue {
   ]
 
   mounted() {
-    
+
   }
 }
 </script>
