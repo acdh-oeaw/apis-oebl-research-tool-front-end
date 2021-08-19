@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "npm run get-api-types && vue-cli-service build && npm run build:server",
-    "test-setup": "CYPRESS_CACHE_FOLDER=./node_modules/cypress/cache/Cypress npx cypress cache path && CYPRESS_CACHE_FOLDER=./node_modules/cypress/cache/Cypress npx cypress cache list",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
