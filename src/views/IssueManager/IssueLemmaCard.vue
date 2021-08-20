@@ -8,19 +8,25 @@
       Lemma nicht gefunden.
     </span>
     <v-row class="mt-2" no-gutters>
-      <v-col>
+      <v-col class="align-self-end">
         <user-avatar v-if="showEditor" :value="editor" />
         <user-avatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
       </v-col>
       <v-col class="text-right">
         <v-chip
           small
-          class="label px-2 ml-1"
+          class="label px-2"
           v-for="label in labelsLimited"
           :color="label.color"
           :key="label.id">
           {{ label.name }}
         </v-chip>
+        <v-chip
+          v-if="maxLabels && labels.length > maxLabels"
+          small
+          color="background"
+          class="label px-2 text--secondary font-weight-medium"
+        >+{{ labels.length - maxLabels }}</v-chip>
       </v-col>
     </v-row>
   </div>
@@ -66,10 +72,20 @@ export default class IssueLemmaCard extends Vue {
     }
   }
 
+  get labels(): LemmaLabel[] {
+    if (this.value.labels !== undefined) {
+      return this.value.labels.map(id => this.labelsById[id])
+    } else {
+      return []
+    }
+  }
+
   get labelsLimited(): LemmaLabel[] {
-    return this.maxLabels !== null
-      ? _.take(this.value.labels, this.maxLabels).map(id => this.labelsById[id])
-      : this.value.labels!.map(id => this.labelsById[id])
+    if (this.maxLabels !== null) {
+      return _.take(this.labels, this.maxLabels)
+    } else {
+      return this.labels
+    }
   }
 
   get editor() {
@@ -103,6 +119,11 @@ h5
 .label
   color white !important
   font-weight 600
+  margin-left 1px
+  margin-bottom 1px
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
 .id-img
   font-size .8em
   &.author
