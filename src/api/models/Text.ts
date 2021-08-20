@@ -8,5 +8,5 @@ export type Text = {
     readonly url?: string;
     readonly id?: number;
     text?: string;
-    readonly kind?: (Label);
+    readonly kind?: Label;
 }

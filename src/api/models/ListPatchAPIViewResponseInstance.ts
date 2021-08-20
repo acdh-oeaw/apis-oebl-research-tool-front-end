@@ -6,7 +6,7 @@ import type { LemmaresearchEditor } from './LemmaresearchEditor';
 
 export type ListPatchAPIViewResponseInstance = {
     list: LemmaresearchEditor;
-    selected?: boolean;
+    selected: boolean;
     gnd?: Array<string>;
     firstName?: string;
     lastName?: string;

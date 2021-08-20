@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import './fetch'
 
 import IssueStore from './issue'
 import AuthorStore from './author'
@@ -12,6 +11,7 @@ import ArticleStore from './article'
 
 import { OpenAPI } from '../api'
 import { LemmaFilterItem } from '@/types/lemma'
+import { patchedFetch, unpatchedFetch } from './fetch'
 
 OpenAPI.BASE = process.env.VUE_APP_API_HOST || ''
 OpenAPI.WITH_CREDENTIALS = true
@@ -79,6 +79,7 @@ class Store {
   }
 
   async logIn(user: string, pwd: string): Promise<boolean> {
+    window.fetch = unpatchedFetch
     // FIXME: use token
     localStorage.setItem('user', btoa(user))
     localStorage.setItem('pass', btoa(pwd))
@@ -89,6 +90,7 @@ class Store {
       await this.runCallbacks(this.loginCallbacks)
       this.loginCallbacks = []
       this.isLoggedIn = true
+      window.fetch = patchedFetch
       return true
     } catch (e) {
       return false

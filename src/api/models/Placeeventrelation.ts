@@ -18,6 +18,6 @@ export type Placeeventrelation = {
      * Inverse relation like: "is sub-class of" vs. "is super-class of".
      */
     name_reverse?: string;
-    readonly parent_class?: (Label);
-    readonly vocab_name?: (Label);
+    readonly parent_class?: Label;
+    readonly vocab_name?: Label;
 }

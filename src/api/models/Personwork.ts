@@ -24,8 +24,8 @@ export type Personwork = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_person?: (ApisBase);
-    readonly related_work?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_person?: ApisBase;
+    readonly related_work?: ApisBase;
+    readonly relation_type?: Label;
 }

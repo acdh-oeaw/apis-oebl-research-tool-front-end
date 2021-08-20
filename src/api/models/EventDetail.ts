@@ -26,8 +26,8 @@ export type EventDetail = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly kind?: (Label);
+    readonly source?: ApisBase;
+    readonly kind?: Label;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
     readonly relations?: Array<RelationObjectSerializer2>;

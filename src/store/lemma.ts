@@ -609,6 +609,7 @@ export default class LemmaStore {
         lastName: l.lastName || undefined,
         dateOfBirth: l.dateOfBirth || undefined,
         dateOfDeath: l.dateOfDeath || undefined,
+        selected: false,
         gnd: l.gnd
       }))
     }))

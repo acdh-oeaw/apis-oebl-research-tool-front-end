@@ -24,8 +24,8 @@ export type Workwork = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_workA?: (ApisBase);
-    readonly related_workB?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_workA?: ApisBase;
+    readonly related_workB?: ApisBase;
+    readonly relation_type?: Label;
 }

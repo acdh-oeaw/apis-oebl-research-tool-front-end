@@ -11,6 +11,6 @@ export type CollectionDetail = {
     name: string;
     description?: string;
     published?: boolean;
-    readonly collection_type?: (Label);
-    readonly parent_class?: (ApisBase);
+    readonly collection_type?: Label;
+    readonly parent_class?: ApisBase;
 }

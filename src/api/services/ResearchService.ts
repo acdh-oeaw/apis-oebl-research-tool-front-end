@@ -112,12 +112,12 @@ export class ResearchService {
      * Args:
      * GenericAPIView ([type]): [description]
      * @param id A unique integer value identifying this list entry.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/research/api/v1/lemmaresearch/${id}/`,
@@ -223,12 +223,12 @@ export class ResearchService {
 
     /**
      * @param id A unique integer value identifying this list.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async researchApiV1ListresearchDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/research/api/v1/listresearch/${id}/`,

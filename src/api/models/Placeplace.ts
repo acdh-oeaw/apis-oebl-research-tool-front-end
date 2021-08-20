@@ -24,8 +24,8 @@ export type Placeplace = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_placeA?: (ApisBase);
-    readonly related_placeB?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_placeA?: ApisBase;
+    readonly related_placeB?: ApisBase;
+    readonly relation_type?: Label;
 }

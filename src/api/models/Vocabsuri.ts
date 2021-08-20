@@ -12,5 +12,5 @@ export type Vocabsuri = {
     rdf_link?: string;
     loaded?: boolean;
     loaded_time?: string | null;
-    readonly vocab?: (Label);
+    readonly vocab?: Label;
 }

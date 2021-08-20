@@ -4,7 +4,7 @@
 
 export type LemmasCreateRequest = {
     gnd?: Array<string>;
-    selected?: boolean;
+    selected: boolean;
     firstName?: string;
     lastName?: string;
     dateOfBirth?: string;

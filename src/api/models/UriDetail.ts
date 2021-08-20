@@ -12,5 +12,5 @@ export type UriDetail = {
     rdf_link?: string;
     loaded?: boolean;
     loaded_time?: string | null;
-    readonly entity?: (ApisBase);
+    readonly entity?: ApisBase;
 }

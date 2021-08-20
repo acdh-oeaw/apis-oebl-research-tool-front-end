@@ -15,6 +15,6 @@ export type TitleDetail = {
     description?: string;
     status?: StatusEnum;
     abbreviation?: string;
-    readonly parent_class?: (Label);
-    readonly vocab_name?: (Label);
+    readonly parent_class?: Label;
+    readonly vocab_name?: Label;
 }

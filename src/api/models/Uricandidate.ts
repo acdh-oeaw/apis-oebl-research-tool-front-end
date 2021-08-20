@@ -10,5 +10,5 @@ export type Uricandidate = {
     uri: string;
     confidence?: number | null;
     responsible: string;
-    readonly entity?: (ApisBase);
+    readonly entity?: ApisBase;
 }

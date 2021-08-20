@@ -24,8 +24,8 @@ export type Eventevent = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_eventA?: (ApisBase);
-    readonly related_eventB?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_eventA?: ApisBase;
+    readonly related_eventB?: ApisBase;
+    readonly relation_type?: Label;
 }

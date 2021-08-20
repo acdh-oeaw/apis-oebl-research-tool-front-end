@@ -24,8 +24,8 @@ export type Institutioninstitution = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_institutionA?: (ApisBase);
-    readonly related_institutionB?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_institutionA?: ApisBase;
+    readonly related_institutionB?: ApisBase;
+    readonly relation_type?: Label;
 }

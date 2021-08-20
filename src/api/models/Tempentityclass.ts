@@ -24,7 +24,7 @@ export type Tempentityclass = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
+    readonly source?: ApisBase;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
 }

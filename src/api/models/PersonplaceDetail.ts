@@ -25,9 +25,9 @@ export type PersonplaceDetail = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_person?: (ApisBase);
-    readonly related_place?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_person?: ApisBase;
+    readonly related_place?: ApisBase;
+    readonly relation_type?: Label;
     readonly relations?: Array<RelationObjectSerializer2>;
 }

@@ -6,7 +6,7 @@ import type { PatchedLemmaresearchEditorRequest } from './PatchedLemmaresearchEd
 
 export type PatchedLemmaResearchPatchAPIViewRequest = {
     list?: PatchedLemmaresearchEditorRequest;
-    selected?: boolean;
+    selected: boolean;
     gnd?: Array<string>;
     firstName?: string;
     lastName?: string;

@@ -632,13 +632,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiEntitiesEventDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/entities/event/${id}/`,
@@ -1051,13 +1051,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiEntitiesInstitutionDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/entities/institution/${id}/`,
@@ -1536,13 +1536,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiEntitiesPersonDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/entities/person/${id}/`,
@@ -1961,13 +1961,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiEntitiesPlaceDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/entities/place/${id}/`,
@@ -2380,13 +2380,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiEntitiesWorkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/entities/work/${id}/`,
@@ -2592,13 +2592,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this collection.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoCollectionDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/collection/${id}/`,
@@ -2777,13 +2777,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this source.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoSourceDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/source/${id}/`,
@@ -3160,13 +3160,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this temp entity class.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoTempentityclassDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/tempentityclass/${id}/`,
@@ -3414,13 +3414,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this text.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoTextDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/text/${id}/`,
@@ -3575,13 +3575,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this uri.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoUriDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/uri/${id}/`,
@@ -3730,13 +3730,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this uri candidate.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiMetainfoUricandidateDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/metainfo/uricandidate/${id}/`,
@@ -4497,13 +4497,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event event.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsEventeventDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/eventevent/${id}/`,
@@ -5264,13 +5264,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsEventworkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/eventwork/${id}/`,
@@ -6031,13 +6031,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution event.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutioneventDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/institutionevent/${id}/`,
@@ -6798,13 +6798,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution institution.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutioninstitutionDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/institutioninstitution/${id}/`,
@@ -7565,13 +7565,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution place.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutionplaceDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/institutionplace/${id}/`,
@@ -8332,13 +8332,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutionworkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/institutionwork/${id}/`,
@@ -9123,13 +9123,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person event.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPersoneventDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/personevent/${id}/`,
@@ -9914,13 +9914,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person institution.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPersoninstitutionDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/personinstitution/${id}/`,
@@ -10729,13 +10729,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person person.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPersonpersonDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/personperson/${id}/`,
@@ -11520,13 +11520,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person place.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPersonplaceDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/personplace/${id}/`,
@@ -12311,13 +12311,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPersonworkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/personwork/${id}/`,
@@ -13078,13 +13078,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place event.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceeventDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/placeevent/${id}/`,
@@ -13845,13 +13845,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place place.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceplaceDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/placeplace/${id}/`,
@@ -14612,13 +14612,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceworkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/placework/${id}/`,
@@ -15379,13 +15379,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this work work.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiRelationsWorkworkDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/relations/workwork/${id}/`,
@@ -15582,13 +15582,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this collection type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesCollectiontypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/collectiontype/${id}/`,
@@ -15764,13 +15764,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event event relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesEventeventrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/eventeventrelation/${id}/`,
@@ -15931,13 +15931,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesEventtypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/eventtype/${id}/`,
@@ -16113,13 +16113,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this event work relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesEventworkrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/eventworkrelation/${id}/`,
@@ -16295,13 +16295,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution event relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesInstitutioneventrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/institutioneventrelation/${id}/`,
@@ -16477,13 +16477,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution institution relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesInstitutioninstitutionrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/institutioninstitutionrelation/${id}/`,
@@ -16659,13 +16659,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution place relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesInstitutionplacerelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/institutionplacerelation/${id}/`,
@@ -16826,13 +16826,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesInstitutiontypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/institutiontype/${id}/`,
@@ -17008,13 +17008,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this institution work relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesInstitutionworkrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/institutionworkrelation/${id}/`,
@@ -17175,13 +17175,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this label type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesLabeltypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/labeltype/${id}/`,
@@ -17357,13 +17357,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person event relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPersoneventrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/personeventrelation/${id}/`,
@@ -17539,13 +17539,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person institution relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPersoninstitutionrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/personinstitutionrelation/${id}/`,
@@ -17721,13 +17721,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person person relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPersonpersonrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/personpersonrelation/${id}/`,
@@ -17903,13 +17903,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person place relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPersonplacerelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/personplacerelation/${id}/`,
@@ -18085,13 +18085,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this person work relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPersonworkrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/personworkrelation/${id}/`,
@@ -18267,13 +18267,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place event relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPlaceeventrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/placeeventrelation/${id}/`,
@@ -18449,13 +18449,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place place relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPlaceplacerelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/placeplacerelation/${id}/`,
@@ -18616,13 +18616,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPlacetypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/placetype/${id}/`,
@@ -18798,13 +18798,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this place work relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesPlaceworkrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/placeworkrelation/${id}/`,
@@ -18965,13 +18965,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this profession type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesProfessiontypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/professiontype/${id}/`,
@@ -19165,13 +19165,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this text type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesTexttypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/texttype/${id}/`,
@@ -19344,13 +19344,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this title.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesTitleDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/title/${id}/`,
@@ -19493,13 +19493,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this vocab names.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesVocabnamesDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/vocabnames/${id}/`,
@@ -19657,13 +19657,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this vocabs base class.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesVocabsbaseclassDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/vocabsbaseclass/${id}/`,
@@ -19818,13 +19818,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this vocabs uri.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesVocabsuriDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/vocabsuri/${id}/`,
@@ -19985,13 +19985,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this work type.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesWorktypeDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/worktype/${id}/`,
@@ -20167,13 +20167,13 @@ export class ApisService {
     /**
      * @param id A unique integer value identifying this work work relation.
      * @param format
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async apisApiVocabulariesWorkworkrelationDestroy(
         id: number,
         format?: 'json' | 'json+net',
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/apis/api/vocabularies/workworkrelation/${id}/`,

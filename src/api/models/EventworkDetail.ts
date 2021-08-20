@@ -25,9 +25,9 @@ export type EventworkDetail = {
     references?: string | null;
     notes?: string | null;
     published?: boolean;
-    readonly source?: (ApisBase);
-    readonly related_event?: (ApisBase);
-    readonly related_work?: (ApisBase);
-    readonly relation_type?: (Label);
+    readonly source?: ApisBase;
+    readonly related_event?: ApisBase;
+    readonly related_work?: ApisBase;
+    readonly relation_type?: Label;
     readonly relations?: Array<RelationObjectSerializer2>;
 }

@@ -199,12 +199,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue lemma.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
@@ -308,12 +308,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async workflowApiV1IssuesDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/issues/${id}/`,
@@ -435,12 +435,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma label.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-label/${id}/`,
@@ -541,12 +541,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma note.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-note/${id}/`,
@@ -650,12 +650,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma status.
-     * @returns any No response body
+     * @returns void
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusDestroy(
         id: number,
-    ): Promise<any> {
+    ): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-status/${id}/`,

@@ -14,6 +14,6 @@ export type Labeltype = {
      */
     description?: string;
     status?: StatusEnum;
-    readonly parent_class?: (Label);
-    readonly vocab_name?: (Label);
+    readonly parent_class?: Label;
+    readonly vocab_name?: Label;
 }

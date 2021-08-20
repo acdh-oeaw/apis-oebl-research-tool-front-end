@@ -33,7 +33,7 @@ export type Person = {
      */
     first_name?: string | null;
     gender?: (GenderEnum | BlankEnum | NullEnum) | null;
-    readonly source?: (ApisBase);
+    readonly source?: ApisBase;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
     readonly profession?: Array<Label>;
