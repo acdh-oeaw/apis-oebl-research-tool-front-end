@@ -27,7 +27,7 @@ export default class IssueStore {
     })
   }
 
-  updateIssueLemmasLocally(ids: number[], update: Partial<IssueLemma>) {
+  private updateIssueLemmasLocally(ids: number[], update: Partial<IssueLemma>) {
     this._issueLemmas = this._issueLemmas.map(il => {
       if (ids.indexOf(il.id) > -1) {
         return {...il, ...update}
@@ -138,7 +138,7 @@ export default class IssueStore {
     }
   }
 
-  async deleteIssueLemmaLocally(id: number) {
+  private async deleteIssueLemmaLocally(id: number) {
     this.issueLemmas = this.issueLemmas.filter(il => il.id !== id)
   }
 

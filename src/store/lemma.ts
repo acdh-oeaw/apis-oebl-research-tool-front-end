@@ -239,7 +239,7 @@ export default class LemmaStore {
     this.listenForRemoteEvents()
   }
 
-  updateDescribesListChange(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
+  doesUpdateDescribeListChange(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
     return (
       update.list !== undefined &&
       update.list !== undefined &&
@@ -262,7 +262,7 @@ export default class LemmaStore {
 
   isMovementToUserList(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
     return (
-      this.updateDescribesListChange(ls, update) &&
+      this.doesUpdateDescribeListChange(ls, update) &&
       this.getUserLists(this.lemmaLists, store.user.userProfile).some(ll => ll.id === update.list?.id)
     )
   }
@@ -456,7 +456,7 @@ export default class LemmaStore {
     notifyService.emit('updateLemmas', ls, u, store.user.userProfile)
   }
 
-  deleteLemmaListLocally(id: number) {
+  private deleteLemmaListLocally(id: number) {
     this.lemmaLists = this.lemmaLists.filter(ll => ll.id !== id)
   }
 
@@ -557,7 +557,7 @@ export default class LemmaStore {
     return x
   }
 
-  async deleteLemmasLocally(ids: number[]) {
+  private async deleteLemmasLocally(ids: number[]) {
     console.log('lemmas to delete:', ids)
     this._lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
     await this.localDb.lemmas.bulkDelete(ids)
@@ -717,7 +717,7 @@ export default class LemmaStore {
     }
   }
 
-  updateLemmaListLocally(id: number, l: Partial<LemmaList>) {
+  private updateLemmaListLocally(id: number, l: Partial<LemmaList>) {
     this._lemmaLists = this._lemmaLists.map(l2 => {
       return id === l2.id ? {...l2, ...l} : l2
     })
@@ -729,7 +729,7 @@ export default class LemmaStore {
     notifyService.emit('updateLemmaList', newList)
   }
 
-  addLemmaListLocally(l: LemmaList) {
+  private addLemmaListLocally(l: LemmaList) {
     this.lemmaLists = [ ...this.lemmaLists, l ]
   }
 
