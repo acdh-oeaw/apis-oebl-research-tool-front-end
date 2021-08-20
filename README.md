@@ -2,17 +2,17 @@
 
 ## Integriertes Redaktionssystem
 
-The application consists of three main parts:
+The IRS is meant as a system for computer-aided research and data acquisition, project tracking and collaborative scientific writing. The application consists of three main parts:
 
 ### 1. The Research Tool
 
-*Lemmas* (specifically persons of historical interest) can be entered manually or batch-imported (from XLSs or CSVs) into the Research Tool. The Research Tool will then try to find the Lemma’s GND (its norm-data Identifier). Once found, it triggers an asynchronous scrape job on the server that tries to find additional information on the subject in various catalogues and databases. This information is then displayed under "Externe Ressourcen". If a GND could not be found automatically, it can be selected manually. All Lemmas can be organized into lists/folders (displayed in the left hand side bar) via drag-and-drop. They can be searched, and filtered by all attributes.
+*Lemmas* (specifically persons of historical interest) can be entered manually or batch-imported (from XLSs or CSVs) into the Research Tool. The Research Tool will then try to find the Lemma’s GND (its norm-data Identifier). Once found, it triggers an asynchronous scrape job on the server that tries to find additional information on the subject in various catalogues and databases. This information is then displayed under "Externe Ressourcen". If a GND could not be found automatically, it can be selected manually. All Lemmas can be organized into lists/folders (displayed in the left hand side bar) via drag-and-drop. They can be searched and filtered by all attributes.
 
 ![research-tool](screenshots/research-tool.png)
 
 ### 2. The Issue Manager
 
-Once a Lemma is selected for publication, it can be added to an *Issue* (”Abgabe”). Inside the Issue/Abgabe, an *Article*’s status can change by moving it from column to column. The natural progression of an Article over time would be left-to-right. Tags can be used to categorize the Articles further and to add important organizational details (such as the payment status, whether the Article is delayed, etc.). In the Issue Manager, the Articles are assigned to Editors.
+Once a Lemma is selected for publication, it can be added to an *Issue* (”Abgabe”). Inside the Issue/Abgabe, an *Article*’s status can change by moving it from column to column. The natural progression of an Article over time would be left-to-right. Tags can be used to categorize the Articles further and to add important organizational details (such as the payment status, whether the Article is delayed, etc.). In the Issue Manager, the Articles are assigned to Editors and Authors, and the progress is tracked.
 
 ![issue-manager](screenshots/issue-manager.png)
 
@@ -57,11 +57,11 @@ Currently, all Lemmas are stored, searched and filtered on the client in an Inde
 
 ### Real-Time Synchronization
 
-Clients keep each other up to date by connecting to a remote ”Event Bus” (a WebSocket server), provided by the built in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are strictly typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
+Clients keep each other up to date by connecting to a remote ”Event Bus” (a WebSocket server), provided by the built-in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are strictly typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
 
 ### Zotero data caching
 
-Upon initialization the built in server starts caching responses from the Zotero API that barely ever change (specifically the `ItemTypeFields` for every type of publication).
+Upon initialization the built in server starts caching responses from the Zotero API that rarely change (specifically the `ItemTypeFields` for every type of publication).
 
 ### Editor
 
@@ -79,7 +79,7 @@ The Editor component makes heavy use of [ProseMirror](https://prosemirror.net)�
   - [ ] Browse previous versions of the Article. (Possibly display diff?)
 - [ ] Actually upload "Dateien" in the Research Tool Component
 - [ ] Ability to add (Zotero) literature to a Lemma in the Research Tool Component.
-- [ ] Create a specialized UI just for Authors, where they can only see and edit their assigned Articles.
+- [ ] Create a specialized UI just for Authors, where they can only see and edit their own assigned Articles.
 - [ ] Display legacy publication data from Gideon.
 
 ## Project setup
