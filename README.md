@@ -43,7 +43,7 @@ The application uses Vue 2.x with Vuetify 2.x as a UI component library, and use
 
 ### Hosting
 
-The SPA is served through an Node.js based Express server, serving the static files (see [server/index.ts](server/index.ts)). The built-in server also performs other (minor) duties (i. e. Zotero response caching and an providing Event Bus — see below).
+The SPA is served through an Node.js based Express server, serving the static files (see [server/index.ts](server/index.ts)). The built-in server also performs other (minor) duties (i. e. Zotero response caching and an providing the ”Event Bus” — see below).
 
 ### REST API calls / RPC
 
@@ -51,13 +51,13 @@ The Back End provides an OpenAPI (née Swagger) spec. By calling `npm run get-ap
 
 ### State Management
 
-The application state is not stored inside a traditional Vuex State Container, but instead in bare Typescript classes located in [src/store](src/store). Their instance methods are used to mutate their state.
+The application state is not stored inside a traditional Vuex State Container, but instead in bare Typescript classes located in [src/store](src/store). Their instance methods are used to mutate their state. They also subscribe to remote changes and emit events, as described below.
 
 Currently, all Lemmas are stored, searched and filtered on the client in an IndexedDB table (called `LemmaDb`). On start-up, we fetch the updates, inserts and deletions from the server, and update the local database accordingly (all of this happens in the lemma class / store).
 
 ### Real-Time Synchronization
 
-Clients keep each other up to date by connecting to a remote Event Bus (a WebSocket server), provided by the built in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are strictly typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
+Clients keep each other up to date by connecting to a remote ”Event Bus” (a WebSocket server), provided by the built in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are strictly typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
 
 ### Zotero data caching
 
@@ -65,9 +65,9 @@ Upon initialization the built in server starts caching responses from the Zotero
 
 ### Editor
 
-The Editor makes heavy use of [ProseMirror](https://prosemirror.net)’s API, data structures and nomenclature both through [TipTap 2](https://tiptap.dev) and directly. Familiarity with the respective APIs is probably necessary for productive development.
+The Editor component makes heavy use of [ProseMirror](https://prosemirror.net)’s API, data structures and nomenclature both via [TipTap 2](https://tiptap.dev) and directly. Familiarity with the respective APIs is probably necessary for productive development.
 
-## Road-map
+## Road Map
 
 - [ ] Use Tokens for authentication instead of HTTP Basic Auth in the header. (Must be coordinated with the Back End)
 - [ ] Integrate the Editor with the Back End
@@ -80,6 +80,7 @@ The Editor makes heavy use of [ProseMirror](https://prosemirror.net)’s API, da
 - [ ] Actually upload "Dateien" in the Research Tool Component
 - [ ] Ability to add (Zotero) literature to a Lemma in the Research Tool Component.
 - [ ] Create a specialized UI just for Authors, where they can only see and edit their assigned Articles.
+- [ ] Display legacy publication data from Gideon.
 
 ## Project setup
 
