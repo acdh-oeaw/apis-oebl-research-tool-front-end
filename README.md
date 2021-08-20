@@ -46,6 +46,10 @@ Clients keep each other up to date by connecting to a remote Event Bus, provided
 
 Upon initialization the built in server starts caching responses from the Zotero API that barely ever change (specifically the ItemTypeFields for every type of publication).
 
+### Editor
+
+The Editor makes heavy use of [ProseMirror](https://prosemirror.net)’s API, data-structures and nomenclature both through [TipTap 2](https://tiptap.dev) and directly. Familiarity with the respective APIs is probably necessary for productive development.
+
 ## Project setup
 
 ```
