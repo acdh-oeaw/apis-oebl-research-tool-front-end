@@ -546,11 +546,6 @@ export default class LemmaStore {
     return s
   }
 
-  async getLastViewDate() {
-    // TODO:
-    return new Date()
-  }
-
   getListById(id: number) {
     return this.lemmaLists.find(i => i.id === id)
   }
