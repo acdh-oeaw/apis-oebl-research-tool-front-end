@@ -91,11 +91,13 @@ export default class LemmaScrapeResult extends Vue {
   }
 
   arrayable(v: ScrapeValue) {
-    return Object.values(v).filter(Array.isArray)
+    return _(v).omitBy(a => !Array.isArray(a)).value()
+    // return Object.values(v).filter(Array.isArray)
   }
 
   nonArrayable(v: ScrapeValue) {
-    return Object.values(v).filter(a => !Array.isArray(a))
+    return _(v).omitBy(Array.isArray).value()
+    // return Object.values(v).filter(a => !Array.isArray(a))
   }
 
   maybeLinkItem(key: string|number, value: any): string|undefined {
