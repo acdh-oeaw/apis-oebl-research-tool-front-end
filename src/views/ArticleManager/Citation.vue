@@ -284,7 +284,7 @@ export default class Citation extends Vue {
         store.article.updateCitation(this.id, { zoteroKey: zoteroItem.key, zoteroItemCached: zoteroItem })
       }
     } else {
-      confirm.confirm('not citation selected')
+      confirm.confirm('no citation selected')
     }
   }
 

@@ -530,7 +530,10 @@ export default class LemmaManager extends Vue {
   async deleteList(id: number) {
     const list = store.lemma.getListById(id)
     if (list !== undefined) {
-      if (await confirm.confirm(`Wollen Sie die Liste ”${ list.title }” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`)) {
+      if (await confirm.confirm(
+        `Wollen Sie die Liste ”${ list.title }” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`,
+        { icon: 'mdi-delete-outline' }
+      )) {
         await store.lemma.deleteLemmaList(id)
       }
     }

@@ -4,6 +4,7 @@ interface ConfirmOptions {
   abortText?: string
   confirmText?: string
   showCancel?: boolean
+  icon?: string
 }
 
 export const bus = new Vue()
@@ -14,12 +15,14 @@ class ConfirmStore {
   private defaultAbortText = 'abbrechen'
   private defaultConfirmText = 'OK'
   private defaultShowCancel = true
+  private defaultIcon: string|undefined = undefined
 
   show = false
   message = this.defaultMessage
   abortText = this.defaultAbortText
   confirmText = this.defaultConfirmText
   showCancel = this.defaultShowCancel
+  icon = this.defaultIcon
 
   async confirm(message: string, options?: ConfirmOptions): Promise<boolean> {
     this.message = message || this.defaultMessage
@@ -27,6 +30,7 @@ class ConfirmStore {
     this.abortText = options?.abortText || this.defaultAbortText
     this.confirmText = options?.confirmText || this.defaultConfirmText
     this.showCancel = options?.showCancel === undefined ? this.defaultShowCancel : options.showCancel
+    this.icon = options?.icon || this.defaultIcon
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this
     return new Promise((resolve) => {

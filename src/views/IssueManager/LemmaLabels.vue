@@ -202,7 +202,7 @@ export default class LemmaLabels extends Vue {
   async deleteEditingLabel() {
     const i = this.editingLabel
     if (i !== null && i.id !== undefined && i.id > -1) {
-      if (await confirm.confirm('Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.')) {
+      if (await confirm.confirm('Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.', { icon: 'mdi-delete-outline' })) {
         store.issue.deleteLabel(i.id)
         this.editingLabel = null
       }

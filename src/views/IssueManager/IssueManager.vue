@@ -458,7 +458,7 @@ export default class IssueManager extends Vue {
   }
 
   async deleteIssueLemma(id: number) {
-    if (await confirm.confirm('Wollen Sie dieses Lemma aus der Abgabe entfernen?')) {
+    if (await confirm.confirm('Wollen Sie dieses Lemma aus der Abgabe entfernen?', { icon: 'mdi-delete-outline' })) {
       store.issue.deleteIssueLemma(id)
     }
   }

@@ -351,7 +351,7 @@ export default class Sidebar extends Vue {
 
   async deleteList(list: LemmaList) {
     if (list.id !== undefined) {
-      if (await confirm.confirm(`Liste ”${list.title}” löschen?`)) {
+      if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: 'mdi-delete-outline' })) {
         store.lemma.deleteLemmaList(list.id)
       }
     }

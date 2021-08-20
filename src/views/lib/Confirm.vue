@@ -2,6 +2,9 @@
   <v-dialog overlay-color="#000" @input="modelClose" max-width="400px" :value="confirmStore.show">
     <v-card color="background" class="rounded-lg pa-3">
       <v-card-text class="text-center pb-4 pt-2">
+        <div v-if="confirmStore.icon !== undefined" class="my-2">
+          <v-icon large>{{ confirmStore.icon }}</v-icon>
+        </div>
         {{ confirmStore.message }}
       </v-card-text>
       <v-card-actions class="pa-0">

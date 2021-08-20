@@ -2,7 +2,8 @@ import store from '.'
 import confirm from './confirm'
 import { OpenAPI } from '@/api'
 import _ from 'lodash'
-const fetchOriginal = fetch
+
+export const unpatchedFetch = fetch
 
 export const requestState = {
   writeCallsRunning: 0,
@@ -26,14 +27,14 @@ function isHttpWriteCall(init?: RequestInit): boolean {
 
 window.addEventListener('beforeunload', warnBeforeLeave)
 
-window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+export const patchedFetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
   requestState.hasErrored = false
   const isWriteCall = isHttpWriteCall(init)
   if (isWriteCall) {
     requestState.writeCallsRunning = requestState.writeCallsRunning + 1
   }
   requestState.allCallsRunning = requestState.allCallsRunning + 1
-  const res = await fetchOriginal(input, init)
+  const res = await unpatchedFetch(input, init)
   if (isWriteCall) {
     requestState.writeCallsRunning = requestState.writeCallsRunning - 1
   }
@@ -66,7 +67,7 @@ window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response>
       } else {
         requestState.hasErrored = true
         console.error(res)
-        await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false })
+        await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false, icon: 'mdi-error' })
         return res
       }
     // it’s a request to somewhere else
@@ -76,3 +77,5 @@ window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response>
     }
   }
 }
+
+window.fetch = patchedFetch
