@@ -2,17 +2,19 @@
 
 ## Integriertes Redaktionssystem
 
-The IRS is meant as a system for computer-aided research and data acquisition, project tracking and collaborative scientific writing. The application consists of three main parts:
+The IRS is meant as a system for computer-aided research and data enrichment, publication project tracking and collaborative scientific writing. The application consists of three main parts:
 
 ### 1. The Research Tool
 
-*Lemmas* (specifically persons of historical interest) can be entered manually or batch-imported (from XLSs or CSVs) into the Research Tool. The Research Tool will then try to find the Lemma’s GND (its norm-data Identifier). Once found, it triggers an asynchronous scrape job on the server that tries to find additional information on the subject in various catalogues and databases. This information is then displayed under "Externe Ressourcen". If a GND could not be found automatically, it can be selected manually. All Lemmas can be organized into lists/folders (displayed in the left hand side bar) via drag-and-drop. They can be searched and filtered by all attributes.
+*Lemmas* (specifically: persons of historical interest) can be entered manually or batch-imported (from XLS or CSV Files) into the Research Tool. The Research Tool will then try to find the Lemma’s [GND](https://en.wikipedia.org/wiki/Integrated_Authority_File) (its norm-data Identifier, the Integrated Authority File). Once found, it triggers an asynchronous scrape job on the server that tries to find additional information on the subject in various catalogues and databases. The scrape job will trigger an Event on the client side once it’s done. The additional information is then displayed under "Externe Ressourcen". If a GND could not be found automatically, it can be selected manually.
+
+All Lemmas can be organized into lists/folders (displayed in the left hand side bar) via drag-and-drop. They can be searched and filtered by all their attributes.
 
 ![research-tool](screenshots/research-tool.png)
 
 ### 2. The Issue Manager
 
-Once a Lemma is selected for publication, it can be added to an *Issue* (”Abgabe”). Inside the Issue/Abgabe, an *Article*’s status can change by moving it from column to column. The natural progression of an Article over time would be left-to-right. Tags can be used to categorize the Articles further and to add important organizational details (such as the payment status, whether the Article is delayed, etc.). In the Issue Manager, the Articles are assigned to Editors and Authors, and the progress is tracked.
+Once a Lemma is selected for publication, it can be added to an *Issue* (”Abgabe”). Inside the Issue, an *Article*’s status can change by moving it from column to column. The natural progression of an Article over time would be left-to-right. *Tags* can be used to categorize the Articles further and to add important organizational details (such as the payment status, whether the Article is delayed, etc.). In the Issue Manager, the Articles are assigned to *Editors* and *Authors*, and the progress is tracked.
 
 ![issue-manager](screenshots/issue-manager.png)
 
@@ -21,10 +23,10 @@ Once a Lemma is selected for publication, it can be added to an *Issue* (”Abga
 The Article editor is specifically designed for writing, editing and annotating scientific texts. There are three main types of annotations:
 
 - *Comments* (or rather, Comment Threads). Similar to Microsoft Word or Apple Pages.
-- *Citations*. Linked to a Zotero Item.
+- *Citations*. Ranges that are linked to a Zotero Item (a publication).
 - *Named Entities*. People, places, artifacts, etc. As a basic type, they can have a Relation Type, a Duration and the actual Entity.
 
-The data for *Citations* and for *Named Entities* is stored directly in the document tree, whereas the comments are only referenced with a UUID with their content stored separately on the server.
+The data for *Citations* and for *Named Entities* is stored directly in the document tree, whereas the *Comments* are only referenced with a UUID with their content stored separately on the server.
 
 An Article (document) can currently contain several types of nodes / blocks:
 
@@ -43,11 +45,11 @@ The application uses Vue 2.x with Vuetify 2.x as a UI component library, and use
 
 ### Hosting
 
-The SPA is served through an Node.js based Express server, serving the static files (see [server/index.ts](server/index.ts)). The built-in server also performs other (minor) duties (i. e. Zotero response caching and an providing the ”Event Bus” — see below).
+The SPA is served from an Node.js based Express server, handling the static files (see [server/index.ts](server/index.ts)). The built-in server also performs other (minor) duties (i. e. proxying/caching Zotero responses and providing the ”Event Bus” — see below).
 
 ### REST API calls / RPC
 
-The Back End provides an OpenAPI (née Swagger) spec. By calling `npm run get-api-types` the spec is downloaded and transformed into a statically typed TS API client. All calls to the Back End are then made through this API client. The auto-generated types are also used extensively throughout the code base.
+The Back End provides an OpenAPI (née Swagger) spec. By calling `npm run get-api-types`, the spec is downloaded and transformed into a statically typed TS API client. All calls to the Back End are then made through this API client. The auto-generated types are also used extensively throughout the code base.
 
 ### State Management
 
