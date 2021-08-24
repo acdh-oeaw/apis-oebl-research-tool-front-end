@@ -55,18 +55,18 @@ app.post('/message/import-lemmas', (req, res) => {
 })
 
 app.get('/zotero/search/:query', async (req, res) => {
-  const x = await (await fetch('https://api.zotero.org/users/7926651/items?q=' + req.params.query, {
+  const x = await (await fetch('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items?q=' + req.params.query, {
     headers: {
-      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+      'Zotero-API-Key': process.env.ZOTERO_API_KEY
     }
   })).json()
   res.send(JSON.stringify(x))
 })
 
 app.get('/zotero/item/:id', async (req, res) => {
-  const x = await (await fetch('https://api.zotero.org/users/7926651/items/' + req.params.id, {
+  const x = await (await fetch('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
     headers: {
-      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+      'Zotero-API-Key': process.env.ZOTERO_API_KEY
     }
   })).json()
   res.send(JSON.stringify(x))
@@ -74,11 +74,11 @@ app.get('/zotero/item/:id', async (req, res) => {
 
 app.patch('/zotero/item/:id', async (req, res) => {
   console.log(req.body)
-  const x = await fetch('https://api.zotero.org/users/7926651/items/' + req.params.id, {
+  const x = await fetch('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
     method: 'PATCH',
     body: JSON.stringify(req.body),
     headers: {
-      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+      'Zotero-API-Key': process.env.ZOTERO_API_KEY
     }
   })
   if (x.ok) {
@@ -100,11 +100,11 @@ app.patch('/zotero/item/:id', async (req, res) => {
 
 app.post('/zotero/item', async (req, res) => {
   console.log(req.body)
-  const x = await fetch('https://api.zotero.org/users/7926651/items/', {
+  const x = await fetch('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/', {
     method: 'POST',
     body: JSON.stringify(req.body),
     headers: {
-      'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+      'Zotero-API-Key': process.env.ZOTERO_API_KEY
     }
   })
   if (x.ok) {

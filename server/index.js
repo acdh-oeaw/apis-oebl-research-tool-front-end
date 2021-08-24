@@ -97,9 +97,9 @@ app.get('/zotero/search/:query', function (req, res) { return __awaiter(void 0, 
     var x;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items?q=' + req.params.query, {
+            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items?q=' + req.params.query, {
                     headers: {
-                        'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                        'Zotero-API-Key': process.env.ZOTERO_API_KEY
                     }
                 })];
             case 1: return [4 /*yield*/, (_a.sent()).json()];
@@ -114,9 +114,9 @@ app.get('/zotero/item/:id', function (req, res) { return __awaiter(void 0, void 
     var x;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/' + req.params.id, {
+            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
                     headers: {
-                        'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                        'Zotero-API-Key': process.env.ZOTERO_API_KEY
                     }
                 })];
             case 1: return [4 /*yield*/, (_a.sent()).json()];
@@ -133,11 +133,11 @@ app.patch('/zotero/item/:id', function (req, res) { return __awaiter(void 0, voi
         switch (_c.label) {
             case 0:
                 console.log(req.body);
-                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/' + req.params.id, {
+                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
                         method: 'PATCH',
                         body: JSON.stringify(req.body),
                         headers: {
-                            'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                            'Zotero-API-Key': process.env.ZOTERO_API_KEY
                         }
                     })];
             case 1:
@@ -171,11 +171,11 @@ app.post('/zotero/item', function (req, res) { return __awaiter(void 0, void 0, 
         switch (_g.label) {
             case 0:
                 console.log(req.body);
-                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/7926651/items/', {
+                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/', {
                         method: 'POST',
                         body: JSON.stringify(req.body),
                         headers: {
-                            'Zotero-API-Key': 'NXywXQ1UV28KbY9kpL7LoYn9'
+                            'Zotero-API-Key': process.env.ZOTERO_API_KEY
                         }
                     })];
             case 1:

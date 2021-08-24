@@ -45,7 +45,7 @@ function fetch(url) {
             switch (_c.label) {
                 case 0:
                     if (!(fetchCache[url] === undefined)) return [3 /*break*/, 3];
-                    console.log('cache miss for', url);
+                    console.info('cached ', url);
                     _a = fetchCache;
                     _b = url;
                     return [4 /*yield*/, node_fetch_1["default"](url)];
