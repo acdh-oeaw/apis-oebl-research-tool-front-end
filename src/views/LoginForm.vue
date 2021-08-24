@@ -4,8 +4,9 @@
       <loading-spinner size="40" color="white" />
     </v-overlay>
     <v-card-text>
-      <v-form @submit.prevent="login">
+      <v-form test-id="login-form" @submit.prevent="login">
         <v-text-field
+          test-id="user-field"
           class="input-no-stroke"
           hide-details
           dark
@@ -16,6 +17,7 @@
           placeholder="User Name" />
         <v-divider />
         <v-text-field
+          test-id="password-field"
           class="input-no-stroke mt-1 pt-0"
           hide-details
           :autocomplete="false"
