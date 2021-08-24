@@ -192,7 +192,7 @@ export default class CommentThread extends Vue {
 
   async repositionTooltip() {
     await this.$nextTick()
-    // trigger resize to reposition the tooltip
+    // trigger resize to reposition the tooltip.
     window.dispatchEvent(new Event('resize'))
   }
 

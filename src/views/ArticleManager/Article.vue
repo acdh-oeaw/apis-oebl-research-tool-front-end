@@ -10,7 +10,7 @@
             Abbrechen
           </v-btn>
           <v-spacer />
-          Artikel an "Autor" schicken
+          Artikel an ”{{ 'Autor Name' }}” schicken
           <v-spacer />
           <v-btn class="rounded-lg" color="primary" elevation="0" @click="showSendWindow = false">
             <v-icon small left>mdi-send</v-icon>
@@ -361,6 +361,7 @@ export default class Article extends Vue {
   async insertImage() {
     const files = await fileDialog({ multiple: false, accept: 'image/*' })
     if (files.item(0) !== null) {
+      // TODO: perform upload here
       const src = URL.createObjectURL(files.item(0))
       if (this.editor !== null) {
         const l = this.editor.commands.setImage({src})
@@ -371,6 +372,7 @@ export default class Article extends Vue {
   async insertAudio() {
     const files = await fileDialog({ multiple: false, accept: 'audio/*' })
     if (files.item(0) !== null) {
+      // TODO: perform upload here
       const src = URL.createObjectURL(files.item(0))
       if (this.editor !== null) {
         const l = this.editor.commands.setAudio({src})
@@ -404,7 +406,8 @@ export default class Article extends Vue {
     this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
     await store.article.loadArticle(this.issueLemmaId)
     // await store.article.loadComments(this.issueLemmaId)
-    const vm = this
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const articleComponent = this
     this.editor = new Editor({
       content: store.article.article,
       extensions: [
@@ -416,7 +419,7 @@ export default class Article extends Vue {
         StarterKit
       ],
       onTransaction(a) {
-        vm.activeFormatting = vm.formattingItems.find(fi => fi.isActive(vm.editor!))
+        articleComponent.activeFormatting = articleComponent.formattingItems.find(fi => fi.isActive(articleComponent.editor!))
       }
     })
     // applyDevTools(this.editor.view)
