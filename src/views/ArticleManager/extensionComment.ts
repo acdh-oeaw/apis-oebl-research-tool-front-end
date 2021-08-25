@@ -36,6 +36,7 @@ declare module '@tiptap/core' {
 }
 
 export const Comment = popupMark.extend({
+
   name: 'comment',
 
   defaultOptions: {
