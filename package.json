@@ -10,7 +10,7 @@
     "build:server": "tsc ./server/index.ts",
     "dev": "concurrently -r \"vue-cli-service serve\" \"npm run dev:server\"",
     "dev:server": "env-cmd -f .env.development ts-node-dev --project ./server/tsconfig.json ./server/index.ts",
-    "get-api-types": "curl -L -v --insecure -H \"Accept: application/json\" \"https://oebl-irs-backend.acdh-dev.oeaw.ac.at/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api && npm run pick-services WorkflowService ResearchService MeService",
+    "get-api-types": "curl -L -v --insecure -H \"Accept: application/json\" \"https://oebl-irs-backend.acdh-dev.oeaw.ac.at/apis/swagger/schema\" > ./api-spec.json && openapi -i api-spec.json -o ./src/api --request ./src/service/request.ts && npm run pick-services WorkflowService ResearchService MeService",
     "pick-services": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/pick-services.ts",
     "schema": "typescript-json-schema \"src/types/*ts\" \"Requests\" > src/types/schema.json",
     "start": "node ./server/index.js",

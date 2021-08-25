@@ -5,6 +5,9 @@
 describe('My First Test', () => {
   it('Visits the app root url', () => {
     cy.visit('/')
-    cy.contains('h1', 'Welcome to Your Vue.js + TypeScript App')
+    cy.get('[test-id="user-field"]').type('wrong user')
+    cy.get('[test-id="password-field"]').type('wrong password')
+    cy.get('[test-id="login-form"]').submit()
+    cy.contains(/falsches passwort/)
   })
 })

@@ -11,7 +11,7 @@ import ArticleStore from './article'
 
 import { OpenAPI } from '../api'
 import { LemmaFilterItem } from '@/types/lemma'
-import { patchedFetch, unpatchedFetch } from './fetch'
+import { request } from '@/api/core/request'
 
 OpenAPI.BASE = process.env.VUE_APP_API_HOST || ''
 OpenAPI.WITH_CREDENTIALS = true
@@ -43,13 +43,23 @@ interface Settings {
   }
 }
 
+/**
+ * In all stores, state variables that can only be
+ * mutated by a class member but read by the public,
+ * are prefix with an underscore and use a getter
+ * (but no setter) for public read access.
+ * */
+
 class Store {
 
   public isLoggedIn = OpenAPI.USERNAME !== undefined
-  public loginCallbacks: (() => any)[] = []
 
+  /** This is where we put functions that we want to run after the login. */
+  private loginCallbacks: (() => any)[] = []
   private _selectedIssueId = 1
   private _selectedBiographyId = 1
+  public showSearchDialog = false
+  /** Settings for the entire application */
   private _settings: Settings = {
     darkTheme: false,
     issueLayout: 'board',
@@ -66,8 +76,6 @@ class Store {
     }
   }
 
-  public showSearchDialog = false
-
   public onLoginSuccess(cb: () => any) {
     this.loginCallbacks.push(cb)
   }
@@ -79,22 +87,43 @@ class Store {
   }
 
   async logIn(user: string, pwd: string): Promise<boolean> {
-    window.fetch = unpatchedFetch
     // FIXME: use token
-    localStorage.setItem('user', btoa(user))
-    localStorage.setItem('pass', btoa(pwd))
-    OpenAPI.USERNAME = user
-    OpenAPI.PASSWORD = pwd
-    console.log(OpenAPI)
     try {
-      await this.runCallbacks(this.loginCallbacks)
-      this.loginCallbacks = []
-      this.isLoggedIn = true
-      window.fetch = patchedFetch
-      return true
+      // this is the only time we don’t use the auto generated API client to communicate with the back end.
+      const me = await fetch(process.env.VUE_APP_API_HOST + '/me', {
+        headers: {
+          authorization: `Basic ${ btoa(user + ':' + pwd) }`
+        }
+      })
+      if (me.ok) {
+        console.log('me.ok', me.ok)
+        localStorage.setItem('user', btoa(user))
+        localStorage.setItem('pass', btoa(pwd))
+        OpenAPI.USERNAME = user
+        OpenAPI.PASSWORD = pwd
+        console.log(this.loginCallbacks)
+        await this.runCallbacks(this.loginCallbacks)
+        this.loginCallbacks = []
+        this.isLoggedIn = true
+        return true
+      } else {
+        return false
+      }
     } catch (e) {
+      OpenAPI.USERNAME = undefined
+      OpenAPI.PASSWORD = undefined
+      localStorage.removeItem('user')
+      localStorage.removeItem('pass')
       return false
     }
+  }
+
+  async logOut() {
+    localStorage.removeItem('user')
+    localStorage.removeItem('pass')
+    OpenAPI.USERNAME = undefined
+    OpenAPI.PASSWORD = undefined
+    this.isLoggedIn = false
   }
 
   get settings(): Settings {

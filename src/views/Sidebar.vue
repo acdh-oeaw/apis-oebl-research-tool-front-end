@@ -268,7 +268,7 @@ import confirm from '@/store/confirm'
 import prompt from '@/store/prompt'
 import { List as LemmaList, List } from '@/api/models/List'
 import { WithId } from '@/types'
-import { requestState } from '@/store/fetch'
+import { requestState } from '@/api/core/request'
 import TextField from './lib/TextField.vue'
 import Badge from './lib/Badge.vue'
 
