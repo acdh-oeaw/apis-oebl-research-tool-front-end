@@ -43,6 +43,13 @@ An Article (document) can currently contain several types of nodes / blocks:
 
 The application uses Vue 2.x with Vuetify 2.x as a UI component library, and uses custom UI Elements only if necessary (see [src/views/lib](src/views/lib)). All components are written in Typescript with the Class Component Decorators for more idiomatic structure. Tests are run with Cypress. The color scheme of the application is defined in [src/plugins/vuetify.ts](src/plugins/vuetify.ts)
 
+For practical development purposes, the following to pieces of software are wholeheartedly recommended:
+
+- [Vetur for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
+- [Vue.js Devtools for Google Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+
+For type-checking the `template` bits of the Vue Single-File-Component (as opposed to the controller code in the `<script />` tag), you can run `npm run type-check-template`. This is currently not part of the CI/CD pipeline, as it produces too many false positives. It is however useful for finding subtle oversights.
+
 ### Hosting
 
 The SPA is served from an Node.js based Express server, handling the static files (see [server/index.ts](server/index.ts)). The built-in server also performs other (minor) duties (i. e. proxying/caching Zotero responses and providing the ”Event Bus” — see below).
@@ -59,7 +66,7 @@ Currently, all Lemmas are stored, searched and filtered on the client in an Inde
 
 ### Real-Time Synchronization
 
-Clients keep each other up to date by connecting to a remote ”Event Bus” (a WebSocket server), provided by the built-in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are strictly typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
+Clients keep each other up to date by connecting to a remote ”Event Bus” (a WebSocket server), provided by the built-in Node.js server (see [/server](/server/index.ts)). Clients receive Events when the data is changed by another. The Back End can also send specific types of Events by `POST`ing to paths starting with `/message` — for instance when a Lemma’s scrape data is updated by the server. This only works if a secret key is provided in the request header. All `NotifyEvents` are statically typed and thus conveniently enumerated in [src/service/notify](src/service/notify/notify.ts)`.
 
 ### Zotero data caching
 
