@@ -7,19 +7,17 @@ const allowedServices = process.argv.slice(2)
 const path = './src/api/index.ts'
 const serviceRegEx = /export \{ ((.)+Service) \} .+;/
 
-;(async () => {
-  const f = fs.readFileSync(path)
-  const lines = f.toString().split('\n')
-  console.log('allowedServices:', allowedServices)
-  const newLines = lines.map(l => {
-    const matches = serviceRegEx.exec(l)
-    if (matches !== null && !allowedServices.includes(matches[1].trim())) {
-      // remove/comment out
-      return '// ' + l
-    } else {
-      // leave in
-      return l
-    }
-  })
-  fs.writeFileSync(path, newLines.join('\n'))
-})()
+const f = fs.readFileSync(path)
+const lines = f.toString().split('\n')
+console.log('allowedServices:', allowedServices)
+const newLines = lines.map(l => {
+  const matches = serviceRegEx.exec(l)
+  if (matches !== null && !allowedServices.includes(matches[1].trim())) {
+    // remove/comment out
+    return '// ' + l
+  } else {
+    // leave in
+    return l
+  }
+})
+fs.writeFileSync(path, newLines.join('\n'))
