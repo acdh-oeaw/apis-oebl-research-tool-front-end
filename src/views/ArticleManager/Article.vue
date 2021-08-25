@@ -62,7 +62,9 @@
           </v-card>
         </v-slide-item>
         <v-slide-item>
-          <v-card color="background darken-2" elevation="0" class="ml-5 rounded-lg pa-1">
+          <v-card
+            color="background darken-2" elevation="0" class="ml-5 rounded-lg pa-1"
+          >
             <div class="tb-tooltip caption muted">Format</div>
             <select-menu
               :hide-searchbar="true"

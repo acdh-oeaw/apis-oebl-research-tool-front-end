@@ -5,6 +5,7 @@ import { Editor } from '@/api'
 import { IssueLemma } from '@/api/models/IssueLemma'
 import { WithId } from '@/types'
 
+/** All possible Events that can be sent over the bus. Add new Event Types here. */
 export interface NotifyEvents {
   disconnect: () => void
   updateIssueLemmas: (ids: number[], ils: Partial<IssueLemma>) => void
@@ -25,7 +26,7 @@ interface NotifyClient extends Socket {
 const client = io(process.env.VUE_APP_WEBAPP_HOST || 'http://localhost:8080') as NotifyClient
 
 client.onAny((...args: any) => {
-  console.log('message from server:', args)
+  // console.log('message from server:', args)
 })
 
 export default client

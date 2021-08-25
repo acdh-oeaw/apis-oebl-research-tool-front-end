@@ -32,7 +32,7 @@
         Abbrechen
       </v-btn>
     </v-overlay>
-    <div v-if="showHeader" class="d-flex flex-row align-self-stretch">
+    <div v-if="showHeader && comment !== undefined" class="d-flex flex-row align-self-stretch">
       <v-btn icon tile class="rounded-lg" disabled small>
       </v-btn>
       <div
