@@ -72,13 +72,14 @@ The Editor component makes heavy use of [ProseMirror](https://prosemirror.net)�
 ## Road Map
 
 - [ ] Use Tokens for authentication instead of HTTP Basic Auth in the header. (Must be coordinated with the Back End)
-- [ ] Integrate the Editor with the Back End
+- [ ] Integrate the editor with the Back End
   - [ ] Save Article (XML)
   - [ ] Load Article (XML)
-  - [ ] Comments Store
-  - [ ] Don’t Get Entities from Lobid, but from APIS.
-  - [ ] Run automatic Named Entity Recognition via a Spacey Instance.
+  - [ ] Comments store
+  - [ ] Don’t get entities from Lobid, but from APIS.
+  - [ ] Run automatic Named Entity Recognition via a Spacy Instance.
   - [ ] Browse previous versions of the Article. (Possibly display diff?)
+  - [ ] "Auto Save" with a dedicated flag, so the Back End can differentiate between automatic and intentional saves.
 - [ ] Actually upload "Dateien" in the Research Tool Component
 - [ ] Ability to add (Zotero) literature to a Lemma in the Research Tool Component.
 - [ ] Create a specialized UI just for Authors, where they can only see and edit their own assigned Articles.
