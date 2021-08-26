@@ -14,6 +14,7 @@
         <v-textarea
           solo
           flat
+          test-id="prompt-field"
           clearable
           background-color="background darken-2"
           class="rounded-lg"
@@ -26,12 +27,25 @@
       </v-card-text>
       <v-divider />
       <v-card-actions class="pb-0">
-        <v-btn :disabled="!promptStore.isValid(promptStore.value)" block @click="bus.$emit('confirm')" class="rounded-lg" color="primary" elevation="0">
+        <v-btn
+          test-id="prompt-submit-btn"
+          :disabled="!promptStore.isValid(promptStore.value)"
+          block
+          @click="bus.$emit('confirm')"
+          class="rounded-lg"
+          color="primary"
+          elevation="0">
           {{ promptStore.confirmText }}
         </v-btn>
       </v-card-actions>
       <v-card-actions>
-        <v-btn block @click="bus.$emit('abort')" class="rounded-lg" color="background darken-2" elevation="0">
+        <v-btn
+          block
+          test-id="prompt-abort-btn"
+          @click="bus.$emit('abort')"
+          class="rounded-lg"
+          color="background darken-2"
+          elevation="0">
           {{ promptStore.abortText }}
         </v-btn>
       </v-card-actions>

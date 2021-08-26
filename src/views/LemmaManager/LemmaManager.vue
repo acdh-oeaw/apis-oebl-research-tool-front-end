@@ -157,6 +157,7 @@
                 v-on="on"
                 v-bind="props"
                 tile
+                test-id="lemma-menu-btn"
                 class="rounded-lg"
                 icon>
                 <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
@@ -180,6 +181,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
+                test-id="lemma-list-delete-btn"
                 v-if="lemmaListId !== null"
                 @click="deleteList(lemmaListId)">
                 <v-list-item-avatar size="15">
@@ -232,6 +234,17 @@
             <v-divider class="mt-0 pt-0" />
             <div class="caption muted px-3 pt-2">Farbschema</div>
             <theme-toggle class="mx-2 mb-2" />
+            <v-divider />
+            <v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
+              <v-list-item @click="() => store.logOut()" dense>
+                <v-list-item-avatar size="15">
+                  <v-icon small>mdi-power</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  Ausloggen
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-menu>
         </v-flex>
         <v-flex
@@ -274,6 +287,7 @@
     <v-main class="fill-width fill-height transition-none">
       <virtual-table
         ref="vTable"
+        test-id="lemma-table"
         class="virtual-table text-body-3"
         :show-filter="showFilter"
         :columns="columns"
@@ -706,10 +720,12 @@ export default class LemmaManager extends Vue {
   }
 
   dragListener(item: LemmaRow, ev: DragEvent) {
+    console.log('dragging!')
     let dragImage: null|HTMLElement = null
     if (this.selectedRows.findIndex(r => r.id === item.id) === -1) {
       this.selectedRows.push(item)
     }
+    console.log('ev.dataTransfer', ev.dataTransfer, this.selectedRows)
     if (ev.dataTransfer) {
       dragImage = ((this.$refs.dragGhost as Vue).$el) as HTMLElement
       ev.dataTransfer.effectAllowed = 'move'

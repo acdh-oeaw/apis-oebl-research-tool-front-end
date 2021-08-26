@@ -98,6 +98,7 @@
       :item-height="rowHeight">
       <template v-slot:default="{ item, index }">
         <div
+          test-id="lemma-row"
           :draggable="$listeners['drag:row']"
           :style="{ height: rowHeight + 'px' }"
           :class="[

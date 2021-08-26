@@ -1,5 +1,8 @@
 <template>
-  <div tabindex="-1" class="d-flex fill-height flex-column overflow-y-hidden sidebar">
+  <div
+    test-id="sidebar"
+    tabindex="-1"
+    class="d-flex fill-height flex-column overflow-y-hidden sidebar">
     <div :style="{ zIndex: 1}">
       <div class="d-flex pb-2">
         <v-btn
@@ -69,6 +72,7 @@
         <v-list-item
           :ripple="false"
           to="/lemmas"
+          test-id="lemma-library-link"
           exact
           @click="store.lemma.selectedLemmaListId = null">
           <v-list-item-avatar tile>
@@ -96,16 +100,16 @@
         color="transparent"
         nav>
         <v-list-item
+          v-for="issue in store.issue.issues"
+          :key="'issue-' + issue.id"
           :ripple="false"
+          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
           class="droppable mb-0"
+          :to="'/issue/' + issue.id"
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="addLemmaToIssue(issue.id, $event)"
-          @click="loadIssueLemmas(issue.id || null)"
-          :to="'/issue/' + issue.id"
-          :input-value="store.lemma.selectedLemmaIssueId === issue.id"
-          v-for="issue in store.issue.issues"
-          :key="'issue-' + issue.id">
+          @click="loadIssueLemmas(issue.id || null)">
           <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-list-item-avatar>
@@ -131,6 +135,7 @@
           @dragenter.prevent="onDragEnter($event)"
           elevation="0"
           text
+          test-id="create-list-btn"
           small
           color="primary darken-1">
           Liste anlegen
@@ -164,6 +169,7 @@
           <v-list-item-action>
             <transition name="roll">
               <badge
+                test-id="lemma-list-count"
                 :key="list.count"
                 :content="list.count" />
             </transition>
@@ -308,6 +314,7 @@ export default class Sidebar extends Vue {
   }
 
   onDragEnter(e: DragEvent, clickAfterLingering = false) {
+    console.log('Dragenter!!')
     if (e.currentTarget instanceof HTMLElement) {
       const target = e.currentTarget
       const timer = setTimeout(() => {
@@ -358,6 +365,8 @@ export default class Sidebar extends Vue {
   }
 
   async copyLemmasToList(list: WithId<List>, e: DragEvent) {
+    console.log('copy lemma to list', e)
+    console.log('data transfer!', e.dataTransfer?.getData('text/plain'))
     const lemmas = JSON.parse(e.dataTransfer?.getData('text/plain') || '[]') as LemmaRow[]
     const listItems = store.lemma.getLemmasByList(list.id)
     const newLemmaList = _.uniq([ ...lemmas.map(l => l.id), ...listItems ])
