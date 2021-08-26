@@ -30,6 +30,7 @@
       :width="store.settings.drawerLeftWidth">
       <sidebar v-if="showDrawer" class="px-3 pt-5" />
     </resizable-drawer>
+    <!-- THE CONTENT -->
     <keep-alive>
       <router-view />
     </keep-alive>
