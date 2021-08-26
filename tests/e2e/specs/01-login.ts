@@ -1,5 +1,8 @@
 // https://docs.cypress.io/api/introduction/api.html
 
+// eslint-disable-next-line handle-callback-err
+Cypress.on('uncaught:exception', (err, runnable) => false)
+
 describe('The IRS Login', () => {
   it('rejects a bad authentication attempt', () => {
     cy.visit('/')
