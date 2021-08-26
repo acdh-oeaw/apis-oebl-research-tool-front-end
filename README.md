@@ -62,7 +62,7 @@ The auto-generated types are also used extensively throughout the code base.
 
 ### State Management
 
-The application state is not stored inside a traditional Vuex State Container, but instead in bare Typescript classes located in [src/store](src/store). Their instance methods are used to mutate their state. They also subscribe to remote changes and emit events, as described below. In all stores, state variables that can only be mutated by a class member but can be read by the public, are marked `private`, prefixed with an underscore and use a `getter` (but no setter) for public read access. This means the app will not compile if for instance a component controller tries to modify a store’s state directly.
+The application state is not stored inside a traditional Vuex State Container, but instead in bare Typescript classes located in [src/store](src/store). Their instance methods are used to mutate their state. They also subscribe to remote changes and emit events, as described below. In all stores, state variables that can only be mutated by a class member but can be read by the public, are marked `private`, prefixed with an underscore and use a `getter` (but no setter) for public read access. This means the app will not compile if (for instance) a component controller tries to modify a store’s state directly.
 
 Currently, all Lemmas are stored, searched and filtered on the client in an IndexedDB table (called `LemmaDb`). On start-up, we fetch the updates, inserts and deletions from the server, and update the local database accordingly (all of this happens in the lemma class / store).
 
