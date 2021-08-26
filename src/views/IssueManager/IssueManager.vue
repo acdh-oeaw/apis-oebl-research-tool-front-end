@@ -146,6 +146,15 @@
           <v-list-item :style="{backgroundColor: 'var(--v-background-darken-2)'}" class="pa-1 rounded-lg">
             <theme-toggle />
           </v-list-item>
+          <v-divider />
+          <v-list-item @click="() => store.logOut()" dense>
+            <v-list-item-avatar size="15">
+              <v-icon small>mdi-power</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              Ausloggen
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-btn
