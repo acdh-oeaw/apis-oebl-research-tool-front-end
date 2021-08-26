@@ -419,7 +419,14 @@ export default class LemmaStore {
       this.updateLemmasLocally(ls, { list })
       notifyService.emit('updateLemmas', ls, { list }, store.user.userProfile)
       await Promise.all(ls.map(async (l) => {
-        await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, { list: { id: list.id, title: list.title } })
+        await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, {
+          // TODO: remove selected prop when it’s optional.
+          selected: l.selected,
+          list: {
+            id: list.id,
+            title: list.title
+          }
+        })
       }))
     }
   }
@@ -450,7 +457,12 @@ export default class LemmaStore {
     await this.updateLemmasLocally(ls, u)
     // actual update on the server
     await Promise.all(ls.map(async (l) => {
-      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, u)
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, {
+        // TODO: remove selected prop when it’s optional.
+        // https://github.com/ferdikoomen/openapi-typescript-codegen/issues/636
+        selected: l.selected,
+        ...u
+      })
     }))
     // notify others
     notifyService.emit('updateLemmas', ls, u, store.user.userProfile)
