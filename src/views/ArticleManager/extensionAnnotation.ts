@@ -143,18 +143,18 @@ export const Annotation = popupMark.extend({
   addCommands() {
     return {
       setAnnotation: (attributes) => ({ commands }) => {
-        return commands.setMark('annotation', { id: uuid() })
+        return commands.setMark(this.name, { id: uuid() })
       },
       toggleAnnotation: (attributes) => ({ commands }) => {
         if (this.editor.isActive(this.name)) {
-          return commands.unsetMark('annotation')
+          return commands.unsetMark(this.name)
         } else {
-          const command = commands.toggleMark('annotation', { id: uuid() })
+          const command = commands.toggleMark(this.name, { id: uuid() })
           return command
         }
       },
       unsetAnnotation: () => ({ commands }) => {
-        return commands.unsetMark('annotation')
+        return commands.unsetMark(this.name)
       }
     }
   },

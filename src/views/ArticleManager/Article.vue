@@ -249,13 +249,15 @@
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
         <div class="px-5" :style="{ fontSize: (16 * store.settings.articleZoomFactor) + 'px' }">
           <editor-content
-            spellcheck="false"
+            :spellcheck="spellcheck"
             class="tiptap-editor"
             :editor="editor" />
           <v-divider class="mb-5 mx-5 mt-5" />
-          <div class="d-flex text-body-1" v-for="(citation, i) in citations" :key="citation.citationId">
-            <sup v-text="i + 1" /> <citation-display @click.native="jumpToCitationText" :value="citation" />
-          </div>
+          <citation-list
+            v-if="editor !== null"
+            @click:citation="jumpToCitationText"
+            :editor="editor"
+          />
         </div>
       </div>
     </v-main>
@@ -282,20 +284,18 @@ import TextField from '@/views/lib/TextField.vue'
 import AnnotationSidebar from './AnnotationSidebar.vue'
 
 import IssueLemmaDetail from '../IssueManager/IssueLemmaDetail.vue'
-
 import CommentsSidebar from './CommentsSidebar.vue'
-
-import CitationDisplay from './CitationDisplay.vue'
+import CitationList from './CitationList.vue'
 
 import store from '@/store'
-import ArticleStore, { Citation } from '@/store/article'
+import ArticleStore from '@/store/article'
 import { IssueLemma } from '@/api'
 
 @Component({
   components: {
     ResizableDrawer,
     SelectMenu,
-    CitationDisplay,
+    CitationList,
     EditorContent,
     IssueLemmaDetail,
     CommentsSidebar,
@@ -307,6 +307,7 @@ export default class Article extends Vue {
 
   @Prop({ required: true }) issueLemmaId!: number
 
+  readonly spellcheck = false
   issueLemma: IssueLemma|null = null
   editor: Editor|null = null
   showSendWindow = false
@@ -386,11 +387,7 @@ export default class Article extends Vue {
     v.onSelect(this.editor)
   }
 
-  get citations() {
-    return store.article.citations
-  }
-
-  jumpToCitationText(c: Citation) {
+  jumpToCitationText(c: any) {
     if (this.editor) {
       this.editor.commands.focus()
       // this.editor.commands.setTextSelection(c.quotedRange)
@@ -463,8 +460,6 @@ export default class Article extends Vue {
   position sticky
   z-index 99
   top 0
-// .tiptap-editor /deep/ *
-//   color #333
 
 .tiptap-editor /deep/ .ProseMirror
   z-index 7

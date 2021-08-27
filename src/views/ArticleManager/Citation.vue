@@ -52,7 +52,7 @@
           <text-field
             @input="searchBook"
             class="flex-grow-1"
-            v-model="searchQuery"
+            :value="searchTerm"
             :clearable="true"
             placeholder="Werk suchen …">
             <template v-slot:prepend>
@@ -69,7 +69,7 @@
           <text-field
             style="width: 100px"
             class="ml-1 px-2"
-            @input="updateQuotedRange"
+            @input="updateProps({ quotedRange: $event })"
             placeholder="Seite">
             <template v-slot:prepend>
               <v-icon size="16" class="ml-1 mr-0">
@@ -83,18 +83,18 @@
             dense
             nav
             class="px-0"
-            :input-value="currentCitation !== null && result.key === currentCitation.zoteroKey"
+            :input-value="result.key === zoteroKey"
             v-for="(result, i) in results"
             :key="i">
             <v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
-              <template v-if="currentCitation !== null">
+              <template>
                 <v-btn
                   @click.stop.prevent.capture="selectTitle(result)"
                   tile
                   icon
                   class="rounded-lg"
                   elevation="0">
-                  <v-icon v-if="result.key === currentCitation.zoteroKey" color="primary">mdi-check-circle</v-icon>
+                  <v-icon v-if="result.key === zoteroKey" color="primary">mdi-check-circle</v-icon>
                   <v-icon v-else>mdi-circle-outline</v-icon>
                 </v-btn>
               </template>
@@ -154,10 +154,10 @@ import SelectMenu from '@/views/lib/SelectMenu.vue'
 import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
 import zotero, { ZoteroItem } from '@/service/zotero'
 import ZoteroForm from './ZoteroForm.vue'
-import store from '@/store'
 import confirm from '@/store/confirm'
 import _ from 'lodash'
 import { Editor } from '@tiptap/vue-2'
+import { CitationAttributes } from '@/store/article'
 
 const newItem = { data: { creators: [], itemType: 'book' } }
 
@@ -171,10 +171,13 @@ const newItem = { data: { creators: [], itemType: 'book' } }
 })
 export default class Citation extends Vue {
 
-  @Prop({ default: null }) id!: string|null
+  @Prop({ default: null }) id!: CitationAttributes['id']
+  @Prop({ default: null }) zoteroKey!: CitationAttributes['zoteroKey']
+  @Prop({ default: null }) quotedRange!: CitationAttributes['quotedRange']
   @Prop({ required: true}) editor!: Editor
 
-  searchQuery = ''
+  currentCitation: ZoteroItem|null = null
+  searchQueries: {[key: string]: string} = {}
   newItem = _.clone(newItem)
   page = 0
   loading = false
@@ -182,8 +185,26 @@ export default class Citation extends Vue {
   results: ZoteroItem[] = []
   showOverlay = false
 
+  get searchTerm(): string {
+    // if possible, use the cached search term
+    if (
+      this.id !== null &&
+      this.searchQueries[this.id] !== undefined
+    ) {
+      return this.searchQueries[this.id]
+    // otherwise it’s empty
+    } else {
+      return ''
+    }
+  }
+
+  set searchTerm(t: string) {
+    // cache it
+    this.searchQueries[this.id!] = t
+  }
+
   removeCitation() {
-    this.editor.commands.unsetMark('footnote')
+    this.editor.commands.unsetMark('citation')
     this.editor.commands.focus()
   }
 
@@ -193,28 +214,28 @@ export default class Citation extends Vue {
     console.log({t})
   }
 
-  get currentCitation() {
-    if (this.id !== null) {
-      return store.article.getCitationById(this.id) || null
-    } else {
-      return null
+  @Watch('zoteroKey', { immediate: true })
+  async onChangeKey() {
+    if (this.zoteroKey !== null) {
+      this.currentCitation = await zotero.getItem(this.zoteroKey)
     }
   }
 
   @Watch('id', { immediate: true })
-  onChangeId() {
-    if (this.currentCitation !== null && this.currentCitation.zoteroItemCached !== null) {
-      this.results = [ this.currentCitation.zoteroItemCached ]
+  async onChangeId() {
+    if (this.searchTerm === '' && this.currentCitation !== null) {
+      this.results = [ this.currentCitation ]
     }
   }
 
   async searchBook(e: string) {
+    this.searchTerm = e
     this.loading = true
     if (e !== null && e.trim().length > 0) {
       this.results = await zotero.searchItem(e)
     } else {
-      if (this.currentCitation?.zoteroItemCached !== null && this.currentCitation?.zoteroItemCached !== undefined) {
-        this.results = [ this.currentCitation?.zoteroItemCached ]
+      if (this.currentCitation !== null) {
+        this.results = [ this.currentCitation ]
       }
     }
     this.loading = false
@@ -269,32 +290,26 @@ export default class Citation extends Vue {
     }
   }
 
-  updateQuotedRange(s: string|null) {
-    if (this.id !== null) {
-      store.article.updateCitation(this.id, { quotedRange: s })
-    }
+  updateProps(ps: Partial<CitationAttributes>): boolean {
+    const res = this.editor.commands.updateAttributes('citation', {
+      id: this.id,
+      zoteroKey: this.zoteroKey,
+      ...ps
+    })
+    return res
   }
 
   selectTitle(zoteroItem: ZoteroItem) {
     if (this.id !== null) {
-      const currentCitation = store.article.getCitationById(this.id)
-      if (currentCitation?.zoteroKey === zoteroItem.key) {
-        store.article.unsetCitation(this.id)
-      } else {
-        store.article.updateCitation(this.id, { zoteroKey: zoteroItem.key, zoteroItemCached: zoteroItem })
-      }
+      this.updateProps({
+        id: this.id,
+        zoteroKey: zoteroItem.key
+      })
     } else {
       confirm.confirm('no citation selected')
     }
   }
 
-  @Watch('value', { deep: true })
-  onChangeValue(v: any) {
-    console.log(v)
-  }
-
-  mounted() {
-  }
 }
 </script>
 <style lang="stylus" scoped>

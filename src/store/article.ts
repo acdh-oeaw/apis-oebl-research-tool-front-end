@@ -14,10 +14,9 @@ export interface CommentThread {
   comments: Comment[]
 }
 
-export interface Citation {
-  citationId: string
+export interface CitationAttributes {
+  id: string|null
   zoteroKey: string|null
-  zoteroItemCached: ZoteroItem|null
   quotedRange: string|null
 }
 
@@ -37,7 +36,6 @@ export default class ArticleStore {
   showSidebar = false
 
   private _commentThreads: CommentThread[] = []
-  private _citations: Citation[] = []
   public article = ''
 
   async loadComments(articleId: number) {
@@ -81,26 +79,7 @@ export default class ArticleStore {
     ]
   }
 
-  get citations() {
-    return this._citations
-  }
-
-  async loadCitations(articleId: number) {
-    this._citations = [
-      {
-        citationId: '9cee2f2a-212d-43eb-b351-0ad4098c6834',
-        zoteroKey: 'ZSRWJPWF',
-        zoteroItemCached: null,
-        quotedRange: null
-      }
-    ]
-    this._citations = await Promise.all(this._citations.map(async (c) => {
-      return {...c, zoteroItemCached: await zotero.getItem('ZSRWJPWF')}
-    }))
-  }
-
   async loadArticle(articleId: number) {
-    this.loadCitations(articleId)
     this.loadComments(articleId)
     this.article = `
       <h1>Test Headlines look like this</h1>
@@ -113,7 +92,7 @@ export default class ArticleStore {
       Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="1">excepteur</comment>
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
       <p>Non labore occaecat deserunt dolor aliquip
-      consectetur fugiat <footnote data-id="9cee2f2a-212d-43eb-b351-0ad4098c6834">laboris</footnote> velit adipisicing laboris
+      consectetur fugiat <footnote data-zotero-key="HZ9BKUUJ" data-id="9cee2f2a-212d-43eb-b351-0ad4098c6834">laboris</footnote> velit adipisicing laboris
       aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
       Est ut cupidatat exercitation et ea quis commodo.</p>
       Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
@@ -121,7 +100,7 @@ export default class ArticleStore {
       deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
       <h2>Or possibly like this.</h2>
       <p>Non labore occaecat deserunt dolor aliquip
-      consectetur fugiat <footnote data-id="9cee2f2b-212d-43eb-b351-0ad4098c6835">laboris</footnote> velit adipisicing laboris
+      consectetur fugiat <footnote data-zotero-key="KHPCHKFV" data-id="9cee2f2b-212d-43eb-b351-0ad4098c6835">laboris</footnote> velit adipisicing laboris
       aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
       Est ut cupidatat exercitation et ea quis commodo.</p>
       Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua. Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.
@@ -130,56 +109,12 @@ export default class ArticleStore {
     `
   }
 
-  getCitationById(id: string): Citation|undefined {
-    return this._citations.find(c => c.citationId === id)
-  }
-
-  updateCitation(id: string, a: Omit<Partial<Citation>, 'citationId'>) {
-    this._citations = this._citations.map(c => {
-      if (id === c.citationId) {
-        return {...c, ...a}
-      } else {
-        return c
-      }
-    })
-  }
-
-  unsetCitation(id: string) {
-    this._citations = this._citations.map(c => {
-      if (id === c.citationId) {
-        return {
-          ...c,
-          zoteroItemCached: null,
-          zoteroKey: null
-        }
-      } else {
-        return c
-      }
-    })
-  }
-
-  selectCitationZotero(citationId: string, zoteroKey: string) {
-    this._citations = this._citations.map(c => {
-      if (c.citationId === citationId) {
-        return { ...c, zoteroKey }
-      } else {
-        return c
-      }
-    })
-  }
-
   get threads() {
     return this._commentThreads
   }
 
   getThread(id: string): CommentThread|undefined {
     return this._commentThreads.find(c => c.threadId === id)
-  }
-
-  updateCommentOffsets(os: { [threadId: string]: number }) {
-    this._commentThreads = this._commentThreads.map(ct => {
-      return {...ct, offset: os[ct.threadId]}
-    })
   }
 
   addComment(threadId: string, comment: Comment) {
@@ -203,12 +138,6 @@ export default class ArticleStore {
 
   createCitation() {
     const id = uuid()
-    this._citations.push({
-      citationId: id,
-      quotedRange: null,
-      zoteroKey: null,
-      zoteroItemCached: null
-    })
     return id
   }
 

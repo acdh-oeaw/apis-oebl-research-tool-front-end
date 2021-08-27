@@ -178,7 +178,7 @@ import { AnnotationAttributes } from './extensionAnnotation'
     LobidPreviewCard
   }
 })
-export default class Entity extends Vue {
+export default class Annotation extends Vue {
 
   @Prop({ default: null }) id!: string|null
   @Prop({ default: null }) entityId!: string|null

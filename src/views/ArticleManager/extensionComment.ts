@@ -4,8 +4,6 @@ import {
 } from '@tiptap/core'
 
 import { v4 as uuid } from 'uuid'
-
-import { findChildrenByMark } from 'prosemirror-utils'
 import CommentThread from './CommentThread.vue'
 import popupMark from './popupPlugin'
 
@@ -97,18 +95,6 @@ export const Comment = popupMark.extend({
       },
     }
   },
-
-  // onUpdate(...a: any[]) {
-  // const [ { editor, transaction } ] = a
-  // const comments = findChildrenByMark(transaction.doc, editor.schema.marks.comment, true)
-  //   .map((n) => {
-  //     return {
-  //       pos: n.pos,
-  //       mark: n.node.marks.find((m: any) => m.type.name === 'comment')
-  //     }
-  //   })
-  //   .filter(m => m.mark !== undefined)
-  // },
 
   addKeyboardShortcuts() {
     return {
