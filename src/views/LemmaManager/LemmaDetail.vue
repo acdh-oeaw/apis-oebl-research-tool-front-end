@@ -1,13 +1,14 @@
 <template>
   <v-card
     class="transparent flex-column d-flex fill-height lemma-detail"
+    elevation="0"
     @dragover.prevent=""
     @dragenter.prevent.capture.stop="onDragEnter"
     @dragleave.prevent.capture.stop="onDragLeave"
     @drop.prevent.capture.stop="onDrop"
     v-if="value !== undefined && value !== null">
     <v-card-title class="flex-column pb-2">
-      <div class="d-flex flex-row align-self-stretch">
+      <div class="d-flex flex-row align-self-stretch" v-if="showHeader">
         <v-btn
           style="margin-top: -8px; margin-left: -10px; "
           width="48"
@@ -33,7 +34,7 @@
           <v-icon>mdi-dock-right</v-icon>
         </v-btn>
       </div>
-      <div style="margin-top: -5px" class="text-caption text-center">
+      <div style="margin-top: -5px" class="text-caption text-center" v-if="showHeader">
         {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
       </div>
       <v-btn-toggle
@@ -71,6 +72,7 @@
               btn-class="px-2 background darken-2"
               prepend-icon="mdi-format-list-bulleted"
               search-placeholder="Liste suchen …"
+              no-selection-text="keine Liste"
               :show-chevron="true"
               :value="value.list || null"
               :items="store.lemma.lemmaLists"
@@ -240,6 +242,8 @@
           <h4 class="py-2 px-5 background d-flex">
             Literatur
           </h4>
+          <v-card-text style="min-height: 200px">
+          </v-card-text>
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
@@ -340,6 +344,7 @@ const DRAG_CLASS = 'drag-over'
 export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow
+  @Prop({ default: true }) showHeader!: boolean
   log = console.log
   store = store
   showGndSearch = false
@@ -352,7 +357,7 @@ export default class LemmaDetail extends Vue {
       event.currentTarget !== null &&
       event.dataTransfer !== null &&
       // during the "drag" phase, the "files" prop is still empty
-      // so we use the items prop instead, to check what’s being dragged.
+      // so we use the items prop instead to check _what_ is being dragged.
       event.dataTransfer.items[0] !== null &&
       event.dataTransfer.items[0].kind === 'file'
     ) {

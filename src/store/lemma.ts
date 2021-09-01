@@ -483,16 +483,17 @@ export default class LemmaStore {
     await this.loadRemoteLemmaLists()
   }
 
-  async addLemma(l: ImportablePerson, listId: number) {
+  async addLemma(l: LemmaRow, listId: number) {
     await ResearchService.researchApiV1LemmaresearchCreate(({
       listId,
       lemmas: [ {
-        dateOfBirth: l.dateOfBirth || undefined,
-        dateOfDeath: l.dateOfDeath || undefined,
+        ...l,
+        dateOfBirth: l.birthYear || undefined,
+        dateOfDeath: l.deathYear || undefined,
         firstName: l.firstName || undefined,
         lastName: l.lastName || undefined,
         selected: false,
-        gnd: l.gnd
+        gnd: l.gnd,
       } ]
     }))
   }

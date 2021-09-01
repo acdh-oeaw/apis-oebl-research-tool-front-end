@@ -597,7 +597,7 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  addLemma(l: ImportablePerson, listId: number) {
+  addLemma(l: LemmaRow, listId: number) {
     this.showAddLemmaDialog = false
     this.store.lemma.addLemma(l, listId)
   }
