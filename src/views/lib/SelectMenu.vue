@@ -120,6 +120,7 @@ export default class SelectMenu extends Vue {
   @Prop({ default: null }) prependIcon!: string|null
   @Prop({ default: null }) addNullOption!: string|null
   @Prop({ default: 'Suchen …'}) searchPlaceholder!: string
+  @Prop({ default: 'nichts ausgewählt' }) noSelectionText!: string
 
   searchText: string|null = null
 
@@ -172,13 +173,13 @@ export default class SelectMenu extends Vue {
 
   get displayValue() {
     if (this.value === null) {
-      return 'nichts ausgewählt'
+      return this.noSelectionText
     } if (typeof this.value === 'string' || typeof this.value === 'number') {
       const item = this.items.find(i => i[this.keyValue] === this.value)
       if (item && item[this.keyName]) {
         return item[this.keyName]
       } else {
-        return 'nichts ausgewählt'
+        return this.noSelectionText
       }
     } else {
       return this.value[this.keyName]
