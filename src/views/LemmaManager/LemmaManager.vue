@@ -112,14 +112,7 @@
             </span>
           </span>
         </v-flex>
-        <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2 mr-2">
-          <!-- <data-filter
-            :comparators="comparators"
-            :columns="columns"
-            :value="filterItems"
-            @input="onUpdateFilterItems"
-          /> -->
-        </v-flex>
+        <v-spacer />
         <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
             @click="store.showSearchDialog = true"
@@ -136,8 +129,8 @@
           style="margin-top: -5px">
           <v-btn
             tile
-            @click="showFilter = !showFilter"
-            :color="showFilter ? 'primary' : undefined"
+            @click="store.settings = { ...store.settings, showLemmaFilter: !store.settings.showLemmaFilter}"
+            :color="store.settings.showLemmaFilter ? 'primary' : undefined"
             class="rounded-lg"
             icon>
             <v-icon>mdi-filter-variant</v-icon>
@@ -193,7 +186,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
-                v-if="store.lemma.selectedLemmaFilterId === null && usableFilterItems.length > 0"
+                v-if="store.lemma.selectedLemmaFilterId === null && Object.keys(store.lemma.currentFilters).length > 0"
                 @click="saveFilter" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-card-search-outline</v-icon>
@@ -290,7 +283,7 @@
         ref="vTable"
         test-id="lemma-table"
         class="virtual-table text-body-3"
-        :show-filter="showFilter"
+        :show-filter="store.settings.showLemmaFilter"
         :columns="columns"
         :sortable-columns="true"
         :row-height="38"
@@ -300,7 +293,7 @@
         :data="sortedFilteredLemmas"
         :selected-rows="selectedRows"
         header-color="background darken-2"
-        @keyup.native.delete.prevent.stop="deleteSelectedLemmas"
+        @keyup.delete="deleteSelectedLemmas"
         @drag:row="dragListener"
         @click:cell="onClickCell"
         @click:header="sortLemmas"
@@ -308,7 +301,7 @@
         @dblclick:cell="store.lemma.showSideBar = true"
         @update:selection="selectedRows = $event"
         @update:item="updateLemmaFromTable"
-        @update:filter="log"
+        @update:filter="(f) => store.lemma.setFilter(f)"
         @update:columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
@@ -409,10 +402,8 @@ export default class LemmaManager extends Vue {
   toolbarMinHeight = 80
   toolbarPaddingY = 15
   showAddLemmaDialog = false
-  showFilter = false
   log = console.log
 
-  comparators = store.lemma.comparators
   filterItems: LemmaFilterItem[] = []
 
   previewPopupCoords: [number, number] = [0, 0]
@@ -453,14 +444,24 @@ export default class LemmaManager extends Vue {
 
   @Watch('lemmaListId')
   onUpdateLemmaListId() {
-    this.filterItems = []
     store.lemma.selectedLemmaListId = this.lemmaListId
+  }
+
+  async saveFilter() {
+    const name = await prompt.prompt('Filter speichern', { placeholder: 'Filtername eingeben…' })
+    if (name !== null) {
+      store.lemma.storedLemmaFilters = [ ...store.lemma.storedLemmaFilters, {
+        name: name,
+        id: uuid(),
+        filterItems: this.store.lemma.currentFilters
+      }]
+    }
   }
 
   @Watch('highlightId', { immediate: true })
   async onChangeHighlightId() {
     if (this.highlightId !== null) {
-      this.filterItems = []
+      this.store.lemma.setFilter({})
       await this.$nextTick()
       const index = this.sortedFilteredLemmas.findIndex(l => l.id === this.highlightId)
       this.scrollToRow = index > -1 ? index : null
@@ -544,14 +545,16 @@ export default class LemmaManager extends Vue {
     this.filterData()
   }
 
-  async deleteList(id: number) {
-    const list = store.lemma.getListById(id)
-    if (list !== undefined) {
-      if (await confirm.confirm(
-        `Wollen Sie die Liste ”${ list.title }” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`,
-        { icon: 'mdi-delete-outline' }
-      )) {
-        await store.lemma.deleteLemmaList(id)
+  async deleteList(id: number|null) {
+    if (id !== null) {
+      const list = store.lemma.getListById(id)
+      if (list !== undefined) {
+        if (await confirm.confirm(
+          `Wollen Sie die Liste ”${ list.title }” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`,
+          { icon: 'mdi-delete-outline' }
+        )) {
+          await store.lemma.deleteLemmaList(id)
+        }
       }
     }
   }
@@ -591,9 +594,9 @@ export default class LemmaManager extends Vue {
   get sortedFilteredLemmas(): LemmaRow[] {
     const sortByColumn = this.columns.find(c => c.sort !== undefined && c.sort !== null)
     if (sortByColumn !== undefined) {
-      return _.orderBy(this.filteredLemmas, sortByColumn.value, sortByColumn.sort || 'asc')
+      return _.orderBy(this.store.lemma.lemmas, sortByColumn.value, sortByColumn.sort || 'asc')
     } else {
-      return this.filteredLemmas
+      return this.store.lemma.lemmas
     }
   }
 
@@ -656,11 +659,11 @@ export default class LemmaManager extends Vue {
     if (id !== null) {
       const l = store.lemma.getStoredLemmaFilterById(id)
       if (l !== undefined) {
-        this.filterItems = l.filterItems
+        this.store.lemma.currentFilters = l.filterItems
         this.filterData()
       }
     } else {
-      this.filterItems = []
+      this.store.lemma.setFilter({})
       this.filterData()
     }
   }
@@ -739,52 +742,23 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  async saveFilter() {
-    const name = await prompt.prompt('Filter speichern', { placeholder: 'Filtername eingeben…' })
-    if (name !== null) {
-      store.lemma.storedLemmaFilters = [ ...store.lemma.storedLemmaFilters, {
-        name: name,
-        id: uuid(),
-        filterItems: this.filterItems
-      }]
-    }
-  }
-
-  onUpdateFilterItems(fis: LemmaFilterItem[]) {
-    this.filterItems = fis
-    this.updateTableHeight()
-    this.filterData()
-  }
-
-  get usableFilterItems() {
-    return this.filterItems
-      .filter(i => i.query.trim() !== '' && i.query !== null)
-      .map(i => ({...i, query: i.query.toLocaleLowerCase()}))
-  }
-
-  @Watch('store.lemma.lemmas')
-  filterData() {
-    const comparators = _.keyBy(this.comparators, 'value')
-    if (this.usableFilterItems.length === 0) {
-      this.filteredLemmas = store.lemma.lemmas
-    } else {
-      console.time('filter lemmas')
-      const filterItemsByColumn = _.groupBy(this.usableFilterItems, (i) => i.column.value + '__' + i.comparator)
-      this.filteredLemmas = store.lemma.lemmas.filter(lemma => {
-        return _.every(filterItemsByColumn, (fs) => {
-          if (fs.length === 1) {
-            // only one filter item for this column
-            return comparators[fs[0].comparator].predicate(lemma[fs[0].column.value], fs[0].query)
-          } else {
-            // multiple filter items for query => use some (equivalent to "OR")
-            return fs.some(f => comparators[f.comparator].predicate(lemma[f.column.value], f.query))
-          }
+  filterData(q?: { [key: string]: string|boolean|null }) {
+    if (q !== undefined) {
+      this.filteredLemmas = this.store.lemma.lemmas.filter(l => {
+        return _(q).each((value, name) => {
+          const v = String(value)
+          return (
+            (
+              l[name] !== undefined && l[name].indexOf(v) > -1 ||
+              l.columns_user[name] !== undefined && l.columns_user[name].toString().indexOf(v) > -1
+            )
+          )
         })
       })
-      console.timeEnd('filter lemmas')
+    } else {
+      this.filteredLemmas = this.store.lemma.lemmas
     }
   }
-
 }
 </script>
 <style lang="stylus">

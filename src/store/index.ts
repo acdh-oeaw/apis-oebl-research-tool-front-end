@@ -35,6 +35,7 @@ interface Settings {
   drawerLeftWidth: number
   showNavDrawer: boolean
   articleZoomFactor: number
+  showLemmaFilter: boolean
   issueViewOptions: {
     showBirthAndDeath: boolean
     showEditor: boolean
@@ -67,6 +68,7 @@ class Store {
     issueLemmaSearchItems: [],
     drawerRightWidth: 370,
     drawerLeftWidth: 370,
+    showLemmaFilter: false,
     showNavDrawer: true,
     issueViewOptions: {
       showBirthAndDeath: true,

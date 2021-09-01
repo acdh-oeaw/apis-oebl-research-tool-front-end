@@ -12,7 +12,7 @@ import { UserProfile } from './user'
 interface LemmaFilter {
   id: string
   name: string
-  filterItems: LemmaFilterItem[]
+  filterItems: { [key: string]: string|boolean|null }
 }
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
@@ -44,6 +44,7 @@ export default class LemmaStore {
 
   private _storedLemmaFilters: LemmaFilter[] = []
 
+  public currentFilters: { [key: string]: string|boolean|null } = {}
   public importStatus = {
 
     target: 0,
@@ -761,12 +762,26 @@ export default class LemmaStore {
     return this._lemmas.filter(l => l.list?.id === listId)
   }
 
+  setFilter(columnQueries: { [key: string]: string|boolean|null } = {}) {
+    this.currentFilters = { ...columnQueries }
+  }
+
+  filterLemmas(ls: LemmaRow[], fs = this.currentFilters): LemmaRow[] {
+    return ls.filter(l => {
+      return _(fs).every((value, name) => {
+        const v = String(value).toLocaleLowerCase()
+        return (
+          (l[name] !== undefined && String(l[name]).toLocaleLowerCase().indexOf(v) > -1) ||
+          (l.columns_user[name] !== undefined && String(l.columns_user[name]).toLocaleLowerCase().indexOf(v) > -1)
+        )
+      })
+    })
+  }
+
   get lemmas() {
-    if (this.selectedLemmaListId !== null) {
-      return this.getLemmasByList(this.selectedLemmaListId)
-    } else {
-      return this._lemmas
-    }
+    console.log('trigger lemma getter')
+    const ls = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
+    return this.filterLemmas(ls, this.currentFilters)
   }
 
   set lemmas(ls: LemmaRow[]) {

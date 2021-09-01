@@ -75,8 +75,7 @@
           v-if="showFilter && column.type !== 'boolean'"
           placeholder="Suchen…"
           @input="emitFilterEvent(column, $event)"
-          @keyup.stop=""
-          @keydown.stop=""
+          @keydown.esc="emitFilterEvent(column, '')"
           class="mb-0"
           color="background darken-3 mx-0" />
         <select-menu
@@ -91,6 +90,8 @@
       style="contain: content"
       ref="scroller"
       :bench="10"
+      tabindex="-1"
+      @keyup="$emit('keyup', $event)"
       @scroll.passive="onScroll"
       class="virtual-scroller"
       :items="data"
