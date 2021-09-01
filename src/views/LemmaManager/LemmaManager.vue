@@ -33,6 +33,7 @@
       :value="showAddLemmaDialog === true"
       scrollable
       @input="showAddLemmaDialog = $event"
+      content-class="align-self-start"
       max-width="1000px">
       <lemma-add
         color="background"
@@ -307,6 +308,7 @@
         @dblclick:cell="store.lemma.showSideBar = true"
         @update:selection="selectedRows = $event"
         @update:item="updateLemmaFromTable"
+        @update:filter="log"
         @update:columns="columns = $event" >
         <template v-slot:cell="{ item, index, column, value }">
           <template v-if="item[column.value] === 'Not available'"></template>
@@ -408,6 +410,7 @@ export default class LemmaManager extends Vue {
   toolbarPaddingY = 15
   showAddLemmaDialog = false
   showFilter = false
+  log = console.log
 
   comparators = store.lemma.comparators
   filterItems: LemmaFilterItem[] = []

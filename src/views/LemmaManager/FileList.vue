@@ -6,7 +6,7 @@
         <div class="caption text-center muted">{{ file.name }}</div>
       </div>
     </div>
-    <div class="text-center py-5 text-body-1" v-else>
+    <div class="text-center py-5 text-body-1 muted" v-else>
       Ziehen Sie Dateien hierher.
     </div>
     <div class="caption grey--text text-center mt-4">
