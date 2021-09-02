@@ -351,7 +351,7 @@
           <template v-else-if="value">
             {{ item[column.value] }}
           </template>
-          <span style="opacity: .5" v-else-if="!value || value === '?'">
+          <span class="muted" v-else-if="!value || value.trim() === '?'">
             ⊘
           </span>
         </template>
@@ -559,6 +559,7 @@ export default class LemmaManager extends Vue {
     }
   }
 
+  @Watch('store.settings.showLemmaFilter', { immediate: true })
   updateTableHeight() {
     this.tableHeight = this.getTableHeight()
   }
@@ -577,7 +578,7 @@ export default class LemmaManager extends Vue {
   }
 
   get toolbarHeight() {
-    return Math.max(((this.filterItems.length) * 38) + this.toolbarPaddingY * 2, 80)
+    return this.store.settings.showLemmaFilter ? 120 : 80
   }
 
   getTableHeight() {
@@ -775,25 +776,16 @@ export default class LemmaManager extends Vue {
   // .v-virtual-scroll
 
 .virtual-table .table-row
-  // transition background-color .1s
   border-radius 5px
   &.selected
     background-color rgba(0,0,0,.15) !important
 
-.virtual-table:focus .table-row.selected
-  // background-color var(--v-background-lighten1) !important
-  // box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+:focus .table-row.selected
   background-color var(--v-primary-darken1) !important
   color white
 
 .theme--light .virtual-table .table-row.odd
   background var(--v-background-darken2)
-
-// .theme--light .virtual-table .table-row
-//   border-bottom 1px solid rgba(0,0,0,.07) !important
-
-// .theme--dark .virtual-table .table-row
-//   border-bottom 1px solid var(--v-background-lighten1) !important
 
 .virtual-table .table-cell,
 .virtual-table .header-cell
