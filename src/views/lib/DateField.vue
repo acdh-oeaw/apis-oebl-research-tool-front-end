@@ -4,35 +4,39 @@
       <div class="outer">
         <select-menu
           :show-chevron="true"
-          btn-class="mt-1 mr-2 ml-1"
-          :value="parsedValue.modifier"
+          btn-class="mt-1 mr-2 ml-1 modifier-menu"
+          :value="modifier"
           :items="modifiers"
           @input="updateValue({ modifier: $event })"
         />
         <input
+          min="1"
+          max="31"
           maxlength="2"
-          :value="parsedValue.day"
+          :value="day"
           class="pa-1 text--primary"
-          style="width: 35px"
+          style="width: 40px"
           placeholder="TT"
-          @input="updateValue({ day: $event.target.value })"
+          @cahnge="updateValue({ day: $event.target.value })"
         />
         <input
           maxlength="2"
-          :value="parsedValue.month"
+          min="1"
+          max="12"
+          :value="month"
           class="pa-1 text--primary"
-          style="width: 35px"
+          style="width: 40px"
           placeholder="MM"
-          @input="updateValue({ month: $event.target.value })"
+          @change="updateValue({ month: $event.target.value })"
         />
         <input
           minlength="4"
           maxlength="4"
-          :value="parsedValue.year"
+          :value="year"
           class="pa-1 text--primary"
           style="width: 50px"
-          placeholder="YYYY"
-          @input="updateValue({ year: $event.target.value })"
+          placeholder="JJJJ"
+          @change="updateValue({ year: $event.target.value })"
           />
       </div>
     </template>
@@ -65,6 +69,13 @@ export default class DateField extends Vue {
   @Prop({ default: null }) label!: string|null
   @Prop({ default: '' }) value!: string
 
+  localValue = ''
+
+  @Watch('value', { immediate: true })
+  onChangeValue(newV: string) {
+    this.localValue = newV || ''
+  }
+
   readonly modifiers = [
     {
       name: 'genau',
@@ -88,34 +99,72 @@ export default class DateField extends Vue {
     }
   ]
 
+  get day() {
+    const m = this.localValue.match(/(\d\d?)(?:\D+)(?:\d\d?)(?:\D+)(?:\d\d\d\d)/)
+    if (m !== null) {
+      console.log(m)
+      return m[1]
+    } else {
+      return ''
+    }
+  }
+
+  get month() {
+    const m = this.localValue.match(/(?:\d\d?)?(?:\D+)(\d\d?)(?:\D+)(?:\d\d\d\d)/)
+    if (m !== null) {
+      console.log(m)
+      return m[1]
+    } else {
+      return ''
+    }
+  }
+
+  get year() {
+    const m = this.localValue.match(/\d\d\d\d/)
+    if (m !== null) {
+      return m[0]
+    } else {
+      return ''
+    }
+  }
+
+  get modifier() {
+    return this.modifiers.find(m => this.localValue.indexOf(m.name) > -1) || this.modifiers[0]
+  }
+
+  isValidDate(v: string): boolean {
+    return (
+      this.year !== '' ||
+      this.year !== '' && this.month !== '' ||
+      this.year !== '' && this.month !== '' && this.day !== ''
+    )
+  }
+
   updateValue(pv: Partial<DateValue>) {
-    this.$emit('input', this.serializeValue({
-      ...this.parsedValue, ...pv
-    }))
+    console.log({ pv })
+    this.localValue = this.serializeValue({
+      modifier: this.modifier,
+      day: this.day,
+      month: this.month,
+      year: this.year,
+      ...pv
+    })
+    console.log({
+      modifier: this.modifier,
+      day: this.day,
+      month: this.month,
+      year: this.year,
+      ...pv
+    }, 'this.localValue', this.localValue, 'this.serializeValue()')
+    if (this.isValidDate(this.localValue)) {
+      this.$emit('input', this.localValue)
+    }
   }
 
   serializeValue(v: DateValue) {
-    return [
-      v.modifier?.value, [
-        v.day,
-        v.month,
-        v.year
-      ].filter(t => t !== null).join('. ')
-    ].filter(t => t !== null).join(' ')
-  }
-
-  get parsedValue(): DateValue {
-    const v = this.value || ''
-    const yearMatches = v.match(/\d\d\d\d/) || [ null ]
-    const monthMatches = v.match(/(?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
-    const dayMatches = v.match(/(\d\d?). (?:\d\d?). (?:\d\d\d\d)/) || [ null, null ]
-    const modifierMatches = this.modifiers.find(m => v.indexOf(m.name) > -1)
-    return {
-      year: yearMatches[0],
-      month: monthMatches[1],
-      day: dayMatches[1],
-      modifier: modifierMatches || this.modifiers[0]
-    }
+    const s = (v.modifier?.value || '') + ' ' + [ v.day, v.month, v.year ].filter(m => m !== '').join('. ').trim()
+    console.log(s)
+    return s
   }
 
 }
@@ -126,4 +175,8 @@ export default class DateField extends Vue {
   height 100%
 input
   text-align center
+</style>
+<style lang="stylus">
+.modifier-menu
+  width: 62px
 </style>
