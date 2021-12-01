@@ -8,7 +8,7 @@
 		"dockerfile": "Dockerfile_dev",
 		// Update 'VARIANT' to pick a Node version: 12, 14, 16
 		"args": { 
-			"VARIANT": "16"
+			"VARIANT": "12"
 		}
 	},
 
