@@ -2,9 +2,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { EntityUri } from './EntityUri';
+import type { LabelSerializerLegacy } from './LabelSerializerLegacy';
+
 export type Entity = {
-    readonly id?: number;
-    readonly label?: string;
+    id: number;
     readonly url?: string;
-    readonly type?: string;
+    name: string;
+    start_date: string;
+    end_date: string;
+    uris: Array<EntityUri>;
+    labels: Array<LabelSerializerLegacy>;
+    readonly revisions?: string;
 }

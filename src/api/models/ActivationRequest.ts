@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AuthToken = {
-    readonly token?: string;
+export type ActivationRequest = {
+    uid: string;
+    token: string;
 }

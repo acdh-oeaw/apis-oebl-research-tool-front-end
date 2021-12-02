@@ -4,7 +4,6 @@
 
 import type { ApisBase } from './ApisBase';
 import type { Label } from './Label';
-import type { RelationObjectSerializer2 } from './RelationObjectSerializer2';
 
 export type WorkDetail = {
     readonly url?: string;
@@ -30,5 +29,4 @@ export type WorkDetail = {
     readonly kind?: Label;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
-    readonly relations?: Array<RelationObjectSerializer2>;
 }

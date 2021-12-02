@@ -9,58 +9,6 @@
         }
     },
     "paths": {
-        "/api_login/": {
-            "post": {
-                "operationId": "api_login_create",
-                "description": "",
-                "tags": [
-                    "api_login"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AuthTokenRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AuthTokenRequest"
-                            }
-                        },
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AuthTokenRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "cookieAuth": []
-                    },
-                    {
-                        "basicAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AuthToken"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            }
-        },
         "/apis/api/GeoJsonPlace/": {
             "get": {
                 "operationId": "apis_api_GeoJsonPlace_retrieve",
@@ -58147,6 +58095,958 @@
                 }
             }
         },
+        "/auth/token/login/": {
+            "post": {
+                "operationId": "auth_token_login_create",
+                "description": "Use this endpoint to obtain user authentication token.",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenCreateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/token/logout/": {
+            "post": {
+                "operationId": "auth_token_logout_create",
+                "description": "Use this endpoint to logout user (remove user authentication token).",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/auth/users/": {
+            "get": {
+                "operationId": "auth_users_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedUserList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "auth_users_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/{id}/": {
+            "get": {
+                "operationId": "auth_users_retrieve",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this Benutzer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "auth_users_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this Benutzer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "auth_users_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this Benutzer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "auth_users_destroy",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this Benutzer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/auth/users/activation/": {
+            "post": {
+                "operationId": "auth_users_activation_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ActivationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ActivationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ActivationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/me/": {
+            "get": {
+                "operationId": "auth_users_me_retrieve",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "auth_users_me_update",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "auth_users_me_partial_update",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "auth_users_me_destroy",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/auth/users/resend_activation/": {
+            "post": {
+                "operationId": "auth_users_resend_activation_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SendEmailReset"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/reset_password/": {
+            "post": {
+                "operationId": "auth_users_reset_password_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SendEmailReset"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/reset_password_confirm/": {
+            "post": {
+                "operationId": "auth_users_reset_password_confirm_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordResetConfirmRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordResetConfirmRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordResetConfirmRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PasswordResetConfirm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/reset_username/": {
+            "post": {
+                "operationId": "auth_users_reset_username_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendEmailResetRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SendEmailReset"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/reset_username_confirm/": {
+            "post": {
+                "operationId": "auth_users_reset_username_confirm_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsernameResetConfirmRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsernameResetConfirmRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsernameResetConfirmRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsernameResetConfirm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/set_password/": {
+            "post": {
+                "operationId": "auth_users_set_password_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetPasswordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetPasswordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SetPassword"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/users/set_username/": {
+            "post": {
+                "operationId": "auth_users_set_username_create",
+                "description": "",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetUsernameRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetUsernameRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetUsernameRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SetUsername"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/entity/{id}/": {
             "get": {
                 "operationId": "entity_retrieve",
@@ -60696,6 +61596,36 @@
     },
     "components": {
         "schemas": {
+            "Activation": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "token",
+                    "uid"
+                ]
+            },
+            "ActivationRequest": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "token",
+                    "uid"
+                ]
+            },
             "ApisBase": {
                 "type": "object",
                 "properties": {
@@ -60713,32 +61643,6 @@
                         "readOnly": true
                     }
                 }
-            },
-            "AuthToken": {
-                "type": "object",
-                "properties": {
-                    "token": {
-                        "type": "string",
-                        "readOnly": true
-                    }
-                }
-            },
-            "AuthTokenRequest": {
-                "type": "object",
-                "properties": {
-                    "username": {
-                        "type": "string",
-                        "writeOnly": true
-                    },
-                    "password": {
-                        "type": "string",
-                        "writeOnly": true
-                    }
-                },
-                "required": [
-                    "password",
-                    "username"
-                ]
             },
             "Author": {
                 "type": "object",
@@ -61031,23 +61935,64 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "label": {
-                        "type": "string",
-                        "readOnly": true
+                        "type": "integer"
                     },
                     "url": {
                         "type": "string",
-                        "format": "uri",
                         "readOnly": true
                     },
-                    "type": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "uris": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EntityUri"
+                        }
+                    },
+                    "labels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LabelSerializerLegacy"
+                        }
+                    },
+                    "revisions": {
                         "type": "string",
                         "readOnly": true
                     }
-                }
+                },
+                "required": [
+                    "end_date",
+                    "id",
+                    "labels",
+                    "name",
+                    "start_date",
+                    "uris"
+                ]
+            },
+            "EntityUri": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "uri": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "required": [
+                    "id",
+                    "uri"
+                ]
             },
             "Event": {
                 "type": "object",
@@ -61261,13 +62206,6 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ApisBase"
-                        },
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
                         },
                         "readOnly": true
                     }
@@ -61556,13 +62494,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -62076,13 +63007,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -62500,13 +63424,6 @@
                             "$ref": "#/components/schemas/ApisBase"
                         },
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -62793,13 +63710,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -63206,13 +64116,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -63617,13 +64520,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -64137,13 +65033,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -64558,6 +65447,48 @@
                         "readOnly": true
                     }
                 }
+            },
+            "LabelSerializerLegacy": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "The entities label or name.",
+                        "maxLength": 255
+                    },
+                    "isoCode_639_3": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The ISO 639-3 (or 2) code for the label's language.",
+                        "maxLength": 3
+                    },
+                    "label_type": {
+                        "$ref": "#/components/schemas/LabelType"
+                    }
+                },
+                "required": [
+                    "label_type"
+                ]
+            },
+            "LabelType": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "name"
+                ]
             },
             "Labeltype": {
                 "type": "object",
@@ -66617,6 +67548,33 @@
                     }
                 }
             },
+            "PaginatedUserList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                }
+            },
             "PaginatedVocabnamesList": {
                 "type": "object",
                 "properties": {
@@ -66805,6 +67763,44 @@
                         }
                     }
                 }
+            },
+            "PasswordResetConfirm": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "new_password",
+                    "token",
+                    "uid"
+                ]
+            },
+            "PasswordResetConfirmRequest": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "new_password",
+                    "token",
+                    "uid"
+                ]
             },
             "PatchedCollectionDetailRequest": {
                 "type": "object",
@@ -68773,6 +69769,16 @@
                     }
                 }
             },
+            "PatchedUserRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    }
+                }
+            },
             "PatchedVocabnamesDetailRequest": {
                 "type": "object",
                 "properties": {
@@ -69260,13 +70266,6 @@
                             "$ref": "#/components/schemas/Label"
                         },
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -69573,13 +70572,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -69986,13 +70978,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -70397,13 +71382,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -70810,13 +71788,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -71221,13 +72192,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -71658,13 +72622,6 @@
                             "$ref": "#/components/schemas/ApisBase"
                         },
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -71961,13 +72918,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -72373,13 +73323,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },
@@ -72893,13 +73836,6 @@
                             }
                         ],
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -73202,40 +74138,6 @@
                     "name"
                 ]
             },
-            "RelationObjectSerializer2": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "label": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "url": {
-                        "type": "string",
-                        "format": "uri",
-                        "readOnly": true
-                    },
-                    "relation_type": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/VocabsBase"
-                            }
-                        ],
-                        "readOnly": true
-                    },
-                    "related_entity": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Entity"
-                            }
-                        ],
-                        "readOnly": true
-                    }
-                }
-            },
             "ResearchLemma2WorkflowLemmaRequest": {
                 "type": "object",
                 "properties": {
@@ -73263,6 +74165,96 @@
                 },
                 "required": [
                     "success"
+                ]
+            },
+            "SendEmailReset": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "required": [
+                    "email"
+                ]
+            },
+            "SendEmailResetRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "required": [
+                    "email"
+                ]
+            },
+            "SetPassword": {
+                "type": "object",
+                "properties": {
+                    "new_password": {
+                        "type": "string"
+                    },
+                    "current_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_password"
+                ]
+            },
+            "SetPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "new_password": {
+                        "type": "string"
+                    },
+                    "current_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_password"
+                ]
+            },
+            "SetUsername": {
+                "type": "object",
+                "properties": {
+                    "current_password": {
+                        "type": "string"
+                    },
+                    "new_username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_username"
+                ]
+            },
+            "SetUsernameRequest": {
+                "type": "object",
+                "properties": {
+                    "current_password": {
+                        "type": "string"
+                    },
+                    "new_username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_username"
                 ]
             },
             "Source": {
@@ -73969,6 +74961,28 @@
                     "name"
                 ]
             },
+            "TokenCreate": {
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TokenCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    }
+                }
+            },
             "Uri": {
                 "type": "object",
                 "properties": {
@@ -74190,6 +75204,25 @@
                     "uri"
                 ]
             },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_."
+                    }
+                }
+            },
             "UserAcc": {
                 "type": "object",
                 "properties": {
@@ -74207,6 +75240,91 @@
                 },
                 "required": [
                     "username"
+                ]
+            },
+            "UserCreate": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "username"
+                ]
+            },
+            "UserCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "password",
+                    "username"
+                ]
+            },
+            "UserRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    }
+                }
+            },
+            "UsernameResetConfirm": {
+                "type": "object",
+                "properties": {
+                    "new_username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "new_username"
+                ]
+            },
+            "UsernameResetConfirmRequest": {
+                "type": "object",
+                "properties": {
+                    "new_username": {
+                        "type": "string",
+                        "description": "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "new_username"
                 ]
             },
             "Vocabnames": {
@@ -74262,28 +75380,6 @@
                 "required": [
                     "name"
                 ]
-            },
-            "VocabsBase": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "label": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "url": {
-                        "type": "string",
-                        "format": "uri",
-                        "readOnly": true
-                    },
-                    "parent_id": {
-                        "type": "integer",
-                        "readOnly": true
-                    }
-                }
             },
             "Vocabsbaseclass": {
                 "type": "object",
@@ -74730,13 +75826,6 @@
                             "$ref": "#/components/schemas/ApisBase"
                         },
                         "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -75130,13 +76219,6 @@
                                 "$ref": "#/components/schemas/Label"
                             }
                         ],
-                        "readOnly": true
-                    },
-                    "relations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RelationObjectSerializer2"
-                        },
                         "readOnly": true
                     }
                 },

@@ -19,7 +19,11 @@ const io = socketIo(server, {
     origin: [
       'http://localhost:8080',
       'https://localhost:8080',
-      'https://oebl-research.acdh-dev.oeaw.ac.at'
+      'https://oebl-research.acdh-dev.oeaw.ac.at',
+      'http://backend',
+      'http://frontend:8080',
+      'http://backend:8080',
+      'http://127.0.0.1:8080'
     ]
   }
 })
@@ -33,6 +37,7 @@ app.use(express.json({limit: '100mb'}))
 app.use([ '/', '/css', '/img', '/js'], express.static('./dist'))
 
 app.post('/message/import-issue-lemmas', (req, res) => {
+  console.log('triggered import issue lemma before secret check')
   if (req.headers['x-secret'] === serviceSecret) {
     console.log('triggered importIssueLemmas', req.body)
     io.sockets.emit('importIssueLemmas', req.body)

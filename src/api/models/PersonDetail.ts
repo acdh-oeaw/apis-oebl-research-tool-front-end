@@ -7,7 +7,6 @@ import type { BlankEnum } from './BlankEnum';
 import type { GenderEnum } from './GenderEnum';
 import type { Label } from './Label';
 import type { NullEnum } from './NullEnum';
-import type { RelationObjectSerializer2 } from './RelationObjectSerializer2';
 
 export type PersonDetail = {
     readonly url?: string;
@@ -39,5 +38,4 @@ export type PersonDetail = {
     readonly collection?: Array<ApisBase>;
     readonly profession?: Array<Label>;
     readonly title?: Array<Label>;
-    readonly relations?: Array<RelationObjectSerializer2>;
 }

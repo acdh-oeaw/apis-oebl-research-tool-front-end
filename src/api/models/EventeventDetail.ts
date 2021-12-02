@@ -4,7 +4,6 @@
 
 import type { ApisBase } from './ApisBase';
 import type { Label } from './Label';
-import type { RelationObjectSerializer2 } from './RelationObjectSerializer2';
 
 export type EventeventDetail = {
     readonly url?: string;
@@ -29,5 +28,4 @@ export type EventeventDetail = {
     readonly related_eventA?: ApisBase;
     readonly related_eventB?: ApisBase;
     readonly relation_type?: Label;
-    readonly relations?: Array<RelationObjectSerializer2>;
 }

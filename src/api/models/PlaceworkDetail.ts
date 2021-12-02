@@ -4,7 +4,6 @@
 
 import type { ApisBase } from './ApisBase';
 import type { Label } from './Label';
-import type { RelationObjectSerializer2 } from './RelationObjectSerializer2';
 
 export type PlaceworkDetail = {
     readonly url?: string;
@@ -29,5 +28,4 @@ export type PlaceworkDetail = {
     readonly related_place?: ApisBase;
     readonly related_work?: ApisBase;
     readonly relation_type?: Label;
-    readonly relations?: Array<RelationObjectSerializer2>;
 }

@@ -17,9 +17,9 @@ OpenAPI.BASE = process.env.VUE_APP_API_HOST || ''
 OpenAPI.WITH_CREDENTIALS = true
 
 // FIXME: use tokens
-OpenAPI.USERNAME = atob(localStorage.getItem('user') || '') || undefined
-OpenAPI.PASSWORD = atob(localStorage.getItem('pass') || '') || undefined
-// OpenAPI.TOKEN = 'e601dc755e635fd6e9ec38eabc2a059ed898d75d'
+//OpenAPI.USERNAME = atob(localStorage.getItem('user') || '') || undefined
+//OpenAPI.PASSWORD = atob(localStorage.getItem('pass') || '') || undefined
+OpenAPI.TOKEN = localStorage.getItem('token') || '' || undefined
 
 export interface StoredLemmaFilter {
   name: string,
@@ -53,7 +53,7 @@ interface Settings {
 
 class Store {
 
-  public isLoggedIn = OpenAPI.USERNAME !== undefined
+  public isLoggedIn = OpenAPI.TOKEN !== undefined
 
   /** This is where we put functions that we want to run after the login. */
   private loginCallbacks: (() => any)[] = []
@@ -92,17 +92,23 @@ class Store {
     // FIXME: use token
     try {
       // this is the only time we don’t use the auto generated API client to communicate with the back end.
-      const me = await fetch(process.env.VUE_APP_API_HOST + '/me', {
+      const me = await fetch(process.env.VUE_APP_API_HOST + '/auth/token/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: user,
+          password: pwd
+        }),
         headers: {
-          authorization: `Basic ${ btoa(user + ':' + pwd) }`
+          'Content-Type': 'application/json'
         }
-      })
-      if (me.ok) {
-        console.log('me.ok', me.ok)
-        localStorage.setItem('user', btoa(user))
-        localStorage.setItem('pass', btoa(pwd))
-        OpenAPI.USERNAME = user
-        OpenAPI.PASSWORD = pwd
+      }).then(res => res.json())
+        .then(res => {
+          localStorage.setItem('token', res.auth_token);
+          OpenAPI.TOKEN = res.auth_token
+          return true
+        });
+      if (me) {
+        console.log('me.ok', me)
         console.log(this.loginCallbacks)
         await this.runCallbacks(this.loginCallbacks)
         this.loginCallbacks = []
@@ -112,8 +118,10 @@ class Store {
         return false
       }
     } catch (e) {
+      OpenAPI.TOKEN = undefined
       OpenAPI.USERNAME = undefined
       OpenAPI.PASSWORD = undefined
+      localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('pass')
       return false
@@ -123,8 +131,10 @@ class Store {
   async logOut() {
     localStorage.removeItem('user')
     localStorage.removeItem('pass')
+    localStorage.removeItem('token')
     OpenAPI.USERNAME = undefined
     OpenAPI.PASSWORD = undefined
+    OpenAPI.TOKEN = undefined
     this.isLoggedIn = false
   }
 
