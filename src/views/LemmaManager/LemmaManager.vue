@@ -621,7 +621,7 @@ export default class LemmaManager extends Vue {
     console.log(e)
     // A list is selected
     // remove from list.
-    if (this.lemmaListId !== null || !(e.ctrlKey || e.metaKey)) {
+    if (this.lemmaListId !== null && !(e.ctrlKey || e.metaKey)) {
       const msg = `Wollen Sie wirklich ${ this.selectedRows.length } Lemma(ta) aus dieser Liste entfernen?`
       if (await confirm.confirm(msg)) {
         this.removeLemmasFromList(this.selectedRows)
