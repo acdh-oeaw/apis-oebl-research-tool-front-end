@@ -65467,14 +65467,14 @@
                         "maxLength": 3
                     },
                     "label_type": {
-                        "$ref": "#/components/schemas/LabelType"
+                        "$ref": "#/components/schemas/LabelTypeMinimal"
                     }
                 },
                 "required": [
                     "label_type"
                 ]
             },
-            "LabelType": {
+            "LabelTypeMinimal": {
                 "type": "object",
                 "properties": {
                     "id": {

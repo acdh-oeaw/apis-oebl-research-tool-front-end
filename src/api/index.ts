@@ -76,10 +76,10 @@ export type { IssueLemmaSerializerOpenApi } from './models/IssueLemmaSerializerO
 export type { IssueRequest } from './models/IssueRequest';
 export type { Label } from './models/Label';
 export type { LabelSerializerLegacy } from './models/LabelSerializerLegacy';
-export type { LabelType } from './models/LabelType';
 export type { Labeltype } from './models/Labeltype';
 export type { LabeltypeDetail } from './models/LabeltypeDetail';
 export type { LabeltypeDetailRequest } from './models/LabeltypeDetailRequest';
+export type { LabelTypeMinimal } from './models/LabelTypeMinimal';
 export type { Lemma } from './models/Lemma';
 export type { LemmaLabel } from './models/LemmaLabel';
 export type { LemmaLabelRequest } from './models/LemmaLabelRequest';

@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type LabelType = {
+export type LabelTypeMinimal = {
     readonly id?: number;
     name: string;
 }

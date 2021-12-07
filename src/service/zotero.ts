@@ -82,11 +82,11 @@ class ZoteroStore {
   }
 
   async getInitialData() {
-    return (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/initial-data')).json()
+    return (await fetch(process.env.VUE_APP_EVENTBUS_HOST + '/zotero/initial-data')).json()
   }
 
   async createItem(i: ZoteroItem['data']) {
-    return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/item', {
+    return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item', {
       method: 'POST',
       body: JSON.stringify([i]),
       headers: {
@@ -96,15 +96,15 @@ class ZoteroStore {
   }
 
   async searchItem(q: string): Promise<ZoteroItem[]> {
-    return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/search/' + q)).json()
+    return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + '/zotero/search/' + q)).json()
   }
 
   async getItem(key: string): Promise<ZoteroItem> {
-    return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/item/' + key)).json()
+    return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item/' + key)).json()
   }
 
   async updateTitle(key: string, t: ZoteroPatchData): Promise<{ version: number }> {
-    return await (await fetch(process.env.VUE_APP_WEBAPP_HOST + '/zotero/item/' + key, {
+    return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item/' + key, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
