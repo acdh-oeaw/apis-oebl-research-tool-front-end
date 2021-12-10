@@ -65,7 +65,7 @@ var ZoteroStore = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_WEBAPP_HOST + '/zotero/initial-data')];
+                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_EVENTBUS_HOST + '/zotero/initial-data')];
                     case 1: return [2 /*return*/, (_a.sent()).json()];
                 }
             });
@@ -75,7 +75,7 @@ var ZoteroStore = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_WEBAPP_HOST + '/zotero/item', {
+                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item', {
                             method: 'POST',
                             body: JSON.stringify([i]),
                             headers: {
@@ -92,7 +92,7 @@ var ZoteroStore = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_WEBAPP_HOST + '/zotero/search/' + q)];
+                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_EVENTBUS_HOST + '/zotero/search/' + q)];
                     case 1: return [4 /*yield*/, (_a.sent()).json()];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
@@ -103,7 +103,7 @@ var ZoteroStore = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_WEBAPP_HOST + '/zotero/item/' + key)];
+                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item/' + key)];
                     case 1: return [4 /*yield*/, (_a.sent()).json()];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
@@ -114,7 +114,7 @@ var ZoteroStore = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_WEBAPP_HOST + '/zotero/item/' + key, {
+                    case 0: return [4 /*yield*/, node_fetch_1["default"](process.env.VUE_APP_EVENTBUS_HOST + '/zotero/item/' + key, {
                             method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json'

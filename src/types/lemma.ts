@@ -82,6 +82,7 @@ export interface LemmaRow {
   lastName: string
   birthYear: string|null
   deathYear: string|null
+  gender: string|null
   gnd: string[]
   loc: number|null
   viaf_id: number|null

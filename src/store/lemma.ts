@@ -22,8 +22,8 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
     super('LemmaDb')
-    this.version(4).stores({
-      lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,selected'
+    this.version(5).stores({
+      lemmas: 'id,firstName,lastName,gender,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
   }
@@ -163,6 +163,15 @@ export default class LemmaStore {
     {
       name: 'Vorname',
       value: 'firstName',
+      type: 'text',
+      filterable: true,
+      show: true,
+      isUserColumn: false,
+      editable: true
+    },
+    {
+      name: 'Geschlecht',
+      value: 'gender',
       type: 'text',
       filterable: true,
       show: true,
@@ -593,6 +602,7 @@ export default class LemmaStore {
       lastName: 'random_name', // ({ last: true, seed }),
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
+      gender: null,
       gnd: gnds,
       columns_user: {},
       list: undefined,
@@ -642,6 +652,7 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
+      gender: rs.gender == 'm' ? 'männlich': rs.gender == 'f' ? 'weiblich': rs.gender == "d" ? "divers": "-",
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,
       updated: rs.last_updated,

@@ -13,6 +13,7 @@ export type ListEntry = {
     lastName: string;
     dateOfBirth: string;
     dateOfDeath: string;
+    gender: string;
     columns_user?: Record<string, any> | null;
     columns_scrape?: Record<string, any> | null;
     deleted: boolean;

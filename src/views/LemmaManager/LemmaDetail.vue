@@ -123,16 +123,20 @@
               :value="value.columns_user.alternativeLastName"
               @input="updateUserColumns('alternativeLastName', $event)"
             />
-            <text-field label="Geschlecht">
+            <text-field label="Geschlecht" 
+            >
               <template v-slot:input>
                 <v-btn-toggle
                   class="transparent mt-1 ml-1"
                   active-class="background darken-3"
+                  :value="value.gender"
+                  @change="debouncedUpdateData({ gender: $event })"
                   borderless
                   max="1"
                   mandatory>
                   <v-btn value="m" text class="rounded-lg" small>männlich</v-btn>
                   <v-btn value="f" text class="rounded-lg" small>weiblich</v-btn>
+                  <v-btn value="d" text class="rounded-lg" small>divers</v-btn>
                   <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
                 </v-btn-toggle>
               </template>
@@ -446,6 +450,7 @@ export default class LemmaDetail extends Vue {
   }
 
   updateData(u: Partial<LemmaRow>) {
+    console.log(u)
     this.$emit('update', u)
   }
 
