@@ -1,9 +1,9 @@
 import realFetch from 'node-fetch'
 import { ZoteroItemCreatorType, ZoteroItemType, ZoteroItemTypeField } from '../src/service/zotero'
 
-const fetchCache: { [url: string]: any } = {}
+export const fetchCache: { [url: string]: any } = {}
 
-async function fetch(url: string) {
+export async function cached_fetch(url: string) {
   if (fetchCache[url] === undefined) {
     console.info('cached ', url)
     fetchCache[url] = await (await realFetch(url)).json()
@@ -11,19 +11,19 @@ async function fetch(url: string) {
   return { json: () => fetchCache[url] }
 }
 
-class Zotero {
+class ZoteroTypes {
 
   lang = 'de-DE'
 
   async getItemTypes(): Promise<Array<{itemType: string, localized: string}>> {
-    return await (await (fetch('https://api.zotero.org/itemTypes?locale=' + this.lang))).json()
+    return await (await (cached_fetch('https://api.zotero.org/itemTypes?locale=' + this.lang))).json()
   }
 
   async getItemTypeFields(itemTypes: ZoteroItemType[]): Promise<{ [itemType: string]: ZoteroItemTypeField[] }> {
     return Promise.all(itemTypes.map(async (it) => {
       return {
         itemType: it.itemType,
-        fields: await (await fetch(`https://api.zotero.org/itemTypeFields?itemType=${ it.itemType }&locale=${ this.lang }`)).json()
+        fields: await (await cached_fetch(`https://api.zotero.org/itemTypeFields?itemType=${ it.itemType }&locale=${ this.lang }`)).json()
       }
     })).then(its => {
       return its.reduce((m, e) => {
@@ -37,7 +37,7 @@ class Zotero {
     return Promise.all(itemTypes.map(async (it) => {
       return {
         itemType: it.itemType,
-        creators: await (await fetch(`https://api.zotero.org/itemTypeCreatorTypes?itemType=${ it.itemType }&locale=${ this.lang }`)).json()
+        creators: await (await cached_fetch(`https://api.zotero.org/itemTypeCreatorTypes?itemType=${ it.itemType }&locale=${ this.lang }`)).json()
       }
     })).then(its => {
       return its.reduce((m, e) => {
@@ -48,4 +48,4 @@ class Zotero {
   }
 }
 
-export default new Zotero()
+export default new ZoteroTypes()
