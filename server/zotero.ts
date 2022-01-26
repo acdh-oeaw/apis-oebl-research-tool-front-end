@@ -57,7 +57,7 @@ export default new ZoteroTypes()
 /**
  * Zotero Items for a entity (user / group) from a zotero request at a certain time with a library version
  */
-interface EntityRelatedZoteroItems {
+export interface EntityRelatedZoteroItems {
   /** https://www.zotero.org/support/dev/web_api/v3/syncing#version_numbers */
   libraryVersion: number
   zoteroItems: Array<ZoteroItem>
@@ -115,7 +115,7 @@ export async function zoteroFetchFunction(
   }
 
   const response = await fetchFunction(url, {method: 'GET', headers: headers});
-  
+
   if (response.status === 304) {
     return null;
   }
@@ -146,7 +146,7 @@ export async function zoteroFetchFunction(
 }
 
 
-class ZoteroItemCache {
+export class ZoteroItemCache {
   zoteroEntityType: ZoteroEntityType
   fetchFunction: typeof zoteroFetchFunction
   apiKey: string

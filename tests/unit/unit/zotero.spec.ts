@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import fetch, { Headers, Response } from 'node-fetch';
 import { ZoteroItem } from '../../../src/service/zotero';
-import { zoteroFetchFunction, ZoteroEntityType, nativeFetchWrapper } from '../../../server/zotero';
-import { result } from 'lodash';
+import { zoteroFetchFunction, ZoteroEntityType, EntityRelatedZoteroItems, ZoteroItemCache } from '../../../server/zotero';
+import { range, reduce } from 'lodash';
 
 
 
@@ -214,4 +214,109 @@ describe('Fetching data from the real Zotero API', async () => {
     //     }
     //     expect(result).to.be.an('error');
     // });
+});
+
+
+class StatfulFetchMocker {
+    
+    libraryVersion: number;
+
+    constructor() {
+        this.libraryVersion = 0;
+    }
+
+
+    advanceVersion(version: number|undefined = undefined) {
+        if ((typeof version === 'undefined')) {
+            this.libraryVersion++;
+        } else {
+            this.libraryVersion = version;
+        }
+        return this;
+    }
+
+    async mockFetch<nativeFetchWrapper>(
+            url:string, args: {headers: Headers, method: 'GET'}
+        ): Promise<{status: Number, json(): Promise<any>, headers: Headers}> {
+
+        const requestLibraryVersion = args.headers.get('If-Modified-Since-Version') ? Number(args.headers.get('If-Modified-Since-Version')) : null;
+        
+        const headers = new Headers();
+        headers.set('Last-Modified-Version', String(this.libraryVersion));
+
+        if (requestLibraryVersion === this.libraryVersion) {
+            return {
+                headers: headers,
+                status: 304,
+                json: async () => [],
+            }
+        }
+
+        return {
+            headers: headers,
+            status: 200,
+            json: this._getItems.bind(this),
+        }
+
+    }
+
+    async _getItems(): Promise<Array<object>> {
+        return Array.from(
+            range(0, this.libraryVersion, 1),
+            (libraryVersion: number) => {
+                return {
+                    key: String(libraryVersion),
+                    data: {
+                        title: `Title ${libraryVersion}`,
+                        version: libraryVersion
+                    }
+                }
+            }
+        );
+    }
+
+
+    async mockZoteroFetcher(
+            entity_id: string, 
+            zoteroEntityType: ZoteroEntityType,
+            libraryVersion: Number | null = null,
+            apiKey: string | undefined
+            ): Promise<EntityRelatedZoteroItems | null> {
+                return await zoteroFetchFunction(
+                    entity_id, zoteroEntityType, libraryVersion, apiKey, this.mockFetch.bind(this)
+                );
+            }
+
+    getMockZoteroFetcher() {
+        return this.mockZoteroFetcher.bind(this);
+    }
+}
+
+
+describe('The Zotero cache should cache results (…)', async () => {
+    let mocker: StatfulFetchMocker;
+    let cache: ZoteroItemCache;
+
+    beforeEach(() => {
+        mocker = new StatfulFetchMocker();
+        cache = new ZoteroItemCache(ZoteroEntityType.groups, mocker.getMockZoteroFetcher(), 'NXywXQ1UV28KbY9kpL7LoYn9');
+    });
+
+    it('returns a result the first time antity-data is requested', async () => {
+        const result = await cache.get('any-enitity-id');
+        expect(result.length === 1, `Our cache should reflect the behavior of the statful mocker.`)
+    });
+
+    it('should return the newest data', async() => {
+        let result = await cache.get('any-enitity-id');
+        mocker.advanceVersion();
+        result = await cache.get('any-enitity-id');
+        expect(result.length === 1, `Our cache should reflect the behavior of the statful mocker.`);
+    });
+
+    it('should persist data, if nothing has changed', async () => {
+        const result_1 = await cache.get('any-enitity-id');
+        const result_2 = await cache.get('any-enitity-id');
+        expect(result_1).to.deep.equal(result_2);
+    });
 });
