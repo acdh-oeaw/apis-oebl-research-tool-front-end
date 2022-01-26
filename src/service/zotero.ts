@@ -63,6 +63,21 @@ export interface ZoteroItem {
   }
 }
 
+/**
+ * Wraps ZoteroItem with additional meta-information
+ */
+export interface ZoteroItemWrapper {
+  /**
+   * The ZoterItem to add meta-data to.
+   */
+  zoteroItem: ZoteroItem
+  /**
+   * The date, when the zotero Item was retrieved from
+   */
+  dateRetrieved: Date
+}
+
+
 class ZoteroStore {
 
   constructor() {
