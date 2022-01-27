@@ -1,7 +1,5 @@
-import { json } from 'body-parser'
 import { assert } from 'chai'
-import { Primitive } from 'lodash'
-import fetch, { Headers, Response } from 'node-fetch'
+import fetch, { Headers } from 'node-fetch'
 import realFetch from 'node-fetch'
 import { ZoteroItem, ZoteroItemCreatorType, ZoteroItemType, ZoteroItemTypeField } from '../src/service/zotero'
 
