@@ -57,7 +57,7 @@ class Store {
 
   /** This is where we put functions that we want to run after the login. */
   private loginCallbacks: (() => any)[] = []
-  private _selectedIssueId = 1
+  private _selectedIssueId: number | null = null
   private _selectedBiographyId = 1
   public showSearchDialog = false
   /** Settings for the entire application */
