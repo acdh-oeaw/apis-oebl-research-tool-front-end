@@ -112,6 +112,13 @@
             </span>
           </span>
         </v-flex>
+        <v-flex align-self-start class="rounded-lg flex-nowrap background darken-2 mr-2">
+          <data-filter
+            :comparators="comparators"
+            :columns="columns"
+            :value="filterItems"
+          />
+        </v-flex>
         <v-spacer />
         <v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
           <v-btn
@@ -668,6 +675,7 @@ export default class LemmaManager extends Vue {
       this.filterData()
     }
   }
+  
 
   async deleteFilter(id: string|null) {
     if (id !== null) {
@@ -759,6 +767,42 @@ export default class LemmaManager extends Vue {
     } else {
       this.filteredLemmas = this.store.lemma.lemmas
     }
+  }
+
+  comparators = store.lemma.comparators
+  
+  onUpdateFilterItems(fis: LemmaFilterItem[]) {
+    this.filterItems = fis
+    this.updateTableHeight()
+    this.filterDataLegacy()
+  }
+
+  @Watch('store.lemma.lemmas')
+  filterDataLegacy() {
+    const comparators = _.keyBy(this.comparators, 'value')
+    if (this.usableFilterItems.length === 0) {
+      this.filteredLemmas = store.lemma.lemmas
+    } else {
+      console.time('filter lemmas')
+      const filterItemsByColumn = _.groupBy(this.usableFilterItems, (i) => i.column.value + '__' + i.comparator)
+      this.filteredLemmas = store.lemma.lemmas.filter(lemma => {
+        return _.every(filterItemsByColumn, (fs) => {
+          if (fs.length === 1) {
+            // only one filter item for this column
+            return comparators[fs[0].comparator].predicate(lemma[fs[0].column.value], fs[0].query)
+          } else {
+            // multiple filter items for query => use some (equivalent to "OR")
+            return fs.some(f => comparators[f.comparator].predicate(lemma[f.column.value], f.query))
+          }
+        })
+      })
+      console.timeEnd('filter lemmas')
+    }
+  }
+get usableFilterItems() {
+    return this.filterItems
+      .filter(i => i.query.trim() !== '' && i.query !== null)
+      .map(i => ({...i, query: i.query.toLocaleLowerCase()}))
   }
 }
 </script>
