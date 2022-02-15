@@ -65890,6 +65890,9 @@
                         "type": "string",
                         "format": "date"
                     },
+                    "gender": {
+                        "type": "string"
+                    },
                     "columns_user": {
                         "type": "object",
                         "additionalProperties": {},
@@ -65914,6 +65917,7 @@
                     "dateOfBirth",
                     "dateOfDeath",
                     "firstName",
+                    "gender",
                     "lastName"
                 ]
             },
