@@ -610,7 +610,8 @@ export default class LemmaStore {
       // eslint-disable-next-line @typescript-eslint/camelcase
       viaf_id: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
       // eslint-disable-next-line @typescript-eslint/camelcase
-      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null
+      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
+      legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
     }
   }
 
@@ -664,7 +665,9 @@ export default class LemmaStore {
         id: rs.list.id,
         title: rs.list.title,
         editor: rs.list.editor || undefined
-      } : undefined
+      } : undefined,
+      // TODO: take from backend
+      legacyGideonCitations: null,
     }
   }
 

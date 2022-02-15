@@ -244,9 +244,15 @@
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
-            Literatur
+            Legacy (Gideon)
           </h4>
           <v-card-text style="min-height: 200px">
+            <ul class="gideon-legacy-literature">
+              <li
+                v-for="(legacyCitation, index) in (value.legacyGideonCitations ? value.legacyGideonCitations : [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}])"
+                :key="index"
+                >{{ legacyCitation.value }}</li>
+            </ul>
           </v-card-text>
         </v-window-item>
         <v-window-item>
@@ -471,4 +477,10 @@ h4
   position: sticky
   top: 0
   background: transparent
+
+.gideon-legacy-literature > li
+  display: inline
+
+.gideon-legacy-literature > li:not(:last-child)::after
+  content: ', '  
 </style>
