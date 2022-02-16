@@ -150,6 +150,7 @@ export default class LemmaAdd extends Vue {
     wiki_edits: null,
     gnd: [],
     legacyGideonCitations: null,
+    secondary_literature: null,
   }
 
   person = _.clone(this.emptyPerson)

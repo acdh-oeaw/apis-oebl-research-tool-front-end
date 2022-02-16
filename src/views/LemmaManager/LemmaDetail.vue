@@ -244,6 +244,20 @@
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
+            Sekundärliteratur
+          </h4>
+          <v-list dense>
+            <v-list-item
+              v-for="(secondary_citation, index) in (value.secondary_literature ? value.secondary_literature : [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}])"
+              :key="index"
+              >
+              <v-list-item-content>
+                <v-list-item-title>{{ secondary_citation.title }}, {{ secondary_citation.pages }}</v-list-item-title>
+              </v-list-item-content>
+              </v-list-item>
+          </v-list>
+          
+          <h4 class="py-2 px-5 background d-flex">
             Legacy (Gideon)
           </h4>
           <v-card-text style="min-height: 200px">

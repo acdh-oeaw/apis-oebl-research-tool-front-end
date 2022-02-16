@@ -89,6 +89,7 @@ export interface LemmaRow {
   wiki_edits: number|null
   [userColumn: string]: any
   legacyGideonCitations: null|Array<{id: Number, value: string}>
+  secondary_literature: null|Array<{id: Number, title: string, pages: string}>
 }
 
 export interface LemmaColumn {
