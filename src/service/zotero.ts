@@ -1,4 +1,5 @@
 
+import { LemmaRow } from '@/types/lemma'
 import fetch from 'node-fetch'
 
 export interface ZoteroItemCreator {
@@ -120,3 +121,73 @@ class ZoteroStore {
 }
 
 export default new ZoteroStore()
+
+
+export enum ZoteroLemmaType {
+  /** This is Literature about a lemma/person */
+  ABOUT_LEMMA = "ABOUT_LEMMA",
+  /** This is literature (written) by a lemma/person */
+  BY_LEMMA = "BY_LEMMA",
+}
+
+/**
+ * Manage (CR~U~D) zotero Items with the server
+ */
+export class ZoteroLemmaServerConnector {
+
+  lemma: LemmaRow;
+  zoteroLemmaType: ZoteroLemmaType;
+
+  constructor(lemma: LemmaRow, zoteroLemmaType: ZoteroLemmaType) {
+    this.lemma = lemma;
+    this.zoteroLemmaType = zoteroLemmaType;
+  }
+
+  /**
+   * Save an ZoteroItem to the server
+   * 
+   * @param zoteroItem 
+   * @returns ZoteroLemmaServerConnector for chaining
+   */
+  async add(zoteroItem: ZoteroItem): Promise<ZoteroLemmaServerConnector> {
+    // TODO
+    return this;
+  }
+
+  /**
+   * List ZoteroItems from the database
+   * 
+   * @returns ZoteroItem[]
+   */
+  async get(): Promise<Array<ZoteroItem>> {
+    // TODO
+    return [
+      {
+        key: 'http://example.com/',
+        data: {
+          creators: [],
+          dateAdded: '',
+          dateModified: '',
+          itemType: '',
+          key: '',
+          language: '',
+          relations: {},
+          tags: [],
+          title: 'Test Book',
+          version: 0,
+        }
+      }
+    ];
+  }
+
+  /**
+   * Deletes an ZoteroItem from the server
+   * 
+   * @param zoteroItem 
+   * @returns ZoteroLemmaServerConnector for chaining
+   */
+  async delete(zoteroItem: ZoteroItem): Promise<ZoteroLemmaServerConnector> {
+    // TODO
+    return this;
+  }
+}
