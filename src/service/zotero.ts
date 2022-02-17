@@ -1,5 +1,8 @@
 
+<<<<<<< HEAD
 import { Lemma } from '@/api'
+=======
+>>>>>>> 83e6af6a1f9f36d73d14652f8614ec0e36c22682
 import { LemmaRow } from '@/types/lemma'
 import fetch from 'node-fetch'
 
@@ -145,17 +148,27 @@ export class ZoteroLemmaServerConnector {
   }
 
   /**
+<<<<<<< HEAD
    * Save ZoteroItems to the server
    * 
    * @param zoteroItem[] 
    * @returns ZoteroLemmaServerConnector for chaining
    */
   async add(zoteroItem: ZoteroItem[]): Promise<ZoteroLemmaServerConnector> {
+=======
+   * Save an ZoteroItem to the server
+   * 
+   * @param zoteroItem 
+   * @returns ZoteroLemmaServerConnector for chaining
+   */
+  async add(zoteroItem: ZoteroItem): Promise<ZoteroLemmaServerConnector> {
+>>>>>>> 83e6af6a1f9f36d73d14652f8614ec0e36c22682
     // TODO
     return this;
   }
 
   /**
+<<<<<<< HEAD
    * List ZoteroKeys from the database
    * 
    * @returns string[]
@@ -172,10 +185,45 @@ export class ZoteroLemmaServerConnector {
    * @returns ZoteroLemmaServerConnector for chaining
    */
   async delete(zoteroItem: ZoteroItem[]): Promise<ZoteroLemmaServerConnector> {
+=======
+   * List ZoteroItems from the database
+   * 
+   * @returns ZoteroItem[]
+   */
+  async get(): Promise<Array<ZoteroItem>> {
+    // TODO
+    return [
+      {
+        key: 'http://example.com/',
+        data: {
+          creators: [],
+          dateAdded: '',
+          dateModified: '',
+          itemType: '',
+          key: '',
+          language: '',
+          relations: {},
+          tags: [],
+          title: 'Test Book',
+          version: 0,
+        }
+      }
+    ];
+  }
+
+  /**
+   * Deletes an ZoteroItem from the server
+   * 
+   * @param zoteroItem 
+   * @returns ZoteroLemmaServerConnector for chaining
+   */
+  async delete(zoteroItem: ZoteroItem): Promise<ZoteroLemmaServerConnector> {
+>>>>>>> 83e6af6a1f9f36d73d14652f8614ec0e36c22682
     // TODO
     return this;
   }
 }
+<<<<<<< HEAD
 
 
 /**
@@ -364,3 +412,5 @@ class ZoteroManagmentController {
     return this;
   }
 }
+=======
+>>>>>>> 83e6af6a1f9f36d73d14652f8614ec0e36c22682
