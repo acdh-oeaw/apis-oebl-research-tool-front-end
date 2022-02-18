@@ -144,12 +144,12 @@ export class ZoteroLemmaServerConnector {
   }
 
   /**
-   * Save ZoteroItems to the server
+   * Save ZoteroKeys to the server
    * 
-   * @param zoteroItem[] 
+   * @param string[] 
    * @returns ZoteroLemmaServerConnector for chaining
    */
-  async add(zoteroItem: ZoteroItem[]): Promise<ZoteroLemmaServerConnector> {
+  async add(zoteroKey: string[]): Promise<ZoteroLemmaServerConnector> {
     // TODO
     return this;
   }
@@ -165,12 +165,12 @@ export class ZoteroLemmaServerConnector {
   }
 
   /**
-   * Deletes ZoteroItems from the server
+   * Deletes ZoteroKeys from the server
    * 
-   * @param zoteroItem[] 
+   * @param string[] 
    * @returns ZoteroLemmaServerConnector for chaining
    */
-  async delete(zoteroItem: ZoteroItem[]): Promise<ZoteroLemmaServerConnector> {
+  async delete(zoteroKeys: string[]): Promise<ZoteroLemmaServerConnector> {
     // TODO
     return this;
   }
@@ -301,7 +301,7 @@ async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<Zote
  *  - Client cache
  *  - Zotero-API
  */
-class ZoteroManagmentController {
+class ZoteroLemmaManagmentController {
 
   private zoteroItems: ZoteroItem[];
   private zoteroLemmaServerConnector: ZoteroLemmaServerConnector;
@@ -358,8 +358,13 @@ class ZoteroManagmentController {
 
   async addZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroManagmentController> {
     this.cache.insert(zoteroItems);
-    this.zoteroLemmaServerConnector.add(zoteroItems);
+    this.zoteroLemmaServerConnector.add(zoteroItems.map(item => item.key));
     this.zoteroItems = this.zoteroItems.concat(zoteroItems);
+    return this;
+  }
+
+  async removeZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroManagmentController> {
+    this.zoteroLemmaServerConnector.delete(zoteroItems.map(item => item.key));
     return this;
   }
 }
