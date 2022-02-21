@@ -11,7 +11,7 @@ export default class IssueStore {
   private _labels: LemmaLabel[] = []
   public selectedLemma: WithId<IssueLemma>|null = null
 
-  constructor(id: number) {
+  constructor(id: number | null) {
     this.loadIssueList()
     this.loadLabels()
     this.listenForUpdates()
@@ -44,7 +44,7 @@ export default class IssueStore {
     })
   }
 
-  async loadIssue(id: number) {
+  async loadIssue(id: number | null) {
     this.id = id
     await this.loadIssueLemmas(id)
     await this.loadStatuses(id)
@@ -55,11 +55,14 @@ export default class IssueStore {
     this._issues = (await WorkflowService.workflowApiV1IssuesList()).results || []
   }
 
-  async getIssueLemmas(id: number) {
-    return ((await WorkflowService.workflowApiV1IssueLemmaList(undefined, undefined, id)).results || []) as WithId<IssueLemma>[]
+  async getIssueLemmas(id: number | null) {
+    if (id === null) {
+      return [];
+    }
+    return ((await WorkflowService.workflowApiV1IssueLemmaList(undefined, undefined, id)).results) as WithId<IssueLemma>[]
   }
 
-  async loadIssueLemmas(id: number) {
+  async loadIssueLemmas(id: number | null) {
     this._issueLemmas = await this.getIssueLemmas(id)
   }
 
@@ -89,8 +92,11 @@ export default class IssueStore {
     return (await WorkflowService.workflowApiV1LemmaNoteList(issueLemmaId)).results || []
   }
 
-  async loadStatuses(id: number) {
-    this._statuses = ((await WorkflowService.workflowApiV1LemmaStatusList(id)).results || []) as WithId<LemmaStatus>[]
+  async loadStatuses(id: number | null) {
+    if (id === null) {
+      return [];
+    }
+    this._statuses = ((await WorkflowService.workflowApiV1LemmaStatusList(id)).results) as WithId<LemmaStatus>[]
   }
 
   async loadLabels() {
