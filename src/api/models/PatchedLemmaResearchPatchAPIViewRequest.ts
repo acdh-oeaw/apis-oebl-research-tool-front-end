@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { GenderAe0Enum } from './GenderAe0Enum';
 import type { PatchedLemmaresearchEditorRequest } from './PatchedLemmaresearchEditorRequest';
 
 export type PatchedLemmaResearchPatchAPIViewRequest = {
@@ -12,4 +13,5 @@ export type PatchedLemmaResearchPatchAPIViewRequest = {
     lastName?: string;
     dateOfBirth?: string;
     dateOfDeath?: string;
+    gender?: GenderAe0Enum;
 }

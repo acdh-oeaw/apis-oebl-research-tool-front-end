@@ -134,9 +134,19 @@
                   borderless
                   max="1"
                   mandatory>
-                  <v-btn value="m" text class="rounded-lg" small>männlich</v-btn>
-                  <v-btn value="f" text class="rounded-lg" small>weiblich</v-btn>
-                  <v-btn value="d" text class="rounded-lg" small>divers</v-btn>
+
+                  <div
+                    v-for="genderOption in genderOptions"
+                    :key="genderOption"
+                  >
+                    <v-btn
+                      :value="genderOption"
+                      text
+                      class="rounded-lg"
+                      small
+                      >{{ genderOption }}</v-btn>
+                  </div>
+                  
                   <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
                 </v-btn-toggle>
               </template>
@@ -316,7 +326,7 @@
 </template>
 <script lang="ts">
 
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -328,7 +338,7 @@ import SelectMenu from '@/views/lib/SelectMenu.vue'
 import VueFileList from './FileList.vue'
 import store from '@/store'
 import _ from 'lodash'
-import { List } from '@/api'
+import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 const DRAG_CLASS = 'drag-over'
@@ -355,6 +365,7 @@ export default class LemmaDetail extends Vue {
   detailPage = 0
   dragEventDepth = 0
   files: File[] = []
+  genderOptions: String[] = Object.values(GenderAe0Enum);
 
   onDragEnter(event: DragEvent) {
     if (
