@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { GenderAe0Enum } from './GenderAe0Enum';
 import type { LemmaresearchEditor } from './LemmaresearchEditor';
 
 export type ListPatchAPIViewResponseInstance = {
@@ -12,4 +13,5 @@ export type ListPatchAPIViewResponseInstance = {
     lastName?: string;
     dateOfBirth?: string;
     dateOfDeath?: string;
+    gender?: GenderAe0Enum;
 }

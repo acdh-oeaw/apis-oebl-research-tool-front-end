@@ -141,7 +141,7 @@ export default class LemmaAdd extends Vue {
     lastName: '',
     birthYear: '',
     deathYear: '',
-    gender: '',
+    gender: undefined,
     columns_user: {},
     columns_scrape: {},
     loc: null,
