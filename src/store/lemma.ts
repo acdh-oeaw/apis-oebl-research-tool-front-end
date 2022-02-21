@@ -600,6 +600,7 @@ export default class LemmaStore {
       selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
       firstName: 'testname', // random_name({ first: true, seed }),
       lastName: 'random_name', // ({ last: true, seed }),
+      alternativeNames: [],
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
       gender: undefined,
@@ -652,6 +653,7 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
+      alternativeNames: rs.alternativeNames,
       gender: rs.gender as GenderAe0Enum,
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,
