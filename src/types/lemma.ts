@@ -2,7 +2,7 @@
 
 import { Person as LdPerson } from 'schema-dts'
 import { ListEntry } from '@/api/models/ListEntry'
-import { GenderEnum } from '@/api/models/GenderEnum'
+import { GenderAe0Enum } from '@/api/models/GenderAe0Enum'
 
 export interface UserColumn {
   [key: string]: string|number|string[]
@@ -83,7 +83,7 @@ export interface LemmaRow {
   lastName: string
   birthYear: string|null
   deathYear: string|null
-  gender: GenderEnum|null
+  gender?: GenderAe0Enum
   gnd: string[]
   loc: number|null
   viaf_id: number|null

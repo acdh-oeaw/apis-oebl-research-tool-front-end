@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderEnum } from '@/api'
+import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
@@ -602,7 +602,7 @@ export default class LemmaStore {
       lastName: 'random_name', // ({ last: true, seed }),
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
-      gender: null,
+      gender: undefined,
       gnd: gnds,
       columns_user: {},
       list: undefined,
@@ -652,7 +652,7 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      gender: rs.gender as GenderEnum,
+      gender: rs.gender as GenderAe0Enum,
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,
       updated: rs.last_updated,

@@ -338,7 +338,7 @@ import SelectMenu from '@/views/lib/SelectMenu.vue'
 import VueFileList from './FileList.vue'
 import store from '@/store'
 import _ from 'lodash'
-import { GenderEnum, List } from '@/api'
+import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 const DRAG_CLASS = 'drag-over'
@@ -365,7 +365,7 @@ export default class LemmaDetail extends Vue {
   detailPage = 0
   dragEventDepth = 0
   files: File[] = []
-  genderOptions: String[] = Object.values(GenderEnum);
+  genderOptions: String[] = Object.values(GenderAe0Enum);
 
   onDragEnter(event: DragEvent) {
     if (
