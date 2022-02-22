@@ -3,14 +3,14 @@
         <text-field
             :required="false"
             label="Vorname"
-            v-model="localFullName.firstName"
-            @input="emitInput"
+            v-model="fullName.firstName"
+            @input="emitInput($event, 'firstName')"
         ></text-field>
         <text-field
             :required="false"
             label="Nachname"
-            v-model="localFullName.lastName"
-            @input="emitInput"
+            v-model="fullName.lastName"
+            @input="emitInput($event, 'lastName')"
         ></text-field>
     </div>
 </template>
@@ -31,11 +31,15 @@ export default class FullNameField extends Vue {
     
     @Prop( {default: () => { return { firstName: null, lastName: null} } }) fullName!: FullNameType;
 
-    localFullName: FullNameType = this.fullName;
-
-
-    emitInput() {
-        this.$emit('input', this.localFullName);
+    emitInput(eventData: string, property: 'firstName' | 'lastName') {
+        if (! ['firstName', 'lastName'].includes(property)) {
+            throw new Error(`Can not emit input for property ${property}`);
+        }
+        const updateFirstName = property === 'firstName';
+        this.$emit('input', {
+            firstName: updateFirstName ? eventData : this.fullName.firstName,
+            lastName: !updateFirstName ? eventData : this.fullName.lastName,
+        });
     }
 }
 
