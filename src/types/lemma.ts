@@ -70,8 +70,8 @@ export interface ServerResearchLemma extends ListEntry {
 // })
 
 export interface FullName {
-  firstName?: string,
-  lastName?: string,
+  firstName?: string|null,
+  lastName?: string|null,
 }
 
 export interface LemmaRow {
