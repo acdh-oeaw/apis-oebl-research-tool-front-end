@@ -69,6 +69,11 @@ export interface ServerResearchLemma extends ListEntry {
 //   ])
 // })
 
+export interface FullName {
+  firstName?: string|null,
+  lastName?: string|null,
+}
+
 export interface LemmaRow {
   id: number
   list?: {
@@ -81,6 +86,7 @@ export interface LemmaRow {
   selected: boolean
   firstName: string
   lastName: string
+  alternativeNames: Array<FullName>
   birthYear: string|null
   deathYear: string|null
   gender?: GenderAe0Enum

@@ -65800,6 +65800,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -65893,6 +65901,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -65970,6 +65986,14 @@
                     },
                     "lastName": {
                         "type": "string"
+                    },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
                     },
                     "dateOfBirth": {
                         "type": "string",
@@ -68676,6 +68700,14 @@
                     },
                     "lastName": {
                         "type": "string"
+                    },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
                     },
                     "dateOfBirth": {
                         "type": "string",

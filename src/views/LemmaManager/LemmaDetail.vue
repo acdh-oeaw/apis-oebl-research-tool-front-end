@@ -88,41 +88,19 @@
               label="Vorname"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
-            >
-              <v-btn
-                @click="updateUserColumns('alternativeFirstName', [''].concat(value.columns_user.alternativeFirstName || []))"
-                tile
-                class="rounded-lg mt-1 mr-1"
-                tabindex="-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Vorname"
-              :value="value.columns_user.alternativeFirstName"
-              @input="updateUserColumns('alternativeFirstName', $event)"
-            />
+            ></text-field>
             <text-field
               :required="true"
               label="Nachname"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
-            >
-              <v-btn
-                @click="updateUserColumns('alternativeLastName', [''].concat(value.columns_user.alternativeLastName || []))"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Nachname"
-              :value="value.columns_user.alternativeLastName"
-              @input="updateUserColumns('alternativeLastName', $event)"
-            />
+            ></text-field>
+            <full-name-array-field
+              :fullNames="value.columns_user.alternativeNames"
+              :value="value.columns_user.alternativeNames"
+              @input="updateUserColumns('alternativeNames', $event);"
+            ></full-name-array-field>
+
             <text-field label="Geschlecht" 
             >
               <template v-slot:input>
@@ -334,6 +312,7 @@ import LobidGndSearch from './LobidGndSearch.vue'
 import TextField from '@/views/lib/TextField.vue'
 import DateField from '@/views/lib/DateField.vue'
 import TextFieldAlternatives from '@/views/lib/TextFieldAlternatives.vue'
+import FullNameArrayField from '@/views/lib/FullNameArrayField.vue';
 import SelectMenu from '@/views/lib/SelectMenu.vue'
 import VueFileList from './FileList.vue'
 import store from '@/store'
@@ -352,7 +331,8 @@ const DRAG_CLASS = 'drag-over'
     SelectMenu,
     TextFieldAlternatives,
     DateField,
-    VueFileList
+    VueFileList,
+    FullNameArrayField,
   }
 })
 export default class LemmaDetail extends Vue {
@@ -461,7 +441,6 @@ export default class LemmaDetail extends Vue {
   }
 
   updateData(u: Partial<LemmaRow>) {
-    console.log(u)
     this.$emit('update', u)
   }
 
