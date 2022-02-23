@@ -4,7 +4,7 @@ import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -653,7 +653,7 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      alternativeNames: rs.alternativeNames,
+      alternativeNames: rs.alternativeNames as FullName[],
       gender: rs.gender as GenderAe0Enum,
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,

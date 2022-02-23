@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { FullName } from '@/types/lemma';
 import type { ListSerializerLimited } from './ListSerializerLimited';
 
 export type ListEntry = {
@@ -12,7 +11,7 @@ export type ListEntry = {
     list?: ListSerializerLimited | null;
     firstName: string;
     lastName: string;
-    alternativeNames: Array<FullName>;
+    alternativeNames?: Array<Record<string, any>> | null;
     dateOfBirth: string;
     dateOfDeath: string;
     gender: string;

@@ -9,6 +9,7 @@ export type LemmasCreateRequest = {
     selected: boolean;
     firstName?: string;
     lastName?: string;
+    alternativeNames?: Array<Record<string, any>> | null;
     dateOfBirth?: string;
     dateOfDeath?: string;
     gender?: GenderAe0Enum;
