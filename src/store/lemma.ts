@@ -2,9 +2,9 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import { ResearchService, List as LemmaList, IssueLemma, List, Editor } from '@/api'
+import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -600,9 +600,10 @@ export default class LemmaStore {
       selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
       firstName: 'testname', // random_name({ first: true, seed }),
       lastName: 'random_name', // ({ last: true, seed }),
+      alternativeNames: [],
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
-      gender: null,
+      gender: undefined,
       gnd: gnds,
       columns_user: {},
       list: undefined,
@@ -654,7 +655,8 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
-      gender: rs.gender == 'm' ? 'männlich': rs.gender == 'f' ? 'weiblich': rs.gender == "d" ? "divers": "-",
+      alternativeNames: rs.alternativeNames as FullName[],
+      gender: rs.gender as GenderAe0Enum,
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,
       updated: rs.last_updated,

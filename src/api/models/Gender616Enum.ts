@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum GenderEnum {
+export enum Gender616Enum {
     FEMALE = 'female',
     MALE = 'male',
     THIRD_GENDER = 'third gender',

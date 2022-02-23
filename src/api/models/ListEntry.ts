@@ -11,6 +11,7 @@ export type ListEntry = {
     list?: ListSerializerLimited | null;
     firstName: string;
     lastName: string;
+    alternativeNames?: Array<Record<string, any>> | null;
     dateOfBirth: string;
     dateOfDeath: string;
     gender: string;

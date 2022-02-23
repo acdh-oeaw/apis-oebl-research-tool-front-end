@@ -88,41 +88,19 @@
               label="Vorname"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
-            >
-              <v-btn
-                @click="updateUserColumns('alternativeFirstName', [''].concat(value.columns_user.alternativeFirstName || []))"
-                tile
-                class="rounded-lg mt-1 mr-1"
-                tabindex="-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Vorname"
-              :value="value.columns_user.alternativeFirstName"
-              @input="updateUserColumns('alternativeFirstName', $event)"
-            />
+            ></text-field>
             <text-field
               :required="true"
               label="Nachname"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
-            >
-              <v-btn
-                @click="updateUserColumns('alternativeLastName', [''].concat(value.columns_user.alternativeLastName || []))"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Nachname"
-              :value="value.columns_user.alternativeLastName"
-              @input="updateUserColumns('alternativeLastName', $event)"
-            />
+            ></text-field>
+            <full-name-array-field
+              :fullNames="value.columns_user.alternativeNames"
+              :value="value.columns_user.alternativeNames"
+              @input="updateUserColumns('alternativeNames', $event);"
+            ></full-name-array-field>
+
             <text-field label="Geschlecht" 
             >
               <template v-slot:input>
@@ -134,9 +112,19 @@
                   borderless
                   max="1"
                   mandatory>
-                  <v-btn value="m" text class="rounded-lg" small>männlich</v-btn>
-                  <v-btn value="f" text class="rounded-lg" small>weiblich</v-btn>
-                  <v-btn value="d" text class="rounded-lg" small>divers</v-btn>
+
+                  <div
+                    v-for="genderOption in genderOptions"
+                    :key="genderOption"
+                  >
+                    <v-btn
+                      :value="genderOption"
+                      text
+                      class="rounded-lg"
+                      small
+                      >{{ genderOption }}</v-btn>
+                  </div>
+                  
                   <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
                 </v-btn-toggle>
               </template>
@@ -336,7 +324,7 @@
 </template>
 <script lang="ts">
 
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -344,11 +332,12 @@ import LobidGndSearch from './LobidGndSearch.vue'
 import TextField from '@/views/lib/TextField.vue'
 import DateField from '@/views/lib/DateField.vue'
 import TextFieldAlternatives from '@/views/lib/TextFieldAlternatives.vue'
+import FullNameArrayField from '@/views/lib/FullNameArrayField.vue';
 import SelectMenu from '@/views/lib/SelectMenu.vue'
 import VueFileList from './FileList.vue'
 import store from '@/store'
 import _ from 'lodash'
-import { List } from '@/api'
+import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 const DRAG_CLASS = 'drag-over'
@@ -362,7 +351,8 @@ const DRAG_CLASS = 'drag-over'
     SelectMenu,
     TextFieldAlternatives,
     DateField,
-    VueFileList
+    VueFileList,
+    FullNameArrayField,
   }
 })
 export default class LemmaDetail extends Vue {
@@ -375,6 +365,7 @@ export default class LemmaDetail extends Vue {
   detailPage = 0
   dragEventDepth = 0
   files: File[] = []
+  genderOptions: String[] = Object.values(GenderAe0Enum);
 
   onDragEnter(event: DragEvent) {
     if (
@@ -470,7 +461,6 @@ export default class LemmaDetail extends Vue {
   }
 
   updateData(u: Partial<LemmaRow>) {
-    console.log(u)
     this.$emit('update', u)
   }
 
