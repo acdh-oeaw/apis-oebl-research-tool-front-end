@@ -221,6 +221,7 @@
               elevation="0"
               text
               small
+
               color="primary darken-1">
               Datei hinzufügen
               <v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
@@ -236,11 +237,11 @@
           </h4>
           <v-list dense>
             <v-list-item
-              v-for="(secondary_citation, index) in (value.secondary_literature ? value.secondary_literature : [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}])"
+              v-for="(secondaryCitation, index) in value.secondaryLiterature"
               :key="index"
               >
               <v-list-item-content>
-                <v-list-item-title>{{ secondary_citation.title }}, {{ secondary_citation.pages }}</v-list-item-title>
+                <v-list-item-title>{{ secondaryCitation.title }}, {{ secondaryCitation.pages }}</v-list-item-title>
               </v-list-item-content>
               </v-list-item>
           </v-list>

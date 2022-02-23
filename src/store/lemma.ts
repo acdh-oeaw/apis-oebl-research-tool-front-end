@@ -4,7 +4,7 @@ import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, SecondaryCitation, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -613,7 +613,7 @@ export default class LemmaStore {
       // eslint-disable-next-line @typescript-eslint/camelcase
       wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
       legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
-      secondary_literature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
+      secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
     }
   }
 
@@ -672,7 +672,7 @@ export default class LemmaStore {
       // TODO: take from backend
       legacyGideonCitations: null,
       // TODO: take from backend
-      secondary_literature: null,
+      secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
     }
   }
 
