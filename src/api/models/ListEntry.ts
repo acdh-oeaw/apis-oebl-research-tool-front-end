@@ -19,4 +19,5 @@ export type ListEntry = {
     columns_scrape?: Record<string, any> | null;
     deleted: boolean;
     readonly last_updated?: string;
+    secondaryLiterature?: Array<Record<string, any>> | null;
 }

@@ -13,4 +13,5 @@ export type LemmasCreateRequest = {
     dateOfBirth?: string;
     dateOfDeath?: string;
     gender?: GenderAe0Enum;
+    secondaryLiterature?: Array<Record<string, any>> | null;
 }
