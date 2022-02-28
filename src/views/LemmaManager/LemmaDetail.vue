@@ -234,7 +234,7 @@
           <h4 class="py-2 px-5 background d-flex">
             Literatur
           </h4>
-          <v-expansion-panels accordion>
+          <v-expansion-panels accordion flat>
             <zotero-manager
               v-for="(zoteroSection, key) in zoteroSections"
               :key="key"

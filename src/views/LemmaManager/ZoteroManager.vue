@@ -1,5 +1,5 @@
 <template>
-    <v-expansion-panel>
+    <v-expansion-panel class="transparent">
         <v-expansion-panel-header>{{ title }} ({{ zoteroItems.length }})</v-expansion-panel-header>
         <v-expansion-panel-content>
             <ul class="zotero-citation-list">
