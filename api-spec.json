@@ -63202,11 +63202,19 @@
                     "name"
                 ]
             },
-            "GenderEnum": {
+            "Gender616Enum": {
                 "enum": [
                     "female",
                     "male",
                     "third gender"
+                ],
+                "type": "string"
+            },
+            "GenderAe0Enum": {
+                "enum": [
+                    "männlich",
+                    "weiblich",
+                    "divers"
                 ],
                 "type": "string"
             },
@@ -65792,6 +65800,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -65799,6 +65815,9 @@
                     "dateOfDeath": {
                         "type": "string",
                         "format": "date"
+                    },
+                    "gender": {
+                        "$ref": "#/components/schemas/GenderAe0Enum"
                     }
                 }
             },
@@ -65882,6 +65901,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -65889,6 +65916,9 @@
                     "dateOfDeath": {
                         "type": "string",
                         "format": "date"
+                    },
+                    "gender": {
+                        "type": "string"
                     },
                     "columns_user": {
                         "type": "object",
@@ -65914,6 +65944,7 @@
                     "dateOfBirth",
                     "dateOfDeath",
                     "firstName",
+                    "gender",
                     "lastName"
                 ]
             },
@@ -65956,6 +65987,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -65963,6 +66002,9 @@
                     "dateOfDeath": {
                         "type": "string",
                         "format": "date"
+                    },
+                    "gender": {
+                        "$ref": "#/components/schemas/GenderAe0Enum"
                     }
                 },
                 "required": [
@@ -68659,6 +68701,14 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "alternativeNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -68666,6 +68716,9 @@
                     "dateOfDeath": {
                         "type": "string",
                         "format": "date"
+                    },
+                    "gender": {
+                        "$ref": "#/components/schemas/GenderAe0Enum"
                     }
                 }
             },
@@ -68780,7 +68833,7 @@
                         "nullable": true,
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/GenderEnum"
+                                "$ref": "#/components/schemas/Gender616Enum"
                             },
                             {
                                 "$ref": "#/components/schemas/BlankEnum"
@@ -70085,7 +70138,7 @@
                         "nullable": true,
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/GenderEnum"
+                                "$ref": "#/components/schemas/Gender616Enum"
                             },
                             {
                                 "$ref": "#/components/schemas/BlankEnum"
@@ -70221,7 +70274,7 @@
                         "nullable": true,
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/GenderEnum"
+                                "$ref": "#/components/schemas/Gender616Enum"
                             },
                             {
                                 "$ref": "#/components/schemas/BlankEnum"
@@ -70348,7 +70401,7 @@
                         "nullable": true,
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/GenderEnum"
+                                "$ref": "#/components/schemas/Gender616Enum"
                             },
                             {
                                 "$ref": "#/components/schemas/BlankEnum"

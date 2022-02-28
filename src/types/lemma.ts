@@ -2,6 +2,7 @@
 
 import { Person as LdPerson } from 'schema-dts'
 import { ListEntry } from '@/api/models/ListEntry'
+import { GenderAe0Enum } from '@/api/models/GenderAe0Enum'
 
 export interface UserColumn {
   [key: string]: string|number|string[]
@@ -68,6 +69,11 @@ export interface ServerResearchLemma extends ListEntry {
 //   ])
 // })
 
+export interface FullName {
+  firstName?: string|null,
+  lastName?: string|null,
+}
+
 export interface LemmaRow {
   id: number
   list?: {
@@ -80,9 +86,10 @@ export interface LemmaRow {
   selected: boolean
   firstName: string
   lastName: string
+  alternativeNames: Array<FullName>
   birthYear: string|null
   deathYear: string|null
-  gender: string|null
+  gender?: GenderAe0Enum
   gnd: string[]
   loc: number|null
   viaf_id: number|null
