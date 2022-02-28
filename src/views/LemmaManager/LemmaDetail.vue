@@ -252,7 +252,7 @@
           <v-card-text style="min-height: 200px">
             <ul class="gideon-legacy-literature">
               <li
-                v-for="(legacyCitation, index) in (value.legacyGideonCitations ? value.legacyGideonCitations : [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}])"
+                v-for="(legacyCitation, index) in value.legacyGideonCitations"
                 :key="index"
                 >{{ legacyCitation.value }}</li>
             </ul>
