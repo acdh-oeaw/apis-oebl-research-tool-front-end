@@ -161,8 +161,7 @@ export class ZoteroLemmaServerConnector {
    * @returns string[]
    */
   async get(): Promise<Array<string>> {
-    // TODO
-    return [ 'http://example.com/', ];
+    return this.lemma.zoteroKeys ;
   }
 
   /**

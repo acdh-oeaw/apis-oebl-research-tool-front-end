@@ -65818,6 +65818,22 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
                     }
                 }
             },
@@ -65938,6 +65954,22 @@
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -66005,6 +66037,22 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -68719,6 +68767,22 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
                     }
                 }
             },
