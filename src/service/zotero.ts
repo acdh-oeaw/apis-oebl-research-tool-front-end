@@ -1,4 +1,5 @@
 
+import Dexie from 'dexie';
 import { LemmaRow } from '@/types/lemma'
 import fetch from 'node-fetch'
 
@@ -183,69 +184,47 @@ export class ZoteroLemmaServerConnector {
  */
 class ZoteroItemCache {
 
-    static zoteroItemDatabaseName: string = 'ZoteroCache';
-    static zoteroItemStoreName: string = 'ZoteroItems';
-    static zoteroItemKeyName: string = 'Key';
-
-
-    public dataBaseReady: boolean = false;
-    public dataBaseConnectionEvents: Event[] = [];
-
-    private database: IDBDatabase|undefined;
+    private database: any|undefined;
 
     constructor() {
-      const openDatabaseRequest = window.indexedDB.open(ZoteroItemCache.zoteroItemDatabaseName, 1);
-      openDatabaseRequest.onupgradeneeded = (event: IDBVersionChangeEvent): void => {this.createDatabase(event);};
-      openDatabaseRequest.onerror = (event: any) => {this.dataBaseConnectionEvents.push(event); throw Error(JSON.stringify(event));};
-      openDatabaseRequest.onsuccess = (event: any) => {this.dataBaseConnectionEvents.push(event); console.log(event); this.database = event.target.result;};
+      this.database = new Dexie('ZoteroCache');
+      this.database.version(1).stores({
+        zoteroItems: 'Key',
+      })
     }
 
-    select(zoteroKeys: string[]): Array<ZoteroItem> {
-      const store = this.getZoteroItemStore('readonly');
-      const zoteroItems:Array<ZoteroItem> = [];
-      let databaseResult: ZoteroItem|undefined;
-      for (let zoteroKey in zoteroKeys)  {
-        const request = store.get(zoteroKey);
-        request.onsuccess = (event: any) => databaseResult = event.result;
-        if (databaseResult !== undefined) {
-          zoteroItems.push(databaseResult)
-        }
-      }
-      return zoteroItems;
+    async select(zoteroKeys: string[]): Promise<ZoteroItem[]> {
+        const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
+        return allResults.filter((row: ZoteroItem|undefined) => row !== undefined);
     }
 
-    insert(zoteroItems: ZoteroItem[]): ZoteroItemCache {
-      const store = this.getZoteroItemStore('readwrite');
-      zoteroItems.map(item => store.add(item));
-      return this;
+    /**
+     * 
+     * @param zoteroItems 
+     * @returns The key of the last insert
+     */
+    async insert(zoteroItems: ZoteroItem[]): Promise<string> {
+      return await this.database.zoteroItems.bulkAdd(zoteroItems);
     }
 
-    update(zoteroItems: ZoteroItem[]): ZoteroItemCache {
-      const store = this.getZoteroItemStore('readwrite');
-      zoteroItems.map(item => store.put(item));
-      return this;
+    /**
+     * 
+     * @param zoteroItems 
+     * @returns The key of the last update
+     */
+     async update(zoteroItems: ZoteroItem[]): Promise<string> {
+      return await this.database.zoteroItems.bulkPut(zoteroItems)
     }
 
-    delete(zoteroKeys: string[]): ZoteroItemCache {
-      const store = this.getZoteroItemStore('readwrite');
-      zoteroKeys.map(key => store.delete(key));
-      return this;
+    /**
+     * 
+     * @param zoteroKeys 
+     * @returns I have no clue
+     */
+     async delete(zoteroKeys: string[]): Promise<any> {
+      return await this.database.zoteroItems.bulkDelete()
     }
     
-
-    private createDatabase(event: any): void {
-      this.dataBaseConnectionEvents.push(event);
-      const zoteroItemStore = event.target.result.createObjectStore(ZoteroItemCache.zoteroItemStoreName, {keyPath: ZoteroItemCache.zoteroItemKeyName});
-      zoteroItemStore.createIndex(ZoteroItemCache.zoteroItemKeyName, ZoteroItemCache.zoteroItemKeyName, {unique: true});
-      zoteroItemStore.transaction.onerror = (errorEvent: Event) => {this.dataBaseConnectionEvents.push(errorEvent); throw new Error(JSON.stringify(errorEvent))};
-    }
-
-    private getZoteroItemStore(mode: IDBTransactionMode): IDBObjectStore {
-      if (this.database === undefined) {
-        throw new Error('Database connection is not established');
-      }
-      return this.database.transaction([ZoteroItemCache.zoteroItemStoreName, ], mode).objectStore(ZoteroItemCache.zoteroItemStoreName);
-    }
 }
 
 // If not imported, there is some type error, with auto-imported (?) stuff
@@ -327,12 +306,12 @@ export class ZoteroLemmaManagmentController {
      */
     
     // Check those, who are in the cache
-    const cachedItems = this.cache.select(savedDjangoServerKeys);
+    const cachedItems = await this.cache.select(savedDjangoServerKeys);
     // Check them for sync status
     const zoteroSyncStati = await Promise.all(cachedItems.map(syncZoteroItemWithZoteroAPI));
     // If changed, update cache
     const changedRevisions = zoteroSyncStati.filter(status => status.changed);
-    this.cache.update(changedRevisions.map(status => status.zoteroItem));
+    await this.cache.update(changedRevisions.map(status => status.zoteroItem));
     // Finally have updated cache items:
     const cachedAndSyncedItems = zoteroSyncStati.map(status => status.zoteroItem);
 
@@ -342,7 +321,7 @@ export class ZoteroLemmaManagmentController {
     const cachedKeys = cachedItems.map(item => item.key);
     const notCachedDjangoServerKeys = savedDjangoServerKeys.filter(key => ! cachedKeys.includes(key));
     const newZoteroItems = await Promise.all(notCachedDjangoServerKeys.map(getZoteroItem));
-    this.cache.insert(newZoteroItems);
+    await this.cache.insert(newZoteroItems);
 
     /*
      * Chapter 3: Combine cached and new results and store them 
@@ -357,14 +336,14 @@ export class ZoteroLemmaManagmentController {
   }
 
   async addZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
-    this.cache.insert(zoteroItems);
+    await this.cache.insert(zoteroItems);
     this.zoteroLemmaServerConnector.add(zoteroItems.map(item => item.key));
     this.zoteroItems = this.zoteroItems.concat(zoteroItems);
     return this;
   }
 
   async removeZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
-    this.zoteroLemmaServerConnector.delete(zoteroItems.map(item => item.key));
+    await this.zoteroLemmaServerConnector.delete(zoteroItems.map(item => item.key));
     return this;
   }
 }
