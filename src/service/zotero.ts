@@ -301,7 +301,7 @@ async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<Zote
  *  - Client cache
  *  - Zotero-API
  */
-class ZoteroLemmaManagmentController {
+export class ZoteroLemmaManagmentController {
 
   private zoteroItems: ZoteroItem[];
   private zoteroLemmaServerConnector: ZoteroLemmaServerConnector;
@@ -356,14 +356,14 @@ class ZoteroLemmaManagmentController {
     // (had to keep the pattern)
   }
 
-  async addZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroManagmentController> {
+  async addZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
     this.cache.insert(zoteroItems);
     this.zoteroLemmaServerConnector.add(zoteroItems.map(item => item.key));
     this.zoteroItems = this.zoteroItems.concat(zoteroItems);
     return this;
   }
 
-  async removeZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroManagmentController> {
+  async removeZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
     this.zoteroLemmaServerConnector.delete(zoteroItems.map(item => item.key));
     return this;
   }

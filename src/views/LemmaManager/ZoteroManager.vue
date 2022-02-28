@@ -24,7 +24,7 @@ interface ZoteroView {
     url: string,
 }
 
-import { ZoteroLemmaServerConnector, ZoteroItem } from '@/service/zotero';
+import { ZoteroLemmaServerConnector, ZoteroItem, ZoteroLemmaManagmentController  } from '@/service/zotero';
 
 /**
  * Manage Zotero Items from and about a lemma (https://gitlab.com/acdh-oeaw/oebl/oebl-research-tool-front-end/-/issues/17):
@@ -39,13 +39,12 @@ export default class ZoteroManager extends Vue {
     @Prop({ default: 'Zotero Literatur' }) title!: string;
 
     zoteroItems: Array<ZoteroItem> = [];
+    zoteroLemmaManagmentController: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController(this.ZoteroLemmaServerConnector);
 
     created() {
-        this.ZoteroLemmaServerConnector
-            .get().
-            then(
+        this.zoteroLemmaManagmentController.load().then(
                 (zoteroItems: ZoteroItem[]) => this.zoteroItems = zoteroItems
-            )
+            );
         ;
     }
 
