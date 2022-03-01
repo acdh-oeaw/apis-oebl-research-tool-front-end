@@ -70,7 +70,8 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import zotero, { ZoteroItem, ZoteroItemCreator } from '@/service/zotero'
+import zotero from '@/service/zotero'
+import { ZoteroItem, ZoteroItemCreator } from '@/types/zotero';
 import TextField from '@/views/lib/TextField.vue'
 
 @Component({

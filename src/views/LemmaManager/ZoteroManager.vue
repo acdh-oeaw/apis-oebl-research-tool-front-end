@@ -24,7 +24,9 @@ interface ZoteroView {
     url: string,
 }
 
-import { ZoteroLemmaServerConnector, ZoteroItem, ZoteroLemmaManagmentController  } from '@/service/zotero';
+import { ZoteroLemmaServerConnector, ZoteroLemmaManagmentController  } from '@/service/zotero';
+import { ZoteroItem } from '@/types/zotero';
+
 
 /**
  * Manage Zotero Items from and about a lemma (https://gitlab.com/acdh-oeaw/oebl/oebl-research-tool-front-end/-/issues/17):
