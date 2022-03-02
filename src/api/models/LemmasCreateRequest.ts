@@ -14,5 +14,6 @@ export type LemmasCreateRequest = {
     dateOfDeath?: string;
     gender?: GenderAe0Enum;
     secondaryLiterature?: Array<Record<string, any>> | null;
-    zoteroKeys?: Array<string> | null;
+    zoteroKeysBy?: Array<string> | null;
+    zoteroKeysAbout?: Array<string> | null;
 }

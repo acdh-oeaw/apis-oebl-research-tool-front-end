@@ -95,7 +95,8 @@ export interface LemmaRow {
   viaf_id: number|null
   wiki_edits: number|null
   [userColumn: string]: any,
-  zoteroKeys: string[],
+  zoteroKeysBy: string[],
+  zoteroKeysAbout: string[],
 }
 
 export interface LemmaColumn {

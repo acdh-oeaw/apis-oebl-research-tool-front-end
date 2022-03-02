@@ -612,7 +612,8 @@ export default class LemmaStore {
       viaf_id: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
       // eslint-disable-next-line @typescript-eslint/camelcase
       wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
-      zoteroKeys: [],
+      zoteroKeysBy: [],
+      zoteroKeysAbout: [],
     }
   }
 
@@ -668,7 +669,8 @@ export default class LemmaStore {
         title: rs.list.title,
         editor: rs.list.editor || undefined
       } : undefined,
-      zoteroKeys: rs.zoteroKeys as string[],
+      zoteroKeysBy: rs.zoteroKeysBy as string[],
+      zoteroKeysAbout: rs.zoteroKeysAbout as string[],
     }
   }
 
