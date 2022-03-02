@@ -21,7 +21,6 @@ class ZoteroStore {
     this.itemTypes = initialData.itemTypes
     this.itemTypeFields = initialData.itemTypeFields
     this.itemTypeCreators = initialData.itemTypeCreators
-    console.log(this)
   }
 
   async getInitialData() {
@@ -65,59 +64,6 @@ class ZoteroStore {
 export default new ZoteroStore()
 
 
-export enum ZoteroLemmaType {
-  /** This is Literature about a lemma/person */
-  ABOUT_LEMMA = "ABOUT_LEMMA",
-  /** This is literature (written) by a lemma/person */
-  BY_LEMMA = "BY_LEMMA",
-}
-
-/**
- * Manage (CR~U~D) zotero Items with the server
- */
-export class ZoteroLemmaServerConnector {
-
-  lemma: LemmaRow;
-  zoteroLemmaType: ZoteroLemmaType;
-
-  constructor(lemma: LemmaRow, zoteroLemmaType: ZoteroLemmaType) {
-    this.lemma = lemma;
-    this.zoteroLemmaType = zoteroLemmaType;
-  }
-
-  /**
-   * Save ZoteroKeys to the server
-   * 
-   * @param string[] 
-   * @returns ZoteroLemmaServerConnector for chaining
-   */
-  async add(zoteroKey: string[]): Promise<ZoteroLemmaServerConnector> {
-    // TODO
-    return this;
-  }
-
-  /**
-   * List ZoteroKeys from the database
-   * 
-   * @returns string[]
-   */
-  async get(): Promise<Array<string>> {
-    return this.lemma.zoteroKeys ;
-  }
-
-  /**
-   * Deletes ZoteroKeys from the server
-   * 
-   * @param string[] 
-   * @returns ZoteroLemmaServerConnector for chaining
-   */
-  async delete(zoteroKeys: string[]): Promise<ZoteroLemmaServerConnector> {
-    // TODO
-    return this;
-  }
-}
-
-
 /**
  * Cache Zotero Items locally with IndexedDB
  * 
@@ -135,7 +81,10 @@ class ZoteroItemCache {
 
     async select(zoteroKeys: string[]): Promise<ZoteroItem[]> {
         const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
-        return allResults.filter((row: ZoteroItem|undefined) => row !== undefined);
+        return allResults.filter(
+          (row: ZoteroItem|undefined|null) => 
+              (row !== undefined) && (row !== null)
+            );
     }
 
     /**
@@ -164,7 +113,6 @@ class ZoteroItemCache {
      async delete(zoteroKeys: string[]): Promise<any> {
       return await this.database.zoteroItems.bulkDelete()
     }
-    
 }
 
 // If not imported, there is some type error, with auto-imported (?) stuff
@@ -180,7 +128,8 @@ async function getZoteroResponse(zoteroKey: string, version: number|null = null)
   const djangoResponse = await fetch(
     `${process.env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`, {headers: requestHeaders}
   );
-  if (djangoResponse.ok) {
+  
+  if (!djangoResponse.ok) {
     throw new Error(`Error in server ${djangoResponse.status} ${djangoResponse.statusText}`);
   }
 
@@ -222,36 +171,45 @@ async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<Zote
  */
 export class ZoteroLemmaManagmentController {
 
-  private zoteroItems: ZoteroItem[];
-  private zoteroLemmaServerConnector: ZoteroLemmaServerConnector;
-  private cache: ZoteroItemCache;
+  private _zoteroItems?: ZoteroItem[];
+  private _zoteroItemKeys: string[];
+  private _cache: ZoteroItemCache;
 
-  constructor(serverConnector: ZoteroLemmaServerConnector) {
-    this.zoteroLemmaServerConnector = serverConnector;
-    this.zoteroItems = [];
-    this.cache = new ZoteroItemCache();
+  constructor(zoteroItemKeys: string[]) {
+    this._zoteroItems = undefined;
+    this._zoteroItemKeys = zoteroItemKeys;
+    this._cache = new ZoteroItemCache();
+  }
+
+  get zoteroItems(): ZoteroItem[]|undefined {
+    return this._zoteroItems;
+  }
+
+  get zoteroItemKeys(): string[] {
+    // Had some wrongly typed data in memory – make sure, this does not disrupt the whole process
+    return this._zoteroItemKeys.filter(
+        key =>
+          (key !== undefined)
+          && (key !== null)
+    );
   }
 
   /**
    * Load Zotero Itemss
    */
-  async load(): Promise<ZoteroItem[]> {
-    /*
-     * Front-Matter: Load zoteroKeys from Server
-     */
-    const savedDjangoServerKeys = await this.zoteroLemmaServerConnector.get();
+  async load(): Promise<ZoteroLemmaManagmentController> {
     
     /*
      * Chapter 1: Check Cache and Sync with Zotero
      */
     
     // Check those, who are in the cache
-    const cachedItems = await this.cache.select(savedDjangoServerKeys);
+    const cachedItems = await this._cache.select(this.zoteroItemKeys);
     // Check them for sync status
     const zoteroSyncStati = await Promise.all(cachedItems.map(syncZoteroItemWithZoteroAPI));
     // If changed, update cache
     const changedRevisions = zoteroSyncStati.filter(status => status.changed);
-    await this.cache.update(changedRevisions.map(status => status.zoteroItem));
+    await this._cache.update(changedRevisions.map(status => status.zoteroItem));
     // Finally have updated cache items:
     const cachedAndSyncedItems = zoteroSyncStati.map(status => status.zoteroItem);
 
@@ -259,31 +217,20 @@ export class ZoteroLemmaManagmentController {
      * Chapter 2: Get New Items from Zotero and Cache Them
      */
     const cachedKeys = cachedItems.map(item => item.key);
-    const notCachedDjangoServerKeys = savedDjangoServerKeys.filter(key => ! cachedKeys.includes(key));
+    const notCachedDjangoServerKeys = this.zoteroItemKeys.filter(key => ! cachedKeys.includes(key));
     const newZoteroItems = await Promise.all(notCachedDjangoServerKeys.map(getZoteroItem));
-    await this.cache.insert(newZoteroItems);
+    await this._cache.insert(newZoteroItems);
 
     /*
      * Chapter 3: Combine cached and new results and store them 
      */
-    this.zoteroItems = cachedAndSyncedItems.concat(newZoteroItems);
+    this._zoteroItems = cachedAndSyncedItems.concat(newZoteroItems);
 
-    /*
-     * End-Matter                     
-     */
-    return this.zoteroItems;
-    // (had to keep the pattern)
-  }
-
-  async addZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
-    await this.cache.insert(zoteroItems);
-    this.zoteroLemmaServerConnector.add(zoteroItems.map(item => item.key));
-    this.zoteroItems = this.zoteroItems.concat(zoteroItems);
     return this;
   }
 
-  async removeZoteroItems(zoteroItems: ZoteroItem[]): Promise<ZoteroLemmaManagmentController> {
-    await this.zoteroLemmaServerConnector.delete(zoteroItems.map(item => item.key));
-    return this;
+  async add(zoteroItems: ZoteroItem[]) {
+    this._cache.update(zoteroItems);
   }
+
 }
