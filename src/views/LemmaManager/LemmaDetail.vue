@@ -239,7 +239,8 @@
               v-for="(zoteroSection, key) in zoteroSections"
               :key="key"
               :title="`${zoteroSection.title} ${value.lastName}`"
-              :ZoteroLemmaServerConnector="zoteroSection.zoteroManager"
+              :zoteroKeysFromServer="zoteroSection.zoteroKeys"
+              @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
               ></zotero-manager>
           </v-expansion-panels>
           <v-card-text style="min-height: 200px">
@@ -328,14 +329,14 @@ import _ from 'lodash'
 import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
-import { ZoteroLemmaServerConnector, ZoteroLemmaType } from '@/service/zotero'
 import ZoteroManager from './ZoteroManager.vue'
 
 const DRAG_CLASS = 'drag-over'
 
 interface ZoteroSection {
   title: string,
-  zoteroManager: ZoteroLemmaServerConnector
+  zoteroKeys: string[],
+  column: string,
 }
 
 @Component({
@@ -368,11 +369,13 @@ export default class LemmaDetail extends Vue {
     return [
       {
         title: "Literatur von",
-        zoteroManager: new ZoteroLemmaServerConnector(this.value, ZoteroLemmaType.ABOUT_LEMMA),
+        zoteroKeys: this.value.zoteroKeysBy,
+        column: 'zoteroKeysBy',
       },
       {
         title: "Literatur über",
-        zoteroManager: new ZoteroLemmaServerConnector(this.value, ZoteroLemmaType.BY_LEMMA),
+        zoteroKeys: this.value.zoteroKeysAbout,
+        column: 'zoteroKeysAbout',
       }
     ]
   }
