@@ -58,10 +58,12 @@ export default class ZoteroManager extends Vue {
     created() {
         this.zoteroLemmaManagmentController.load().then(
                 (zoteroLemmaManagmentController) => {
-                    if (zoteroLemmaManagmentController.zoteroItems === undefined) {
-                        throw new Error(`Could not load zoteroItems`);
-                    }
                     this.zoteroItems = zoteroLemmaManagmentController.zoteroItems;
+                    zoteroLemmaManagmentController.update().then(
+                        (zoteroLemmaManagmentController) => {
+                            this.zoteroItems = zoteroLemmaManagmentController.zoteroItems;
+                        }
+                    )
                 }
             );
         ;

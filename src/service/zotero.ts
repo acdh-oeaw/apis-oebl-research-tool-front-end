@@ -157,6 +157,50 @@ async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<Zote
 
 }
 
+/**
+ * This is to have a local cache in memory and not syncing the the same item multiple times from different components
+ */
+class ZoteroSyncManager {
+  
+  /**
+   *  Multiton instances
+   * 
+   *  to cache between components, without having to move this class initialization to the grand-parent and pass it via props
+   * 
+   */
+  public static instances: Map<any, ZoteroSyncManager> = new Map();
+
+  static getInstance(key: any): ZoteroSyncManager {
+    if (!ZoteroSyncManager.instances.has(key)) {
+      ZoteroSyncManager.instances.set(key, new ZoteroSyncManager());
+    }
+    return ZoteroSyncManager.instances.get(key)!;
+  }
+
+  /**
+   * Ongoing and finished synchronizations
+   */
+  private _synchronizations: Map<string, Promise<ZoteroItemUpdate>>
+
+  constructor() {
+    this._synchronizations = new Map();
+  }
+
+
+  async cachedSyncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<ZoteroItemUpdate> {
+    if (!this._synchronizations.has(zoteroItem.key)) {
+      this._synchronizations.set(zoteroItem.key, syncZoteroItemWithZoteroAPI(zoteroItem)); 
+    }
+    return await this._synchronizations.get(zoteroItem.key)!;
+  }
+
+  getCachedSyncZoteroItemWithZoteroAPICallback() {
+    return this.cachedSyncZoteroItemWithZoteroAPI.bind(this);
+  }
+
+}
+
+
 
 /**
  * Control Zotero Manager
@@ -171,17 +215,27 @@ async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<Zote
  */
 export class ZoteroLemmaManagmentController {
 
-  private _zoteroItems?: ZoteroItem[];
+  // Data
+  private _zoteroItems: ZoteroItem[] = [];
+  private _cachedItems: ZoteroItem[] = []; // Keep record for updates
   private _zoteroItemKeys: string[];
+  
+  // Dependencies
   private _cache: ZoteroItemCache;
+  private _syncManager: ZoteroSyncManager = ZoteroSyncManager.getInstance('ZoteroLemmaManagmentController');
+
+  // States
+  private _loaded: boolean = false;
+  private _loading: boolean = false;
+  private _uptodate: boolean = false;
+  private _updating: boolean = false;
 
   constructor(zoteroItemKeys: string[]) {
-    this._zoteroItems = undefined;
     this._zoteroItemKeys = zoteroItemKeys;
     this._cache = new ZoteroItemCache();
   }
 
-  get zoteroItems(): ZoteroItem[]|undefined {
+  get zoteroItems(): ZoteroItem[] {
     return this._zoteroItems;
   }
 
@@ -198,39 +252,73 @@ export class ZoteroLemmaManagmentController {
    * Load Zotero Itemss
    */
   async load(): Promise<ZoteroLemmaManagmentController> {
-    
-    /*
-     * Chapter 1: Check Cache and Sync with Zotero
-     */
-    
+    this._loading = true;
     // Check those, who are in the cache
-    const cachedItems = await this._cache.select(this.zoteroItemKeys);
+    this._cachedItems = await this._cache.select(this.zoteroItemKeys);
+    // Load the rest from Zotero
+    const cachedKeys = this._cachedItems.map(item => item.key);
+    const notCachedDjangoServerKeys = this.zoteroItemKeys.filter(key => ! cachedKeys.includes(key));
+    const newZoteroItems = await Promise.all(notCachedDjangoServerKeys.map(getZoteroItem));
+    // Cache them and write them into our property
+    await this._cache.insert(newZoteroItems);
+    this._zoteroItems = this._cachedItems.concat(newZoteroItems);
+
+    this._loaded = true;
+    this._loading = false;
+    return this;
+  }
+
+  /**
+   * Update changed items from Zotero
+   */
+  async update(): Promise<ZoteroLemmaManagmentController> {
+
+    if (!this._loaded) {
+      throw new Error('Load items, before upadting them');
+    }
+
+    if (this._loading) {
+      throw new Error('Do not update while loading. This leads to incostistent state.')
+    }
+
+    this._updating = true;
+
     // Check them for sync status
-    const zoteroSyncStati = await Promise.all(cachedItems.map(syncZoteroItemWithZoteroAPI));
+    const zoteroSyncStati = await Promise.all(
+      this._cachedItems.map(this._syncManager.getCachedSyncZoteroItemWithZoteroAPICallback())); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
     // If changed, update cache
     const changedRevisions = zoteroSyncStati.filter(status => status.changed);
     await this._cache.update(changedRevisions.map(status => status.zoteroItem));
-    // Finally have updated cache items:
-    const cachedAndSyncedItems = zoteroSyncStati.map(status => status.zoteroItem);
+    // Finally write them back
+    this._zoteroItems = zoteroSyncStati.map(status => status.zoteroItem);
 
-    /*
-     * Chapter 2: Get New Items from Zotero and Cache Them
-     */
-    const cachedKeys = cachedItems.map(item => item.key);
-    const notCachedDjangoServerKeys = this.zoteroItemKeys.filter(key => ! cachedKeys.includes(key));
-    const newZoteroItems = await Promise.all(notCachedDjangoServerKeys.map(getZoteroItem));
-    await this._cache.insert(newZoteroItems);
-
-    /*
-     * Chapter 3: Combine cached and new results and store them 
-     */
-    this._zoteroItems = cachedAndSyncedItems.concat(newZoteroItems);
-
+    this._updating = false;
+    this._uptodate = true;
     return this;
   }
 
   async add(zoteroItems: ZoteroItem[]) {
     this._cache.update(zoteroItems);
+  }
+
+
+  get loaded(): boolean {
+    return this._loaded;
+  }
+
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+
+  get uptodate(): boolean {
+    return this._uptodate;
+  }
+
+
+  get updating(): boolean {
+    return this._updating;
   }
 
 }
