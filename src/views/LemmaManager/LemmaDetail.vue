@@ -232,23 +232,6 @@
           </v-card-text>
         </v-window-item>
         <v-window-item>
-          <h4 class="py-2 px-5 background d-flex">
-            Sekundärliteratur
-          </h4>
-          <v-list dense>
-            <v-list-item
-              v-for="(secondaryCitation, index) in value.secondaryLiterature"
-              :key="index"
-              >
-              <v-list-item-content>
-                <v-list-item-title>{{ secondaryCitation.title }}, {{ secondaryCitation.pages }}</v-list-item-title>
-              </v-list-item-content>
-              </v-list-item>
-          </v-list>
-          
-          <h4 class="py-2 px-5 background d-flex">
-            Legacy (Gideon)
-          </h4>
           <v-expansion-panels accordion flat>
             <zotero-manager
               v-for="(zoteroSection, key) in zoteroSections"
@@ -259,14 +242,23 @@
               @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
               ></zotero-manager>
           </v-expansion-panels>
-          <v-card-text style="min-height: 200px">
-            <ul class="gideon-legacy-literature">
-              <li
-                v-for="(legacyCitation, index) in value.legacyGideonCitations"
-                :key="index"
-                >{{ legacyCitation.value }}</li>
-            </ul>
-          </v-card-text>
+          <v-card flat class="rounded-lg" color="transparent" >
+            <v-card-title class="pt-0 background">
+            Legacy (Gideon)
+            </v-card-title>
+            <v-card-text class="pt-0 background">
+              <div v-if="value.legacyGideonCitations" class="gideon-legacy-result">
+                <v-list  dense class="gideon-legacy-literature pt-0">
+                  <v-list-item
+                    v-for="(legacyCitation, index) in value.legacyGideonCitations"
+                    :key="index"
+                    >{{ legacyCitation.value }}
+                  </v-list-item>
+                </v-list>
+              </div>
+              <div v-else>Keine Gideon-Literatur gefunden</div>
+            </v-card-text>
+          </v-card>
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
