@@ -221,6 +221,7 @@
               elevation="0"
               text
               small
+
               color="primary darken-1">
               Datei hinzufügen
               <v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
@@ -231,9 +232,6 @@
           </v-card-text>
         </v-window-item>
         <v-window-item>
-          <h4 class="py-2 px-5 background d-flex">
-            Literatur
-          </h4>
           <v-expansion-panels accordion flat>
             <zotero-manager
               v-for="(zoteroSection, key) in zoteroSections"
@@ -244,8 +242,23 @@
               @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
               ></zotero-manager>
           </v-expansion-panels>
-          <v-card-text style="min-height: 200px">
-          </v-card-text>
+          <v-card flat class="rounded-lg" color="transparent" >
+            <v-card-title class="pt-0 background">
+            Legacy (Gideon)
+            </v-card-title>
+            <v-card-text class="pt-0 background">
+              <div v-if="value.legacyGideonCitations" class="gideon-legacy-result">
+                <v-list  dense class="gideon-legacy-literature pt-0">
+                  <v-list-item
+                    v-for="(legacyCitation, index) in value.legacyGideonCitations"
+                    :key="index"
+                    >{{ legacyCitation.value }}
+                  </v-list-item>
+                </v-list>
+              </div>
+              <div v-else>Keine Gideon-Literatur gefunden</div>
+            </v-card-text>
+          </v-card>
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
@@ -500,4 +513,10 @@ h4
   position: sticky
   top: 0
   background: transparent
+
+.gideon-legacy-literature > li
+  display: inline
+
+.gideon-legacy-literature > li:not(:last-child)::after
+  content: ', '  
 </style>

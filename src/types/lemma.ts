@@ -74,6 +74,13 @@ export interface FullName {
   lastName?: string|null,
 }
 
+export interface SecondaryCitation {
+  id?: number|null,
+  title: string,
+  pages?: string|null,
+}
+
+
 export interface LemmaRow {
   id: number
   list?: {
@@ -94,7 +101,9 @@ export interface LemmaRow {
   loc: number|null
   viaf_id: number|null
   wiki_edits: number|null
-  [userColumn: string]: any,
+  [userColumn: string]: any
+  legacyGideonCitations?: null | Array<{id: Number, value: string}>
+  secondaryLiterature: null|Array<SecondaryCitation>
   zoteroKeysBy: string[],
   zoteroKeysAbout: string[],
 }

@@ -16,6 +16,7 @@ export type PatchedLemmaResearchPatchAPIViewRequest = {
     dateOfDeath?: string;
     gender?: GenderAe0Enum;
     secondaryLiterature?: Array<Record<string, any>> | null;
+    gideonLegacyLiterature?: Array<Record<string, any>> | null;
     zoteroKeysBy?: Array<string> | null;
     zoteroKeysAbout?: Array<string> | null;
 }

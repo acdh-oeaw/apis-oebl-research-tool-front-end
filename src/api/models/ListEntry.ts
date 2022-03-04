@@ -20,6 +20,7 @@ export type ListEntry = {
     deleted: boolean;
     readonly last_updated?: string;
     secondaryLiterature?: Array<Record<string, any>> | null;
+    gideonLegacyLiterature?: Array<Record<string, any>> | null;
     zoteroKeysBy?: Array<string> | null;
     zoteroKeysAbout?: Array<string> | null;
 }

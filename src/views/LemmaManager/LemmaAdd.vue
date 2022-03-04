@@ -150,6 +150,8 @@ export default class LemmaAdd extends Vue {
     viaf_id: null,
     wiki_edits: null,
     gnd: [],
+    legacyGideonCitations: null,
+    secondaryLiterature: [],
     zoteroKeysBy: [],
     zoteroKeysAbout: []
   }
