@@ -139,15 +139,21 @@ export default class LemmaAdd extends Vue {
     id: -1,
     firstName: '',
     lastName: '',
+    alternativeNames: [],
     birthYear: '',
     deathYear: '',
+    gender: undefined,
     columns_user: {},
     columns_scrape: {},
     loc: null,
     selected: false,
     viaf_id: null,
     wiki_edits: null,
-    gnd: []
+    gnd: [],
+    legacyGideonCitations: null,
+    secondaryLiterature: [],
+    zoteroKeysBy: [],
+    zoteroKeysAbout: []
   }
 
   person = _.clone(this.emptyPerson)

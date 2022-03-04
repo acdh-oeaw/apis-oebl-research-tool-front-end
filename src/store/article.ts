@@ -1,4 +1,4 @@
-import zotero, { ZoteroItem } from '@/service/zotero'
+import zotero  from '@/service/zotero'
 import { v4 as uuid } from 'uuid'
 
 interface Comment {

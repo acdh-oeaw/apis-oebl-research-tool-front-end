@@ -88,51 +88,43 @@
               label="Vorname"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
-            >
-              <v-btn
-                @click="updateUserColumns('alternativeFirstName', [''].concat(value.columns_user.alternativeFirstName || []))"
-                tile
-                class="rounded-lg mt-1 mr-1"
-                tabindex="-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Vorname"
-              :value="value.columns_user.alternativeFirstName"
-              @input="updateUserColumns('alternativeFirstName', $event)"
-            />
+            ></text-field>
             <text-field
               :required="true"
               label="Nachname"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
+            ></text-field>
+            <full-name-array-field
+              :fullNames="value.columns_user.alternativeNames"
+              :value="value.columns_user.alternativeNames"
+              @input="updateUserColumns('alternativeNames', $event);"
+            ></full-name-array-field>
+
+            <text-field label="Geschlecht" 
             >
-              <v-btn
-                @click="updateUserColumns('alternativeLastName', [''].concat(value.columns_user.alternativeLastName || []))"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </text-field>
-            <text-field-alternatives
-              label="Nachname"
-              :value="value.columns_user.alternativeLastName"
-              @input="updateUserColumns('alternativeLastName', $event)"
-            />
-            <text-field label="Geschlecht">
               <template v-slot:input>
                 <v-btn-toggle
                   class="transparent mt-1 ml-1"
                   active-class="background darken-3"
+                  :value="value.gender"
+                  @change="debouncedUpdateData({ gender: $event })"
                   borderless
                   max="1"
                   mandatory>
-                  <v-btn value="m" text class="rounded-lg" small>männlich</v-btn>
-                  <v-btn value="f" text class="rounded-lg" small>weiblich</v-btn>
+
+                  <div
+                    v-for="genderOption in genderOptions"
+                    :key="genderOption"
+                  >
+                    <v-btn
+                      :value="genderOption"
+                      text
+                      class="rounded-lg"
+                      small
+                      >{{ genderOption }}</v-btn>
+                  </div>
+                  
                   <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
                 </v-btn-toggle>
               </template>
@@ -229,6 +221,7 @@
               elevation="0"
               text
               small
+
               color="primary darken-1">
               Datei hinzufügen
               <v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
@@ -239,11 +232,33 @@
           </v-card-text>
         </v-window-item>
         <v-window-item>
-          <h4 class="py-2 px-5 background d-flex">
-            Literatur
-          </h4>
-          <v-card-text style="min-height: 200px">
-          </v-card-text>
+          <v-expansion-panels accordion flat>
+            <zotero-manager
+              v-for="(zoteroSection, key) in zoteroSections"
+              :key="key"
+              :lemmaName="zoteroSection.lemmaName"
+              :listName="zoteroSection.listName"
+              :zoteroKeysFromServer="zoteroSection.zoteroKeys"
+              @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
+              ></zotero-manager>
+          </v-expansion-panels>
+          <v-card flat class="rounded-lg" color="transparent" >
+            <v-card-title class="pt-0 background">
+            Legacy (Gideon)
+            </v-card-title>
+            <v-card-text class="pt-0 background">
+              <div v-if="value.legacyGideonCitations" class="gideon-legacy-result">
+                <v-list  dense class="gideon-legacy-literature pt-0">
+                  <v-list-item
+                    v-for="(legacyCitation, index) in value.legacyGideonCitations"
+                    :key="index"
+                    >{{ legacyCitation.value }}
+                  </v-list-item>
+                </v-list>
+              </div>
+              <div v-else>Keine Gideon-Literatur gefunden</div>
+            </v-card-text>
+          </v-card>
         </v-window-item>
         <v-window-item>
           <h4 class="py-2 px-5 background d-flex">
@@ -312,7 +327,7 @@
 </template>
 <script lang="ts">
 
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { LemmaRow } from '@/types/lemma'
 import LemmaScrapeResult from './LemmaScrapeResult.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -320,14 +335,24 @@ import LobidGndSearch from './LobidGndSearch.vue'
 import TextField from '@/views/lib/TextField.vue'
 import DateField from '@/views/lib/DateField.vue'
 import TextFieldAlternatives from '@/views/lib/TextFieldAlternatives.vue'
+import FullNameArrayField from '@/views/lib/FullNameArrayField.vue';
 import SelectMenu from '@/views/lib/SelectMenu.vue'
 import VueFileList from './FileList.vue'
 import store from '@/store'
 import _ from 'lodash'
-import { List } from '@/api'
+import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
+import ZoteroManager from './ZoteroManager.vue'
+
 const DRAG_CLASS = 'drag-over'
+
+interface ZoteroSection {
+  lemmaName: string,
+  listName: string,
+  zoteroKeys: string[],
+  column: string,
+}
 
 @Component({
   components: {
@@ -338,7 +363,9 @@ const DRAG_CLASS = 'drag-over'
     SelectMenu,
     TextFieldAlternatives,
     DateField,
-    VueFileList
+    VueFileList,
+    ZoteroManager,
+    FullNameArrayField,
   }
 })
 export default class LemmaDetail extends Vue {
@@ -351,6 +378,26 @@ export default class LemmaDetail extends Vue {
   detailPage = 0
   dragEventDepth = 0
   files: File[] = []
+  genderOptions: String[] = Object.values(GenderAe0Enum);
+
+  get zoteroSections(): Array<ZoteroSection> {
+    const name = `${this.value.lastName}, ${this.value.firstName}`
+    return [
+      {
+        listName: "Literatur von",
+        lemmaName: name,
+        zoteroKeys: this.value.zoteroKeysBy,
+        column: 'zoteroKeysBy',
+      },
+      {
+        listName: "Literatur über",
+        lemmaName: name,
+        zoteroKeys: this.value.zoteroKeysAbout,
+        column: 'zoteroKeysAbout',
+      }
+    ]
+  }
+
 
   onDragEnter(event: DragEvent) {
     if (
@@ -466,4 +513,10 @@ h4
   position: sticky
   top: 0
   background: transparent
+
+.gideon-legacy-literature > li
+  display: inline
+
+.gideon-legacy-literature > li:not(:last-child)::after
+  content: ', '  
 </style>

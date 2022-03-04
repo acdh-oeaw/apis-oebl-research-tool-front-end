@@ -2,9 +2,9 @@
 import _ from 'lodash'
 import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
-import { ResearchService, List as LemmaList, IssueLemma, List, Editor } from '@/api'
+import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, ServerResearchLemma } from '@/types/lemma'
+import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, SecondaryCitation, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
@@ -22,8 +22,8 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
     super('LemmaDb')
-    this.version(4).stores({
-      lemmas: 'id,firstName,lastName,birthYear,deathYear,gnd,loc,viaf_id,selected'
+    this.version(5).stores({
+      lemmas: 'id,firstName,lastName,gender,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
   }
@@ -163,6 +163,15 @@ export default class LemmaStore {
     {
       name: 'Vorname',
       value: 'firstName',
+      type: 'text',
+      filterable: true,
+      show: true,
+      isUserColumn: false,
+      editable: true
+    },
+    {
+      name: 'Geschlecht',
+      value: 'gender',
       type: 'text',
       filterable: true,
       show: true,
@@ -591,8 +600,10 @@ export default class LemmaStore {
       selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
       firstName: 'testname', // random_name({ first: true, seed }),
       lastName: 'random_name', // ({ last: true, seed }),
+      alternativeNames: [],
       birthYear: bYear.toString(),
       deathYear: _.random(bYear, 2000, false).toString(),
+      gender: undefined,
       gnd: gnds,
       columns_user: {},
       list: undefined,
@@ -600,7 +611,11 @@ export default class LemmaStore {
       // eslint-disable-next-line @typescript-eslint/camelcase
       viaf_id: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
       // eslint-disable-next-line @typescript-eslint/camelcase
-      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null
+      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
+      legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
+      secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
+      zoteroKeysBy: [],
+      zoteroKeysAbout: [],
     }
   }
 
@@ -642,6 +657,8 @@ export default class LemmaStore {
       ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
+      alternativeNames: rs.alternativeNames as FullName[],
+      gender: rs.gender as GenderAe0Enum,
       dateOfBirth: rs.dateOfBirth,
       dateOfDeath: rs.dateOfDeath,
       updated: rs.last_updated,
@@ -653,7 +670,11 @@ export default class LemmaStore {
         id: rs.list.id,
         title: rs.list.title,
         editor: rs.list.editor || undefined
-      } : undefined
+      } : undefined,
+      legacyGideonCitations: rs.gideonLegacyLiterature as Array<{id: number, value: string}> | null,
+      secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
+      zoteroKeysBy: rs.zoteroKeysBy as string[],
+      zoteroKeysAbout: rs.zoteroKeysAbout as string[],
     }
   }
 
