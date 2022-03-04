@@ -249,6 +249,16 @@
           <h4 class="py-2 px-5 background d-flex">
             Legacy (Gideon)
           </h4>
+          <v-expansion-panels accordion flat>
+            <zotero-manager
+              v-for="(zoteroSection, key) in zoteroSections"
+              :key="key"
+              :lemmaName="zoteroSection.lemmaName"
+              :listName="zoteroSection.listName"
+              :zoteroKeysFromServer="zoteroSection.zoteroKeys"
+              @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
+              ></zotero-manager>
+          </v-expansion-panels>
           <v-card-text style="min-height: 200px">
             <ul class="gideon-legacy-literature">
               <li
@@ -341,7 +351,16 @@ import _ from 'lodash'
 import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
+import ZoteroManager from './ZoteroManager.vue'
+
 const DRAG_CLASS = 'drag-over'
+
+interface ZoteroSection {
+  lemmaName: string,
+  listName: string,
+  zoteroKeys: string[],
+  column: string,
+}
 
 @Component({
   components: {
@@ -353,6 +372,7 @@ const DRAG_CLASS = 'drag-over'
     TextFieldAlternatives,
     DateField,
     VueFileList,
+    ZoteroManager,
     FullNameArrayField,
   }
 })
@@ -367,6 +387,25 @@ export default class LemmaDetail extends Vue {
   dragEventDepth = 0
   files: File[] = []
   genderOptions: String[] = Object.values(GenderAe0Enum);
+
+  get zoteroSections(): Array<ZoteroSection> {
+    const name = `${this.value.lastName}, ${this.value.firstName}`
+    return [
+      {
+        listName: "Literatur von",
+        lemmaName: name,
+        zoteroKeys: this.value.zoteroKeysBy,
+        column: 'zoteroKeysBy',
+      },
+      {
+        listName: "Literatur über",
+        lemmaName: name,
+        zoteroKeys: this.value.zoteroKeysAbout,
+        column: 'zoteroKeysAbout',
+      }
+    ]
+  }
+
 
   onDragEnter(event: DragEvent) {
     if (

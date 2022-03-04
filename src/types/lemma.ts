@@ -104,6 +104,8 @@ export interface LemmaRow {
   [userColumn: string]: any
   legacyGideonCitations: null|Array<{id: Number, value: string}>
   secondaryLiterature: null|Array<SecondaryCitation>
+  zoteroKeysBy: string[],
+  zoteroKeysAbout: string[],
 }
 
 export interface LemmaColumn {

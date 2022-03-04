@@ -65826,6 +65826,20 @@
                             "additionalProperties": {}
                         },
                         "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 }
             },
@@ -65954,6 +65968,20 @@
                             "additionalProperties": {}
                         },
                         "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -66027,6 +66055,20 @@
                         "items": {
                             "type": "object",
                             "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         },
                         "nullable": true
                     }
@@ -68749,6 +68791,20 @@
                         "items": {
                             "type": "object",
                             "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         },
                         "nullable": true
                     }

@@ -614,6 +614,8 @@ export default class LemmaStore {
       wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
       legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
       secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
+      zoteroKeysBy: [],
+      zoteroKeysAbout: [],
     }
   }
 
@@ -671,8 +673,9 @@ export default class LemmaStore {
       } : undefined,
       // TODO: take from backend
       legacyGideonCitations: null,
-      // TODO: take from backend
       secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
+      zoteroKeysBy: rs.zoteroKeysBy as string[],
+      zoteroKeysAbout: rs.zoteroKeysAbout as string[],
     }
   }
 

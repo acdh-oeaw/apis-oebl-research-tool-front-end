@@ -5,7 +5,9 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import zotero, { ZoteroItem } from '@/service/zotero'
+import zotero from '@/service/zotero'
+import { ZoteroItem } from '@/types/zotero';
+
 import _ from 'lodash'
 
 @Component

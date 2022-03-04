@@ -3,7 +3,7 @@ import * as compression from 'compression'
 import * as fs from 'fs'
 import * as http from 'http'
 import * as socketIo from 'socket.io'
-import fetch from 'node-fetch'
+import fetch, { Headers } from 'node-fetch'
 import * as cors from 'cors'
 import zotero from './zotero'
 
@@ -68,13 +68,28 @@ app.get('/zotero/search/:query', async (req, res) => {
   res.send(JSON.stringify(x))
 })
 
-app.get('/zotero/item/:id', async (req, res) => {
-  const x = await (await fetch('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
-    headers: {
-      'Zotero-API-Key': process.env.ZOTERO_API_KEY
-    }
-  })).json()
-  res.send(JSON.stringify(x))
+app.get('/zotero/item/:id', async (request, response) => {
+  const zoteroHeaders = new Headers();
+  zoteroHeaders.set('Zotero-API-Key', process.env.ZOTERO_API_KEY);
+  zoteroHeaders.set('Zotero-Api-Version', '3');
+  zoteroHeaders.set('Content-Type', 'application/json');
+
+  if ('if-Modified-Since-Version' in request.headers) {
+    zoteroHeaders.set('if-Modified-Since-Version', String(request.headers['if-Modified-Since-Version']) )
+  }
+
+  const zoteroResponse = await fetch(
+      'https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + request.params.id, 
+      { headers: zoteroHeaders}
+    );
+  response.header['zoteroStatus'] = String(zoteroResponse.status);
+  response.header['zoteroStatusText'] = zoteroResponse.statusText;
+  
+  let responseBody = null;
+  if (zoteroResponse.status == 200) {
+    responseBody = await zoteroResponse.json();
+  }
+  response.send(JSON.stringify(responseBody));
 })
 
 app.patch('/zotero/item/:id', async (req, res) => {
