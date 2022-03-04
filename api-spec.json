@@ -65818,6 +65818,28 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 }
             },
@@ -65938,6 +65960,28 @@
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -66005,6 +66049,28 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -68719,6 +68785,28 @@
                     },
                     "gender": {
                         "$ref": "#/components/schemas/GenderAe0Enum"
+                    },
+                    "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "zoteroKeysAbout": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 }
             },
