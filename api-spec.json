@@ -65827,6 +65827,14 @@
                         },
                         "nullable": true
                     },
+                    "gideonLegacyLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "zoteroKeysBy": {
                         "type": "array",
                         "items": {
@@ -65969,6 +65977,14 @@
                         },
                         "nullable": true
                     },
+                    "gideonLegacyLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
                     "zoteroKeysBy": {
                         "type": "array",
                         "items": {
@@ -66051,6 +66067,14 @@
                         "$ref": "#/components/schemas/GenderAe0Enum"
                     },
                     "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "gideonLegacyLiterature": {
                         "type": "array",
                         "items": {
                             "type": "object",
@@ -68787,6 +68811,14 @@
                         "$ref": "#/components/schemas/GenderAe0Enum"
                     },
                     "secondaryLiterature": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "gideonLegacyLiterature": {
                         "type": "array",
                         "items": {
                             "type": "object",
