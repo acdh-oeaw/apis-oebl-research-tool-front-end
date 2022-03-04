@@ -1,25 +1,42 @@
 <template>
-    <v-expansion-panel class="transparent">
-        <v-expansion-panel-header>
-            {{ title }} ({{ zoteroItems.length }})
-            </v-expansion-panel-header>
-        <div class="add-more-zotero-items">
-            <zotero-search
+    <v-card class="transparent" flat >
+        <v-card-title class="zotero-list-title pb-0">
+            {{ listName }} Lemma 
+
+            <span v-if="zoteroLemmaManagmentController.loading" class="loading-zotero">
+                …
+            </span>
+            <span v-else class="zotero-results">{{this.zoteroItems.length}}</span>
+            <div class="add-more-zotero-items">
+                <zotero-search
                 :exclude="zoteroItems"
                 @submit="addNewZoteroItem($event)"
-            ></zotero-search>
+                ></zotero-search>
+            </div>
+        </v-card-title>
+        <div v-if="detailedView" class="detailed-zotero-view">
+            
+            <v-card-text class="pt-0 pl-2" >
+                <v-list class="zotero-citation-list pt-0" dense>
+                    <v-list-item
+                        v-for="(zoteroView, key) in zoteroItemsView"
+                        :key="key"
+                    >
+                    {{ zoteroView.citation }}
+                        <v-btn
+                            :href="zoteroView.url"
+                            target="_blank"
+                            icon
+                            x-small
+                            class="pl-1"
+                        >
+                            <v-icon x-small>mdi-open-in-new</v-icon>
+                        </v-btn>
+                    </v-list-item>
+                </v-list>
+            </v-card-text>
         </div>
-        <v-expansion-panel-content>
-            <ul class="zotero-citation-list">
-                <li
-                    v-for="(zoteroView, key) in zoteroItemsView"
-                    :key="key"
-                >
-                    <a :href="zoteroView.url" target="_blank">{{ zoteroView.title }}</a>
-                </li>
-            </ul>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -28,8 +45,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 
 interface ZoteroView {
-    title: string,
-    url: string,
+    citation: string,
+    url?: string,
 }
 
 import { ZoteroLemmaManagmentController  } from '@/service/zotero';
@@ -50,7 +67,10 @@ import ZoteroSearch from '@/views/lib/ZoteroSearch.vue';
 export default class ZoteroManager extends Vue {
 
     @Prop({ default: () => []}) zoteroKeysFromServer!: string[];
-    @Prop({ default: 'Zotero Literatur' }) title!: string;
+    @Prop() lemmaName!: string;
+    @Prop() listName!: string;
+
+    detailedView: boolean = true;
 
     zoteroItems: Array<ZoteroItem> = [];
     zoteroLemmaManagmentController: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController(this.zoteroKeysFromServer);
@@ -85,9 +105,12 @@ export default class ZoteroManager extends Vue {
     get zoteroItemsView(): Array<ZoteroView> {
         return this.zoteroItems.map(
             (zoteroItem: ZoteroItem): ZoteroView => {
+                const authors = zoteroItem.data.creators.map(creator => creator.lastName).join(', ');
+                const title = zoteroItem.data.title;
+                const year = zoteroItem.data.date ? zoteroItem.data.date: 'o. J.';
                 return {
-                    title: zoteroItem.data.title,
-                    url: zoteroItem.key, // TODO: This should be a valid url
+                    citation: `${authors}: ${title}, ${year}`,
+                    url: zoteroItem.links?.alternate.href,
                 }
             }
         );
@@ -97,4 +120,28 @@ export default class ZoteroManager extends Vue {
 }
 
 </script>
+<style scoped >
 
+    .loading-zotero {
+        margin: 0 1em 0 1em;
+    }
+
+    .zotero-results {
+        padding: 0;
+        margin: 0;
+    }
+
+    .zotero-results::before {
+        margin-left: 1em;
+        content: '(';
+    }
+     
+    .zotero-results::after {
+        content: ')';
+    }
+
+    .zotero-list-title {
+        font-size: 100%;
+        font-weight: 500;
+    }
+</style>

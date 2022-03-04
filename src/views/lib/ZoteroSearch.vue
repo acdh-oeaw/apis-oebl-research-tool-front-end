@@ -4,7 +4,7 @@
             :error-messages="zoteroErrorMessages"
             :items="filteredAndFormattedZoteroResults"
             :search-input.sync="searchTerm"
-            label="Zotero Search"
+            label="Aus Zotero hinzufügen"
             :loading="loading"
             @upddate:search-input="searchTerm = $event"
             @input="submitItem($event)"
@@ -70,7 +70,7 @@ export default class ZoteroSearch extends Vue {
         const filteredResults = this.zoteroResults.filter((zoteroItem: ZoteroItem) => !exclude_keys.includes(zoteroItem.key));
         return filteredResults.map(
             (zoteroItem) => {
-                return { value: zoteroItem.key, text: zoteroItem.data.title}
+                return { value: zoteroItem.key, text: `${zoteroItem.data.title}, ${zoteroItem.data.date ? zoteroItem.data.date: 'o. J.'}`}
                 }
         );
     }

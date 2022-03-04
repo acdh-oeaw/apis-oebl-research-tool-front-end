@@ -238,7 +238,8 @@
             <zotero-manager
               v-for="(zoteroSection, key) in zoteroSections"
               :key="key"
-              :title="`${zoteroSection.title} ${value.lastName}`"
+              :lemmaName="zoteroSection.lemmaName"
+              :listName="zoteroSection.listName"
               :zoteroKeysFromServer="zoteroSection.zoteroKeys"
               @submit="debouncedUpdateData({[zoteroSection.column]: $event})"
               ></zotero-manager>
@@ -334,7 +335,8 @@ import ZoteroManager from './ZoteroManager.vue'
 const DRAG_CLASS = 'drag-over'
 
 interface ZoteroSection {
-  title: string,
+  lemmaName: string,
+  listName: string,
   zoteroKeys: string[],
   column: string,
 }
@@ -366,14 +368,17 @@ export default class LemmaDetail extends Vue {
   genderOptions: String[] = Object.values(GenderAe0Enum);
 
   get zoteroSections(): Array<ZoteroSection> {
+    const name = `${this.value.lastName}, ${this.value.firstName}`
     return [
       {
-        title: "Literatur von",
+        listName: "Literatur von",
+        lemmaName: name,
         zoteroKeys: this.value.zoteroKeysBy,
         column: 'zoteroKeysBy',
       },
       {
-        title: "Literatur über",
+        listName: "Literatur über",
+        lemmaName: name,
         zoteroKeys: this.value.zoteroKeysAbout,
         column: 'zoteroKeysAbout',
       }

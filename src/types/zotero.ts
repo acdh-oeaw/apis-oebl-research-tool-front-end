@@ -24,6 +24,7 @@ export interface ZoteroPatchData extends Partial<ZoteroItem['data']> {
   }
 
 export interface ZoteroItem {
+    links?: {self: {href: string }, alternate: {href: string}};
     key: string
     data: {
       // abstractNote: string
