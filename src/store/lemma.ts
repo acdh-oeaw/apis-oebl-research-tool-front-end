@@ -671,8 +671,7 @@ export default class LemmaStore {
         title: rs.list.title,
         editor: rs.list.editor || undefined
       } : undefined,
-      // TODO: take from backend
-      legacyGideonCitations: null,
+      legacyGideonCitations: rs.gideonLegacyLiterature as Array<{id: number, value: string}> | null,
       secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
       zoteroKeysBy: rs.zoteroKeysBy as string[],
       zoteroKeysAbout: rs.zoteroKeysAbout as string[],

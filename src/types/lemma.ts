@@ -102,7 +102,7 @@ export interface LemmaRow {
   viaf_id: number|null
   wiki_edits: number|null
   [userColumn: string]: any
-  legacyGideonCitations: null|Array<{id: Number, value: string}>
+  legacyGideonCitations?: null | Array<{id: Number, value: string}>
   secondaryLiterature: null|Array<SecondaryCitation>
   zoteroKeysBy: string[],
   zoteroKeysAbout: string[],
