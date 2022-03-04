@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { LabelType } from './LabelType';
+import type { LabelTypeMinimal } from './LabelTypeMinimal';
 
 export type LabelSerializerLegacy = {
     readonly id?: number;
@@ -14,5 +14,5 @@ export type LabelSerializerLegacy = {
      * The ISO 639-3 (or 2) code for the label's language.
      */
     isoCode_639_3?: string | null;
-    label_type: LabelType;
+    label_type: LabelTypeMinimal;
 }
