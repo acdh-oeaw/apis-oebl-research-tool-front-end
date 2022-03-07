@@ -235,7 +235,7 @@
           <v-expansion-panels accordion flat>
             <zotero-manager
               v-for="(zoteroSection, key) in zoteroSections"
-              :key="key"
+              :key="`${value.id}_${key}`"
               :lemmaName="zoteroSection.lemmaName"
               :listName="zoteroSection.listName"
               :zoteroKeysFromServer="zoteroSection.zoteroKeys"
