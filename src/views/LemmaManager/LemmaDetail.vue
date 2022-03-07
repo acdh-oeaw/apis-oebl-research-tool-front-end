@@ -99,6 +99,7 @@
               :fullNames="value.columns_user.alternativeNames"
               :value="value.columns_user.alternativeNames"
               @input="updateUserColumns('alternativeNames', $event);"
+              :key="value.id"
             ></full-name-array-field>
 
             <text-field label="Geschlecht" 

@@ -74,6 +74,10 @@ export default class FullNameArrayField extends Vue {
 
     localFullNames: FullNameType[] = this.fullNames;
 
+    beforeCreate() {
+        console.debug('BEFORE')
+    }
+
     emitInput() {
         this.$emit('input', this.localFullNames);
     }
@@ -83,7 +87,6 @@ export default class FullNameArrayField extends Vue {
     }
 
     updateItem(eventData: FullNameType, index: number) {
-        console.debug({eventData: eventData})
         const fullNames = this.localFullNames;
         fullNames[index] = eventData;
         this.localFullNames = fullNames;
