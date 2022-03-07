@@ -96,9 +96,10 @@
               @input="debouncedUpdateData({ lastName: $event })"
             ></text-field>
             <full-name-array-field
-              :fullNames="value.columns_user.alternativeNames"
-              :value="value.columns_user.alternativeNames"
+              :fullNames="value.alternativeNames"
+              :value="value.alternativeNames"
               @input="updateUserColumns('alternativeNames', $event);"
+              :key="value.id"
             ></full-name-array-field>
 
             <text-field label="Geschlecht" 
