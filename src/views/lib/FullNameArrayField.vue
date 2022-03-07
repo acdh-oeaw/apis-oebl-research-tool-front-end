@@ -74,10 +74,6 @@ export default class FullNameArrayField extends Vue {
 
     localFullNames: FullNameType[] = this.fullNames;
 
-    beforeCreate() {
-        console.debug('BEFORE')
-    }
-
     emitInput() {
         this.$emit('input', this.localFullNames);
     }
