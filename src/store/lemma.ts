@@ -21,7 +21,7 @@ const currentDbVersion = '1.1'
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
-    super('LemmaDb')
+    super('LemmaDb', {allowEmptyDB: true})
     this.version(5).stores({
       lemmas: 'id,firstName,lastName,gender,birthYear,deathYear,gnd,loc,viaf_id,selected'
     })
@@ -291,7 +291,6 @@ export default class LemmaStore {
 
   listenForRemoteImports() {
     notifyService.on('importLemmas', (ls) => {
-      console.log('importing lemmas', ls)
       // convert to local type
       const rows = ls.map(this.convertRemoteLemmaToLemmaRow)
       // insert the lemmas
@@ -443,7 +442,11 @@ export default class LemmaStore {
 
   private async upsertLemmasLocally(ls: LemmaRow[]) {
     this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id')
-    await this.localDb.lemmas.bulkPut(ls)
+    try {
+      await this.localDb.lemmas.bulkPut(ls)
+    } catch (error) {
+      console.error({catchedError: error});
+    }
   }
 
   private async updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): Promise<LemmaRow[]> {
@@ -458,7 +461,13 @@ export default class LemmaStore {
         return l
       }
     })
-    await this.localDb.lemmas.bulkPut(updatedLemmas)
+
+    try {
+      await this.localDb.lemmas.bulkPut(updatedLemmas)
+    } catch (error) {
+      console.error({catchedError: error});
+    }
+
     return updatedLemmas
   }
 
@@ -539,7 +548,12 @@ export default class LemmaStore {
   }
 
   async initLemmaData() {
-    this._lemmas = await this.getLocalLemmaCache()
+    try {
+      this._lemmas = await this.getLocalLemmaCache()
+    } catch (error) {
+      console.error({costomErrorMessage: 'Could not run initLemmaData', error: error })
+      this._lemmas = [];
+    }
     const fetchUpdatesFrom = _.clone(this.lastLemmaFetchDate)
     this.lastLemmaFetchDate = new Date()
     await this.getAndApplyRemoteLemmas(fetchUpdatesFrom)
@@ -559,13 +573,11 @@ export default class LemmaStore {
   }
 
   getMostSimilarLemmas(l: LemmaRow) {
-    console.time('similar')
     const s = _(this.lemmas)
       .map(lc => ({ ...lc, similarity: this.getSumSimilarity(lc, l) }))
       .filter(lc => lc.similarity > 0)
       .orderBy('similarity', 'desc')
       .value()
-    console.timeEnd('similar')
     return s
   }
 
@@ -573,17 +585,24 @@ export default class LemmaStore {
     return this.lemmaLists.find(i => i.id === id)
   }
 
-  async getLocalLemmaCache() {
-    console.time('local cache')
-    const x = await this.localDb.lemmas.toArray()
-    console.timeEnd('local cache')
-    return x
+  async getLocalLemmaCache(): Promise<LemmaRow[]> {
+    let lemmas: LemmaRow[] = [];
+    try {
+      lemmas = await this.localDb.lemmas.toArray();
+    } catch (error) {
+      console.error({catchedError: error});
+      lemmas = [];
+    }
+    return lemmas;
   }
 
   private async deleteLemmasLocally(ids: number[]) {
-    console.log('lemmas to delete:', ids)
     this._lemmas = this._lemmas.filter(l => ids.indexOf(l.id) === -1)
-    await this.localDb.lemmas.bulkDelete(ids)
+    try {
+      await this.localDb.lemmas.bulkDelete(ids)
+    } catch (error) {
+      console.error({catchedError: error});
+    }
   }
 
   async deleteLemma(ids: number[]) {
@@ -725,7 +744,13 @@ export default class LemmaStore {
   }
 
   async getAndApplyRemoteLemmas(modifiedAfter: Date|null = null): Promise<void> {
-    const currentLemmasLength = (await this.localDb.lemmas.count())
+    let currentLemmasLength: number = 0;
+    try {
+      currentLemmasLength = (await this.localDb.lemmas.count())
+    } catch (error) {
+      console.error({catchedError: error});
+    }
+    
     // there are no lemmas, or no last modified date,
     // or the DB must be cleared => get all lemmas
     if (
@@ -734,7 +759,11 @@ export default class LemmaStore {
       this.shouldClearDb()
     ) {
       this._lemmas = []
-      await this.localDb.lemmas.clear()
+      try {
+        await this.localDb.lemmas.clear()
+      } catch (error) {
+        console.error({catchedError: error});
+      }
       this.getLemmasIncrementally(false, undefined, 100, async (ls) => {
         await this.upsertLemmasLocally(ls)
       })
@@ -742,7 +771,6 @@ export default class LemmaStore {
     } else {
       const upserted = await this.getLemmasIncrementally(false, modifiedAfter.toISOString(), 100)
       const deleted = await this.getLemmasIncrementally(true, modifiedAfter.toISOString(), 100)
-      console.log({upserted, deleted})
       await this.deleteLemmasLocally(deleted.map(l => l.id!))
       await this.upsertLemmasLocally(upserted)
     }
@@ -796,7 +824,6 @@ export default class LemmaStore {
   }
 
   get lemmas() {
-    console.log('trigger lemma getter')
     const ls = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
     return this.filterLemmas(ls, this.currentFilters)
   }
