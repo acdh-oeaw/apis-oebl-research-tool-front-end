@@ -7,6 +7,17 @@ import fetch, { Headers } from 'node-fetch'
 import * as cors from 'cors'
 import zotero from './zotero'
 
+
+if (
+  process.env.ZOTERO_API_KEY === undefined
+  || process.env.ZOTERO_USER === undefined
+) {
+  const environment = JSON.stringify({ZOTERO_USER: process.env.ZOTERO_USER, ZOTERO_API_KEY: process.env.ZOTERO_API_KEY});
+  throw new Error(`Zotero is not correctly configered. See environment: ${environment}`);
+}
+
+
+
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
 
