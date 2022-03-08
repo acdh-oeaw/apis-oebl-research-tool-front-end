@@ -74,8 +74,8 @@ class ZoteroItemCache {
 
     constructor() {
       this.database = new Dexie('ZoteroCache', {allowEmptyDB: true});
-      this.database.version(1).stores({
-        zoteroItems: 'Key',
+      this.database.version(2).stores({
+        zoteroItems: 'key',
       })
     }
 
