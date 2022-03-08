@@ -327,7 +327,7 @@ export class ZoteroLemmaManagmentController {
   async add(zoteroItems: ZoteroItem[]) {
     if (this._cache !== null) {
       try {
-        this._cache.update(zoteroItems);
+        await this._cache.update(zoteroItems);
       } catch (error) {
         console.error({catchedError: error});
       }
