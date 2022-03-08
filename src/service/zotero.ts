@@ -74,8 +74,8 @@ class ZoteroItemCache {
 
     constructor() {
       this.database = new Dexie('ZoteroCache', {allowEmptyDB: true});
-      this.database.version(1).stores({
-        zoteroItems: 'Key',
+      this.database.version(2).stores({
+        zoteroItems: 'key',
       })
     }
 
@@ -327,7 +327,7 @@ export class ZoteroLemmaManagmentController {
   async add(zoteroItems: ZoteroItem[]) {
     if (this._cache !== null) {
       try {
-        this._cache.update(zoteroItems);
+        await this._cache.update(zoteroItems);
       } catch (error) {
         console.error({catchedError: error});
       }
