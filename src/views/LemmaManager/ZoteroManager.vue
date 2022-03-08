@@ -32,6 +32,18 @@
                         >
                             <v-icon x-small>mdi-open-in-new</v-icon>
                         </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            icon
+                            x-small
+                            class="rounded-lg"
+                            @click="removeZoteroItem(zoteroView.key)"
+                            >
+                            <v-icon class="pl-6">
+                                mdi-minus-circle-outline
+                            </v-icon>
+                        </v-btn>
+                    
                     </v-list-item>
                 </v-list>
             </v-card-text>
@@ -47,6 +59,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 interface ZoteroView {
     citation: string,
     url?: string,
+    key: string,
 }
 
 import { ZoteroLemmaManagmentController  } from '@/service/zotero';
@@ -114,8 +127,21 @@ export default class ZoteroManager extends Vue {
         // Add items to cache:
         this.getZoteroController().add([zoteroItem]);
         // Notify parent component of new zoteroItems
+        this.emitZoteroItems();
+    }
+
+    removeZoteroItem(zoteroKey: string) {
+        this.zoteroItems = this.getZoteroController().remove(zoteroKey).zoteroItems;
+        this.emitZoteroItems();
+    }
+
+    emitZoteroItems() {
         this.$emit('submit', this.zoteroItems.map(item => item.key));
     }
+
+
+
+
 
     get zoteroItemsView(): Array<ZoteroView> {
         return this.zoteroItems.map(
@@ -126,6 +152,7 @@ export default class ZoteroManager extends Vue {
                 return {
                     citation: `${authors}: ${title}, ${year}`,
                     url: zoteroItem.links?.alternate.href,
+                    key: zoteroItem.key,
                 }
             }
         );
