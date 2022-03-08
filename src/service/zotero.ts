@@ -334,6 +334,11 @@ export class ZoteroLemmaManagmentController {
     }
   }
 
+  remove(zoteroKey: string): ZoteroLemmaManagmentController {
+    this._zoteroItems = this._zoteroItems.filter(item => item.key !== zoteroKey);
+    return this;
+  }
+
 
   get loaded(): boolean {
     return this._loaded;
