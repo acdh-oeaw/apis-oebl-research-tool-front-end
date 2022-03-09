@@ -177,7 +177,22 @@ export default class LemmaAdd extends Vue {
 
   get filteredList() {
     return store.lemma.lemmas.filter((l) => {
-      return l.firstName.toLowerCase().startsWith(this.person.firstName?.toLowerCase() || '~') || l.lastName.toLowerCase().startsWith(this.person.lastName?.toLowerCase() || '~')
+      
+      let firstNameAlike = false;
+      let lastNameAlike = false;
+      const personFirstName = this.person.firstName ? this.person.firstName.toLowerCase() : '~';
+      const personLastName = this.person.lastName ? this.person.lastName.toLowerCase() : '~';
+      
+      if (l.firstName) {
+        firstNameAlike = l.firstName.startsWith(personFirstName);
+      }
+
+      if (l.lastName) {
+        lastNameAlike = l.lastName.startsWith(personLastName);
+      }
+      
+      
+      return firstNameAlike || lastNameAlike;
     })
   }
 
