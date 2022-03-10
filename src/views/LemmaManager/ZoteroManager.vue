@@ -3,7 +3,7 @@
         <v-card-title class="zotero-list-title pb-0">
             {{ listName }} Lemma 
 
-            <span v-if="zoteroLemmaManagmentController.loading" class="loading-zotero">
+            <span v-if="loading" class="loading-zotero">
                 …
             </span>
             <span v-else class="zotero-results">{{this.zoteroItems.length}}</span>
@@ -32,6 +32,18 @@
                         >
                             <v-icon x-small>mdi-open-in-new</v-icon>
                         </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            icon
+                            x-small
+                            class="rounded-lg"
+                            @click="removeZoteroItem(zoteroView.key)"
+                            >
+                            <v-icon class="pl-6">
+                                mdi-minus-circle-outline
+                            </v-icon>
+                        </v-btn>
+                    
                     </v-list-item>
                 </v-list>
             </v-card-text>
@@ -41,12 +53,13 @@
 
 <script lang="ts">
 
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 
 interface ZoteroView {
     citation: string,
     url?: string,
+    key: string,
 }
 
 import { ZoteroLemmaManagmentController  } from '@/service/zotero';
@@ -71,16 +84,31 @@ export default class ZoteroManager extends Vue {
     @Prop() listName!: string;
 
     detailedView: boolean = true;
+    loading: boolean = false;
+    updating: boolean = false;
 
     zoteroItems: Array<ZoteroItem> = [];
-    zoteroLemmaManagmentController: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController(this.zoteroKeysFromServer);
+    _zoteroLemmaManagmentController?: ZoteroLemmaManagmentController = undefined; // make it not reactive
 
-    created() {
-        this.zoteroLemmaManagmentController.load().then(
+    getZoteroController(): ZoteroLemmaManagmentController {
+        if (this._zoteroLemmaManagmentController === undefined) {
+            this._zoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
+        }
+        return this._zoteroLemmaManagmentController;
+    }
+
+
+    @Watch('zoteroKeysFromServer', {deep: false, immediate: true})
+    loadAndUpdateZoteroItems() {
+        this.loading = true
+        this.getZoteroController().load(this.zoteroKeysFromServer).then(
                 (zoteroLemmaManagmentController) => {
+                    this.loading = false;
+                    this.updating = true;
                     this.zoteroItems = zoteroLemmaManagmentController.zoteroItems;
                     zoteroLemmaManagmentController.update().then(
                         (zoteroLemmaManagmentController) => {
+                            this.updating = false;
                             this.zoteroItems = zoteroLemmaManagmentController.zoteroItems;
                         }
                     )
@@ -97,10 +125,23 @@ export default class ZoteroManager extends Vue {
         // Keep track of items in component
         this.zoteroItems.push(zoteroItem);
         // Add items to cache:
-        this.zoteroLemmaManagmentController.add([zoteroItem]);
+        this.getZoteroController().add([zoteroItem]);
         // Notify parent component of new zoteroItems
+        this.emitZoteroItems();
+    }
+
+    removeZoteroItem(zoteroKey: string) {
+        this.zoteroItems = this.getZoteroController().remove(zoteroKey).zoteroItems;
+        this.emitZoteroItems();
+    }
+
+    emitZoteroItems() {
         this.$emit('submit', this.zoteroItems.map(item => item.key));
     }
+
+
+
+
 
     get zoteroItemsView(): Array<ZoteroView> {
         return this.zoteroItems.map(
@@ -111,12 +152,11 @@ export default class ZoteroManager extends Vue {
                 return {
                     citation: `${authors}: ${title}, ${year}`,
                     url: zoteroItem.links?.alternate.href,
+                    key: zoteroItem.key,
                 }
             }
         );
     } 
-
-
 }
 
 </script>

@@ -83,7 +83,6 @@ export default class FullNameArrayField extends Vue {
     }
 
     updateItem(eventData: FullNameType, index: number) {
-        console.debug({eventData: eventData})
         const fullNames = this.localFullNames;
         fullNames[index] = eventData;
         this.localFullNames = fullNames;
