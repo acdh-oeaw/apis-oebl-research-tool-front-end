@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import type { ListSerializerLimited } from './ListSerializerLimited';
+import type { ProfessionGroup } from './ProfessionGroup';
 
 export type ListEntry = {
     readonly id?: number;
@@ -23,4 +24,6 @@ export type ListEntry = {
     gideonLegacyLiterature?: Array<Record<string, any>> | null;
     zoteroKeysBy?: Array<string> | null;
     zoteroKeysAbout?: Array<string> | null;
+    professionDetail: string;
+    professionGroup?: ProfessionGroup | null;
 }
