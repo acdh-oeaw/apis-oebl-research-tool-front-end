@@ -66003,12 +66003,16 @@
                         "type": "string"
                     },
                     "professionGroup": {
+<<<<<<< HEAD
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/ProfessionGroup"
                             }
                         ],
                         "nullable": true
+=======
+                        "type": "string"
+>>>>>>> dev-mapping-new-entities
                     }
                 },
                 "required": [
@@ -66017,7 +66021,12 @@
                     "firstName",
                     "gender",
                     "lastName",
+<<<<<<< HEAD
                     "professionDetail"
+=======
+                    "professionDetail",
+                    "professionGroup"
+>>>>>>> dev-mapping-new-entities
                 ]
             },
             "ListPatchAPIViewResponse": {

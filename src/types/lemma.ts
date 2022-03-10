@@ -101,6 +101,8 @@ export interface LemmaRow {
   loc: number|null
   viaf_id: number|null
   wiki_edits: number|null
+  professionDetail: string|null
+  professionGroup: string|null
   [userColumn: string]: any
   legacyGideonCitations?: null | Array<{id: Number, value: string}>
   secondaryLiterature: null|Array<SecondaryCitation>
