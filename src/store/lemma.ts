@@ -16,7 +16,7 @@ interface LemmaFilter {
 }
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
-const currentDbVersion = '1.1'
+const currentDbVersion = '2.0'
 
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
