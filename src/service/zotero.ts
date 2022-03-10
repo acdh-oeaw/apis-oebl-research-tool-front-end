@@ -73,9 +73,9 @@ class ZoteroItemCache {
     private database: any|undefined;
 
     constructor() {
-      this.database = new Dexie('ZoteroCache');
-      this.database.version(1).stores({
-        zoteroItems: 'Key',
+      this.database = new Dexie('ZoteroCache', {allowEmptyDB: true});
+      this.database.version(2).stores({
+        zoteroItems: 'key',
       })
     }
 
@@ -217,11 +217,10 @@ export class ZoteroLemmaManagmentController {
 
   // Data
   private _zoteroItems: ZoteroItem[] = [];
-  private _cachedItems: ZoteroItem[] = []; // Keep record for updates
-  private _zoteroItemKeys: string[];
+  private _cachedItemsToCheckForUpdate: ZoteroItem[] = []; // Keep record for updates
   
   // Dependencies
-  private _cache: ZoteroItemCache;
+  private _cache: ZoteroItemCache|null;
   private _syncManager: ZoteroSyncManager = ZoteroSyncManager.getInstance('ZoteroLemmaManagmentController');
 
   // States
@@ -230,41 +229,58 @@ export class ZoteroLemmaManagmentController {
   private _uptodate: boolean = false;
   private _updating: boolean = false;
 
-  constructor(zoteroItemKeys: string[]) {
-    this._zoteroItemKeys = zoteroItemKeys;
-    this._cache = new ZoteroItemCache();
+  constructor() {
+    try {
+      this._cache = new ZoteroItemCache();
+    } catch (error) {
+      console.error({catchedError: error});
+      this._cache = null;
+    }
   }
 
   get zoteroItems(): ZoteroItem[] {
     return this._zoteroItems;
   }
 
-  get zoteroItemKeys(): string[] {
-    // Had some wrongly typed data in memory – make sure, this does not disrupt the whole process
-    return this._zoteroItemKeys.filter(
-        key =>
-          (key !== undefined)
-          && (key !== null)
-    );
-  }
 
   /**
-   * Load Zotero Itemss
+   * Load Zotero Items
    */
-  async load(): Promise<ZoteroLemmaManagmentController> {
+  async load(zoteroItemKeys: string[]): Promise<ZoteroLemmaManagmentController> {
+    // Set state, so components can use that
     this._loading = true;
-    // Check those, who are in the cache
-    this._cachedItems = await this._cache.select(this.zoteroItemKeys);
-    // Load the rest from Zotero
-    const cachedKeys = this._cachedItems.map(item => item.key);
-    const notCachedDjangoServerKeys = this.zoteroItemKeys.filter(key => ! cachedKeys.includes(key));
-    const newZoteroItems = await Promise.all(notCachedDjangoServerKeys.map(getZoteroItem));
-    // Cache them and write them into our property
-    await this._cache.insert(newZoteroItems);
-    this._zoteroItems = this._cachedItems.concat(newZoteroItems);
+    // Only load data, that has not already been loaded into memory
+    const alreadyLoadedKeys = this.zoteroItems.map(item => item.key);
+    zoteroItemKeys = zoteroItemKeys.filter(key => !alreadyLoadedKeys.includes(key));
+    // If there is a cache, load data from there
+    let cachedItems: ZoteroItem[] = [];
+    try {
+      cachedItems = this._cache === null ? [] : await this._cache.select(zoteroItemKeys);
+    } catch (error) {
+      console.error({catchedError: error});
+    }
+    // Check, which items had not been cached
+    const cachedKeys = cachedItems.map(item => item.key);
+    const notCachedKeys = zoteroItemKeys.filter(key => ! cachedKeys.includes(key));
+    // Load them from zotero
+    const newZoteroItems = await Promise.all(notCachedKeys.map(getZoteroItem));
+    // Try to cache the new items
+    if (this._cache !== null) {
+      try {
+        await this._cache.insert(newZoteroItems);
+      } catch (error) {
+        console.error({catchedError: error});
+      }
+    }
+    // All items, cached and new, are the result of this caclulation
+    const result = cachedItems.concat(newZoteroItems);
+    // Update properties
+    this.addZoteroItems(result, true);
+    this.addItemsToCachedList(cachedItems);
 
     this._loaded = true;
     this._loading = false;
+    
     return this;
   }
 
@@ -285,20 +301,42 @@ export class ZoteroLemmaManagmentController {
 
     // Check them for sync status
     const zoteroSyncStati = await Promise.all(
-      this._cachedItems.map(this._syncManager.getCachedSyncZoteroItemWithZoteroAPICallback())); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
+      this._cachedItemsToCheckForUpdate.map(this._syncManager.getCachedSyncZoteroItemWithZoteroAPICallback())); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
     // If changed, update cache
     const changedRevisions = zoteroSyncStati.filter(status => status.changed);
-    await this._cache.update(changedRevisions.map(status => status.zoteroItem));
+    if (this._cache !== null) {
+      try {
+        await this._cache.update(changedRevisions.map(status => status.zoteroItem));
+      } catch (error) {
+        console.error({catchedError: error});
+      }
+    }
     // Finally write them back
-    this._zoteroItems = zoteroSyncStati.map(status => status.zoteroItem);
+    const syncedZoteroItems = zoteroSyncStati.map(status => status.zoteroItem);
+    const syncedZoteroKeys = syncedZoteroItems.map(zoteroItem => zoteroItem.key);
+    const uncachedItems = this._zoteroItems.filter(zoteroItem => !syncedZoteroKeys.includes(zoteroItem.key));
+    this._zoteroItems = uncachedItems.concat(syncedZoteroItems);
+    this._cachedItemsToCheckForUpdate = [];
 
     this._updating = false;
     this._uptodate = true;
+
     return this;
   }
 
   async add(zoteroItems: ZoteroItem[]) {
-    this._cache.update(zoteroItems);
+    if (this._cache !== null) {
+      try {
+        await this._cache.update(zoteroItems);
+      } catch (error) {
+        console.error({catchedError: error});
+      }
+    }
+  }
+
+  remove(zoteroKey: string): ZoteroLemmaManagmentController {
+    this._zoteroItems = this._zoteroItems.filter(item => item.key !== zoteroKey);
+    return this;
   }
 
 
@@ -321,4 +359,20 @@ export class ZoteroLemmaManagmentController {
     return this._updating;
   }
 
+  private addZoteroItems(newZoteroItems: ZoteroItem[], overwrite: boolean): void {
+    
+    const oldZoteroItems = this._zoteroItems;
+
+    const itemsToFilter = overwrite ? oldZoteroItems : newZoteroItems;
+    const itemsToStay = overwrite ? newZoteroItems : oldZoteroItems;
+    const keysToStay = itemsToStay.map(item => item.key);
+    const filteredItems = itemsToFilter.filter(item => !keysToStay.includes(item.key));
+    this._zoteroItems = itemsToStay.concat(filteredItems);
+  }
+
+  private addItemsToCachedList(newCachedItems: ZoteroItem[]): void {
+    const newKeys = newCachedItems.map(item => item.key);
+    const oldItems = this._cachedItemsToCheckForUpdate.filter(item => !newKeys.includes(item.key));
+    this._cachedItemsToCheckForUpdate = oldItems.concat(newCachedItems);
+  }
 }
