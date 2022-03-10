@@ -155,7 +155,7 @@ export default class LemmaAdd extends Vue {
     zoteroKeysBy: [],
     zoteroKeysAbout: [],
     professionDetail: '',
-    professionGroup: ''
+    professionGroup: {}
   }
 
   person = _.clone(this.emptyPerson)

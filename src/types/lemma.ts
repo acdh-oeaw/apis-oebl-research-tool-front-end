@@ -20,6 +20,11 @@ export interface ServerResearchLemma extends ListEntry {
   }
 }
 
+export interface ProfessionGroup {
+  id?: number,
+  name?: string
+}
+
 // const serverResearchLemma = t.type({
 //   id: t.number,
 //   gnd: t.array(t.string),
@@ -101,8 +106,8 @@ export interface LemmaRow {
   loc: number|null
   viaf_id: number|null
   wiki_edits: number|null
-  professionDetail: string|null
-  professionGroup: string|null
+  professionDetail?: string|null
+  professionGroup?: ProfessionGroup|null
   [userColumn: string]: any
   legacyGideonCitations?: null | Array<{id: Number, value: string}>
   secondaryLiterature: null|Array<SecondaryCitation>

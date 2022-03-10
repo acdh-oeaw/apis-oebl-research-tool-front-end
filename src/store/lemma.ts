@@ -654,7 +654,7 @@ export default class LemmaStore {
       zoteroKeysBy: [],
       zoteroKeysAbout: [],
       professionDetail: 'random profession',
-      professionGroup: 'random profession group'
+      professionGroup: {'id': 7, 'name': 'random profession group'}
     }
   }
 
