@@ -33,6 +33,7 @@
     "date-fns": "^2.16.1",
     "dexie": "^3.0.3",
     "express": "^4.17.1",
+    "env-cmd": "^10.1.0",
     "file-dialog": "^0.0.8",
     "file-select-dialog": "^1.5.4",
     "flush-promises": "^1.0.2",
