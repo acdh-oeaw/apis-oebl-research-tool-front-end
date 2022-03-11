@@ -287,6 +287,7 @@ export type { PlaceworkDetailRequest } from './models/PlaceworkDetailRequest';
 export type { Placeworkrelation } from './models/Placeworkrelation';
 export type { PlaceworkrelationDetail } from './models/PlaceworkrelationDetail';
 export type { PlaceworkrelationDetailRequest } from './models/PlaceworkrelationDetailRequest';
+export type { ProfessionGroup } from './models/ProfessionGroup';
 export type { Professiontype } from './models/Professiontype';
 export type { ProfessiontypeDetail } from './models/ProfessiontypeDetail';
 export type { ProfessiontypeDetailRequest } from './models/ProfessiontypeDetailRequest';

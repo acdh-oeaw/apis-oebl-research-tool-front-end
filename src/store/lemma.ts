@@ -16,7 +16,7 @@ interface LemmaFilter {
 }
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
-const currentDbVersion = '1.1'
+const currentDbVersion = '2.0'
 
 class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
@@ -210,7 +210,7 @@ export default class LemmaStore {
       value: 'loc',
       type: 'link',
       filterable: true,
-      show: true,
+      show: false,
       isUserColumn: false,
       editable: false
     },
@@ -219,7 +219,7 @@ export default class LemmaStore {
       value: 'viaf_id',
       type: 'link',
       filterable: true,
-      show: true,
+      show: false,
       isUserColumn: false,
       editable: false
     },
@@ -228,9 +228,27 @@ export default class LemmaStore {
       value: 'wiki_edits',
       type: 'number',
       filterable: true,
+      show: false,
+      isUserColumn: false,
+      editable: false
+    },
+    {
+      name: 'Berufsgruppe',
+      value: 'professionGroup',
+      type: 'text',
+      filterable: true,
       show: true,
       isUserColumn: false,
       editable: false
+    },
+    {
+      name: 'Beruf',
+      value: 'professionDetail',
+      type: 'text',
+      filterable: true,
+      show: true,
+      isUserColumn: false,
+      editable: true
     },
     {
       name: 'id',
@@ -635,6 +653,8 @@ export default class LemmaStore {
       secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
       zoteroKeysBy: [],
       zoteroKeysAbout: [],
+      professionDetail: 'random profession',
+      professionGroup: {'id': 7, 'name': 'random profession group'}
     }
   }
 
@@ -684,6 +704,8 @@ export default class LemmaStore {
       gnd: rs.gnd !== undefined ? rs.gnd.filter(g => g !== 'None') : [],
       columns_user: rs.columns_user,
       columns_scrape: rs.columns_scrape,
+      professionDetail: rs.professionDetail,
+      professionGroup: rs.professionGroup,
       // TODO: yuck.
       list: rs.list ? {
         id: rs.list.id,

@@ -65998,6 +65998,21 @@
                             "type": "string"
                         },
                         "nullable": true
+                    },
+                    "professionDetail": {
+                        "type": "string"
+                    },
+                    "professionGroup": {
+<<<<<<< HEAD
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProfessionGroup"
+                            }
+                        ],
+                        "nullable": true
+=======
+                        "type": "string"
+>>>>>>> dev-mapping-new-entities
                     }
                 },
                 "required": [
@@ -66005,7 +66020,13 @@
                     "dateOfDeath",
                     "firstName",
                     "gender",
-                    "lastName"
+                    "lastName",
+<<<<<<< HEAD
+                    "professionDetail"
+=======
+                    "professionDetail",
+                    "professionGroup"
+>>>>>>> dev-mapping-new-entities
                 ]
             },
             "ListPatchAPIViewResponse": {
@@ -74197,6 +74218,22 @@
                     "name_reverse": {
                         "type": "string",
                         "description": "Inverse relation like: \"is sub-class of\" vs. \"is super-class of\".",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "ProfessionGroup": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
                         "maxLength": 255
                     }
                 },

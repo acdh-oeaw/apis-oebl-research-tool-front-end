@@ -153,7 +153,9 @@ export default class LemmaAdd extends Vue {
     legacyGideonCitations: null,
     secondaryLiterature: [],
     zoteroKeysBy: [],
-    zoteroKeysAbout: []
+    zoteroKeysAbout: [],
+    professionDetail: '',
+    professionGroup: {}
   }
 
   person = _.clone(this.emptyPerson)

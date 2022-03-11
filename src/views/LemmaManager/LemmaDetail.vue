@@ -112,7 +112,7 @@
                   @change="debouncedUpdateData({ gender: $event })"
                   borderless
                   max="1"
-                  mandatory>
+                  >
 
                   <div
                     v-for="genderOption in genderOptions"
