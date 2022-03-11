@@ -98,7 +98,7 @@
             <full-name-array-field
               :fullNames="value.alternativeNames"
               :value="value.alternativeNames"
-              @input="updateUserColumns('alternativeNames', $event);"
+              @submit="updateUserColumns('alternativeNames', $event);"
               :key="value.id"
             ></full-name-array-field>
 

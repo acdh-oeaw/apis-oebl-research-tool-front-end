@@ -22,7 +22,9 @@
             @keydown="onKeyDown"
             @input="onInput"
             :placeholder="placeholder"
-            :value="localValue" />
+            :value="localValue" 
+            :disabled="disabled"
+            />
         </slot>
       </div>
       <div>
@@ -47,6 +49,7 @@ export default class TextField extends Vue {
   @Prop({ default: false }) allowNewLine!: boolean
   @Prop({ default: '' }) value!: string
   @Prop({ default: false }) clearable!: boolean
+  @Prop( { default: false }) disabled!: boolean
   @Prop({ default: false }) required!: boolean
   @Prop({ default: false }) selected!: boolean
   @Prop({ default: null }) placeholder!: string|null
