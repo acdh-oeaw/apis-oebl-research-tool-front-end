@@ -468,6 +468,12 @@ export default class LemmaStore {
   }
 
   private async updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): Promise<LemmaRow[]> {
+    const updatedIndexDBLemmas = await this.updateLemmaIndexedDB(ls, u);
+    this.updateSelectedLemmas(updatedIndexDBLemmas);
+    return updatedIndexDBLemmas;
+  }
+
+  private async updateLemmaIndexedDB(ls: LemmaRow[], u: Partial<LemmaRow>): Promise<LemmaRow[]> {
     const ids = ls.map(l => l.id)
     const updatedLemmas: LemmaRow[] = []
     this._lemmas = this._lemmas.map((l) => {
@@ -487,6 +493,50 @@ export default class LemmaStore {
     }
 
     return updatedLemmas
+  }
+
+  /**
+   *  Update selected lemmas in the cache, if there is a data change.
+   * 
+   * Both are arrays of lemmaRows :-(
+   * 
+   * As far as I have seen, this could also just be: `this.selectedLemmas = newLemmaRows[0].id === this.selectedLemmas[0].id ? newLemmaWows : this.selectedRows`
+   * But to be sure, set operations
+   * 
+   * @param newLemmaRows 
+   * @returns 
+   */
+  private updateSelectedLemmas(newLemmaRows: LemmaRow[]) {
+    
+    // Doing 2 early returns, instead of one with or, since the second does a local cache call
+    if (newLemmaRows.length === 0) {
+      return;
+    }
+    
+    const selectedLemmas = this.selectedLemmas;
+    
+    if (selectedLemmas.length === 0) {
+      return;
+    }
+
+    const getLemmaId = (lemma: LemmaRow): number => lemma.id;
+
+    const selectedLemmasToUpdate = _.intersectionBy(newLemmaRows, selectedLemmas, getLemmaId);
+    
+    if (selectedLemmasToUpdate.length === 0) {
+      return;
+    }
+    
+    const preserveThisSelectedLemmas = _.differenceBy(selectedLemmas, selectedLemmasToUpdate, getLemmaId);
+    
+    const updatedSelectedLemmas = preserveThisSelectedLemmas.length === 0 ? selectedLemmasToUpdate : preserveThisSelectedLemmas.concat(selectedLemmasToUpdate);
+
+    if (updatedSelectedLemmas.length !== selectedLemmas.length) {
+      throw new Error('Updating logic failed. Lengths of new and old selected lemmas do not match');
+    }
+
+    this.selectedLemmas = updatedSelectedLemmas;
+    
   }
 
   async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
