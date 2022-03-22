@@ -2,41 +2,36 @@
   <text-field :label="label">
     <template v-slot:input>
       <div class="outer">
-        <select-menu
-          :show-chevron="true"
-          btn-class="mt-1 mr-2 ml-1 modifier-menu"
-          :value="modifier"
-          :items="modifiers"
-          @input="updateValue({ modifier: $event })"
-        />
+        <div
+          v-if="errorMessage" 
+          class="error-message">
+          {{ errorMessage }}
+        </div>
         <input
           min="1"
-          max="31"
+          :max="maxDay"
           maxlength="2"
-          :value="day"
+          :value="localDay"
           class="pa-1 text--primary"
           style="width: 40px"
           placeholder="TT"
-          @cahnge="updateValue({ day: $event.target.value })"
         />
         <input
           maxlength="2"
           min="1"
           max="12"
-          :value="month"
+          :value="localMonth"
           class="pa-1 text--primary"
           style="width: 40px"
           placeholder="MM"
-          @change="updateValue({ month: $event.target.value })"
         />
         <input
           minlength="4"
           maxlength="4"
-          :value="year"
+          :value="localYear"
           class="pa-1 text--primary"
           style="width: 50px"
           placeholder="JJJJ"
-          @change="updateValue({ year: $event.target.value })"
           />
       </div>
     </template>
@@ -47,16 +42,10 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import TextField from './TextField.vue'
 import SelectMenu from './SelectMenu.vue'
+import parseISO from 'date-fns/parseISO';
+import isValid from 'date-fns/isValid';
+import getDaysInMonth from 'date-fns/fp/getDaysInMonth';
 
-interface DateValue {
-  day: string|null
-  month: string|null
-  year: string|null
-  modifier: {
-    value: string|null
-    name: string
-  }
-}
 
 @Component({
   components: {
@@ -66,106 +55,50 @@ interface DateValue {
 })
 export default class DateField extends Vue {
 
-  @Prop({ default: null }) label!: string|null
-  @Prop({ default: '' }) value!: string
+  @Prop({ default: null }) label!: string|null;
+  @Prop( ) date!: Date | null;
 
-  localValue = ''
+  localDay: number = 1;
+  localMonth: number = 1;
+  localYear: number = 0;
+  errorMessage: string|null = null;
 
-  @Watch('value', { immediate: true })
-  onChangeValue(newV: string) {
-    this.localValue = newV || ''
-  }
-
-  readonly modifiers = [
-    {
-      name: 'genau',
-      value: null
-    },
-    {
-      name: 'ca.',
-      value: 'ca.',
-    },
-    {
-      name: 'nach',
-      value: 'nach'
-    },
-    {
-      name: 'vor',
-      value: 'vor'
-    },
-    {
-      name: 'um',
-      value: 'um'
-    }
-  ]
-
-  get day() {
-    const m = this.localValue.match(/(\d\d?)(?:\D+)(?:\d\d?)(?:\D+)(?:\d\d\d\d)/)
-    if (m !== null) {
-      console.log(m)
-      return m[1]
-    } else {
-      return ''
+  @Watch('date', {immediate: true, deep: true})
+  updateLocalDate() {
+    // Fallback for wrong types
+    if (this.date instanceof Date) {
+      this.localYear = this.date.getUTCFullYear();
+      this.localMonth = this.date.getUTCMonth() + 1; // "a zero-based value" https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getUTCMonth
+      this.localDay = this.date.getUTCDate();
     }
   }
 
-  get month() {
-    const m = this.localValue.match(/(?:\d\d?)?(?:\D+)(\d\d?)(?:\D+)(?:\d\d\d\d)/)
-    if (m !== null) {
-      console.log(m)
-      return m[1]
-    } else {
-      return ''
+  @Watch('localDay', {immediate: false, deep: false})
+  @Watch('localMonth', {immediate: false, deep: false})
+  @Watch('localYear', {immediate: false, deep: false})
+  processDateInput() {
+
+    const parseAttempt = parseISO(`${this.localYear}-${this.localMonth}-${this.localDay}`, {additionalDigits: 0});
+
+    if (isValid(parseAttempt)) {
+      this.errorMessage = null;
+      this.$emit('input', parseAttempt);
+      return;
     }
+    this.errorMessage = 'Bitte ein korrektes Datum eingeben';
   }
 
-  get year() {
-    const m = this.localValue.match(/\d\d\d\d/)
-    if (m !== null) {
-      return m[0]
-    } else {
-      return ''
-    }
+  get maxDay(): number {
+      const parseAttempt = parseISO(`${this.localYear}-${this.localMonth}-1`, {additionalDigits: 0});
+      
+      if (isValid(parseAttempt)) {
+        return getDaysInMonth(parseAttempt);
+      }
+      
+      return 31;
   }
 
-  get modifier() {
-    return this.modifiers.find(m => this.localValue.indexOf(m.name) > -1) || this.modifiers[0]
-  }
 
-  isValidDate(v: string): boolean {
-    return (
-      this.year !== '' ||
-      this.year !== '' && this.month !== '' ||
-      this.year !== '' && this.month !== '' && this.day !== ''
-    )
-  }
-
-  updateValue(pv: Partial<DateValue>) {
-    console.log({ pv })
-    this.localValue = this.serializeValue({
-      modifier: this.modifier,
-      day: this.day,
-      month: this.month,
-      year: this.year,
-      ...pv
-    })
-    console.log({
-      modifier: this.modifier,
-      day: this.day,
-      month: this.month,
-      year: this.year,
-      ...pv
-    }, 'this.localValue', this.localValue, 'this.serializeValue()')
-    if (this.isValidDate(this.localValue)) {
-      this.$emit('input', this.localValue)
-    }
-  }
-
-  serializeValue(v: DateValue) {
-    const s = (v.modifier?.value || '') + ' ' + [ v.day, v.month, v.year ].filter(m => m !== '').join('. ').trim()
-    console.log(s)
-    return s
-  }
 
 }
 </script>

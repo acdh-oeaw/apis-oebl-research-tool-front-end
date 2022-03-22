@@ -99,8 +99,8 @@ export interface LemmaRow {
   firstName: string
   lastName: string
   alternativeNames: Array<FullName>
-  birthYear: string|null
-  deathYear: string|null
+  dateOfBirth: Date|null
+  dateOfDeath: Date|null
   gender?: GenderAe0Enum
   gnd: string[]
   loc: number|null

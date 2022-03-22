@@ -8,12 +8,53 @@ import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFi
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
+import parseISO from 'date-fns/parseISO';
+import isValid from 'date-fns/isValid';
 
 interface LemmaFilter {
   id: string
   name: string
   filterItems: { [key: string]: string|boolean|null }
 }
+
+
+
+function serializeLemmaRow(lemmaRow: LemmaRow): object {
+  const result: any = {... lemmaRow};
+  if (lemmaRow.dateOfBirth) {
+    result.dateOfBirth = lemmaRow.dateOfBirth.toISOString();
+  }
+  
+  if (lemmaRow.dateOfDeath) {
+    result.dateOfDeath = lemmaRow.dateOfDeath.toISOString();
+  }
+
+  return result;
+}
+
+
+function unserializeLemmaRow(inputObject: any): LemmaRow {
+  let dateOfBirth = null;
+  let dateOfDeath = null;
+  if (inputObject.dateOfBirth) {
+    dateOfBirth = new Date(inputObject.dateOfBirth);
+  }
+  
+  if (inputObject.dateOfDeath) {
+    dateOfDeath = new Date(inputObject.dateOfDeath);
+  }
+
+  return {... inputObject, dateOfBirth, dateOfDeath} as LemmaRow;
+}
+
+function parseDateFromServer(date: string|null): Date|null {
+  if (date === null) {
+    return null;
+  }
+  const parseAttempt = parseISO(date);
+  return isValid(parseAttempt) ? parseAttempt : null;
+}
+
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = '2.0'
@@ -22,8 +63,8 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<LemmaRow, number>
   public constructor() {
     super('LemmaDb', {allowEmptyDB: true})
-    this.version(5).stores({
-      lemmas: 'id,firstName,lastName,gender,birthYear,deathYear,gnd,loc,viaf_id,selected'
+    this.version(6).stores({
+      lemmas: 'id,firstName,lastName,gender,dateOfBirth,dateOfDeath,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
   }
@@ -179,18 +220,18 @@ export default class LemmaStore {
       editable: true
     },
     {
-      name: 'Geburtsjahr',
-      value: 'birthYear',
-      type: 'number',
+      name: 'Geburtsdatum',
+      value: 'dateOfBirth',
+      type: 'text',
       filterable: true,
       show: true,
       isUserColumn: false,
       editable: true
     },
     {
-      name: 'Sterbejahr',
-      value: 'deathYear',
-      type: 'number',
+      name: 'Todesdatum',
+      value: 'dateOfDeath',
+      type: 'text',
       filterable: true,
       show: true,
       isUserColumn: false,
@@ -387,13 +428,13 @@ export default class LemmaStore {
   }
 
   get selectedLemmas() {
-    this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]')
+    this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]', unserializeLemmaRow);
     return this._selectedLemmas
   }
 
   set selectedLemmas(ls: LemmaRow[]) {
     this._selectedLemmas = ls
-    localStorage.setItem('selectedLemmas', JSON.stringify(ls))
+    localStorage.setItem('selectedLemmas', JSON.stringify(ls.map(serializeLemmaRow))); // Map instead of replacer, because it doesn't matter and typescript won't let me do replacer
   }
 
   get selectedLemmaIssueId() {
@@ -459,9 +500,10 @@ export default class LemmaStore {
   }
 
   private async upsertLemmasLocally(ls: LemmaRow[]) {
-    this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id')
+    this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id');
+    const serializedLemmas = this._lemmas.map(serializeLemmaRow)
     try {
-      await this.localDb.lemmas.bulkPut(ls)
+      await this.localDb.lemmas.bulkPut(serializedLemmas)
     } catch (error) {
       console.error({catchedError: error});
     }
@@ -492,13 +534,16 @@ export default class LemmaStore {
   async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
     // optimistic update
     await this.updateLemmasLocally(ls, u)
+
+    const update = serializeLemmaRow(u);
+
     // actual update on the server
     await Promise.all(ls.map(async (l) => {
       await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, {
         // TODO: remove selected prop when it’s optional.
         // https://github.com/ferdikoomen/openapi-typescript-codegen/issues/636
         selected: l.selected,
-        ...u
+        ...update
       })
     }))
     // notify others
@@ -525,8 +570,8 @@ export default class LemmaStore {
       listId,
       lemmas: [ {
         ...l,
-        dateOfBirth: l.birthYear || undefined,
-        dateOfDeath: l.deathYear || undefined,
+        dateOfBirth: l.dateOfBirth?.toISOString() || undefined,
+        dateOfDeath: l.dateOfDeath?.toISOString() || undefined,
         firstName: l.firstName || undefined,
         lastName: l.lastName || undefined,
         selected: false,
@@ -631,15 +676,14 @@ export default class LemmaStore {
 
   fakeLemma(seed: number): LemmaRow {
     const gnds = _.range(0, _.random(0, 3)).map(() => _.random(100000001, 993183199, false).toString())
-    const bYear = _.random(1890, 1990, false)
     return {
       id: seed,
       selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
       firstName: 'testname', // random_name({ first: true, seed }),
       lastName: 'random_name', // ({ last: true, seed }),
       alternativeNames: [],
-      birthYear: bYear.toString(),
-      deathYear: _.random(bYear, 2000, false).toString(),
+      dateOfBirth: new Date(2000, 1, 1),
+      dateOfDeath: new Date(2020, 4, 7),
       gender: undefined,
       gnd: gnds,
       columns_user: {},
@@ -681,15 +725,11 @@ export default class LemmaStore {
     return list
   }
 
+
   convertRemoteLemmaToLemmaRow(rs: ServerResearchLemma): LemmaRow {
-    // TODO: remove options, use only dateOfBirth/Death
-    const dateOfBirth = (rs as any).dateOfBirth || _.get(rs, 'columns_scrape.wikidata.date_of_birth') || _.get(rs, 'columns_user.dateOfBirth')
-    const dateOfDeath = (rs as any).dateOfDeath || _.get(rs, 'columns_scrape.wikidata.date_of_death') || _.get(rs, 'columns_user.dateOfDeath')
     return {
       id: rs.id,
       selected: rs.selected || false,
-      birthYear: dateOfBirth ? (new Date(dateOfBirth).getFullYear().toString()) : null,
-      deathYear: dateOfDeath ? (new Date(dateOfDeath).getFullYear().toString()) : null,
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
       viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf'),
       wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count'),
@@ -698,8 +738,8 @@ export default class LemmaStore {
       lastName: rs.lastName,
       alternativeNames: rs.alternativeNames as FullName[],
       gender: rs.gender as GenderAe0Enum,
-      dateOfBirth: rs.dateOfBirth,
-      dateOfDeath: rs.dateOfDeath,
+      dateOfBirth: parseDateFromServer(rs.dateOfBirth),
+      dateOfDeath: parseDateFromServer(rs.dateOfDeath),
       updated: rs.last_updated,
       gnd: rs.gnd !== undefined ? rs.gnd.filter(g => g !== 'None') : [],
       columns_user: rs.columns_user,

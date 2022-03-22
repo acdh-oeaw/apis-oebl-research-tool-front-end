@@ -71,7 +71,7 @@
                             {{ lemma.firstName }} {{ lemma.lastName }}
                           </v-list-item-title>
                           <v-list-item-subtitle>
-                            {{ lemma.birthYear }} - {{ lemma.deathYear }}
+                            {{ lemma.dateOfBirth.getFullYear() }} - {{ lemma.dateOfDeath.getFullYear() }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -140,8 +140,8 @@ export default class LemmaAdd extends Vue {
     firstName: '',
     lastName: '',
     alternativeNames: [],
-    birthYear: '',
-    deathYear: '',
+    dateOfBirth: null,
+    dateOfDeath: null,
     gender: undefined,
     columns_user: {},
     columns_scrape: {},
@@ -203,11 +203,13 @@ export default class LemmaAdd extends Vue {
   }
 
   async onChangePerson() {
+    const yearOfBirth = this.person.dateOfBirth ? String(this.person.dateOfBirth.getFullYear()) : null;
+    const yearOfDeath = this.person.dateOfDeath ? String(this.person.dateOfDeath.getFullYear()) : null;
     this.possibleGnds = (await findPerson({
       firstName: this.person.firstName,
       lastName: this.person.lastName,
-      dateOfBirth: this.person.birthYear,
-      dateOfDeath: this.person.deathYear,
+      dateOfBirth: yearOfBirth,
+      dateOfDeath: String(yearOfDeath) ? yearOfDeath : '',
       gnd: this.person.gnd
     })).map(p => (p as any).gndIdentifier)
   }
