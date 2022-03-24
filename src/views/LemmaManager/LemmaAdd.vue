@@ -115,6 +115,7 @@ import LemmaDetail from './LemmaDetail.vue'
 import TextField from '../lib/TextField.vue'
 import store from '@/store'
 import _ from 'lodash'
+import { DateContainer } from '@/util/dates'
 
 @Component({
   components: {
@@ -140,8 +141,6 @@ export default class LemmaAdd extends Vue {
     firstName: '',
     lastName: '',
     alternativeNames: [],
-    dateOfBirth: null,
-    dateOfDeath: null,
     gender: undefined,
     columns_user: {},
     columns_scrape: {},
@@ -155,7 +154,9 @@ export default class LemmaAdd extends Vue {
     zoteroKeysBy: [],
     zoteroKeysAbout: [],
     professionDetail: '',
-    professionGroup: {}
+    professionGroup: {},
+    dateOfBirth: new DateContainer(),
+    dateOfDeath: new DateContainer(),
   }
 
   person = _.clone(this.emptyPerson)
@@ -203,13 +204,11 @@ export default class LemmaAdd extends Vue {
   }
 
   async onChangePerson() {
-    const yearOfBirth = this.person.dateOfBirth ? String(this.person.dateOfBirth.getFullYear()) : null;
-    const yearOfDeath = this.person.dateOfDeath ? String(this.person.dateOfDeath.getFullYear()) : null;
     this.possibleGnds = (await findPerson({
       firstName: this.person.firstName,
       lastName: this.person.lastName,
-      dateOfBirth: yearOfBirth,
-      dateOfDeath: String(yearOfDeath) ? yearOfDeath : '',
+      dateOfBirth: this.person.dateOfBirth.calendarYear === undefined ? null : String(this.person.dateOfBirth.calendarYear),
+      dateOfDeath: this.person.dateOfDeath.calendarYear === undefined ? null : String(this.person.dateOfDeath.calendarYear),
       gnd: this.person.gnd
     })).map(p => (p as any).gndIdentifier)
   }

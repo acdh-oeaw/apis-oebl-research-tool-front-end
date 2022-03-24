@@ -158,14 +158,6 @@
               @input="debouncedUpdateData({ dateOfBirth: $event })"
               :key="'dateOfBirth_' + value.id"
             >
-              <v-btn
-                @click="log"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
             </date-field>
             <date-field
               label="Sterbedatum"
@@ -173,14 +165,6 @@
               @input="debouncedUpdateData({ dateOfDeath: $event })"
               :key="'dateOfDeath_' + value.id"
             >
-              <v-btn
-                @click="log"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
             </date-field>
             <v-spacer class="my-5" />
             <text-field
@@ -385,11 +369,11 @@ export default class LemmaDetail extends Vue {
 
 
   get yearOfBirth(): number | undefined {
-    return this.value.dateOfBirth?.getUTCFullYear();
+    return this.value.dateOfBirth.calendarYear;
   }
 
   get yearOfDeath(): number | undefined {
-    return this.value.dateOfDeath?.getUTCFullYear();
+    return this.value.dateOfDeath.calendarYear;
   }
 
   get zoteroSections(): Array<ZoteroSection> {

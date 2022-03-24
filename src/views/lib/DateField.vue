@@ -1,5 +1,8 @@
 <template>
-  <text-field :label="label">
+  <text-field 
+  :label="label"
+  @input="emitDate()"
+  >
     <template v-slot:input>
       <div class="outer">
         <div
@@ -9,9 +12,9 @@
         </div>
         <input
           min="1"
-          :max="maxDay"
+          :max="localDate.getMaxDate()"
           maxlength="2"
-          :value="localDay"
+          v-model="localDate.calendarDay"
           class="pa-1 text--primary"
           style="width: 40px"
           placeholder="TT"
@@ -20,7 +23,7 @@
           maxlength="2"
           min="1"
           max="12"
-          :value="localMonth"
+          v-model="localDate.calendarMonth"
           class="pa-1 text--primary"
           style="width: 40px"
           placeholder="MM"
@@ -28,11 +31,18 @@
         <input
           minlength="4"
           maxlength="4"
-          :value="localYear"
+          v-model="localDate.calendarYear"
           class="pa-1 text--primary"
           style="width: 50px"
           placeholder="JJJJ"
           />
+          <v-spacer></v-spacer>
+          <v-btn
+            @click="localDate.reset()"
+            icon
+            >
+            <v-icon>mdi-close-circle-outline</v-icon>
+            </v-btn>
       </div>
     </template>
     <slot />
@@ -41,64 +51,70 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import TextField from './TextField.vue'
-import SelectMenu from './SelectMenu.vue'
-import parseISO from 'date-fns/parseISO';
-import isValid from 'date-fns/isValid';
-import getDaysInMonth from 'date-fns/fp/getDaysInMonth';
+import { DateContainer } from '@/util/dates';
 
 
 @Component({
   components: {
     TextField,
-    SelectMenu
   }
 })
 export default class DateField extends Vue {
 
   @Prop({ default: null }) label!: string|null;
-  @Prop( ) date!: Date | null;
+  @Prop( ) date!: DateContainer;
 
-  localDay: number = 1;
-  localMonth: number = 1;
-  localYear: number = 0;
-  errorMessage: string|null = null;
-
+  localDate: DateContainer = new DateContainer();
+  
   @Watch('date', {immediate: true, deep: true})
   updateLocalDate() {
-    // Fallback for wrong types
-    if (this.date instanceof Date) {
-      this.localYear = this.date.getUTCFullYear();
-      this.localMonth = this.date.getUTCMonth() + 1; // "a zero-based value" https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getUTCMonth
-      this.localDay = this.date.getUTCDate();
+    if (!this.localDate.equals(this.date)) {
+      this.localDate = this.date;
     }
   }
 
-  @Watch('localDay', {immediate: false, deep: false})
-  @Watch('localMonth', {immediate: false, deep: false})
-  @Watch('localYear', {immediate: false, deep: false})
-  processDateInput() {
+  get errorMessage(): string|undefined {
+    if (
+      this.localDate.calendarYear === undefined
+      || this.localDate.calendarMonth === undefined
+      || this.localDate.calendarDay === undefined
+    ) {
+      return undefined;
+    }
 
-    const parseAttempt = parseISO(`${this.localYear}-${this.localMonth}-${this.localDay}`, {additionalDigits: 0});
+    if (
+      (this.localDate.calendarMonth < 1 )
+      || (this.localDate.calendarMonth > 12 )
+    ) {
+      return 'Bitte einen Monat zwischen 1 und 12 auswählen.';
+    }
 
-    if (isValid(parseAttempt)) {
-      this.errorMessage = null;
-      this.$emit('input', parseAttempt);
+    if (
+      (this.localDate.calendarDay < 1 )
+      || (this.localDate.calendarDay > this.localDate.getMaxDate())
+    ) {
+      return `Bitte einen Tag zwischen 1 und ${this.localDate.getMaxDate()} auswählen.`
+    }
+ 
+    if (!this.localDate.isValid()) {
+      console.error({message: 'Logic in error, check object', object: this});
+      return 'Bitte ein existierendes Datum auswählen';
+    }
+
+    return undefined;
+  }
+  
+
+  emitDate() {
+    if (
+      this.localDate.calendarYear === undefined
+      || this.localDate.calendarMonth === undefined
+      || this.localDate.calendarDay === undefined
+    ) {
       return;
     }
-    this.errorMessage = 'Bitte ein korrektes Datum eingeben';
+    this.$emit('submit', this.localDate);
   }
-
-  get maxDay(): number {
-      const parseAttempt = parseISO(`${this.localYear}-${this.localMonth}-1`, {additionalDigits: 0});
-      
-      if (isValid(parseAttempt)) {
-        return getDaysInMonth(parseAttempt);
-      }
-      
-      return 31;
-  }
-
-
 
 }
 </script>

@@ -4,12 +4,13 @@ import Dexie from 'dexie'
 import * as jaroWinkler from 'jaro-winkler'
 import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
-import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, SecondaryCitation, ServerResearchLemma } from '@/types/lemma'
+import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, SecondaryCitation, SerializedLemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
 import parseISO from 'date-fns/parseISO';
 import isValid from 'date-fns/isValid';
+import { DateContainer } from '@/util/dates'
 
 interface LemmaFilter {
   id: string
@@ -19,58 +20,42 @@ interface LemmaFilter {
 
 
 
-function serializeLemmaRow(lemmaRow: LemmaRow): object {
-  const result: any = {... lemmaRow};
+function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
+  const copy: any = {... lemmaRow};
   if (lemmaRow.dateOfBirth) {
-    result.dateOfBirth = lemmaRow.dateOfBirth.toISOString();
+    copy.dateOfBirth = lemmaRow.dateOfBirth.generateISO_OnlyDate();
   }
-  
   if (lemmaRow.dateOfDeath) {
-    result.dateOfDeath = lemmaRow.dateOfDeath.toISOString();
+    copy.dateOfDeath = lemmaRow.dateOfDeath.generateISO_OnlyDate();
   }
-
-  return result;
+  return copy;
 }
 
 
-function unserializeLemmaRow(inputObject: any): LemmaRow {
-  let dateOfBirth = null;
-  let dateOfDeath = null;
-  if (inputObject.dateOfBirth) {
-    dateOfBirth = new Date(inputObject.dateOfBirth);
-  }
-  
-  if (inputObject.dateOfDeath) {
-    dateOfDeath = new Date(inputObject.dateOfDeath);
-  }
-
-  return {... inputObject, dateOfBirth, dateOfDeath} as LemmaRow;
+function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
+  return {
+    ... serializedLemmaRow,
+    dateOfBirth: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfBirth),
+    dateOfDeath: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfDeath),
+  };
 }
-
-function parseDateFromServer(date: string|null): Date|null {
-  if (date === null) {
-    return null;
-  }
-  const parseAttempt = parseISO(date);
-  return isValid(parseAttempt) ? parseAttempt : null;
-}
-
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = '2.0'
 
 class LemmaDatabase extends Dexie {
-  public lemmas: Dexie.Table<LemmaRow, number>
+  public lemmas: Dexie.Table<SerializedLemmaRow, number>
   public constructor() {
     super('LemmaDb', {allowEmptyDB: true})
-    this.version(6).stores({
+    this.version(7).stores({
       lemmas: 'id,firstName,lastName,gender,dateOfBirth,dateOfDeath,gnd,loc,viaf_id,selected'
     })
     this.lemmas = this.table('lemmas')
   }
 }
 
-export default class LemmaStore {
+export default class 
+LemmaStore {
 
   private localDb = new LemmaDatabase()
 
@@ -360,13 +345,13 @@ export default class LemmaStore {
   }
 
   listenForRemoteLemmaUpdates() {
-    notifyService.on('updateLemmas', (ls, u, e) => {
-      const updatedLemmas = this.updateLemmasLocally(ls, u)
-      if (this.isMovementToUserList(ls, u)) {
-        if (u.list?.id !== undefined) {
-          const lemmasWithEditor = ls.map(l => ({ editor: e, item: l }))
-          this.newLemmasInUserList[u.list?.id] = {
-            ...this.newLemmasInUserList[u.list?.id],
+    notifyService.on('updateLemmas', (lemmas, updates, e) => {
+      const updatedLemmas = this.updateLemmas(lemmas, updates, false);
+      if (this.isMovementToUserList(lemmas, updates)) {
+        if (updates.list?.id !== undefined) {
+          const lemmasWithEditor = lemmas.map(l => ({ editor: e, item: l }))
+          this.newLemmasInUserList[updates.list?.id] = {
+            ...this.newLemmasInUserList[updates.list?.id],
             ..._.keyBy(lemmasWithEditor, e => e.item.id)
           }
         }
@@ -428,13 +413,16 @@ export default class LemmaStore {
   }
 
   get selectedLemmas() {
-    this._selectedLemmas = JSON.parse(localStorage.getItem('selectedLemmas') || '[]', unserializeLemmaRow);
+    const localSelectedLemmasJSON = localStorage.getItem('selectedLemmas');
+    const localSelectedLemmasObjects: SerializedLemmaRow[] = localSelectedLemmasJSON ? JSON.parse(localSelectedLemmasJSON) : [];
+    const unserializedSelectedLemmas = localSelectedLemmasObjects.map(unserializeLemmaRow)
+    this._selectedLemmas = unserializedSelectedLemmas;
     return this._selectedLemmas
   }
 
-  set selectedLemmas(ls: LemmaRow[]) {
-    this._selectedLemmas = ls
-    localStorage.setItem('selectedLemmas', JSON.stringify(ls.map(serializeLemmaRow))); // Map instead of replacer, because it doesn't matter and typescript won't let me do replacer
+  set selectedLemmas(lemmas: LemmaRow[]) {
+    this._selectedLemmas = lemmas
+    localStorage.setItem('selectedLemmas', JSON.stringify(lemmas.map(serializeLemmaRow)));
   }
 
   get selectedLemmaIssueId() {
@@ -482,26 +470,15 @@ export default class LemmaStore {
     return this.getStoredLemmaFilterById(id)
   }
 
-  async addLemmasToList(list: LemmaRow['list'], ls: LemmaRow[]) {
-    if (list !== undefined) {
-      this.updateLemmasLocally(ls, { list })
-      notifyService.emit('updateLemmas', ls, { list }, store.user.userProfile)
-      await Promise.all(ls.map(async (l) => {
-        await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, {
-          // TODO: remove selected prop when it’s optional.
-          selected: l.selected,
-          list: {
-            id: list.id,
-            title: list.title
-          }
-        })
-      }))
+  async addLemmasToList(list: LemmaRow['list'], lemmas: LemmaRow[]) {
+    if (list === undefined) {
+      return;
     }
+    await this.updateLemmas(lemmas, { list });
   }
 
-  private async upsertLemmasLocally(ls: LemmaRow[]) {
-    this._lemmas = _.uniqBy(ls.concat(this._lemmas), 'id');
-    const serializedLemmas = this._lemmas.map(serializeLemmaRow)
+  private async updateLemmasInIndexedDB(newLemmas: LemmaRow[]): Promise<void> {
+    const serializedLemmas = newLemmas.map(serializeLemmaRow);
     try {
       await this.localDb.lemmas.bulkPut(serializedLemmas)
     } catch (error) {
@@ -509,45 +486,62 @@ export default class LemmaStore {
     }
   }
 
-  private async updateLemmasLocally(ls: LemmaRow[], u: Partial<LemmaRow>): Promise<LemmaRow[]> {
-    const ids = ls.map(l => l.id)
-    const updatedLemmas: LemmaRow[] = []
-    this._lemmas = this._lemmas.map((l) => {
-      if (ids.includes(l.id)) {
-        const nl = {...l, ...u}
-        updatedLemmas.push(nl)
-        return nl
-      } else {
-        return l
-      }
-    })
-
-    try {
-      await this.localDb.lemmas.bulkPut(updatedLemmas)
-    } catch (error) {
-      console.error({catchedError: error});
-    }
-
-    return updatedLemmas
+  private async updateLemmasOnServer(newLemmas: LemmaRow[]) {
+    const serializedLemmas = newLemmas.map(serializeLemmaRow);
+    await Promise.all(serializedLemmas.map(async (lemma) => {
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, lemma);
+    }))
   }
 
-  async updateLemmas(ls: LemmaRow[], u: Partial<LemmaRow>) {
-    // optimistic update
-    await this.updateLemmasLocally(ls, u)
+  private mergeUpdates(updateThisLemmas: LemmaRow[], withThisUpdate: Partial<LemmaRow>): LemmaRow[] {
+    return updateThisLemmas.map(
+      lemmaRow => {
+        return {... lemmaRow, ... withThisUpdate};
+      }
+    );
+  }
 
-    const update = serializeLemmaRow(u);
+  private rightMergeLemmas(oldLemmas: LemmaRow[], newLemmas: LemmaRow[]): LemmaRow[] {
+    const newIds = newLemmas.map(lemma => lemma.id);
+    const unchangingLemmas = oldLemmas.filter(lemma => !newIds.includes(lemma.id));
+    return unchangingLemmas.concat(newLemmas);
+  }
 
-    // actual update on the server
-    await Promise.all(ls.map(async (l) => {
-      await ResearchService.researchApiV1LemmaresearchPartialUpdate(l.id, {
-        // TODO: remove selected prop when it’s optional.
-        // https://github.com/ferdikoomen/openapi-typescript-codegen/issues/636
-        selected: l.selected,
-        ...update
-      })
-    }))
-    // notify others
-    notifyService.emit('updateLemmas', ls, u, store.user.userProfile)
+
+  private innerMergeLemmas(oldLemmas: LemmaRow[], updateLemmas: LemmaRow[]): LemmaRow[] {
+    const oldIds = oldLemmas.map(lemma => lemma.id);
+    const updateIds = updateLemmas.map(lemma => lemma.id);
+
+    const unchangingLemmas = oldLemmas.filter(lemma => !updateIds.includes(lemma.id));
+    const updatesToApply = updateLemmas.filter(lemma => oldIds.includes(lemma.id));
+
+    return unchangingLemmas.concat(updatesToApply);
+  }
+
+  /**
+   * Bulk Update All Lemmas With One Update
+   * 
+   * @param updateThisLemmas 
+   * @param withThisUpdate 
+   */
+  async updateLemmas(updateThisLemmas: LemmaRow[], withThisUpdate: Partial<LemmaRow>, global: boolean = true): Promise<LemmaRow[]> {
+    
+    const newLemmas = this.mergeUpdates(updateThisLemmas, withThisUpdate);
+    // optimistic update: Change, even if others fail
+    await this.upsertLemmasLocally(newLemmas);
+
+    if (global) {
+      await this.updateLemmasOnServer(newLemmas);
+      notifyService.emit('updateLemmas', updateThisLemmas, withThisUpdate, store.user.userProfile);
+    }
+
+    return newLemmas;
+  }
+
+  private async upsertLemmasLocally(newLemmas: LemmaRow[]) {
+    this._lemmas = this.rightMergeLemmas(this._lemmas, newLemmas);
+    this.selectedLemmas = this.innerMergeLemmas(this.selectedLemmas, newLemmas);
+    await this.updateLemmasInIndexedDB(newLemmas)
   }
 
   private deleteLemmaListLocally(id: number) {
@@ -570,8 +564,8 @@ export default class LemmaStore {
       listId,
       lemmas: [ {
         ...l,
-        dateOfBirth: l.dateOfBirth?.toISOString() || undefined,
-        dateOfDeath: l.dateOfDeath?.toISOString() || undefined,
+        dateOfBirth: l.dateOfBirth.generateISO_OnlyDate(),
+        dateOfDeath: l.dateOfDeath.generateISO_OnlyDate(),
         firstName: l.firstName || undefined,
         lastName: l.lastName || undefined,
         selected: false,
@@ -649,14 +643,14 @@ export default class LemmaStore {
   }
 
   async getLocalLemmaCache(): Promise<LemmaRow[]> {
-    let lemmas: LemmaRow[] = [];
+    let lemmas: SerializedLemmaRow[] = [];
     try {
       lemmas = await this.localDb.lemmas.toArray();
     } catch (error) {
       console.error({catchedError: error});
       lemmas = [];
     }
-    return lemmas;
+    return lemmas.map(unserializeLemmaRow);
   }
 
   private async deleteLemmasLocally(ids: number[]) {
@@ -682,8 +676,8 @@ export default class LemmaStore {
       firstName: 'testname', // random_name({ first: true, seed }),
       lastName: 'random_name', // ({ last: true, seed }),
       alternativeNames: [],
-      dateOfBirth: new Date(2000, 1, 1),
-      dateOfDeath: new Date(2020, 4, 7),
+      dateOfBirth: new DateContainer(2020, 4, 6),
+      dateOfDeath: new DateContainer(2020, 4, 7),
       gender: undefined,
       gnd: gnds,
       columns_user: {},
@@ -738,8 +732,8 @@ export default class LemmaStore {
       lastName: rs.lastName,
       alternativeNames: rs.alternativeNames as FullName[],
       gender: rs.gender as GenderAe0Enum,
-      dateOfBirth: parseDateFromServer(rs.dateOfBirth),
-      dateOfDeath: parseDateFromServer(rs.dateOfDeath),
+      dateOfBirth: DateContainer.fromISO_OnlyDate(rs.dateOfBirth),
+      dateOfDeath: DateContainer.fromISO_OnlyDate(rs.dateOfDeath),
       updated: rs.last_updated,
       gnd: rs.gnd !== undefined ? rs.gnd.filter(g => g !== 'None') : [],
       columns_user: rs.columns_user,
