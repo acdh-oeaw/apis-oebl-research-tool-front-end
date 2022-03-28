@@ -540,7 +540,7 @@ export default class LemmaManager extends Vue {
     if (this.selectedRows.length > 0 && this.selectedRows[0].id === l.id) {
       this.selectedRows[0] = { ...l, ...u }
     }
-    // update store and server
+    // update store, server and local storage
     await store.lemma.updateLemmas([ l ], u)
     this.filterData()
   }
