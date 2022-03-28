@@ -11,111 +11,160 @@ export class DateContainer {
     // Starts with 1
     public calendarMonth?: number;
     // Starts with 1
-    public calendarDay?: number;
+    public calendarDate?: number;
 
     private _cachedDate?: Date;
+    private _cachedFirstDateOfTheMonth?: Date;
 
     constructor(
-            calendarYear: number | undefined = undefined,
-            calendarMonth: number | undefined = undefined,
-            calendarDay: number | undefined = undefined,
-        ) {
-            this.calendarYear = calendarYear;
-            this.calendarMonth = calendarMonth;
-            this.calendarDay = calendarDay;
+        calendarYear: number | undefined = undefined,
+        calendarMonth: number | undefined = undefined,
+        calendarDay: number | undefined = undefined,
+    ) {
+        this.calendarYear = calendarYear;
+        this.calendarMonth = calendarMonth;
+        this.calendarDate = calendarDay;
     }
 
     // YYYY-MM-DD
-    static fromISO_OnlyDate(isoDate: string|undefined): DateContainer {
+    static fromISO_OnlyDate(isoDate: string | undefined): DateContainer {
         if (isoDate === undefined) {
             return new DateContainer();
         }
         const parseAttempt = parseISO(isoDate);
+        if (isValid(parseAttempt)) {
+            return DateContainer.fromDate(parseAttempt);
+        }
+        return new DateContainer()
+    }
+
+    static fromDate(date: Date): DateContainer {
         return new DateContainer(
-            parseAttempt.getFullYear(),
-            parseAttempt.getMonth() +1,
-            parseAttempt.getDay(),
+            date.getFullYear(),
+            date.getMonth() + 1,
+            date.getDate(),
         );
     }
 
     // YYYY-MM-DD
     generateISO_OnlyDate(): string | undefined {
-        if (!this.isValid()) {
+        if (
+            this.isEmpty()
+            || (!this.isValid())
+        ) {
             return undefined;
         }
         const date = this.getDateObject();
-        return formatISO(date, {representation: 'date'});
+        if (date === undefined) {
+            return undefined;
+        }
+        return formatISO(date, { representation: 'date' });
     }
 
     isValid(): boolean {
-        let date: Date;
-        try {
-            date = this.getDateObject();
-        } catch (_) {
+        const date = this.getDateObject();
+        if (date === undefined) {
             return false;
         }
         return isValid(date);
     }
 
-    getDateObject(): Date {
+    isEmpty(): boolean {
+        return (this.calendarYear === undefined) && (this.calendarMonth === undefined) && (this.calendarDate === undefined)
+    }
+
+    getDateObject(): Date | undefined {
         if (
             this.calendarYear === undefined
             || this.calendarMonth === undefined
-            || this.calendarDay === undefined
+            || this.calendarDate === undefined
+            // https://en.wikipedia.org/wiki/Year_zero differs from Javascript's implementation
+            // https://gitlab.com/acdh-oeaw/oebl/oebl-irs-devops/-/issues/41
+            || this.calendarYear < 1
         ) {
-            const propertiesSummary = JSON.stringify({calendarYear: this.calendarYear, calendarMonth: this.calendarMonth, calendarDay: this.calendarDay});
-            throw new Error(`Some date properties are undefined: ${propertiesSummary}`);
+            return undefined;
         }
 
         if (
-            ! (this._cachedDate === undefined)
-            && this._cachedDate.getFullYear() === this.calendarYear
-            && this._cachedDate.getMonth() === this.calendarMonth
-            && (this._cachedDate.getDay() + 1) === this.calendarDay
+            this._cachedDate !== undefined
+            && this.equalsDate(this._cachedDate)
         ) {
             return this._cachedDate;
         }
 
-        const date = new Date();
-        date.setFullYear(this.calendarYear);
-        date.setMonth(this.calendarMonth - 1);
-        date.setDate(this.calendarDay);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        this._cachedDate = date;
-        return date;
+        this._cachedDate = DateContainer.createDate(this.calendarYear, this.calendarMonth, this.calendarDate);
+        return this._cachedDate;
     }
-    
+
     getMaxDate(): number {
+
+        const defaultMaxDate = 31;
+
+        // Early return 1: No way to tell
         if (
             this.calendarYear === undefined
             || this.calendarMonth === undefined
-            || this.calendarDay === undefined
         ) {
-            return 31;
+            return defaultMaxDate;
         }
-        return getDaysInMonth(this.getDateObject());
+
+        // Check for cached date uptodate and try to create if not
+        if (
+            this._cachedFirstDateOfTheMonth === undefined
+            || !this.equalsDate(this._cachedFirstDateOfTheMonth, true)
+        ) {
+            this._cachedFirstDateOfTheMonth = DateContainer.createDate(this.calendarYear, this.calendarMonth, 1);
+        }
+
+        // Early return 2: Could not create first day of month -> default
+        if (this._cachedFirstDateOfTheMonth === undefined) {
+            return defaultMaxDate;
+        }
+
+        return getDaysInMonth(this._cachedFirstDateOfTheMonth);
     }
 
     reset(): DateContainer {
         this._cachedDate = undefined;
         this.calendarYear = undefined;
         this.calendarMonth = undefined;
-        this.calendarDay = undefined;
+        this.calendarDate = undefined;
         return this;
     }
 
     equals(other: DateContainer): boolean {
         return this.calendarYear === other.calendarYear
             && this.calendarMonth === other.calendarMonth
-            && this.calendarDay === other.calendarDay
+            && this.calendarDate === other.calendarDate
             ;
     }
 
+    equalsDate(date: Date, ignoreDay: boolean = false): boolean {
+        return this.calendarYear === date.getFullYear()
+            && this.calendarMonth === (date.getMonth() + 1)
+            && (
+                ignoreDay
+                || this.calendarDate === date.getDate()
+            )
+            ;
+    }
 
+    static createDate(calendarYear: number, calendarMonth: number, calendarDate: number): Date | undefined {
+        const indexMonth = calendarMonth - 1;
+        const date = new Date();
+        date.setFullYear(calendarYear);
+        date.setMonth(indexMonth);
+        date.setDate(calendarDate);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
 
-    
+        // No overflow!
+        if (date.getMonth() !== indexMonth) {
+            return undefined;
+        }
 
+        return date;
+    }
 }
