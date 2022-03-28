@@ -1,4 +1,4 @@
-import { formatISO, getDaysInMonth, isValid, parseISO } from "date-fns";
+import { format, formatISO, getDaysInMonth, isValid, parseISO } from "date-fns";
 
 
 /**
@@ -167,4 +167,14 @@ export class DateContainer {
 
         return date;
     }
+
+    toString(): string {
+        const date = this.getDateObject();
+        if (date === undefined) {
+            return '';
+        }
+        return format(date, 'dd.LL.u');
+    }
+
 }
+
