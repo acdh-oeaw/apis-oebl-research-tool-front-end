@@ -71,7 +71,7 @@
                             {{ lemma.firstName }} {{ lemma.lastName }}
                           </v-list-item-title>
                           <v-list-item-subtitle>
-                            {{ lemma.dateOfBirth.getFullYear() }} - {{ lemma.dateOfDeath.getFullYear() }}
+                            {{ lemma.dateOfBirth }} - {{ lemma.dateOfDeath }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
