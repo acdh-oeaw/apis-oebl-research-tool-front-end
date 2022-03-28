@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import _ from 'lodash'
 import Dexie from 'dexie'
-import * as jaroWinkler from 'jaro-winkler'
 import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from '@/api'
 import notifyService from '@/service/notify/notify'
 import { FullName, ImportablePerson, LemmaColumn, LemmaFilterComparator, LemmaFilterItem, LemmaRow, SecondaryCitation, SerializedLemmaRow, ServerResearchLemma } from '@/types/lemma'
 import { WithId } from '@/types'
 import store from '.'
 import { UserProfile } from './user'
-import parseISO from 'date-fns/parseISO';
-import isValid from 'date-fns/isValid';
 import { DateContainer } from '@/util/dates'
 
 interface LemmaFilter {
