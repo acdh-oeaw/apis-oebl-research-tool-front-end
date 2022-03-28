@@ -66003,16 +66003,24 @@
                         "type": "string"
                     },
                     "professionGroup": {
-<<<<<<< HEAD
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/ProfessionGroup"
                             }
                         ],
                         "nullable": true
-=======
-                        "type": "string"
->>>>>>> dev-mapping-new-entities
+                    },
+                    "bioNote": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "kinship": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "religion": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -66021,12 +66029,7 @@
                     "firstName",
                     "gender",
                     "lastName",
-<<<<<<< HEAD
                     "professionDetail"
-=======
-                    "professionDetail",
-                    "professionGroup"
->>>>>>> dev-mapping-new-entities
                 ]
             },
             "ListPatchAPIViewResponse": {

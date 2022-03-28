@@ -71,7 +71,7 @@
                             {{ lemma.firstName }} {{ lemma.lastName }}
                           </v-list-item-title>
                           <v-list-item-subtitle>
-                            {{ lemma.birthYear }} - {{ lemma.deathYear }}
+                            {{ lemma.dateOfBirth.getFullYear() }} - {{ lemma.dateOfDeath.getFullYear() }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -115,6 +115,7 @@ import LemmaDetail from './LemmaDetail.vue'
 import TextField from '../lib/TextField.vue'
 import store from '@/store'
 import _ from 'lodash'
+import { DateContainer } from '@/util/dates'
 
 @Component({
   components: {
@@ -140,8 +141,6 @@ export default class LemmaAdd extends Vue {
     firstName: '',
     lastName: '',
     alternativeNames: [],
-    birthYear: '',
-    deathYear: '',
     gender: undefined,
     columns_user: {},
     columns_scrape: {},
@@ -155,7 +154,9 @@ export default class LemmaAdd extends Vue {
     zoteroKeysBy: [],
     zoteroKeysAbout: [],
     professionDetail: '',
-    professionGroup: {}
+    professionGroup: {},
+    dateOfBirth: new DateContainer(),
+    dateOfDeath: new DateContainer(),
   }
 
   person = _.clone(this.emptyPerson)
@@ -206,8 +207,8 @@ export default class LemmaAdd extends Vue {
     this.possibleGnds = (await findPerson({
       firstName: this.person.firstName,
       lastName: this.person.lastName,
-      dateOfBirth: this.person.birthYear,
-      dateOfDeath: this.person.deathYear,
+      dateOfBirth: this.person.dateOfBirth.calendarYear === undefined ? null : String(this.person.dateOfBirth.calendarYear),
+      dateOfDeath: this.person.dateOfDeath.calendarYear === undefined ? null : String(this.person.dateOfDeath.calendarYear),
       gnd: this.person.gnd
     })).map(p => (p as any).gndIdentifier)
   }

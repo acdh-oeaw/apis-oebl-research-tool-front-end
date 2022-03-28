@@ -26,4 +26,7 @@ export type ListEntry = {
     zoteroKeysAbout?: Array<string> | null;
     professionDetail: string;
     professionGroup?: ProfessionGroup | null;
+    bioNote?: string | null;
+    kinship?: string | null;
+    religion?: string | null;
 }

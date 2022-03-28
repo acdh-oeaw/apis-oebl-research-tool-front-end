@@ -3,6 +3,7 @@
 import { Person as LdPerson } from 'schema-dts'
 import { ListEntry } from '@/api/models/ListEntry'
 import { GenderAe0Enum } from '@/api/models/GenderAe0Enum'
+import { DateContainer } from '@/util/dates'
 
 export interface UserColumn {
   [key: string]: string|number|string[]
@@ -85,34 +86,54 @@ export interface SecondaryCitation {
   pages?: string|null,
 }
 
-
-export interface LemmaRow {
-  id: number
+/**
+ * Dynamic property notation breaks keysof (for Omit, Pick)
+ */
+interface StaticLemmaRow {
+  id: number,
   list?: {
-    id?: number
-    title: string
-    editor?: number
-  }
-  columns_user: UserColumn
-  columns_scrape?: ServerResearchLemma['columns_scrape']
-  selected: boolean
-  firstName: string
-  lastName: string
-  alternativeNames: Array<FullName>
-  birthYear: string|null
-  deathYear: string|null
-  gender?: GenderAe0Enum
-  gnd: string[]
-  loc: number|null
-  viaf_id: number|null
-  wiki_edits: number|null
-  professionDetail?: string|null
-  professionGroup?: ProfessionGroup|null
-  [userColumn: string]: any
-  legacyGideonCitations?: null | Array<{id: Number, value: string}>
-  secondaryLiterature: null|Array<SecondaryCitation>
+    id?: number,
+    title: string,
+    editor?: number,
+  },
+  columns_user: UserColumn,
+  columns_scrape?: ServerResearchLemma['columns_scrape'],
+  selected: boolean,
+  firstName: string,
+  lastName: string,
+  alternativeNames: Array<FullName>,
+  dateOfBirth: DateContainer,
+  dateOfDeath: DateContainer,
+  gender?: GenderAe0Enum,
+  gnd: string[],
+  loc: number|null,
+  viaf_id: number|null,
+  wiki_edits: number|null,
+  professionDetail?: string|null,
+  professionGroup?: ProfessionGroup|null,
+  legacyGideonCitations?: null | Array<{id: Number, value: string}>,
+  secondaryLiterature: null|Array<SecondaryCitation>,
   zoteroKeysBy: string[],
   zoteroKeysAbout: string[],
+}
+
+/**
+ * Including dynamic properties
+ */
+export interface LemmaRow extends StaticLemmaRow {
+  [userColumn: string]: any,
+}
+
+// All of StaticLemmaRow, which is serializable without user-land-code
+type DefaultSerializableLemmaRow = Omit<StaticLemmaRow, 'dateOfBirth' | 'dateOfDeath'>;
+
+
+/**
+ * A serialized instance of LemmaRow for IndexedDb and LocalStorage
+ */
+export type SerializedLemmaRow  = DefaultSerializableLemmaRow & {
+  dateOfBirth?: string// ISO
+  dateOfDeath?: string// ISO
 }
 
 export interface LemmaColumn {

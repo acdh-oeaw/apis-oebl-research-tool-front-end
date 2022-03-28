@@ -35,7 +35,7 @@
         </v-btn>
       </div>
       <div style="margin-top: -5px" class="text-caption text-center" v-if="showHeader">
-        {{ value.birthYear || '?' }} - {{ value.deathYear || '?' }}
+        {{ yearOfBirth || '?' }} - {{ yearOfDeath || '?' }}
       </div>
       <v-btn-toggle
         max
@@ -154,31 +154,17 @@
             <v-spacer class="my-5" />
             <date-field
               label="Geburtsdatum"
-              :value="value.birthYear"
-              @input="debouncedUpdateData({ birthYear: $event })"
+              :date="value.dateOfBirth"
+              @submit="debouncedUpdateData({ dateOfBirth: $event })"
+              :key="'dateOfBirth_' + value.id"
             >
-              <v-btn
-                @click="log"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
             </date-field>
             <date-field
               label="Sterbedatum"
-              :value="value.deathYear"
-              @input="debouncedUpdateData({ deathYear: $event })"
+              :date="value.dateOfDeath"
+              @submit="debouncedUpdateData({ dateOfDeath: $event })"
+              :key="'dateOfDeath_' + value.id"
             >
-              <v-btn
-                @click="log"
-                tile
-                tabindex="-1"
-                class="rounded-lg mt-1 mr-1"
-                icon
-                small><v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
             </date-field>
             <v-spacer class="my-5" />
             <text-field
@@ -380,6 +366,15 @@ export default class LemmaDetail extends Vue {
   dragEventDepth = 0
   files: File[] = []
   genderOptions: String[] = Object.values(GenderAe0Enum);
+
+
+  get yearOfBirth(): number | undefined {
+    return this.value.dateOfBirth.calendarYear;
+  }
+
+  get yearOfDeath(): number | undefined {
+    return this.value.dateOfDeath.calendarYear;
+  }
 
   get zoteroSections(): Array<ZoteroSection> {
     const name = `${this.value.lastName}, ${this.value.firstName}`
