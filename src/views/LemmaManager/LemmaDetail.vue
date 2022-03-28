@@ -155,14 +155,14 @@
             <date-field
               label="Geburtsdatum"
               :date="value.dateOfBirth"
-              @input="debouncedUpdateData({ dateOfBirth: $event })"
+              @submit="debouncedUpdateData({ dateOfBirth: $event })"
               :key="'dateOfBirth_' + value.id"
             >
             </date-field>
             <date-field
               label="Sterbedatum"
               :date="value.dateOfDeath"
-              @input="debouncedUpdateData({ dateOfDeath: $event })"
+              @submit="debouncedUpdateData({ dateOfDeath: $event })"
               :key="'dateOfDeath_' + value.id"
             >
             </date-field>
