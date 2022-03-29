@@ -115,6 +115,9 @@ interface StaticLemmaRow {
   secondaryLiterature: null|Array<SecondaryCitation>,
   zoteroKeysBy: string[],
   zoteroKeysAbout: string[],
+  bioNote?: string|null,
+  kinship?: string|null,
+  religion?: string|null,
 }
 
 /**
