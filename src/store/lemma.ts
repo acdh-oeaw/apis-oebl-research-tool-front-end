@@ -44,8 +44,8 @@ class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<SerializedLemmaRow, number>
   public constructor() {
     super('LemmaDb', {allowEmptyDB: true})
-    this.version(7).stores({
-      lemmas: 'id,firstName,lastName,gender,dateOfBirth,dateOfDeath,gnd,loc,viaf_id,selected'
+    this.version(8).stores({
+      lemmas: 'id,firstName,lastName,gender,dateOfBirth,dateOfDeath,gnd,loc,viaf_id,selected,bioNote,kinship,religion'
     })
     this.lemmas = this.table('lemmas')
   }
@@ -690,7 +690,10 @@ LemmaStore {
       zoteroKeysBy: [],
       zoteroKeysAbout: [],
       professionDetail: 'random profession',
-      professionGroup: {'id': 7, 'name': 'random profession group'}
+      professionGroup: {'id': 7, 'name': 'random profession group'},
+      bioNote: 'Geboren und aufgewachsen in Untertupfingen.',
+      kinship: 'Tanten und Onkel. Ein Schwager, aber keine Schwester.',
+      religion: 'Römisch-orthodox.',
     }
   }
 
@@ -748,6 +751,9 @@ LemmaStore {
       secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
       zoteroKeysBy: rs.zoteroKeysBy as string[],
       zoteroKeysAbout: rs.zoteroKeysAbout as string[],
+      bioNote: rs.bioNote,
+      kinship: rs.kinship,
+      religion: rs.religion,
     }
   }
 
