@@ -171,11 +171,22 @@
               style="min-height: 60px"
               label="Verwandtschaft"
               :allow-new-line="true"
+              :value="value.kinship"
+              @input="debouncedUpdateData({kinship: $event })"
             />
             <text-field
               style="min-height: 60px"
               label="Lebenslauf"
               :allow-new-line="true"
+              :value="value.bioNote"
+              @input="debouncedUpdateData({bioNote: $event })"
+            />
+            <text-field
+              style="min-height: 60px"
+              label="Religiöses Bekenntnis"
+              :allow-new-line="true"
+              :value="value.religion"
+              @input="debouncedUpdateData({religion: $event })"
             />
           </v-card-text>
           <h4
