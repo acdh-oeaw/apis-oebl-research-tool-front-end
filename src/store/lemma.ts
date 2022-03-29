@@ -556,17 +556,18 @@ LemmaStore {
     await this.loadRemoteLemmaLists()
   }
 
-  async addLemma(l: LemmaRow, listId: number) {
+  async addLemma(lemmaRow: LemmaRow, listId: number) {
+    this._lemmas.push(lemmaRow);
     await ResearchService.researchApiV1LemmaresearchCreate(({
       listId,
       lemmas: [ {
-        ...l,
-        dateOfBirth: l.dateOfBirth.generateISO_OnlyDate(),
-        dateOfDeath: l.dateOfDeath.generateISO_OnlyDate(),
-        firstName: l.firstName || undefined,
-        lastName: l.lastName || undefined,
+        ...lemmaRow,
+        dateOfBirth: lemmaRow.dateOfBirth.generateISO_OnlyDate(),
+        dateOfDeath: lemmaRow.dateOfDeath.generateISO_OnlyDate(),
+        firstName: lemmaRow.firstName || undefined,
+        lastName: lemmaRow.lastName || undefined,
         selected: false,
-        gnd: l.gnd,
+        gnd: lemmaRow.gnd,
       } ]
     }))
   }
