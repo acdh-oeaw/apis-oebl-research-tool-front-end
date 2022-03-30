@@ -13,8 +13,12 @@ import type { PaginatedListList } from '../models/PaginatedListList';
 import type { PatchedLemmaResearchPatchAPIViewRequest } from '../models/PatchedLemmaResearchPatchAPIViewRequest';
 import type { PatchedListRequest } from '../models/PatchedListRequest';
 import { request as __request } from '../core/request';
+import { isEqual } from 'lodash';
 
 export class ResearchService {
+
+    static lemmaResearchPatchCache: Map<number, PatchedLemmaResearchPatchAPIViewRequest>
+
 
     /**
      * APIView to process scraping requests
@@ -85,6 +89,32 @@ export class ResearchService {
         return result.body;
     }
 
+
+    // Check if anything has changed in the patch request for lemma research
+    static uptodatePatchCacheExists(
+        id: number,
+        requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
+    ): boolean {
+        if (requestBody === undefined) {
+            return false;
+        }
+
+        let uptodate = false;
+
+        if (this.lemmaResearchPatchCache.has(id)) {
+            const cached = this.lemmaResearchPatchCache.get(id);
+            uptodate = isEqual(cached, requestBody);
+        }
+
+        if (!uptodate) {
+            this.lemmaResearchPatchCache.set(id, requestBody);
+        }
+
+        return uptodate;
+        
+    }
+
+
     /**
      * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
      * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
@@ -97,7 +127,13 @@ export class ResearchService {
     public static async researchApiV1LemmaresearchPartialUpdate(
         id: number,
         requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
-    ): Promise<ListPatchAPIViewResponse> {
+    ): Promise<ListPatchAPIViewResponse|null> {
+
+        // Catch feedback loops: https://gitlab.com/acdh-oeaw/oebl/oebl-research-tool-front-end/-/issues/43
+        if (this.uptodatePatchCacheExists(id, requestBody)) {
+            return null;
+        }
+        
         const result = await __request({
             method: 'PATCH',
             path: `/research/api/v1/lemmaresearch/${id}/`,
