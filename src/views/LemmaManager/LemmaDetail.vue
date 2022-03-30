@@ -188,6 +188,19 @@
               :value="value.religion"
               @input="debouncedUpdateData({religion: $event })"
             />
+            <v-spacer class="my-5" />
+            <text-field
+              style="min-height: 60px"
+              label="Berufsbezeichnung"
+              :allow-new-line="true"
+              :value="value.professionDetail"
+              @input="debouncedUpdateData({professionDetail: $event })"
+            />
+            <profession-group-field
+            :key="value.id + '_professionGroupField'"
+              :selected="value.professionGroup"
+              @input="debouncedUpdateData({professionGroup: $event })"
+            />
           </v-card-text>
           <h4
             class="py-2 px-5 background"
@@ -342,6 +355,7 @@ import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 import ZoteroManager from './ZoteroManager.vue'
+import ProfessionGroupField from '../lib/ProfessionGroupField.vue'
 
 const DRAG_CLASS = 'drag-over'
 
@@ -364,6 +378,7 @@ interface ZoteroSection {
     VueFileList,
     ZoteroManager,
     FullNameArrayField,
+    ProfessionGroupField,
   }
 })
 export default class LemmaDetail extends Vue {
