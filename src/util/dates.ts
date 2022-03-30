@@ -120,7 +120,6 @@ export class DateContainer {
         if (this._cachedFirstDateOfTheMonth === undefined) {
             return defaultMaxDate;
         }
-
         return getDaysInMonth(this._cachedFirstDateOfTheMonth);
     }
 
@@ -152,16 +151,19 @@ export class DateContainer {
     static createDate(calendarYear: number, calendarMonth: number, calendarDate: number): Date | undefined {
         const indexMonth = calendarMonth - 1;
         const date = new Date();
+        date.setDate(calendarDate); // Do this first! Else: if today > 28/29 and calenderMonth = 2 -> overflow, due to default
         date.setFullYear(calendarYear);
         date.setMonth(indexMonth);
-        date.setDate(calendarDate);
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
         date.setMilliseconds(0);
 
+
         // No overflow!
         if (date.getMonth() !== indexMonth) {
+            console.debug({date, indexMonth, calendarMonth, calendarDate, calendarYear})
+
             return undefined;
         }
 
