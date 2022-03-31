@@ -124,10 +124,18 @@
                       class="rounded-lg"
                       small
                       >{{ genderOption }}</v-btn>
-                  </div>
-                  
-                  <v-btn :value="null" text class="rounded-lg" small>unbekannt</v-btn>
+                  </div>                  
                 </v-btn-toggle>
+                  <v-btn
+                    v-if="value.gender"
+                    @click="value.gender = null"
+                    text
+                    small
+                    class="rounded-lg ml-5"
+                    icon
+                    >
+                    <v-icon>mdi-close-circle-outline</v-icon>
+                  </v-btn>
               </template>
             </text-field>
             <text-field
