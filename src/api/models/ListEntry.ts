@@ -10,12 +10,12 @@ export type ListEntry = {
     readonly gnd?: Array<string>;
     selected?: boolean;
     list?: ListSerializerLimited | null;
-    firstName: string;
+    firstName?: string | null;
     lastName: string;
     alternativeNames?: Array<Record<string, any>> | null;
-    dateOfBirth: string;
-    dateOfDeath: string;
-    gender: string;
+    dateOfBirth?: string | null;
+    dateOfDeath?: string | null;
+    gender?: string | null;
     columns_user?: Record<string, any> | null;
     columns_scrape?: Record<string, any> | null;
     deleted: boolean;
@@ -24,7 +24,7 @@ export type ListEntry = {
     gideonLegacyLiterature?: Array<Record<string, any>> | null;
     zoteroKeysBy?: Array<string> | null;
     zoteroKeysAbout?: Array<string> | null;
-    professionDetail: string;
+    professionDetail?: string | null;
     professionGroup?: ProfessionGroup | null;
     bioNote?: string | null;
     kinship?: string | null;
