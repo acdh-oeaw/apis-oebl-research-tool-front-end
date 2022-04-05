@@ -27,8 +27,8 @@ export class DateContainer {
     }
 
     // YYYY-MM-DD
-    static fromISO_OnlyDate(isoDate: string | undefined): DateContainer {
-        if (isoDate === undefined) {
+    static fromISO_OnlyDate(isoDate: string | undefined | null ): DateContainer {
+        if ((isoDate === undefined) || (isoDate === null)) {
             return new DateContainer();
         }
         const parseAttempt = parseISO(isoDate);
@@ -47,16 +47,16 @@ export class DateContainer {
     }
 
     // YYYY-MM-DD
-    generateISO_OnlyDate(): string | undefined {
+    generateISO_OnlyDate(): string | null {
         if (
             this.isEmpty()
             || (!this.isValid())
         ) {
-            return undefined;
+            return null;
         }
         const date = this.getDateObject();
         if (date === undefined) {
-            return undefined;
+            return null;
         }
         return formatISO(date, { representation: 'date' });
     }

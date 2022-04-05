@@ -36,11 +36,10 @@
       placeholder="JJJJ"
       ref="year"
     />
-    <!--  https://gitlab.com/acdh-oeaw/oebl/oebl-irs-devops/-/issues/42
     <v-spacer></v-spacer>
     <v-btn @click="localDate.reset()" icon>
       <v-icon>mdi-close-circle-outline</v-icon>
-    </v-btn> -->
+    </v-btn>
   </v-input>
 </template>
 <script lang="ts">
