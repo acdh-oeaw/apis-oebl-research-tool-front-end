@@ -116,7 +116,7 @@ export default class LobidGndSearch extends Vue {
   async searchGnd() {
     this.loading = true
     this.resultGnds = (await findPerson({
-      firstName: this.localLemma!.firstName,
+      firstName: this.localLemma!.firstName ?? null,
       lastName: this.localLemma!.lastName,
       dateOfBirth: null,
       dateOfDeath: null,

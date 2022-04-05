@@ -96,7 +96,7 @@ export default class IssueStore {
     if (id === null) {
       return [];
     }
-    this._statuses = ((await WorkflowService.workflowApiV1LemmaStatusList(id)).results) as WithId<LemmaStatus>[]
+    this._statuses = ((await WorkflowService.workflowApiV1LemmaStatusList([id, ])).results) as WithId<LemmaStatus>[]
   }
 
   async loadLabels() {

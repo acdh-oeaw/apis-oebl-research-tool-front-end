@@ -21,15 +21,15 @@ export class ResearchService {
      *
      * Args:
      * GenericAPIView ([type]): [description]
-     * @param deleted deleted
+     * @param deleted
      * @param limit Number of results to return per page.
-     * @param modifiedAfter modified_after
+     * @param modifiedAfter
      * @param offset The initial index from which to return the results.
      * @returns PaginatedListEntryList
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchList(
-        deleted?: string,
+        deleted?: boolean,
         limit?: number,
         modifiedAfter?: string,
         offset?: number,
@@ -126,10 +126,10 @@ export class ResearchService {
     }
 
     /**
-     * @param editor editor
+     * @param editor
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param title title
+     * @param title
      * @returns PaginatedListList
      * @throws ApiError
      */

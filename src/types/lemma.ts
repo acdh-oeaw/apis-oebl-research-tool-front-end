@@ -99,7 +99,7 @@ interface StaticLemmaRow {
   columns_user: UserColumn,
   columns_scrape?: ServerResearchLemma['columns_scrape'],
   selected: boolean,
-  firstName: string,
+  firstName?: string | null,
   lastName: string,
   alternativeNames: Array<FullName>,
   dateOfBirth: DateContainer,
@@ -185,7 +185,7 @@ export interface Row {
 export type Table<T> = T[]
 
 export interface ImportablePerson {
-  firstName: string|null
+  firstName?: string|null
   lastName: string|null
   dateOfBirth: string|null
   dateOfDeath: string|null

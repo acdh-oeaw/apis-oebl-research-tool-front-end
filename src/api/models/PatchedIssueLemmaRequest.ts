@@ -2,10 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PatchedLemmaRequest } from './PatchedLemmaRequest';
+import type { LemmaRequest } from './LemmaRequest';
 
 export type PatchedIssueLemmaRequest = {
-    lemma?: PatchedLemmaRequest;
+    lemma?: LemmaRequest;
     order?: number;
     issue?: number | null;
     status?: number | null;

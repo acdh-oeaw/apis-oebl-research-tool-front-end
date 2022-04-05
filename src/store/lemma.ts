@@ -486,7 +486,7 @@ LemmaStore {
   private async updateLemmasOnServer(newLemmas: LemmaRow[]) {
     const serializedLemmas = newLemmas.map(serializeLemmaRow);
     await Promise.all(serializedLemmas.map(async (lemma) => {
-      await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, lemma);
+      await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, {... lemma, firstName: lemma.firstName === null ? undefined : lemma.firstName});
     }))
   }
 
@@ -764,9 +764,8 @@ LemmaStore {
     onProgress?: (ls: LemmaRow[]) => any
   ): Promise<LemmaRow[]> {
     // get the first page
-    const deletedParam = deleted !== undefined ? deleted.toString() : undefined
     const firstRes = await ResearchService.researchApiV1LemmaresearchList(
-      deletedParam,
+      deleted,
       chunkSize,
       modifiedAfter
     )
@@ -780,7 +779,7 @@ LemmaStore {
       let lemmaAgg: LemmaRow[] = []
       for (let i = 1; i < chunks; i++) {
         const res = (await ResearchService.researchApiV1LemmaresearchList(
-          deletedParam,
+          deleted,
           chunkSize,
           modifiedAfter, i * chunkSize
         )).results as ServerResearchLemma[] || []
