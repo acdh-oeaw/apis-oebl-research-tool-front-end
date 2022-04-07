@@ -231,158 +231,158 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param kind kind
-     * @param kindId kind__id
-     * @param kindIdIn kind__id__in
-     * @param kindIn kind__in
-     * @param kindName kind__name
-     * @param kindNameIcontains kind__name__icontains
-     * @param kindNameIregex kind__name__iregex
-     * @param kindNameIsnull kind__name__isnull
-     * @param kindStatus kind__status
-     * @param kindStatusIcontains kind__status__icontains
-     * @param kindStatusIregex kind__status__iregex
-     * @param kindStatusIsnull kind__status__isnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kind
+     * @param kindId
+     * @param kindIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindName
+     * @param kindNameIcontains
+     * @param kindNameIregex
+     * @param kindNameIsnull
+     * @param kindStatus
+     * @param kindStatusIcontains
+     * @param kindStatusIregex
+     * @param kindStatusIsnull
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedEventList
      * @throws ApiError
      */
     public static async apisApiEntitiesEventList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         kind?: number,
         kindId?: number,
-        kindIdIn?: number,
-        kindIn?: number,
+        kindIdIn?: Array<number>,
+        kindIn?: Array<number>,
         kindName?: string,
         kindNameIcontains?: string,
         kindNameIregex?: string,
-        kindNameIsnull?: string,
+        kindNameIsnull?: boolean,
         kindStatus?: 'ac' | 'can' | 'del' | 'rej',
-        kindStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        kindStatusIcontains?: string,
+        kindStatusIregex?: string,
+        kindStatusIsnull?: boolean,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -392,47 +392,47 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedEventList> {
         const result = await __request({
             method: 'GET',
@@ -650,158 +650,158 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param kind kind
-     * @param kindId kind__id
-     * @param kindIdIn kind__id__in
-     * @param kindIn kind__in
-     * @param kindName kind__name
-     * @param kindNameIcontains kind__name__icontains
-     * @param kindNameIregex kind__name__iregex
-     * @param kindNameIsnull kind__name__isnull
-     * @param kindStatus kind__status
-     * @param kindStatusIcontains kind__status__icontains
-     * @param kindStatusIregex kind__status__iregex
-     * @param kindStatusIsnull kind__status__isnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kind
+     * @param kindId
+     * @param kindIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindName
+     * @param kindNameIcontains
+     * @param kindNameIregex
+     * @param kindNameIsnull
+     * @param kindStatus
+     * @param kindStatusIcontains
+     * @param kindStatusIregex
+     * @param kindStatusIsnull
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedInstitutionList
      * @throws ApiError
      */
     public static async apisApiEntitiesInstitutionList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         kind?: number,
         kindId?: number,
-        kindIdIn?: number,
-        kindIn?: number,
+        kindIdIn?: Array<number>,
+        kindIn?: Array<number>,
         kindName?: string,
         kindNameIcontains?: string,
         kindNameIregex?: string,
-        kindNameIsnull?: string,
+        kindNameIsnull?: boolean,
         kindStatus?: 'ac' | 'can' | 'del' | 'rej',
-        kindStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        kindStatusIcontains?: string,
+        kindStatusIregex?: string,
+        kindStatusIsnull?: boolean,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -811,47 +811,47 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedInstitutionList> {
         const result = await __request({
             method: 'GET',
@@ -1069,189 +1069,189 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
-     * @param firstName first_name
-     * @param firstNameIcontains first_name__icontains
-     * @param firstNameIregex first_name__iregex
-     * @param firstNameIsnull first_name__isnull
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
+     * @param firstName
+     * @param firstNameIcontains
+     * @param firstNameIregex
+     * @param firstNameIsnull
      * @param format
-     * @param gender gender
-     * @param genderIcontains gender__icontains
-     * @param genderIregex gender__iregex
-     * @param genderIsnull gender__isnull
-     * @param id id
-     * @param idIn id__in
+     * @param gender
+     * @param genderIcontains
+     * @param genderIregex
+     * @param genderIsnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param profession profession
-     * @param professionId profession__id
-     * @param professionIdIn profession__id__in
-     * @param professionName profession__name
-     * @param professionNameIcontains profession__name__icontains
-     * @param professionNameIregex profession__name__iregex
-     * @param professionNameIsnull profession__name__isnull
-     * @param professionStatus profession__status
-     * @param professionStatusIcontains profession__status__icontains
-     * @param professionStatusIregex profession__status__iregex
-     * @param professionStatusIsnull profession__status__isnull
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
-     * @param title title
-     * @param titleAbbreviation title__abbreviation
-     * @param titleAbbreviationIcontains title__abbreviation__icontains
-     * @param titleAbbreviationIregex title__abbreviation__iregex
-     * @param titleAbbreviationIsnull title__abbreviation__isnull
-     * @param titleId title__id
-     * @param titleIdIn title__id__in
-     * @param titleName title__name
-     * @param titleNameIcontains title__name__icontains
-     * @param titleNameIregex title__name__iregex
-     * @param titleNameIsnull title__name__isnull
-     * @param titleStatus title__status
-     * @param titleStatusIcontains title__status__icontains
-     * @param titleStatusIregex title__status__iregex
-     * @param titleStatusIsnull title__status__isnull
+     * @param profession
+     * @param professionId
+     * @param professionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param professionName
+     * @param professionNameIcontains
+     * @param professionNameIregex
+     * @param professionNameIsnull
+     * @param professionStatus
+     * @param professionStatusIcontains
+     * @param professionStatusIregex
+     * @param professionStatusIsnull
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param title
+     * @param titleAbbreviation
+     * @param titleAbbreviationIcontains
+     * @param titleAbbreviationIregex
+     * @param titleAbbreviationIsnull
+     * @param titleId
+     * @param titleIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param titleName
+     * @param titleNameIcontains
+     * @param titleNameIregex
+     * @param titleNameIsnull
+     * @param titleStatus
+     * @param titleStatusIcontains
+     * @param titleStatusIregex
+     * @param titleStatusIsnull
      * @returns PaginatedPersonList
      * @throws ApiError
      */
     public static async apisApiEntitiesPersonList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         firstName?: string,
         firstNameIcontains?: string,
         firstNameIregex?: string,
-        firstNameIsnull?: string,
+        firstNameIsnull?: boolean,
         format?: 'json' | 'json+net',
-        gender?: 'female' | 'male' | 'third gender',
-        genderIcontains?: 'female' | 'male' | 'third gender',
-        genderIregex?: 'female' | 'male' | 'third gender',
-        genderIsnull?: 'female' | 'male' | 'third gender',
+        gender?: 'female' | 'male' | 'third gender' | null,
+        genderIcontains?: string,
+        genderIregex?: string,
+        genderIsnull?: boolean,
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         profession?: Array<number>,
         professionId?: number,
-        professionIdIn?: number,
+        professionIdIn?: Array<number>,
         professionName?: string,
         professionNameIcontains?: string,
         professionNameIregex?: string,
-        professionNameIsnull?: string,
+        professionNameIsnull?: boolean,
         professionStatus?: 'ac' | 'can' | 'del' | 'rej',
-        professionStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        professionStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        professionStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        professionStatusIcontains?: string,
+        professionStatusIregex?: string,
+        professionStatusIsnull?: boolean,
         published?: boolean,
         references?: string,
         review?: boolean,
@@ -1259,62 +1259,62 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
         title?: Array<number>,
         titleAbbreviation?: string,
         titleAbbreviationIcontains?: string,
         titleAbbreviationIregex?: string,
-        titleAbbreviationIsnull?: string,
+        titleAbbreviationIsnull?: boolean,
         titleId?: number,
-        titleIdIn?: number,
+        titleIdIn?: Array<number>,
         titleName?: string,
         titleNameIcontains?: string,
         titleNameIregex?: string,
-        titleNameIsnull?: string,
+        titleNameIsnull?: boolean,
         titleStatus?: 'ac' | 'can' | 'del' | 'rej',
-        titleStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        titleStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        titleStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        titleStatusIcontains?: string,
+        titleStatusIregex?: string,
+        titleStatusIsnull?: boolean,
     ): Promise<PaginatedPersonList> {
         const result = await __request({
             method: 'GET',
@@ -1554,162 +1554,162 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param kind kind
-     * @param kindId kind__id
-     * @param kindIdIn kind__id__in
-     * @param kindIn kind__in
-     * @param kindName kind__name
-     * @param kindNameIcontains kind__name__icontains
-     * @param kindNameIregex kind__name__iregex
-     * @param kindNameIsnull kind__name__isnull
-     * @param kindStatus kind__status
-     * @param kindStatusIcontains kind__status__icontains
-     * @param kindStatusIregex kind__status__iregex
-     * @param kindStatusIsnull kind__status__isnull
-     * @param lat lat
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kind
+     * @param kindId
+     * @param kindIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindName
+     * @param kindNameIcontains
+     * @param kindNameIregex
+     * @param kindNameIsnull
+     * @param kindStatus
+     * @param kindStatusIcontains
+     * @param kindStatusIregex
+     * @param kindStatusIsnull
+     * @param lat
      * @param limit Number of results to return per page.
-     * @param lng lng
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param lng
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPlaceList
      * @throws ApiError
      */
     public static async apisApiEntitiesPlaceList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         kind?: number,
         kindId?: number,
-        kindIdIn?: number,
-        kindIn?: number,
+        kindIdIn?: Array<number>,
+        kindIn?: Array<number>,
         kindName?: string,
         kindNameIcontains?: string,
         kindNameIregex?: string,
-        kindNameIsnull?: string,
+        kindNameIsnull?: boolean,
         kindStatus?: 'ac' | 'can' | 'del' | 'rej',
-        kindStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        kindStatusIcontains?: string,
+        kindStatusIregex?: string,
+        kindStatusIsnull?: boolean,
         lat?: number,
         limit?: number,
         lng?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -1719,47 +1719,47 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPlaceList> {
         const result = await __request({
             method: 'GET',
@@ -1979,158 +1979,158 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param kind kind
-     * @param kindId kind__id
-     * @param kindIdIn kind__id__in
-     * @param kindIn kind__in
-     * @param kindName kind__name
-     * @param kindNameIcontains kind__name__icontains
-     * @param kindNameIregex kind__name__iregex
-     * @param kindNameIsnull kind__name__isnull
-     * @param kindStatus kind__status
-     * @param kindStatusIcontains kind__status__icontains
-     * @param kindStatusIregex kind__status__iregex
-     * @param kindStatusIsnull kind__status__isnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kind
+     * @param kindId
+     * @param kindIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindName
+     * @param kindNameIcontains
+     * @param kindNameIregex
+     * @param kindNameIsnull
+     * @param kindStatus
+     * @param kindStatusIcontains
+     * @param kindStatusIregex
+     * @param kindStatusIsnull
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedWorkList
      * @throws ApiError
      */
     public static async apisApiEntitiesWorkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         kind?: number,
         kindId?: number,
-        kindIdIn?: number,
-        kindIn?: number,
+        kindIdIn?: Array<number>,
+        kindIn?: Array<number>,
         kindName?: string,
         kindNameIcontains?: string,
         kindNameIregex?: string,
-        kindNameIsnull?: string,
+        kindNameIsnull?: boolean,
         kindStatus?: 'ac' | 'can' | 'del' | 'rej',
-        kindStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        kindStatusIcontains?: string,
+        kindStatusIregex?: string,
+        kindStatusIsnull?: boolean,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -2140,47 +2140,47 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedWorkList> {
         const result = await __request({
             method: 'GET',
@@ -2398,68 +2398,68 @@ export class ApisService {
     }
 
     /**
-     * @param collectionType collection_type
-     * @param collectionTypeId collection_type__id
-     * @param collectionTypeIdIn collection_type__id__in
-     * @param collectionTypeIn collection_type__in
-     * @param collectionTypeName collection_type__name
-     * @param collectionTypeNameIcontains collection_type__name__icontains
-     * @param collectionTypeNameIregex collection_type__name__iregex
-     * @param collectionTypeNameIsnull collection_type__name__isnull
-     * @param collectionTypeStatus collection_type__status
-     * @param collectionTypeStatusIcontains collection_type__status__icontains
-     * @param collectionTypeStatusIregex collection_type__status__iregex
-     * @param collectionTypeStatusIsnull collection_type__status__isnull
-     * @param description description
+     * @param collectionType
+     * @param collectionTypeId
+     * @param collectionTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionTypeName
+     * @param collectionTypeNameIcontains
+     * @param collectionTypeNameIregex
+     * @param collectionTypeNameIsnull
+     * @param collectionTypeStatus
+     * @param collectionTypeStatusIcontains
+     * @param collectionTypeStatusIregex
+     * @param collectionTypeStatusIsnull
+     * @param description
      * @param format
-     * @param groupsAllowed groups_allowed
-     * @param groupsAllowedId groups_allowed__id
-     * @param groupsAllowedIdIn groups_allowed__id__in
-     * @param groupsAllowedName groups_allowed__name
-     * @param groupsAllowedNameIcontains groups_allowed__name__icontains
-     * @param groupsAllowedNameIregex groups_allowed__name__iregex
-     * @param groupsAllowedNameIsnull groups_allowed__name__isnull
-     * @param id id
-     * @param idIn id__in
+     * @param groupsAllowed
+     * @param groupsAllowedId
+     * @param groupsAllowedIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param groupsAllowedName
+     * @param groupsAllowedNameIcontains
+     * @param groupsAllowedNameIregex
+     * @param groupsAllowedNameIsnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param published published
+     * @param published
      * @returns PaginatedCollectionList
      * @throws ApiError
      */
     public static async apisApiMetainfoCollectionList(
         collectionType?: number,
         collectionTypeId?: number,
-        collectionTypeIdIn?: number,
-        collectionTypeIn?: number,
+        collectionTypeIdIn?: Array<number>,
+        collectionTypeIn?: Array<number>,
         collectionTypeName?: string,
         collectionTypeNameIcontains?: string,
         collectionTypeNameIregex?: string,
-        collectionTypeNameIsnull?: string,
+        collectionTypeNameIsnull?: boolean,
         collectionTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        collectionTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        collectionTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        collectionTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        collectionTypeStatusIcontains?: string,
+        collectionTypeStatusIregex?: string,
+        collectionTypeStatusIsnull?: boolean,
         description?: string,
         format?: 'json' | 'json+net',
         groupsAllowed?: Array<number>,
         groupsAllowedId?: number,
-        groupsAllowedIdIn?: number,
+        groupsAllowedIdIn?: Array<number>,
         groupsAllowedName?: string,
         groupsAllowedNameIcontains?: string,
         groupsAllowedNameIregex?: string,
-        groupsAllowedNameIsnull?: string,
+        groupsAllowedNameIsnull?: boolean,
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         published?: boolean,
     ): Promise<PaginatedCollectionList> {
@@ -2610,27 +2610,27 @@ export class ApisService {
     }
 
     /**
-     * @param author author
-     * @param authorIcontains author__icontains
-     * @param authorIregex author__iregex
-     * @param authorIsnull author__isnull
+     * @param author
+     * @param authorIcontains
+     * @param authorIregex
+     * @param authorIsnull
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param indexed indexed
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param indexed
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param origFilename orig_filename
-     * @param origFilenameIcontains orig_filename__icontains
-     * @param origFilenameIregex orig_filename__iregex
-     * @param origFilenameIsnull orig_filename__isnull
-     * @param origId orig_id
-     * @param origIdIn orig_id__in
-     * @param origIdRange orig_id__range
-     * @param pubinfo pubinfo
-     * @param pubinfoIcontains pubinfo__icontains
-     * @param pubinfoIregex pubinfo__iregex
-     * @param pubinfoIsnull pubinfo__isnull
+     * @param origFilename
+     * @param origFilenameIcontains
+     * @param origFilenameIregex
+     * @param origFilenameIsnull
+     * @param origId
+     * @param origIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param origIdRange Mehrere Werte können durch Kommas getrennt sein.
+     * @param pubinfo
+     * @param pubinfoIcontains
+     * @param pubinfoIregex
+     * @param pubinfoIsnull
      * @returns PaginatedSourceList
      * @throws ApiError
      */
@@ -2638,24 +2638,24 @@ export class ApisService {
         author?: string,
         authorIcontains?: string,
         authorIregex?: string,
-        authorIsnull?: string,
+        authorIsnull?: boolean,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         indexed?: boolean,
         limit?: number,
         offset?: number,
         origFilename?: string,
         origFilenameIcontains?: string,
         origFilenameIregex?: string,
-        origFilenameIsnull?: string,
+        origFilenameIsnull?: boolean,
         origId?: number,
-        origIdIn?: number,
-        origIdRange?: number,
+        origIdIn?: Array<number>,
+        origIdRange?: Array<number>,
         pubinfo?: string,
         pubinfoIcontains?: string,
         pubinfoIregex?: string,
-        pubinfoIsnull?: string,
+        pubinfoIsnull?: boolean,
     ): Promise<PaginatedSourceList> {
         const result = await __request({
             method: 'GET',
@@ -2795,134 +2795,134 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedTempentityclassList
      * @throws ApiError
      */
     public static async apisApiMetainfoTempentityclassList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -2932,47 +2932,47 @@ export class ApisService {
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedTempentityclassList> {
         const result = await __request({
             method: 'GET',
@@ -3179,92 +3179,92 @@ export class ApisService {
 
     /**
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param kind kind
-     * @param kindEntity kind__entity
-     * @param kindEntityIcontains kind__entity__icontains
-     * @param kindEntityIregex kind__entity__iregex
-     * @param kindEntityIsnull kind__entity__isnull
-     * @param kindId kind__id
-     * @param kindIdIn kind__id__in
-     * @param kindIn kind__in
-     * @param kindLang kind__lang
-     * @param kindLangIcontains kind__lang__icontains
-     * @param kindLangIregex kind__lang__iregex
-     * @param kindLangIsnull kind__lang__isnull
-     * @param kindName kind__name
-     * @param kindNameIcontains kind__name__icontains
-     * @param kindNameIregex kind__name__iregex
-     * @param kindNameIsnull kind__name__isnull
-     * @param kindStatus kind__status
-     * @param kindStatusIcontains kind__status__icontains
-     * @param kindStatusIregex kind__status__iregex
-     * @param kindStatusIsnull kind__status__isnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kind
+     * @param kindEntity
+     * @param kindEntityIcontains
+     * @param kindEntityIregex
+     * @param kindEntityIsnull
+     * @param kindId
+     * @param kindIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param kindLang
+     * @param kindLangIcontains
+     * @param kindLangIregex
+     * @param kindLangIsnull
+     * @param kindName
+     * @param kindNameIcontains
+     * @param kindNameIregex
+     * @param kindNameIsnull
+     * @param kindStatus
+     * @param kindStatusIcontains
+     * @param kindStatusIregex
+     * @param kindStatusIsnull
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param text text
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param text
      * @returns PaginatedTextList
      * @throws ApiError
      */
     public static async apisApiMetainfoTextList(
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         kind?: number,
         kindEntity?: string,
         kindEntityIcontains?: string,
         kindEntityIregex?: string,
-        kindEntityIsnull?: string,
+        kindEntityIsnull?: boolean,
         kindId?: number,
-        kindIdIn?: number,
-        kindIn?: number,
+        kindIdIn?: Array<number>,
+        kindIn?: Array<number>,
         kindLang?: string,
         kindLangIcontains?: string,
         kindLangIregex?: string,
-        kindLangIsnull?: string,
+        kindLangIsnull?: boolean,
         kindName?: string,
         kindNameIcontains?: string,
         kindNameIregex?: string,
-        kindNameIsnull?: string,
+        kindNameIsnull?: boolean,
         kindStatus?: 'ac' | 'can' | 'del' | 'rej',
-        kindStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        kindStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        kindStatusIcontains?: string,
+        kindStatusIregex?: string,
+        kindStatusIsnull?: boolean,
         limit?: number,
         offset?: number,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         text?: string,
     ): Promise<PaginatedTextList> {
         const result = await __request({
@@ -3432,19 +3432,19 @@ export class ApisService {
     }
 
     /**
-     * @param domain domain
-     * @param domainIcontains domain__icontains
-     * @param domainIregex domain__iregex
-     * @param domainIsnull domain__isnull
+     * @param domain
+     * @param domainIcontains
+     * @param domainIregex
+     * @param domainIsnull
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param loaded loaded
-     * @param loadedTime loaded_time
+     * @param loaded
+     * @param loadedTime
      * @param offset The initial index from which to return the results.
-     * @param rdfLink rdf_link
-     * @param uri uri
+     * @param rdfLink
+     * @param uri
      * @returns PaginatedUriList
      * @throws ApiError
      */
@@ -3452,10 +3452,10 @@ export class ApisService {
         domain?: string,
         domainIcontains?: string,
         domainIregex?: string,
-        domainIsnull?: string,
+        domainIsnull?: boolean,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         loaded?: boolean,
         loadedTime?: string,
@@ -3593,17 +3593,17 @@ export class ApisService {
     }
 
     /**
-     * @param confidence confidence
+     * @param confidence
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param responsible responsible
-     * @param responsibleIcontains responsible__icontains
-     * @param responsibleIregex responsible__iregex
-     * @param responsibleIsnull responsible__isnull
-     * @param uri uri
+     * @param responsible
+     * @param responsibleIcontains
+     * @param responsibleIregex
+     * @param responsibleIsnull
+     * @param uri
      * @returns PaginatedUricandidateList
      * @throws ApiError
      */
@@ -3611,13 +3611,13 @@ export class ApisService {
         confidence?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         offset?: number,
         responsible?: string,
         responsibleIcontains?: string,
         responsibleIregex?: string,
-        responsibleIsnull?: string,
+        responsibleIsnull?: boolean,
         uri?: string,
     ): Promise<PaginatedUricandidateList> {
         const result = await __request({
@@ -3748,262 +3748,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedEventA related_eventA
-     * @param relatedEventAEndDate related_eventA__end_date
-     * @param relatedEventAEndDateGt related_eventA__end_date__gt
-     * @param relatedEventAEndDateLt related_eventA__end_date__lt
-     * @param relatedEventAEndDateYear related_eventA__end_date__year
-     * @param relatedEventAEndDateYearGt related_eventA__end_date__year__gt
-     * @param relatedEventAEndDateYearLt related_eventA__end_date__year__lt
-     * @param relatedEventAEndDateWritten related_eventA__end_date_written
-     * @param relatedEventAEndDateWrittenIcontains related_eventA__end_date_written__icontains
-     * @param relatedEventAEndDateWrittenIregex related_eventA__end_date_written__iregex
-     * @param relatedEventAEndDateWrittenIsnull related_eventA__end_date_written__isnull
-     * @param relatedEventAEndEndDate related_eventA__end_end_date
-     * @param relatedEventAEndEndDateGt related_eventA__end_end_date__gt
-     * @param relatedEventAEndEndDateLt related_eventA__end_end_date__lt
-     * @param relatedEventAEndEndDateYear related_eventA__end_end_date__year
-     * @param relatedEventAEndEndDateYearGt related_eventA__end_end_date__year__gt
-     * @param relatedEventAEndEndDateYearLt related_eventA__end_end_date__year__lt
-     * @param relatedEventAEndStartDate related_eventA__end_start_date
-     * @param relatedEventAEndStartDateGt related_eventA__end_start_date__gt
-     * @param relatedEventAEndStartDateLt related_eventA__end_start_date__lt
-     * @param relatedEventAEndStartDateYear related_eventA__end_start_date__year
-     * @param relatedEventAEndStartDateYearGt related_eventA__end_start_date__year__gt
-     * @param relatedEventAEndStartDateYearLt related_eventA__end_start_date__year__lt
-     * @param relatedEventAId related_eventA__id
-     * @param relatedEventAIdIn related_eventA__id__in
-     * @param relatedEventAIn related_eventA__in
-     * @param relatedEventAName related_eventA__name
-     * @param relatedEventANameIcontains related_eventA__name__icontains
-     * @param relatedEventANameIregex related_eventA__name__iregex
-     * @param relatedEventANameIsnull related_eventA__name__isnull
-     * @param relatedEventAStartDate related_eventA__start_date
-     * @param relatedEventAStartDateGt related_eventA__start_date__gt
-     * @param relatedEventAStartDateLt related_eventA__start_date__lt
-     * @param relatedEventAStartDateYear related_eventA__start_date__year
-     * @param relatedEventAStartDateYearGt related_eventA__start_date__year__gt
-     * @param relatedEventAStartDateYearLt related_eventA__start_date__year__lt
-     * @param relatedEventAStartDateWritten related_eventA__start_date_written
-     * @param relatedEventAStartDateWrittenIcontains related_eventA__start_date_written__icontains
-     * @param relatedEventAStartDateWrittenIregex related_eventA__start_date_written__iregex
-     * @param relatedEventAStartDateWrittenIsnull related_eventA__start_date_written__isnull
-     * @param relatedEventAStartEndDate related_eventA__start_end_date
-     * @param relatedEventAStartEndDateGt related_eventA__start_end_date__gt
-     * @param relatedEventAStartEndDateLt related_eventA__start_end_date__lt
-     * @param relatedEventAStartEndDateYear related_eventA__start_end_date__year
-     * @param relatedEventAStartEndDateYearGt related_eventA__start_end_date__year__gt
-     * @param relatedEventAStartEndDateYearLt related_eventA__start_end_date__year__lt
-     * @param relatedEventAStartStartDate related_eventA__start_start_date
-     * @param relatedEventAStartStartDateGt related_eventA__start_start_date__gt
-     * @param relatedEventAStartStartDateLt related_eventA__start_start_date__lt
-     * @param relatedEventAStartStartDateYear related_eventA__start_start_date__year
-     * @param relatedEventAStartStartDateYearGt related_eventA__start_start_date__year__gt
-     * @param relatedEventAStartStartDateYearLt related_eventA__start_start_date__year__lt
-     * @param relatedEventAStatus related_eventA__status
-     * @param relatedEventAStatusIcontains related_eventA__status__icontains
-     * @param relatedEventAStatusIregex related_eventA__status__iregex
-     * @param relatedEventAStatusIsnull related_eventA__status__isnull
-     * @param relatedEventB related_eventB
-     * @param relatedEventBEndDate related_eventB__end_date
-     * @param relatedEventBEndDateGt related_eventB__end_date__gt
-     * @param relatedEventBEndDateLt related_eventB__end_date__lt
-     * @param relatedEventBEndDateYear related_eventB__end_date__year
-     * @param relatedEventBEndDateYearGt related_eventB__end_date__year__gt
-     * @param relatedEventBEndDateYearLt related_eventB__end_date__year__lt
-     * @param relatedEventBEndDateWritten related_eventB__end_date_written
-     * @param relatedEventBEndDateWrittenIcontains related_eventB__end_date_written__icontains
-     * @param relatedEventBEndDateWrittenIregex related_eventB__end_date_written__iregex
-     * @param relatedEventBEndDateWrittenIsnull related_eventB__end_date_written__isnull
-     * @param relatedEventBEndEndDate related_eventB__end_end_date
-     * @param relatedEventBEndEndDateGt related_eventB__end_end_date__gt
-     * @param relatedEventBEndEndDateLt related_eventB__end_end_date__lt
-     * @param relatedEventBEndEndDateYear related_eventB__end_end_date__year
-     * @param relatedEventBEndEndDateYearGt related_eventB__end_end_date__year__gt
-     * @param relatedEventBEndEndDateYearLt related_eventB__end_end_date__year__lt
-     * @param relatedEventBEndStartDate related_eventB__end_start_date
-     * @param relatedEventBEndStartDateGt related_eventB__end_start_date__gt
-     * @param relatedEventBEndStartDateLt related_eventB__end_start_date__lt
-     * @param relatedEventBEndStartDateYear related_eventB__end_start_date__year
-     * @param relatedEventBEndStartDateYearGt related_eventB__end_start_date__year__gt
-     * @param relatedEventBEndStartDateYearLt related_eventB__end_start_date__year__lt
-     * @param relatedEventBId related_eventB__id
-     * @param relatedEventBIdIn related_eventB__id__in
-     * @param relatedEventBIn related_eventB__in
-     * @param relatedEventBName related_eventB__name
-     * @param relatedEventBNameIcontains related_eventB__name__icontains
-     * @param relatedEventBNameIregex related_eventB__name__iregex
-     * @param relatedEventBNameIsnull related_eventB__name__isnull
-     * @param relatedEventBStartDate related_eventB__start_date
-     * @param relatedEventBStartDateGt related_eventB__start_date__gt
-     * @param relatedEventBStartDateLt related_eventB__start_date__lt
-     * @param relatedEventBStartDateYear related_eventB__start_date__year
-     * @param relatedEventBStartDateYearGt related_eventB__start_date__year__gt
-     * @param relatedEventBStartDateYearLt related_eventB__start_date__year__lt
-     * @param relatedEventBStartDateWritten related_eventB__start_date_written
-     * @param relatedEventBStartDateWrittenIcontains related_eventB__start_date_written__icontains
-     * @param relatedEventBStartDateWrittenIregex related_eventB__start_date_written__iregex
-     * @param relatedEventBStartDateWrittenIsnull related_eventB__start_date_written__isnull
-     * @param relatedEventBStartEndDate related_eventB__start_end_date
-     * @param relatedEventBStartEndDateGt related_eventB__start_end_date__gt
-     * @param relatedEventBStartEndDateLt related_eventB__start_end_date__lt
-     * @param relatedEventBStartEndDateYear related_eventB__start_end_date__year
-     * @param relatedEventBStartEndDateYearGt related_eventB__start_end_date__year__gt
-     * @param relatedEventBStartEndDateYearLt related_eventB__start_end_date__year__lt
-     * @param relatedEventBStartStartDate related_eventB__start_start_date
-     * @param relatedEventBStartStartDateGt related_eventB__start_start_date__gt
-     * @param relatedEventBStartStartDateLt related_eventB__start_start_date__lt
-     * @param relatedEventBStartStartDateYear related_eventB__start_start_date__year
-     * @param relatedEventBStartStartDateYearGt related_eventB__start_start_date__year__gt
-     * @param relatedEventBStartStartDateYearLt related_eventB__start_start_date__year__lt
-     * @param relatedEventBStatus related_eventB__status
-     * @param relatedEventBStatusIcontains related_eventB__status__icontains
-     * @param relatedEventBStatusIregex related_eventB__status__iregex
-     * @param relatedEventBStatusIsnull related_eventB__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedEventA
+     * @param relatedEventAEndDate
+     * @param relatedEventAEndDateGt
+     * @param relatedEventAEndDateLt
+     * @param relatedEventAEndDateYear
+     * @param relatedEventAEndDateYearGt
+     * @param relatedEventAEndDateYearLt
+     * @param relatedEventAEndDateWritten
+     * @param relatedEventAEndDateWrittenIcontains
+     * @param relatedEventAEndDateWrittenIregex
+     * @param relatedEventAEndDateWrittenIsnull
+     * @param relatedEventAEndEndDate
+     * @param relatedEventAEndEndDateGt
+     * @param relatedEventAEndEndDateLt
+     * @param relatedEventAEndEndDateYear
+     * @param relatedEventAEndEndDateYearGt
+     * @param relatedEventAEndEndDateYearLt
+     * @param relatedEventAEndStartDate
+     * @param relatedEventAEndStartDateGt
+     * @param relatedEventAEndStartDateLt
+     * @param relatedEventAEndStartDateYear
+     * @param relatedEventAEndStartDateYearGt
+     * @param relatedEventAEndStartDateYearLt
+     * @param relatedEventAId
+     * @param relatedEventAIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventAIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventAName
+     * @param relatedEventANameIcontains
+     * @param relatedEventANameIregex
+     * @param relatedEventANameIsnull
+     * @param relatedEventAStartDate
+     * @param relatedEventAStartDateGt
+     * @param relatedEventAStartDateLt
+     * @param relatedEventAStartDateYear
+     * @param relatedEventAStartDateYearGt
+     * @param relatedEventAStartDateYearLt
+     * @param relatedEventAStartDateWritten
+     * @param relatedEventAStartDateWrittenIcontains
+     * @param relatedEventAStartDateWrittenIregex
+     * @param relatedEventAStartDateWrittenIsnull
+     * @param relatedEventAStartEndDate
+     * @param relatedEventAStartEndDateGt
+     * @param relatedEventAStartEndDateLt
+     * @param relatedEventAStartEndDateYear
+     * @param relatedEventAStartEndDateYearGt
+     * @param relatedEventAStartEndDateYearLt
+     * @param relatedEventAStartStartDate
+     * @param relatedEventAStartStartDateGt
+     * @param relatedEventAStartStartDateLt
+     * @param relatedEventAStartStartDateYear
+     * @param relatedEventAStartStartDateYearGt
+     * @param relatedEventAStartStartDateYearLt
+     * @param relatedEventAStatus
+     * @param relatedEventAStatusIcontains
+     * @param relatedEventAStatusIregex
+     * @param relatedEventAStatusIsnull
+     * @param relatedEventB
+     * @param relatedEventBEndDate
+     * @param relatedEventBEndDateGt
+     * @param relatedEventBEndDateLt
+     * @param relatedEventBEndDateYear
+     * @param relatedEventBEndDateYearGt
+     * @param relatedEventBEndDateYearLt
+     * @param relatedEventBEndDateWritten
+     * @param relatedEventBEndDateWrittenIcontains
+     * @param relatedEventBEndDateWrittenIregex
+     * @param relatedEventBEndDateWrittenIsnull
+     * @param relatedEventBEndEndDate
+     * @param relatedEventBEndEndDateGt
+     * @param relatedEventBEndEndDateLt
+     * @param relatedEventBEndEndDateYear
+     * @param relatedEventBEndEndDateYearGt
+     * @param relatedEventBEndEndDateYearLt
+     * @param relatedEventBEndStartDate
+     * @param relatedEventBEndStartDateGt
+     * @param relatedEventBEndStartDateLt
+     * @param relatedEventBEndStartDateYear
+     * @param relatedEventBEndStartDateYearGt
+     * @param relatedEventBEndStartDateYearLt
+     * @param relatedEventBId
+     * @param relatedEventBIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventBIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventBName
+     * @param relatedEventBNameIcontains
+     * @param relatedEventBNameIregex
+     * @param relatedEventBNameIsnull
+     * @param relatedEventBStartDate
+     * @param relatedEventBStartDateGt
+     * @param relatedEventBStartDateLt
+     * @param relatedEventBStartDateYear
+     * @param relatedEventBStartDateYearGt
+     * @param relatedEventBStartDateYearLt
+     * @param relatedEventBStartDateWritten
+     * @param relatedEventBStartDateWrittenIcontains
+     * @param relatedEventBStartDateWrittenIregex
+     * @param relatedEventBStartDateWrittenIsnull
+     * @param relatedEventBStartEndDate
+     * @param relatedEventBStartEndDateGt
+     * @param relatedEventBStartEndDateLt
+     * @param relatedEventBStartEndDateYear
+     * @param relatedEventBStartEndDateYearGt
+     * @param relatedEventBStartEndDateYearLt
+     * @param relatedEventBStartStartDate
+     * @param relatedEventBStartStartDateGt
+     * @param relatedEventBStartStartDateLt
+     * @param relatedEventBStartStartDateYear
+     * @param relatedEventBStartStartDateYearGt
+     * @param relatedEventBStartStartDateYearLt
+     * @param relatedEventBStatus
+     * @param relatedEventBStatusIcontains
+     * @param relatedEventBStatusIregex
+     * @param relatedEventBStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedEventeventList
      * @throws ApiError
      */
     public static async apisApiRelationsEventeventList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -4012,176 +4012,176 @@ export class ApisService {
         relatedEventAEndDate?: string,
         relatedEventAEndDateGt?: string,
         relatedEventAEndDateLt?: string,
-        relatedEventAEndDateYear?: string,
-        relatedEventAEndDateYearGt?: string,
-        relatedEventAEndDateYearLt?: string,
+        relatedEventAEndDateYear?: number,
+        relatedEventAEndDateYearGt?: number,
+        relatedEventAEndDateYearLt?: number,
         relatedEventAEndDateWritten?: string,
         relatedEventAEndDateWrittenIcontains?: string,
         relatedEventAEndDateWrittenIregex?: string,
-        relatedEventAEndDateWrittenIsnull?: string,
+        relatedEventAEndDateWrittenIsnull?: boolean,
         relatedEventAEndEndDate?: string,
         relatedEventAEndEndDateGt?: string,
         relatedEventAEndEndDateLt?: string,
-        relatedEventAEndEndDateYear?: string,
-        relatedEventAEndEndDateYearGt?: string,
-        relatedEventAEndEndDateYearLt?: string,
+        relatedEventAEndEndDateYear?: number,
+        relatedEventAEndEndDateYearGt?: number,
+        relatedEventAEndEndDateYearLt?: number,
         relatedEventAEndStartDate?: string,
         relatedEventAEndStartDateGt?: string,
         relatedEventAEndStartDateLt?: string,
-        relatedEventAEndStartDateYear?: string,
-        relatedEventAEndStartDateYearGt?: string,
-        relatedEventAEndStartDateYearLt?: string,
+        relatedEventAEndStartDateYear?: number,
+        relatedEventAEndStartDateYearGt?: number,
+        relatedEventAEndStartDateYearLt?: number,
         relatedEventAId?: number,
-        relatedEventAIdIn?: number,
-        relatedEventAIn?: number,
+        relatedEventAIdIn?: Array<number>,
+        relatedEventAIn?: Array<number>,
         relatedEventAName?: string,
         relatedEventANameIcontains?: string,
         relatedEventANameIregex?: string,
-        relatedEventANameIsnull?: string,
+        relatedEventANameIsnull?: boolean,
         relatedEventAStartDate?: string,
         relatedEventAStartDateGt?: string,
         relatedEventAStartDateLt?: string,
-        relatedEventAStartDateYear?: string,
-        relatedEventAStartDateYearGt?: string,
-        relatedEventAStartDateYearLt?: string,
+        relatedEventAStartDateYear?: number,
+        relatedEventAStartDateYearGt?: number,
+        relatedEventAStartDateYearLt?: number,
         relatedEventAStartDateWritten?: string,
         relatedEventAStartDateWrittenIcontains?: string,
         relatedEventAStartDateWrittenIregex?: string,
-        relatedEventAStartDateWrittenIsnull?: string,
+        relatedEventAStartDateWrittenIsnull?: boolean,
         relatedEventAStartEndDate?: string,
         relatedEventAStartEndDateGt?: string,
         relatedEventAStartEndDateLt?: string,
-        relatedEventAStartEndDateYear?: string,
-        relatedEventAStartEndDateYearGt?: string,
-        relatedEventAStartEndDateYearLt?: string,
+        relatedEventAStartEndDateYear?: number,
+        relatedEventAStartEndDateYearGt?: number,
+        relatedEventAStartEndDateYearLt?: number,
         relatedEventAStartStartDate?: string,
         relatedEventAStartStartDateGt?: string,
         relatedEventAStartStartDateLt?: string,
-        relatedEventAStartStartDateYear?: string,
-        relatedEventAStartStartDateYearGt?: string,
-        relatedEventAStartStartDateYearLt?: string,
+        relatedEventAStartStartDateYear?: number,
+        relatedEventAStartStartDateYearGt?: number,
+        relatedEventAStartStartDateYearLt?: number,
         relatedEventAStatus?: string,
         relatedEventAStatusIcontains?: string,
         relatedEventAStatusIregex?: string,
-        relatedEventAStatusIsnull?: string,
+        relatedEventAStatusIsnull?: boolean,
         relatedEventB?: number,
         relatedEventBEndDate?: string,
         relatedEventBEndDateGt?: string,
         relatedEventBEndDateLt?: string,
-        relatedEventBEndDateYear?: string,
-        relatedEventBEndDateYearGt?: string,
-        relatedEventBEndDateYearLt?: string,
+        relatedEventBEndDateYear?: number,
+        relatedEventBEndDateYearGt?: number,
+        relatedEventBEndDateYearLt?: number,
         relatedEventBEndDateWritten?: string,
         relatedEventBEndDateWrittenIcontains?: string,
         relatedEventBEndDateWrittenIregex?: string,
-        relatedEventBEndDateWrittenIsnull?: string,
+        relatedEventBEndDateWrittenIsnull?: boolean,
         relatedEventBEndEndDate?: string,
         relatedEventBEndEndDateGt?: string,
         relatedEventBEndEndDateLt?: string,
-        relatedEventBEndEndDateYear?: string,
-        relatedEventBEndEndDateYearGt?: string,
-        relatedEventBEndEndDateYearLt?: string,
+        relatedEventBEndEndDateYear?: number,
+        relatedEventBEndEndDateYearGt?: number,
+        relatedEventBEndEndDateYearLt?: number,
         relatedEventBEndStartDate?: string,
         relatedEventBEndStartDateGt?: string,
         relatedEventBEndStartDateLt?: string,
-        relatedEventBEndStartDateYear?: string,
-        relatedEventBEndStartDateYearGt?: string,
-        relatedEventBEndStartDateYearLt?: string,
+        relatedEventBEndStartDateYear?: number,
+        relatedEventBEndStartDateYearGt?: number,
+        relatedEventBEndStartDateYearLt?: number,
         relatedEventBId?: number,
-        relatedEventBIdIn?: number,
-        relatedEventBIn?: number,
+        relatedEventBIdIn?: Array<number>,
+        relatedEventBIn?: Array<number>,
         relatedEventBName?: string,
         relatedEventBNameIcontains?: string,
         relatedEventBNameIregex?: string,
-        relatedEventBNameIsnull?: string,
+        relatedEventBNameIsnull?: boolean,
         relatedEventBStartDate?: string,
         relatedEventBStartDateGt?: string,
         relatedEventBStartDateLt?: string,
-        relatedEventBStartDateYear?: string,
-        relatedEventBStartDateYearGt?: string,
-        relatedEventBStartDateYearLt?: string,
+        relatedEventBStartDateYear?: number,
+        relatedEventBStartDateYearGt?: number,
+        relatedEventBStartDateYearLt?: number,
         relatedEventBStartDateWritten?: string,
         relatedEventBStartDateWrittenIcontains?: string,
         relatedEventBStartDateWrittenIregex?: string,
-        relatedEventBStartDateWrittenIsnull?: string,
+        relatedEventBStartDateWrittenIsnull?: boolean,
         relatedEventBStartEndDate?: string,
         relatedEventBStartEndDateGt?: string,
         relatedEventBStartEndDateLt?: string,
-        relatedEventBStartEndDateYear?: string,
-        relatedEventBStartEndDateYearGt?: string,
-        relatedEventBStartEndDateYearLt?: string,
+        relatedEventBStartEndDateYear?: number,
+        relatedEventBStartEndDateYearGt?: number,
+        relatedEventBStartEndDateYearLt?: number,
         relatedEventBStartStartDate?: string,
         relatedEventBStartStartDateGt?: string,
         relatedEventBStartStartDateLt?: string,
-        relatedEventBStartStartDateYear?: string,
-        relatedEventBStartStartDateYearGt?: string,
-        relatedEventBStartStartDateYearLt?: string,
+        relatedEventBStartStartDateYear?: number,
+        relatedEventBStartStartDateYearGt?: number,
+        relatedEventBStartStartDateYearLt?: number,
         relatedEventBStatus?: string,
         relatedEventBStatusIcontains?: string,
         relatedEventBStatusIregex?: string,
-        relatedEventBStatusIsnull?: string,
+        relatedEventBStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedEventeventList> {
         const result = await __request({
             method: 'GET',
@@ -4515,262 +4515,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedEvent related_event
-     * @param relatedEventEndDate related_event__end_date
-     * @param relatedEventEndDateGt related_event__end_date__gt
-     * @param relatedEventEndDateLt related_event__end_date__lt
-     * @param relatedEventEndDateYear related_event__end_date__year
-     * @param relatedEventEndDateYearGt related_event__end_date__year__gt
-     * @param relatedEventEndDateYearLt related_event__end_date__year__lt
-     * @param relatedEventEndDateWritten related_event__end_date_written
-     * @param relatedEventEndDateWrittenIcontains related_event__end_date_written__icontains
-     * @param relatedEventEndDateWrittenIregex related_event__end_date_written__iregex
-     * @param relatedEventEndDateWrittenIsnull related_event__end_date_written__isnull
-     * @param relatedEventEndEndDate related_event__end_end_date
-     * @param relatedEventEndEndDateGt related_event__end_end_date__gt
-     * @param relatedEventEndEndDateLt related_event__end_end_date__lt
-     * @param relatedEventEndEndDateYear related_event__end_end_date__year
-     * @param relatedEventEndEndDateYearGt related_event__end_end_date__year__gt
-     * @param relatedEventEndEndDateYearLt related_event__end_end_date__year__lt
-     * @param relatedEventEndStartDate related_event__end_start_date
-     * @param relatedEventEndStartDateGt related_event__end_start_date__gt
-     * @param relatedEventEndStartDateLt related_event__end_start_date__lt
-     * @param relatedEventEndStartDateYear related_event__end_start_date__year
-     * @param relatedEventEndStartDateYearGt related_event__end_start_date__year__gt
-     * @param relatedEventEndStartDateYearLt related_event__end_start_date__year__lt
-     * @param relatedEventId related_event__id
-     * @param relatedEventIdIn related_event__id__in
-     * @param relatedEventIn related_event__in
-     * @param relatedEventName related_event__name
-     * @param relatedEventNameIcontains related_event__name__icontains
-     * @param relatedEventNameIregex related_event__name__iregex
-     * @param relatedEventNameIsnull related_event__name__isnull
-     * @param relatedEventStartDate related_event__start_date
-     * @param relatedEventStartDateGt related_event__start_date__gt
-     * @param relatedEventStartDateLt related_event__start_date__lt
-     * @param relatedEventStartDateYear related_event__start_date__year
-     * @param relatedEventStartDateYearGt related_event__start_date__year__gt
-     * @param relatedEventStartDateYearLt related_event__start_date__year__lt
-     * @param relatedEventStartDateWritten related_event__start_date_written
-     * @param relatedEventStartDateWrittenIcontains related_event__start_date_written__icontains
-     * @param relatedEventStartDateWrittenIregex related_event__start_date_written__iregex
-     * @param relatedEventStartDateWrittenIsnull related_event__start_date_written__isnull
-     * @param relatedEventStartEndDate related_event__start_end_date
-     * @param relatedEventStartEndDateGt related_event__start_end_date__gt
-     * @param relatedEventStartEndDateLt related_event__start_end_date__lt
-     * @param relatedEventStartEndDateYear related_event__start_end_date__year
-     * @param relatedEventStartEndDateYearGt related_event__start_end_date__year__gt
-     * @param relatedEventStartEndDateYearLt related_event__start_end_date__year__lt
-     * @param relatedEventStartStartDate related_event__start_start_date
-     * @param relatedEventStartStartDateGt related_event__start_start_date__gt
-     * @param relatedEventStartStartDateLt related_event__start_start_date__lt
-     * @param relatedEventStartStartDateYear related_event__start_start_date__year
-     * @param relatedEventStartStartDateYearGt related_event__start_start_date__year__gt
-     * @param relatedEventStartStartDateYearLt related_event__start_start_date__year__lt
-     * @param relatedEventStatus related_event__status
-     * @param relatedEventStatusIcontains related_event__status__icontains
-     * @param relatedEventStatusIregex related_event__status__iregex
-     * @param relatedEventStatusIsnull related_event__status__isnull
-     * @param relatedWork related_work
-     * @param relatedWorkEndDate related_work__end_date
-     * @param relatedWorkEndDateGt related_work__end_date__gt
-     * @param relatedWorkEndDateLt related_work__end_date__lt
-     * @param relatedWorkEndDateYear related_work__end_date__year
-     * @param relatedWorkEndDateYearGt related_work__end_date__year__gt
-     * @param relatedWorkEndDateYearLt related_work__end_date__year__lt
-     * @param relatedWorkEndDateWritten related_work__end_date_written
-     * @param relatedWorkEndDateWrittenIcontains related_work__end_date_written__icontains
-     * @param relatedWorkEndDateWrittenIregex related_work__end_date_written__iregex
-     * @param relatedWorkEndDateWrittenIsnull related_work__end_date_written__isnull
-     * @param relatedWorkEndEndDate related_work__end_end_date
-     * @param relatedWorkEndEndDateGt related_work__end_end_date__gt
-     * @param relatedWorkEndEndDateLt related_work__end_end_date__lt
-     * @param relatedWorkEndEndDateYear related_work__end_end_date__year
-     * @param relatedWorkEndEndDateYearGt related_work__end_end_date__year__gt
-     * @param relatedWorkEndEndDateYearLt related_work__end_end_date__year__lt
-     * @param relatedWorkEndStartDate related_work__end_start_date
-     * @param relatedWorkEndStartDateGt related_work__end_start_date__gt
-     * @param relatedWorkEndStartDateLt related_work__end_start_date__lt
-     * @param relatedWorkEndStartDateYear related_work__end_start_date__year
-     * @param relatedWorkEndStartDateYearGt related_work__end_start_date__year__gt
-     * @param relatedWorkEndStartDateYearLt related_work__end_start_date__year__lt
-     * @param relatedWorkId related_work__id
-     * @param relatedWorkIdIn related_work__id__in
-     * @param relatedWorkIn related_work__in
-     * @param relatedWorkName related_work__name
-     * @param relatedWorkNameIcontains related_work__name__icontains
-     * @param relatedWorkNameIregex related_work__name__iregex
-     * @param relatedWorkNameIsnull related_work__name__isnull
-     * @param relatedWorkStartDate related_work__start_date
-     * @param relatedWorkStartDateGt related_work__start_date__gt
-     * @param relatedWorkStartDateLt related_work__start_date__lt
-     * @param relatedWorkStartDateYear related_work__start_date__year
-     * @param relatedWorkStartDateYearGt related_work__start_date__year__gt
-     * @param relatedWorkStartDateYearLt related_work__start_date__year__lt
-     * @param relatedWorkStartDateWritten related_work__start_date_written
-     * @param relatedWorkStartDateWrittenIcontains related_work__start_date_written__icontains
-     * @param relatedWorkStartDateWrittenIregex related_work__start_date_written__iregex
-     * @param relatedWorkStartDateWrittenIsnull related_work__start_date_written__isnull
-     * @param relatedWorkStartEndDate related_work__start_end_date
-     * @param relatedWorkStartEndDateGt related_work__start_end_date__gt
-     * @param relatedWorkStartEndDateLt related_work__start_end_date__lt
-     * @param relatedWorkStartEndDateYear related_work__start_end_date__year
-     * @param relatedWorkStartEndDateYearGt related_work__start_end_date__year__gt
-     * @param relatedWorkStartEndDateYearLt related_work__start_end_date__year__lt
-     * @param relatedWorkStartStartDate related_work__start_start_date
-     * @param relatedWorkStartStartDateGt related_work__start_start_date__gt
-     * @param relatedWorkStartStartDateLt related_work__start_start_date__lt
-     * @param relatedWorkStartStartDateYear related_work__start_start_date__year
-     * @param relatedWorkStartStartDateYearGt related_work__start_start_date__year__gt
-     * @param relatedWorkStartStartDateYearLt related_work__start_start_date__year__lt
-     * @param relatedWorkStatus related_work__status
-     * @param relatedWorkStatusIcontains related_work__status__icontains
-     * @param relatedWorkStatusIregex related_work__status__iregex
-     * @param relatedWorkStatusIsnull related_work__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedEvent
+     * @param relatedEventEndDate
+     * @param relatedEventEndDateGt
+     * @param relatedEventEndDateLt
+     * @param relatedEventEndDateYear
+     * @param relatedEventEndDateYearGt
+     * @param relatedEventEndDateYearLt
+     * @param relatedEventEndDateWritten
+     * @param relatedEventEndDateWrittenIcontains
+     * @param relatedEventEndDateWrittenIregex
+     * @param relatedEventEndDateWrittenIsnull
+     * @param relatedEventEndEndDate
+     * @param relatedEventEndEndDateGt
+     * @param relatedEventEndEndDateLt
+     * @param relatedEventEndEndDateYear
+     * @param relatedEventEndEndDateYearGt
+     * @param relatedEventEndEndDateYearLt
+     * @param relatedEventEndStartDate
+     * @param relatedEventEndStartDateGt
+     * @param relatedEventEndStartDateLt
+     * @param relatedEventEndStartDateYear
+     * @param relatedEventEndStartDateYearGt
+     * @param relatedEventEndStartDateYearLt
+     * @param relatedEventId
+     * @param relatedEventIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventName
+     * @param relatedEventNameIcontains
+     * @param relatedEventNameIregex
+     * @param relatedEventNameIsnull
+     * @param relatedEventStartDate
+     * @param relatedEventStartDateGt
+     * @param relatedEventStartDateLt
+     * @param relatedEventStartDateYear
+     * @param relatedEventStartDateYearGt
+     * @param relatedEventStartDateYearLt
+     * @param relatedEventStartDateWritten
+     * @param relatedEventStartDateWrittenIcontains
+     * @param relatedEventStartDateWrittenIregex
+     * @param relatedEventStartDateWrittenIsnull
+     * @param relatedEventStartEndDate
+     * @param relatedEventStartEndDateGt
+     * @param relatedEventStartEndDateLt
+     * @param relatedEventStartEndDateYear
+     * @param relatedEventStartEndDateYearGt
+     * @param relatedEventStartEndDateYearLt
+     * @param relatedEventStartStartDate
+     * @param relatedEventStartStartDateGt
+     * @param relatedEventStartStartDateLt
+     * @param relatedEventStartStartDateYear
+     * @param relatedEventStartStartDateYearGt
+     * @param relatedEventStartStartDateYearLt
+     * @param relatedEventStatus
+     * @param relatedEventStatusIcontains
+     * @param relatedEventStatusIregex
+     * @param relatedEventStatusIsnull
+     * @param relatedWork
+     * @param relatedWorkEndDate
+     * @param relatedWorkEndDateGt
+     * @param relatedWorkEndDateLt
+     * @param relatedWorkEndDateYear
+     * @param relatedWorkEndDateYearGt
+     * @param relatedWorkEndDateYearLt
+     * @param relatedWorkEndDateWritten
+     * @param relatedWorkEndDateWrittenIcontains
+     * @param relatedWorkEndDateWrittenIregex
+     * @param relatedWorkEndDateWrittenIsnull
+     * @param relatedWorkEndEndDate
+     * @param relatedWorkEndEndDateGt
+     * @param relatedWorkEndEndDateLt
+     * @param relatedWorkEndEndDateYear
+     * @param relatedWorkEndEndDateYearGt
+     * @param relatedWorkEndEndDateYearLt
+     * @param relatedWorkEndStartDate
+     * @param relatedWorkEndStartDateGt
+     * @param relatedWorkEndStartDateLt
+     * @param relatedWorkEndStartDateYear
+     * @param relatedWorkEndStartDateYearGt
+     * @param relatedWorkEndStartDateYearLt
+     * @param relatedWorkId
+     * @param relatedWorkIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkName
+     * @param relatedWorkNameIcontains
+     * @param relatedWorkNameIregex
+     * @param relatedWorkNameIsnull
+     * @param relatedWorkStartDate
+     * @param relatedWorkStartDateGt
+     * @param relatedWorkStartDateLt
+     * @param relatedWorkStartDateYear
+     * @param relatedWorkStartDateYearGt
+     * @param relatedWorkStartDateYearLt
+     * @param relatedWorkStartDateWritten
+     * @param relatedWorkStartDateWrittenIcontains
+     * @param relatedWorkStartDateWrittenIregex
+     * @param relatedWorkStartDateWrittenIsnull
+     * @param relatedWorkStartEndDate
+     * @param relatedWorkStartEndDateGt
+     * @param relatedWorkStartEndDateLt
+     * @param relatedWorkStartEndDateYear
+     * @param relatedWorkStartEndDateYearGt
+     * @param relatedWorkStartEndDateYearLt
+     * @param relatedWorkStartStartDate
+     * @param relatedWorkStartStartDateGt
+     * @param relatedWorkStartStartDateLt
+     * @param relatedWorkStartStartDateYear
+     * @param relatedWorkStartStartDateYearGt
+     * @param relatedWorkStartStartDateYearLt
+     * @param relatedWorkStatus
+     * @param relatedWorkStatusIcontains
+     * @param relatedWorkStatusIregex
+     * @param relatedWorkStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedEventworkList
      * @throws ApiError
      */
     public static async apisApiRelationsEventworkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -4779,176 +4779,176 @@ export class ApisService {
         relatedEventEndDate?: string,
         relatedEventEndDateGt?: string,
         relatedEventEndDateLt?: string,
-        relatedEventEndDateYear?: string,
-        relatedEventEndDateYearGt?: string,
-        relatedEventEndDateYearLt?: string,
+        relatedEventEndDateYear?: number,
+        relatedEventEndDateYearGt?: number,
+        relatedEventEndDateYearLt?: number,
         relatedEventEndDateWritten?: string,
         relatedEventEndDateWrittenIcontains?: string,
         relatedEventEndDateWrittenIregex?: string,
-        relatedEventEndDateWrittenIsnull?: string,
+        relatedEventEndDateWrittenIsnull?: boolean,
         relatedEventEndEndDate?: string,
         relatedEventEndEndDateGt?: string,
         relatedEventEndEndDateLt?: string,
-        relatedEventEndEndDateYear?: string,
-        relatedEventEndEndDateYearGt?: string,
-        relatedEventEndEndDateYearLt?: string,
+        relatedEventEndEndDateYear?: number,
+        relatedEventEndEndDateYearGt?: number,
+        relatedEventEndEndDateYearLt?: number,
         relatedEventEndStartDate?: string,
         relatedEventEndStartDateGt?: string,
         relatedEventEndStartDateLt?: string,
-        relatedEventEndStartDateYear?: string,
-        relatedEventEndStartDateYearGt?: string,
-        relatedEventEndStartDateYearLt?: string,
+        relatedEventEndStartDateYear?: number,
+        relatedEventEndStartDateYearGt?: number,
+        relatedEventEndStartDateYearLt?: number,
         relatedEventId?: number,
-        relatedEventIdIn?: number,
-        relatedEventIn?: number,
+        relatedEventIdIn?: Array<number>,
+        relatedEventIn?: Array<number>,
         relatedEventName?: string,
         relatedEventNameIcontains?: string,
         relatedEventNameIregex?: string,
-        relatedEventNameIsnull?: string,
+        relatedEventNameIsnull?: boolean,
         relatedEventStartDate?: string,
         relatedEventStartDateGt?: string,
         relatedEventStartDateLt?: string,
-        relatedEventStartDateYear?: string,
-        relatedEventStartDateYearGt?: string,
-        relatedEventStartDateYearLt?: string,
+        relatedEventStartDateYear?: number,
+        relatedEventStartDateYearGt?: number,
+        relatedEventStartDateYearLt?: number,
         relatedEventStartDateWritten?: string,
         relatedEventStartDateWrittenIcontains?: string,
         relatedEventStartDateWrittenIregex?: string,
-        relatedEventStartDateWrittenIsnull?: string,
+        relatedEventStartDateWrittenIsnull?: boolean,
         relatedEventStartEndDate?: string,
         relatedEventStartEndDateGt?: string,
         relatedEventStartEndDateLt?: string,
-        relatedEventStartEndDateYear?: string,
-        relatedEventStartEndDateYearGt?: string,
-        relatedEventStartEndDateYearLt?: string,
+        relatedEventStartEndDateYear?: number,
+        relatedEventStartEndDateYearGt?: number,
+        relatedEventStartEndDateYearLt?: number,
         relatedEventStartStartDate?: string,
         relatedEventStartStartDateGt?: string,
         relatedEventStartStartDateLt?: string,
-        relatedEventStartStartDateYear?: string,
-        relatedEventStartStartDateYearGt?: string,
-        relatedEventStartStartDateYearLt?: string,
+        relatedEventStartStartDateYear?: number,
+        relatedEventStartStartDateYearGt?: number,
+        relatedEventStartStartDateYearLt?: number,
         relatedEventStatus?: string,
         relatedEventStatusIcontains?: string,
         relatedEventStatusIregex?: string,
-        relatedEventStatusIsnull?: string,
+        relatedEventStatusIsnull?: boolean,
         relatedWork?: number,
         relatedWorkEndDate?: string,
         relatedWorkEndDateGt?: string,
         relatedWorkEndDateLt?: string,
-        relatedWorkEndDateYear?: string,
-        relatedWorkEndDateYearGt?: string,
-        relatedWorkEndDateYearLt?: string,
+        relatedWorkEndDateYear?: number,
+        relatedWorkEndDateYearGt?: number,
+        relatedWorkEndDateYearLt?: number,
         relatedWorkEndDateWritten?: string,
         relatedWorkEndDateWrittenIcontains?: string,
         relatedWorkEndDateWrittenIregex?: string,
-        relatedWorkEndDateWrittenIsnull?: string,
+        relatedWorkEndDateWrittenIsnull?: boolean,
         relatedWorkEndEndDate?: string,
         relatedWorkEndEndDateGt?: string,
         relatedWorkEndEndDateLt?: string,
-        relatedWorkEndEndDateYear?: string,
-        relatedWorkEndEndDateYearGt?: string,
-        relatedWorkEndEndDateYearLt?: string,
+        relatedWorkEndEndDateYear?: number,
+        relatedWorkEndEndDateYearGt?: number,
+        relatedWorkEndEndDateYearLt?: number,
         relatedWorkEndStartDate?: string,
         relatedWorkEndStartDateGt?: string,
         relatedWorkEndStartDateLt?: string,
-        relatedWorkEndStartDateYear?: string,
-        relatedWorkEndStartDateYearGt?: string,
-        relatedWorkEndStartDateYearLt?: string,
+        relatedWorkEndStartDateYear?: number,
+        relatedWorkEndStartDateYearGt?: number,
+        relatedWorkEndStartDateYearLt?: number,
         relatedWorkId?: number,
-        relatedWorkIdIn?: number,
-        relatedWorkIn?: number,
+        relatedWorkIdIn?: Array<number>,
+        relatedWorkIn?: Array<number>,
         relatedWorkName?: string,
         relatedWorkNameIcontains?: string,
         relatedWorkNameIregex?: string,
-        relatedWorkNameIsnull?: string,
+        relatedWorkNameIsnull?: boolean,
         relatedWorkStartDate?: string,
         relatedWorkStartDateGt?: string,
         relatedWorkStartDateLt?: string,
-        relatedWorkStartDateYear?: string,
-        relatedWorkStartDateYearGt?: string,
-        relatedWorkStartDateYearLt?: string,
+        relatedWorkStartDateYear?: number,
+        relatedWorkStartDateYearGt?: number,
+        relatedWorkStartDateYearLt?: number,
         relatedWorkStartDateWritten?: string,
         relatedWorkStartDateWrittenIcontains?: string,
         relatedWorkStartDateWrittenIregex?: string,
-        relatedWorkStartDateWrittenIsnull?: string,
+        relatedWorkStartDateWrittenIsnull?: boolean,
         relatedWorkStartEndDate?: string,
         relatedWorkStartEndDateGt?: string,
         relatedWorkStartEndDateLt?: string,
-        relatedWorkStartEndDateYear?: string,
-        relatedWorkStartEndDateYearGt?: string,
-        relatedWorkStartEndDateYearLt?: string,
+        relatedWorkStartEndDateYear?: number,
+        relatedWorkStartEndDateYearGt?: number,
+        relatedWorkStartEndDateYearLt?: number,
         relatedWorkStartStartDate?: string,
         relatedWorkStartStartDateGt?: string,
         relatedWorkStartStartDateLt?: string,
-        relatedWorkStartStartDateYear?: string,
-        relatedWorkStartStartDateYearGt?: string,
-        relatedWorkStartStartDateYearLt?: string,
+        relatedWorkStartStartDateYear?: number,
+        relatedWorkStartStartDateYearGt?: number,
+        relatedWorkStartStartDateYearLt?: number,
         relatedWorkStatus?: string,
         relatedWorkStatusIcontains?: string,
         relatedWorkStatusIregex?: string,
-        relatedWorkStatusIsnull?: string,
+        relatedWorkStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedEventworkList> {
         const result = await __request({
             method: 'GET',
@@ -5282,262 +5282,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedEvent related_event
-     * @param relatedEventEndDate related_event__end_date
-     * @param relatedEventEndDateGt related_event__end_date__gt
-     * @param relatedEventEndDateLt related_event__end_date__lt
-     * @param relatedEventEndDateYear related_event__end_date__year
-     * @param relatedEventEndDateYearGt related_event__end_date__year__gt
-     * @param relatedEventEndDateYearLt related_event__end_date__year__lt
-     * @param relatedEventEndDateWritten related_event__end_date_written
-     * @param relatedEventEndDateWrittenIcontains related_event__end_date_written__icontains
-     * @param relatedEventEndDateWrittenIregex related_event__end_date_written__iregex
-     * @param relatedEventEndDateWrittenIsnull related_event__end_date_written__isnull
-     * @param relatedEventEndEndDate related_event__end_end_date
-     * @param relatedEventEndEndDateGt related_event__end_end_date__gt
-     * @param relatedEventEndEndDateLt related_event__end_end_date__lt
-     * @param relatedEventEndEndDateYear related_event__end_end_date__year
-     * @param relatedEventEndEndDateYearGt related_event__end_end_date__year__gt
-     * @param relatedEventEndEndDateYearLt related_event__end_end_date__year__lt
-     * @param relatedEventEndStartDate related_event__end_start_date
-     * @param relatedEventEndStartDateGt related_event__end_start_date__gt
-     * @param relatedEventEndStartDateLt related_event__end_start_date__lt
-     * @param relatedEventEndStartDateYear related_event__end_start_date__year
-     * @param relatedEventEndStartDateYearGt related_event__end_start_date__year__gt
-     * @param relatedEventEndStartDateYearLt related_event__end_start_date__year__lt
-     * @param relatedEventId related_event__id
-     * @param relatedEventIdIn related_event__id__in
-     * @param relatedEventIn related_event__in
-     * @param relatedEventName related_event__name
-     * @param relatedEventNameIcontains related_event__name__icontains
-     * @param relatedEventNameIregex related_event__name__iregex
-     * @param relatedEventNameIsnull related_event__name__isnull
-     * @param relatedEventStartDate related_event__start_date
-     * @param relatedEventStartDateGt related_event__start_date__gt
-     * @param relatedEventStartDateLt related_event__start_date__lt
-     * @param relatedEventStartDateYear related_event__start_date__year
-     * @param relatedEventStartDateYearGt related_event__start_date__year__gt
-     * @param relatedEventStartDateYearLt related_event__start_date__year__lt
-     * @param relatedEventStartDateWritten related_event__start_date_written
-     * @param relatedEventStartDateWrittenIcontains related_event__start_date_written__icontains
-     * @param relatedEventStartDateWrittenIregex related_event__start_date_written__iregex
-     * @param relatedEventStartDateWrittenIsnull related_event__start_date_written__isnull
-     * @param relatedEventStartEndDate related_event__start_end_date
-     * @param relatedEventStartEndDateGt related_event__start_end_date__gt
-     * @param relatedEventStartEndDateLt related_event__start_end_date__lt
-     * @param relatedEventStartEndDateYear related_event__start_end_date__year
-     * @param relatedEventStartEndDateYearGt related_event__start_end_date__year__gt
-     * @param relatedEventStartEndDateYearLt related_event__start_end_date__year__lt
-     * @param relatedEventStartStartDate related_event__start_start_date
-     * @param relatedEventStartStartDateGt related_event__start_start_date__gt
-     * @param relatedEventStartStartDateLt related_event__start_start_date__lt
-     * @param relatedEventStartStartDateYear related_event__start_start_date__year
-     * @param relatedEventStartStartDateYearGt related_event__start_start_date__year__gt
-     * @param relatedEventStartStartDateYearLt related_event__start_start_date__year__lt
-     * @param relatedEventStatus related_event__status
-     * @param relatedEventStatusIcontains related_event__status__icontains
-     * @param relatedEventStatusIregex related_event__status__iregex
-     * @param relatedEventStatusIsnull related_event__status__isnull
-     * @param relatedInstitution related_institution
-     * @param relatedInstitutionEndDate related_institution__end_date
-     * @param relatedInstitutionEndDateGt related_institution__end_date__gt
-     * @param relatedInstitutionEndDateLt related_institution__end_date__lt
-     * @param relatedInstitutionEndDateYear related_institution__end_date__year
-     * @param relatedInstitutionEndDateYearGt related_institution__end_date__year__gt
-     * @param relatedInstitutionEndDateYearLt related_institution__end_date__year__lt
-     * @param relatedInstitutionEndDateWritten related_institution__end_date_written
-     * @param relatedInstitutionEndDateWrittenIcontains related_institution__end_date_written__icontains
-     * @param relatedInstitutionEndDateWrittenIregex related_institution__end_date_written__iregex
-     * @param relatedInstitutionEndDateWrittenIsnull related_institution__end_date_written__isnull
-     * @param relatedInstitutionEndEndDate related_institution__end_end_date
-     * @param relatedInstitutionEndEndDateGt related_institution__end_end_date__gt
-     * @param relatedInstitutionEndEndDateLt related_institution__end_end_date__lt
-     * @param relatedInstitutionEndEndDateYear related_institution__end_end_date__year
-     * @param relatedInstitutionEndEndDateYearGt related_institution__end_end_date__year__gt
-     * @param relatedInstitutionEndEndDateYearLt related_institution__end_end_date__year__lt
-     * @param relatedInstitutionEndStartDate related_institution__end_start_date
-     * @param relatedInstitutionEndStartDateGt related_institution__end_start_date__gt
-     * @param relatedInstitutionEndStartDateLt related_institution__end_start_date__lt
-     * @param relatedInstitutionEndStartDateYear related_institution__end_start_date__year
-     * @param relatedInstitutionEndStartDateYearGt related_institution__end_start_date__year__gt
-     * @param relatedInstitutionEndStartDateYearLt related_institution__end_start_date__year__lt
-     * @param relatedInstitutionId related_institution__id
-     * @param relatedInstitutionIdIn related_institution__id__in
-     * @param relatedInstitutionIn related_institution__in
-     * @param relatedInstitutionName related_institution__name
-     * @param relatedInstitutionNameIcontains related_institution__name__icontains
-     * @param relatedInstitutionNameIregex related_institution__name__iregex
-     * @param relatedInstitutionNameIsnull related_institution__name__isnull
-     * @param relatedInstitutionStartDate related_institution__start_date
-     * @param relatedInstitutionStartDateGt related_institution__start_date__gt
-     * @param relatedInstitutionStartDateLt related_institution__start_date__lt
-     * @param relatedInstitutionStartDateYear related_institution__start_date__year
-     * @param relatedInstitutionStartDateYearGt related_institution__start_date__year__gt
-     * @param relatedInstitutionStartDateYearLt related_institution__start_date__year__lt
-     * @param relatedInstitutionStartDateWritten related_institution__start_date_written
-     * @param relatedInstitutionStartDateWrittenIcontains related_institution__start_date_written__icontains
-     * @param relatedInstitutionStartDateWrittenIregex related_institution__start_date_written__iregex
-     * @param relatedInstitutionStartDateWrittenIsnull related_institution__start_date_written__isnull
-     * @param relatedInstitutionStartEndDate related_institution__start_end_date
-     * @param relatedInstitutionStartEndDateGt related_institution__start_end_date__gt
-     * @param relatedInstitutionStartEndDateLt related_institution__start_end_date__lt
-     * @param relatedInstitutionStartEndDateYear related_institution__start_end_date__year
-     * @param relatedInstitutionStartEndDateYearGt related_institution__start_end_date__year__gt
-     * @param relatedInstitutionStartEndDateYearLt related_institution__start_end_date__year__lt
-     * @param relatedInstitutionStartStartDate related_institution__start_start_date
-     * @param relatedInstitutionStartStartDateGt related_institution__start_start_date__gt
-     * @param relatedInstitutionStartStartDateLt related_institution__start_start_date__lt
-     * @param relatedInstitutionStartStartDateYear related_institution__start_start_date__year
-     * @param relatedInstitutionStartStartDateYearGt related_institution__start_start_date__year__gt
-     * @param relatedInstitutionStartStartDateYearLt related_institution__start_start_date__year__lt
-     * @param relatedInstitutionStatus related_institution__status
-     * @param relatedInstitutionStatusIcontains related_institution__status__icontains
-     * @param relatedInstitutionStatusIregex related_institution__status__iregex
-     * @param relatedInstitutionStatusIsnull related_institution__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedEvent
+     * @param relatedEventEndDate
+     * @param relatedEventEndDateGt
+     * @param relatedEventEndDateLt
+     * @param relatedEventEndDateYear
+     * @param relatedEventEndDateYearGt
+     * @param relatedEventEndDateYearLt
+     * @param relatedEventEndDateWritten
+     * @param relatedEventEndDateWrittenIcontains
+     * @param relatedEventEndDateWrittenIregex
+     * @param relatedEventEndDateWrittenIsnull
+     * @param relatedEventEndEndDate
+     * @param relatedEventEndEndDateGt
+     * @param relatedEventEndEndDateLt
+     * @param relatedEventEndEndDateYear
+     * @param relatedEventEndEndDateYearGt
+     * @param relatedEventEndEndDateYearLt
+     * @param relatedEventEndStartDate
+     * @param relatedEventEndStartDateGt
+     * @param relatedEventEndStartDateLt
+     * @param relatedEventEndStartDateYear
+     * @param relatedEventEndStartDateYearGt
+     * @param relatedEventEndStartDateYearLt
+     * @param relatedEventId
+     * @param relatedEventIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventName
+     * @param relatedEventNameIcontains
+     * @param relatedEventNameIregex
+     * @param relatedEventNameIsnull
+     * @param relatedEventStartDate
+     * @param relatedEventStartDateGt
+     * @param relatedEventStartDateLt
+     * @param relatedEventStartDateYear
+     * @param relatedEventStartDateYearGt
+     * @param relatedEventStartDateYearLt
+     * @param relatedEventStartDateWritten
+     * @param relatedEventStartDateWrittenIcontains
+     * @param relatedEventStartDateWrittenIregex
+     * @param relatedEventStartDateWrittenIsnull
+     * @param relatedEventStartEndDate
+     * @param relatedEventStartEndDateGt
+     * @param relatedEventStartEndDateLt
+     * @param relatedEventStartEndDateYear
+     * @param relatedEventStartEndDateYearGt
+     * @param relatedEventStartEndDateYearLt
+     * @param relatedEventStartStartDate
+     * @param relatedEventStartStartDateGt
+     * @param relatedEventStartStartDateLt
+     * @param relatedEventStartStartDateYear
+     * @param relatedEventStartStartDateYearGt
+     * @param relatedEventStartStartDateYearLt
+     * @param relatedEventStatus
+     * @param relatedEventStatusIcontains
+     * @param relatedEventStatusIregex
+     * @param relatedEventStatusIsnull
+     * @param relatedInstitution
+     * @param relatedInstitutionEndDate
+     * @param relatedInstitutionEndDateGt
+     * @param relatedInstitutionEndDateLt
+     * @param relatedInstitutionEndDateYear
+     * @param relatedInstitutionEndDateYearGt
+     * @param relatedInstitutionEndDateYearLt
+     * @param relatedInstitutionEndDateWritten
+     * @param relatedInstitutionEndDateWrittenIcontains
+     * @param relatedInstitutionEndDateWrittenIregex
+     * @param relatedInstitutionEndDateWrittenIsnull
+     * @param relatedInstitutionEndEndDate
+     * @param relatedInstitutionEndEndDateGt
+     * @param relatedInstitutionEndEndDateLt
+     * @param relatedInstitutionEndEndDateYear
+     * @param relatedInstitutionEndEndDateYearGt
+     * @param relatedInstitutionEndEndDateYearLt
+     * @param relatedInstitutionEndStartDate
+     * @param relatedInstitutionEndStartDateGt
+     * @param relatedInstitutionEndStartDateLt
+     * @param relatedInstitutionEndStartDateYear
+     * @param relatedInstitutionEndStartDateYearGt
+     * @param relatedInstitutionEndStartDateYearLt
+     * @param relatedInstitutionId
+     * @param relatedInstitutionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionName
+     * @param relatedInstitutionNameIcontains
+     * @param relatedInstitutionNameIregex
+     * @param relatedInstitutionNameIsnull
+     * @param relatedInstitutionStartDate
+     * @param relatedInstitutionStartDateGt
+     * @param relatedInstitutionStartDateLt
+     * @param relatedInstitutionStartDateYear
+     * @param relatedInstitutionStartDateYearGt
+     * @param relatedInstitutionStartDateYearLt
+     * @param relatedInstitutionStartDateWritten
+     * @param relatedInstitutionStartDateWrittenIcontains
+     * @param relatedInstitutionStartDateWrittenIregex
+     * @param relatedInstitutionStartDateWrittenIsnull
+     * @param relatedInstitutionStartEndDate
+     * @param relatedInstitutionStartEndDateGt
+     * @param relatedInstitutionStartEndDateLt
+     * @param relatedInstitutionStartEndDateYear
+     * @param relatedInstitutionStartEndDateYearGt
+     * @param relatedInstitutionStartEndDateYearLt
+     * @param relatedInstitutionStartStartDate
+     * @param relatedInstitutionStartStartDateGt
+     * @param relatedInstitutionStartStartDateLt
+     * @param relatedInstitutionStartStartDateYear
+     * @param relatedInstitutionStartStartDateYearGt
+     * @param relatedInstitutionStartStartDateYearLt
+     * @param relatedInstitutionStatus
+     * @param relatedInstitutionStatusIcontains
+     * @param relatedInstitutionStatusIregex
+     * @param relatedInstitutionStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedInstitutioneventList
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutioneventList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -5546,176 +5546,176 @@ export class ApisService {
         relatedEventEndDate?: string,
         relatedEventEndDateGt?: string,
         relatedEventEndDateLt?: string,
-        relatedEventEndDateYear?: string,
-        relatedEventEndDateYearGt?: string,
-        relatedEventEndDateYearLt?: string,
+        relatedEventEndDateYear?: number,
+        relatedEventEndDateYearGt?: number,
+        relatedEventEndDateYearLt?: number,
         relatedEventEndDateWritten?: string,
         relatedEventEndDateWrittenIcontains?: string,
         relatedEventEndDateWrittenIregex?: string,
-        relatedEventEndDateWrittenIsnull?: string,
+        relatedEventEndDateWrittenIsnull?: boolean,
         relatedEventEndEndDate?: string,
         relatedEventEndEndDateGt?: string,
         relatedEventEndEndDateLt?: string,
-        relatedEventEndEndDateYear?: string,
-        relatedEventEndEndDateYearGt?: string,
-        relatedEventEndEndDateYearLt?: string,
+        relatedEventEndEndDateYear?: number,
+        relatedEventEndEndDateYearGt?: number,
+        relatedEventEndEndDateYearLt?: number,
         relatedEventEndStartDate?: string,
         relatedEventEndStartDateGt?: string,
         relatedEventEndStartDateLt?: string,
-        relatedEventEndStartDateYear?: string,
-        relatedEventEndStartDateYearGt?: string,
-        relatedEventEndStartDateYearLt?: string,
+        relatedEventEndStartDateYear?: number,
+        relatedEventEndStartDateYearGt?: number,
+        relatedEventEndStartDateYearLt?: number,
         relatedEventId?: number,
-        relatedEventIdIn?: number,
-        relatedEventIn?: number,
+        relatedEventIdIn?: Array<number>,
+        relatedEventIn?: Array<number>,
         relatedEventName?: string,
         relatedEventNameIcontains?: string,
         relatedEventNameIregex?: string,
-        relatedEventNameIsnull?: string,
+        relatedEventNameIsnull?: boolean,
         relatedEventStartDate?: string,
         relatedEventStartDateGt?: string,
         relatedEventStartDateLt?: string,
-        relatedEventStartDateYear?: string,
-        relatedEventStartDateYearGt?: string,
-        relatedEventStartDateYearLt?: string,
+        relatedEventStartDateYear?: number,
+        relatedEventStartDateYearGt?: number,
+        relatedEventStartDateYearLt?: number,
         relatedEventStartDateWritten?: string,
         relatedEventStartDateWrittenIcontains?: string,
         relatedEventStartDateWrittenIregex?: string,
-        relatedEventStartDateWrittenIsnull?: string,
+        relatedEventStartDateWrittenIsnull?: boolean,
         relatedEventStartEndDate?: string,
         relatedEventStartEndDateGt?: string,
         relatedEventStartEndDateLt?: string,
-        relatedEventStartEndDateYear?: string,
-        relatedEventStartEndDateYearGt?: string,
-        relatedEventStartEndDateYearLt?: string,
+        relatedEventStartEndDateYear?: number,
+        relatedEventStartEndDateYearGt?: number,
+        relatedEventStartEndDateYearLt?: number,
         relatedEventStartStartDate?: string,
         relatedEventStartStartDateGt?: string,
         relatedEventStartStartDateLt?: string,
-        relatedEventStartStartDateYear?: string,
-        relatedEventStartStartDateYearGt?: string,
-        relatedEventStartStartDateYearLt?: string,
+        relatedEventStartStartDateYear?: number,
+        relatedEventStartStartDateYearGt?: number,
+        relatedEventStartStartDateYearLt?: number,
         relatedEventStatus?: string,
         relatedEventStatusIcontains?: string,
         relatedEventStatusIregex?: string,
-        relatedEventStatusIsnull?: string,
+        relatedEventStatusIsnull?: boolean,
         relatedInstitution?: number,
         relatedInstitutionEndDate?: string,
         relatedInstitutionEndDateGt?: string,
         relatedInstitutionEndDateLt?: string,
-        relatedInstitutionEndDateYear?: string,
-        relatedInstitutionEndDateYearGt?: string,
-        relatedInstitutionEndDateYearLt?: string,
+        relatedInstitutionEndDateYear?: number,
+        relatedInstitutionEndDateYearGt?: number,
+        relatedInstitutionEndDateYearLt?: number,
         relatedInstitutionEndDateWritten?: string,
         relatedInstitutionEndDateWrittenIcontains?: string,
         relatedInstitutionEndDateWrittenIregex?: string,
-        relatedInstitutionEndDateWrittenIsnull?: string,
+        relatedInstitutionEndDateWrittenIsnull?: boolean,
         relatedInstitutionEndEndDate?: string,
         relatedInstitutionEndEndDateGt?: string,
         relatedInstitutionEndEndDateLt?: string,
-        relatedInstitutionEndEndDateYear?: string,
-        relatedInstitutionEndEndDateYearGt?: string,
-        relatedInstitutionEndEndDateYearLt?: string,
+        relatedInstitutionEndEndDateYear?: number,
+        relatedInstitutionEndEndDateYearGt?: number,
+        relatedInstitutionEndEndDateYearLt?: number,
         relatedInstitutionEndStartDate?: string,
         relatedInstitutionEndStartDateGt?: string,
         relatedInstitutionEndStartDateLt?: string,
-        relatedInstitutionEndStartDateYear?: string,
-        relatedInstitutionEndStartDateYearGt?: string,
-        relatedInstitutionEndStartDateYearLt?: string,
+        relatedInstitutionEndStartDateYear?: number,
+        relatedInstitutionEndStartDateYearGt?: number,
+        relatedInstitutionEndStartDateYearLt?: number,
         relatedInstitutionId?: number,
-        relatedInstitutionIdIn?: number,
-        relatedInstitutionIn?: number,
+        relatedInstitutionIdIn?: Array<number>,
+        relatedInstitutionIn?: Array<number>,
         relatedInstitutionName?: string,
         relatedInstitutionNameIcontains?: string,
         relatedInstitutionNameIregex?: string,
-        relatedInstitutionNameIsnull?: string,
+        relatedInstitutionNameIsnull?: boolean,
         relatedInstitutionStartDate?: string,
         relatedInstitutionStartDateGt?: string,
         relatedInstitutionStartDateLt?: string,
-        relatedInstitutionStartDateYear?: string,
-        relatedInstitutionStartDateYearGt?: string,
-        relatedInstitutionStartDateYearLt?: string,
+        relatedInstitutionStartDateYear?: number,
+        relatedInstitutionStartDateYearGt?: number,
+        relatedInstitutionStartDateYearLt?: number,
         relatedInstitutionStartDateWritten?: string,
         relatedInstitutionStartDateWrittenIcontains?: string,
         relatedInstitutionStartDateWrittenIregex?: string,
-        relatedInstitutionStartDateWrittenIsnull?: string,
+        relatedInstitutionStartDateWrittenIsnull?: boolean,
         relatedInstitutionStartEndDate?: string,
         relatedInstitutionStartEndDateGt?: string,
         relatedInstitutionStartEndDateLt?: string,
-        relatedInstitutionStartEndDateYear?: string,
-        relatedInstitutionStartEndDateYearGt?: string,
-        relatedInstitutionStartEndDateYearLt?: string,
+        relatedInstitutionStartEndDateYear?: number,
+        relatedInstitutionStartEndDateYearGt?: number,
+        relatedInstitutionStartEndDateYearLt?: number,
         relatedInstitutionStartStartDate?: string,
         relatedInstitutionStartStartDateGt?: string,
         relatedInstitutionStartStartDateLt?: string,
-        relatedInstitutionStartStartDateYear?: string,
-        relatedInstitutionStartStartDateYearGt?: string,
-        relatedInstitutionStartStartDateYearLt?: string,
+        relatedInstitutionStartStartDateYear?: number,
+        relatedInstitutionStartStartDateYearGt?: number,
+        relatedInstitutionStartStartDateYearLt?: number,
         relatedInstitutionStatus?: string,
         relatedInstitutionStatusIcontains?: string,
         relatedInstitutionStatusIregex?: string,
-        relatedInstitutionStatusIsnull?: string,
+        relatedInstitutionStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedInstitutioneventList> {
         const result = await __request({
             method: 'GET',
@@ -6049,262 +6049,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedInstitutionA related_institutionA
-     * @param relatedInstitutionAEndDate related_institutionA__end_date
-     * @param relatedInstitutionAEndDateGt related_institutionA__end_date__gt
-     * @param relatedInstitutionAEndDateLt related_institutionA__end_date__lt
-     * @param relatedInstitutionAEndDateYear related_institutionA__end_date__year
-     * @param relatedInstitutionAEndDateYearGt related_institutionA__end_date__year__gt
-     * @param relatedInstitutionAEndDateYearLt related_institutionA__end_date__year__lt
-     * @param relatedInstitutionAEndDateWritten related_institutionA__end_date_written
-     * @param relatedInstitutionAEndDateWrittenIcontains related_institutionA__end_date_written__icontains
-     * @param relatedInstitutionAEndDateWrittenIregex related_institutionA__end_date_written__iregex
-     * @param relatedInstitutionAEndDateWrittenIsnull related_institutionA__end_date_written__isnull
-     * @param relatedInstitutionAEndEndDate related_institutionA__end_end_date
-     * @param relatedInstitutionAEndEndDateGt related_institutionA__end_end_date__gt
-     * @param relatedInstitutionAEndEndDateLt related_institutionA__end_end_date__lt
-     * @param relatedInstitutionAEndEndDateYear related_institutionA__end_end_date__year
-     * @param relatedInstitutionAEndEndDateYearGt related_institutionA__end_end_date__year__gt
-     * @param relatedInstitutionAEndEndDateYearLt related_institutionA__end_end_date__year__lt
-     * @param relatedInstitutionAEndStartDate related_institutionA__end_start_date
-     * @param relatedInstitutionAEndStartDateGt related_institutionA__end_start_date__gt
-     * @param relatedInstitutionAEndStartDateLt related_institutionA__end_start_date__lt
-     * @param relatedInstitutionAEndStartDateYear related_institutionA__end_start_date__year
-     * @param relatedInstitutionAEndStartDateYearGt related_institutionA__end_start_date__year__gt
-     * @param relatedInstitutionAEndStartDateYearLt related_institutionA__end_start_date__year__lt
-     * @param relatedInstitutionAId related_institutionA__id
-     * @param relatedInstitutionAIdIn related_institutionA__id__in
-     * @param relatedInstitutionAIn related_institutionA__in
-     * @param relatedInstitutionAName related_institutionA__name
-     * @param relatedInstitutionANameIcontains related_institutionA__name__icontains
-     * @param relatedInstitutionANameIregex related_institutionA__name__iregex
-     * @param relatedInstitutionANameIsnull related_institutionA__name__isnull
-     * @param relatedInstitutionAStartDate related_institutionA__start_date
-     * @param relatedInstitutionAStartDateGt related_institutionA__start_date__gt
-     * @param relatedInstitutionAStartDateLt related_institutionA__start_date__lt
-     * @param relatedInstitutionAStartDateYear related_institutionA__start_date__year
-     * @param relatedInstitutionAStartDateYearGt related_institutionA__start_date__year__gt
-     * @param relatedInstitutionAStartDateYearLt related_institutionA__start_date__year__lt
-     * @param relatedInstitutionAStartDateWritten related_institutionA__start_date_written
-     * @param relatedInstitutionAStartDateWrittenIcontains related_institutionA__start_date_written__icontains
-     * @param relatedInstitutionAStartDateWrittenIregex related_institutionA__start_date_written__iregex
-     * @param relatedInstitutionAStartDateWrittenIsnull related_institutionA__start_date_written__isnull
-     * @param relatedInstitutionAStartEndDate related_institutionA__start_end_date
-     * @param relatedInstitutionAStartEndDateGt related_institutionA__start_end_date__gt
-     * @param relatedInstitutionAStartEndDateLt related_institutionA__start_end_date__lt
-     * @param relatedInstitutionAStartEndDateYear related_institutionA__start_end_date__year
-     * @param relatedInstitutionAStartEndDateYearGt related_institutionA__start_end_date__year__gt
-     * @param relatedInstitutionAStartEndDateYearLt related_institutionA__start_end_date__year__lt
-     * @param relatedInstitutionAStartStartDate related_institutionA__start_start_date
-     * @param relatedInstitutionAStartStartDateGt related_institutionA__start_start_date__gt
-     * @param relatedInstitutionAStartStartDateLt related_institutionA__start_start_date__lt
-     * @param relatedInstitutionAStartStartDateYear related_institutionA__start_start_date__year
-     * @param relatedInstitutionAStartStartDateYearGt related_institutionA__start_start_date__year__gt
-     * @param relatedInstitutionAStartStartDateYearLt related_institutionA__start_start_date__year__lt
-     * @param relatedInstitutionAStatus related_institutionA__status
-     * @param relatedInstitutionAStatusIcontains related_institutionA__status__icontains
-     * @param relatedInstitutionAStatusIregex related_institutionA__status__iregex
-     * @param relatedInstitutionAStatusIsnull related_institutionA__status__isnull
-     * @param relatedInstitutionB related_institutionB
-     * @param relatedInstitutionBEndDate related_institutionB__end_date
-     * @param relatedInstitutionBEndDateGt related_institutionB__end_date__gt
-     * @param relatedInstitutionBEndDateLt related_institutionB__end_date__lt
-     * @param relatedInstitutionBEndDateYear related_institutionB__end_date__year
-     * @param relatedInstitutionBEndDateYearGt related_institutionB__end_date__year__gt
-     * @param relatedInstitutionBEndDateYearLt related_institutionB__end_date__year__lt
-     * @param relatedInstitutionBEndDateWritten related_institutionB__end_date_written
-     * @param relatedInstitutionBEndDateWrittenIcontains related_institutionB__end_date_written__icontains
-     * @param relatedInstitutionBEndDateWrittenIregex related_institutionB__end_date_written__iregex
-     * @param relatedInstitutionBEndDateWrittenIsnull related_institutionB__end_date_written__isnull
-     * @param relatedInstitutionBEndEndDate related_institutionB__end_end_date
-     * @param relatedInstitutionBEndEndDateGt related_institutionB__end_end_date__gt
-     * @param relatedInstitutionBEndEndDateLt related_institutionB__end_end_date__lt
-     * @param relatedInstitutionBEndEndDateYear related_institutionB__end_end_date__year
-     * @param relatedInstitutionBEndEndDateYearGt related_institutionB__end_end_date__year__gt
-     * @param relatedInstitutionBEndEndDateYearLt related_institutionB__end_end_date__year__lt
-     * @param relatedInstitutionBEndStartDate related_institutionB__end_start_date
-     * @param relatedInstitutionBEndStartDateGt related_institutionB__end_start_date__gt
-     * @param relatedInstitutionBEndStartDateLt related_institutionB__end_start_date__lt
-     * @param relatedInstitutionBEndStartDateYear related_institutionB__end_start_date__year
-     * @param relatedInstitutionBEndStartDateYearGt related_institutionB__end_start_date__year__gt
-     * @param relatedInstitutionBEndStartDateYearLt related_institutionB__end_start_date__year__lt
-     * @param relatedInstitutionBId related_institutionB__id
-     * @param relatedInstitutionBIdIn related_institutionB__id__in
-     * @param relatedInstitutionBIn related_institutionB__in
-     * @param relatedInstitutionBName related_institutionB__name
-     * @param relatedInstitutionBNameIcontains related_institutionB__name__icontains
-     * @param relatedInstitutionBNameIregex related_institutionB__name__iregex
-     * @param relatedInstitutionBNameIsnull related_institutionB__name__isnull
-     * @param relatedInstitutionBStartDate related_institutionB__start_date
-     * @param relatedInstitutionBStartDateGt related_institutionB__start_date__gt
-     * @param relatedInstitutionBStartDateLt related_institutionB__start_date__lt
-     * @param relatedInstitutionBStartDateYear related_institutionB__start_date__year
-     * @param relatedInstitutionBStartDateYearGt related_institutionB__start_date__year__gt
-     * @param relatedInstitutionBStartDateYearLt related_institutionB__start_date__year__lt
-     * @param relatedInstitutionBStartDateWritten related_institutionB__start_date_written
-     * @param relatedInstitutionBStartDateWrittenIcontains related_institutionB__start_date_written__icontains
-     * @param relatedInstitutionBStartDateWrittenIregex related_institutionB__start_date_written__iregex
-     * @param relatedInstitutionBStartDateWrittenIsnull related_institutionB__start_date_written__isnull
-     * @param relatedInstitutionBStartEndDate related_institutionB__start_end_date
-     * @param relatedInstitutionBStartEndDateGt related_institutionB__start_end_date__gt
-     * @param relatedInstitutionBStartEndDateLt related_institutionB__start_end_date__lt
-     * @param relatedInstitutionBStartEndDateYear related_institutionB__start_end_date__year
-     * @param relatedInstitutionBStartEndDateYearGt related_institutionB__start_end_date__year__gt
-     * @param relatedInstitutionBStartEndDateYearLt related_institutionB__start_end_date__year__lt
-     * @param relatedInstitutionBStartStartDate related_institutionB__start_start_date
-     * @param relatedInstitutionBStartStartDateGt related_institutionB__start_start_date__gt
-     * @param relatedInstitutionBStartStartDateLt related_institutionB__start_start_date__lt
-     * @param relatedInstitutionBStartStartDateYear related_institutionB__start_start_date__year
-     * @param relatedInstitutionBStartStartDateYearGt related_institutionB__start_start_date__year__gt
-     * @param relatedInstitutionBStartStartDateYearLt related_institutionB__start_start_date__year__lt
-     * @param relatedInstitutionBStatus related_institutionB__status
-     * @param relatedInstitutionBStatusIcontains related_institutionB__status__icontains
-     * @param relatedInstitutionBStatusIregex related_institutionB__status__iregex
-     * @param relatedInstitutionBStatusIsnull related_institutionB__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedInstitutionA
+     * @param relatedInstitutionAEndDate
+     * @param relatedInstitutionAEndDateGt
+     * @param relatedInstitutionAEndDateLt
+     * @param relatedInstitutionAEndDateYear
+     * @param relatedInstitutionAEndDateYearGt
+     * @param relatedInstitutionAEndDateYearLt
+     * @param relatedInstitutionAEndDateWritten
+     * @param relatedInstitutionAEndDateWrittenIcontains
+     * @param relatedInstitutionAEndDateWrittenIregex
+     * @param relatedInstitutionAEndDateWrittenIsnull
+     * @param relatedInstitutionAEndEndDate
+     * @param relatedInstitutionAEndEndDateGt
+     * @param relatedInstitutionAEndEndDateLt
+     * @param relatedInstitutionAEndEndDateYear
+     * @param relatedInstitutionAEndEndDateYearGt
+     * @param relatedInstitutionAEndEndDateYearLt
+     * @param relatedInstitutionAEndStartDate
+     * @param relatedInstitutionAEndStartDateGt
+     * @param relatedInstitutionAEndStartDateLt
+     * @param relatedInstitutionAEndStartDateYear
+     * @param relatedInstitutionAEndStartDateYearGt
+     * @param relatedInstitutionAEndStartDateYearLt
+     * @param relatedInstitutionAId
+     * @param relatedInstitutionAIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionAIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionAName
+     * @param relatedInstitutionANameIcontains
+     * @param relatedInstitutionANameIregex
+     * @param relatedInstitutionANameIsnull
+     * @param relatedInstitutionAStartDate
+     * @param relatedInstitutionAStartDateGt
+     * @param relatedInstitutionAStartDateLt
+     * @param relatedInstitutionAStartDateYear
+     * @param relatedInstitutionAStartDateYearGt
+     * @param relatedInstitutionAStartDateYearLt
+     * @param relatedInstitutionAStartDateWritten
+     * @param relatedInstitutionAStartDateWrittenIcontains
+     * @param relatedInstitutionAStartDateWrittenIregex
+     * @param relatedInstitutionAStartDateWrittenIsnull
+     * @param relatedInstitutionAStartEndDate
+     * @param relatedInstitutionAStartEndDateGt
+     * @param relatedInstitutionAStartEndDateLt
+     * @param relatedInstitutionAStartEndDateYear
+     * @param relatedInstitutionAStartEndDateYearGt
+     * @param relatedInstitutionAStartEndDateYearLt
+     * @param relatedInstitutionAStartStartDate
+     * @param relatedInstitutionAStartStartDateGt
+     * @param relatedInstitutionAStartStartDateLt
+     * @param relatedInstitutionAStartStartDateYear
+     * @param relatedInstitutionAStartStartDateYearGt
+     * @param relatedInstitutionAStartStartDateYearLt
+     * @param relatedInstitutionAStatus
+     * @param relatedInstitutionAStatusIcontains
+     * @param relatedInstitutionAStatusIregex
+     * @param relatedInstitutionAStatusIsnull
+     * @param relatedInstitutionB
+     * @param relatedInstitutionBEndDate
+     * @param relatedInstitutionBEndDateGt
+     * @param relatedInstitutionBEndDateLt
+     * @param relatedInstitutionBEndDateYear
+     * @param relatedInstitutionBEndDateYearGt
+     * @param relatedInstitutionBEndDateYearLt
+     * @param relatedInstitutionBEndDateWritten
+     * @param relatedInstitutionBEndDateWrittenIcontains
+     * @param relatedInstitutionBEndDateWrittenIregex
+     * @param relatedInstitutionBEndDateWrittenIsnull
+     * @param relatedInstitutionBEndEndDate
+     * @param relatedInstitutionBEndEndDateGt
+     * @param relatedInstitutionBEndEndDateLt
+     * @param relatedInstitutionBEndEndDateYear
+     * @param relatedInstitutionBEndEndDateYearGt
+     * @param relatedInstitutionBEndEndDateYearLt
+     * @param relatedInstitutionBEndStartDate
+     * @param relatedInstitutionBEndStartDateGt
+     * @param relatedInstitutionBEndStartDateLt
+     * @param relatedInstitutionBEndStartDateYear
+     * @param relatedInstitutionBEndStartDateYearGt
+     * @param relatedInstitutionBEndStartDateYearLt
+     * @param relatedInstitutionBId
+     * @param relatedInstitutionBIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionBIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionBName
+     * @param relatedInstitutionBNameIcontains
+     * @param relatedInstitutionBNameIregex
+     * @param relatedInstitutionBNameIsnull
+     * @param relatedInstitutionBStartDate
+     * @param relatedInstitutionBStartDateGt
+     * @param relatedInstitutionBStartDateLt
+     * @param relatedInstitutionBStartDateYear
+     * @param relatedInstitutionBStartDateYearGt
+     * @param relatedInstitutionBStartDateYearLt
+     * @param relatedInstitutionBStartDateWritten
+     * @param relatedInstitutionBStartDateWrittenIcontains
+     * @param relatedInstitutionBStartDateWrittenIregex
+     * @param relatedInstitutionBStartDateWrittenIsnull
+     * @param relatedInstitutionBStartEndDate
+     * @param relatedInstitutionBStartEndDateGt
+     * @param relatedInstitutionBStartEndDateLt
+     * @param relatedInstitutionBStartEndDateYear
+     * @param relatedInstitutionBStartEndDateYearGt
+     * @param relatedInstitutionBStartEndDateYearLt
+     * @param relatedInstitutionBStartStartDate
+     * @param relatedInstitutionBStartStartDateGt
+     * @param relatedInstitutionBStartStartDateLt
+     * @param relatedInstitutionBStartStartDateYear
+     * @param relatedInstitutionBStartStartDateYearGt
+     * @param relatedInstitutionBStartStartDateYearLt
+     * @param relatedInstitutionBStatus
+     * @param relatedInstitutionBStatusIcontains
+     * @param relatedInstitutionBStatusIregex
+     * @param relatedInstitutionBStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedInstitutioninstitutionList
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutioninstitutionList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -6313,176 +6313,176 @@ export class ApisService {
         relatedInstitutionAEndDate?: string,
         relatedInstitutionAEndDateGt?: string,
         relatedInstitutionAEndDateLt?: string,
-        relatedInstitutionAEndDateYear?: string,
-        relatedInstitutionAEndDateYearGt?: string,
-        relatedInstitutionAEndDateYearLt?: string,
+        relatedInstitutionAEndDateYear?: number,
+        relatedInstitutionAEndDateYearGt?: number,
+        relatedInstitutionAEndDateYearLt?: number,
         relatedInstitutionAEndDateWritten?: string,
         relatedInstitutionAEndDateWrittenIcontains?: string,
         relatedInstitutionAEndDateWrittenIregex?: string,
-        relatedInstitutionAEndDateWrittenIsnull?: string,
+        relatedInstitutionAEndDateWrittenIsnull?: boolean,
         relatedInstitutionAEndEndDate?: string,
         relatedInstitutionAEndEndDateGt?: string,
         relatedInstitutionAEndEndDateLt?: string,
-        relatedInstitutionAEndEndDateYear?: string,
-        relatedInstitutionAEndEndDateYearGt?: string,
-        relatedInstitutionAEndEndDateYearLt?: string,
+        relatedInstitutionAEndEndDateYear?: number,
+        relatedInstitutionAEndEndDateYearGt?: number,
+        relatedInstitutionAEndEndDateYearLt?: number,
         relatedInstitutionAEndStartDate?: string,
         relatedInstitutionAEndStartDateGt?: string,
         relatedInstitutionAEndStartDateLt?: string,
-        relatedInstitutionAEndStartDateYear?: string,
-        relatedInstitutionAEndStartDateYearGt?: string,
-        relatedInstitutionAEndStartDateYearLt?: string,
+        relatedInstitutionAEndStartDateYear?: number,
+        relatedInstitutionAEndStartDateYearGt?: number,
+        relatedInstitutionAEndStartDateYearLt?: number,
         relatedInstitutionAId?: number,
-        relatedInstitutionAIdIn?: number,
-        relatedInstitutionAIn?: number,
+        relatedInstitutionAIdIn?: Array<number>,
+        relatedInstitutionAIn?: Array<number>,
         relatedInstitutionAName?: string,
         relatedInstitutionANameIcontains?: string,
         relatedInstitutionANameIregex?: string,
-        relatedInstitutionANameIsnull?: string,
+        relatedInstitutionANameIsnull?: boolean,
         relatedInstitutionAStartDate?: string,
         relatedInstitutionAStartDateGt?: string,
         relatedInstitutionAStartDateLt?: string,
-        relatedInstitutionAStartDateYear?: string,
-        relatedInstitutionAStartDateYearGt?: string,
-        relatedInstitutionAStartDateYearLt?: string,
+        relatedInstitutionAStartDateYear?: number,
+        relatedInstitutionAStartDateYearGt?: number,
+        relatedInstitutionAStartDateYearLt?: number,
         relatedInstitutionAStartDateWritten?: string,
         relatedInstitutionAStartDateWrittenIcontains?: string,
         relatedInstitutionAStartDateWrittenIregex?: string,
-        relatedInstitutionAStartDateWrittenIsnull?: string,
+        relatedInstitutionAStartDateWrittenIsnull?: boolean,
         relatedInstitutionAStartEndDate?: string,
         relatedInstitutionAStartEndDateGt?: string,
         relatedInstitutionAStartEndDateLt?: string,
-        relatedInstitutionAStartEndDateYear?: string,
-        relatedInstitutionAStartEndDateYearGt?: string,
-        relatedInstitutionAStartEndDateYearLt?: string,
+        relatedInstitutionAStartEndDateYear?: number,
+        relatedInstitutionAStartEndDateYearGt?: number,
+        relatedInstitutionAStartEndDateYearLt?: number,
         relatedInstitutionAStartStartDate?: string,
         relatedInstitutionAStartStartDateGt?: string,
         relatedInstitutionAStartStartDateLt?: string,
-        relatedInstitutionAStartStartDateYear?: string,
-        relatedInstitutionAStartStartDateYearGt?: string,
-        relatedInstitutionAStartStartDateYearLt?: string,
+        relatedInstitutionAStartStartDateYear?: number,
+        relatedInstitutionAStartStartDateYearGt?: number,
+        relatedInstitutionAStartStartDateYearLt?: number,
         relatedInstitutionAStatus?: string,
         relatedInstitutionAStatusIcontains?: string,
         relatedInstitutionAStatusIregex?: string,
-        relatedInstitutionAStatusIsnull?: string,
+        relatedInstitutionAStatusIsnull?: boolean,
         relatedInstitutionB?: number,
         relatedInstitutionBEndDate?: string,
         relatedInstitutionBEndDateGt?: string,
         relatedInstitutionBEndDateLt?: string,
-        relatedInstitutionBEndDateYear?: string,
-        relatedInstitutionBEndDateYearGt?: string,
-        relatedInstitutionBEndDateYearLt?: string,
+        relatedInstitutionBEndDateYear?: number,
+        relatedInstitutionBEndDateYearGt?: number,
+        relatedInstitutionBEndDateYearLt?: number,
         relatedInstitutionBEndDateWritten?: string,
         relatedInstitutionBEndDateWrittenIcontains?: string,
         relatedInstitutionBEndDateWrittenIregex?: string,
-        relatedInstitutionBEndDateWrittenIsnull?: string,
+        relatedInstitutionBEndDateWrittenIsnull?: boolean,
         relatedInstitutionBEndEndDate?: string,
         relatedInstitutionBEndEndDateGt?: string,
         relatedInstitutionBEndEndDateLt?: string,
-        relatedInstitutionBEndEndDateYear?: string,
-        relatedInstitutionBEndEndDateYearGt?: string,
-        relatedInstitutionBEndEndDateYearLt?: string,
+        relatedInstitutionBEndEndDateYear?: number,
+        relatedInstitutionBEndEndDateYearGt?: number,
+        relatedInstitutionBEndEndDateYearLt?: number,
         relatedInstitutionBEndStartDate?: string,
         relatedInstitutionBEndStartDateGt?: string,
         relatedInstitutionBEndStartDateLt?: string,
-        relatedInstitutionBEndStartDateYear?: string,
-        relatedInstitutionBEndStartDateYearGt?: string,
-        relatedInstitutionBEndStartDateYearLt?: string,
+        relatedInstitutionBEndStartDateYear?: number,
+        relatedInstitutionBEndStartDateYearGt?: number,
+        relatedInstitutionBEndStartDateYearLt?: number,
         relatedInstitutionBId?: number,
-        relatedInstitutionBIdIn?: number,
-        relatedInstitutionBIn?: number,
+        relatedInstitutionBIdIn?: Array<number>,
+        relatedInstitutionBIn?: Array<number>,
         relatedInstitutionBName?: string,
         relatedInstitutionBNameIcontains?: string,
         relatedInstitutionBNameIregex?: string,
-        relatedInstitutionBNameIsnull?: string,
+        relatedInstitutionBNameIsnull?: boolean,
         relatedInstitutionBStartDate?: string,
         relatedInstitutionBStartDateGt?: string,
         relatedInstitutionBStartDateLt?: string,
-        relatedInstitutionBStartDateYear?: string,
-        relatedInstitutionBStartDateYearGt?: string,
-        relatedInstitutionBStartDateYearLt?: string,
+        relatedInstitutionBStartDateYear?: number,
+        relatedInstitutionBStartDateYearGt?: number,
+        relatedInstitutionBStartDateYearLt?: number,
         relatedInstitutionBStartDateWritten?: string,
         relatedInstitutionBStartDateWrittenIcontains?: string,
         relatedInstitutionBStartDateWrittenIregex?: string,
-        relatedInstitutionBStartDateWrittenIsnull?: string,
+        relatedInstitutionBStartDateWrittenIsnull?: boolean,
         relatedInstitutionBStartEndDate?: string,
         relatedInstitutionBStartEndDateGt?: string,
         relatedInstitutionBStartEndDateLt?: string,
-        relatedInstitutionBStartEndDateYear?: string,
-        relatedInstitutionBStartEndDateYearGt?: string,
-        relatedInstitutionBStartEndDateYearLt?: string,
+        relatedInstitutionBStartEndDateYear?: number,
+        relatedInstitutionBStartEndDateYearGt?: number,
+        relatedInstitutionBStartEndDateYearLt?: number,
         relatedInstitutionBStartStartDate?: string,
         relatedInstitutionBStartStartDateGt?: string,
         relatedInstitutionBStartStartDateLt?: string,
-        relatedInstitutionBStartStartDateYear?: string,
-        relatedInstitutionBStartStartDateYearGt?: string,
-        relatedInstitutionBStartStartDateYearLt?: string,
+        relatedInstitutionBStartStartDateYear?: number,
+        relatedInstitutionBStartStartDateYearGt?: number,
+        relatedInstitutionBStartStartDateYearLt?: number,
         relatedInstitutionBStatus?: string,
         relatedInstitutionBStatusIcontains?: string,
         relatedInstitutionBStatusIregex?: string,
-        relatedInstitutionBStatusIsnull?: string,
+        relatedInstitutionBStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedInstitutioninstitutionList> {
         const result = await __request({
             method: 'GET',
@@ -6816,262 +6816,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedInstitution related_institution
-     * @param relatedInstitutionEndDate related_institution__end_date
-     * @param relatedInstitutionEndDateGt related_institution__end_date__gt
-     * @param relatedInstitutionEndDateLt related_institution__end_date__lt
-     * @param relatedInstitutionEndDateYear related_institution__end_date__year
-     * @param relatedInstitutionEndDateYearGt related_institution__end_date__year__gt
-     * @param relatedInstitutionEndDateYearLt related_institution__end_date__year__lt
-     * @param relatedInstitutionEndDateWritten related_institution__end_date_written
-     * @param relatedInstitutionEndDateWrittenIcontains related_institution__end_date_written__icontains
-     * @param relatedInstitutionEndDateWrittenIregex related_institution__end_date_written__iregex
-     * @param relatedInstitutionEndDateWrittenIsnull related_institution__end_date_written__isnull
-     * @param relatedInstitutionEndEndDate related_institution__end_end_date
-     * @param relatedInstitutionEndEndDateGt related_institution__end_end_date__gt
-     * @param relatedInstitutionEndEndDateLt related_institution__end_end_date__lt
-     * @param relatedInstitutionEndEndDateYear related_institution__end_end_date__year
-     * @param relatedInstitutionEndEndDateYearGt related_institution__end_end_date__year__gt
-     * @param relatedInstitutionEndEndDateYearLt related_institution__end_end_date__year__lt
-     * @param relatedInstitutionEndStartDate related_institution__end_start_date
-     * @param relatedInstitutionEndStartDateGt related_institution__end_start_date__gt
-     * @param relatedInstitutionEndStartDateLt related_institution__end_start_date__lt
-     * @param relatedInstitutionEndStartDateYear related_institution__end_start_date__year
-     * @param relatedInstitutionEndStartDateYearGt related_institution__end_start_date__year__gt
-     * @param relatedInstitutionEndStartDateYearLt related_institution__end_start_date__year__lt
-     * @param relatedInstitutionId related_institution__id
-     * @param relatedInstitutionIdIn related_institution__id__in
-     * @param relatedInstitutionIn related_institution__in
-     * @param relatedInstitutionName related_institution__name
-     * @param relatedInstitutionNameIcontains related_institution__name__icontains
-     * @param relatedInstitutionNameIregex related_institution__name__iregex
-     * @param relatedInstitutionNameIsnull related_institution__name__isnull
-     * @param relatedInstitutionStartDate related_institution__start_date
-     * @param relatedInstitutionStartDateGt related_institution__start_date__gt
-     * @param relatedInstitutionStartDateLt related_institution__start_date__lt
-     * @param relatedInstitutionStartDateYear related_institution__start_date__year
-     * @param relatedInstitutionStartDateYearGt related_institution__start_date__year__gt
-     * @param relatedInstitutionStartDateYearLt related_institution__start_date__year__lt
-     * @param relatedInstitutionStartDateWritten related_institution__start_date_written
-     * @param relatedInstitutionStartDateWrittenIcontains related_institution__start_date_written__icontains
-     * @param relatedInstitutionStartDateWrittenIregex related_institution__start_date_written__iregex
-     * @param relatedInstitutionStartDateWrittenIsnull related_institution__start_date_written__isnull
-     * @param relatedInstitutionStartEndDate related_institution__start_end_date
-     * @param relatedInstitutionStartEndDateGt related_institution__start_end_date__gt
-     * @param relatedInstitutionStartEndDateLt related_institution__start_end_date__lt
-     * @param relatedInstitutionStartEndDateYear related_institution__start_end_date__year
-     * @param relatedInstitutionStartEndDateYearGt related_institution__start_end_date__year__gt
-     * @param relatedInstitutionStartEndDateYearLt related_institution__start_end_date__year__lt
-     * @param relatedInstitutionStartStartDate related_institution__start_start_date
-     * @param relatedInstitutionStartStartDateGt related_institution__start_start_date__gt
-     * @param relatedInstitutionStartStartDateLt related_institution__start_start_date__lt
-     * @param relatedInstitutionStartStartDateYear related_institution__start_start_date__year
-     * @param relatedInstitutionStartStartDateYearGt related_institution__start_start_date__year__gt
-     * @param relatedInstitutionStartStartDateYearLt related_institution__start_start_date__year__lt
-     * @param relatedInstitutionStatus related_institution__status
-     * @param relatedInstitutionStatusIcontains related_institution__status__icontains
-     * @param relatedInstitutionStatusIregex related_institution__status__iregex
-     * @param relatedInstitutionStatusIsnull related_institution__status__isnull
-     * @param relatedPlace related_place
-     * @param relatedPlaceEndDate related_place__end_date
-     * @param relatedPlaceEndDateGt related_place__end_date__gt
-     * @param relatedPlaceEndDateLt related_place__end_date__lt
-     * @param relatedPlaceEndDateYear related_place__end_date__year
-     * @param relatedPlaceEndDateYearGt related_place__end_date__year__gt
-     * @param relatedPlaceEndDateYearLt related_place__end_date__year__lt
-     * @param relatedPlaceEndDateWritten related_place__end_date_written
-     * @param relatedPlaceEndDateWrittenIcontains related_place__end_date_written__icontains
-     * @param relatedPlaceEndDateWrittenIregex related_place__end_date_written__iregex
-     * @param relatedPlaceEndDateWrittenIsnull related_place__end_date_written__isnull
-     * @param relatedPlaceEndEndDate related_place__end_end_date
-     * @param relatedPlaceEndEndDateGt related_place__end_end_date__gt
-     * @param relatedPlaceEndEndDateLt related_place__end_end_date__lt
-     * @param relatedPlaceEndEndDateYear related_place__end_end_date__year
-     * @param relatedPlaceEndEndDateYearGt related_place__end_end_date__year__gt
-     * @param relatedPlaceEndEndDateYearLt related_place__end_end_date__year__lt
-     * @param relatedPlaceEndStartDate related_place__end_start_date
-     * @param relatedPlaceEndStartDateGt related_place__end_start_date__gt
-     * @param relatedPlaceEndStartDateLt related_place__end_start_date__lt
-     * @param relatedPlaceEndStartDateYear related_place__end_start_date__year
-     * @param relatedPlaceEndStartDateYearGt related_place__end_start_date__year__gt
-     * @param relatedPlaceEndStartDateYearLt related_place__end_start_date__year__lt
-     * @param relatedPlaceId related_place__id
-     * @param relatedPlaceIdIn related_place__id__in
-     * @param relatedPlaceIn related_place__in
-     * @param relatedPlaceName related_place__name
-     * @param relatedPlaceNameIcontains related_place__name__icontains
-     * @param relatedPlaceNameIregex related_place__name__iregex
-     * @param relatedPlaceNameIsnull related_place__name__isnull
-     * @param relatedPlaceStartDate related_place__start_date
-     * @param relatedPlaceStartDateGt related_place__start_date__gt
-     * @param relatedPlaceStartDateLt related_place__start_date__lt
-     * @param relatedPlaceStartDateYear related_place__start_date__year
-     * @param relatedPlaceStartDateYearGt related_place__start_date__year__gt
-     * @param relatedPlaceStartDateYearLt related_place__start_date__year__lt
-     * @param relatedPlaceStartDateWritten related_place__start_date_written
-     * @param relatedPlaceStartDateWrittenIcontains related_place__start_date_written__icontains
-     * @param relatedPlaceStartDateWrittenIregex related_place__start_date_written__iregex
-     * @param relatedPlaceStartDateWrittenIsnull related_place__start_date_written__isnull
-     * @param relatedPlaceStartEndDate related_place__start_end_date
-     * @param relatedPlaceStartEndDateGt related_place__start_end_date__gt
-     * @param relatedPlaceStartEndDateLt related_place__start_end_date__lt
-     * @param relatedPlaceStartEndDateYear related_place__start_end_date__year
-     * @param relatedPlaceStartEndDateYearGt related_place__start_end_date__year__gt
-     * @param relatedPlaceStartEndDateYearLt related_place__start_end_date__year__lt
-     * @param relatedPlaceStartStartDate related_place__start_start_date
-     * @param relatedPlaceStartStartDateGt related_place__start_start_date__gt
-     * @param relatedPlaceStartStartDateLt related_place__start_start_date__lt
-     * @param relatedPlaceStartStartDateYear related_place__start_start_date__year
-     * @param relatedPlaceStartStartDateYearGt related_place__start_start_date__year__gt
-     * @param relatedPlaceStartStartDateYearLt related_place__start_start_date__year__lt
-     * @param relatedPlaceStatus related_place__status
-     * @param relatedPlaceStatusIcontains related_place__status__icontains
-     * @param relatedPlaceStatusIregex related_place__status__iregex
-     * @param relatedPlaceStatusIsnull related_place__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedInstitution
+     * @param relatedInstitutionEndDate
+     * @param relatedInstitutionEndDateGt
+     * @param relatedInstitutionEndDateLt
+     * @param relatedInstitutionEndDateYear
+     * @param relatedInstitutionEndDateYearGt
+     * @param relatedInstitutionEndDateYearLt
+     * @param relatedInstitutionEndDateWritten
+     * @param relatedInstitutionEndDateWrittenIcontains
+     * @param relatedInstitutionEndDateWrittenIregex
+     * @param relatedInstitutionEndDateWrittenIsnull
+     * @param relatedInstitutionEndEndDate
+     * @param relatedInstitutionEndEndDateGt
+     * @param relatedInstitutionEndEndDateLt
+     * @param relatedInstitutionEndEndDateYear
+     * @param relatedInstitutionEndEndDateYearGt
+     * @param relatedInstitutionEndEndDateYearLt
+     * @param relatedInstitutionEndStartDate
+     * @param relatedInstitutionEndStartDateGt
+     * @param relatedInstitutionEndStartDateLt
+     * @param relatedInstitutionEndStartDateYear
+     * @param relatedInstitutionEndStartDateYearGt
+     * @param relatedInstitutionEndStartDateYearLt
+     * @param relatedInstitutionId
+     * @param relatedInstitutionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionName
+     * @param relatedInstitutionNameIcontains
+     * @param relatedInstitutionNameIregex
+     * @param relatedInstitutionNameIsnull
+     * @param relatedInstitutionStartDate
+     * @param relatedInstitutionStartDateGt
+     * @param relatedInstitutionStartDateLt
+     * @param relatedInstitutionStartDateYear
+     * @param relatedInstitutionStartDateYearGt
+     * @param relatedInstitutionStartDateYearLt
+     * @param relatedInstitutionStartDateWritten
+     * @param relatedInstitutionStartDateWrittenIcontains
+     * @param relatedInstitutionStartDateWrittenIregex
+     * @param relatedInstitutionStartDateWrittenIsnull
+     * @param relatedInstitutionStartEndDate
+     * @param relatedInstitutionStartEndDateGt
+     * @param relatedInstitutionStartEndDateLt
+     * @param relatedInstitutionStartEndDateYear
+     * @param relatedInstitutionStartEndDateYearGt
+     * @param relatedInstitutionStartEndDateYearLt
+     * @param relatedInstitutionStartStartDate
+     * @param relatedInstitutionStartStartDateGt
+     * @param relatedInstitutionStartStartDateLt
+     * @param relatedInstitutionStartStartDateYear
+     * @param relatedInstitutionStartStartDateYearGt
+     * @param relatedInstitutionStartStartDateYearLt
+     * @param relatedInstitutionStatus
+     * @param relatedInstitutionStatusIcontains
+     * @param relatedInstitutionStatusIregex
+     * @param relatedInstitutionStatusIsnull
+     * @param relatedPlace
+     * @param relatedPlaceEndDate
+     * @param relatedPlaceEndDateGt
+     * @param relatedPlaceEndDateLt
+     * @param relatedPlaceEndDateYear
+     * @param relatedPlaceEndDateYearGt
+     * @param relatedPlaceEndDateYearLt
+     * @param relatedPlaceEndDateWritten
+     * @param relatedPlaceEndDateWrittenIcontains
+     * @param relatedPlaceEndDateWrittenIregex
+     * @param relatedPlaceEndDateWrittenIsnull
+     * @param relatedPlaceEndEndDate
+     * @param relatedPlaceEndEndDateGt
+     * @param relatedPlaceEndEndDateLt
+     * @param relatedPlaceEndEndDateYear
+     * @param relatedPlaceEndEndDateYearGt
+     * @param relatedPlaceEndEndDateYearLt
+     * @param relatedPlaceEndStartDate
+     * @param relatedPlaceEndStartDateGt
+     * @param relatedPlaceEndStartDateLt
+     * @param relatedPlaceEndStartDateYear
+     * @param relatedPlaceEndStartDateYearGt
+     * @param relatedPlaceEndStartDateYearLt
+     * @param relatedPlaceId
+     * @param relatedPlaceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceName
+     * @param relatedPlaceNameIcontains
+     * @param relatedPlaceNameIregex
+     * @param relatedPlaceNameIsnull
+     * @param relatedPlaceStartDate
+     * @param relatedPlaceStartDateGt
+     * @param relatedPlaceStartDateLt
+     * @param relatedPlaceStartDateYear
+     * @param relatedPlaceStartDateYearGt
+     * @param relatedPlaceStartDateYearLt
+     * @param relatedPlaceStartDateWritten
+     * @param relatedPlaceStartDateWrittenIcontains
+     * @param relatedPlaceStartDateWrittenIregex
+     * @param relatedPlaceStartDateWrittenIsnull
+     * @param relatedPlaceStartEndDate
+     * @param relatedPlaceStartEndDateGt
+     * @param relatedPlaceStartEndDateLt
+     * @param relatedPlaceStartEndDateYear
+     * @param relatedPlaceStartEndDateYearGt
+     * @param relatedPlaceStartEndDateYearLt
+     * @param relatedPlaceStartStartDate
+     * @param relatedPlaceStartStartDateGt
+     * @param relatedPlaceStartStartDateLt
+     * @param relatedPlaceStartStartDateYear
+     * @param relatedPlaceStartStartDateYearGt
+     * @param relatedPlaceStartStartDateYearLt
+     * @param relatedPlaceStatus
+     * @param relatedPlaceStatusIcontains
+     * @param relatedPlaceStatusIregex
+     * @param relatedPlaceStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedInstitutionplaceList
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutionplaceList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -7080,176 +7080,176 @@ export class ApisService {
         relatedInstitutionEndDate?: string,
         relatedInstitutionEndDateGt?: string,
         relatedInstitutionEndDateLt?: string,
-        relatedInstitutionEndDateYear?: string,
-        relatedInstitutionEndDateYearGt?: string,
-        relatedInstitutionEndDateYearLt?: string,
+        relatedInstitutionEndDateYear?: number,
+        relatedInstitutionEndDateYearGt?: number,
+        relatedInstitutionEndDateYearLt?: number,
         relatedInstitutionEndDateWritten?: string,
         relatedInstitutionEndDateWrittenIcontains?: string,
         relatedInstitutionEndDateWrittenIregex?: string,
-        relatedInstitutionEndDateWrittenIsnull?: string,
+        relatedInstitutionEndDateWrittenIsnull?: boolean,
         relatedInstitutionEndEndDate?: string,
         relatedInstitutionEndEndDateGt?: string,
         relatedInstitutionEndEndDateLt?: string,
-        relatedInstitutionEndEndDateYear?: string,
-        relatedInstitutionEndEndDateYearGt?: string,
-        relatedInstitutionEndEndDateYearLt?: string,
+        relatedInstitutionEndEndDateYear?: number,
+        relatedInstitutionEndEndDateYearGt?: number,
+        relatedInstitutionEndEndDateYearLt?: number,
         relatedInstitutionEndStartDate?: string,
         relatedInstitutionEndStartDateGt?: string,
         relatedInstitutionEndStartDateLt?: string,
-        relatedInstitutionEndStartDateYear?: string,
-        relatedInstitutionEndStartDateYearGt?: string,
-        relatedInstitutionEndStartDateYearLt?: string,
+        relatedInstitutionEndStartDateYear?: number,
+        relatedInstitutionEndStartDateYearGt?: number,
+        relatedInstitutionEndStartDateYearLt?: number,
         relatedInstitutionId?: number,
-        relatedInstitutionIdIn?: number,
-        relatedInstitutionIn?: number,
+        relatedInstitutionIdIn?: Array<number>,
+        relatedInstitutionIn?: Array<number>,
         relatedInstitutionName?: string,
         relatedInstitutionNameIcontains?: string,
         relatedInstitutionNameIregex?: string,
-        relatedInstitutionNameIsnull?: string,
+        relatedInstitutionNameIsnull?: boolean,
         relatedInstitutionStartDate?: string,
         relatedInstitutionStartDateGt?: string,
         relatedInstitutionStartDateLt?: string,
-        relatedInstitutionStartDateYear?: string,
-        relatedInstitutionStartDateYearGt?: string,
-        relatedInstitutionStartDateYearLt?: string,
+        relatedInstitutionStartDateYear?: number,
+        relatedInstitutionStartDateYearGt?: number,
+        relatedInstitutionStartDateYearLt?: number,
         relatedInstitutionStartDateWritten?: string,
         relatedInstitutionStartDateWrittenIcontains?: string,
         relatedInstitutionStartDateWrittenIregex?: string,
-        relatedInstitutionStartDateWrittenIsnull?: string,
+        relatedInstitutionStartDateWrittenIsnull?: boolean,
         relatedInstitutionStartEndDate?: string,
         relatedInstitutionStartEndDateGt?: string,
         relatedInstitutionStartEndDateLt?: string,
-        relatedInstitutionStartEndDateYear?: string,
-        relatedInstitutionStartEndDateYearGt?: string,
-        relatedInstitutionStartEndDateYearLt?: string,
+        relatedInstitutionStartEndDateYear?: number,
+        relatedInstitutionStartEndDateYearGt?: number,
+        relatedInstitutionStartEndDateYearLt?: number,
         relatedInstitutionStartStartDate?: string,
         relatedInstitutionStartStartDateGt?: string,
         relatedInstitutionStartStartDateLt?: string,
-        relatedInstitutionStartStartDateYear?: string,
-        relatedInstitutionStartStartDateYearGt?: string,
-        relatedInstitutionStartStartDateYearLt?: string,
+        relatedInstitutionStartStartDateYear?: number,
+        relatedInstitutionStartStartDateYearGt?: number,
+        relatedInstitutionStartStartDateYearLt?: number,
         relatedInstitutionStatus?: string,
         relatedInstitutionStatusIcontains?: string,
         relatedInstitutionStatusIregex?: string,
-        relatedInstitutionStatusIsnull?: string,
+        relatedInstitutionStatusIsnull?: boolean,
         relatedPlace?: number,
         relatedPlaceEndDate?: string,
         relatedPlaceEndDateGt?: string,
         relatedPlaceEndDateLt?: string,
-        relatedPlaceEndDateYear?: string,
-        relatedPlaceEndDateYearGt?: string,
-        relatedPlaceEndDateYearLt?: string,
+        relatedPlaceEndDateYear?: number,
+        relatedPlaceEndDateYearGt?: number,
+        relatedPlaceEndDateYearLt?: number,
         relatedPlaceEndDateWritten?: string,
         relatedPlaceEndDateWrittenIcontains?: string,
         relatedPlaceEndDateWrittenIregex?: string,
-        relatedPlaceEndDateWrittenIsnull?: string,
+        relatedPlaceEndDateWrittenIsnull?: boolean,
         relatedPlaceEndEndDate?: string,
         relatedPlaceEndEndDateGt?: string,
         relatedPlaceEndEndDateLt?: string,
-        relatedPlaceEndEndDateYear?: string,
-        relatedPlaceEndEndDateYearGt?: string,
-        relatedPlaceEndEndDateYearLt?: string,
+        relatedPlaceEndEndDateYear?: number,
+        relatedPlaceEndEndDateYearGt?: number,
+        relatedPlaceEndEndDateYearLt?: number,
         relatedPlaceEndStartDate?: string,
         relatedPlaceEndStartDateGt?: string,
         relatedPlaceEndStartDateLt?: string,
-        relatedPlaceEndStartDateYear?: string,
-        relatedPlaceEndStartDateYearGt?: string,
-        relatedPlaceEndStartDateYearLt?: string,
+        relatedPlaceEndStartDateYear?: number,
+        relatedPlaceEndStartDateYearGt?: number,
+        relatedPlaceEndStartDateYearLt?: number,
         relatedPlaceId?: number,
-        relatedPlaceIdIn?: number,
-        relatedPlaceIn?: number,
+        relatedPlaceIdIn?: Array<number>,
+        relatedPlaceIn?: Array<number>,
         relatedPlaceName?: string,
         relatedPlaceNameIcontains?: string,
         relatedPlaceNameIregex?: string,
-        relatedPlaceNameIsnull?: string,
+        relatedPlaceNameIsnull?: boolean,
         relatedPlaceStartDate?: string,
         relatedPlaceStartDateGt?: string,
         relatedPlaceStartDateLt?: string,
-        relatedPlaceStartDateYear?: string,
-        relatedPlaceStartDateYearGt?: string,
-        relatedPlaceStartDateYearLt?: string,
+        relatedPlaceStartDateYear?: number,
+        relatedPlaceStartDateYearGt?: number,
+        relatedPlaceStartDateYearLt?: number,
         relatedPlaceStartDateWritten?: string,
         relatedPlaceStartDateWrittenIcontains?: string,
         relatedPlaceStartDateWrittenIregex?: string,
-        relatedPlaceStartDateWrittenIsnull?: string,
+        relatedPlaceStartDateWrittenIsnull?: boolean,
         relatedPlaceStartEndDate?: string,
         relatedPlaceStartEndDateGt?: string,
         relatedPlaceStartEndDateLt?: string,
-        relatedPlaceStartEndDateYear?: string,
-        relatedPlaceStartEndDateYearGt?: string,
-        relatedPlaceStartEndDateYearLt?: string,
+        relatedPlaceStartEndDateYear?: number,
+        relatedPlaceStartEndDateYearGt?: number,
+        relatedPlaceStartEndDateYearLt?: number,
         relatedPlaceStartStartDate?: string,
         relatedPlaceStartStartDateGt?: string,
         relatedPlaceStartStartDateLt?: string,
-        relatedPlaceStartStartDateYear?: string,
-        relatedPlaceStartStartDateYearGt?: string,
-        relatedPlaceStartStartDateYearLt?: string,
+        relatedPlaceStartStartDateYear?: number,
+        relatedPlaceStartStartDateYearGt?: number,
+        relatedPlaceStartStartDateYearLt?: number,
         relatedPlaceStatus?: string,
         relatedPlaceStatusIcontains?: string,
         relatedPlaceStatusIregex?: string,
-        relatedPlaceStatusIsnull?: string,
+        relatedPlaceStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedInstitutionplaceList> {
         const result = await __request({
             method: 'GET',
@@ -7583,262 +7583,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedInstitution related_institution
-     * @param relatedInstitutionEndDate related_institution__end_date
-     * @param relatedInstitutionEndDateGt related_institution__end_date__gt
-     * @param relatedInstitutionEndDateLt related_institution__end_date__lt
-     * @param relatedInstitutionEndDateYear related_institution__end_date__year
-     * @param relatedInstitutionEndDateYearGt related_institution__end_date__year__gt
-     * @param relatedInstitutionEndDateYearLt related_institution__end_date__year__lt
-     * @param relatedInstitutionEndDateWritten related_institution__end_date_written
-     * @param relatedInstitutionEndDateWrittenIcontains related_institution__end_date_written__icontains
-     * @param relatedInstitutionEndDateWrittenIregex related_institution__end_date_written__iregex
-     * @param relatedInstitutionEndDateWrittenIsnull related_institution__end_date_written__isnull
-     * @param relatedInstitutionEndEndDate related_institution__end_end_date
-     * @param relatedInstitutionEndEndDateGt related_institution__end_end_date__gt
-     * @param relatedInstitutionEndEndDateLt related_institution__end_end_date__lt
-     * @param relatedInstitutionEndEndDateYear related_institution__end_end_date__year
-     * @param relatedInstitutionEndEndDateYearGt related_institution__end_end_date__year__gt
-     * @param relatedInstitutionEndEndDateYearLt related_institution__end_end_date__year__lt
-     * @param relatedInstitutionEndStartDate related_institution__end_start_date
-     * @param relatedInstitutionEndStartDateGt related_institution__end_start_date__gt
-     * @param relatedInstitutionEndStartDateLt related_institution__end_start_date__lt
-     * @param relatedInstitutionEndStartDateYear related_institution__end_start_date__year
-     * @param relatedInstitutionEndStartDateYearGt related_institution__end_start_date__year__gt
-     * @param relatedInstitutionEndStartDateYearLt related_institution__end_start_date__year__lt
-     * @param relatedInstitutionId related_institution__id
-     * @param relatedInstitutionIdIn related_institution__id__in
-     * @param relatedInstitutionIn related_institution__in
-     * @param relatedInstitutionName related_institution__name
-     * @param relatedInstitutionNameIcontains related_institution__name__icontains
-     * @param relatedInstitutionNameIregex related_institution__name__iregex
-     * @param relatedInstitutionNameIsnull related_institution__name__isnull
-     * @param relatedInstitutionStartDate related_institution__start_date
-     * @param relatedInstitutionStartDateGt related_institution__start_date__gt
-     * @param relatedInstitutionStartDateLt related_institution__start_date__lt
-     * @param relatedInstitutionStartDateYear related_institution__start_date__year
-     * @param relatedInstitutionStartDateYearGt related_institution__start_date__year__gt
-     * @param relatedInstitutionStartDateYearLt related_institution__start_date__year__lt
-     * @param relatedInstitutionStartDateWritten related_institution__start_date_written
-     * @param relatedInstitutionStartDateWrittenIcontains related_institution__start_date_written__icontains
-     * @param relatedInstitutionStartDateWrittenIregex related_institution__start_date_written__iregex
-     * @param relatedInstitutionStartDateWrittenIsnull related_institution__start_date_written__isnull
-     * @param relatedInstitutionStartEndDate related_institution__start_end_date
-     * @param relatedInstitutionStartEndDateGt related_institution__start_end_date__gt
-     * @param relatedInstitutionStartEndDateLt related_institution__start_end_date__lt
-     * @param relatedInstitutionStartEndDateYear related_institution__start_end_date__year
-     * @param relatedInstitutionStartEndDateYearGt related_institution__start_end_date__year__gt
-     * @param relatedInstitutionStartEndDateYearLt related_institution__start_end_date__year__lt
-     * @param relatedInstitutionStartStartDate related_institution__start_start_date
-     * @param relatedInstitutionStartStartDateGt related_institution__start_start_date__gt
-     * @param relatedInstitutionStartStartDateLt related_institution__start_start_date__lt
-     * @param relatedInstitutionStartStartDateYear related_institution__start_start_date__year
-     * @param relatedInstitutionStartStartDateYearGt related_institution__start_start_date__year__gt
-     * @param relatedInstitutionStartStartDateYearLt related_institution__start_start_date__year__lt
-     * @param relatedInstitutionStatus related_institution__status
-     * @param relatedInstitutionStatusIcontains related_institution__status__icontains
-     * @param relatedInstitutionStatusIregex related_institution__status__iregex
-     * @param relatedInstitutionStatusIsnull related_institution__status__isnull
-     * @param relatedWork related_work
-     * @param relatedWorkEndDate related_work__end_date
-     * @param relatedWorkEndDateGt related_work__end_date__gt
-     * @param relatedWorkEndDateLt related_work__end_date__lt
-     * @param relatedWorkEndDateYear related_work__end_date__year
-     * @param relatedWorkEndDateYearGt related_work__end_date__year__gt
-     * @param relatedWorkEndDateYearLt related_work__end_date__year__lt
-     * @param relatedWorkEndDateWritten related_work__end_date_written
-     * @param relatedWorkEndDateWrittenIcontains related_work__end_date_written__icontains
-     * @param relatedWorkEndDateWrittenIregex related_work__end_date_written__iregex
-     * @param relatedWorkEndDateWrittenIsnull related_work__end_date_written__isnull
-     * @param relatedWorkEndEndDate related_work__end_end_date
-     * @param relatedWorkEndEndDateGt related_work__end_end_date__gt
-     * @param relatedWorkEndEndDateLt related_work__end_end_date__lt
-     * @param relatedWorkEndEndDateYear related_work__end_end_date__year
-     * @param relatedWorkEndEndDateYearGt related_work__end_end_date__year__gt
-     * @param relatedWorkEndEndDateYearLt related_work__end_end_date__year__lt
-     * @param relatedWorkEndStartDate related_work__end_start_date
-     * @param relatedWorkEndStartDateGt related_work__end_start_date__gt
-     * @param relatedWorkEndStartDateLt related_work__end_start_date__lt
-     * @param relatedWorkEndStartDateYear related_work__end_start_date__year
-     * @param relatedWorkEndStartDateYearGt related_work__end_start_date__year__gt
-     * @param relatedWorkEndStartDateYearLt related_work__end_start_date__year__lt
-     * @param relatedWorkId related_work__id
-     * @param relatedWorkIdIn related_work__id__in
-     * @param relatedWorkIn related_work__in
-     * @param relatedWorkName related_work__name
-     * @param relatedWorkNameIcontains related_work__name__icontains
-     * @param relatedWorkNameIregex related_work__name__iregex
-     * @param relatedWorkNameIsnull related_work__name__isnull
-     * @param relatedWorkStartDate related_work__start_date
-     * @param relatedWorkStartDateGt related_work__start_date__gt
-     * @param relatedWorkStartDateLt related_work__start_date__lt
-     * @param relatedWorkStartDateYear related_work__start_date__year
-     * @param relatedWorkStartDateYearGt related_work__start_date__year__gt
-     * @param relatedWorkStartDateYearLt related_work__start_date__year__lt
-     * @param relatedWorkStartDateWritten related_work__start_date_written
-     * @param relatedWorkStartDateWrittenIcontains related_work__start_date_written__icontains
-     * @param relatedWorkStartDateWrittenIregex related_work__start_date_written__iregex
-     * @param relatedWorkStartDateWrittenIsnull related_work__start_date_written__isnull
-     * @param relatedWorkStartEndDate related_work__start_end_date
-     * @param relatedWorkStartEndDateGt related_work__start_end_date__gt
-     * @param relatedWorkStartEndDateLt related_work__start_end_date__lt
-     * @param relatedWorkStartEndDateYear related_work__start_end_date__year
-     * @param relatedWorkStartEndDateYearGt related_work__start_end_date__year__gt
-     * @param relatedWorkStartEndDateYearLt related_work__start_end_date__year__lt
-     * @param relatedWorkStartStartDate related_work__start_start_date
-     * @param relatedWorkStartStartDateGt related_work__start_start_date__gt
-     * @param relatedWorkStartStartDateLt related_work__start_start_date__lt
-     * @param relatedWorkStartStartDateYear related_work__start_start_date__year
-     * @param relatedWorkStartStartDateYearGt related_work__start_start_date__year__gt
-     * @param relatedWorkStartStartDateYearLt related_work__start_start_date__year__lt
-     * @param relatedWorkStatus related_work__status
-     * @param relatedWorkStatusIcontains related_work__status__icontains
-     * @param relatedWorkStatusIregex related_work__status__iregex
-     * @param relatedWorkStatusIsnull related_work__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedInstitution
+     * @param relatedInstitutionEndDate
+     * @param relatedInstitutionEndDateGt
+     * @param relatedInstitutionEndDateLt
+     * @param relatedInstitutionEndDateYear
+     * @param relatedInstitutionEndDateYearGt
+     * @param relatedInstitutionEndDateYearLt
+     * @param relatedInstitutionEndDateWritten
+     * @param relatedInstitutionEndDateWrittenIcontains
+     * @param relatedInstitutionEndDateWrittenIregex
+     * @param relatedInstitutionEndDateWrittenIsnull
+     * @param relatedInstitutionEndEndDate
+     * @param relatedInstitutionEndEndDateGt
+     * @param relatedInstitutionEndEndDateLt
+     * @param relatedInstitutionEndEndDateYear
+     * @param relatedInstitutionEndEndDateYearGt
+     * @param relatedInstitutionEndEndDateYearLt
+     * @param relatedInstitutionEndStartDate
+     * @param relatedInstitutionEndStartDateGt
+     * @param relatedInstitutionEndStartDateLt
+     * @param relatedInstitutionEndStartDateYear
+     * @param relatedInstitutionEndStartDateYearGt
+     * @param relatedInstitutionEndStartDateYearLt
+     * @param relatedInstitutionId
+     * @param relatedInstitutionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionName
+     * @param relatedInstitutionNameIcontains
+     * @param relatedInstitutionNameIregex
+     * @param relatedInstitutionNameIsnull
+     * @param relatedInstitutionStartDate
+     * @param relatedInstitutionStartDateGt
+     * @param relatedInstitutionStartDateLt
+     * @param relatedInstitutionStartDateYear
+     * @param relatedInstitutionStartDateYearGt
+     * @param relatedInstitutionStartDateYearLt
+     * @param relatedInstitutionStartDateWritten
+     * @param relatedInstitutionStartDateWrittenIcontains
+     * @param relatedInstitutionStartDateWrittenIregex
+     * @param relatedInstitutionStartDateWrittenIsnull
+     * @param relatedInstitutionStartEndDate
+     * @param relatedInstitutionStartEndDateGt
+     * @param relatedInstitutionStartEndDateLt
+     * @param relatedInstitutionStartEndDateYear
+     * @param relatedInstitutionStartEndDateYearGt
+     * @param relatedInstitutionStartEndDateYearLt
+     * @param relatedInstitutionStartStartDate
+     * @param relatedInstitutionStartStartDateGt
+     * @param relatedInstitutionStartStartDateLt
+     * @param relatedInstitutionStartStartDateYear
+     * @param relatedInstitutionStartStartDateYearGt
+     * @param relatedInstitutionStartStartDateYearLt
+     * @param relatedInstitutionStatus
+     * @param relatedInstitutionStatusIcontains
+     * @param relatedInstitutionStatusIregex
+     * @param relatedInstitutionStatusIsnull
+     * @param relatedWork
+     * @param relatedWorkEndDate
+     * @param relatedWorkEndDateGt
+     * @param relatedWorkEndDateLt
+     * @param relatedWorkEndDateYear
+     * @param relatedWorkEndDateYearGt
+     * @param relatedWorkEndDateYearLt
+     * @param relatedWorkEndDateWritten
+     * @param relatedWorkEndDateWrittenIcontains
+     * @param relatedWorkEndDateWrittenIregex
+     * @param relatedWorkEndDateWrittenIsnull
+     * @param relatedWorkEndEndDate
+     * @param relatedWorkEndEndDateGt
+     * @param relatedWorkEndEndDateLt
+     * @param relatedWorkEndEndDateYear
+     * @param relatedWorkEndEndDateYearGt
+     * @param relatedWorkEndEndDateYearLt
+     * @param relatedWorkEndStartDate
+     * @param relatedWorkEndStartDateGt
+     * @param relatedWorkEndStartDateLt
+     * @param relatedWorkEndStartDateYear
+     * @param relatedWorkEndStartDateYearGt
+     * @param relatedWorkEndStartDateYearLt
+     * @param relatedWorkId
+     * @param relatedWorkIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkName
+     * @param relatedWorkNameIcontains
+     * @param relatedWorkNameIregex
+     * @param relatedWorkNameIsnull
+     * @param relatedWorkStartDate
+     * @param relatedWorkStartDateGt
+     * @param relatedWorkStartDateLt
+     * @param relatedWorkStartDateYear
+     * @param relatedWorkStartDateYearGt
+     * @param relatedWorkStartDateYearLt
+     * @param relatedWorkStartDateWritten
+     * @param relatedWorkStartDateWrittenIcontains
+     * @param relatedWorkStartDateWrittenIregex
+     * @param relatedWorkStartDateWrittenIsnull
+     * @param relatedWorkStartEndDate
+     * @param relatedWorkStartEndDateGt
+     * @param relatedWorkStartEndDateLt
+     * @param relatedWorkStartEndDateYear
+     * @param relatedWorkStartEndDateYearGt
+     * @param relatedWorkStartEndDateYearLt
+     * @param relatedWorkStartStartDate
+     * @param relatedWorkStartStartDateGt
+     * @param relatedWorkStartStartDateLt
+     * @param relatedWorkStartStartDateYear
+     * @param relatedWorkStartStartDateYearGt
+     * @param relatedWorkStartStartDateYearLt
+     * @param relatedWorkStatus
+     * @param relatedWorkStatusIcontains
+     * @param relatedWorkStatusIregex
+     * @param relatedWorkStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedInstitutionworkList
      * @throws ApiError
      */
     public static async apisApiRelationsInstitutionworkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -7847,176 +7847,176 @@ export class ApisService {
         relatedInstitutionEndDate?: string,
         relatedInstitutionEndDateGt?: string,
         relatedInstitutionEndDateLt?: string,
-        relatedInstitutionEndDateYear?: string,
-        relatedInstitutionEndDateYearGt?: string,
-        relatedInstitutionEndDateYearLt?: string,
+        relatedInstitutionEndDateYear?: number,
+        relatedInstitutionEndDateYearGt?: number,
+        relatedInstitutionEndDateYearLt?: number,
         relatedInstitutionEndDateWritten?: string,
         relatedInstitutionEndDateWrittenIcontains?: string,
         relatedInstitutionEndDateWrittenIregex?: string,
-        relatedInstitutionEndDateWrittenIsnull?: string,
+        relatedInstitutionEndDateWrittenIsnull?: boolean,
         relatedInstitutionEndEndDate?: string,
         relatedInstitutionEndEndDateGt?: string,
         relatedInstitutionEndEndDateLt?: string,
-        relatedInstitutionEndEndDateYear?: string,
-        relatedInstitutionEndEndDateYearGt?: string,
-        relatedInstitutionEndEndDateYearLt?: string,
+        relatedInstitutionEndEndDateYear?: number,
+        relatedInstitutionEndEndDateYearGt?: number,
+        relatedInstitutionEndEndDateYearLt?: number,
         relatedInstitutionEndStartDate?: string,
         relatedInstitutionEndStartDateGt?: string,
         relatedInstitutionEndStartDateLt?: string,
-        relatedInstitutionEndStartDateYear?: string,
-        relatedInstitutionEndStartDateYearGt?: string,
-        relatedInstitutionEndStartDateYearLt?: string,
+        relatedInstitutionEndStartDateYear?: number,
+        relatedInstitutionEndStartDateYearGt?: number,
+        relatedInstitutionEndStartDateYearLt?: number,
         relatedInstitutionId?: number,
-        relatedInstitutionIdIn?: number,
-        relatedInstitutionIn?: number,
+        relatedInstitutionIdIn?: Array<number>,
+        relatedInstitutionIn?: Array<number>,
         relatedInstitutionName?: string,
         relatedInstitutionNameIcontains?: string,
         relatedInstitutionNameIregex?: string,
-        relatedInstitutionNameIsnull?: string,
+        relatedInstitutionNameIsnull?: boolean,
         relatedInstitutionStartDate?: string,
         relatedInstitutionStartDateGt?: string,
         relatedInstitutionStartDateLt?: string,
-        relatedInstitutionStartDateYear?: string,
-        relatedInstitutionStartDateYearGt?: string,
-        relatedInstitutionStartDateYearLt?: string,
+        relatedInstitutionStartDateYear?: number,
+        relatedInstitutionStartDateYearGt?: number,
+        relatedInstitutionStartDateYearLt?: number,
         relatedInstitutionStartDateWritten?: string,
         relatedInstitutionStartDateWrittenIcontains?: string,
         relatedInstitutionStartDateWrittenIregex?: string,
-        relatedInstitutionStartDateWrittenIsnull?: string,
+        relatedInstitutionStartDateWrittenIsnull?: boolean,
         relatedInstitutionStartEndDate?: string,
         relatedInstitutionStartEndDateGt?: string,
         relatedInstitutionStartEndDateLt?: string,
-        relatedInstitutionStartEndDateYear?: string,
-        relatedInstitutionStartEndDateYearGt?: string,
-        relatedInstitutionStartEndDateYearLt?: string,
+        relatedInstitutionStartEndDateYear?: number,
+        relatedInstitutionStartEndDateYearGt?: number,
+        relatedInstitutionStartEndDateYearLt?: number,
         relatedInstitutionStartStartDate?: string,
         relatedInstitutionStartStartDateGt?: string,
         relatedInstitutionStartStartDateLt?: string,
-        relatedInstitutionStartStartDateYear?: string,
-        relatedInstitutionStartStartDateYearGt?: string,
-        relatedInstitutionStartStartDateYearLt?: string,
+        relatedInstitutionStartStartDateYear?: number,
+        relatedInstitutionStartStartDateYearGt?: number,
+        relatedInstitutionStartStartDateYearLt?: number,
         relatedInstitutionStatus?: string,
         relatedInstitutionStatusIcontains?: string,
         relatedInstitutionStatusIregex?: string,
-        relatedInstitutionStatusIsnull?: string,
+        relatedInstitutionStatusIsnull?: boolean,
         relatedWork?: number,
         relatedWorkEndDate?: string,
         relatedWorkEndDateGt?: string,
         relatedWorkEndDateLt?: string,
-        relatedWorkEndDateYear?: string,
-        relatedWorkEndDateYearGt?: string,
-        relatedWorkEndDateYearLt?: string,
+        relatedWorkEndDateYear?: number,
+        relatedWorkEndDateYearGt?: number,
+        relatedWorkEndDateYearLt?: number,
         relatedWorkEndDateWritten?: string,
         relatedWorkEndDateWrittenIcontains?: string,
         relatedWorkEndDateWrittenIregex?: string,
-        relatedWorkEndDateWrittenIsnull?: string,
+        relatedWorkEndDateWrittenIsnull?: boolean,
         relatedWorkEndEndDate?: string,
         relatedWorkEndEndDateGt?: string,
         relatedWorkEndEndDateLt?: string,
-        relatedWorkEndEndDateYear?: string,
-        relatedWorkEndEndDateYearGt?: string,
-        relatedWorkEndEndDateYearLt?: string,
+        relatedWorkEndEndDateYear?: number,
+        relatedWorkEndEndDateYearGt?: number,
+        relatedWorkEndEndDateYearLt?: number,
         relatedWorkEndStartDate?: string,
         relatedWorkEndStartDateGt?: string,
         relatedWorkEndStartDateLt?: string,
-        relatedWorkEndStartDateYear?: string,
-        relatedWorkEndStartDateYearGt?: string,
-        relatedWorkEndStartDateYearLt?: string,
+        relatedWorkEndStartDateYear?: number,
+        relatedWorkEndStartDateYearGt?: number,
+        relatedWorkEndStartDateYearLt?: number,
         relatedWorkId?: number,
-        relatedWorkIdIn?: number,
-        relatedWorkIn?: number,
+        relatedWorkIdIn?: Array<number>,
+        relatedWorkIn?: Array<number>,
         relatedWorkName?: string,
         relatedWorkNameIcontains?: string,
         relatedWorkNameIregex?: string,
-        relatedWorkNameIsnull?: string,
+        relatedWorkNameIsnull?: boolean,
         relatedWorkStartDate?: string,
         relatedWorkStartDateGt?: string,
         relatedWorkStartDateLt?: string,
-        relatedWorkStartDateYear?: string,
-        relatedWorkStartDateYearGt?: string,
-        relatedWorkStartDateYearLt?: string,
+        relatedWorkStartDateYear?: number,
+        relatedWorkStartDateYearGt?: number,
+        relatedWorkStartDateYearLt?: number,
         relatedWorkStartDateWritten?: string,
         relatedWorkStartDateWrittenIcontains?: string,
         relatedWorkStartDateWrittenIregex?: string,
-        relatedWorkStartDateWrittenIsnull?: string,
+        relatedWorkStartDateWrittenIsnull?: boolean,
         relatedWorkStartEndDate?: string,
         relatedWorkStartEndDateGt?: string,
         relatedWorkStartEndDateLt?: string,
-        relatedWorkStartEndDateYear?: string,
-        relatedWorkStartEndDateYearGt?: string,
-        relatedWorkStartEndDateYearLt?: string,
+        relatedWorkStartEndDateYear?: number,
+        relatedWorkStartEndDateYearGt?: number,
+        relatedWorkStartEndDateYearLt?: number,
         relatedWorkStartStartDate?: string,
         relatedWorkStartStartDateGt?: string,
         relatedWorkStartStartDateLt?: string,
-        relatedWorkStartStartDateYear?: string,
-        relatedWorkStartStartDateYearGt?: string,
-        relatedWorkStartStartDateYearLt?: string,
+        relatedWorkStartStartDateYear?: number,
+        relatedWorkStartStartDateYearGt?: number,
+        relatedWorkStartStartDateYearLt?: number,
         relatedWorkStatus?: string,
         relatedWorkStatusIcontains?: string,
         relatedWorkStatusIregex?: string,
-        relatedWorkStatusIsnull?: string,
+        relatedWorkStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedInstitutionworkList> {
         const result = await __request({
             method: 'GET',
@@ -8350,270 +8350,270 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedEvent related_event
-     * @param relatedEventEndDate related_event__end_date
-     * @param relatedEventEndDateGt related_event__end_date__gt
-     * @param relatedEventEndDateLt related_event__end_date__lt
-     * @param relatedEventEndDateYear related_event__end_date__year
-     * @param relatedEventEndDateYearGt related_event__end_date__year__gt
-     * @param relatedEventEndDateYearLt related_event__end_date__year__lt
-     * @param relatedEventEndDateWritten related_event__end_date_written
-     * @param relatedEventEndDateWrittenIcontains related_event__end_date_written__icontains
-     * @param relatedEventEndDateWrittenIregex related_event__end_date_written__iregex
-     * @param relatedEventEndDateWrittenIsnull related_event__end_date_written__isnull
-     * @param relatedEventEndEndDate related_event__end_end_date
-     * @param relatedEventEndEndDateGt related_event__end_end_date__gt
-     * @param relatedEventEndEndDateLt related_event__end_end_date__lt
-     * @param relatedEventEndEndDateYear related_event__end_end_date__year
-     * @param relatedEventEndEndDateYearGt related_event__end_end_date__year__gt
-     * @param relatedEventEndEndDateYearLt related_event__end_end_date__year__lt
-     * @param relatedEventEndStartDate related_event__end_start_date
-     * @param relatedEventEndStartDateGt related_event__end_start_date__gt
-     * @param relatedEventEndStartDateLt related_event__end_start_date__lt
-     * @param relatedEventEndStartDateYear related_event__end_start_date__year
-     * @param relatedEventEndStartDateYearGt related_event__end_start_date__year__gt
-     * @param relatedEventEndStartDateYearLt related_event__end_start_date__year__lt
-     * @param relatedEventId related_event__id
-     * @param relatedEventIdIn related_event__id__in
-     * @param relatedEventIn related_event__in
-     * @param relatedEventName related_event__name
-     * @param relatedEventNameIcontains related_event__name__icontains
-     * @param relatedEventNameIregex related_event__name__iregex
-     * @param relatedEventNameIsnull related_event__name__isnull
-     * @param relatedEventStartDate related_event__start_date
-     * @param relatedEventStartDateGt related_event__start_date__gt
-     * @param relatedEventStartDateLt related_event__start_date__lt
-     * @param relatedEventStartDateYear related_event__start_date__year
-     * @param relatedEventStartDateYearGt related_event__start_date__year__gt
-     * @param relatedEventStartDateYearLt related_event__start_date__year__lt
-     * @param relatedEventStartDateWritten related_event__start_date_written
-     * @param relatedEventStartDateWrittenIcontains related_event__start_date_written__icontains
-     * @param relatedEventStartDateWrittenIregex related_event__start_date_written__iregex
-     * @param relatedEventStartDateWrittenIsnull related_event__start_date_written__isnull
-     * @param relatedEventStartEndDate related_event__start_end_date
-     * @param relatedEventStartEndDateGt related_event__start_end_date__gt
-     * @param relatedEventStartEndDateLt related_event__start_end_date__lt
-     * @param relatedEventStartEndDateYear related_event__start_end_date__year
-     * @param relatedEventStartEndDateYearGt related_event__start_end_date__year__gt
-     * @param relatedEventStartEndDateYearLt related_event__start_end_date__year__lt
-     * @param relatedEventStartStartDate related_event__start_start_date
-     * @param relatedEventStartStartDateGt related_event__start_start_date__gt
-     * @param relatedEventStartStartDateLt related_event__start_start_date__lt
-     * @param relatedEventStartStartDateYear related_event__start_start_date__year
-     * @param relatedEventStartStartDateYearGt related_event__start_start_date__year__gt
-     * @param relatedEventStartStartDateYearLt related_event__start_start_date__year__lt
-     * @param relatedEventStatus related_event__status
-     * @param relatedEventStatusIcontains related_event__status__icontains
-     * @param relatedEventStatusIregex related_event__status__iregex
-     * @param relatedEventStatusIsnull related_event__status__isnull
-     * @param relatedPerson related_person
-     * @param relatedPersonEndDate related_person__end_date
-     * @param relatedPersonEndDateGt related_person__end_date__gt
-     * @param relatedPersonEndDateLt related_person__end_date__lt
-     * @param relatedPersonEndDateYear related_person__end_date__year
-     * @param relatedPersonEndDateYearGt related_person__end_date__year__gt
-     * @param relatedPersonEndDateYearLt related_person__end_date__year__lt
-     * @param relatedPersonEndDateWritten related_person__end_date_written
-     * @param relatedPersonEndDateWrittenIcontains related_person__end_date_written__icontains
-     * @param relatedPersonEndDateWrittenIregex related_person__end_date_written__iregex
-     * @param relatedPersonEndDateWrittenIsnull related_person__end_date_written__isnull
-     * @param relatedPersonEndEndDate related_person__end_end_date
-     * @param relatedPersonEndEndDateGt related_person__end_end_date__gt
-     * @param relatedPersonEndEndDateLt related_person__end_end_date__lt
-     * @param relatedPersonEndEndDateYear related_person__end_end_date__year
-     * @param relatedPersonEndEndDateYearGt related_person__end_end_date__year__gt
-     * @param relatedPersonEndEndDateYearLt related_person__end_end_date__year__lt
-     * @param relatedPersonEndStartDate related_person__end_start_date
-     * @param relatedPersonEndStartDateGt related_person__end_start_date__gt
-     * @param relatedPersonEndStartDateLt related_person__end_start_date__lt
-     * @param relatedPersonEndStartDateYear related_person__end_start_date__year
-     * @param relatedPersonEndStartDateYearGt related_person__end_start_date__year__gt
-     * @param relatedPersonEndStartDateYearLt related_person__end_start_date__year__lt
-     * @param relatedPersonFirstName related_person__first_name
-     * @param relatedPersonFirstNameIcontains related_person__first_name__icontains
-     * @param relatedPersonFirstNameIregex related_person__first_name__iregex
-     * @param relatedPersonFirstNameIsnull related_person__first_name__isnull
-     * @param relatedPersonGender related_person__gender
-     * @param relatedPersonGenderIcontains related_person__gender__icontains
-     * @param relatedPersonGenderIregex related_person__gender__iregex
-     * @param relatedPersonGenderIsnull related_person__gender__isnull
-     * @param relatedPersonId related_person__id
-     * @param relatedPersonIdIn related_person__id__in
-     * @param relatedPersonIn related_person__in
-     * @param relatedPersonName related_person__name
-     * @param relatedPersonNameIcontains related_person__name__icontains
-     * @param relatedPersonNameIregex related_person__name__iregex
-     * @param relatedPersonNameIsnull related_person__name__isnull
-     * @param relatedPersonStartDate related_person__start_date
-     * @param relatedPersonStartDateGt related_person__start_date__gt
-     * @param relatedPersonStartDateLt related_person__start_date__lt
-     * @param relatedPersonStartDateYear related_person__start_date__year
-     * @param relatedPersonStartDateYearGt related_person__start_date__year__gt
-     * @param relatedPersonStartDateYearLt related_person__start_date__year__lt
-     * @param relatedPersonStartDateWritten related_person__start_date_written
-     * @param relatedPersonStartDateWrittenIcontains related_person__start_date_written__icontains
-     * @param relatedPersonStartDateWrittenIregex related_person__start_date_written__iregex
-     * @param relatedPersonStartDateWrittenIsnull related_person__start_date_written__isnull
-     * @param relatedPersonStartEndDate related_person__start_end_date
-     * @param relatedPersonStartEndDateGt related_person__start_end_date__gt
-     * @param relatedPersonStartEndDateLt related_person__start_end_date__lt
-     * @param relatedPersonStartEndDateYear related_person__start_end_date__year
-     * @param relatedPersonStartEndDateYearGt related_person__start_end_date__year__gt
-     * @param relatedPersonStartEndDateYearLt related_person__start_end_date__year__lt
-     * @param relatedPersonStartStartDate related_person__start_start_date
-     * @param relatedPersonStartStartDateGt related_person__start_start_date__gt
-     * @param relatedPersonStartStartDateLt related_person__start_start_date__lt
-     * @param relatedPersonStartStartDateYear related_person__start_start_date__year
-     * @param relatedPersonStartStartDateYearGt related_person__start_start_date__year__gt
-     * @param relatedPersonStartStartDateYearLt related_person__start_start_date__year__lt
-     * @param relatedPersonStatus related_person__status
-     * @param relatedPersonStatusIcontains related_person__status__icontains
-     * @param relatedPersonStatusIregex related_person__status__iregex
-     * @param relatedPersonStatusIsnull related_person__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedEvent
+     * @param relatedEventEndDate
+     * @param relatedEventEndDateGt
+     * @param relatedEventEndDateLt
+     * @param relatedEventEndDateYear
+     * @param relatedEventEndDateYearGt
+     * @param relatedEventEndDateYearLt
+     * @param relatedEventEndDateWritten
+     * @param relatedEventEndDateWrittenIcontains
+     * @param relatedEventEndDateWrittenIregex
+     * @param relatedEventEndDateWrittenIsnull
+     * @param relatedEventEndEndDate
+     * @param relatedEventEndEndDateGt
+     * @param relatedEventEndEndDateLt
+     * @param relatedEventEndEndDateYear
+     * @param relatedEventEndEndDateYearGt
+     * @param relatedEventEndEndDateYearLt
+     * @param relatedEventEndStartDate
+     * @param relatedEventEndStartDateGt
+     * @param relatedEventEndStartDateLt
+     * @param relatedEventEndStartDateYear
+     * @param relatedEventEndStartDateYearGt
+     * @param relatedEventEndStartDateYearLt
+     * @param relatedEventId
+     * @param relatedEventIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventName
+     * @param relatedEventNameIcontains
+     * @param relatedEventNameIregex
+     * @param relatedEventNameIsnull
+     * @param relatedEventStartDate
+     * @param relatedEventStartDateGt
+     * @param relatedEventStartDateLt
+     * @param relatedEventStartDateYear
+     * @param relatedEventStartDateYearGt
+     * @param relatedEventStartDateYearLt
+     * @param relatedEventStartDateWritten
+     * @param relatedEventStartDateWrittenIcontains
+     * @param relatedEventStartDateWrittenIregex
+     * @param relatedEventStartDateWrittenIsnull
+     * @param relatedEventStartEndDate
+     * @param relatedEventStartEndDateGt
+     * @param relatedEventStartEndDateLt
+     * @param relatedEventStartEndDateYear
+     * @param relatedEventStartEndDateYearGt
+     * @param relatedEventStartEndDateYearLt
+     * @param relatedEventStartStartDate
+     * @param relatedEventStartStartDateGt
+     * @param relatedEventStartStartDateLt
+     * @param relatedEventStartStartDateYear
+     * @param relatedEventStartStartDateYearGt
+     * @param relatedEventStartStartDateYearLt
+     * @param relatedEventStatus
+     * @param relatedEventStatusIcontains
+     * @param relatedEventStatusIregex
+     * @param relatedEventStatusIsnull
+     * @param relatedPerson
+     * @param relatedPersonEndDate
+     * @param relatedPersonEndDateGt
+     * @param relatedPersonEndDateLt
+     * @param relatedPersonEndDateYear
+     * @param relatedPersonEndDateYearGt
+     * @param relatedPersonEndDateYearLt
+     * @param relatedPersonEndDateWritten
+     * @param relatedPersonEndDateWrittenIcontains
+     * @param relatedPersonEndDateWrittenIregex
+     * @param relatedPersonEndDateWrittenIsnull
+     * @param relatedPersonEndEndDate
+     * @param relatedPersonEndEndDateGt
+     * @param relatedPersonEndEndDateLt
+     * @param relatedPersonEndEndDateYear
+     * @param relatedPersonEndEndDateYearGt
+     * @param relatedPersonEndEndDateYearLt
+     * @param relatedPersonEndStartDate
+     * @param relatedPersonEndStartDateGt
+     * @param relatedPersonEndStartDateLt
+     * @param relatedPersonEndStartDateYear
+     * @param relatedPersonEndStartDateYearGt
+     * @param relatedPersonEndStartDateYearLt
+     * @param relatedPersonFirstName
+     * @param relatedPersonFirstNameIcontains
+     * @param relatedPersonFirstNameIregex
+     * @param relatedPersonFirstNameIsnull
+     * @param relatedPersonGender
+     * @param relatedPersonGenderIcontains
+     * @param relatedPersonGenderIregex
+     * @param relatedPersonGenderIsnull
+     * @param relatedPersonId
+     * @param relatedPersonIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonName
+     * @param relatedPersonNameIcontains
+     * @param relatedPersonNameIregex
+     * @param relatedPersonNameIsnull
+     * @param relatedPersonStartDate
+     * @param relatedPersonStartDateGt
+     * @param relatedPersonStartDateLt
+     * @param relatedPersonStartDateYear
+     * @param relatedPersonStartDateYearGt
+     * @param relatedPersonStartDateYearLt
+     * @param relatedPersonStartDateWritten
+     * @param relatedPersonStartDateWrittenIcontains
+     * @param relatedPersonStartDateWrittenIregex
+     * @param relatedPersonStartDateWrittenIsnull
+     * @param relatedPersonStartEndDate
+     * @param relatedPersonStartEndDateGt
+     * @param relatedPersonStartEndDateLt
+     * @param relatedPersonStartEndDateYear
+     * @param relatedPersonStartEndDateYearGt
+     * @param relatedPersonStartEndDateYearLt
+     * @param relatedPersonStartStartDate
+     * @param relatedPersonStartStartDateGt
+     * @param relatedPersonStartStartDateLt
+     * @param relatedPersonStartStartDateYear
+     * @param relatedPersonStartStartDateYearGt
+     * @param relatedPersonStartStartDateYearLt
+     * @param relatedPersonStatus
+     * @param relatedPersonStatusIcontains
+     * @param relatedPersonStatusIregex
+     * @param relatedPersonStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPersoneventList
      * @throws ApiError
      */
     public static async apisApiRelationsPersoneventList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -8622,184 +8622,184 @@ export class ApisService {
         relatedEventEndDate?: string,
         relatedEventEndDateGt?: string,
         relatedEventEndDateLt?: string,
-        relatedEventEndDateYear?: string,
-        relatedEventEndDateYearGt?: string,
-        relatedEventEndDateYearLt?: string,
+        relatedEventEndDateYear?: number,
+        relatedEventEndDateYearGt?: number,
+        relatedEventEndDateYearLt?: number,
         relatedEventEndDateWritten?: string,
         relatedEventEndDateWrittenIcontains?: string,
         relatedEventEndDateWrittenIregex?: string,
-        relatedEventEndDateWrittenIsnull?: string,
+        relatedEventEndDateWrittenIsnull?: boolean,
         relatedEventEndEndDate?: string,
         relatedEventEndEndDateGt?: string,
         relatedEventEndEndDateLt?: string,
-        relatedEventEndEndDateYear?: string,
-        relatedEventEndEndDateYearGt?: string,
-        relatedEventEndEndDateYearLt?: string,
+        relatedEventEndEndDateYear?: number,
+        relatedEventEndEndDateYearGt?: number,
+        relatedEventEndEndDateYearLt?: number,
         relatedEventEndStartDate?: string,
         relatedEventEndStartDateGt?: string,
         relatedEventEndStartDateLt?: string,
-        relatedEventEndStartDateYear?: string,
-        relatedEventEndStartDateYearGt?: string,
-        relatedEventEndStartDateYearLt?: string,
+        relatedEventEndStartDateYear?: number,
+        relatedEventEndStartDateYearGt?: number,
+        relatedEventEndStartDateYearLt?: number,
         relatedEventId?: number,
-        relatedEventIdIn?: number,
-        relatedEventIn?: number,
+        relatedEventIdIn?: Array<number>,
+        relatedEventIn?: Array<number>,
         relatedEventName?: string,
         relatedEventNameIcontains?: string,
         relatedEventNameIregex?: string,
-        relatedEventNameIsnull?: string,
+        relatedEventNameIsnull?: boolean,
         relatedEventStartDate?: string,
         relatedEventStartDateGt?: string,
         relatedEventStartDateLt?: string,
-        relatedEventStartDateYear?: string,
-        relatedEventStartDateYearGt?: string,
-        relatedEventStartDateYearLt?: string,
+        relatedEventStartDateYear?: number,
+        relatedEventStartDateYearGt?: number,
+        relatedEventStartDateYearLt?: number,
         relatedEventStartDateWritten?: string,
         relatedEventStartDateWrittenIcontains?: string,
         relatedEventStartDateWrittenIregex?: string,
-        relatedEventStartDateWrittenIsnull?: string,
+        relatedEventStartDateWrittenIsnull?: boolean,
         relatedEventStartEndDate?: string,
         relatedEventStartEndDateGt?: string,
         relatedEventStartEndDateLt?: string,
-        relatedEventStartEndDateYear?: string,
-        relatedEventStartEndDateYearGt?: string,
-        relatedEventStartEndDateYearLt?: string,
+        relatedEventStartEndDateYear?: number,
+        relatedEventStartEndDateYearGt?: number,
+        relatedEventStartEndDateYearLt?: number,
         relatedEventStartStartDate?: string,
         relatedEventStartStartDateGt?: string,
         relatedEventStartStartDateLt?: string,
-        relatedEventStartStartDateYear?: string,
-        relatedEventStartStartDateYearGt?: string,
-        relatedEventStartStartDateYearLt?: string,
+        relatedEventStartStartDateYear?: number,
+        relatedEventStartStartDateYearGt?: number,
+        relatedEventStartStartDateYearLt?: number,
         relatedEventStatus?: string,
         relatedEventStatusIcontains?: string,
         relatedEventStatusIregex?: string,
-        relatedEventStatusIsnull?: string,
+        relatedEventStatusIsnull?: boolean,
         relatedPerson?: number,
         relatedPersonEndDate?: string,
         relatedPersonEndDateGt?: string,
         relatedPersonEndDateLt?: string,
-        relatedPersonEndDateYear?: string,
-        relatedPersonEndDateYearGt?: string,
-        relatedPersonEndDateYearLt?: string,
+        relatedPersonEndDateYear?: number,
+        relatedPersonEndDateYearGt?: number,
+        relatedPersonEndDateYearLt?: number,
         relatedPersonEndDateWritten?: string,
         relatedPersonEndDateWrittenIcontains?: string,
         relatedPersonEndDateWrittenIregex?: string,
-        relatedPersonEndDateWrittenIsnull?: string,
+        relatedPersonEndDateWrittenIsnull?: boolean,
         relatedPersonEndEndDate?: string,
         relatedPersonEndEndDateGt?: string,
         relatedPersonEndEndDateLt?: string,
-        relatedPersonEndEndDateYear?: string,
-        relatedPersonEndEndDateYearGt?: string,
-        relatedPersonEndEndDateYearLt?: string,
+        relatedPersonEndEndDateYear?: number,
+        relatedPersonEndEndDateYearGt?: number,
+        relatedPersonEndEndDateYearLt?: number,
         relatedPersonEndStartDate?: string,
         relatedPersonEndStartDateGt?: string,
         relatedPersonEndStartDateLt?: string,
-        relatedPersonEndStartDateYear?: string,
-        relatedPersonEndStartDateYearGt?: string,
-        relatedPersonEndStartDateYearLt?: string,
+        relatedPersonEndStartDateYear?: number,
+        relatedPersonEndStartDateYearGt?: number,
+        relatedPersonEndStartDateYearLt?: number,
         relatedPersonFirstName?: string,
         relatedPersonFirstNameIcontains?: string,
         relatedPersonFirstNameIregex?: string,
-        relatedPersonFirstNameIsnull?: string,
-        relatedPersonGender?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonFirstNameIsnull?: boolean,
+        relatedPersonGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonGenderIcontains?: string,
+        relatedPersonGenderIregex?: string,
+        relatedPersonGenderIsnull?: boolean,
         relatedPersonId?: number,
-        relatedPersonIdIn?: number,
-        relatedPersonIn?: number,
+        relatedPersonIdIn?: Array<number>,
+        relatedPersonIn?: Array<number>,
         relatedPersonName?: string,
         relatedPersonNameIcontains?: string,
         relatedPersonNameIregex?: string,
-        relatedPersonNameIsnull?: string,
+        relatedPersonNameIsnull?: boolean,
         relatedPersonStartDate?: string,
         relatedPersonStartDateGt?: string,
         relatedPersonStartDateLt?: string,
-        relatedPersonStartDateYear?: string,
-        relatedPersonStartDateYearGt?: string,
-        relatedPersonStartDateYearLt?: string,
+        relatedPersonStartDateYear?: number,
+        relatedPersonStartDateYearGt?: number,
+        relatedPersonStartDateYearLt?: number,
         relatedPersonStartDateWritten?: string,
         relatedPersonStartDateWrittenIcontains?: string,
         relatedPersonStartDateWrittenIregex?: string,
-        relatedPersonStartDateWrittenIsnull?: string,
+        relatedPersonStartDateWrittenIsnull?: boolean,
         relatedPersonStartEndDate?: string,
         relatedPersonStartEndDateGt?: string,
         relatedPersonStartEndDateLt?: string,
-        relatedPersonStartEndDateYear?: string,
-        relatedPersonStartEndDateYearGt?: string,
-        relatedPersonStartEndDateYearLt?: string,
+        relatedPersonStartEndDateYear?: number,
+        relatedPersonStartEndDateYearGt?: number,
+        relatedPersonStartEndDateYearLt?: number,
         relatedPersonStartStartDate?: string,
         relatedPersonStartStartDateGt?: string,
         relatedPersonStartStartDateLt?: string,
-        relatedPersonStartStartDateYear?: string,
-        relatedPersonStartStartDateYearGt?: string,
-        relatedPersonStartStartDateYearLt?: string,
+        relatedPersonStartStartDateYear?: number,
+        relatedPersonStartStartDateYearGt?: number,
+        relatedPersonStartStartDateYearLt?: number,
         relatedPersonStatus?: string,
         relatedPersonStatusIcontains?: string,
         relatedPersonStatusIregex?: string,
-        relatedPersonStatusIsnull?: string,
+        relatedPersonStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPersoneventList> {
         const result = await __request({
             method: 'GET',
@@ -9141,270 +9141,270 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedInstitution related_institution
-     * @param relatedInstitutionEndDate related_institution__end_date
-     * @param relatedInstitutionEndDateGt related_institution__end_date__gt
-     * @param relatedInstitutionEndDateLt related_institution__end_date__lt
-     * @param relatedInstitutionEndDateYear related_institution__end_date__year
-     * @param relatedInstitutionEndDateYearGt related_institution__end_date__year__gt
-     * @param relatedInstitutionEndDateYearLt related_institution__end_date__year__lt
-     * @param relatedInstitutionEndDateWritten related_institution__end_date_written
-     * @param relatedInstitutionEndDateWrittenIcontains related_institution__end_date_written__icontains
-     * @param relatedInstitutionEndDateWrittenIregex related_institution__end_date_written__iregex
-     * @param relatedInstitutionEndDateWrittenIsnull related_institution__end_date_written__isnull
-     * @param relatedInstitutionEndEndDate related_institution__end_end_date
-     * @param relatedInstitutionEndEndDateGt related_institution__end_end_date__gt
-     * @param relatedInstitutionEndEndDateLt related_institution__end_end_date__lt
-     * @param relatedInstitutionEndEndDateYear related_institution__end_end_date__year
-     * @param relatedInstitutionEndEndDateYearGt related_institution__end_end_date__year__gt
-     * @param relatedInstitutionEndEndDateYearLt related_institution__end_end_date__year__lt
-     * @param relatedInstitutionEndStartDate related_institution__end_start_date
-     * @param relatedInstitutionEndStartDateGt related_institution__end_start_date__gt
-     * @param relatedInstitutionEndStartDateLt related_institution__end_start_date__lt
-     * @param relatedInstitutionEndStartDateYear related_institution__end_start_date__year
-     * @param relatedInstitutionEndStartDateYearGt related_institution__end_start_date__year__gt
-     * @param relatedInstitutionEndStartDateYearLt related_institution__end_start_date__year__lt
-     * @param relatedInstitutionId related_institution__id
-     * @param relatedInstitutionIdIn related_institution__id__in
-     * @param relatedInstitutionIn related_institution__in
-     * @param relatedInstitutionName related_institution__name
-     * @param relatedInstitutionNameIcontains related_institution__name__icontains
-     * @param relatedInstitutionNameIregex related_institution__name__iregex
-     * @param relatedInstitutionNameIsnull related_institution__name__isnull
-     * @param relatedInstitutionStartDate related_institution__start_date
-     * @param relatedInstitutionStartDateGt related_institution__start_date__gt
-     * @param relatedInstitutionStartDateLt related_institution__start_date__lt
-     * @param relatedInstitutionStartDateYear related_institution__start_date__year
-     * @param relatedInstitutionStartDateYearGt related_institution__start_date__year__gt
-     * @param relatedInstitutionStartDateYearLt related_institution__start_date__year__lt
-     * @param relatedInstitutionStartDateWritten related_institution__start_date_written
-     * @param relatedInstitutionStartDateWrittenIcontains related_institution__start_date_written__icontains
-     * @param relatedInstitutionStartDateWrittenIregex related_institution__start_date_written__iregex
-     * @param relatedInstitutionStartDateWrittenIsnull related_institution__start_date_written__isnull
-     * @param relatedInstitutionStartEndDate related_institution__start_end_date
-     * @param relatedInstitutionStartEndDateGt related_institution__start_end_date__gt
-     * @param relatedInstitutionStartEndDateLt related_institution__start_end_date__lt
-     * @param relatedInstitutionStartEndDateYear related_institution__start_end_date__year
-     * @param relatedInstitutionStartEndDateYearGt related_institution__start_end_date__year__gt
-     * @param relatedInstitutionStartEndDateYearLt related_institution__start_end_date__year__lt
-     * @param relatedInstitutionStartStartDate related_institution__start_start_date
-     * @param relatedInstitutionStartStartDateGt related_institution__start_start_date__gt
-     * @param relatedInstitutionStartStartDateLt related_institution__start_start_date__lt
-     * @param relatedInstitutionStartStartDateYear related_institution__start_start_date__year
-     * @param relatedInstitutionStartStartDateYearGt related_institution__start_start_date__year__gt
-     * @param relatedInstitutionStartStartDateYearLt related_institution__start_start_date__year__lt
-     * @param relatedInstitutionStatus related_institution__status
-     * @param relatedInstitutionStatusIcontains related_institution__status__icontains
-     * @param relatedInstitutionStatusIregex related_institution__status__iregex
-     * @param relatedInstitutionStatusIsnull related_institution__status__isnull
-     * @param relatedPerson related_person
-     * @param relatedPersonEndDate related_person__end_date
-     * @param relatedPersonEndDateGt related_person__end_date__gt
-     * @param relatedPersonEndDateLt related_person__end_date__lt
-     * @param relatedPersonEndDateYear related_person__end_date__year
-     * @param relatedPersonEndDateYearGt related_person__end_date__year__gt
-     * @param relatedPersonEndDateYearLt related_person__end_date__year__lt
-     * @param relatedPersonEndDateWritten related_person__end_date_written
-     * @param relatedPersonEndDateWrittenIcontains related_person__end_date_written__icontains
-     * @param relatedPersonEndDateWrittenIregex related_person__end_date_written__iregex
-     * @param relatedPersonEndDateWrittenIsnull related_person__end_date_written__isnull
-     * @param relatedPersonEndEndDate related_person__end_end_date
-     * @param relatedPersonEndEndDateGt related_person__end_end_date__gt
-     * @param relatedPersonEndEndDateLt related_person__end_end_date__lt
-     * @param relatedPersonEndEndDateYear related_person__end_end_date__year
-     * @param relatedPersonEndEndDateYearGt related_person__end_end_date__year__gt
-     * @param relatedPersonEndEndDateYearLt related_person__end_end_date__year__lt
-     * @param relatedPersonEndStartDate related_person__end_start_date
-     * @param relatedPersonEndStartDateGt related_person__end_start_date__gt
-     * @param relatedPersonEndStartDateLt related_person__end_start_date__lt
-     * @param relatedPersonEndStartDateYear related_person__end_start_date__year
-     * @param relatedPersonEndStartDateYearGt related_person__end_start_date__year__gt
-     * @param relatedPersonEndStartDateYearLt related_person__end_start_date__year__lt
-     * @param relatedPersonFirstName related_person__first_name
-     * @param relatedPersonFirstNameIcontains related_person__first_name__icontains
-     * @param relatedPersonFirstNameIregex related_person__first_name__iregex
-     * @param relatedPersonFirstNameIsnull related_person__first_name__isnull
-     * @param relatedPersonGender related_person__gender
-     * @param relatedPersonGenderIcontains related_person__gender__icontains
-     * @param relatedPersonGenderIregex related_person__gender__iregex
-     * @param relatedPersonGenderIsnull related_person__gender__isnull
-     * @param relatedPersonId related_person__id
-     * @param relatedPersonIdIn related_person__id__in
-     * @param relatedPersonIn related_person__in
-     * @param relatedPersonName related_person__name
-     * @param relatedPersonNameIcontains related_person__name__icontains
-     * @param relatedPersonNameIregex related_person__name__iregex
-     * @param relatedPersonNameIsnull related_person__name__isnull
-     * @param relatedPersonStartDate related_person__start_date
-     * @param relatedPersonStartDateGt related_person__start_date__gt
-     * @param relatedPersonStartDateLt related_person__start_date__lt
-     * @param relatedPersonStartDateYear related_person__start_date__year
-     * @param relatedPersonStartDateYearGt related_person__start_date__year__gt
-     * @param relatedPersonStartDateYearLt related_person__start_date__year__lt
-     * @param relatedPersonStartDateWritten related_person__start_date_written
-     * @param relatedPersonStartDateWrittenIcontains related_person__start_date_written__icontains
-     * @param relatedPersonStartDateWrittenIregex related_person__start_date_written__iregex
-     * @param relatedPersonStartDateWrittenIsnull related_person__start_date_written__isnull
-     * @param relatedPersonStartEndDate related_person__start_end_date
-     * @param relatedPersonStartEndDateGt related_person__start_end_date__gt
-     * @param relatedPersonStartEndDateLt related_person__start_end_date__lt
-     * @param relatedPersonStartEndDateYear related_person__start_end_date__year
-     * @param relatedPersonStartEndDateYearGt related_person__start_end_date__year__gt
-     * @param relatedPersonStartEndDateYearLt related_person__start_end_date__year__lt
-     * @param relatedPersonStartStartDate related_person__start_start_date
-     * @param relatedPersonStartStartDateGt related_person__start_start_date__gt
-     * @param relatedPersonStartStartDateLt related_person__start_start_date__lt
-     * @param relatedPersonStartStartDateYear related_person__start_start_date__year
-     * @param relatedPersonStartStartDateYearGt related_person__start_start_date__year__gt
-     * @param relatedPersonStartStartDateYearLt related_person__start_start_date__year__lt
-     * @param relatedPersonStatus related_person__status
-     * @param relatedPersonStatusIcontains related_person__status__icontains
-     * @param relatedPersonStatusIregex related_person__status__iregex
-     * @param relatedPersonStatusIsnull related_person__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedInstitution
+     * @param relatedInstitutionEndDate
+     * @param relatedInstitutionEndDateGt
+     * @param relatedInstitutionEndDateLt
+     * @param relatedInstitutionEndDateYear
+     * @param relatedInstitutionEndDateYearGt
+     * @param relatedInstitutionEndDateYearLt
+     * @param relatedInstitutionEndDateWritten
+     * @param relatedInstitutionEndDateWrittenIcontains
+     * @param relatedInstitutionEndDateWrittenIregex
+     * @param relatedInstitutionEndDateWrittenIsnull
+     * @param relatedInstitutionEndEndDate
+     * @param relatedInstitutionEndEndDateGt
+     * @param relatedInstitutionEndEndDateLt
+     * @param relatedInstitutionEndEndDateYear
+     * @param relatedInstitutionEndEndDateYearGt
+     * @param relatedInstitutionEndEndDateYearLt
+     * @param relatedInstitutionEndStartDate
+     * @param relatedInstitutionEndStartDateGt
+     * @param relatedInstitutionEndStartDateLt
+     * @param relatedInstitutionEndStartDateYear
+     * @param relatedInstitutionEndStartDateYearGt
+     * @param relatedInstitutionEndStartDateYearLt
+     * @param relatedInstitutionId
+     * @param relatedInstitutionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedInstitutionName
+     * @param relatedInstitutionNameIcontains
+     * @param relatedInstitutionNameIregex
+     * @param relatedInstitutionNameIsnull
+     * @param relatedInstitutionStartDate
+     * @param relatedInstitutionStartDateGt
+     * @param relatedInstitutionStartDateLt
+     * @param relatedInstitutionStartDateYear
+     * @param relatedInstitutionStartDateYearGt
+     * @param relatedInstitutionStartDateYearLt
+     * @param relatedInstitutionStartDateWritten
+     * @param relatedInstitutionStartDateWrittenIcontains
+     * @param relatedInstitutionStartDateWrittenIregex
+     * @param relatedInstitutionStartDateWrittenIsnull
+     * @param relatedInstitutionStartEndDate
+     * @param relatedInstitutionStartEndDateGt
+     * @param relatedInstitutionStartEndDateLt
+     * @param relatedInstitutionStartEndDateYear
+     * @param relatedInstitutionStartEndDateYearGt
+     * @param relatedInstitutionStartEndDateYearLt
+     * @param relatedInstitutionStartStartDate
+     * @param relatedInstitutionStartStartDateGt
+     * @param relatedInstitutionStartStartDateLt
+     * @param relatedInstitutionStartStartDateYear
+     * @param relatedInstitutionStartStartDateYearGt
+     * @param relatedInstitutionStartStartDateYearLt
+     * @param relatedInstitutionStatus
+     * @param relatedInstitutionStatusIcontains
+     * @param relatedInstitutionStatusIregex
+     * @param relatedInstitutionStatusIsnull
+     * @param relatedPerson
+     * @param relatedPersonEndDate
+     * @param relatedPersonEndDateGt
+     * @param relatedPersonEndDateLt
+     * @param relatedPersonEndDateYear
+     * @param relatedPersonEndDateYearGt
+     * @param relatedPersonEndDateYearLt
+     * @param relatedPersonEndDateWritten
+     * @param relatedPersonEndDateWrittenIcontains
+     * @param relatedPersonEndDateWrittenIregex
+     * @param relatedPersonEndDateWrittenIsnull
+     * @param relatedPersonEndEndDate
+     * @param relatedPersonEndEndDateGt
+     * @param relatedPersonEndEndDateLt
+     * @param relatedPersonEndEndDateYear
+     * @param relatedPersonEndEndDateYearGt
+     * @param relatedPersonEndEndDateYearLt
+     * @param relatedPersonEndStartDate
+     * @param relatedPersonEndStartDateGt
+     * @param relatedPersonEndStartDateLt
+     * @param relatedPersonEndStartDateYear
+     * @param relatedPersonEndStartDateYearGt
+     * @param relatedPersonEndStartDateYearLt
+     * @param relatedPersonFirstName
+     * @param relatedPersonFirstNameIcontains
+     * @param relatedPersonFirstNameIregex
+     * @param relatedPersonFirstNameIsnull
+     * @param relatedPersonGender
+     * @param relatedPersonGenderIcontains
+     * @param relatedPersonGenderIregex
+     * @param relatedPersonGenderIsnull
+     * @param relatedPersonId
+     * @param relatedPersonIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonName
+     * @param relatedPersonNameIcontains
+     * @param relatedPersonNameIregex
+     * @param relatedPersonNameIsnull
+     * @param relatedPersonStartDate
+     * @param relatedPersonStartDateGt
+     * @param relatedPersonStartDateLt
+     * @param relatedPersonStartDateYear
+     * @param relatedPersonStartDateYearGt
+     * @param relatedPersonStartDateYearLt
+     * @param relatedPersonStartDateWritten
+     * @param relatedPersonStartDateWrittenIcontains
+     * @param relatedPersonStartDateWrittenIregex
+     * @param relatedPersonStartDateWrittenIsnull
+     * @param relatedPersonStartEndDate
+     * @param relatedPersonStartEndDateGt
+     * @param relatedPersonStartEndDateLt
+     * @param relatedPersonStartEndDateYear
+     * @param relatedPersonStartEndDateYearGt
+     * @param relatedPersonStartEndDateYearLt
+     * @param relatedPersonStartStartDate
+     * @param relatedPersonStartStartDateGt
+     * @param relatedPersonStartStartDateLt
+     * @param relatedPersonStartStartDateYear
+     * @param relatedPersonStartStartDateYearGt
+     * @param relatedPersonStartStartDateYearLt
+     * @param relatedPersonStatus
+     * @param relatedPersonStatusIcontains
+     * @param relatedPersonStatusIregex
+     * @param relatedPersonStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPersoninstitutionList
      * @throws ApiError
      */
     public static async apisApiRelationsPersoninstitutionList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -9413,184 +9413,184 @@ export class ApisService {
         relatedInstitutionEndDate?: string,
         relatedInstitutionEndDateGt?: string,
         relatedInstitutionEndDateLt?: string,
-        relatedInstitutionEndDateYear?: string,
-        relatedInstitutionEndDateYearGt?: string,
-        relatedInstitutionEndDateYearLt?: string,
+        relatedInstitutionEndDateYear?: number,
+        relatedInstitutionEndDateYearGt?: number,
+        relatedInstitutionEndDateYearLt?: number,
         relatedInstitutionEndDateWritten?: string,
         relatedInstitutionEndDateWrittenIcontains?: string,
         relatedInstitutionEndDateWrittenIregex?: string,
-        relatedInstitutionEndDateWrittenIsnull?: string,
+        relatedInstitutionEndDateWrittenIsnull?: boolean,
         relatedInstitutionEndEndDate?: string,
         relatedInstitutionEndEndDateGt?: string,
         relatedInstitutionEndEndDateLt?: string,
-        relatedInstitutionEndEndDateYear?: string,
-        relatedInstitutionEndEndDateYearGt?: string,
-        relatedInstitutionEndEndDateYearLt?: string,
+        relatedInstitutionEndEndDateYear?: number,
+        relatedInstitutionEndEndDateYearGt?: number,
+        relatedInstitutionEndEndDateYearLt?: number,
         relatedInstitutionEndStartDate?: string,
         relatedInstitutionEndStartDateGt?: string,
         relatedInstitutionEndStartDateLt?: string,
-        relatedInstitutionEndStartDateYear?: string,
-        relatedInstitutionEndStartDateYearGt?: string,
-        relatedInstitutionEndStartDateYearLt?: string,
+        relatedInstitutionEndStartDateYear?: number,
+        relatedInstitutionEndStartDateYearGt?: number,
+        relatedInstitutionEndStartDateYearLt?: number,
         relatedInstitutionId?: number,
-        relatedInstitutionIdIn?: number,
-        relatedInstitutionIn?: number,
+        relatedInstitutionIdIn?: Array<number>,
+        relatedInstitutionIn?: Array<number>,
         relatedInstitutionName?: string,
         relatedInstitutionNameIcontains?: string,
         relatedInstitutionNameIregex?: string,
-        relatedInstitutionNameIsnull?: string,
+        relatedInstitutionNameIsnull?: boolean,
         relatedInstitutionStartDate?: string,
         relatedInstitutionStartDateGt?: string,
         relatedInstitutionStartDateLt?: string,
-        relatedInstitutionStartDateYear?: string,
-        relatedInstitutionStartDateYearGt?: string,
-        relatedInstitutionStartDateYearLt?: string,
+        relatedInstitutionStartDateYear?: number,
+        relatedInstitutionStartDateYearGt?: number,
+        relatedInstitutionStartDateYearLt?: number,
         relatedInstitutionStartDateWritten?: string,
         relatedInstitutionStartDateWrittenIcontains?: string,
         relatedInstitutionStartDateWrittenIregex?: string,
-        relatedInstitutionStartDateWrittenIsnull?: string,
+        relatedInstitutionStartDateWrittenIsnull?: boolean,
         relatedInstitutionStartEndDate?: string,
         relatedInstitutionStartEndDateGt?: string,
         relatedInstitutionStartEndDateLt?: string,
-        relatedInstitutionStartEndDateYear?: string,
-        relatedInstitutionStartEndDateYearGt?: string,
-        relatedInstitutionStartEndDateYearLt?: string,
+        relatedInstitutionStartEndDateYear?: number,
+        relatedInstitutionStartEndDateYearGt?: number,
+        relatedInstitutionStartEndDateYearLt?: number,
         relatedInstitutionStartStartDate?: string,
         relatedInstitutionStartStartDateGt?: string,
         relatedInstitutionStartStartDateLt?: string,
-        relatedInstitutionStartStartDateYear?: string,
-        relatedInstitutionStartStartDateYearGt?: string,
-        relatedInstitutionStartStartDateYearLt?: string,
+        relatedInstitutionStartStartDateYear?: number,
+        relatedInstitutionStartStartDateYearGt?: number,
+        relatedInstitutionStartStartDateYearLt?: number,
         relatedInstitutionStatus?: string,
         relatedInstitutionStatusIcontains?: string,
         relatedInstitutionStatusIregex?: string,
-        relatedInstitutionStatusIsnull?: string,
+        relatedInstitutionStatusIsnull?: boolean,
         relatedPerson?: number,
         relatedPersonEndDate?: string,
         relatedPersonEndDateGt?: string,
         relatedPersonEndDateLt?: string,
-        relatedPersonEndDateYear?: string,
-        relatedPersonEndDateYearGt?: string,
-        relatedPersonEndDateYearLt?: string,
+        relatedPersonEndDateYear?: number,
+        relatedPersonEndDateYearGt?: number,
+        relatedPersonEndDateYearLt?: number,
         relatedPersonEndDateWritten?: string,
         relatedPersonEndDateWrittenIcontains?: string,
         relatedPersonEndDateWrittenIregex?: string,
-        relatedPersonEndDateWrittenIsnull?: string,
+        relatedPersonEndDateWrittenIsnull?: boolean,
         relatedPersonEndEndDate?: string,
         relatedPersonEndEndDateGt?: string,
         relatedPersonEndEndDateLt?: string,
-        relatedPersonEndEndDateYear?: string,
-        relatedPersonEndEndDateYearGt?: string,
-        relatedPersonEndEndDateYearLt?: string,
+        relatedPersonEndEndDateYear?: number,
+        relatedPersonEndEndDateYearGt?: number,
+        relatedPersonEndEndDateYearLt?: number,
         relatedPersonEndStartDate?: string,
         relatedPersonEndStartDateGt?: string,
         relatedPersonEndStartDateLt?: string,
-        relatedPersonEndStartDateYear?: string,
-        relatedPersonEndStartDateYearGt?: string,
-        relatedPersonEndStartDateYearLt?: string,
+        relatedPersonEndStartDateYear?: number,
+        relatedPersonEndStartDateYearGt?: number,
+        relatedPersonEndStartDateYearLt?: number,
         relatedPersonFirstName?: string,
         relatedPersonFirstNameIcontains?: string,
         relatedPersonFirstNameIregex?: string,
-        relatedPersonFirstNameIsnull?: string,
-        relatedPersonGender?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonFirstNameIsnull?: boolean,
+        relatedPersonGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonGenderIcontains?: string,
+        relatedPersonGenderIregex?: string,
+        relatedPersonGenderIsnull?: boolean,
         relatedPersonId?: number,
-        relatedPersonIdIn?: number,
-        relatedPersonIn?: number,
+        relatedPersonIdIn?: Array<number>,
+        relatedPersonIn?: Array<number>,
         relatedPersonName?: string,
         relatedPersonNameIcontains?: string,
         relatedPersonNameIregex?: string,
-        relatedPersonNameIsnull?: string,
+        relatedPersonNameIsnull?: boolean,
         relatedPersonStartDate?: string,
         relatedPersonStartDateGt?: string,
         relatedPersonStartDateLt?: string,
-        relatedPersonStartDateYear?: string,
-        relatedPersonStartDateYearGt?: string,
-        relatedPersonStartDateYearLt?: string,
+        relatedPersonStartDateYear?: number,
+        relatedPersonStartDateYearGt?: number,
+        relatedPersonStartDateYearLt?: number,
         relatedPersonStartDateWritten?: string,
         relatedPersonStartDateWrittenIcontains?: string,
         relatedPersonStartDateWrittenIregex?: string,
-        relatedPersonStartDateWrittenIsnull?: string,
+        relatedPersonStartDateWrittenIsnull?: boolean,
         relatedPersonStartEndDate?: string,
         relatedPersonStartEndDateGt?: string,
         relatedPersonStartEndDateLt?: string,
-        relatedPersonStartEndDateYear?: string,
-        relatedPersonStartEndDateYearGt?: string,
-        relatedPersonStartEndDateYearLt?: string,
+        relatedPersonStartEndDateYear?: number,
+        relatedPersonStartEndDateYearGt?: number,
+        relatedPersonStartEndDateYearLt?: number,
         relatedPersonStartStartDate?: string,
         relatedPersonStartStartDateGt?: string,
         relatedPersonStartStartDateLt?: string,
-        relatedPersonStartStartDateYear?: string,
-        relatedPersonStartStartDateYearGt?: string,
-        relatedPersonStartStartDateYearLt?: string,
+        relatedPersonStartStartDateYear?: number,
+        relatedPersonStartStartDateYearGt?: number,
+        relatedPersonStartStartDateYearLt?: number,
         relatedPersonStatus?: string,
         relatedPersonStatusIcontains?: string,
         relatedPersonStatusIregex?: string,
-        relatedPersonStatusIsnull?: string,
+        relatedPersonStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPersoninstitutionList> {
         const result = await __request({
             method: 'GET',
@@ -9932,278 +9932,278 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedPersonA related_personA
-     * @param relatedPersonAEndDate related_personA__end_date
-     * @param relatedPersonAEndDateGt related_personA__end_date__gt
-     * @param relatedPersonAEndDateLt related_personA__end_date__lt
-     * @param relatedPersonAEndDateYear related_personA__end_date__year
-     * @param relatedPersonAEndDateYearGt related_personA__end_date__year__gt
-     * @param relatedPersonAEndDateYearLt related_personA__end_date__year__lt
-     * @param relatedPersonAEndDateWritten related_personA__end_date_written
-     * @param relatedPersonAEndDateWrittenIcontains related_personA__end_date_written__icontains
-     * @param relatedPersonAEndDateWrittenIregex related_personA__end_date_written__iregex
-     * @param relatedPersonAEndDateWrittenIsnull related_personA__end_date_written__isnull
-     * @param relatedPersonAEndEndDate related_personA__end_end_date
-     * @param relatedPersonAEndEndDateGt related_personA__end_end_date__gt
-     * @param relatedPersonAEndEndDateLt related_personA__end_end_date__lt
-     * @param relatedPersonAEndEndDateYear related_personA__end_end_date__year
-     * @param relatedPersonAEndEndDateYearGt related_personA__end_end_date__year__gt
-     * @param relatedPersonAEndEndDateYearLt related_personA__end_end_date__year__lt
-     * @param relatedPersonAEndStartDate related_personA__end_start_date
-     * @param relatedPersonAEndStartDateGt related_personA__end_start_date__gt
-     * @param relatedPersonAEndStartDateLt related_personA__end_start_date__lt
-     * @param relatedPersonAEndStartDateYear related_personA__end_start_date__year
-     * @param relatedPersonAEndStartDateYearGt related_personA__end_start_date__year__gt
-     * @param relatedPersonAEndStartDateYearLt related_personA__end_start_date__year__lt
-     * @param relatedPersonAFirstName related_personA__first_name
-     * @param relatedPersonAFirstNameIcontains related_personA__first_name__icontains
-     * @param relatedPersonAFirstNameIregex related_personA__first_name__iregex
-     * @param relatedPersonAFirstNameIsnull related_personA__first_name__isnull
-     * @param relatedPersonAGender related_personA__gender
-     * @param relatedPersonAGenderIcontains related_personA__gender__icontains
-     * @param relatedPersonAGenderIregex related_personA__gender__iregex
-     * @param relatedPersonAGenderIsnull related_personA__gender__isnull
-     * @param relatedPersonAId related_personA__id
-     * @param relatedPersonAIdIn related_personA__id__in
-     * @param relatedPersonAIn related_personA__in
-     * @param relatedPersonAName related_personA__name
-     * @param relatedPersonANameIcontains related_personA__name__icontains
-     * @param relatedPersonANameIregex related_personA__name__iregex
-     * @param relatedPersonANameIsnull related_personA__name__isnull
-     * @param relatedPersonAStartDate related_personA__start_date
-     * @param relatedPersonAStartDateGt related_personA__start_date__gt
-     * @param relatedPersonAStartDateLt related_personA__start_date__lt
-     * @param relatedPersonAStartDateYear related_personA__start_date__year
-     * @param relatedPersonAStartDateYearGt related_personA__start_date__year__gt
-     * @param relatedPersonAStartDateYearLt related_personA__start_date__year__lt
-     * @param relatedPersonAStartDateWritten related_personA__start_date_written
-     * @param relatedPersonAStartDateWrittenIcontains related_personA__start_date_written__icontains
-     * @param relatedPersonAStartDateWrittenIregex related_personA__start_date_written__iregex
-     * @param relatedPersonAStartDateWrittenIsnull related_personA__start_date_written__isnull
-     * @param relatedPersonAStartEndDate related_personA__start_end_date
-     * @param relatedPersonAStartEndDateGt related_personA__start_end_date__gt
-     * @param relatedPersonAStartEndDateLt related_personA__start_end_date__lt
-     * @param relatedPersonAStartEndDateYear related_personA__start_end_date__year
-     * @param relatedPersonAStartEndDateYearGt related_personA__start_end_date__year__gt
-     * @param relatedPersonAStartEndDateYearLt related_personA__start_end_date__year__lt
-     * @param relatedPersonAStartStartDate related_personA__start_start_date
-     * @param relatedPersonAStartStartDateGt related_personA__start_start_date__gt
-     * @param relatedPersonAStartStartDateLt related_personA__start_start_date__lt
-     * @param relatedPersonAStartStartDateYear related_personA__start_start_date__year
-     * @param relatedPersonAStartStartDateYearGt related_personA__start_start_date__year__gt
-     * @param relatedPersonAStartStartDateYearLt related_personA__start_start_date__year__lt
-     * @param relatedPersonAStatus related_personA__status
-     * @param relatedPersonAStatusIcontains related_personA__status__icontains
-     * @param relatedPersonAStatusIregex related_personA__status__iregex
-     * @param relatedPersonAStatusIsnull related_personA__status__isnull
-     * @param relatedPersonB related_personB
-     * @param relatedPersonBEndDate related_personB__end_date
-     * @param relatedPersonBEndDateGt related_personB__end_date__gt
-     * @param relatedPersonBEndDateLt related_personB__end_date__lt
-     * @param relatedPersonBEndDateYear related_personB__end_date__year
-     * @param relatedPersonBEndDateYearGt related_personB__end_date__year__gt
-     * @param relatedPersonBEndDateYearLt related_personB__end_date__year__lt
-     * @param relatedPersonBEndDateWritten related_personB__end_date_written
-     * @param relatedPersonBEndDateWrittenIcontains related_personB__end_date_written__icontains
-     * @param relatedPersonBEndDateWrittenIregex related_personB__end_date_written__iregex
-     * @param relatedPersonBEndDateWrittenIsnull related_personB__end_date_written__isnull
-     * @param relatedPersonBEndEndDate related_personB__end_end_date
-     * @param relatedPersonBEndEndDateGt related_personB__end_end_date__gt
-     * @param relatedPersonBEndEndDateLt related_personB__end_end_date__lt
-     * @param relatedPersonBEndEndDateYear related_personB__end_end_date__year
-     * @param relatedPersonBEndEndDateYearGt related_personB__end_end_date__year__gt
-     * @param relatedPersonBEndEndDateYearLt related_personB__end_end_date__year__lt
-     * @param relatedPersonBEndStartDate related_personB__end_start_date
-     * @param relatedPersonBEndStartDateGt related_personB__end_start_date__gt
-     * @param relatedPersonBEndStartDateLt related_personB__end_start_date__lt
-     * @param relatedPersonBEndStartDateYear related_personB__end_start_date__year
-     * @param relatedPersonBEndStartDateYearGt related_personB__end_start_date__year__gt
-     * @param relatedPersonBEndStartDateYearLt related_personB__end_start_date__year__lt
-     * @param relatedPersonBFirstName related_personB__first_name
-     * @param relatedPersonBFirstNameIcontains related_personB__first_name__icontains
-     * @param relatedPersonBFirstNameIregex related_personB__first_name__iregex
-     * @param relatedPersonBFirstNameIsnull related_personB__first_name__isnull
-     * @param relatedPersonBGender related_personB__gender
-     * @param relatedPersonBGenderIcontains related_personB__gender__icontains
-     * @param relatedPersonBGenderIregex related_personB__gender__iregex
-     * @param relatedPersonBGenderIsnull related_personB__gender__isnull
-     * @param relatedPersonBId related_personB__id
-     * @param relatedPersonBIdIn related_personB__id__in
-     * @param relatedPersonBIn related_personB__in
-     * @param relatedPersonBName related_personB__name
-     * @param relatedPersonBNameIcontains related_personB__name__icontains
-     * @param relatedPersonBNameIregex related_personB__name__iregex
-     * @param relatedPersonBNameIsnull related_personB__name__isnull
-     * @param relatedPersonBStartDate related_personB__start_date
-     * @param relatedPersonBStartDateGt related_personB__start_date__gt
-     * @param relatedPersonBStartDateLt related_personB__start_date__lt
-     * @param relatedPersonBStartDateYear related_personB__start_date__year
-     * @param relatedPersonBStartDateYearGt related_personB__start_date__year__gt
-     * @param relatedPersonBStartDateYearLt related_personB__start_date__year__lt
-     * @param relatedPersonBStartDateWritten related_personB__start_date_written
-     * @param relatedPersonBStartDateWrittenIcontains related_personB__start_date_written__icontains
-     * @param relatedPersonBStartDateWrittenIregex related_personB__start_date_written__iregex
-     * @param relatedPersonBStartDateWrittenIsnull related_personB__start_date_written__isnull
-     * @param relatedPersonBStartEndDate related_personB__start_end_date
-     * @param relatedPersonBStartEndDateGt related_personB__start_end_date__gt
-     * @param relatedPersonBStartEndDateLt related_personB__start_end_date__lt
-     * @param relatedPersonBStartEndDateYear related_personB__start_end_date__year
-     * @param relatedPersonBStartEndDateYearGt related_personB__start_end_date__year__gt
-     * @param relatedPersonBStartEndDateYearLt related_personB__start_end_date__year__lt
-     * @param relatedPersonBStartStartDate related_personB__start_start_date
-     * @param relatedPersonBStartStartDateGt related_personB__start_start_date__gt
-     * @param relatedPersonBStartStartDateLt related_personB__start_start_date__lt
-     * @param relatedPersonBStartStartDateYear related_personB__start_start_date__year
-     * @param relatedPersonBStartStartDateYearGt related_personB__start_start_date__year__gt
-     * @param relatedPersonBStartStartDateYearLt related_personB__start_start_date__year__lt
-     * @param relatedPersonBStatus related_personB__status
-     * @param relatedPersonBStatusIcontains related_personB__status__icontains
-     * @param relatedPersonBStatusIregex related_personB__status__iregex
-     * @param relatedPersonBStatusIsnull related_personB__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedPersonA
+     * @param relatedPersonAEndDate
+     * @param relatedPersonAEndDateGt
+     * @param relatedPersonAEndDateLt
+     * @param relatedPersonAEndDateYear
+     * @param relatedPersonAEndDateYearGt
+     * @param relatedPersonAEndDateYearLt
+     * @param relatedPersonAEndDateWritten
+     * @param relatedPersonAEndDateWrittenIcontains
+     * @param relatedPersonAEndDateWrittenIregex
+     * @param relatedPersonAEndDateWrittenIsnull
+     * @param relatedPersonAEndEndDate
+     * @param relatedPersonAEndEndDateGt
+     * @param relatedPersonAEndEndDateLt
+     * @param relatedPersonAEndEndDateYear
+     * @param relatedPersonAEndEndDateYearGt
+     * @param relatedPersonAEndEndDateYearLt
+     * @param relatedPersonAEndStartDate
+     * @param relatedPersonAEndStartDateGt
+     * @param relatedPersonAEndStartDateLt
+     * @param relatedPersonAEndStartDateYear
+     * @param relatedPersonAEndStartDateYearGt
+     * @param relatedPersonAEndStartDateYearLt
+     * @param relatedPersonAFirstName
+     * @param relatedPersonAFirstNameIcontains
+     * @param relatedPersonAFirstNameIregex
+     * @param relatedPersonAFirstNameIsnull
+     * @param relatedPersonAGender
+     * @param relatedPersonAGenderIcontains
+     * @param relatedPersonAGenderIregex
+     * @param relatedPersonAGenderIsnull
+     * @param relatedPersonAId
+     * @param relatedPersonAIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonAIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonAName
+     * @param relatedPersonANameIcontains
+     * @param relatedPersonANameIregex
+     * @param relatedPersonANameIsnull
+     * @param relatedPersonAStartDate
+     * @param relatedPersonAStartDateGt
+     * @param relatedPersonAStartDateLt
+     * @param relatedPersonAStartDateYear
+     * @param relatedPersonAStartDateYearGt
+     * @param relatedPersonAStartDateYearLt
+     * @param relatedPersonAStartDateWritten
+     * @param relatedPersonAStartDateWrittenIcontains
+     * @param relatedPersonAStartDateWrittenIregex
+     * @param relatedPersonAStartDateWrittenIsnull
+     * @param relatedPersonAStartEndDate
+     * @param relatedPersonAStartEndDateGt
+     * @param relatedPersonAStartEndDateLt
+     * @param relatedPersonAStartEndDateYear
+     * @param relatedPersonAStartEndDateYearGt
+     * @param relatedPersonAStartEndDateYearLt
+     * @param relatedPersonAStartStartDate
+     * @param relatedPersonAStartStartDateGt
+     * @param relatedPersonAStartStartDateLt
+     * @param relatedPersonAStartStartDateYear
+     * @param relatedPersonAStartStartDateYearGt
+     * @param relatedPersonAStartStartDateYearLt
+     * @param relatedPersonAStatus
+     * @param relatedPersonAStatusIcontains
+     * @param relatedPersonAStatusIregex
+     * @param relatedPersonAStatusIsnull
+     * @param relatedPersonB
+     * @param relatedPersonBEndDate
+     * @param relatedPersonBEndDateGt
+     * @param relatedPersonBEndDateLt
+     * @param relatedPersonBEndDateYear
+     * @param relatedPersonBEndDateYearGt
+     * @param relatedPersonBEndDateYearLt
+     * @param relatedPersonBEndDateWritten
+     * @param relatedPersonBEndDateWrittenIcontains
+     * @param relatedPersonBEndDateWrittenIregex
+     * @param relatedPersonBEndDateWrittenIsnull
+     * @param relatedPersonBEndEndDate
+     * @param relatedPersonBEndEndDateGt
+     * @param relatedPersonBEndEndDateLt
+     * @param relatedPersonBEndEndDateYear
+     * @param relatedPersonBEndEndDateYearGt
+     * @param relatedPersonBEndEndDateYearLt
+     * @param relatedPersonBEndStartDate
+     * @param relatedPersonBEndStartDateGt
+     * @param relatedPersonBEndStartDateLt
+     * @param relatedPersonBEndStartDateYear
+     * @param relatedPersonBEndStartDateYearGt
+     * @param relatedPersonBEndStartDateYearLt
+     * @param relatedPersonBFirstName
+     * @param relatedPersonBFirstNameIcontains
+     * @param relatedPersonBFirstNameIregex
+     * @param relatedPersonBFirstNameIsnull
+     * @param relatedPersonBGender
+     * @param relatedPersonBGenderIcontains
+     * @param relatedPersonBGenderIregex
+     * @param relatedPersonBGenderIsnull
+     * @param relatedPersonBId
+     * @param relatedPersonBIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonBIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonBName
+     * @param relatedPersonBNameIcontains
+     * @param relatedPersonBNameIregex
+     * @param relatedPersonBNameIsnull
+     * @param relatedPersonBStartDate
+     * @param relatedPersonBStartDateGt
+     * @param relatedPersonBStartDateLt
+     * @param relatedPersonBStartDateYear
+     * @param relatedPersonBStartDateYearGt
+     * @param relatedPersonBStartDateYearLt
+     * @param relatedPersonBStartDateWritten
+     * @param relatedPersonBStartDateWrittenIcontains
+     * @param relatedPersonBStartDateWrittenIregex
+     * @param relatedPersonBStartDateWrittenIsnull
+     * @param relatedPersonBStartEndDate
+     * @param relatedPersonBStartEndDateGt
+     * @param relatedPersonBStartEndDateLt
+     * @param relatedPersonBStartEndDateYear
+     * @param relatedPersonBStartEndDateYearGt
+     * @param relatedPersonBStartEndDateYearLt
+     * @param relatedPersonBStartStartDate
+     * @param relatedPersonBStartStartDateGt
+     * @param relatedPersonBStartStartDateLt
+     * @param relatedPersonBStartStartDateYear
+     * @param relatedPersonBStartStartDateYearGt
+     * @param relatedPersonBStartStartDateYearLt
+     * @param relatedPersonBStatus
+     * @param relatedPersonBStatusIcontains
+     * @param relatedPersonBStatusIregex
+     * @param relatedPersonBStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPersonpersonList
      * @throws ApiError
      */
     public static async apisApiRelationsPersonpersonList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -10212,192 +10212,192 @@ export class ApisService {
         relatedPersonAEndDate?: string,
         relatedPersonAEndDateGt?: string,
         relatedPersonAEndDateLt?: string,
-        relatedPersonAEndDateYear?: string,
-        relatedPersonAEndDateYearGt?: string,
-        relatedPersonAEndDateYearLt?: string,
+        relatedPersonAEndDateYear?: number,
+        relatedPersonAEndDateYearGt?: number,
+        relatedPersonAEndDateYearLt?: number,
         relatedPersonAEndDateWritten?: string,
         relatedPersonAEndDateWrittenIcontains?: string,
         relatedPersonAEndDateWrittenIregex?: string,
-        relatedPersonAEndDateWrittenIsnull?: string,
+        relatedPersonAEndDateWrittenIsnull?: boolean,
         relatedPersonAEndEndDate?: string,
         relatedPersonAEndEndDateGt?: string,
         relatedPersonAEndEndDateLt?: string,
-        relatedPersonAEndEndDateYear?: string,
-        relatedPersonAEndEndDateYearGt?: string,
-        relatedPersonAEndEndDateYearLt?: string,
+        relatedPersonAEndEndDateYear?: number,
+        relatedPersonAEndEndDateYearGt?: number,
+        relatedPersonAEndEndDateYearLt?: number,
         relatedPersonAEndStartDate?: string,
         relatedPersonAEndStartDateGt?: string,
         relatedPersonAEndStartDateLt?: string,
-        relatedPersonAEndStartDateYear?: string,
-        relatedPersonAEndStartDateYearGt?: string,
-        relatedPersonAEndStartDateYearLt?: string,
+        relatedPersonAEndStartDateYear?: number,
+        relatedPersonAEndStartDateYearGt?: number,
+        relatedPersonAEndStartDateYearLt?: number,
         relatedPersonAFirstName?: string,
         relatedPersonAFirstNameIcontains?: string,
         relatedPersonAFirstNameIregex?: string,
-        relatedPersonAFirstNameIsnull?: string,
-        relatedPersonAGender?: 'female' | 'male' | 'third gender',
-        relatedPersonAGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonAGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonAGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonAFirstNameIsnull?: boolean,
+        relatedPersonAGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonAGenderIcontains?: string,
+        relatedPersonAGenderIregex?: string,
+        relatedPersonAGenderIsnull?: boolean,
         relatedPersonAId?: number,
-        relatedPersonAIdIn?: number,
-        relatedPersonAIn?: number,
+        relatedPersonAIdIn?: Array<number>,
+        relatedPersonAIn?: Array<number>,
         relatedPersonAName?: string,
         relatedPersonANameIcontains?: string,
         relatedPersonANameIregex?: string,
-        relatedPersonANameIsnull?: string,
+        relatedPersonANameIsnull?: boolean,
         relatedPersonAStartDate?: string,
         relatedPersonAStartDateGt?: string,
         relatedPersonAStartDateLt?: string,
-        relatedPersonAStartDateYear?: string,
-        relatedPersonAStartDateYearGt?: string,
-        relatedPersonAStartDateYearLt?: string,
+        relatedPersonAStartDateYear?: number,
+        relatedPersonAStartDateYearGt?: number,
+        relatedPersonAStartDateYearLt?: number,
         relatedPersonAStartDateWritten?: string,
         relatedPersonAStartDateWrittenIcontains?: string,
         relatedPersonAStartDateWrittenIregex?: string,
-        relatedPersonAStartDateWrittenIsnull?: string,
+        relatedPersonAStartDateWrittenIsnull?: boolean,
         relatedPersonAStartEndDate?: string,
         relatedPersonAStartEndDateGt?: string,
         relatedPersonAStartEndDateLt?: string,
-        relatedPersonAStartEndDateYear?: string,
-        relatedPersonAStartEndDateYearGt?: string,
-        relatedPersonAStartEndDateYearLt?: string,
+        relatedPersonAStartEndDateYear?: number,
+        relatedPersonAStartEndDateYearGt?: number,
+        relatedPersonAStartEndDateYearLt?: number,
         relatedPersonAStartStartDate?: string,
         relatedPersonAStartStartDateGt?: string,
         relatedPersonAStartStartDateLt?: string,
-        relatedPersonAStartStartDateYear?: string,
-        relatedPersonAStartStartDateYearGt?: string,
-        relatedPersonAStartStartDateYearLt?: string,
+        relatedPersonAStartStartDateYear?: number,
+        relatedPersonAStartStartDateYearGt?: number,
+        relatedPersonAStartStartDateYearLt?: number,
         relatedPersonAStatus?: string,
         relatedPersonAStatusIcontains?: string,
         relatedPersonAStatusIregex?: string,
-        relatedPersonAStatusIsnull?: string,
+        relatedPersonAStatusIsnull?: boolean,
         relatedPersonB?: number,
         relatedPersonBEndDate?: string,
         relatedPersonBEndDateGt?: string,
         relatedPersonBEndDateLt?: string,
-        relatedPersonBEndDateYear?: string,
-        relatedPersonBEndDateYearGt?: string,
-        relatedPersonBEndDateYearLt?: string,
+        relatedPersonBEndDateYear?: number,
+        relatedPersonBEndDateYearGt?: number,
+        relatedPersonBEndDateYearLt?: number,
         relatedPersonBEndDateWritten?: string,
         relatedPersonBEndDateWrittenIcontains?: string,
         relatedPersonBEndDateWrittenIregex?: string,
-        relatedPersonBEndDateWrittenIsnull?: string,
+        relatedPersonBEndDateWrittenIsnull?: boolean,
         relatedPersonBEndEndDate?: string,
         relatedPersonBEndEndDateGt?: string,
         relatedPersonBEndEndDateLt?: string,
-        relatedPersonBEndEndDateYear?: string,
-        relatedPersonBEndEndDateYearGt?: string,
-        relatedPersonBEndEndDateYearLt?: string,
+        relatedPersonBEndEndDateYear?: number,
+        relatedPersonBEndEndDateYearGt?: number,
+        relatedPersonBEndEndDateYearLt?: number,
         relatedPersonBEndStartDate?: string,
         relatedPersonBEndStartDateGt?: string,
         relatedPersonBEndStartDateLt?: string,
-        relatedPersonBEndStartDateYear?: string,
-        relatedPersonBEndStartDateYearGt?: string,
-        relatedPersonBEndStartDateYearLt?: string,
+        relatedPersonBEndStartDateYear?: number,
+        relatedPersonBEndStartDateYearGt?: number,
+        relatedPersonBEndStartDateYearLt?: number,
         relatedPersonBFirstName?: string,
         relatedPersonBFirstNameIcontains?: string,
         relatedPersonBFirstNameIregex?: string,
-        relatedPersonBFirstNameIsnull?: string,
-        relatedPersonBGender?: 'female' | 'male' | 'third gender',
-        relatedPersonBGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonBGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonBGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonBFirstNameIsnull?: boolean,
+        relatedPersonBGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonBGenderIcontains?: string,
+        relatedPersonBGenderIregex?: string,
+        relatedPersonBGenderIsnull?: boolean,
         relatedPersonBId?: number,
-        relatedPersonBIdIn?: number,
-        relatedPersonBIn?: number,
+        relatedPersonBIdIn?: Array<number>,
+        relatedPersonBIn?: Array<number>,
         relatedPersonBName?: string,
         relatedPersonBNameIcontains?: string,
         relatedPersonBNameIregex?: string,
-        relatedPersonBNameIsnull?: string,
+        relatedPersonBNameIsnull?: boolean,
         relatedPersonBStartDate?: string,
         relatedPersonBStartDateGt?: string,
         relatedPersonBStartDateLt?: string,
-        relatedPersonBStartDateYear?: string,
-        relatedPersonBStartDateYearGt?: string,
-        relatedPersonBStartDateYearLt?: string,
+        relatedPersonBStartDateYear?: number,
+        relatedPersonBStartDateYearGt?: number,
+        relatedPersonBStartDateYearLt?: number,
         relatedPersonBStartDateWritten?: string,
         relatedPersonBStartDateWrittenIcontains?: string,
         relatedPersonBStartDateWrittenIregex?: string,
-        relatedPersonBStartDateWrittenIsnull?: string,
+        relatedPersonBStartDateWrittenIsnull?: boolean,
         relatedPersonBStartEndDate?: string,
         relatedPersonBStartEndDateGt?: string,
         relatedPersonBStartEndDateLt?: string,
-        relatedPersonBStartEndDateYear?: string,
-        relatedPersonBStartEndDateYearGt?: string,
-        relatedPersonBStartEndDateYearLt?: string,
+        relatedPersonBStartEndDateYear?: number,
+        relatedPersonBStartEndDateYearGt?: number,
+        relatedPersonBStartEndDateYearLt?: number,
         relatedPersonBStartStartDate?: string,
         relatedPersonBStartStartDateGt?: string,
         relatedPersonBStartStartDateLt?: string,
-        relatedPersonBStartStartDateYear?: string,
-        relatedPersonBStartStartDateYearGt?: string,
-        relatedPersonBStartStartDateYearLt?: string,
+        relatedPersonBStartStartDateYear?: number,
+        relatedPersonBStartStartDateYearGt?: number,
+        relatedPersonBStartStartDateYearLt?: number,
         relatedPersonBStatus?: string,
         relatedPersonBStatusIcontains?: string,
         relatedPersonBStatusIregex?: string,
-        relatedPersonBStatusIsnull?: string,
+        relatedPersonBStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPersonpersonList> {
         const result = await __request({
             method: 'GET',
@@ -10747,270 +10747,270 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedPerson related_person
-     * @param relatedPersonEndDate related_person__end_date
-     * @param relatedPersonEndDateGt related_person__end_date__gt
-     * @param relatedPersonEndDateLt related_person__end_date__lt
-     * @param relatedPersonEndDateYear related_person__end_date__year
-     * @param relatedPersonEndDateYearGt related_person__end_date__year__gt
-     * @param relatedPersonEndDateYearLt related_person__end_date__year__lt
-     * @param relatedPersonEndDateWritten related_person__end_date_written
-     * @param relatedPersonEndDateWrittenIcontains related_person__end_date_written__icontains
-     * @param relatedPersonEndDateWrittenIregex related_person__end_date_written__iregex
-     * @param relatedPersonEndDateWrittenIsnull related_person__end_date_written__isnull
-     * @param relatedPersonEndEndDate related_person__end_end_date
-     * @param relatedPersonEndEndDateGt related_person__end_end_date__gt
-     * @param relatedPersonEndEndDateLt related_person__end_end_date__lt
-     * @param relatedPersonEndEndDateYear related_person__end_end_date__year
-     * @param relatedPersonEndEndDateYearGt related_person__end_end_date__year__gt
-     * @param relatedPersonEndEndDateYearLt related_person__end_end_date__year__lt
-     * @param relatedPersonEndStartDate related_person__end_start_date
-     * @param relatedPersonEndStartDateGt related_person__end_start_date__gt
-     * @param relatedPersonEndStartDateLt related_person__end_start_date__lt
-     * @param relatedPersonEndStartDateYear related_person__end_start_date__year
-     * @param relatedPersonEndStartDateYearGt related_person__end_start_date__year__gt
-     * @param relatedPersonEndStartDateYearLt related_person__end_start_date__year__lt
-     * @param relatedPersonFirstName related_person__first_name
-     * @param relatedPersonFirstNameIcontains related_person__first_name__icontains
-     * @param relatedPersonFirstNameIregex related_person__first_name__iregex
-     * @param relatedPersonFirstNameIsnull related_person__first_name__isnull
-     * @param relatedPersonGender related_person__gender
-     * @param relatedPersonGenderIcontains related_person__gender__icontains
-     * @param relatedPersonGenderIregex related_person__gender__iregex
-     * @param relatedPersonGenderIsnull related_person__gender__isnull
-     * @param relatedPersonId related_person__id
-     * @param relatedPersonIdIn related_person__id__in
-     * @param relatedPersonIn related_person__in
-     * @param relatedPersonName related_person__name
-     * @param relatedPersonNameIcontains related_person__name__icontains
-     * @param relatedPersonNameIregex related_person__name__iregex
-     * @param relatedPersonNameIsnull related_person__name__isnull
-     * @param relatedPersonStartDate related_person__start_date
-     * @param relatedPersonStartDateGt related_person__start_date__gt
-     * @param relatedPersonStartDateLt related_person__start_date__lt
-     * @param relatedPersonStartDateYear related_person__start_date__year
-     * @param relatedPersonStartDateYearGt related_person__start_date__year__gt
-     * @param relatedPersonStartDateYearLt related_person__start_date__year__lt
-     * @param relatedPersonStartDateWritten related_person__start_date_written
-     * @param relatedPersonStartDateWrittenIcontains related_person__start_date_written__icontains
-     * @param relatedPersonStartDateWrittenIregex related_person__start_date_written__iregex
-     * @param relatedPersonStartDateWrittenIsnull related_person__start_date_written__isnull
-     * @param relatedPersonStartEndDate related_person__start_end_date
-     * @param relatedPersonStartEndDateGt related_person__start_end_date__gt
-     * @param relatedPersonStartEndDateLt related_person__start_end_date__lt
-     * @param relatedPersonStartEndDateYear related_person__start_end_date__year
-     * @param relatedPersonStartEndDateYearGt related_person__start_end_date__year__gt
-     * @param relatedPersonStartEndDateYearLt related_person__start_end_date__year__lt
-     * @param relatedPersonStartStartDate related_person__start_start_date
-     * @param relatedPersonStartStartDateGt related_person__start_start_date__gt
-     * @param relatedPersonStartStartDateLt related_person__start_start_date__lt
-     * @param relatedPersonStartStartDateYear related_person__start_start_date__year
-     * @param relatedPersonStartStartDateYearGt related_person__start_start_date__year__gt
-     * @param relatedPersonStartStartDateYearLt related_person__start_start_date__year__lt
-     * @param relatedPersonStatus related_person__status
-     * @param relatedPersonStatusIcontains related_person__status__icontains
-     * @param relatedPersonStatusIregex related_person__status__iregex
-     * @param relatedPersonStatusIsnull related_person__status__isnull
-     * @param relatedPlace related_place
-     * @param relatedPlaceEndDate related_place__end_date
-     * @param relatedPlaceEndDateGt related_place__end_date__gt
-     * @param relatedPlaceEndDateLt related_place__end_date__lt
-     * @param relatedPlaceEndDateYear related_place__end_date__year
-     * @param relatedPlaceEndDateYearGt related_place__end_date__year__gt
-     * @param relatedPlaceEndDateYearLt related_place__end_date__year__lt
-     * @param relatedPlaceEndDateWritten related_place__end_date_written
-     * @param relatedPlaceEndDateWrittenIcontains related_place__end_date_written__icontains
-     * @param relatedPlaceEndDateWrittenIregex related_place__end_date_written__iregex
-     * @param relatedPlaceEndDateWrittenIsnull related_place__end_date_written__isnull
-     * @param relatedPlaceEndEndDate related_place__end_end_date
-     * @param relatedPlaceEndEndDateGt related_place__end_end_date__gt
-     * @param relatedPlaceEndEndDateLt related_place__end_end_date__lt
-     * @param relatedPlaceEndEndDateYear related_place__end_end_date__year
-     * @param relatedPlaceEndEndDateYearGt related_place__end_end_date__year__gt
-     * @param relatedPlaceEndEndDateYearLt related_place__end_end_date__year__lt
-     * @param relatedPlaceEndStartDate related_place__end_start_date
-     * @param relatedPlaceEndStartDateGt related_place__end_start_date__gt
-     * @param relatedPlaceEndStartDateLt related_place__end_start_date__lt
-     * @param relatedPlaceEndStartDateYear related_place__end_start_date__year
-     * @param relatedPlaceEndStartDateYearGt related_place__end_start_date__year__gt
-     * @param relatedPlaceEndStartDateYearLt related_place__end_start_date__year__lt
-     * @param relatedPlaceId related_place__id
-     * @param relatedPlaceIdIn related_place__id__in
-     * @param relatedPlaceIn related_place__in
-     * @param relatedPlaceName related_place__name
-     * @param relatedPlaceNameIcontains related_place__name__icontains
-     * @param relatedPlaceNameIregex related_place__name__iregex
-     * @param relatedPlaceNameIsnull related_place__name__isnull
-     * @param relatedPlaceStartDate related_place__start_date
-     * @param relatedPlaceStartDateGt related_place__start_date__gt
-     * @param relatedPlaceStartDateLt related_place__start_date__lt
-     * @param relatedPlaceStartDateYear related_place__start_date__year
-     * @param relatedPlaceStartDateYearGt related_place__start_date__year__gt
-     * @param relatedPlaceStartDateYearLt related_place__start_date__year__lt
-     * @param relatedPlaceStartDateWritten related_place__start_date_written
-     * @param relatedPlaceStartDateWrittenIcontains related_place__start_date_written__icontains
-     * @param relatedPlaceStartDateWrittenIregex related_place__start_date_written__iregex
-     * @param relatedPlaceStartDateWrittenIsnull related_place__start_date_written__isnull
-     * @param relatedPlaceStartEndDate related_place__start_end_date
-     * @param relatedPlaceStartEndDateGt related_place__start_end_date__gt
-     * @param relatedPlaceStartEndDateLt related_place__start_end_date__lt
-     * @param relatedPlaceStartEndDateYear related_place__start_end_date__year
-     * @param relatedPlaceStartEndDateYearGt related_place__start_end_date__year__gt
-     * @param relatedPlaceStartEndDateYearLt related_place__start_end_date__year__lt
-     * @param relatedPlaceStartStartDate related_place__start_start_date
-     * @param relatedPlaceStartStartDateGt related_place__start_start_date__gt
-     * @param relatedPlaceStartStartDateLt related_place__start_start_date__lt
-     * @param relatedPlaceStartStartDateYear related_place__start_start_date__year
-     * @param relatedPlaceStartStartDateYearGt related_place__start_start_date__year__gt
-     * @param relatedPlaceStartStartDateYearLt related_place__start_start_date__year__lt
-     * @param relatedPlaceStatus related_place__status
-     * @param relatedPlaceStatusIcontains related_place__status__icontains
-     * @param relatedPlaceStatusIregex related_place__status__iregex
-     * @param relatedPlaceStatusIsnull related_place__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedPerson
+     * @param relatedPersonEndDate
+     * @param relatedPersonEndDateGt
+     * @param relatedPersonEndDateLt
+     * @param relatedPersonEndDateYear
+     * @param relatedPersonEndDateYearGt
+     * @param relatedPersonEndDateYearLt
+     * @param relatedPersonEndDateWritten
+     * @param relatedPersonEndDateWrittenIcontains
+     * @param relatedPersonEndDateWrittenIregex
+     * @param relatedPersonEndDateWrittenIsnull
+     * @param relatedPersonEndEndDate
+     * @param relatedPersonEndEndDateGt
+     * @param relatedPersonEndEndDateLt
+     * @param relatedPersonEndEndDateYear
+     * @param relatedPersonEndEndDateYearGt
+     * @param relatedPersonEndEndDateYearLt
+     * @param relatedPersonEndStartDate
+     * @param relatedPersonEndStartDateGt
+     * @param relatedPersonEndStartDateLt
+     * @param relatedPersonEndStartDateYear
+     * @param relatedPersonEndStartDateYearGt
+     * @param relatedPersonEndStartDateYearLt
+     * @param relatedPersonFirstName
+     * @param relatedPersonFirstNameIcontains
+     * @param relatedPersonFirstNameIregex
+     * @param relatedPersonFirstNameIsnull
+     * @param relatedPersonGender
+     * @param relatedPersonGenderIcontains
+     * @param relatedPersonGenderIregex
+     * @param relatedPersonGenderIsnull
+     * @param relatedPersonId
+     * @param relatedPersonIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonName
+     * @param relatedPersonNameIcontains
+     * @param relatedPersonNameIregex
+     * @param relatedPersonNameIsnull
+     * @param relatedPersonStartDate
+     * @param relatedPersonStartDateGt
+     * @param relatedPersonStartDateLt
+     * @param relatedPersonStartDateYear
+     * @param relatedPersonStartDateYearGt
+     * @param relatedPersonStartDateYearLt
+     * @param relatedPersonStartDateWritten
+     * @param relatedPersonStartDateWrittenIcontains
+     * @param relatedPersonStartDateWrittenIregex
+     * @param relatedPersonStartDateWrittenIsnull
+     * @param relatedPersonStartEndDate
+     * @param relatedPersonStartEndDateGt
+     * @param relatedPersonStartEndDateLt
+     * @param relatedPersonStartEndDateYear
+     * @param relatedPersonStartEndDateYearGt
+     * @param relatedPersonStartEndDateYearLt
+     * @param relatedPersonStartStartDate
+     * @param relatedPersonStartStartDateGt
+     * @param relatedPersonStartStartDateLt
+     * @param relatedPersonStartStartDateYear
+     * @param relatedPersonStartStartDateYearGt
+     * @param relatedPersonStartStartDateYearLt
+     * @param relatedPersonStatus
+     * @param relatedPersonStatusIcontains
+     * @param relatedPersonStatusIregex
+     * @param relatedPersonStatusIsnull
+     * @param relatedPlace
+     * @param relatedPlaceEndDate
+     * @param relatedPlaceEndDateGt
+     * @param relatedPlaceEndDateLt
+     * @param relatedPlaceEndDateYear
+     * @param relatedPlaceEndDateYearGt
+     * @param relatedPlaceEndDateYearLt
+     * @param relatedPlaceEndDateWritten
+     * @param relatedPlaceEndDateWrittenIcontains
+     * @param relatedPlaceEndDateWrittenIregex
+     * @param relatedPlaceEndDateWrittenIsnull
+     * @param relatedPlaceEndEndDate
+     * @param relatedPlaceEndEndDateGt
+     * @param relatedPlaceEndEndDateLt
+     * @param relatedPlaceEndEndDateYear
+     * @param relatedPlaceEndEndDateYearGt
+     * @param relatedPlaceEndEndDateYearLt
+     * @param relatedPlaceEndStartDate
+     * @param relatedPlaceEndStartDateGt
+     * @param relatedPlaceEndStartDateLt
+     * @param relatedPlaceEndStartDateYear
+     * @param relatedPlaceEndStartDateYearGt
+     * @param relatedPlaceEndStartDateYearLt
+     * @param relatedPlaceId
+     * @param relatedPlaceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceName
+     * @param relatedPlaceNameIcontains
+     * @param relatedPlaceNameIregex
+     * @param relatedPlaceNameIsnull
+     * @param relatedPlaceStartDate
+     * @param relatedPlaceStartDateGt
+     * @param relatedPlaceStartDateLt
+     * @param relatedPlaceStartDateYear
+     * @param relatedPlaceStartDateYearGt
+     * @param relatedPlaceStartDateYearLt
+     * @param relatedPlaceStartDateWritten
+     * @param relatedPlaceStartDateWrittenIcontains
+     * @param relatedPlaceStartDateWrittenIregex
+     * @param relatedPlaceStartDateWrittenIsnull
+     * @param relatedPlaceStartEndDate
+     * @param relatedPlaceStartEndDateGt
+     * @param relatedPlaceStartEndDateLt
+     * @param relatedPlaceStartEndDateYear
+     * @param relatedPlaceStartEndDateYearGt
+     * @param relatedPlaceStartEndDateYearLt
+     * @param relatedPlaceStartStartDate
+     * @param relatedPlaceStartStartDateGt
+     * @param relatedPlaceStartStartDateLt
+     * @param relatedPlaceStartStartDateYear
+     * @param relatedPlaceStartStartDateYearGt
+     * @param relatedPlaceStartStartDateYearLt
+     * @param relatedPlaceStatus
+     * @param relatedPlaceStatusIcontains
+     * @param relatedPlaceStatusIregex
+     * @param relatedPlaceStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPersonplaceList
      * @throws ApiError
      */
     public static async apisApiRelationsPersonplaceList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -11019,184 +11019,184 @@ export class ApisService {
         relatedPersonEndDate?: string,
         relatedPersonEndDateGt?: string,
         relatedPersonEndDateLt?: string,
-        relatedPersonEndDateYear?: string,
-        relatedPersonEndDateYearGt?: string,
-        relatedPersonEndDateYearLt?: string,
+        relatedPersonEndDateYear?: number,
+        relatedPersonEndDateYearGt?: number,
+        relatedPersonEndDateYearLt?: number,
         relatedPersonEndDateWritten?: string,
         relatedPersonEndDateWrittenIcontains?: string,
         relatedPersonEndDateWrittenIregex?: string,
-        relatedPersonEndDateWrittenIsnull?: string,
+        relatedPersonEndDateWrittenIsnull?: boolean,
         relatedPersonEndEndDate?: string,
         relatedPersonEndEndDateGt?: string,
         relatedPersonEndEndDateLt?: string,
-        relatedPersonEndEndDateYear?: string,
-        relatedPersonEndEndDateYearGt?: string,
-        relatedPersonEndEndDateYearLt?: string,
+        relatedPersonEndEndDateYear?: number,
+        relatedPersonEndEndDateYearGt?: number,
+        relatedPersonEndEndDateYearLt?: number,
         relatedPersonEndStartDate?: string,
         relatedPersonEndStartDateGt?: string,
         relatedPersonEndStartDateLt?: string,
-        relatedPersonEndStartDateYear?: string,
-        relatedPersonEndStartDateYearGt?: string,
-        relatedPersonEndStartDateYearLt?: string,
+        relatedPersonEndStartDateYear?: number,
+        relatedPersonEndStartDateYearGt?: number,
+        relatedPersonEndStartDateYearLt?: number,
         relatedPersonFirstName?: string,
         relatedPersonFirstNameIcontains?: string,
         relatedPersonFirstNameIregex?: string,
-        relatedPersonFirstNameIsnull?: string,
-        relatedPersonGender?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonFirstNameIsnull?: boolean,
+        relatedPersonGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonGenderIcontains?: string,
+        relatedPersonGenderIregex?: string,
+        relatedPersonGenderIsnull?: boolean,
         relatedPersonId?: number,
-        relatedPersonIdIn?: number,
-        relatedPersonIn?: number,
+        relatedPersonIdIn?: Array<number>,
+        relatedPersonIn?: Array<number>,
         relatedPersonName?: string,
         relatedPersonNameIcontains?: string,
         relatedPersonNameIregex?: string,
-        relatedPersonNameIsnull?: string,
+        relatedPersonNameIsnull?: boolean,
         relatedPersonStartDate?: string,
         relatedPersonStartDateGt?: string,
         relatedPersonStartDateLt?: string,
-        relatedPersonStartDateYear?: string,
-        relatedPersonStartDateYearGt?: string,
-        relatedPersonStartDateYearLt?: string,
+        relatedPersonStartDateYear?: number,
+        relatedPersonStartDateYearGt?: number,
+        relatedPersonStartDateYearLt?: number,
         relatedPersonStartDateWritten?: string,
         relatedPersonStartDateWrittenIcontains?: string,
         relatedPersonStartDateWrittenIregex?: string,
-        relatedPersonStartDateWrittenIsnull?: string,
+        relatedPersonStartDateWrittenIsnull?: boolean,
         relatedPersonStartEndDate?: string,
         relatedPersonStartEndDateGt?: string,
         relatedPersonStartEndDateLt?: string,
-        relatedPersonStartEndDateYear?: string,
-        relatedPersonStartEndDateYearGt?: string,
-        relatedPersonStartEndDateYearLt?: string,
+        relatedPersonStartEndDateYear?: number,
+        relatedPersonStartEndDateYearGt?: number,
+        relatedPersonStartEndDateYearLt?: number,
         relatedPersonStartStartDate?: string,
         relatedPersonStartStartDateGt?: string,
         relatedPersonStartStartDateLt?: string,
-        relatedPersonStartStartDateYear?: string,
-        relatedPersonStartStartDateYearGt?: string,
-        relatedPersonStartStartDateYearLt?: string,
+        relatedPersonStartStartDateYear?: number,
+        relatedPersonStartStartDateYearGt?: number,
+        relatedPersonStartStartDateYearLt?: number,
         relatedPersonStatus?: string,
         relatedPersonStatusIcontains?: string,
         relatedPersonStatusIregex?: string,
-        relatedPersonStatusIsnull?: string,
+        relatedPersonStatusIsnull?: boolean,
         relatedPlace?: number,
         relatedPlaceEndDate?: string,
         relatedPlaceEndDateGt?: string,
         relatedPlaceEndDateLt?: string,
-        relatedPlaceEndDateYear?: string,
-        relatedPlaceEndDateYearGt?: string,
-        relatedPlaceEndDateYearLt?: string,
+        relatedPlaceEndDateYear?: number,
+        relatedPlaceEndDateYearGt?: number,
+        relatedPlaceEndDateYearLt?: number,
         relatedPlaceEndDateWritten?: string,
         relatedPlaceEndDateWrittenIcontains?: string,
         relatedPlaceEndDateWrittenIregex?: string,
-        relatedPlaceEndDateWrittenIsnull?: string,
+        relatedPlaceEndDateWrittenIsnull?: boolean,
         relatedPlaceEndEndDate?: string,
         relatedPlaceEndEndDateGt?: string,
         relatedPlaceEndEndDateLt?: string,
-        relatedPlaceEndEndDateYear?: string,
-        relatedPlaceEndEndDateYearGt?: string,
-        relatedPlaceEndEndDateYearLt?: string,
+        relatedPlaceEndEndDateYear?: number,
+        relatedPlaceEndEndDateYearGt?: number,
+        relatedPlaceEndEndDateYearLt?: number,
         relatedPlaceEndStartDate?: string,
         relatedPlaceEndStartDateGt?: string,
         relatedPlaceEndStartDateLt?: string,
-        relatedPlaceEndStartDateYear?: string,
-        relatedPlaceEndStartDateYearGt?: string,
-        relatedPlaceEndStartDateYearLt?: string,
+        relatedPlaceEndStartDateYear?: number,
+        relatedPlaceEndStartDateYearGt?: number,
+        relatedPlaceEndStartDateYearLt?: number,
         relatedPlaceId?: number,
-        relatedPlaceIdIn?: number,
-        relatedPlaceIn?: number,
+        relatedPlaceIdIn?: Array<number>,
+        relatedPlaceIn?: Array<number>,
         relatedPlaceName?: string,
         relatedPlaceNameIcontains?: string,
         relatedPlaceNameIregex?: string,
-        relatedPlaceNameIsnull?: string,
+        relatedPlaceNameIsnull?: boolean,
         relatedPlaceStartDate?: string,
         relatedPlaceStartDateGt?: string,
         relatedPlaceStartDateLt?: string,
-        relatedPlaceStartDateYear?: string,
-        relatedPlaceStartDateYearGt?: string,
-        relatedPlaceStartDateYearLt?: string,
+        relatedPlaceStartDateYear?: number,
+        relatedPlaceStartDateYearGt?: number,
+        relatedPlaceStartDateYearLt?: number,
         relatedPlaceStartDateWritten?: string,
         relatedPlaceStartDateWrittenIcontains?: string,
         relatedPlaceStartDateWrittenIregex?: string,
-        relatedPlaceStartDateWrittenIsnull?: string,
+        relatedPlaceStartDateWrittenIsnull?: boolean,
         relatedPlaceStartEndDate?: string,
         relatedPlaceStartEndDateGt?: string,
         relatedPlaceStartEndDateLt?: string,
-        relatedPlaceStartEndDateYear?: string,
-        relatedPlaceStartEndDateYearGt?: string,
-        relatedPlaceStartEndDateYearLt?: string,
+        relatedPlaceStartEndDateYear?: number,
+        relatedPlaceStartEndDateYearGt?: number,
+        relatedPlaceStartEndDateYearLt?: number,
         relatedPlaceStartStartDate?: string,
         relatedPlaceStartStartDateGt?: string,
         relatedPlaceStartStartDateLt?: string,
-        relatedPlaceStartStartDateYear?: string,
-        relatedPlaceStartStartDateYearGt?: string,
-        relatedPlaceStartStartDateYearLt?: string,
+        relatedPlaceStartStartDateYear?: number,
+        relatedPlaceStartStartDateYearGt?: number,
+        relatedPlaceStartStartDateYearLt?: number,
         relatedPlaceStatus?: string,
         relatedPlaceStatusIcontains?: string,
         relatedPlaceStatusIregex?: string,
-        relatedPlaceStatusIsnull?: string,
+        relatedPlaceStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPersonplaceList> {
         const result = await __request({
             method: 'GET',
@@ -11538,270 +11538,270 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedPerson related_person
-     * @param relatedPersonEndDate related_person__end_date
-     * @param relatedPersonEndDateGt related_person__end_date__gt
-     * @param relatedPersonEndDateLt related_person__end_date__lt
-     * @param relatedPersonEndDateYear related_person__end_date__year
-     * @param relatedPersonEndDateYearGt related_person__end_date__year__gt
-     * @param relatedPersonEndDateYearLt related_person__end_date__year__lt
-     * @param relatedPersonEndDateWritten related_person__end_date_written
-     * @param relatedPersonEndDateWrittenIcontains related_person__end_date_written__icontains
-     * @param relatedPersonEndDateWrittenIregex related_person__end_date_written__iregex
-     * @param relatedPersonEndDateWrittenIsnull related_person__end_date_written__isnull
-     * @param relatedPersonEndEndDate related_person__end_end_date
-     * @param relatedPersonEndEndDateGt related_person__end_end_date__gt
-     * @param relatedPersonEndEndDateLt related_person__end_end_date__lt
-     * @param relatedPersonEndEndDateYear related_person__end_end_date__year
-     * @param relatedPersonEndEndDateYearGt related_person__end_end_date__year__gt
-     * @param relatedPersonEndEndDateYearLt related_person__end_end_date__year__lt
-     * @param relatedPersonEndStartDate related_person__end_start_date
-     * @param relatedPersonEndStartDateGt related_person__end_start_date__gt
-     * @param relatedPersonEndStartDateLt related_person__end_start_date__lt
-     * @param relatedPersonEndStartDateYear related_person__end_start_date__year
-     * @param relatedPersonEndStartDateYearGt related_person__end_start_date__year__gt
-     * @param relatedPersonEndStartDateYearLt related_person__end_start_date__year__lt
-     * @param relatedPersonFirstName related_person__first_name
-     * @param relatedPersonFirstNameIcontains related_person__first_name__icontains
-     * @param relatedPersonFirstNameIregex related_person__first_name__iregex
-     * @param relatedPersonFirstNameIsnull related_person__first_name__isnull
-     * @param relatedPersonGender related_person__gender
-     * @param relatedPersonGenderIcontains related_person__gender__icontains
-     * @param relatedPersonGenderIregex related_person__gender__iregex
-     * @param relatedPersonGenderIsnull related_person__gender__isnull
-     * @param relatedPersonId related_person__id
-     * @param relatedPersonIdIn related_person__id__in
-     * @param relatedPersonIn related_person__in
-     * @param relatedPersonName related_person__name
-     * @param relatedPersonNameIcontains related_person__name__icontains
-     * @param relatedPersonNameIregex related_person__name__iregex
-     * @param relatedPersonNameIsnull related_person__name__isnull
-     * @param relatedPersonStartDate related_person__start_date
-     * @param relatedPersonStartDateGt related_person__start_date__gt
-     * @param relatedPersonStartDateLt related_person__start_date__lt
-     * @param relatedPersonStartDateYear related_person__start_date__year
-     * @param relatedPersonStartDateYearGt related_person__start_date__year__gt
-     * @param relatedPersonStartDateYearLt related_person__start_date__year__lt
-     * @param relatedPersonStartDateWritten related_person__start_date_written
-     * @param relatedPersonStartDateWrittenIcontains related_person__start_date_written__icontains
-     * @param relatedPersonStartDateWrittenIregex related_person__start_date_written__iregex
-     * @param relatedPersonStartDateWrittenIsnull related_person__start_date_written__isnull
-     * @param relatedPersonStartEndDate related_person__start_end_date
-     * @param relatedPersonStartEndDateGt related_person__start_end_date__gt
-     * @param relatedPersonStartEndDateLt related_person__start_end_date__lt
-     * @param relatedPersonStartEndDateYear related_person__start_end_date__year
-     * @param relatedPersonStartEndDateYearGt related_person__start_end_date__year__gt
-     * @param relatedPersonStartEndDateYearLt related_person__start_end_date__year__lt
-     * @param relatedPersonStartStartDate related_person__start_start_date
-     * @param relatedPersonStartStartDateGt related_person__start_start_date__gt
-     * @param relatedPersonStartStartDateLt related_person__start_start_date__lt
-     * @param relatedPersonStartStartDateYear related_person__start_start_date__year
-     * @param relatedPersonStartStartDateYearGt related_person__start_start_date__year__gt
-     * @param relatedPersonStartStartDateYearLt related_person__start_start_date__year__lt
-     * @param relatedPersonStatus related_person__status
-     * @param relatedPersonStatusIcontains related_person__status__icontains
-     * @param relatedPersonStatusIregex related_person__status__iregex
-     * @param relatedPersonStatusIsnull related_person__status__isnull
-     * @param relatedWork related_work
-     * @param relatedWorkEndDate related_work__end_date
-     * @param relatedWorkEndDateGt related_work__end_date__gt
-     * @param relatedWorkEndDateLt related_work__end_date__lt
-     * @param relatedWorkEndDateYear related_work__end_date__year
-     * @param relatedWorkEndDateYearGt related_work__end_date__year__gt
-     * @param relatedWorkEndDateYearLt related_work__end_date__year__lt
-     * @param relatedWorkEndDateWritten related_work__end_date_written
-     * @param relatedWorkEndDateWrittenIcontains related_work__end_date_written__icontains
-     * @param relatedWorkEndDateWrittenIregex related_work__end_date_written__iregex
-     * @param relatedWorkEndDateWrittenIsnull related_work__end_date_written__isnull
-     * @param relatedWorkEndEndDate related_work__end_end_date
-     * @param relatedWorkEndEndDateGt related_work__end_end_date__gt
-     * @param relatedWorkEndEndDateLt related_work__end_end_date__lt
-     * @param relatedWorkEndEndDateYear related_work__end_end_date__year
-     * @param relatedWorkEndEndDateYearGt related_work__end_end_date__year__gt
-     * @param relatedWorkEndEndDateYearLt related_work__end_end_date__year__lt
-     * @param relatedWorkEndStartDate related_work__end_start_date
-     * @param relatedWorkEndStartDateGt related_work__end_start_date__gt
-     * @param relatedWorkEndStartDateLt related_work__end_start_date__lt
-     * @param relatedWorkEndStartDateYear related_work__end_start_date__year
-     * @param relatedWorkEndStartDateYearGt related_work__end_start_date__year__gt
-     * @param relatedWorkEndStartDateYearLt related_work__end_start_date__year__lt
-     * @param relatedWorkId related_work__id
-     * @param relatedWorkIdIn related_work__id__in
-     * @param relatedWorkIn related_work__in
-     * @param relatedWorkName related_work__name
-     * @param relatedWorkNameIcontains related_work__name__icontains
-     * @param relatedWorkNameIregex related_work__name__iregex
-     * @param relatedWorkNameIsnull related_work__name__isnull
-     * @param relatedWorkStartDate related_work__start_date
-     * @param relatedWorkStartDateGt related_work__start_date__gt
-     * @param relatedWorkStartDateLt related_work__start_date__lt
-     * @param relatedWorkStartDateYear related_work__start_date__year
-     * @param relatedWorkStartDateYearGt related_work__start_date__year__gt
-     * @param relatedWorkStartDateYearLt related_work__start_date__year__lt
-     * @param relatedWorkStartDateWritten related_work__start_date_written
-     * @param relatedWorkStartDateWrittenIcontains related_work__start_date_written__icontains
-     * @param relatedWorkStartDateWrittenIregex related_work__start_date_written__iregex
-     * @param relatedWorkStartDateWrittenIsnull related_work__start_date_written__isnull
-     * @param relatedWorkStartEndDate related_work__start_end_date
-     * @param relatedWorkStartEndDateGt related_work__start_end_date__gt
-     * @param relatedWorkStartEndDateLt related_work__start_end_date__lt
-     * @param relatedWorkStartEndDateYear related_work__start_end_date__year
-     * @param relatedWorkStartEndDateYearGt related_work__start_end_date__year__gt
-     * @param relatedWorkStartEndDateYearLt related_work__start_end_date__year__lt
-     * @param relatedWorkStartStartDate related_work__start_start_date
-     * @param relatedWorkStartStartDateGt related_work__start_start_date__gt
-     * @param relatedWorkStartStartDateLt related_work__start_start_date__lt
-     * @param relatedWorkStartStartDateYear related_work__start_start_date__year
-     * @param relatedWorkStartStartDateYearGt related_work__start_start_date__year__gt
-     * @param relatedWorkStartStartDateYearLt related_work__start_start_date__year__lt
-     * @param relatedWorkStatus related_work__status
-     * @param relatedWorkStatusIcontains related_work__status__icontains
-     * @param relatedWorkStatusIregex related_work__status__iregex
-     * @param relatedWorkStatusIsnull related_work__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedPerson
+     * @param relatedPersonEndDate
+     * @param relatedPersonEndDateGt
+     * @param relatedPersonEndDateLt
+     * @param relatedPersonEndDateYear
+     * @param relatedPersonEndDateYearGt
+     * @param relatedPersonEndDateYearLt
+     * @param relatedPersonEndDateWritten
+     * @param relatedPersonEndDateWrittenIcontains
+     * @param relatedPersonEndDateWrittenIregex
+     * @param relatedPersonEndDateWrittenIsnull
+     * @param relatedPersonEndEndDate
+     * @param relatedPersonEndEndDateGt
+     * @param relatedPersonEndEndDateLt
+     * @param relatedPersonEndEndDateYear
+     * @param relatedPersonEndEndDateYearGt
+     * @param relatedPersonEndEndDateYearLt
+     * @param relatedPersonEndStartDate
+     * @param relatedPersonEndStartDateGt
+     * @param relatedPersonEndStartDateLt
+     * @param relatedPersonEndStartDateYear
+     * @param relatedPersonEndStartDateYearGt
+     * @param relatedPersonEndStartDateYearLt
+     * @param relatedPersonFirstName
+     * @param relatedPersonFirstNameIcontains
+     * @param relatedPersonFirstNameIregex
+     * @param relatedPersonFirstNameIsnull
+     * @param relatedPersonGender
+     * @param relatedPersonGenderIcontains
+     * @param relatedPersonGenderIregex
+     * @param relatedPersonGenderIsnull
+     * @param relatedPersonId
+     * @param relatedPersonIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPersonName
+     * @param relatedPersonNameIcontains
+     * @param relatedPersonNameIregex
+     * @param relatedPersonNameIsnull
+     * @param relatedPersonStartDate
+     * @param relatedPersonStartDateGt
+     * @param relatedPersonStartDateLt
+     * @param relatedPersonStartDateYear
+     * @param relatedPersonStartDateYearGt
+     * @param relatedPersonStartDateYearLt
+     * @param relatedPersonStartDateWritten
+     * @param relatedPersonStartDateWrittenIcontains
+     * @param relatedPersonStartDateWrittenIregex
+     * @param relatedPersonStartDateWrittenIsnull
+     * @param relatedPersonStartEndDate
+     * @param relatedPersonStartEndDateGt
+     * @param relatedPersonStartEndDateLt
+     * @param relatedPersonStartEndDateYear
+     * @param relatedPersonStartEndDateYearGt
+     * @param relatedPersonStartEndDateYearLt
+     * @param relatedPersonStartStartDate
+     * @param relatedPersonStartStartDateGt
+     * @param relatedPersonStartStartDateLt
+     * @param relatedPersonStartStartDateYear
+     * @param relatedPersonStartStartDateYearGt
+     * @param relatedPersonStartStartDateYearLt
+     * @param relatedPersonStatus
+     * @param relatedPersonStatusIcontains
+     * @param relatedPersonStatusIregex
+     * @param relatedPersonStatusIsnull
+     * @param relatedWork
+     * @param relatedWorkEndDate
+     * @param relatedWorkEndDateGt
+     * @param relatedWorkEndDateLt
+     * @param relatedWorkEndDateYear
+     * @param relatedWorkEndDateYearGt
+     * @param relatedWorkEndDateYearLt
+     * @param relatedWorkEndDateWritten
+     * @param relatedWorkEndDateWrittenIcontains
+     * @param relatedWorkEndDateWrittenIregex
+     * @param relatedWorkEndDateWrittenIsnull
+     * @param relatedWorkEndEndDate
+     * @param relatedWorkEndEndDateGt
+     * @param relatedWorkEndEndDateLt
+     * @param relatedWorkEndEndDateYear
+     * @param relatedWorkEndEndDateYearGt
+     * @param relatedWorkEndEndDateYearLt
+     * @param relatedWorkEndStartDate
+     * @param relatedWorkEndStartDateGt
+     * @param relatedWorkEndStartDateLt
+     * @param relatedWorkEndStartDateYear
+     * @param relatedWorkEndStartDateYearGt
+     * @param relatedWorkEndStartDateYearLt
+     * @param relatedWorkId
+     * @param relatedWorkIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkName
+     * @param relatedWorkNameIcontains
+     * @param relatedWorkNameIregex
+     * @param relatedWorkNameIsnull
+     * @param relatedWorkStartDate
+     * @param relatedWorkStartDateGt
+     * @param relatedWorkStartDateLt
+     * @param relatedWorkStartDateYear
+     * @param relatedWorkStartDateYearGt
+     * @param relatedWorkStartDateYearLt
+     * @param relatedWorkStartDateWritten
+     * @param relatedWorkStartDateWrittenIcontains
+     * @param relatedWorkStartDateWrittenIregex
+     * @param relatedWorkStartDateWrittenIsnull
+     * @param relatedWorkStartEndDate
+     * @param relatedWorkStartEndDateGt
+     * @param relatedWorkStartEndDateLt
+     * @param relatedWorkStartEndDateYear
+     * @param relatedWorkStartEndDateYearGt
+     * @param relatedWorkStartEndDateYearLt
+     * @param relatedWorkStartStartDate
+     * @param relatedWorkStartStartDateGt
+     * @param relatedWorkStartStartDateLt
+     * @param relatedWorkStartStartDateYear
+     * @param relatedWorkStartStartDateYearGt
+     * @param relatedWorkStartStartDateYearLt
+     * @param relatedWorkStatus
+     * @param relatedWorkStatusIcontains
+     * @param relatedWorkStatusIregex
+     * @param relatedWorkStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPersonworkList
      * @throws ApiError
      */
     public static async apisApiRelationsPersonworkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -11810,184 +11810,184 @@ export class ApisService {
         relatedPersonEndDate?: string,
         relatedPersonEndDateGt?: string,
         relatedPersonEndDateLt?: string,
-        relatedPersonEndDateYear?: string,
-        relatedPersonEndDateYearGt?: string,
-        relatedPersonEndDateYearLt?: string,
+        relatedPersonEndDateYear?: number,
+        relatedPersonEndDateYearGt?: number,
+        relatedPersonEndDateYearLt?: number,
         relatedPersonEndDateWritten?: string,
         relatedPersonEndDateWrittenIcontains?: string,
         relatedPersonEndDateWrittenIregex?: string,
-        relatedPersonEndDateWrittenIsnull?: string,
+        relatedPersonEndDateWrittenIsnull?: boolean,
         relatedPersonEndEndDate?: string,
         relatedPersonEndEndDateGt?: string,
         relatedPersonEndEndDateLt?: string,
-        relatedPersonEndEndDateYear?: string,
-        relatedPersonEndEndDateYearGt?: string,
-        relatedPersonEndEndDateYearLt?: string,
+        relatedPersonEndEndDateYear?: number,
+        relatedPersonEndEndDateYearGt?: number,
+        relatedPersonEndEndDateYearLt?: number,
         relatedPersonEndStartDate?: string,
         relatedPersonEndStartDateGt?: string,
         relatedPersonEndStartDateLt?: string,
-        relatedPersonEndStartDateYear?: string,
-        relatedPersonEndStartDateYearGt?: string,
-        relatedPersonEndStartDateYearLt?: string,
+        relatedPersonEndStartDateYear?: number,
+        relatedPersonEndStartDateYearGt?: number,
+        relatedPersonEndStartDateYearLt?: number,
         relatedPersonFirstName?: string,
         relatedPersonFirstNameIcontains?: string,
         relatedPersonFirstNameIregex?: string,
-        relatedPersonFirstNameIsnull?: string,
-        relatedPersonGender?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIcontains?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIregex?: 'female' | 'male' | 'third gender',
-        relatedPersonGenderIsnull?: 'female' | 'male' | 'third gender',
+        relatedPersonFirstNameIsnull?: boolean,
+        relatedPersonGender?: 'female' | 'male' | 'third gender' | null,
+        relatedPersonGenderIcontains?: string,
+        relatedPersonGenderIregex?: string,
+        relatedPersonGenderIsnull?: boolean,
         relatedPersonId?: number,
-        relatedPersonIdIn?: number,
-        relatedPersonIn?: number,
+        relatedPersonIdIn?: Array<number>,
+        relatedPersonIn?: Array<number>,
         relatedPersonName?: string,
         relatedPersonNameIcontains?: string,
         relatedPersonNameIregex?: string,
-        relatedPersonNameIsnull?: string,
+        relatedPersonNameIsnull?: boolean,
         relatedPersonStartDate?: string,
         relatedPersonStartDateGt?: string,
         relatedPersonStartDateLt?: string,
-        relatedPersonStartDateYear?: string,
-        relatedPersonStartDateYearGt?: string,
-        relatedPersonStartDateYearLt?: string,
+        relatedPersonStartDateYear?: number,
+        relatedPersonStartDateYearGt?: number,
+        relatedPersonStartDateYearLt?: number,
         relatedPersonStartDateWritten?: string,
         relatedPersonStartDateWrittenIcontains?: string,
         relatedPersonStartDateWrittenIregex?: string,
-        relatedPersonStartDateWrittenIsnull?: string,
+        relatedPersonStartDateWrittenIsnull?: boolean,
         relatedPersonStartEndDate?: string,
         relatedPersonStartEndDateGt?: string,
         relatedPersonStartEndDateLt?: string,
-        relatedPersonStartEndDateYear?: string,
-        relatedPersonStartEndDateYearGt?: string,
-        relatedPersonStartEndDateYearLt?: string,
+        relatedPersonStartEndDateYear?: number,
+        relatedPersonStartEndDateYearGt?: number,
+        relatedPersonStartEndDateYearLt?: number,
         relatedPersonStartStartDate?: string,
         relatedPersonStartStartDateGt?: string,
         relatedPersonStartStartDateLt?: string,
-        relatedPersonStartStartDateYear?: string,
-        relatedPersonStartStartDateYearGt?: string,
-        relatedPersonStartStartDateYearLt?: string,
+        relatedPersonStartStartDateYear?: number,
+        relatedPersonStartStartDateYearGt?: number,
+        relatedPersonStartStartDateYearLt?: number,
         relatedPersonStatus?: string,
         relatedPersonStatusIcontains?: string,
         relatedPersonStatusIregex?: string,
-        relatedPersonStatusIsnull?: string,
+        relatedPersonStatusIsnull?: boolean,
         relatedWork?: number,
         relatedWorkEndDate?: string,
         relatedWorkEndDateGt?: string,
         relatedWorkEndDateLt?: string,
-        relatedWorkEndDateYear?: string,
-        relatedWorkEndDateYearGt?: string,
-        relatedWorkEndDateYearLt?: string,
+        relatedWorkEndDateYear?: number,
+        relatedWorkEndDateYearGt?: number,
+        relatedWorkEndDateYearLt?: number,
         relatedWorkEndDateWritten?: string,
         relatedWorkEndDateWrittenIcontains?: string,
         relatedWorkEndDateWrittenIregex?: string,
-        relatedWorkEndDateWrittenIsnull?: string,
+        relatedWorkEndDateWrittenIsnull?: boolean,
         relatedWorkEndEndDate?: string,
         relatedWorkEndEndDateGt?: string,
         relatedWorkEndEndDateLt?: string,
-        relatedWorkEndEndDateYear?: string,
-        relatedWorkEndEndDateYearGt?: string,
-        relatedWorkEndEndDateYearLt?: string,
+        relatedWorkEndEndDateYear?: number,
+        relatedWorkEndEndDateYearGt?: number,
+        relatedWorkEndEndDateYearLt?: number,
         relatedWorkEndStartDate?: string,
         relatedWorkEndStartDateGt?: string,
         relatedWorkEndStartDateLt?: string,
-        relatedWorkEndStartDateYear?: string,
-        relatedWorkEndStartDateYearGt?: string,
-        relatedWorkEndStartDateYearLt?: string,
+        relatedWorkEndStartDateYear?: number,
+        relatedWorkEndStartDateYearGt?: number,
+        relatedWorkEndStartDateYearLt?: number,
         relatedWorkId?: number,
-        relatedWorkIdIn?: number,
-        relatedWorkIn?: number,
+        relatedWorkIdIn?: Array<number>,
+        relatedWorkIn?: Array<number>,
         relatedWorkName?: string,
         relatedWorkNameIcontains?: string,
         relatedWorkNameIregex?: string,
-        relatedWorkNameIsnull?: string,
+        relatedWorkNameIsnull?: boolean,
         relatedWorkStartDate?: string,
         relatedWorkStartDateGt?: string,
         relatedWorkStartDateLt?: string,
-        relatedWorkStartDateYear?: string,
-        relatedWorkStartDateYearGt?: string,
-        relatedWorkStartDateYearLt?: string,
+        relatedWorkStartDateYear?: number,
+        relatedWorkStartDateYearGt?: number,
+        relatedWorkStartDateYearLt?: number,
         relatedWorkStartDateWritten?: string,
         relatedWorkStartDateWrittenIcontains?: string,
         relatedWorkStartDateWrittenIregex?: string,
-        relatedWorkStartDateWrittenIsnull?: string,
+        relatedWorkStartDateWrittenIsnull?: boolean,
         relatedWorkStartEndDate?: string,
         relatedWorkStartEndDateGt?: string,
         relatedWorkStartEndDateLt?: string,
-        relatedWorkStartEndDateYear?: string,
-        relatedWorkStartEndDateYearGt?: string,
-        relatedWorkStartEndDateYearLt?: string,
+        relatedWorkStartEndDateYear?: number,
+        relatedWorkStartEndDateYearGt?: number,
+        relatedWorkStartEndDateYearLt?: number,
         relatedWorkStartStartDate?: string,
         relatedWorkStartStartDateGt?: string,
         relatedWorkStartStartDateLt?: string,
-        relatedWorkStartStartDateYear?: string,
-        relatedWorkStartStartDateYearGt?: string,
-        relatedWorkStartStartDateYearLt?: string,
+        relatedWorkStartStartDateYear?: number,
+        relatedWorkStartStartDateYearGt?: number,
+        relatedWorkStartStartDateYearLt?: number,
         relatedWorkStatus?: string,
         relatedWorkStatusIcontains?: string,
         relatedWorkStatusIregex?: string,
-        relatedWorkStatusIsnull?: string,
+        relatedWorkStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPersonworkList> {
         const result = await __request({
             method: 'GET',
@@ -12329,262 +12329,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedEvent related_event
-     * @param relatedEventEndDate related_event__end_date
-     * @param relatedEventEndDateGt related_event__end_date__gt
-     * @param relatedEventEndDateLt related_event__end_date__lt
-     * @param relatedEventEndDateYear related_event__end_date__year
-     * @param relatedEventEndDateYearGt related_event__end_date__year__gt
-     * @param relatedEventEndDateYearLt related_event__end_date__year__lt
-     * @param relatedEventEndDateWritten related_event__end_date_written
-     * @param relatedEventEndDateWrittenIcontains related_event__end_date_written__icontains
-     * @param relatedEventEndDateWrittenIregex related_event__end_date_written__iregex
-     * @param relatedEventEndDateWrittenIsnull related_event__end_date_written__isnull
-     * @param relatedEventEndEndDate related_event__end_end_date
-     * @param relatedEventEndEndDateGt related_event__end_end_date__gt
-     * @param relatedEventEndEndDateLt related_event__end_end_date__lt
-     * @param relatedEventEndEndDateYear related_event__end_end_date__year
-     * @param relatedEventEndEndDateYearGt related_event__end_end_date__year__gt
-     * @param relatedEventEndEndDateYearLt related_event__end_end_date__year__lt
-     * @param relatedEventEndStartDate related_event__end_start_date
-     * @param relatedEventEndStartDateGt related_event__end_start_date__gt
-     * @param relatedEventEndStartDateLt related_event__end_start_date__lt
-     * @param relatedEventEndStartDateYear related_event__end_start_date__year
-     * @param relatedEventEndStartDateYearGt related_event__end_start_date__year__gt
-     * @param relatedEventEndStartDateYearLt related_event__end_start_date__year__lt
-     * @param relatedEventId related_event__id
-     * @param relatedEventIdIn related_event__id__in
-     * @param relatedEventIn related_event__in
-     * @param relatedEventName related_event__name
-     * @param relatedEventNameIcontains related_event__name__icontains
-     * @param relatedEventNameIregex related_event__name__iregex
-     * @param relatedEventNameIsnull related_event__name__isnull
-     * @param relatedEventStartDate related_event__start_date
-     * @param relatedEventStartDateGt related_event__start_date__gt
-     * @param relatedEventStartDateLt related_event__start_date__lt
-     * @param relatedEventStartDateYear related_event__start_date__year
-     * @param relatedEventStartDateYearGt related_event__start_date__year__gt
-     * @param relatedEventStartDateYearLt related_event__start_date__year__lt
-     * @param relatedEventStartDateWritten related_event__start_date_written
-     * @param relatedEventStartDateWrittenIcontains related_event__start_date_written__icontains
-     * @param relatedEventStartDateWrittenIregex related_event__start_date_written__iregex
-     * @param relatedEventStartDateWrittenIsnull related_event__start_date_written__isnull
-     * @param relatedEventStartEndDate related_event__start_end_date
-     * @param relatedEventStartEndDateGt related_event__start_end_date__gt
-     * @param relatedEventStartEndDateLt related_event__start_end_date__lt
-     * @param relatedEventStartEndDateYear related_event__start_end_date__year
-     * @param relatedEventStartEndDateYearGt related_event__start_end_date__year__gt
-     * @param relatedEventStartEndDateYearLt related_event__start_end_date__year__lt
-     * @param relatedEventStartStartDate related_event__start_start_date
-     * @param relatedEventStartStartDateGt related_event__start_start_date__gt
-     * @param relatedEventStartStartDateLt related_event__start_start_date__lt
-     * @param relatedEventStartStartDateYear related_event__start_start_date__year
-     * @param relatedEventStartStartDateYearGt related_event__start_start_date__year__gt
-     * @param relatedEventStartStartDateYearLt related_event__start_start_date__year__lt
-     * @param relatedEventStatus related_event__status
-     * @param relatedEventStatusIcontains related_event__status__icontains
-     * @param relatedEventStatusIregex related_event__status__iregex
-     * @param relatedEventStatusIsnull related_event__status__isnull
-     * @param relatedPlace related_place
-     * @param relatedPlaceEndDate related_place__end_date
-     * @param relatedPlaceEndDateGt related_place__end_date__gt
-     * @param relatedPlaceEndDateLt related_place__end_date__lt
-     * @param relatedPlaceEndDateYear related_place__end_date__year
-     * @param relatedPlaceEndDateYearGt related_place__end_date__year__gt
-     * @param relatedPlaceEndDateYearLt related_place__end_date__year__lt
-     * @param relatedPlaceEndDateWritten related_place__end_date_written
-     * @param relatedPlaceEndDateWrittenIcontains related_place__end_date_written__icontains
-     * @param relatedPlaceEndDateWrittenIregex related_place__end_date_written__iregex
-     * @param relatedPlaceEndDateWrittenIsnull related_place__end_date_written__isnull
-     * @param relatedPlaceEndEndDate related_place__end_end_date
-     * @param relatedPlaceEndEndDateGt related_place__end_end_date__gt
-     * @param relatedPlaceEndEndDateLt related_place__end_end_date__lt
-     * @param relatedPlaceEndEndDateYear related_place__end_end_date__year
-     * @param relatedPlaceEndEndDateYearGt related_place__end_end_date__year__gt
-     * @param relatedPlaceEndEndDateYearLt related_place__end_end_date__year__lt
-     * @param relatedPlaceEndStartDate related_place__end_start_date
-     * @param relatedPlaceEndStartDateGt related_place__end_start_date__gt
-     * @param relatedPlaceEndStartDateLt related_place__end_start_date__lt
-     * @param relatedPlaceEndStartDateYear related_place__end_start_date__year
-     * @param relatedPlaceEndStartDateYearGt related_place__end_start_date__year__gt
-     * @param relatedPlaceEndStartDateYearLt related_place__end_start_date__year__lt
-     * @param relatedPlaceId related_place__id
-     * @param relatedPlaceIdIn related_place__id__in
-     * @param relatedPlaceIn related_place__in
-     * @param relatedPlaceName related_place__name
-     * @param relatedPlaceNameIcontains related_place__name__icontains
-     * @param relatedPlaceNameIregex related_place__name__iregex
-     * @param relatedPlaceNameIsnull related_place__name__isnull
-     * @param relatedPlaceStartDate related_place__start_date
-     * @param relatedPlaceStartDateGt related_place__start_date__gt
-     * @param relatedPlaceStartDateLt related_place__start_date__lt
-     * @param relatedPlaceStartDateYear related_place__start_date__year
-     * @param relatedPlaceStartDateYearGt related_place__start_date__year__gt
-     * @param relatedPlaceStartDateYearLt related_place__start_date__year__lt
-     * @param relatedPlaceStartDateWritten related_place__start_date_written
-     * @param relatedPlaceStartDateWrittenIcontains related_place__start_date_written__icontains
-     * @param relatedPlaceStartDateWrittenIregex related_place__start_date_written__iregex
-     * @param relatedPlaceStartDateWrittenIsnull related_place__start_date_written__isnull
-     * @param relatedPlaceStartEndDate related_place__start_end_date
-     * @param relatedPlaceStartEndDateGt related_place__start_end_date__gt
-     * @param relatedPlaceStartEndDateLt related_place__start_end_date__lt
-     * @param relatedPlaceStartEndDateYear related_place__start_end_date__year
-     * @param relatedPlaceStartEndDateYearGt related_place__start_end_date__year__gt
-     * @param relatedPlaceStartEndDateYearLt related_place__start_end_date__year__lt
-     * @param relatedPlaceStartStartDate related_place__start_start_date
-     * @param relatedPlaceStartStartDateGt related_place__start_start_date__gt
-     * @param relatedPlaceStartStartDateLt related_place__start_start_date__lt
-     * @param relatedPlaceStartStartDateYear related_place__start_start_date__year
-     * @param relatedPlaceStartStartDateYearGt related_place__start_start_date__year__gt
-     * @param relatedPlaceStartStartDateYearLt related_place__start_start_date__year__lt
-     * @param relatedPlaceStatus related_place__status
-     * @param relatedPlaceStatusIcontains related_place__status__icontains
-     * @param relatedPlaceStatusIregex related_place__status__iregex
-     * @param relatedPlaceStatusIsnull related_place__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedEvent
+     * @param relatedEventEndDate
+     * @param relatedEventEndDateGt
+     * @param relatedEventEndDateLt
+     * @param relatedEventEndDateYear
+     * @param relatedEventEndDateYearGt
+     * @param relatedEventEndDateYearLt
+     * @param relatedEventEndDateWritten
+     * @param relatedEventEndDateWrittenIcontains
+     * @param relatedEventEndDateWrittenIregex
+     * @param relatedEventEndDateWrittenIsnull
+     * @param relatedEventEndEndDate
+     * @param relatedEventEndEndDateGt
+     * @param relatedEventEndEndDateLt
+     * @param relatedEventEndEndDateYear
+     * @param relatedEventEndEndDateYearGt
+     * @param relatedEventEndEndDateYearLt
+     * @param relatedEventEndStartDate
+     * @param relatedEventEndStartDateGt
+     * @param relatedEventEndStartDateLt
+     * @param relatedEventEndStartDateYear
+     * @param relatedEventEndStartDateYearGt
+     * @param relatedEventEndStartDateYearLt
+     * @param relatedEventId
+     * @param relatedEventIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedEventName
+     * @param relatedEventNameIcontains
+     * @param relatedEventNameIregex
+     * @param relatedEventNameIsnull
+     * @param relatedEventStartDate
+     * @param relatedEventStartDateGt
+     * @param relatedEventStartDateLt
+     * @param relatedEventStartDateYear
+     * @param relatedEventStartDateYearGt
+     * @param relatedEventStartDateYearLt
+     * @param relatedEventStartDateWritten
+     * @param relatedEventStartDateWrittenIcontains
+     * @param relatedEventStartDateWrittenIregex
+     * @param relatedEventStartDateWrittenIsnull
+     * @param relatedEventStartEndDate
+     * @param relatedEventStartEndDateGt
+     * @param relatedEventStartEndDateLt
+     * @param relatedEventStartEndDateYear
+     * @param relatedEventStartEndDateYearGt
+     * @param relatedEventStartEndDateYearLt
+     * @param relatedEventStartStartDate
+     * @param relatedEventStartStartDateGt
+     * @param relatedEventStartStartDateLt
+     * @param relatedEventStartStartDateYear
+     * @param relatedEventStartStartDateYearGt
+     * @param relatedEventStartStartDateYearLt
+     * @param relatedEventStatus
+     * @param relatedEventStatusIcontains
+     * @param relatedEventStatusIregex
+     * @param relatedEventStatusIsnull
+     * @param relatedPlace
+     * @param relatedPlaceEndDate
+     * @param relatedPlaceEndDateGt
+     * @param relatedPlaceEndDateLt
+     * @param relatedPlaceEndDateYear
+     * @param relatedPlaceEndDateYearGt
+     * @param relatedPlaceEndDateYearLt
+     * @param relatedPlaceEndDateWritten
+     * @param relatedPlaceEndDateWrittenIcontains
+     * @param relatedPlaceEndDateWrittenIregex
+     * @param relatedPlaceEndDateWrittenIsnull
+     * @param relatedPlaceEndEndDate
+     * @param relatedPlaceEndEndDateGt
+     * @param relatedPlaceEndEndDateLt
+     * @param relatedPlaceEndEndDateYear
+     * @param relatedPlaceEndEndDateYearGt
+     * @param relatedPlaceEndEndDateYearLt
+     * @param relatedPlaceEndStartDate
+     * @param relatedPlaceEndStartDateGt
+     * @param relatedPlaceEndStartDateLt
+     * @param relatedPlaceEndStartDateYear
+     * @param relatedPlaceEndStartDateYearGt
+     * @param relatedPlaceEndStartDateYearLt
+     * @param relatedPlaceId
+     * @param relatedPlaceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceName
+     * @param relatedPlaceNameIcontains
+     * @param relatedPlaceNameIregex
+     * @param relatedPlaceNameIsnull
+     * @param relatedPlaceStartDate
+     * @param relatedPlaceStartDateGt
+     * @param relatedPlaceStartDateLt
+     * @param relatedPlaceStartDateYear
+     * @param relatedPlaceStartDateYearGt
+     * @param relatedPlaceStartDateYearLt
+     * @param relatedPlaceStartDateWritten
+     * @param relatedPlaceStartDateWrittenIcontains
+     * @param relatedPlaceStartDateWrittenIregex
+     * @param relatedPlaceStartDateWrittenIsnull
+     * @param relatedPlaceStartEndDate
+     * @param relatedPlaceStartEndDateGt
+     * @param relatedPlaceStartEndDateLt
+     * @param relatedPlaceStartEndDateYear
+     * @param relatedPlaceStartEndDateYearGt
+     * @param relatedPlaceStartEndDateYearLt
+     * @param relatedPlaceStartStartDate
+     * @param relatedPlaceStartStartDateGt
+     * @param relatedPlaceStartStartDateLt
+     * @param relatedPlaceStartStartDateYear
+     * @param relatedPlaceStartStartDateYearGt
+     * @param relatedPlaceStartStartDateYearLt
+     * @param relatedPlaceStatus
+     * @param relatedPlaceStatusIcontains
+     * @param relatedPlaceStatusIregex
+     * @param relatedPlaceStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPlaceeventList
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceeventList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -12593,176 +12593,176 @@ export class ApisService {
         relatedEventEndDate?: string,
         relatedEventEndDateGt?: string,
         relatedEventEndDateLt?: string,
-        relatedEventEndDateYear?: string,
-        relatedEventEndDateYearGt?: string,
-        relatedEventEndDateYearLt?: string,
+        relatedEventEndDateYear?: number,
+        relatedEventEndDateYearGt?: number,
+        relatedEventEndDateYearLt?: number,
         relatedEventEndDateWritten?: string,
         relatedEventEndDateWrittenIcontains?: string,
         relatedEventEndDateWrittenIregex?: string,
-        relatedEventEndDateWrittenIsnull?: string,
+        relatedEventEndDateWrittenIsnull?: boolean,
         relatedEventEndEndDate?: string,
         relatedEventEndEndDateGt?: string,
         relatedEventEndEndDateLt?: string,
-        relatedEventEndEndDateYear?: string,
-        relatedEventEndEndDateYearGt?: string,
-        relatedEventEndEndDateYearLt?: string,
+        relatedEventEndEndDateYear?: number,
+        relatedEventEndEndDateYearGt?: number,
+        relatedEventEndEndDateYearLt?: number,
         relatedEventEndStartDate?: string,
         relatedEventEndStartDateGt?: string,
         relatedEventEndStartDateLt?: string,
-        relatedEventEndStartDateYear?: string,
-        relatedEventEndStartDateYearGt?: string,
-        relatedEventEndStartDateYearLt?: string,
+        relatedEventEndStartDateYear?: number,
+        relatedEventEndStartDateYearGt?: number,
+        relatedEventEndStartDateYearLt?: number,
         relatedEventId?: number,
-        relatedEventIdIn?: number,
-        relatedEventIn?: number,
+        relatedEventIdIn?: Array<number>,
+        relatedEventIn?: Array<number>,
         relatedEventName?: string,
         relatedEventNameIcontains?: string,
         relatedEventNameIregex?: string,
-        relatedEventNameIsnull?: string,
+        relatedEventNameIsnull?: boolean,
         relatedEventStartDate?: string,
         relatedEventStartDateGt?: string,
         relatedEventStartDateLt?: string,
-        relatedEventStartDateYear?: string,
-        relatedEventStartDateYearGt?: string,
-        relatedEventStartDateYearLt?: string,
+        relatedEventStartDateYear?: number,
+        relatedEventStartDateYearGt?: number,
+        relatedEventStartDateYearLt?: number,
         relatedEventStartDateWritten?: string,
         relatedEventStartDateWrittenIcontains?: string,
         relatedEventStartDateWrittenIregex?: string,
-        relatedEventStartDateWrittenIsnull?: string,
+        relatedEventStartDateWrittenIsnull?: boolean,
         relatedEventStartEndDate?: string,
         relatedEventStartEndDateGt?: string,
         relatedEventStartEndDateLt?: string,
-        relatedEventStartEndDateYear?: string,
-        relatedEventStartEndDateYearGt?: string,
-        relatedEventStartEndDateYearLt?: string,
+        relatedEventStartEndDateYear?: number,
+        relatedEventStartEndDateYearGt?: number,
+        relatedEventStartEndDateYearLt?: number,
         relatedEventStartStartDate?: string,
         relatedEventStartStartDateGt?: string,
         relatedEventStartStartDateLt?: string,
-        relatedEventStartStartDateYear?: string,
-        relatedEventStartStartDateYearGt?: string,
-        relatedEventStartStartDateYearLt?: string,
+        relatedEventStartStartDateYear?: number,
+        relatedEventStartStartDateYearGt?: number,
+        relatedEventStartStartDateYearLt?: number,
         relatedEventStatus?: string,
         relatedEventStatusIcontains?: string,
         relatedEventStatusIregex?: string,
-        relatedEventStatusIsnull?: string,
+        relatedEventStatusIsnull?: boolean,
         relatedPlace?: number,
         relatedPlaceEndDate?: string,
         relatedPlaceEndDateGt?: string,
         relatedPlaceEndDateLt?: string,
-        relatedPlaceEndDateYear?: string,
-        relatedPlaceEndDateYearGt?: string,
-        relatedPlaceEndDateYearLt?: string,
+        relatedPlaceEndDateYear?: number,
+        relatedPlaceEndDateYearGt?: number,
+        relatedPlaceEndDateYearLt?: number,
         relatedPlaceEndDateWritten?: string,
         relatedPlaceEndDateWrittenIcontains?: string,
         relatedPlaceEndDateWrittenIregex?: string,
-        relatedPlaceEndDateWrittenIsnull?: string,
+        relatedPlaceEndDateWrittenIsnull?: boolean,
         relatedPlaceEndEndDate?: string,
         relatedPlaceEndEndDateGt?: string,
         relatedPlaceEndEndDateLt?: string,
-        relatedPlaceEndEndDateYear?: string,
-        relatedPlaceEndEndDateYearGt?: string,
-        relatedPlaceEndEndDateYearLt?: string,
+        relatedPlaceEndEndDateYear?: number,
+        relatedPlaceEndEndDateYearGt?: number,
+        relatedPlaceEndEndDateYearLt?: number,
         relatedPlaceEndStartDate?: string,
         relatedPlaceEndStartDateGt?: string,
         relatedPlaceEndStartDateLt?: string,
-        relatedPlaceEndStartDateYear?: string,
-        relatedPlaceEndStartDateYearGt?: string,
-        relatedPlaceEndStartDateYearLt?: string,
+        relatedPlaceEndStartDateYear?: number,
+        relatedPlaceEndStartDateYearGt?: number,
+        relatedPlaceEndStartDateYearLt?: number,
         relatedPlaceId?: number,
-        relatedPlaceIdIn?: number,
-        relatedPlaceIn?: number,
+        relatedPlaceIdIn?: Array<number>,
+        relatedPlaceIn?: Array<number>,
         relatedPlaceName?: string,
         relatedPlaceNameIcontains?: string,
         relatedPlaceNameIregex?: string,
-        relatedPlaceNameIsnull?: string,
+        relatedPlaceNameIsnull?: boolean,
         relatedPlaceStartDate?: string,
         relatedPlaceStartDateGt?: string,
         relatedPlaceStartDateLt?: string,
-        relatedPlaceStartDateYear?: string,
-        relatedPlaceStartDateYearGt?: string,
-        relatedPlaceStartDateYearLt?: string,
+        relatedPlaceStartDateYear?: number,
+        relatedPlaceStartDateYearGt?: number,
+        relatedPlaceStartDateYearLt?: number,
         relatedPlaceStartDateWritten?: string,
         relatedPlaceStartDateWrittenIcontains?: string,
         relatedPlaceStartDateWrittenIregex?: string,
-        relatedPlaceStartDateWrittenIsnull?: string,
+        relatedPlaceStartDateWrittenIsnull?: boolean,
         relatedPlaceStartEndDate?: string,
         relatedPlaceStartEndDateGt?: string,
         relatedPlaceStartEndDateLt?: string,
-        relatedPlaceStartEndDateYear?: string,
-        relatedPlaceStartEndDateYearGt?: string,
-        relatedPlaceStartEndDateYearLt?: string,
+        relatedPlaceStartEndDateYear?: number,
+        relatedPlaceStartEndDateYearGt?: number,
+        relatedPlaceStartEndDateYearLt?: number,
         relatedPlaceStartStartDate?: string,
         relatedPlaceStartStartDateGt?: string,
         relatedPlaceStartStartDateLt?: string,
-        relatedPlaceStartStartDateYear?: string,
-        relatedPlaceStartStartDateYearGt?: string,
-        relatedPlaceStartStartDateYearLt?: string,
+        relatedPlaceStartStartDateYear?: number,
+        relatedPlaceStartStartDateYearGt?: number,
+        relatedPlaceStartStartDateYearLt?: number,
         relatedPlaceStatus?: string,
         relatedPlaceStatusIcontains?: string,
         relatedPlaceStatusIregex?: string,
-        relatedPlaceStatusIsnull?: string,
+        relatedPlaceStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPlaceeventList> {
         const result = await __request({
             method: 'GET',
@@ -13096,262 +13096,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedPlaceA related_placeA
-     * @param relatedPlaceAEndDate related_placeA__end_date
-     * @param relatedPlaceAEndDateGt related_placeA__end_date__gt
-     * @param relatedPlaceAEndDateLt related_placeA__end_date__lt
-     * @param relatedPlaceAEndDateYear related_placeA__end_date__year
-     * @param relatedPlaceAEndDateYearGt related_placeA__end_date__year__gt
-     * @param relatedPlaceAEndDateYearLt related_placeA__end_date__year__lt
-     * @param relatedPlaceAEndDateWritten related_placeA__end_date_written
-     * @param relatedPlaceAEndDateWrittenIcontains related_placeA__end_date_written__icontains
-     * @param relatedPlaceAEndDateWrittenIregex related_placeA__end_date_written__iregex
-     * @param relatedPlaceAEndDateWrittenIsnull related_placeA__end_date_written__isnull
-     * @param relatedPlaceAEndEndDate related_placeA__end_end_date
-     * @param relatedPlaceAEndEndDateGt related_placeA__end_end_date__gt
-     * @param relatedPlaceAEndEndDateLt related_placeA__end_end_date__lt
-     * @param relatedPlaceAEndEndDateYear related_placeA__end_end_date__year
-     * @param relatedPlaceAEndEndDateYearGt related_placeA__end_end_date__year__gt
-     * @param relatedPlaceAEndEndDateYearLt related_placeA__end_end_date__year__lt
-     * @param relatedPlaceAEndStartDate related_placeA__end_start_date
-     * @param relatedPlaceAEndStartDateGt related_placeA__end_start_date__gt
-     * @param relatedPlaceAEndStartDateLt related_placeA__end_start_date__lt
-     * @param relatedPlaceAEndStartDateYear related_placeA__end_start_date__year
-     * @param relatedPlaceAEndStartDateYearGt related_placeA__end_start_date__year__gt
-     * @param relatedPlaceAEndStartDateYearLt related_placeA__end_start_date__year__lt
-     * @param relatedPlaceAId related_placeA__id
-     * @param relatedPlaceAIdIn related_placeA__id__in
-     * @param relatedPlaceAIn related_placeA__in
-     * @param relatedPlaceAName related_placeA__name
-     * @param relatedPlaceANameIcontains related_placeA__name__icontains
-     * @param relatedPlaceANameIregex related_placeA__name__iregex
-     * @param relatedPlaceANameIsnull related_placeA__name__isnull
-     * @param relatedPlaceAStartDate related_placeA__start_date
-     * @param relatedPlaceAStartDateGt related_placeA__start_date__gt
-     * @param relatedPlaceAStartDateLt related_placeA__start_date__lt
-     * @param relatedPlaceAStartDateYear related_placeA__start_date__year
-     * @param relatedPlaceAStartDateYearGt related_placeA__start_date__year__gt
-     * @param relatedPlaceAStartDateYearLt related_placeA__start_date__year__lt
-     * @param relatedPlaceAStartDateWritten related_placeA__start_date_written
-     * @param relatedPlaceAStartDateWrittenIcontains related_placeA__start_date_written__icontains
-     * @param relatedPlaceAStartDateWrittenIregex related_placeA__start_date_written__iregex
-     * @param relatedPlaceAStartDateWrittenIsnull related_placeA__start_date_written__isnull
-     * @param relatedPlaceAStartEndDate related_placeA__start_end_date
-     * @param relatedPlaceAStartEndDateGt related_placeA__start_end_date__gt
-     * @param relatedPlaceAStartEndDateLt related_placeA__start_end_date__lt
-     * @param relatedPlaceAStartEndDateYear related_placeA__start_end_date__year
-     * @param relatedPlaceAStartEndDateYearGt related_placeA__start_end_date__year__gt
-     * @param relatedPlaceAStartEndDateYearLt related_placeA__start_end_date__year__lt
-     * @param relatedPlaceAStartStartDate related_placeA__start_start_date
-     * @param relatedPlaceAStartStartDateGt related_placeA__start_start_date__gt
-     * @param relatedPlaceAStartStartDateLt related_placeA__start_start_date__lt
-     * @param relatedPlaceAStartStartDateYear related_placeA__start_start_date__year
-     * @param relatedPlaceAStartStartDateYearGt related_placeA__start_start_date__year__gt
-     * @param relatedPlaceAStartStartDateYearLt related_placeA__start_start_date__year__lt
-     * @param relatedPlaceAStatus related_placeA__status
-     * @param relatedPlaceAStatusIcontains related_placeA__status__icontains
-     * @param relatedPlaceAStatusIregex related_placeA__status__iregex
-     * @param relatedPlaceAStatusIsnull related_placeA__status__isnull
-     * @param relatedPlaceB related_placeB
-     * @param relatedPlaceBEndDate related_placeB__end_date
-     * @param relatedPlaceBEndDateGt related_placeB__end_date__gt
-     * @param relatedPlaceBEndDateLt related_placeB__end_date__lt
-     * @param relatedPlaceBEndDateYear related_placeB__end_date__year
-     * @param relatedPlaceBEndDateYearGt related_placeB__end_date__year__gt
-     * @param relatedPlaceBEndDateYearLt related_placeB__end_date__year__lt
-     * @param relatedPlaceBEndDateWritten related_placeB__end_date_written
-     * @param relatedPlaceBEndDateWrittenIcontains related_placeB__end_date_written__icontains
-     * @param relatedPlaceBEndDateWrittenIregex related_placeB__end_date_written__iregex
-     * @param relatedPlaceBEndDateWrittenIsnull related_placeB__end_date_written__isnull
-     * @param relatedPlaceBEndEndDate related_placeB__end_end_date
-     * @param relatedPlaceBEndEndDateGt related_placeB__end_end_date__gt
-     * @param relatedPlaceBEndEndDateLt related_placeB__end_end_date__lt
-     * @param relatedPlaceBEndEndDateYear related_placeB__end_end_date__year
-     * @param relatedPlaceBEndEndDateYearGt related_placeB__end_end_date__year__gt
-     * @param relatedPlaceBEndEndDateYearLt related_placeB__end_end_date__year__lt
-     * @param relatedPlaceBEndStartDate related_placeB__end_start_date
-     * @param relatedPlaceBEndStartDateGt related_placeB__end_start_date__gt
-     * @param relatedPlaceBEndStartDateLt related_placeB__end_start_date__lt
-     * @param relatedPlaceBEndStartDateYear related_placeB__end_start_date__year
-     * @param relatedPlaceBEndStartDateYearGt related_placeB__end_start_date__year__gt
-     * @param relatedPlaceBEndStartDateYearLt related_placeB__end_start_date__year__lt
-     * @param relatedPlaceBId related_placeB__id
-     * @param relatedPlaceBIdIn related_placeB__id__in
-     * @param relatedPlaceBIn related_placeB__in
-     * @param relatedPlaceBName related_placeB__name
-     * @param relatedPlaceBNameIcontains related_placeB__name__icontains
-     * @param relatedPlaceBNameIregex related_placeB__name__iregex
-     * @param relatedPlaceBNameIsnull related_placeB__name__isnull
-     * @param relatedPlaceBStartDate related_placeB__start_date
-     * @param relatedPlaceBStartDateGt related_placeB__start_date__gt
-     * @param relatedPlaceBStartDateLt related_placeB__start_date__lt
-     * @param relatedPlaceBStartDateYear related_placeB__start_date__year
-     * @param relatedPlaceBStartDateYearGt related_placeB__start_date__year__gt
-     * @param relatedPlaceBStartDateYearLt related_placeB__start_date__year__lt
-     * @param relatedPlaceBStartDateWritten related_placeB__start_date_written
-     * @param relatedPlaceBStartDateWrittenIcontains related_placeB__start_date_written__icontains
-     * @param relatedPlaceBStartDateWrittenIregex related_placeB__start_date_written__iregex
-     * @param relatedPlaceBStartDateWrittenIsnull related_placeB__start_date_written__isnull
-     * @param relatedPlaceBStartEndDate related_placeB__start_end_date
-     * @param relatedPlaceBStartEndDateGt related_placeB__start_end_date__gt
-     * @param relatedPlaceBStartEndDateLt related_placeB__start_end_date__lt
-     * @param relatedPlaceBStartEndDateYear related_placeB__start_end_date__year
-     * @param relatedPlaceBStartEndDateYearGt related_placeB__start_end_date__year__gt
-     * @param relatedPlaceBStartEndDateYearLt related_placeB__start_end_date__year__lt
-     * @param relatedPlaceBStartStartDate related_placeB__start_start_date
-     * @param relatedPlaceBStartStartDateGt related_placeB__start_start_date__gt
-     * @param relatedPlaceBStartStartDateLt related_placeB__start_start_date__lt
-     * @param relatedPlaceBStartStartDateYear related_placeB__start_start_date__year
-     * @param relatedPlaceBStartStartDateYearGt related_placeB__start_start_date__year__gt
-     * @param relatedPlaceBStartStartDateYearLt related_placeB__start_start_date__year__lt
-     * @param relatedPlaceBStatus related_placeB__status
-     * @param relatedPlaceBStatusIcontains related_placeB__status__icontains
-     * @param relatedPlaceBStatusIregex related_placeB__status__iregex
-     * @param relatedPlaceBStatusIsnull related_placeB__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedPlaceA
+     * @param relatedPlaceAEndDate
+     * @param relatedPlaceAEndDateGt
+     * @param relatedPlaceAEndDateLt
+     * @param relatedPlaceAEndDateYear
+     * @param relatedPlaceAEndDateYearGt
+     * @param relatedPlaceAEndDateYearLt
+     * @param relatedPlaceAEndDateWritten
+     * @param relatedPlaceAEndDateWrittenIcontains
+     * @param relatedPlaceAEndDateWrittenIregex
+     * @param relatedPlaceAEndDateWrittenIsnull
+     * @param relatedPlaceAEndEndDate
+     * @param relatedPlaceAEndEndDateGt
+     * @param relatedPlaceAEndEndDateLt
+     * @param relatedPlaceAEndEndDateYear
+     * @param relatedPlaceAEndEndDateYearGt
+     * @param relatedPlaceAEndEndDateYearLt
+     * @param relatedPlaceAEndStartDate
+     * @param relatedPlaceAEndStartDateGt
+     * @param relatedPlaceAEndStartDateLt
+     * @param relatedPlaceAEndStartDateYear
+     * @param relatedPlaceAEndStartDateYearGt
+     * @param relatedPlaceAEndStartDateYearLt
+     * @param relatedPlaceAId
+     * @param relatedPlaceAIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceAIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceAName
+     * @param relatedPlaceANameIcontains
+     * @param relatedPlaceANameIregex
+     * @param relatedPlaceANameIsnull
+     * @param relatedPlaceAStartDate
+     * @param relatedPlaceAStartDateGt
+     * @param relatedPlaceAStartDateLt
+     * @param relatedPlaceAStartDateYear
+     * @param relatedPlaceAStartDateYearGt
+     * @param relatedPlaceAStartDateYearLt
+     * @param relatedPlaceAStartDateWritten
+     * @param relatedPlaceAStartDateWrittenIcontains
+     * @param relatedPlaceAStartDateWrittenIregex
+     * @param relatedPlaceAStartDateWrittenIsnull
+     * @param relatedPlaceAStartEndDate
+     * @param relatedPlaceAStartEndDateGt
+     * @param relatedPlaceAStartEndDateLt
+     * @param relatedPlaceAStartEndDateYear
+     * @param relatedPlaceAStartEndDateYearGt
+     * @param relatedPlaceAStartEndDateYearLt
+     * @param relatedPlaceAStartStartDate
+     * @param relatedPlaceAStartStartDateGt
+     * @param relatedPlaceAStartStartDateLt
+     * @param relatedPlaceAStartStartDateYear
+     * @param relatedPlaceAStartStartDateYearGt
+     * @param relatedPlaceAStartStartDateYearLt
+     * @param relatedPlaceAStatus
+     * @param relatedPlaceAStatusIcontains
+     * @param relatedPlaceAStatusIregex
+     * @param relatedPlaceAStatusIsnull
+     * @param relatedPlaceB
+     * @param relatedPlaceBEndDate
+     * @param relatedPlaceBEndDateGt
+     * @param relatedPlaceBEndDateLt
+     * @param relatedPlaceBEndDateYear
+     * @param relatedPlaceBEndDateYearGt
+     * @param relatedPlaceBEndDateYearLt
+     * @param relatedPlaceBEndDateWritten
+     * @param relatedPlaceBEndDateWrittenIcontains
+     * @param relatedPlaceBEndDateWrittenIregex
+     * @param relatedPlaceBEndDateWrittenIsnull
+     * @param relatedPlaceBEndEndDate
+     * @param relatedPlaceBEndEndDateGt
+     * @param relatedPlaceBEndEndDateLt
+     * @param relatedPlaceBEndEndDateYear
+     * @param relatedPlaceBEndEndDateYearGt
+     * @param relatedPlaceBEndEndDateYearLt
+     * @param relatedPlaceBEndStartDate
+     * @param relatedPlaceBEndStartDateGt
+     * @param relatedPlaceBEndStartDateLt
+     * @param relatedPlaceBEndStartDateYear
+     * @param relatedPlaceBEndStartDateYearGt
+     * @param relatedPlaceBEndStartDateYearLt
+     * @param relatedPlaceBId
+     * @param relatedPlaceBIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceBIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceBName
+     * @param relatedPlaceBNameIcontains
+     * @param relatedPlaceBNameIregex
+     * @param relatedPlaceBNameIsnull
+     * @param relatedPlaceBStartDate
+     * @param relatedPlaceBStartDateGt
+     * @param relatedPlaceBStartDateLt
+     * @param relatedPlaceBStartDateYear
+     * @param relatedPlaceBStartDateYearGt
+     * @param relatedPlaceBStartDateYearLt
+     * @param relatedPlaceBStartDateWritten
+     * @param relatedPlaceBStartDateWrittenIcontains
+     * @param relatedPlaceBStartDateWrittenIregex
+     * @param relatedPlaceBStartDateWrittenIsnull
+     * @param relatedPlaceBStartEndDate
+     * @param relatedPlaceBStartEndDateGt
+     * @param relatedPlaceBStartEndDateLt
+     * @param relatedPlaceBStartEndDateYear
+     * @param relatedPlaceBStartEndDateYearGt
+     * @param relatedPlaceBStartEndDateYearLt
+     * @param relatedPlaceBStartStartDate
+     * @param relatedPlaceBStartStartDateGt
+     * @param relatedPlaceBStartStartDateLt
+     * @param relatedPlaceBStartStartDateYear
+     * @param relatedPlaceBStartStartDateYearGt
+     * @param relatedPlaceBStartStartDateYearLt
+     * @param relatedPlaceBStatus
+     * @param relatedPlaceBStatusIcontains
+     * @param relatedPlaceBStatusIregex
+     * @param relatedPlaceBStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPlaceplaceList
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceplaceList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -13360,176 +13360,176 @@ export class ApisService {
         relatedPlaceAEndDate?: string,
         relatedPlaceAEndDateGt?: string,
         relatedPlaceAEndDateLt?: string,
-        relatedPlaceAEndDateYear?: string,
-        relatedPlaceAEndDateYearGt?: string,
-        relatedPlaceAEndDateYearLt?: string,
+        relatedPlaceAEndDateYear?: number,
+        relatedPlaceAEndDateYearGt?: number,
+        relatedPlaceAEndDateYearLt?: number,
         relatedPlaceAEndDateWritten?: string,
         relatedPlaceAEndDateWrittenIcontains?: string,
         relatedPlaceAEndDateWrittenIregex?: string,
-        relatedPlaceAEndDateWrittenIsnull?: string,
+        relatedPlaceAEndDateWrittenIsnull?: boolean,
         relatedPlaceAEndEndDate?: string,
         relatedPlaceAEndEndDateGt?: string,
         relatedPlaceAEndEndDateLt?: string,
-        relatedPlaceAEndEndDateYear?: string,
-        relatedPlaceAEndEndDateYearGt?: string,
-        relatedPlaceAEndEndDateYearLt?: string,
+        relatedPlaceAEndEndDateYear?: number,
+        relatedPlaceAEndEndDateYearGt?: number,
+        relatedPlaceAEndEndDateYearLt?: number,
         relatedPlaceAEndStartDate?: string,
         relatedPlaceAEndStartDateGt?: string,
         relatedPlaceAEndStartDateLt?: string,
-        relatedPlaceAEndStartDateYear?: string,
-        relatedPlaceAEndStartDateYearGt?: string,
-        relatedPlaceAEndStartDateYearLt?: string,
+        relatedPlaceAEndStartDateYear?: number,
+        relatedPlaceAEndStartDateYearGt?: number,
+        relatedPlaceAEndStartDateYearLt?: number,
         relatedPlaceAId?: number,
-        relatedPlaceAIdIn?: number,
-        relatedPlaceAIn?: number,
+        relatedPlaceAIdIn?: Array<number>,
+        relatedPlaceAIn?: Array<number>,
         relatedPlaceAName?: string,
         relatedPlaceANameIcontains?: string,
         relatedPlaceANameIregex?: string,
-        relatedPlaceANameIsnull?: string,
+        relatedPlaceANameIsnull?: boolean,
         relatedPlaceAStartDate?: string,
         relatedPlaceAStartDateGt?: string,
         relatedPlaceAStartDateLt?: string,
-        relatedPlaceAStartDateYear?: string,
-        relatedPlaceAStartDateYearGt?: string,
-        relatedPlaceAStartDateYearLt?: string,
+        relatedPlaceAStartDateYear?: number,
+        relatedPlaceAStartDateYearGt?: number,
+        relatedPlaceAStartDateYearLt?: number,
         relatedPlaceAStartDateWritten?: string,
         relatedPlaceAStartDateWrittenIcontains?: string,
         relatedPlaceAStartDateWrittenIregex?: string,
-        relatedPlaceAStartDateWrittenIsnull?: string,
+        relatedPlaceAStartDateWrittenIsnull?: boolean,
         relatedPlaceAStartEndDate?: string,
         relatedPlaceAStartEndDateGt?: string,
         relatedPlaceAStartEndDateLt?: string,
-        relatedPlaceAStartEndDateYear?: string,
-        relatedPlaceAStartEndDateYearGt?: string,
-        relatedPlaceAStartEndDateYearLt?: string,
+        relatedPlaceAStartEndDateYear?: number,
+        relatedPlaceAStartEndDateYearGt?: number,
+        relatedPlaceAStartEndDateYearLt?: number,
         relatedPlaceAStartStartDate?: string,
         relatedPlaceAStartStartDateGt?: string,
         relatedPlaceAStartStartDateLt?: string,
-        relatedPlaceAStartStartDateYear?: string,
-        relatedPlaceAStartStartDateYearGt?: string,
-        relatedPlaceAStartStartDateYearLt?: string,
+        relatedPlaceAStartStartDateYear?: number,
+        relatedPlaceAStartStartDateYearGt?: number,
+        relatedPlaceAStartStartDateYearLt?: number,
         relatedPlaceAStatus?: string,
         relatedPlaceAStatusIcontains?: string,
         relatedPlaceAStatusIregex?: string,
-        relatedPlaceAStatusIsnull?: string,
+        relatedPlaceAStatusIsnull?: boolean,
         relatedPlaceB?: number,
         relatedPlaceBEndDate?: string,
         relatedPlaceBEndDateGt?: string,
         relatedPlaceBEndDateLt?: string,
-        relatedPlaceBEndDateYear?: string,
-        relatedPlaceBEndDateYearGt?: string,
-        relatedPlaceBEndDateYearLt?: string,
+        relatedPlaceBEndDateYear?: number,
+        relatedPlaceBEndDateYearGt?: number,
+        relatedPlaceBEndDateYearLt?: number,
         relatedPlaceBEndDateWritten?: string,
         relatedPlaceBEndDateWrittenIcontains?: string,
         relatedPlaceBEndDateWrittenIregex?: string,
-        relatedPlaceBEndDateWrittenIsnull?: string,
+        relatedPlaceBEndDateWrittenIsnull?: boolean,
         relatedPlaceBEndEndDate?: string,
         relatedPlaceBEndEndDateGt?: string,
         relatedPlaceBEndEndDateLt?: string,
-        relatedPlaceBEndEndDateYear?: string,
-        relatedPlaceBEndEndDateYearGt?: string,
-        relatedPlaceBEndEndDateYearLt?: string,
+        relatedPlaceBEndEndDateYear?: number,
+        relatedPlaceBEndEndDateYearGt?: number,
+        relatedPlaceBEndEndDateYearLt?: number,
         relatedPlaceBEndStartDate?: string,
         relatedPlaceBEndStartDateGt?: string,
         relatedPlaceBEndStartDateLt?: string,
-        relatedPlaceBEndStartDateYear?: string,
-        relatedPlaceBEndStartDateYearGt?: string,
-        relatedPlaceBEndStartDateYearLt?: string,
+        relatedPlaceBEndStartDateYear?: number,
+        relatedPlaceBEndStartDateYearGt?: number,
+        relatedPlaceBEndStartDateYearLt?: number,
         relatedPlaceBId?: number,
-        relatedPlaceBIdIn?: number,
-        relatedPlaceBIn?: number,
+        relatedPlaceBIdIn?: Array<number>,
+        relatedPlaceBIn?: Array<number>,
         relatedPlaceBName?: string,
         relatedPlaceBNameIcontains?: string,
         relatedPlaceBNameIregex?: string,
-        relatedPlaceBNameIsnull?: string,
+        relatedPlaceBNameIsnull?: boolean,
         relatedPlaceBStartDate?: string,
         relatedPlaceBStartDateGt?: string,
         relatedPlaceBStartDateLt?: string,
-        relatedPlaceBStartDateYear?: string,
-        relatedPlaceBStartDateYearGt?: string,
-        relatedPlaceBStartDateYearLt?: string,
+        relatedPlaceBStartDateYear?: number,
+        relatedPlaceBStartDateYearGt?: number,
+        relatedPlaceBStartDateYearLt?: number,
         relatedPlaceBStartDateWritten?: string,
         relatedPlaceBStartDateWrittenIcontains?: string,
         relatedPlaceBStartDateWrittenIregex?: string,
-        relatedPlaceBStartDateWrittenIsnull?: string,
+        relatedPlaceBStartDateWrittenIsnull?: boolean,
         relatedPlaceBStartEndDate?: string,
         relatedPlaceBStartEndDateGt?: string,
         relatedPlaceBStartEndDateLt?: string,
-        relatedPlaceBStartEndDateYear?: string,
-        relatedPlaceBStartEndDateYearGt?: string,
-        relatedPlaceBStartEndDateYearLt?: string,
+        relatedPlaceBStartEndDateYear?: number,
+        relatedPlaceBStartEndDateYearGt?: number,
+        relatedPlaceBStartEndDateYearLt?: number,
         relatedPlaceBStartStartDate?: string,
         relatedPlaceBStartStartDateGt?: string,
         relatedPlaceBStartStartDateLt?: string,
-        relatedPlaceBStartStartDateYear?: string,
-        relatedPlaceBStartStartDateYearGt?: string,
-        relatedPlaceBStartStartDateYearLt?: string,
+        relatedPlaceBStartStartDateYear?: number,
+        relatedPlaceBStartStartDateYearGt?: number,
+        relatedPlaceBStartStartDateYearLt?: number,
         relatedPlaceBStatus?: string,
         relatedPlaceBStatusIcontains?: string,
         relatedPlaceBStatusIregex?: string,
-        relatedPlaceBStatusIsnull?: string,
+        relatedPlaceBStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPlaceplaceList> {
         const result = await __request({
             method: 'GET',
@@ -13863,262 +13863,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedPlace related_place
-     * @param relatedPlaceEndDate related_place__end_date
-     * @param relatedPlaceEndDateGt related_place__end_date__gt
-     * @param relatedPlaceEndDateLt related_place__end_date__lt
-     * @param relatedPlaceEndDateYear related_place__end_date__year
-     * @param relatedPlaceEndDateYearGt related_place__end_date__year__gt
-     * @param relatedPlaceEndDateYearLt related_place__end_date__year__lt
-     * @param relatedPlaceEndDateWritten related_place__end_date_written
-     * @param relatedPlaceEndDateWrittenIcontains related_place__end_date_written__icontains
-     * @param relatedPlaceEndDateWrittenIregex related_place__end_date_written__iregex
-     * @param relatedPlaceEndDateWrittenIsnull related_place__end_date_written__isnull
-     * @param relatedPlaceEndEndDate related_place__end_end_date
-     * @param relatedPlaceEndEndDateGt related_place__end_end_date__gt
-     * @param relatedPlaceEndEndDateLt related_place__end_end_date__lt
-     * @param relatedPlaceEndEndDateYear related_place__end_end_date__year
-     * @param relatedPlaceEndEndDateYearGt related_place__end_end_date__year__gt
-     * @param relatedPlaceEndEndDateYearLt related_place__end_end_date__year__lt
-     * @param relatedPlaceEndStartDate related_place__end_start_date
-     * @param relatedPlaceEndStartDateGt related_place__end_start_date__gt
-     * @param relatedPlaceEndStartDateLt related_place__end_start_date__lt
-     * @param relatedPlaceEndStartDateYear related_place__end_start_date__year
-     * @param relatedPlaceEndStartDateYearGt related_place__end_start_date__year__gt
-     * @param relatedPlaceEndStartDateYearLt related_place__end_start_date__year__lt
-     * @param relatedPlaceId related_place__id
-     * @param relatedPlaceIdIn related_place__id__in
-     * @param relatedPlaceIn related_place__in
-     * @param relatedPlaceName related_place__name
-     * @param relatedPlaceNameIcontains related_place__name__icontains
-     * @param relatedPlaceNameIregex related_place__name__iregex
-     * @param relatedPlaceNameIsnull related_place__name__isnull
-     * @param relatedPlaceStartDate related_place__start_date
-     * @param relatedPlaceStartDateGt related_place__start_date__gt
-     * @param relatedPlaceStartDateLt related_place__start_date__lt
-     * @param relatedPlaceStartDateYear related_place__start_date__year
-     * @param relatedPlaceStartDateYearGt related_place__start_date__year__gt
-     * @param relatedPlaceStartDateYearLt related_place__start_date__year__lt
-     * @param relatedPlaceStartDateWritten related_place__start_date_written
-     * @param relatedPlaceStartDateWrittenIcontains related_place__start_date_written__icontains
-     * @param relatedPlaceStartDateWrittenIregex related_place__start_date_written__iregex
-     * @param relatedPlaceStartDateWrittenIsnull related_place__start_date_written__isnull
-     * @param relatedPlaceStartEndDate related_place__start_end_date
-     * @param relatedPlaceStartEndDateGt related_place__start_end_date__gt
-     * @param relatedPlaceStartEndDateLt related_place__start_end_date__lt
-     * @param relatedPlaceStartEndDateYear related_place__start_end_date__year
-     * @param relatedPlaceStartEndDateYearGt related_place__start_end_date__year__gt
-     * @param relatedPlaceStartEndDateYearLt related_place__start_end_date__year__lt
-     * @param relatedPlaceStartStartDate related_place__start_start_date
-     * @param relatedPlaceStartStartDateGt related_place__start_start_date__gt
-     * @param relatedPlaceStartStartDateLt related_place__start_start_date__lt
-     * @param relatedPlaceStartStartDateYear related_place__start_start_date__year
-     * @param relatedPlaceStartStartDateYearGt related_place__start_start_date__year__gt
-     * @param relatedPlaceStartStartDateYearLt related_place__start_start_date__year__lt
-     * @param relatedPlaceStatus related_place__status
-     * @param relatedPlaceStatusIcontains related_place__status__icontains
-     * @param relatedPlaceStatusIregex related_place__status__iregex
-     * @param relatedPlaceStatusIsnull related_place__status__isnull
-     * @param relatedWork related_work
-     * @param relatedWorkEndDate related_work__end_date
-     * @param relatedWorkEndDateGt related_work__end_date__gt
-     * @param relatedWorkEndDateLt related_work__end_date__lt
-     * @param relatedWorkEndDateYear related_work__end_date__year
-     * @param relatedWorkEndDateYearGt related_work__end_date__year__gt
-     * @param relatedWorkEndDateYearLt related_work__end_date__year__lt
-     * @param relatedWorkEndDateWritten related_work__end_date_written
-     * @param relatedWorkEndDateWrittenIcontains related_work__end_date_written__icontains
-     * @param relatedWorkEndDateWrittenIregex related_work__end_date_written__iregex
-     * @param relatedWorkEndDateWrittenIsnull related_work__end_date_written__isnull
-     * @param relatedWorkEndEndDate related_work__end_end_date
-     * @param relatedWorkEndEndDateGt related_work__end_end_date__gt
-     * @param relatedWorkEndEndDateLt related_work__end_end_date__lt
-     * @param relatedWorkEndEndDateYear related_work__end_end_date__year
-     * @param relatedWorkEndEndDateYearGt related_work__end_end_date__year__gt
-     * @param relatedWorkEndEndDateYearLt related_work__end_end_date__year__lt
-     * @param relatedWorkEndStartDate related_work__end_start_date
-     * @param relatedWorkEndStartDateGt related_work__end_start_date__gt
-     * @param relatedWorkEndStartDateLt related_work__end_start_date__lt
-     * @param relatedWorkEndStartDateYear related_work__end_start_date__year
-     * @param relatedWorkEndStartDateYearGt related_work__end_start_date__year__gt
-     * @param relatedWorkEndStartDateYearLt related_work__end_start_date__year__lt
-     * @param relatedWorkId related_work__id
-     * @param relatedWorkIdIn related_work__id__in
-     * @param relatedWorkIn related_work__in
-     * @param relatedWorkName related_work__name
-     * @param relatedWorkNameIcontains related_work__name__icontains
-     * @param relatedWorkNameIregex related_work__name__iregex
-     * @param relatedWorkNameIsnull related_work__name__isnull
-     * @param relatedWorkStartDate related_work__start_date
-     * @param relatedWorkStartDateGt related_work__start_date__gt
-     * @param relatedWorkStartDateLt related_work__start_date__lt
-     * @param relatedWorkStartDateYear related_work__start_date__year
-     * @param relatedWorkStartDateYearGt related_work__start_date__year__gt
-     * @param relatedWorkStartDateYearLt related_work__start_date__year__lt
-     * @param relatedWorkStartDateWritten related_work__start_date_written
-     * @param relatedWorkStartDateWrittenIcontains related_work__start_date_written__icontains
-     * @param relatedWorkStartDateWrittenIregex related_work__start_date_written__iregex
-     * @param relatedWorkStartDateWrittenIsnull related_work__start_date_written__isnull
-     * @param relatedWorkStartEndDate related_work__start_end_date
-     * @param relatedWorkStartEndDateGt related_work__start_end_date__gt
-     * @param relatedWorkStartEndDateLt related_work__start_end_date__lt
-     * @param relatedWorkStartEndDateYear related_work__start_end_date__year
-     * @param relatedWorkStartEndDateYearGt related_work__start_end_date__year__gt
-     * @param relatedWorkStartEndDateYearLt related_work__start_end_date__year__lt
-     * @param relatedWorkStartStartDate related_work__start_start_date
-     * @param relatedWorkStartStartDateGt related_work__start_start_date__gt
-     * @param relatedWorkStartStartDateLt related_work__start_start_date__lt
-     * @param relatedWorkStartStartDateYear related_work__start_start_date__year
-     * @param relatedWorkStartStartDateYearGt related_work__start_start_date__year__gt
-     * @param relatedWorkStartStartDateYearLt related_work__start_start_date__year__lt
-     * @param relatedWorkStatus related_work__status
-     * @param relatedWorkStatusIcontains related_work__status__icontains
-     * @param relatedWorkStatusIregex related_work__status__iregex
-     * @param relatedWorkStatusIsnull related_work__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedPlace
+     * @param relatedPlaceEndDate
+     * @param relatedPlaceEndDateGt
+     * @param relatedPlaceEndDateLt
+     * @param relatedPlaceEndDateYear
+     * @param relatedPlaceEndDateYearGt
+     * @param relatedPlaceEndDateYearLt
+     * @param relatedPlaceEndDateWritten
+     * @param relatedPlaceEndDateWrittenIcontains
+     * @param relatedPlaceEndDateWrittenIregex
+     * @param relatedPlaceEndDateWrittenIsnull
+     * @param relatedPlaceEndEndDate
+     * @param relatedPlaceEndEndDateGt
+     * @param relatedPlaceEndEndDateLt
+     * @param relatedPlaceEndEndDateYear
+     * @param relatedPlaceEndEndDateYearGt
+     * @param relatedPlaceEndEndDateYearLt
+     * @param relatedPlaceEndStartDate
+     * @param relatedPlaceEndStartDateGt
+     * @param relatedPlaceEndStartDateLt
+     * @param relatedPlaceEndStartDateYear
+     * @param relatedPlaceEndStartDateYearGt
+     * @param relatedPlaceEndStartDateYearLt
+     * @param relatedPlaceId
+     * @param relatedPlaceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedPlaceName
+     * @param relatedPlaceNameIcontains
+     * @param relatedPlaceNameIregex
+     * @param relatedPlaceNameIsnull
+     * @param relatedPlaceStartDate
+     * @param relatedPlaceStartDateGt
+     * @param relatedPlaceStartDateLt
+     * @param relatedPlaceStartDateYear
+     * @param relatedPlaceStartDateYearGt
+     * @param relatedPlaceStartDateYearLt
+     * @param relatedPlaceStartDateWritten
+     * @param relatedPlaceStartDateWrittenIcontains
+     * @param relatedPlaceStartDateWrittenIregex
+     * @param relatedPlaceStartDateWrittenIsnull
+     * @param relatedPlaceStartEndDate
+     * @param relatedPlaceStartEndDateGt
+     * @param relatedPlaceStartEndDateLt
+     * @param relatedPlaceStartEndDateYear
+     * @param relatedPlaceStartEndDateYearGt
+     * @param relatedPlaceStartEndDateYearLt
+     * @param relatedPlaceStartStartDate
+     * @param relatedPlaceStartStartDateGt
+     * @param relatedPlaceStartStartDateLt
+     * @param relatedPlaceStartStartDateYear
+     * @param relatedPlaceStartStartDateYearGt
+     * @param relatedPlaceStartStartDateYearLt
+     * @param relatedPlaceStatus
+     * @param relatedPlaceStatusIcontains
+     * @param relatedPlaceStatusIregex
+     * @param relatedPlaceStatusIsnull
+     * @param relatedWork
+     * @param relatedWorkEndDate
+     * @param relatedWorkEndDateGt
+     * @param relatedWorkEndDateLt
+     * @param relatedWorkEndDateYear
+     * @param relatedWorkEndDateYearGt
+     * @param relatedWorkEndDateYearLt
+     * @param relatedWorkEndDateWritten
+     * @param relatedWorkEndDateWrittenIcontains
+     * @param relatedWorkEndDateWrittenIregex
+     * @param relatedWorkEndDateWrittenIsnull
+     * @param relatedWorkEndEndDate
+     * @param relatedWorkEndEndDateGt
+     * @param relatedWorkEndEndDateLt
+     * @param relatedWorkEndEndDateYear
+     * @param relatedWorkEndEndDateYearGt
+     * @param relatedWorkEndEndDateYearLt
+     * @param relatedWorkEndStartDate
+     * @param relatedWorkEndStartDateGt
+     * @param relatedWorkEndStartDateLt
+     * @param relatedWorkEndStartDateYear
+     * @param relatedWorkEndStartDateYearGt
+     * @param relatedWorkEndStartDateYearLt
+     * @param relatedWorkId
+     * @param relatedWorkIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkName
+     * @param relatedWorkNameIcontains
+     * @param relatedWorkNameIregex
+     * @param relatedWorkNameIsnull
+     * @param relatedWorkStartDate
+     * @param relatedWorkStartDateGt
+     * @param relatedWorkStartDateLt
+     * @param relatedWorkStartDateYear
+     * @param relatedWorkStartDateYearGt
+     * @param relatedWorkStartDateYearLt
+     * @param relatedWorkStartDateWritten
+     * @param relatedWorkStartDateWrittenIcontains
+     * @param relatedWorkStartDateWrittenIregex
+     * @param relatedWorkStartDateWrittenIsnull
+     * @param relatedWorkStartEndDate
+     * @param relatedWorkStartEndDateGt
+     * @param relatedWorkStartEndDateLt
+     * @param relatedWorkStartEndDateYear
+     * @param relatedWorkStartEndDateYearGt
+     * @param relatedWorkStartEndDateYearLt
+     * @param relatedWorkStartStartDate
+     * @param relatedWorkStartStartDateGt
+     * @param relatedWorkStartStartDateLt
+     * @param relatedWorkStartStartDateYear
+     * @param relatedWorkStartStartDateYearGt
+     * @param relatedWorkStartStartDateYearLt
+     * @param relatedWorkStatus
+     * @param relatedWorkStatusIcontains
+     * @param relatedWorkStatusIregex
+     * @param relatedWorkStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedPlaceworkList
      * @throws ApiError
      */
     public static async apisApiRelationsPlaceworkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -14127,176 +14127,176 @@ export class ApisService {
         relatedPlaceEndDate?: string,
         relatedPlaceEndDateGt?: string,
         relatedPlaceEndDateLt?: string,
-        relatedPlaceEndDateYear?: string,
-        relatedPlaceEndDateYearGt?: string,
-        relatedPlaceEndDateYearLt?: string,
+        relatedPlaceEndDateYear?: number,
+        relatedPlaceEndDateYearGt?: number,
+        relatedPlaceEndDateYearLt?: number,
         relatedPlaceEndDateWritten?: string,
         relatedPlaceEndDateWrittenIcontains?: string,
         relatedPlaceEndDateWrittenIregex?: string,
-        relatedPlaceEndDateWrittenIsnull?: string,
+        relatedPlaceEndDateWrittenIsnull?: boolean,
         relatedPlaceEndEndDate?: string,
         relatedPlaceEndEndDateGt?: string,
         relatedPlaceEndEndDateLt?: string,
-        relatedPlaceEndEndDateYear?: string,
-        relatedPlaceEndEndDateYearGt?: string,
-        relatedPlaceEndEndDateYearLt?: string,
+        relatedPlaceEndEndDateYear?: number,
+        relatedPlaceEndEndDateYearGt?: number,
+        relatedPlaceEndEndDateYearLt?: number,
         relatedPlaceEndStartDate?: string,
         relatedPlaceEndStartDateGt?: string,
         relatedPlaceEndStartDateLt?: string,
-        relatedPlaceEndStartDateYear?: string,
-        relatedPlaceEndStartDateYearGt?: string,
-        relatedPlaceEndStartDateYearLt?: string,
+        relatedPlaceEndStartDateYear?: number,
+        relatedPlaceEndStartDateYearGt?: number,
+        relatedPlaceEndStartDateYearLt?: number,
         relatedPlaceId?: number,
-        relatedPlaceIdIn?: number,
-        relatedPlaceIn?: number,
+        relatedPlaceIdIn?: Array<number>,
+        relatedPlaceIn?: Array<number>,
         relatedPlaceName?: string,
         relatedPlaceNameIcontains?: string,
         relatedPlaceNameIregex?: string,
-        relatedPlaceNameIsnull?: string,
+        relatedPlaceNameIsnull?: boolean,
         relatedPlaceStartDate?: string,
         relatedPlaceStartDateGt?: string,
         relatedPlaceStartDateLt?: string,
-        relatedPlaceStartDateYear?: string,
-        relatedPlaceStartDateYearGt?: string,
-        relatedPlaceStartDateYearLt?: string,
+        relatedPlaceStartDateYear?: number,
+        relatedPlaceStartDateYearGt?: number,
+        relatedPlaceStartDateYearLt?: number,
         relatedPlaceStartDateWritten?: string,
         relatedPlaceStartDateWrittenIcontains?: string,
         relatedPlaceStartDateWrittenIregex?: string,
-        relatedPlaceStartDateWrittenIsnull?: string,
+        relatedPlaceStartDateWrittenIsnull?: boolean,
         relatedPlaceStartEndDate?: string,
         relatedPlaceStartEndDateGt?: string,
         relatedPlaceStartEndDateLt?: string,
-        relatedPlaceStartEndDateYear?: string,
-        relatedPlaceStartEndDateYearGt?: string,
-        relatedPlaceStartEndDateYearLt?: string,
+        relatedPlaceStartEndDateYear?: number,
+        relatedPlaceStartEndDateYearGt?: number,
+        relatedPlaceStartEndDateYearLt?: number,
         relatedPlaceStartStartDate?: string,
         relatedPlaceStartStartDateGt?: string,
         relatedPlaceStartStartDateLt?: string,
-        relatedPlaceStartStartDateYear?: string,
-        relatedPlaceStartStartDateYearGt?: string,
-        relatedPlaceStartStartDateYearLt?: string,
+        relatedPlaceStartStartDateYear?: number,
+        relatedPlaceStartStartDateYearGt?: number,
+        relatedPlaceStartStartDateYearLt?: number,
         relatedPlaceStatus?: string,
         relatedPlaceStatusIcontains?: string,
         relatedPlaceStatusIregex?: string,
-        relatedPlaceStatusIsnull?: string,
+        relatedPlaceStatusIsnull?: boolean,
         relatedWork?: number,
         relatedWorkEndDate?: string,
         relatedWorkEndDateGt?: string,
         relatedWorkEndDateLt?: string,
-        relatedWorkEndDateYear?: string,
-        relatedWorkEndDateYearGt?: string,
-        relatedWorkEndDateYearLt?: string,
+        relatedWorkEndDateYear?: number,
+        relatedWorkEndDateYearGt?: number,
+        relatedWorkEndDateYearLt?: number,
         relatedWorkEndDateWritten?: string,
         relatedWorkEndDateWrittenIcontains?: string,
         relatedWorkEndDateWrittenIregex?: string,
-        relatedWorkEndDateWrittenIsnull?: string,
+        relatedWorkEndDateWrittenIsnull?: boolean,
         relatedWorkEndEndDate?: string,
         relatedWorkEndEndDateGt?: string,
         relatedWorkEndEndDateLt?: string,
-        relatedWorkEndEndDateYear?: string,
-        relatedWorkEndEndDateYearGt?: string,
-        relatedWorkEndEndDateYearLt?: string,
+        relatedWorkEndEndDateYear?: number,
+        relatedWorkEndEndDateYearGt?: number,
+        relatedWorkEndEndDateYearLt?: number,
         relatedWorkEndStartDate?: string,
         relatedWorkEndStartDateGt?: string,
         relatedWorkEndStartDateLt?: string,
-        relatedWorkEndStartDateYear?: string,
-        relatedWorkEndStartDateYearGt?: string,
-        relatedWorkEndStartDateYearLt?: string,
+        relatedWorkEndStartDateYear?: number,
+        relatedWorkEndStartDateYearGt?: number,
+        relatedWorkEndStartDateYearLt?: number,
         relatedWorkId?: number,
-        relatedWorkIdIn?: number,
-        relatedWorkIn?: number,
+        relatedWorkIdIn?: Array<number>,
+        relatedWorkIn?: Array<number>,
         relatedWorkName?: string,
         relatedWorkNameIcontains?: string,
         relatedWorkNameIregex?: string,
-        relatedWorkNameIsnull?: string,
+        relatedWorkNameIsnull?: boolean,
         relatedWorkStartDate?: string,
         relatedWorkStartDateGt?: string,
         relatedWorkStartDateLt?: string,
-        relatedWorkStartDateYear?: string,
-        relatedWorkStartDateYearGt?: string,
-        relatedWorkStartDateYearLt?: string,
+        relatedWorkStartDateYear?: number,
+        relatedWorkStartDateYearGt?: number,
+        relatedWorkStartDateYearLt?: number,
         relatedWorkStartDateWritten?: string,
         relatedWorkStartDateWrittenIcontains?: string,
         relatedWorkStartDateWrittenIregex?: string,
-        relatedWorkStartDateWrittenIsnull?: string,
+        relatedWorkStartDateWrittenIsnull?: boolean,
         relatedWorkStartEndDate?: string,
         relatedWorkStartEndDateGt?: string,
         relatedWorkStartEndDateLt?: string,
-        relatedWorkStartEndDateYear?: string,
-        relatedWorkStartEndDateYearGt?: string,
-        relatedWorkStartEndDateYearLt?: string,
+        relatedWorkStartEndDateYear?: number,
+        relatedWorkStartEndDateYearGt?: number,
+        relatedWorkStartEndDateYearLt?: number,
         relatedWorkStartStartDate?: string,
         relatedWorkStartStartDateGt?: string,
         relatedWorkStartStartDateLt?: string,
-        relatedWorkStartStartDateYear?: string,
-        relatedWorkStartStartDateYearGt?: string,
-        relatedWorkStartStartDateYearLt?: string,
+        relatedWorkStartStartDateYear?: number,
+        relatedWorkStartStartDateYearGt?: number,
+        relatedWorkStartStartDateYearLt?: number,
         relatedWorkStatus?: string,
         relatedWorkStatusIcontains?: string,
         relatedWorkStatusIregex?: string,
-        relatedWorkStatusIsnull?: string,
+        relatedWorkStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedPlaceworkList> {
         const result = await __request({
             method: 'GET',
@@ -14630,262 +14630,262 @@ export class ApisService {
     }
 
     /**
-     * @param collection collection
-     * @param collectionId collection__id
-     * @param collectionIdIn collection__id__in
-     * @param collectionName collection__name
-     * @param collectionNameIcontains collection__name__icontains
-     * @param collectionNameIregex collection__name__iregex
-     * @param collectionNameIsnull collection__name__isnull
-     * @param endDate end_date
-     * @param endDateGt end_date__gt
-     * @param endDateLt end_date__lt
-     * @param endDateYear end_date__year
-     * @param endDateYearGt end_date__year__gt
-     * @param endDateYearLt end_date__year__lt
-     * @param endDateWritten end_date_written
-     * @param endDateWrittenIcontains end_date_written__icontains
-     * @param endDateWrittenIregex end_date_written__iregex
-     * @param endDateWrittenIsnull end_date_written__isnull
-     * @param endEndDate end_end_date
-     * @param endEndDateGt end_end_date__gt
-     * @param endEndDateLt end_end_date__lt
-     * @param endEndDateYear end_end_date__year
-     * @param endEndDateYearGt end_end_date__year__gt
-     * @param endEndDateYearLt end_end_date__year__lt
-     * @param endStartDate end_start_date
-     * @param endStartDateGt end_start_date__gt
-     * @param endStartDateLt end_start_date__lt
-     * @param endStartDateYear end_start_date__year
-     * @param endStartDateYearGt end_start_date__year__gt
-     * @param endStartDateYearLt end_start_date__year__lt
+     * @param collection
+     * @param collectionId
+     * @param collectionIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionName
+     * @param collectionNameIcontains
+     * @param collectionNameIregex
+     * @param collectionNameIsnull
+     * @param endDate
+     * @param endDateGt
+     * @param endDateLt
+     * @param endDateYear
+     * @param endDateYearGt
+     * @param endDateYearLt
+     * @param endDateWritten
+     * @param endDateWrittenIcontains
+     * @param endDateWrittenIregex
+     * @param endDateWrittenIsnull
+     * @param endEndDate
+     * @param endEndDateGt
+     * @param endEndDateLt
+     * @param endEndDateYear
+     * @param endEndDateYearGt
+     * @param endEndDateYearLt
+     * @param endStartDate
+     * @param endStartDateGt
+     * @param endStartDateLt
+     * @param endStartDateYear
+     * @param endStartDateYearGt
+     * @param endStartDateYearLt
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param notes notes
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param notes
      * @param offset The initial index from which to return the results.
-     * @param published published
-     * @param references references
-     * @param relatedWorkA related_workA
-     * @param relatedWorkAEndDate related_workA__end_date
-     * @param relatedWorkAEndDateGt related_workA__end_date__gt
-     * @param relatedWorkAEndDateLt related_workA__end_date__lt
-     * @param relatedWorkAEndDateYear related_workA__end_date__year
-     * @param relatedWorkAEndDateYearGt related_workA__end_date__year__gt
-     * @param relatedWorkAEndDateYearLt related_workA__end_date__year__lt
-     * @param relatedWorkAEndDateWritten related_workA__end_date_written
-     * @param relatedWorkAEndDateWrittenIcontains related_workA__end_date_written__icontains
-     * @param relatedWorkAEndDateWrittenIregex related_workA__end_date_written__iregex
-     * @param relatedWorkAEndDateWrittenIsnull related_workA__end_date_written__isnull
-     * @param relatedWorkAEndEndDate related_workA__end_end_date
-     * @param relatedWorkAEndEndDateGt related_workA__end_end_date__gt
-     * @param relatedWorkAEndEndDateLt related_workA__end_end_date__lt
-     * @param relatedWorkAEndEndDateYear related_workA__end_end_date__year
-     * @param relatedWorkAEndEndDateYearGt related_workA__end_end_date__year__gt
-     * @param relatedWorkAEndEndDateYearLt related_workA__end_end_date__year__lt
-     * @param relatedWorkAEndStartDate related_workA__end_start_date
-     * @param relatedWorkAEndStartDateGt related_workA__end_start_date__gt
-     * @param relatedWorkAEndStartDateLt related_workA__end_start_date__lt
-     * @param relatedWorkAEndStartDateYear related_workA__end_start_date__year
-     * @param relatedWorkAEndStartDateYearGt related_workA__end_start_date__year__gt
-     * @param relatedWorkAEndStartDateYearLt related_workA__end_start_date__year__lt
-     * @param relatedWorkAId related_workA__id
-     * @param relatedWorkAIdIn related_workA__id__in
-     * @param relatedWorkAIn related_workA__in
-     * @param relatedWorkAName related_workA__name
-     * @param relatedWorkANameIcontains related_workA__name__icontains
-     * @param relatedWorkANameIregex related_workA__name__iregex
-     * @param relatedWorkANameIsnull related_workA__name__isnull
-     * @param relatedWorkAStartDate related_workA__start_date
-     * @param relatedWorkAStartDateGt related_workA__start_date__gt
-     * @param relatedWorkAStartDateLt related_workA__start_date__lt
-     * @param relatedWorkAStartDateYear related_workA__start_date__year
-     * @param relatedWorkAStartDateYearGt related_workA__start_date__year__gt
-     * @param relatedWorkAStartDateYearLt related_workA__start_date__year__lt
-     * @param relatedWorkAStartDateWritten related_workA__start_date_written
-     * @param relatedWorkAStartDateWrittenIcontains related_workA__start_date_written__icontains
-     * @param relatedWorkAStartDateWrittenIregex related_workA__start_date_written__iregex
-     * @param relatedWorkAStartDateWrittenIsnull related_workA__start_date_written__isnull
-     * @param relatedWorkAStartEndDate related_workA__start_end_date
-     * @param relatedWorkAStartEndDateGt related_workA__start_end_date__gt
-     * @param relatedWorkAStartEndDateLt related_workA__start_end_date__lt
-     * @param relatedWorkAStartEndDateYear related_workA__start_end_date__year
-     * @param relatedWorkAStartEndDateYearGt related_workA__start_end_date__year__gt
-     * @param relatedWorkAStartEndDateYearLt related_workA__start_end_date__year__lt
-     * @param relatedWorkAStartStartDate related_workA__start_start_date
-     * @param relatedWorkAStartStartDateGt related_workA__start_start_date__gt
-     * @param relatedWorkAStartStartDateLt related_workA__start_start_date__lt
-     * @param relatedWorkAStartStartDateYear related_workA__start_start_date__year
-     * @param relatedWorkAStartStartDateYearGt related_workA__start_start_date__year__gt
-     * @param relatedWorkAStartStartDateYearLt related_workA__start_start_date__year__lt
-     * @param relatedWorkAStatus related_workA__status
-     * @param relatedWorkAStatusIcontains related_workA__status__icontains
-     * @param relatedWorkAStatusIregex related_workA__status__iregex
-     * @param relatedWorkAStatusIsnull related_workA__status__isnull
-     * @param relatedWorkB related_workB
-     * @param relatedWorkBEndDate related_workB__end_date
-     * @param relatedWorkBEndDateGt related_workB__end_date__gt
-     * @param relatedWorkBEndDateLt related_workB__end_date__lt
-     * @param relatedWorkBEndDateYear related_workB__end_date__year
-     * @param relatedWorkBEndDateYearGt related_workB__end_date__year__gt
-     * @param relatedWorkBEndDateYearLt related_workB__end_date__year__lt
-     * @param relatedWorkBEndDateWritten related_workB__end_date_written
-     * @param relatedWorkBEndDateWrittenIcontains related_workB__end_date_written__icontains
-     * @param relatedWorkBEndDateWrittenIregex related_workB__end_date_written__iregex
-     * @param relatedWorkBEndDateWrittenIsnull related_workB__end_date_written__isnull
-     * @param relatedWorkBEndEndDate related_workB__end_end_date
-     * @param relatedWorkBEndEndDateGt related_workB__end_end_date__gt
-     * @param relatedWorkBEndEndDateLt related_workB__end_end_date__lt
-     * @param relatedWorkBEndEndDateYear related_workB__end_end_date__year
-     * @param relatedWorkBEndEndDateYearGt related_workB__end_end_date__year__gt
-     * @param relatedWorkBEndEndDateYearLt related_workB__end_end_date__year__lt
-     * @param relatedWorkBEndStartDate related_workB__end_start_date
-     * @param relatedWorkBEndStartDateGt related_workB__end_start_date__gt
-     * @param relatedWorkBEndStartDateLt related_workB__end_start_date__lt
-     * @param relatedWorkBEndStartDateYear related_workB__end_start_date__year
-     * @param relatedWorkBEndStartDateYearGt related_workB__end_start_date__year__gt
-     * @param relatedWorkBEndStartDateYearLt related_workB__end_start_date__year__lt
-     * @param relatedWorkBId related_workB__id
-     * @param relatedWorkBIdIn related_workB__id__in
-     * @param relatedWorkBIn related_workB__in
-     * @param relatedWorkBName related_workB__name
-     * @param relatedWorkBNameIcontains related_workB__name__icontains
-     * @param relatedWorkBNameIregex related_workB__name__iregex
-     * @param relatedWorkBNameIsnull related_workB__name__isnull
-     * @param relatedWorkBStartDate related_workB__start_date
-     * @param relatedWorkBStartDateGt related_workB__start_date__gt
-     * @param relatedWorkBStartDateLt related_workB__start_date__lt
-     * @param relatedWorkBStartDateYear related_workB__start_date__year
-     * @param relatedWorkBStartDateYearGt related_workB__start_date__year__gt
-     * @param relatedWorkBStartDateYearLt related_workB__start_date__year__lt
-     * @param relatedWorkBStartDateWritten related_workB__start_date_written
-     * @param relatedWorkBStartDateWrittenIcontains related_workB__start_date_written__icontains
-     * @param relatedWorkBStartDateWrittenIregex related_workB__start_date_written__iregex
-     * @param relatedWorkBStartDateWrittenIsnull related_workB__start_date_written__isnull
-     * @param relatedWorkBStartEndDate related_workB__start_end_date
-     * @param relatedWorkBStartEndDateGt related_workB__start_end_date__gt
-     * @param relatedWorkBStartEndDateLt related_workB__start_end_date__lt
-     * @param relatedWorkBStartEndDateYear related_workB__start_end_date__year
-     * @param relatedWorkBStartEndDateYearGt related_workB__start_end_date__year__gt
-     * @param relatedWorkBStartEndDateYearLt related_workB__start_end_date__year__lt
-     * @param relatedWorkBStartStartDate related_workB__start_start_date
-     * @param relatedWorkBStartStartDateGt related_workB__start_start_date__gt
-     * @param relatedWorkBStartStartDateLt related_workB__start_start_date__lt
-     * @param relatedWorkBStartStartDateYear related_workB__start_start_date__year
-     * @param relatedWorkBStartStartDateYearGt related_workB__start_start_date__year__gt
-     * @param relatedWorkBStartStartDateYearLt related_workB__start_start_date__year__lt
-     * @param relatedWorkBStatus related_workB__status
-     * @param relatedWorkBStatusIcontains related_workB__status__icontains
-     * @param relatedWorkBStatusIregex related_workB__status__iregex
-     * @param relatedWorkBStatusIsnull related_workB__status__isnull
-     * @param relationType relation_type
-     * @param relationTypeId relation_type__id
-     * @param relationTypeIdIn relation_type__id__in
-     * @param relationTypeIn relation_type__in
-     * @param relationTypeName relation_type__name
-     * @param relationTypeNameIcontains relation_type__name__icontains
-     * @param relationTypeNameIregex relation_type__name__iregex
-     * @param relationTypeNameIsnull relation_type__name__isnull
-     * @param relationTypeNameReverse relation_type__name_reverse
-     * @param relationTypeNameReverseIcontains relation_type__name_reverse__icontains
-     * @param relationTypeNameReverseIregex relation_type__name_reverse__iregex
-     * @param relationTypeNameReverseIsnull relation_type__name_reverse__isnull
-     * @param relationTypeStatus relation_type__status
-     * @param relationTypeStatusIcontains relation_type__status__icontains
-     * @param relationTypeStatusIregex relation_type__status__iregex
-     * @param relationTypeStatusIsnull relation_type__status__isnull
-     * @param review review
-     * @param source source
-     * @param sourceAuthor source__author
-     * @param sourceAuthorIcontains source__author__icontains
-     * @param sourceAuthorIregex source__author__iregex
-     * @param sourceAuthorIsnull source__author__isnull
-     * @param sourceId source__id
-     * @param sourceIdIn source__id__in
-     * @param sourceIn source__in
-     * @param sourceOrigFilename source__orig_filename
-     * @param sourceOrigFilenameIcontains source__orig_filename__icontains
-     * @param sourceOrigFilenameIregex source__orig_filename__iregex
-     * @param sourceOrigFilenameIsnull source__orig_filename__isnull
-     * @param sourcePubinfo source__pubinfo
-     * @param sourcePubinfoIcontains source__pubinfo__icontains
-     * @param sourcePubinfoIregex source__pubinfo__iregex
-     * @param sourcePubinfoIsnull source__pubinfo__isnull
-     * @param startDate start_date
-     * @param startDateGt start_date__gt
-     * @param startDateLt start_date__lt
-     * @param startDateYear start_date__year
-     * @param startDateYearGt start_date__year__gt
-     * @param startDateYearLt start_date__year__lt
-     * @param startDateWritten start_date_written
-     * @param startDateWrittenIcontains start_date_written__icontains
-     * @param startDateWrittenIregex start_date_written__iregex
-     * @param startDateWrittenIsnull start_date_written__isnull
-     * @param startEndDate start_end_date
-     * @param startEndDateGt start_end_date__gt
-     * @param startEndDateLt start_end_date__lt
-     * @param startEndDateYear start_end_date__year
-     * @param startEndDateYearGt start_end_date__year__gt
-     * @param startEndDateYearLt start_end_date__year__lt
-     * @param startStartDate start_start_date
-     * @param startStartDateGt start_start_date__gt
-     * @param startStartDateLt start_start_date__lt
-     * @param startStartDateYear start_start_date__year
-     * @param startStartDateYearGt start_start_date__year__gt
-     * @param startStartDateYearLt start_start_date__year__lt
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param text text
-     * @param textId text__id
-     * @param textIdIn text__id__in
+     * @param published
+     * @param references
+     * @param relatedWorkA
+     * @param relatedWorkAEndDate
+     * @param relatedWorkAEndDateGt
+     * @param relatedWorkAEndDateLt
+     * @param relatedWorkAEndDateYear
+     * @param relatedWorkAEndDateYearGt
+     * @param relatedWorkAEndDateYearLt
+     * @param relatedWorkAEndDateWritten
+     * @param relatedWorkAEndDateWrittenIcontains
+     * @param relatedWorkAEndDateWrittenIregex
+     * @param relatedWorkAEndDateWrittenIsnull
+     * @param relatedWorkAEndEndDate
+     * @param relatedWorkAEndEndDateGt
+     * @param relatedWorkAEndEndDateLt
+     * @param relatedWorkAEndEndDateYear
+     * @param relatedWorkAEndEndDateYearGt
+     * @param relatedWorkAEndEndDateYearLt
+     * @param relatedWorkAEndStartDate
+     * @param relatedWorkAEndStartDateGt
+     * @param relatedWorkAEndStartDateLt
+     * @param relatedWorkAEndStartDateYear
+     * @param relatedWorkAEndStartDateYearGt
+     * @param relatedWorkAEndStartDateYearLt
+     * @param relatedWorkAId
+     * @param relatedWorkAIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkAIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkAName
+     * @param relatedWorkANameIcontains
+     * @param relatedWorkANameIregex
+     * @param relatedWorkANameIsnull
+     * @param relatedWorkAStartDate
+     * @param relatedWorkAStartDateGt
+     * @param relatedWorkAStartDateLt
+     * @param relatedWorkAStartDateYear
+     * @param relatedWorkAStartDateYearGt
+     * @param relatedWorkAStartDateYearLt
+     * @param relatedWorkAStartDateWritten
+     * @param relatedWorkAStartDateWrittenIcontains
+     * @param relatedWorkAStartDateWrittenIregex
+     * @param relatedWorkAStartDateWrittenIsnull
+     * @param relatedWorkAStartEndDate
+     * @param relatedWorkAStartEndDateGt
+     * @param relatedWorkAStartEndDateLt
+     * @param relatedWorkAStartEndDateYear
+     * @param relatedWorkAStartEndDateYearGt
+     * @param relatedWorkAStartEndDateYearLt
+     * @param relatedWorkAStartStartDate
+     * @param relatedWorkAStartStartDateGt
+     * @param relatedWorkAStartStartDateLt
+     * @param relatedWorkAStartStartDateYear
+     * @param relatedWorkAStartStartDateYearGt
+     * @param relatedWorkAStartStartDateYearLt
+     * @param relatedWorkAStatus
+     * @param relatedWorkAStatusIcontains
+     * @param relatedWorkAStatusIregex
+     * @param relatedWorkAStatusIsnull
+     * @param relatedWorkB
+     * @param relatedWorkBEndDate
+     * @param relatedWorkBEndDateGt
+     * @param relatedWorkBEndDateLt
+     * @param relatedWorkBEndDateYear
+     * @param relatedWorkBEndDateYearGt
+     * @param relatedWorkBEndDateYearLt
+     * @param relatedWorkBEndDateWritten
+     * @param relatedWorkBEndDateWrittenIcontains
+     * @param relatedWorkBEndDateWrittenIregex
+     * @param relatedWorkBEndDateWrittenIsnull
+     * @param relatedWorkBEndEndDate
+     * @param relatedWorkBEndEndDateGt
+     * @param relatedWorkBEndEndDateLt
+     * @param relatedWorkBEndEndDateYear
+     * @param relatedWorkBEndEndDateYearGt
+     * @param relatedWorkBEndEndDateYearLt
+     * @param relatedWorkBEndStartDate
+     * @param relatedWorkBEndStartDateGt
+     * @param relatedWorkBEndStartDateLt
+     * @param relatedWorkBEndStartDateYear
+     * @param relatedWorkBEndStartDateYearGt
+     * @param relatedWorkBEndStartDateYearLt
+     * @param relatedWorkBId
+     * @param relatedWorkBIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkBIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relatedWorkBName
+     * @param relatedWorkBNameIcontains
+     * @param relatedWorkBNameIregex
+     * @param relatedWorkBNameIsnull
+     * @param relatedWorkBStartDate
+     * @param relatedWorkBStartDateGt
+     * @param relatedWorkBStartDateLt
+     * @param relatedWorkBStartDateYear
+     * @param relatedWorkBStartDateYearGt
+     * @param relatedWorkBStartDateYearLt
+     * @param relatedWorkBStartDateWritten
+     * @param relatedWorkBStartDateWrittenIcontains
+     * @param relatedWorkBStartDateWrittenIregex
+     * @param relatedWorkBStartDateWrittenIsnull
+     * @param relatedWorkBStartEndDate
+     * @param relatedWorkBStartEndDateGt
+     * @param relatedWorkBStartEndDateLt
+     * @param relatedWorkBStartEndDateYear
+     * @param relatedWorkBStartEndDateYearGt
+     * @param relatedWorkBStartEndDateYearLt
+     * @param relatedWorkBStartStartDate
+     * @param relatedWorkBStartStartDateGt
+     * @param relatedWorkBStartStartDateLt
+     * @param relatedWorkBStartStartDateYear
+     * @param relatedWorkBStartStartDateYearGt
+     * @param relatedWorkBStartStartDateYearLt
+     * @param relatedWorkBStatus
+     * @param relatedWorkBStatusIcontains
+     * @param relatedWorkBStatusIregex
+     * @param relatedWorkBStatusIsnull
+     * @param relationType
+     * @param relationTypeId
+     * @param relationTypeIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param relationTypeName
+     * @param relationTypeNameIcontains
+     * @param relationTypeNameIregex
+     * @param relationTypeNameIsnull
+     * @param relationTypeNameReverse
+     * @param relationTypeNameReverseIcontains
+     * @param relationTypeNameReverseIregex
+     * @param relationTypeNameReverseIsnull
+     * @param relationTypeStatus
+     * @param relationTypeStatusIcontains
+     * @param relationTypeStatusIregex
+     * @param relationTypeStatusIsnull
+     * @param review
+     * @param source
+     * @param sourceAuthor
+     * @param sourceAuthorIcontains
+     * @param sourceAuthorIregex
+     * @param sourceAuthorIsnull
+     * @param sourceId
+     * @param sourceIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param sourceOrigFilename
+     * @param sourceOrigFilenameIcontains
+     * @param sourceOrigFilenameIregex
+     * @param sourceOrigFilenameIsnull
+     * @param sourcePubinfo
+     * @param sourcePubinfoIcontains
+     * @param sourcePubinfoIregex
+     * @param sourcePubinfoIsnull
+     * @param startDate
+     * @param startDateGt
+     * @param startDateLt
+     * @param startDateYear
+     * @param startDateYearGt
+     * @param startDateYearLt
+     * @param startDateWritten
+     * @param startDateWrittenIcontains
+     * @param startDateWrittenIregex
+     * @param startDateWrittenIsnull
+     * @param startEndDate
+     * @param startEndDateGt
+     * @param startEndDateLt
+     * @param startEndDateYear
+     * @param startEndDateYearGt
+     * @param startEndDateYearLt
+     * @param startStartDate
+     * @param startStartDateGt
+     * @param startStartDateLt
+     * @param startStartDateYear
+     * @param startStartDateYearGt
+     * @param startStartDateYearLt
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param text
+     * @param textId
+     * @param textIdIn Mehrere Werte können durch Kommas getrennt sein.
      * @returns PaginatedWorkworkList
      * @throws ApiError
      */
     public static async apisApiRelationsWorkworkList(
         collection?: Array<number>,
         collectionId?: number,
-        collectionIdIn?: number,
+        collectionIdIn?: Array<number>,
         collectionName?: string,
         collectionNameIcontains?: string,
         collectionNameIregex?: string,
-        collectionNameIsnull?: string,
+        collectionNameIsnull?: boolean,
         endDate?: string,
         endDateGt?: string,
         endDateLt?: string,
-        endDateYear?: string,
-        endDateYearGt?: string,
-        endDateYearLt?: string,
+        endDateYear?: number,
+        endDateYearGt?: number,
+        endDateYearLt?: number,
         endDateWritten?: string,
         endDateWrittenIcontains?: string,
         endDateWrittenIregex?: string,
-        endDateWrittenIsnull?: string,
+        endDateWrittenIsnull?: boolean,
         endEndDate?: string,
         endEndDateGt?: string,
         endEndDateLt?: string,
-        endEndDateYear?: string,
-        endEndDateYearGt?: string,
-        endEndDateYearLt?: string,
+        endEndDateYear?: number,
+        endEndDateYearGt?: number,
+        endEndDateYearLt?: number,
         endStartDate?: string,
         endStartDateGt?: string,
         endStartDateLt?: string,
-        endStartDateYear?: string,
-        endStartDateYearGt?: string,
-        endStartDateYearLt?: string,
+        endStartDateYear?: number,
+        endStartDateYearGt?: number,
+        endStartDateYearLt?: number,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         notes?: string,
         offset?: number,
         published?: boolean,
@@ -14894,176 +14894,176 @@ export class ApisService {
         relatedWorkAEndDate?: string,
         relatedWorkAEndDateGt?: string,
         relatedWorkAEndDateLt?: string,
-        relatedWorkAEndDateYear?: string,
-        relatedWorkAEndDateYearGt?: string,
-        relatedWorkAEndDateYearLt?: string,
+        relatedWorkAEndDateYear?: number,
+        relatedWorkAEndDateYearGt?: number,
+        relatedWorkAEndDateYearLt?: number,
         relatedWorkAEndDateWritten?: string,
         relatedWorkAEndDateWrittenIcontains?: string,
         relatedWorkAEndDateWrittenIregex?: string,
-        relatedWorkAEndDateWrittenIsnull?: string,
+        relatedWorkAEndDateWrittenIsnull?: boolean,
         relatedWorkAEndEndDate?: string,
         relatedWorkAEndEndDateGt?: string,
         relatedWorkAEndEndDateLt?: string,
-        relatedWorkAEndEndDateYear?: string,
-        relatedWorkAEndEndDateYearGt?: string,
-        relatedWorkAEndEndDateYearLt?: string,
+        relatedWorkAEndEndDateYear?: number,
+        relatedWorkAEndEndDateYearGt?: number,
+        relatedWorkAEndEndDateYearLt?: number,
         relatedWorkAEndStartDate?: string,
         relatedWorkAEndStartDateGt?: string,
         relatedWorkAEndStartDateLt?: string,
-        relatedWorkAEndStartDateYear?: string,
-        relatedWorkAEndStartDateYearGt?: string,
-        relatedWorkAEndStartDateYearLt?: string,
+        relatedWorkAEndStartDateYear?: number,
+        relatedWorkAEndStartDateYearGt?: number,
+        relatedWorkAEndStartDateYearLt?: number,
         relatedWorkAId?: number,
-        relatedWorkAIdIn?: number,
-        relatedWorkAIn?: number,
+        relatedWorkAIdIn?: Array<number>,
+        relatedWorkAIn?: Array<number>,
         relatedWorkAName?: string,
         relatedWorkANameIcontains?: string,
         relatedWorkANameIregex?: string,
-        relatedWorkANameIsnull?: string,
+        relatedWorkANameIsnull?: boolean,
         relatedWorkAStartDate?: string,
         relatedWorkAStartDateGt?: string,
         relatedWorkAStartDateLt?: string,
-        relatedWorkAStartDateYear?: string,
-        relatedWorkAStartDateYearGt?: string,
-        relatedWorkAStartDateYearLt?: string,
+        relatedWorkAStartDateYear?: number,
+        relatedWorkAStartDateYearGt?: number,
+        relatedWorkAStartDateYearLt?: number,
         relatedWorkAStartDateWritten?: string,
         relatedWorkAStartDateWrittenIcontains?: string,
         relatedWorkAStartDateWrittenIregex?: string,
-        relatedWorkAStartDateWrittenIsnull?: string,
+        relatedWorkAStartDateWrittenIsnull?: boolean,
         relatedWorkAStartEndDate?: string,
         relatedWorkAStartEndDateGt?: string,
         relatedWorkAStartEndDateLt?: string,
-        relatedWorkAStartEndDateYear?: string,
-        relatedWorkAStartEndDateYearGt?: string,
-        relatedWorkAStartEndDateYearLt?: string,
+        relatedWorkAStartEndDateYear?: number,
+        relatedWorkAStartEndDateYearGt?: number,
+        relatedWorkAStartEndDateYearLt?: number,
         relatedWorkAStartStartDate?: string,
         relatedWorkAStartStartDateGt?: string,
         relatedWorkAStartStartDateLt?: string,
-        relatedWorkAStartStartDateYear?: string,
-        relatedWorkAStartStartDateYearGt?: string,
-        relatedWorkAStartStartDateYearLt?: string,
+        relatedWorkAStartStartDateYear?: number,
+        relatedWorkAStartStartDateYearGt?: number,
+        relatedWorkAStartStartDateYearLt?: number,
         relatedWorkAStatus?: string,
         relatedWorkAStatusIcontains?: string,
         relatedWorkAStatusIregex?: string,
-        relatedWorkAStatusIsnull?: string,
+        relatedWorkAStatusIsnull?: boolean,
         relatedWorkB?: number,
         relatedWorkBEndDate?: string,
         relatedWorkBEndDateGt?: string,
         relatedWorkBEndDateLt?: string,
-        relatedWorkBEndDateYear?: string,
-        relatedWorkBEndDateYearGt?: string,
-        relatedWorkBEndDateYearLt?: string,
+        relatedWorkBEndDateYear?: number,
+        relatedWorkBEndDateYearGt?: number,
+        relatedWorkBEndDateYearLt?: number,
         relatedWorkBEndDateWritten?: string,
         relatedWorkBEndDateWrittenIcontains?: string,
         relatedWorkBEndDateWrittenIregex?: string,
-        relatedWorkBEndDateWrittenIsnull?: string,
+        relatedWorkBEndDateWrittenIsnull?: boolean,
         relatedWorkBEndEndDate?: string,
         relatedWorkBEndEndDateGt?: string,
         relatedWorkBEndEndDateLt?: string,
-        relatedWorkBEndEndDateYear?: string,
-        relatedWorkBEndEndDateYearGt?: string,
-        relatedWorkBEndEndDateYearLt?: string,
+        relatedWorkBEndEndDateYear?: number,
+        relatedWorkBEndEndDateYearGt?: number,
+        relatedWorkBEndEndDateYearLt?: number,
         relatedWorkBEndStartDate?: string,
         relatedWorkBEndStartDateGt?: string,
         relatedWorkBEndStartDateLt?: string,
-        relatedWorkBEndStartDateYear?: string,
-        relatedWorkBEndStartDateYearGt?: string,
-        relatedWorkBEndStartDateYearLt?: string,
+        relatedWorkBEndStartDateYear?: number,
+        relatedWorkBEndStartDateYearGt?: number,
+        relatedWorkBEndStartDateYearLt?: number,
         relatedWorkBId?: number,
-        relatedWorkBIdIn?: number,
-        relatedWorkBIn?: number,
+        relatedWorkBIdIn?: Array<number>,
+        relatedWorkBIn?: Array<number>,
         relatedWorkBName?: string,
         relatedWorkBNameIcontains?: string,
         relatedWorkBNameIregex?: string,
-        relatedWorkBNameIsnull?: string,
+        relatedWorkBNameIsnull?: boolean,
         relatedWorkBStartDate?: string,
         relatedWorkBStartDateGt?: string,
         relatedWorkBStartDateLt?: string,
-        relatedWorkBStartDateYear?: string,
-        relatedWorkBStartDateYearGt?: string,
-        relatedWorkBStartDateYearLt?: string,
+        relatedWorkBStartDateYear?: number,
+        relatedWorkBStartDateYearGt?: number,
+        relatedWorkBStartDateYearLt?: number,
         relatedWorkBStartDateWritten?: string,
         relatedWorkBStartDateWrittenIcontains?: string,
         relatedWorkBStartDateWrittenIregex?: string,
-        relatedWorkBStartDateWrittenIsnull?: string,
+        relatedWorkBStartDateWrittenIsnull?: boolean,
         relatedWorkBStartEndDate?: string,
         relatedWorkBStartEndDateGt?: string,
         relatedWorkBStartEndDateLt?: string,
-        relatedWorkBStartEndDateYear?: string,
-        relatedWorkBStartEndDateYearGt?: string,
-        relatedWorkBStartEndDateYearLt?: string,
+        relatedWorkBStartEndDateYear?: number,
+        relatedWorkBStartEndDateYearGt?: number,
+        relatedWorkBStartEndDateYearLt?: number,
         relatedWorkBStartStartDate?: string,
         relatedWorkBStartStartDateGt?: string,
         relatedWorkBStartStartDateLt?: string,
-        relatedWorkBStartStartDateYear?: string,
-        relatedWorkBStartStartDateYearGt?: string,
-        relatedWorkBStartStartDateYearLt?: string,
+        relatedWorkBStartStartDateYear?: number,
+        relatedWorkBStartStartDateYearGt?: number,
+        relatedWorkBStartStartDateYearLt?: number,
         relatedWorkBStatus?: string,
         relatedWorkBStatusIcontains?: string,
         relatedWorkBStatusIregex?: string,
-        relatedWorkBStatusIsnull?: string,
+        relatedWorkBStatusIsnull?: boolean,
         relationType?: number,
         relationTypeId?: number,
-        relationTypeIdIn?: number,
-        relationTypeIn?: number,
+        relationTypeIdIn?: Array<number>,
+        relationTypeIn?: Array<number>,
         relationTypeName?: string,
         relationTypeNameIcontains?: string,
         relationTypeNameIregex?: string,
-        relationTypeNameIsnull?: string,
+        relationTypeNameIsnull?: boolean,
         relationTypeNameReverse?: string,
         relationTypeNameReverseIcontains?: string,
         relationTypeNameReverseIregex?: string,
-        relationTypeNameReverseIsnull?: string,
+        relationTypeNameReverseIsnull?: boolean,
         relationTypeStatus?: 'ac' | 'can' | 'del' | 'rej',
-        relationTypeStatusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        relationTypeStatusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        relationTypeStatusIcontains?: string,
+        relationTypeStatusIregex?: string,
+        relationTypeStatusIsnull?: boolean,
         review?: boolean,
         source?: number,
         sourceAuthor?: string,
         sourceAuthorIcontains?: string,
         sourceAuthorIregex?: string,
-        sourceAuthorIsnull?: string,
+        sourceAuthorIsnull?: boolean,
         sourceId?: number,
-        sourceIdIn?: number,
-        sourceIn?: number,
+        sourceIdIn?: Array<number>,
+        sourceIn?: Array<number>,
         sourceOrigFilename?: string,
         sourceOrigFilenameIcontains?: string,
         sourceOrigFilenameIregex?: string,
-        sourceOrigFilenameIsnull?: string,
+        sourceOrigFilenameIsnull?: boolean,
         sourcePubinfo?: string,
         sourcePubinfoIcontains?: string,
         sourcePubinfoIregex?: string,
-        sourcePubinfoIsnull?: string,
+        sourcePubinfoIsnull?: boolean,
         startDate?: string,
         startDateGt?: string,
         startDateLt?: string,
-        startDateYear?: string,
-        startDateYearGt?: string,
-        startDateYearLt?: string,
+        startDateYear?: number,
+        startDateYearGt?: number,
+        startDateYearLt?: number,
         startDateWritten?: string,
         startDateWrittenIcontains?: string,
         startDateWrittenIregex?: string,
-        startDateWrittenIsnull?: string,
+        startDateWrittenIsnull?: boolean,
         startEndDate?: string,
         startEndDateGt?: string,
         startEndDateLt?: string,
-        startEndDateYear?: string,
-        startEndDateYearGt?: string,
-        startEndDateYearLt?: string,
+        startEndDateYear?: number,
+        startEndDateYearGt?: number,
+        startEndDateYearLt?: number,
         startStartDate?: string,
         startStartDateGt?: string,
         startStartDateLt?: string,
-        startStartDateYear?: string,
-        startStartDateYearGt?: string,
-        startStartDateYearLt?: string,
+        startStartDateYear?: number,
+        startStartDateYearGt?: number,
+        startStartDateYearLt?: number,
         status?: string,
         statusIcontains?: string,
         statusIregex?: string,
-        statusIsnull?: string,
+        statusIsnull?: boolean,
         text?: Array<number>,
         textId?: number,
-        textIdIn?: number,
+        textIdIn?: Array<number>,
     ): Promise<PaginatedWorkworkList> {
         const result = await __request({
             method: 'GET',
@@ -15433,21 +15433,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedCollectiontypeList
      * @throws ApiError
      */
@@ -15455,17 +15455,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedCollectiontypeList> {
         const result = await __request({
@@ -15600,26 +15600,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedEventeventrelationList
      * @throws ApiError
      */
@@ -15627,22 +15627,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedEventeventrelationList> {
         const result = await __request({
@@ -15782,21 +15782,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedEventtypeList
      * @throws ApiError
      */
@@ -15804,17 +15804,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedEventtypeList> {
         const result = await __request({
@@ -15949,26 +15949,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedEventworkrelationList
      * @throws ApiError
      */
@@ -15976,22 +15976,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedEventworkrelationList> {
         const result = await __request({
@@ -16131,26 +16131,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedInstitutioneventrelationList
      * @throws ApiError
      */
@@ -16158,22 +16158,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedInstitutioneventrelationList> {
         const result = await __request({
@@ -16313,26 +16313,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedInstitutioninstitutionrelationList
      * @throws ApiError
      */
@@ -16340,22 +16340,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedInstitutioninstitutionrelationList> {
         const result = await __request({
@@ -16495,26 +16495,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedInstitutionplacerelationList
      * @throws ApiError
      */
@@ -16522,22 +16522,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedInstitutionplacerelationList> {
         const result = await __request({
@@ -16677,21 +16677,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedInstitutiontypeList
      * @throws ApiError
      */
@@ -16699,17 +16699,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedInstitutiontypeList> {
         const result = await __request({
@@ -16844,26 +16844,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedInstitutionworkrelationList
      * @throws ApiError
      */
@@ -16871,22 +16871,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedInstitutionworkrelationList> {
         const result = await __request({
@@ -17026,21 +17026,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedLabeltypeList
      * @throws ApiError
      */
@@ -17048,17 +17048,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedLabeltypeList> {
         const result = await __request({
@@ -17193,26 +17193,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPersoneventrelationList
      * @throws ApiError
      */
@@ -17220,22 +17220,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPersoneventrelationList> {
         const result = await __request({
@@ -17375,26 +17375,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPersoninstitutionrelationList
      * @throws ApiError
      */
@@ -17402,22 +17402,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPersoninstitutionrelationList> {
         const result = await __request({
@@ -17557,26 +17557,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPersonpersonrelationList
      * @throws ApiError
      */
@@ -17584,22 +17584,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPersonpersonrelationList> {
         const result = await __request({
@@ -17739,26 +17739,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPersonplacerelationList
      * @throws ApiError
      */
@@ -17766,22 +17766,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPersonplacerelationList> {
         const result = await __request({
@@ -17921,26 +17921,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPersonworkrelationList
      * @throws ApiError
      */
@@ -17948,22 +17948,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPersonworkrelationList> {
         const result = await __request({
@@ -18103,26 +18103,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPlaceeventrelationList
      * @throws ApiError
      */
@@ -18130,22 +18130,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPlaceeventrelationList> {
         const result = await __request({
@@ -18285,26 +18285,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPlaceplacerelationList
      * @throws ApiError
      */
@@ -18312,22 +18312,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPlaceplacerelationList> {
         const result = await __request({
@@ -18467,21 +18467,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPlacetypeList
      * @throws ApiError
      */
@@ -18489,17 +18489,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPlacetypeList> {
         const result = await __request({
@@ -18634,26 +18634,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedPlaceworkrelationList
      * @throws ApiError
      */
@@ -18661,22 +18661,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedPlaceworkrelationList> {
         const result = await __request({
@@ -18816,21 +18816,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedProfessiontypeList
      * @throws ApiError
      */
@@ -18838,17 +18838,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedProfessiontypeList> {
         const result = await __request({
@@ -18983,61 +18983,61 @@ export class ApisService {
     }
 
     /**
-     * @param collections collections
-     * @param collectionsId collections__id
-     * @param collectionsIdIn collections__id__in
-     * @param collectionsName collections__name
-     * @param collectionsNameIcontains collections__name__icontains
-     * @param collectionsNameIregex collections__name__iregex
-     * @param collectionsNameIsnull collections__name__isnull
-     * @param description description
+     * @param collections
+     * @param collectionsId
+     * @param collectionsIdIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param collectionsName
+     * @param collectionsNameIcontains
+     * @param collectionsNameIregex
+     * @param collectionsNameIsnull
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
-     * @param lang lang
-     * @param langIcontains lang__icontains
-     * @param langIregex lang__iregex
-     * @param langIsnull lang__isnull
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
+     * @param lang
+     * @param langIcontains
+     * @param langIregex
+     * @param langIsnull
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedTexttypeList
      * @throws ApiError
      */
     public static async apisApiVocabulariesTexttypeList(
         collections?: Array<number>,
         collectionsId?: number,
-        collectionsIdIn?: number,
+        collectionsIdIn?: Array<number>,
         collectionsName?: string,
         collectionsNameIcontains?: string,
         collectionsNameIregex?: string,
-        collectionsNameIsnull?: string,
+        collectionsNameIsnull?: boolean,
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         lang?: string,
         langIcontains?: string,
         langIregex?: string,
-        langIsnull?: string,
+        langIsnull?: boolean,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedTexttypeList> {
         const result = await __request({
@@ -19183,25 +19183,25 @@ export class ApisService {
     }
 
     /**
-     * @param abbreviation abbreviation
-     * @param abbreviationIcontains abbreviation__icontains
-     * @param abbreviationIregex abbreviation__iregex
-     * @param abbreviationIsnull abbreviation__isnull
-     * @param description description
+     * @param abbreviation
+     * @param abbreviationIcontains
+     * @param abbreviationIregex
+     * @param abbreviationIsnull
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedTitleList
      * @throws ApiError
      */
@@ -19209,21 +19209,21 @@ export class ApisService {
         abbreviation?: string,
         abbreviationIcontains?: string,
         abbreviationIregex?: string,
-        abbreviationIsnull?: string,
+        abbreviationIsnull?: boolean,
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedTitleList> {
         const result = await __request({
@@ -19363,13 +19363,13 @@ export class ApisService {
 
     /**
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
      * @returns PaginatedVocabnamesList
      * @throws ApiError
@@ -19377,12 +19377,12 @@ export class ApisService {
     public static async apisApiVocabulariesVocabnamesList(
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
     ): Promise<PaginatedVocabnamesList> {
         const result = await __request({
@@ -19511,20 +19511,20 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
      * @returns PaginatedVocabsbaseclassList
      * @throws ApiError
      */
@@ -19532,17 +19532,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
     ): Promise<PaginatedVocabsbaseclassList> {
         const result = await __request({
             method: 'GET',
@@ -19675,19 +19675,19 @@ export class ApisService {
     }
 
     /**
-     * @param domain domain
-     * @param domainIcontains domain__icontains
-     * @param domainIregex domain__iregex
-     * @param domainIsnull domain__isnull
+     * @param domain
+     * @param domainIcontains
+     * @param domainIregex
+     * @param domainIsnull
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param loaded loaded
-     * @param loadedTime loaded_time
+     * @param loaded
+     * @param loadedTime
      * @param offset The initial index from which to return the results.
-     * @param rdfLink rdf_link
-     * @param uri uri
+     * @param rdfLink
+     * @param uri
      * @returns PaginatedVocabsuriList
      * @throws ApiError
      */
@@ -19695,10 +19695,10 @@ export class ApisService {
         domain?: string,
         domainIcontains?: string,
         domainIregex?: string,
-        domainIsnull?: string,
+        domainIsnull?: boolean,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         loaded?: boolean,
         loadedTime?: string,
@@ -19836,21 +19836,21 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
      * @param offset The initial index from which to return the results.
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedWorktypeList
      * @throws ApiError
      */
@@ -19858,17 +19858,17 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         offset?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedWorktypeList> {
         const result = await __request({
@@ -20003,26 +20003,26 @@ export class ApisService {
     }
 
     /**
-     * @param description description
+     * @param description
      * @param format
-     * @param id id
-     * @param idIn id__in
+     * @param id
+     * @param idIn Mehrere Werte können durch Kommas getrennt sein.
      * @param limit Number of results to return per page.
-     * @param name name
-     * @param nameIcontains name__icontains
-     * @param nameIregex name__iregex
-     * @param nameIsnull name__isnull
-     * @param nameReverse name_reverse
-     * @param nameReverseIcontains name_reverse__icontains
-     * @param nameReverseIregex name_reverse__iregex
-     * @param nameReverseIsnull name_reverse__isnull
+     * @param name
+     * @param nameIcontains
+     * @param nameIregex
+     * @param nameIsnull
+     * @param nameReverse
+     * @param nameReverseIcontains
+     * @param nameReverseIregex
+     * @param nameReverseIsnull
      * @param offset The initial index from which to return the results.
-     * @param relationbaseclassPtr relationbaseclass_ptr
-     * @param status status
-     * @param statusIcontains status__icontains
-     * @param statusIregex status__iregex
-     * @param statusIsnull status__isnull
-     * @param vocabsbaseclassPtr vocabsbaseclass_ptr
+     * @param relationbaseclassPtr
+     * @param status
+     * @param statusIcontains
+     * @param statusIregex
+     * @param statusIsnull
+     * @param vocabsbaseclassPtr
      * @returns PaginatedWorkworkrelationList
      * @throws ApiError
      */
@@ -20030,22 +20030,22 @@ export class ApisService {
         description?: string,
         format?: 'json' | 'json+net',
         id?: number,
-        idIn?: number,
+        idIn?: Array<number>,
         limit?: number,
         name?: string,
         nameIcontains?: string,
         nameIregex?: string,
-        nameIsnull?: string,
+        nameIsnull?: boolean,
         nameReverse?: string,
         nameReverseIcontains?: string,
         nameReverseIregex?: string,
-        nameReverseIsnull?: string,
+        nameReverseIsnull?: boolean,
         offset?: number,
         relationbaseclassPtr?: number,
         status?: 'ac' | 'can' | 'del' | 'rej',
-        statusIcontains?: 'rej' | 'ac' | 'can' | 'del',
-        statusIregex?: 'rej' | 'ac' | 'can' | 'del',
-        statusIsnull?: 'rej' | 'ac' | 'can' | 'del',
+        statusIcontains?: string,
+        statusIregex?: string,
+        statusIsnull?: boolean,
         vocabsbaseclassPtr?: number,
     ): Promise<PaginatedWorkworkrelationList> {
         const result = await __request({

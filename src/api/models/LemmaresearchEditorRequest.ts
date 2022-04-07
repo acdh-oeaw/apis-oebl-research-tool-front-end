@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PatchedLemmaresearchEditorRequest = {
+export type LemmaresearchEditorRequest = {
     id?: number;
     editor?: number;
     title?: string;
