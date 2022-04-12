@@ -56,7 +56,7 @@
                     {{ result.item.firstName }} {{ result.item.lastName }}
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    {{ result.item.dateOfBirth.getFullYear() }} - {{ result.item.dateOfDeath.getFullYear() }}
+                    {{ result.item.dateOfBirth }} - {{ result.item.dateOfDeath }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 50%">
