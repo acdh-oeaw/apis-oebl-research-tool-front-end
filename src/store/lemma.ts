@@ -577,29 +577,27 @@ LemmaStore {
   }
 
   getAllUserColumns(lemmas: LemmaRow[]): LemmaColumn[] {
-    const userColumnIndex: { [key: string]: string } = {}
-    // read all user columns from lemmas
-    for (const lemma of lemmas) {
-      if (lemma.columns_user !== undefined) {
-        for (const key in lemma.columns_user) {
-          if (userColumnIndex[key] === undefined) {
-            userColumnIndex[key] = typeof lemma.columns_user[key]
-          }
+    
+    const allColumnKeys =  new Set(
+      lemmas.flatMap(
+        lemma => Object.keys(lemma.columns_user)
+      )
+    );
+
+    return Array.from(allColumnKeys).map(
+      key => {
+        return {
+          name: key,
+          value: key,
+          filterable: true,
+          type: 'text',
+          show: false,
+          isUserColumn: true,
+          editable: true,
         }
       }
-    }
-    const uc = _.map(userColumnIndex, (v, k) => {
-      return {
-        name: k,
-        value: k,
-        filterable: true,
-        type: 'text' as 'text',
-        show: false,
-        isUserColumn: true,
-        editable: true
-      }
-    })
-    return uc
+    );
+  
   }
 
   async initLemmaData() {
@@ -874,16 +872,49 @@ LemmaStore {
     this.currentFilters = { ...columnQueries }
   }
 
-  filterLemmas(ls: LemmaRow[], fs = this.currentFilters): LemmaRow[] {
-    return ls.filter(l => {
-      return _(fs).every((value, name) => {
+  filterLemmas(lemmas: LemmaRow[], filters = this.currentFilters): LemmaRow[] {
+    return lemmas.filter(lemma => {
+      return _(filters).every((value, name) => {
         const v = String(value).toLocaleLowerCase()
         return (
-          (l[name] !== undefined && String(l[name]).toLocaleLowerCase().indexOf(v) > -1) ||
-          (l.columns_user[name] !== undefined && String(l.columns_user[name]).toLocaleLowerCase().indexOf(v) > -1)
+          (lemma[name] !== undefined && String(lemma[name]).toLocaleLowerCase().indexOf(v) > -1) ||
+          (lemma.columns_user[name] !== undefined && String(lemma.columns_user[name]).toLocaleLowerCase().indexOf(v) > -1)
         )
       })
     })
+  }
+
+  lemmaPassesFilter(lemma: LemmaRow): boolean {
+    for (const [searchColumn, searchTerm] of Object.entries(this.currentFilters)) {
+
+      if (searchTerm === undefined || searchTerm === null) {
+        continue;
+      }
+
+      const normalizedSearchTerm = searchTerm.toLocaleString().trim().toLocaleLowerCase();
+
+      if (normalizedSearchTerm === '') {
+        continue;
+      }
+
+      let lookUpValue = undefined;
+      if (searchColumn in lemma) {
+        lookUpValue = lemma[searchColumn as keyof LemmaRow];
+      } else {
+        lookUpValue = lemma.columns_user[searchColumn];
+      }
+
+      if (lookUpValue === undefined || lookUpValue === null) {
+        return false;
+      }
+      
+      const normalizedLookUpValue = lookUpValue.toLocaleString().trim().toLocaleLowerCase();
+
+
+
+
+    }
+    return true;
   }
 
   get lemmas() {
