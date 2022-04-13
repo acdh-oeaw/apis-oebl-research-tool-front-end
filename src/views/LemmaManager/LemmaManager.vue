@@ -361,6 +361,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
 import DragImage from './DragImage.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -370,9 +371,11 @@ import LemmaDetail from './LemmaDetail.vue'
 import LemmaAdd from './LemmaAdd.vue'
 import DataFilter from '../lib/DataFilter.vue'
 
+import _ from 'lodash';
+
 import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
-import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
+import { LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
