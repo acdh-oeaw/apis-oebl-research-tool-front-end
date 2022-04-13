@@ -872,31 +872,28 @@ LemmaStore {
     this.currentFilters = { ...columnQueries }
   }
 
-  filterLemmas(lemmas: LemmaRow[], filters = this.currentFilters): LemmaRow[] {
-    return lemmas.filter(lemma => {
-      return _(filters).every((value, name) => {
-        const v = String(value).toLocaleLowerCase()
-        return (
-          (lemma[name] !== undefined && String(lemma[name]).toLocaleLowerCase().indexOf(v) > -1) ||
-          (lemma.columns_user[name] !== undefined && String(lemma.columns_user[name]).toLocaleLowerCase().indexOf(v) > -1)
-        )
-      })
-    })
+  filterLemmas(lemmas: LemmaRow[]): LemmaRow[] {
+    return lemmas.filter(this.lemmaPassesFilter.bind(this));
   }
 
   lemmaPassesFilter(lemma: LemmaRow): boolean {
+
+    // Using a for loop for early return
     for (const [searchColumn, searchTerm] of Object.entries(this.currentFilters)) {
 
+      // Nothing to search -> next filter
       if (searchTerm === undefined || searchTerm === null) {
         continue;
       }
 
       const normalizedSearchTerm = searchTerm.toLocaleString().trim().toLocaleLowerCase();
-
+      
+      // Again: nothing to search -> next filter
       if (normalizedSearchTerm === '') {
         continue;
       }
 
+      // Since we do not know, if the columns is a user column or a default one, try
       let lookUpValue = undefined;
       if (searchColumn in lemma) {
         lookUpValue = lemma[searchColumn as keyof LemmaRow];
@@ -904,22 +901,30 @@ LemmaStore {
         lookUpValue = lemma.columns_user[searchColumn];
       }
 
+      // If there is nothing to compare to, this lemma should not pass filter.
       if (lookUpValue === undefined || lookUpValue === null) {
         return false;
       }
       
       const normalizedLookUpValue = lookUpValue.toLocaleString().trim().toLocaleLowerCase();
 
+      // Again if there is nothing to compare to, this lemma should not pass filter.
+      if (normalizedLookUpValue === '') {
+        return false;
+      }
 
-
+      // Finally!!!
+      if (!normalizedLookUpValue.includes(normalizedSearchTerm)) {
+        return false;
+      }
 
     }
     return true;
   }
 
   get lemmas() {
-    const ls = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
-    return this.filterLemmas(ls, this.currentFilters)
+    const lemmas = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
+    return this.filterLemmas(lemmas)
   }
 
   set lemmas(ls: LemmaRow[]) {
