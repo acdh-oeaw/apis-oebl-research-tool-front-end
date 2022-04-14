@@ -208,7 +208,7 @@ LemmaStore {
       filterable: true,
       show: true,
       isUserColumn: false,
-      editable: true
+      editable: false,
     },
     {
       name: 'Todesdatum',
@@ -217,7 +217,7 @@ LemmaStore {
       filterable: true,
       show: true,
       isUserColumn: false,
-      editable: true
+      editable: false,
     },
     {
       name: 'GND',
