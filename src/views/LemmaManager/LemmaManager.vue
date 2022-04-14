@@ -361,7 +361,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import _, { clone, indexOf } from 'lodash'
+
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
 import DragImage from './DragImage.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -371,9 +371,11 @@ import LemmaDetail from './LemmaDetail.vue'
 import LemmaAdd from './LemmaAdd.vue'
 import DataFilter from '../lib/DataFilter.vue'
 
+import _ from 'lodash';
+
 import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
-import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
+import { LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
@@ -409,8 +411,6 @@ export default class LemmaManager extends Vue {
   previewPopupCoords: [number, number] = [0, 0]
   lobidPreviewGnds: string[] = []
   filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
-
-  filterDataDebounced = _.debounce(this.filterData, 150)
 
   fileToImport = {
     file: null as null|File,
@@ -518,21 +518,8 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  updateLemmaFromTable(l: LemmaRow, u: Partial<LemmaRow>) {
-    const update: Partial<LemmaRow> = {}
-    _.mapValues(u, (v, k) => {
-      if (k.includes('user.')) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        update.columns_user = {
-          ...l.columns_user,
-          [ k ]: v
-        }
-      } else {
-        update[k] = v
-      }
-    })
-    console.log({update})
-    this.updateLemma(l, update)
+  updateLemmaFromTable(lemma: LemmaRow, tableUpdate: Partial<LemmaRow>) {
+    this.updateLemma(lemma, tableUpdate)
   }
 
   async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
@@ -542,7 +529,6 @@ export default class LemmaManager extends Vue {
     }
     // update store, server and local storage
     await store.lemma.updateLemmas([ l ], u)
-    this.filterData()
   }
 
   async deleteList(id: number|null) {
@@ -661,11 +647,9 @@ export default class LemmaManager extends Vue {
       const l = store.lemma.getStoredLemmaFilterById(id)
       if (l !== undefined) {
         this.store.lemma.currentFilters = l.filterItems
-        this.filterData()
       }
     } else {
       this.store.lemma.setFilter({})
-      this.filterData()
     }
   }
 
@@ -740,24 +724,6 @@ export default class LemmaManager extends Vue {
       if (dragImage !== null) {
         ev.dataTransfer.setDragImage(dragImage, 0, 0)
       }
-    }
-  }
-
-  filterData(q?: { [key: string]: string|boolean|null }) {
-    if (q !== undefined) {
-      this.filteredLemmas = this.store.lemma.lemmas.filter(l => {
-        return _(q).each((value, name) => {
-          const v = String(value)
-          return (
-            (
-              l[name] !== undefined && l[name].indexOf(v) > -1 ||
-              l.columns_user[name] !== undefined && l.columns_user[name].toString().indexOf(v) > -1
-            )
-          )
-        })
-      })
-    } else {
-      this.filteredLemmas = this.store.lemma.lemmas
     }
   }
 }

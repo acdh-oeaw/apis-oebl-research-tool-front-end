@@ -37,6 +37,13 @@ function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
   };
 }
 
+export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn) {
+  if (column.isUserColumn) {
+    return row.columns_user[column.value];
+  }
+  return row[column.value as keyof LemmaRow]; // Yeaaah :-(
+}
+
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = '2.0'
 
@@ -208,7 +215,7 @@ LemmaStore {
       filterable: true,
       show: true,
       isUserColumn: false,
-      editable: true
+      editable: false,
     },
     {
       name: 'Todesdatum',
@@ -217,7 +224,7 @@ LemmaStore {
       filterable: true,
       show: true,
       isUserColumn: false,
-      editable: true
+      editable: false,
     },
     {
       name: 'GND',
@@ -577,29 +584,27 @@ LemmaStore {
   }
 
   getAllUserColumns(lemmas: LemmaRow[]): LemmaColumn[] {
-    const userColumnIndex: { [key: string]: string } = {}
-    // read all user columns from lemmas
-    for (const lemma of lemmas) {
-      if (lemma.columns_user !== undefined) {
-        for (const key in lemma.columns_user) {
-          if (userColumnIndex[key] === undefined) {
-            userColumnIndex[key] = typeof lemma.columns_user[key]
-          }
+    
+    const allColumnKeys =  new Set(
+      lemmas.flatMap(
+        lemma => Object.keys(lemma.columns_user)
+      )
+    );
+
+    return Array.from(allColumnKeys).map(
+      key => {
+        return {
+          name: key,
+          value: key,
+          filterable: true,
+          type: 'text',
+          show: false,
+          isUserColumn: true,
+          editable: true,
         }
       }
-    }
-    const uc = _.map(userColumnIndex, (v, k) => {
-      return {
-        name: k,
-        value: k,
-        filterable: true,
-        type: 'text' as 'text',
-        show: false,
-        isUserColumn: true,
-        editable: true
-      }
-    })
-    return uc
+    );
+  
   }
 
   async initLemmaData() {
@@ -666,37 +671,6 @@ LemmaStore {
     notifyService.emit('deleteLemmas', ids)
   }
 
-  fakeLemma(seed: number): LemmaRow {
-    const gnds = _.range(0, _.random(0, 3)).map(() => _.random(100000001, 993183199, false).toString())
-    return {
-      id: seed,
-      selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
-      firstName: 'testname', // random_name({ first: true, seed }),
-      lastName: 'random_name', // ({ last: true, seed }),
-      alternativeNames: [],
-      dateOfBirth: new DateContainer(2020, 4, 6),
-      dateOfDeath: new DateContainer(2020, 4, 7),
-      gender: undefined,
-      gnd: gnds,
-      columns_user: {},
-      list: undefined,
-      loc: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      viaf_id: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
-      legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
-      secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
-      zoteroKeysBy: [],
-      zoteroKeysAbout: [],
-      professionDetail: 'random profession',
-      professionGroup: {'id': 7, 'name': 'random profession group'},
-      bioNote: 'Geboren und aufgewachsen in Untertupfingen.',
-      kinship: 'Tanten und Onkel. Ein Schwager, aber keine Schwester.',
-      religion: 'Römisch-orthodox.',
-    }
-  }
-
   async importLemmas(ls: ImportablePerson[], listName: string) {
     // create list
     const list = await (async () => {
@@ -728,7 +702,6 @@ LemmaStore {
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
       viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf'),
       wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count'),
-      ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
       alternativeNames: rs.alternativeNames as FullName[],
@@ -874,21 +847,74 @@ LemmaStore {
     this.currentFilters = { ...columnQueries }
   }
 
-  filterLemmas(ls: LemmaRow[], fs = this.currentFilters): LemmaRow[] {
-    return ls.filter(l => {
-      return _(fs).every((value, name) => {
-        const v = String(value).toLocaleLowerCase()
-        return (
-          (l[name] !== undefined && String(l[name]).toLocaleLowerCase().indexOf(v) > -1) ||
-          (l.columns_user[name] !== undefined && String(l.columns_user[name]).toLocaleLowerCase().indexOf(v) > -1)
-        )
-      })
-    })
+  filterLemmas(lemmas: LemmaRow[]): LemmaRow[] {
+    return lemmas.filter(this.lemmaPassesFilter.bind(this));
+  }
+
+  lemmaPassesFilter(lemma: LemmaRow): boolean {
+
+    // Using a for loop for early return
+    for (const [searchColumn, searchTerm] of Object.entries(this.currentFilters)) {
+
+      // Nothing to search -> next filter
+      if (searchTerm === undefined || searchTerm === null) {
+        continue;
+      }
+
+      const normalizedSearchTerm = searchTerm.toLocaleString().trim().toLocaleLowerCase();
+      
+      // Again: nothing to search -> next filter
+      if (normalizedSearchTerm === '') {
+        continue;
+      }
+
+      // Since we do not know, if the columns is a user column or a default one, try
+      let lookUpValue = undefined;
+      if (searchColumn in lemma) {
+        lookUpValue = lemma[searchColumn as keyof LemmaRow];
+      } else {
+        lookUpValue = lemma.columns_user[searchColumn];
+      }
+
+      // If there is nothing to compare to, this lemma should not pass filter.
+      if (lookUpValue === undefined || lookUpValue === null) {
+        return false;
+      }
+
+      switch (typeof lookUpValue) {
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+          lookUpValue = String(lookUpValue);
+          break;
+        case 'object':
+          lookUpValue = JSON.stringify(lookUpValue);
+          break;
+        case 'string':
+          break;
+        default:
+          throw new Error(`Can not search in type ${typeof lookUpValue} = ${lookUpValue}`);
+      }
+      
+      const normalizedLookUpValue = lookUpValue.trim().toLocaleLowerCase();
+
+      // Again if there is nothing to compare to, this lemma should not pass filter.
+      if (normalizedLookUpValue === '') {
+        return false;
+      }
+
+      // Finally!!!
+      if (!normalizedLookUpValue.includes(normalizedSearchTerm)) {
+        return false;
+      }
+
+    }
+    return true;
   }
 
   get lemmas() {
-    const ls = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
-    return this.filterLemmas(ls, this.currentFilters)
+    const lemmas = this.selectedLemmaListId !== null ? this.getLemmasByList(this.selectedLemmaListId) : this._lemmas
+    return this.filterLemmas(lemmas)
   }
 
   set lemmas(ls: LemmaRow[]) {
