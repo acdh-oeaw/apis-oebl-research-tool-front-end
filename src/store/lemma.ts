@@ -664,37 +664,6 @@ LemmaStore {
     notifyService.emit('deleteLemmas', ids)
   }
 
-  fakeLemma(seed: number): LemmaRow {
-    const gnds = _.range(0, _.random(0, 3)).map(() => _.random(100000001, 993183199, false).toString())
-    return {
-      id: seed,
-      selected: _.random(0, 1, true) >= 0.95, // 5 percent should be selected
-      firstName: 'testname', // random_name({ first: true, seed }),
-      lastName: 'random_name', // ({ last: true, seed }),
-      alternativeNames: [],
-      dateOfBirth: new DateContainer(2020, 4, 6),
-      dateOfDeath: new DateContainer(2020, 4, 7),
-      gender: undefined,
-      gnd: gnds,
-      columns_user: {},
-      list: undefined,
-      loc: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      viaf_id: gnds.length > 0 ? _.random(2313882, 9931831, false) : null,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      wiki_edits: gnds.length > 0 ? _.random(0, 651, false) : null,
-      legacyGideonCitations: [{id: 0, value: 'First book'}, {id: 0, value: 'Second book'}],
-      secondaryLiterature: [{id: 0, title: 'Another book', pages: '-15 - 8'}, {id: 0, title: 'Still another book', pages: '2.7182 - 3.1415'}],
-      zoteroKeysBy: [],
-      zoteroKeysAbout: [],
-      professionDetail: 'random profession',
-      professionGroup: {'id': 7, 'name': 'random profession group'},
-      bioNote: 'Geboren und aufgewachsen in Untertupfingen.',
-      kinship: 'Tanten und Onkel. Ein Schwager, aber keine Schwester.',
-      religion: 'Römisch-orthodox.',
-    }
-  }
-
   async importLemmas(ls: ImportablePerson[], listName: string) {
     // create list
     const list = await (async () => {
@@ -726,7 +695,6 @@ LemmaStore {
       loc: _.get(rs, 'columns_scrape.wikidata.loc'),
       viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf'),
       wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count'),
-      ...rs.columns_user,
       firstName: rs.firstName,
       lastName: rs.lastName,
       alternativeNames: rs.alternativeNames as FullName[],
