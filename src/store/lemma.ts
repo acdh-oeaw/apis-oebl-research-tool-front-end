@@ -37,6 +37,13 @@ function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
   };
 }
 
+export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn) {
+  if (column.isUserColumn) {
+    return row.columns_user[column.value];
+  }
+  return row[column.value as keyof LemmaRow]; // Yeaaah :-(
+}
+
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = '2.0'
 
@@ -873,8 +880,23 @@ LemmaStore {
       if (lookUpValue === undefined || lookUpValue === null) {
         return false;
       }
+
+      switch (typeof lookUpValue) {
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+          lookUpValue = String(lookUpValue);
+          break;
+        case 'object':
+          lookUpValue = JSON.stringify(lookUpValue);
+          break;
+        case 'string':
+          break;
+        default:
+          throw new Error(`Can not search in type ${typeof lookUpValue} = ${lookUpValue}`);
+      }
       
-      const normalizedLookUpValue = lookUpValue.toLocaleString().trim().toLocaleLowerCase();
+      const normalizedLookUpValue = lookUpValue.trim().toLocaleLowerCase();
 
       // Again if there is nothing to compare to, this lemma should not pass filter.
       if (normalizedLookUpValue === '') {

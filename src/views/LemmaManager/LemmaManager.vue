@@ -518,26 +518,8 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  // TODO: This is NOT a Partial<LemmaRow>. It is some weird type with `user.[PROPERTY]` properties, which typescript does not complaint about,
-  // since it does not get Vue, or so, but for what using ts then? So: Make the VirtualTable just emit the right data types, it has all it needs for it.
   updateLemmaFromTable(lemma: LemmaRow, tableUpdate: Partial<LemmaRow>) {
-
-    // Split user columns and top level columns in two, since they are at the same level in the table.
-    const tableUpdateEntries = Object.entries(tableUpdate);
-    const topLevelUpdatesEntries = tableUpdateEntries
-      .filter(([key, value]) => !key.startsWith('user.'))
-      ;
-    const userColumnUpdateEntries = tableUpdateEntries
-      .filter(([key, value]) => key.startsWith('user.'))
-      .map(([key, value]) => [key.replace(/^user\./, ''), value])
-      ;
-
-    const lemmaUpdate: Partial<LemmaRow> = {
-      ... Object.fromEntries(topLevelUpdatesEntries),
-      columns_user: Object.fromEntries(userColumnUpdateEntries),
-    }
-
-    this.updateLemma(lemma, lemmaUpdate)
+    this.updateLemma(lemma, tableUpdate)
   }
 
   async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {

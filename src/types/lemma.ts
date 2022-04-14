@@ -83,7 +83,7 @@ export type SerializedLemmaRow  = LemmaRow & {
 
 export interface LemmaColumn {
   name: string
-  value: keyof LemmaRow | string,  // string would suffice – just to make it explicit
+  value: keyof LemmaRow,
   type: 'text'|'link'|'number'|'boolean'|'array',
   filterable: boolean
   show: boolean
