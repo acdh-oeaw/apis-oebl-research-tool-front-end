@@ -125,10 +125,10 @@
             <slot
               name="cell"
               draggable
-              :item="item"
+              :item="{[column.value]: getStringFromLemmaRowByColumn(item, column)}"
               :index="index"
-              :column="column"
-              :value="item[column.value]" />
+              :column="{value: column.value}"
+              :value="getStringFromLemmaRowByColumn(item, column)" />
           </div>
         </div>
       </template>
@@ -141,6 +141,9 @@ import Draggable from 'vuedraggable'
 import TextField from '@/views/lib/TextField.vue'
 import SelectMenu from '@/views/lib/SelectMenu.vue'
 import _ from 'lodash'
+import { LemmaColumn, LemmaRow } from '@/types/lemma'
+import { getValueFromLemmaRowByColumn } from '@/store/lemma'
+import { DateContainer } from '@/util/dates'
 
 function getNextSibling(el: HTMLElement, selector: string): HTMLElement|undefined {
   // Get the next sibling element
@@ -167,20 +170,6 @@ function getPreviousSibling(el: HTMLElement, selector: string): HTMLElement|unde
   }
 }
 
-interface Row {
-  id: number
-  [key: string]: any
-}
-
-interface Column {
-  value: keyof Row
-  name: string
-  width?: number
-  editable?: boolean
-  show?: boolean
-  sort?: null|'desc'|'asc'
-  type?: 'boolean'|'text'|'number'|'array'|'link'
-}
 
 @Component({
   components: {
@@ -191,18 +180,18 @@ interface Column {
 })
 export default class VirtualTable extends Vue {
 
-  @Prop({ default: [] }) columns!: Column[]
+  @Prop({ default: [] }) columns!: LemmaColumn[]
   @Prop({ required: true }) height!: number
-  @Prop({ default: [] }) data!: Row[]
+  @Prop({ default: [] }) data!: LemmaRow[]
   @Prop({ default: 40 }) rowHeight!: number
   @Prop({ default: true }) sortableColumns!: boolean
   @Prop({ default: true }) keyboardSelection!: boolean
   @Prop({ default: '' }) headerColor!: string
   @Prop({ default: null }) scrollToRow!: number|null
-  @Prop({ default: () => [] }) selectedRows!: Row[]
+  @Prop({ default: () => [] }) selectedRows!: LemmaRow[]
   @Prop({ default: false }) showFilter!: boolean
 
-  selected: { [key: number]: Row } = {}
+  selected: { [key: number]: LemmaRow } = {}
   log = console.log
   scrollLeft = 0
 
@@ -212,8 +201,8 @@ export default class VirtualTable extends Vue {
     x: number,
     y: number,
     value: string|null,
-    item: Row,
-    column: Column,
+    item: LemmaRow,
+    column: LemmaColumn,
     el: HTMLElement
   }|null = null
 
@@ -226,7 +215,7 @@ export default class VirtualTable extends Vue {
         this.editPopUp = {
           x: nextSiblingEl.getBoundingClientRect().left,
           y: nextSiblingEl.getBoundingClientRect().top,
-          value: this.editPopUp.item[nextColumn.value],
+          value: this.getStringFromLemmaRowByColumn(this.editPopUp.item, nextColumn),
           item: this.editPopUp.item,
           column: nextColumn,
           el: nextSiblingEl
@@ -235,7 +224,24 @@ export default class VirtualTable extends Vue {
     }
   }
 
-  emitFilterEvent(c: Column, ev?: string|boolean|null) {
+  getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): string | null {
+    const value = getValueFromLemmaRowByColumn(lemma, column);
+    if (value === null || value == undefined) {
+      return null;
+    }
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    if (value instanceof DateContainer) {
+      return value.toString();
+    }
+
+    return JSON.stringify(value);
+  }
+
+
+  emitFilterEvent(c: LemmaColumn, ev?: string|boolean|null) {
     if (ev !== undefined && ev !== null && ev !== '') {
       this.columnQueries[c.value] = ev
     } else {
@@ -264,19 +270,24 @@ export default class VirtualTable extends Vue {
 
   onEditItem() {
     if (this.editPopUp !== null) {
-      this.$emit('update:item', this.editPopUp.item, {
-        [ this.editPopUp.column.value ]: this.editPopUp.value
-      })
+      this.$emit(
+        'update:item', 
+        this.editPopUp.item, 
+        {
+          [ this.editPopUp.column.value ]: this.editPopUp.value
+        }
+      );
       this.editPopUp = null
     }
   }
 
-  onDblClickCell(item: Row, e: MouseEvent, column: Column, index: number) {
+  onDblClickCell(item: LemmaRow, e: MouseEvent, column: LemmaColumn, index: number) {
     if (column.editable === true && e.currentTarget instanceof HTMLElement) {
+      
       this.editPopUp = {
         x: e.currentTarget.getBoundingClientRect().left,
         y: e.currentTarget.getBoundingClientRect().top,
-        value: item[column.value],
+        value: this.getStringFromLemmaRowByColumn(item, column),
         el: e.currentTarget,
         column,
         item,
@@ -284,7 +295,7 @@ export default class VirtualTable extends Vue {
     }
   }
 
-  onDblClickRow(e: MouseEvent, item: Row, index: number) {
+  onDblClickRow(e: MouseEvent, item: LemmaRow, index: number) {
     this.$emit('dblclick:row', item, e)
   }
 
@@ -378,7 +389,7 @@ export default class VirtualTable extends Vue {
     this.$emit('update:selection', this.data)
   }
 
-  selectItem(item: Row, event: MouseEvent) {
+  selectItem(item: LemmaRow, event: MouseEvent) {
     if (event.currentTarget instanceof HTMLElement) {
       if (event.ctrlKey || event.metaKey) {
         // add or remove from selection set
@@ -408,7 +419,7 @@ export default class VirtualTable extends Vue {
     return 100 / this.visibleColumns.length + '%'
   }
 
-  updateColumnOrder(cs: Column[]) {
+  updateColumnOrder(cs: LemmaColumn[]) {
     this.$emit('update:columns', [...cs, ...this.columns.filter(c => c.show === false)])
   }
 

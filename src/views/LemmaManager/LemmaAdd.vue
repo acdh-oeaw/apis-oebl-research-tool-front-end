@@ -109,7 +109,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { findPerson } from '@/service/lobid'
-import { ImportablePerson, LemmaRow } from '@/types/lemma'
+import { LemmaRow } from '@/types/lemma'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LemmaDetail from './LemmaDetail.vue'
 import TextField from '../lib/TextField.vue'

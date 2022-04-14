@@ -1,6 +1,5 @@
 
 import Dexie from 'dexie';
-import { LemmaRow } from '@/types/lemma'
 import fetch from 'node-fetch'
 
 import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField, ZoteroPatchData, ZoteroItem } from '@/types/zotero';

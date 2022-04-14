@@ -55,8 +55,12 @@
                   <v-list-item-title>
                     {{ result.item.firstName }} {{ result.item.lastName }}
                   </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{ result.item.dateOfBirth }} - {{ result.item.dateOfDeath }}
+                  <!-- 
+                    Only check for borth date valid … 
+                    -> If only birth date valid: "01.01.2000 –", 
+                      else "01.01.1900 - 01.01.1980" -->
+                  <v-list-item-subtitle v-if="result.item.dateOfBirth.isValid()">
+                    {{ [ result.item.dateOfBirth, result.item.dateOfDeath ].join(' – ') }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action-text style="white-space: nowrap; overflow: hidden; max-width: 50%">
@@ -65,7 +69,6 @@
                     class="text-right font-weight-bold">
                       <v-icon x-small>mdi-format-list-bulleted</v-icon> {{ result.item.list.title }}
                     </div>
-                  <div>{{ Object.values(result.item.columns_user).filter(l => !!l && l !== '?').join(', ') }}</div>
                 </v-list-item-action-text>
               </v-list-item>
             </v-list>
@@ -178,21 +181,87 @@ export default class GlobalSearch extends Vue {
   }
 
   get results(): SearchItem[] {
-    if (this.searchText !== '' && this.searchText !== null) {
-      console.time('search')
-      const sts = this.searchText.split(' ').map(s => s.toLowerCase().replaceAll('*', ''))
-      const r = _(store.lemma.allLemmas)
-        .filter((l) => {
-          const searchIndex = `${l.firstName}|||${l.lastName}|||${l.birthYear}|||${l.deathYear}|||${Object.values(l.columns_user)}`.toLowerCase()
-          return sts.every(st => searchIndex.includes(st))
-        })
-        .take(40)
-        .map((l) => ({ type: 'lemmma' as SearchItem['type'], item: l }))
-        .value()
-      console.timeEnd('search')
-      return r
-    } else {
-      return store.search.recentSearchItems
+
+    if (this.searchText === null || this.searchText === '') {
+      return store.search.recentSearchItems;
+    }
+
+    const searchTerms = this.searchText.split(/\s/).map(term => term.toLocaleLowerCase());
+
+    const foundItems: SearchItem[] = [];
+    const limitItems = 40;
+
+    for (const lemma of store.lemma.allLemmas) {
+
+      if (this.lemmaPassesOrSearch(lemma, searchTerms)) {
+        foundItems.push(
+          {
+            'type': 'lemma',
+            item: lemma,
+          }
+        );
+      }
+
+      if (foundItems.length > limitItems) {
+        break;
+      }
+    }
+
+    return foundItems;
+
+  }
+
+  /**
+   * Check if any of the values include the searcht term.
+   */
+  lemmaPassesOrSearch(lemma: LemmaRow, searchTerms: string[]): boolean {
+    for (let value of this.yieldLemmaSearchFields(lemma)) {
+      if (
+        value === undefined
+        || value === null 
+        || value === ''
+        ) {
+        continue;
+      }
+
+      value = value.toLocaleLowerCase();
+
+      for (const searchTerm of searchTerms) {
+        if (value.includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Flat yield all values relevant for this component's global search: Go deeper for `columns_user`
+   */
+  * yieldLemmaSearchFields(lemma: LemmaRow): Generator<string|null|undefined> {
+
+    // 1. Hard coded yields for known – I was tired of dynamic string conversion
+    yield lemma.lastName;
+    yield lemma.dateOfBirth.toString();
+    yield lemma.dateOfBirth.toString();
+    yield lemma.firstName;
+    if (lemma.gnd.length > 0) {
+      yield JSON.stringify(lemma.gnd);
+    }
+    for (const alternativeName of lemma.alternativeNames) {
+      yield alternativeName.firstName;
+      yield alternativeName.lastName;
+    }
+
+    // 2. Go down the road
+
+    for (let value of Object.values(lemma.columns_user)) {
+      value = typeof value === 'number' ? String(value) : value; // Cast numbers to strings
+      // and let everything else go:
+      if (typeof value !== 'string') {
+        continue;
+      }
+      yield value;
     }
   }
 
