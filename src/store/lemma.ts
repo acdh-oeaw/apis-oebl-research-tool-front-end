@@ -600,7 +600,7 @@ LemmaStore {
           type: 'text',
           show: false,
           isUserColumn: true,
-          editable: true,
+          editable: false,
         }
       }
     );
