@@ -11,10 +11,12 @@
       label="Nachname">
     </text-field>
     <text-field
-      v-model="localValue"
+      :value="localValue.length > 0 ? localValue[0] : ''"
       @input="useCustomGnd($event)"
       placeholder="manuell wählen…"
-      label="GND">
+      label="GND"
+      :color="undefined"
+      >
     </text-field>
     <div class="results pt-3">
       <v-overlay
@@ -42,7 +44,7 @@
         class="mb-2 rounded-lg"
         block
         elevation="0">
-        {{ localValue !== null ? 'Auswahl speichern' : 'Zurücksetzten'}}
+        {{ localValue.length > 0 ? 'Auswahl speichern' : 'Zurücksetzten'}}
       </v-btn>
       <v-btn
         @click="$emit('cancel')"
@@ -73,26 +75,26 @@ import TextField from '@/views/lib/TextField.vue'
 })
 export default class LobidGndSearch extends Vue {
 
-  @Prop({ required: true }) lemma!: LemmaRow
-  @Prop({ default: () => [] }) gnd!: string[]
-  @Prop({ default: null }) value: string|null = null
+  @Prop({ required: true, }) lemma!: LemmaRow;
+  @Prop({ default: () => [], }) gnd!: string[];
+  @Prop({ default: Array, }) value!: string[];
 
   loading = false
   localLemma: LemmaRow = clone(this.lemma)
-  localValue: string|null = clone(this.value)
+  localValue: string[] = clone(this.value)
   debouncedSearchGnd = debounce(this.searchGnd, 150)
   resultGnds: string[] = []
 
   @Watch('value', { immediate: true })
   onChangeValue() {
-    this.localValue = this.value
+    this.localValue = this.value;
   }
 
-  onSelectGnd(gnd: string|null) {
-    this.localValue = gnd
+  onSelectGnd(gnds: string[]) {
+    this.localValue = gnds;
   }
 
-  saveGnd(gnd: string) {
+  saveGnd(gnd: string) {;
     this.$emit('input', gnd)
   }
 
@@ -103,14 +105,19 @@ export default class LobidGndSearch extends Vue {
 
   @Watch('lemma', { immediate: true, deep: true })
   onChangeLemma() {
-    console.log('changed')
     this.localLemma = clone(this.lemma)
   }
 
   useCustomGnd(gnd: string|null) {
-    if (gnd !== null && gnd.trim() !== '') {
-      this.resultGnds = [ gnd ]
+    if (gnd === null) {
+      return;
     }
+    const normalizedGND = gnd.trim();
+
+    if (normalizedGND === '') {
+      return;
+    }
+      this.resultGnds = [ gnd, ];
   }
 
   async searchGnd() {
