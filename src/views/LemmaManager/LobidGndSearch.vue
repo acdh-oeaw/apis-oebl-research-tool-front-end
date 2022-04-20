@@ -3,18 +3,18 @@
     <text-field
       @input="debouncedSearchGnd"
       v-model="localLemma.firstName"
-      label="Vorname">
+      :label="lemmaRowTranslations.firstName.de">
     </text-field>
     <text-field
       @input="debouncedSearchGnd"
       v-model="localLemma.lastName"
-      label="Nachname">
+      :label="lemmaRowTranslations.lastName.de">
     </text-field>
     <text-field
       :value="localValue.length > 0 ? localValue[0] : ''"
       @input="useCustomGnd($event)"
       placeholder="manuell wählen…"
-      label="GND"
+      :label="lemmaRowTranslations.gnd.de"
       :color="undefined"
       >
     </text-field>
@@ -65,6 +65,7 @@ import { findPerson } from '@/service/lobid'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
 import TextField from '@/views/lib/TextField.vue'
+import { lemmaRowTranslations } from '../../util/labels';
 
 @Component({
   components: {
@@ -78,6 +79,8 @@ export default class LobidGndSearch extends Vue {
   @Prop({ required: true, }) lemma!: LemmaRow;
   @Prop({ default: () => [], }) gnd!: string[];
   @Prop({ default: Array, }) value!: string[];
+  lemmaRowTranslations = lemmaRowTranslations;
+
 
   loading = false
   localLemma: LemmaRow = clone(this.lemma)
