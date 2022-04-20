@@ -4,7 +4,7 @@
             class="transparent"
             elevation="0"
         >
-            <h4 class="py-2 ">Alternative Namen</h4>
+            <h4 class="py-2 ">{{lemmaRowTranslations.alternativeNames.de}}</h4>
             <v-card-actions :class="{'edit-full-names-area': true, 'justify-center': selectedToEdit === null}">    
                 <div
                     v-if="selectedToEdit === null" 
@@ -90,6 +90,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { FullName as FullNameType } from '@/types/lemma';
 import FullNameField from '@/views/lib/FullNameField.vue'
+import { lemmaRowTranslations } from '../../util/labels';
 
 @Component({
     components: {
@@ -99,6 +100,8 @@ import FullNameField from '@/views/lib/FullNameField.vue'
 export default class FullNameArrayField extends Vue {
 
     @Prop({ default: () => [] }) fullNames!: FullNameType[];
+    lemmaRowTranslations = lemmaRowTranslations;
+
 
     // A new or existing full name, selected to edit. 
     selectedToEdit: FullNameType|null = null;

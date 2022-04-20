@@ -9,6 +9,9 @@ import store from '.'
 import { UserProfile } from './user'
 import { DateContainer } from '@/util/dates'
 
+import { lemmaRowTranslations } from '../util/labels';
+
+
 interface LemmaFilter {
   id: string
   name: string
@@ -172,7 +175,7 @@ LemmaStore {
 
   public defaultColumns: LemmaColumn[] = [
     {
-      name: 'Markiert',
+      name: lemmaRowTranslations.selected.de,
       value: 'selected',
       type: 'boolean',
       filterable: true,
@@ -182,7 +185,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'Nachname',
+      name: lemmaRowTranslations.lastName.de,
       value: 'lastName',
       type: 'text',
       filterable: true,
@@ -191,7 +194,7 @@ LemmaStore {
       editable: true
     },
     {
-      name: 'Vorname',
+      name: lemmaRowTranslations.firstName.de,
       value: 'firstName',
       type: 'text',
       filterable: true,
@@ -200,7 +203,7 @@ LemmaStore {
       editable: true
     },
     {
-      name: 'Geschlecht',
+      name: lemmaRowTranslations.lastName.de,
       value: 'gender',
       type: 'text',
       filterable: true,
@@ -209,7 +212,7 @@ LemmaStore {
       editable: true
     },
     {
-      name: 'Geburtsdatum',
+      name: lemmaRowTranslations.dateOfBirth.de,
       value: 'dateOfBirth',
       type: 'text',
       filterable: true,
@@ -218,7 +221,7 @@ LemmaStore {
       editable: false,
     },
     {
-      name: 'Todesdatum',
+      name: lemmaRowTranslations.dateOfDeath.de,
       value: 'dateOfDeath',
       type: 'text',
       filterable: true,
@@ -227,7 +230,7 @@ LemmaStore {
       editable: false,
     },
     {
-      name: 'GND',
+      name: lemmaRowTranslations.gnd.de,
       value: 'gnd',
       type: 'array',
       filterable: true,
@@ -236,7 +239,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'Library of Congress',
+      name: lemmaRowTranslations.loc.de,
       value: 'loc',
       type: 'link',
       filterable: true,
@@ -245,7 +248,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'VIAF ID',
+      name: lemmaRowTranslations.viaf_id.de,
       value: 'viaf_id',
       type: 'link',
       filterable: true,
@@ -254,7 +257,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'Wikipedia Edits',
+      name: lemmaRowTranslations.wiki_edits.de,
       value: 'wiki_edits',
       type: 'number',
       filterable: true,
@@ -263,7 +266,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'Berufsgruppe',
+      name: lemmaRowTranslations.professionGroup.de,
       value: 'professionGroup',
       type: 'text',
       filterable: true,
@@ -272,7 +275,7 @@ LemmaStore {
       editable: false
     },
     {
-      name: 'Beruf',
+      name: lemmaRowTranslations.professionDetail.de,
       value: 'professionDetail',
       type: 'text',
       filterable: true,
@@ -281,7 +284,7 @@ LemmaStore {
       editable: true
     },
     {
-      name: 'id',
+      name: lemmaRowTranslations.id.de,
       value: 'id',
       type: 'number',
       filterable: true,
