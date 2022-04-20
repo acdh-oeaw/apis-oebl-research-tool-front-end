@@ -9,7 +9,7 @@
       no-gutters>
       <slot />
       <div style="flex: 0 0 40px" class="align-self-center text-center" v-if="$listeners['input'] !== undefined">
-        <v-icon color="primary" v-if="fragment.gnd === value">mdi-check-decagram</v-icon>
+        <v-icon color="primary" v-if="value.includes(fragment.gnd)">mdi-check-decagram</v-icon>
         <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
       </div>
       <div
@@ -52,20 +52,21 @@ type Fragment = {
 @Component
 export default class LobidPreviewCard extends Vue {
 
-  @Prop({ default: [] }) gnd!: string[]
-  @Prop({ default: Infinity }) limit!: number
-  @Prop({ default: null }) value!: string|null
+  @Prop({ default: Array, }) gnd!: string[];
+  @Prop({ default: Infinity, }) limit!: number;
+  @Prop({ default: Array, }) value!: string[];
 
   allFragments: Fragment[] = []
   loading = false
 
   selectOrDeselectFragment(gnd: string) {
-    this.$emit('click', gnd)
-    if (gnd === this.value) {
-      this.$emit('input', null)
+    const gnds = new Set(this.value);
+    if (gnds.has(gnd)) {
+      gnds.delete(gnd);
     } else {
-      this.$emit('input', gnd)
+      gnds.add(gnd);
     }
+    this.$emit('input', Array.from(gnds));
   }
 
   get fragments() {

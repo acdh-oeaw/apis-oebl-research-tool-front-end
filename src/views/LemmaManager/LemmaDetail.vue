@@ -313,7 +313,7 @@
               </v-window-item>
               <v-window-item>
                 <lobid-gnd-search
-                  :value="value.gnd.length === 1 ? value.gnd[0] : null"
+                  :value="value.gnd"
                   :lemma="value"
                   :gnd="value.gnd"
                   @cancel="showGndSearch = false"
@@ -490,13 +490,9 @@ export default class LemmaDetail extends Vue {
     }
   }
 
-  selectGnd(gnd: string|null) {
+  selectGnd(gnd: string[]) {
     this.showGndSearch = false
-    if (gnd === null) {
-      this.$emit('update', { gnd: [] })
-    } else {
-      this.$emit('update', { gnd: [ gnd ] })
-    }
+    this.$emit('update', { gnd })
   }
 
   updateUserColumns(userKey: string, $event: string|number|string[]) {
