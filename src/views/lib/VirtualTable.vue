@@ -200,7 +200,7 @@ export default class VirtualTable extends Vue {
   editPopUp: {
     x: number,
     y: number,
-    value: string|null,
+    value: string|null|string[],
     item: LemmaRow,
     column: LemmaColumn,
     el: HTMLElement
@@ -224,7 +224,7 @@ export default class VirtualTable extends Vue {
     }
   }
 
-  getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): string | null {
+  getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): string | null | string[] {
     const value = getValueFromLemmaRowByColumn(lemma, column);
     if (value === null || value == undefined) {
       return null;
@@ -235,6 +235,10 @@ export default class VirtualTable extends Vue {
 
     if (value instanceof DateContainer) {
       return value.toString();
+    }
+
+    if (column.value === 'gnd') {
+      return value as string[];
     }
 
     return JSON.stringify(value);

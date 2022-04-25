@@ -85,13 +85,13 @@
           <v-card-text>
             <text-field
               :required="true"
-              label="Vorname"
+              :label="lemmaRowTranslations.firstName.de"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
             ></text-field>
             <text-field
               :required="true"
-              label="Nachname"
+              :label="lemmaRowTranslations.lastName.de"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
             ></text-field>
@@ -102,7 +102,8 @@
               :key="value.id"
             ></full-name-array-field>
 
-            <text-field label="Geschlecht" 
+            <text-field 
+            :label="lemmaRowTranslations.gender.de" 
             >
               <template v-slot:input>
                 <v-btn-toggle
@@ -128,7 +129,7 @@
                 </v-btn-toggle>
                   <v-btn
                     v-if="value.gender"
-                    @click="value.gender = null"
+                    @click="value.gender = undefined"
                     text
                     small
                     class="rounded-lg ml-5"
@@ -140,13 +141,20 @@
             </text-field>
             <text-field
               tabindex="-1"
-              label="Adelsprädikat"
+              :label="lemmaRowTranslations.nobleTitle.de"
               placeholder="(kein)"
               @input="updateUserColumns('nobleTitle', $event)"
               :value="value.columns_user.nobleTitle"
             >
               <v-btn
-                @click="updateUserColumns('alternativeNobleTitle', [''].concat(value.columns_user.alternativeNobleTitle || []))"
+                @click="
+                  updateUserColumns(
+                    'alternativeNobleTitle', 
+                    Array.isArray(value.columns_user.alternativeNobleTitle)
+                    ? [''].concat(value.columns_user.alternativeNobleTitle)
+                    : ['']
+                    )
+                    "
                 tile
                 tabindex="-1"
                 class="rounded-lg mt-1 mr-1"
@@ -155,20 +163,20 @@
               </v-btn>
             </text-field>
             <text-field-alternatives
-              label="Adelsprädikat"
+              :label="lemmaRowTranslations.nobleTitle.de"
               :value="value.columns_user.alternativeNobleTitle"
               @input="updateUserColumns('alternativeNobleTitle', $event)"
             />
             <v-spacer class="my-5" />
             <date-field
-              label="Geburtsdatum"
+              :label="lemmaRowTranslations.dateOfBirth.de"
               :date="value.dateOfBirth"
               @submit="debouncedUpdateData({ dateOfBirth: $event })"
               :key="'dateOfBirth_' + value.id"
             >
             </date-field>
             <date-field
-              label="Sterbedatum"
+              :label="lemmaRowTranslations.dateOfDeath.de"
               :date="value.dateOfDeath"
               @submit="debouncedUpdateData({ dateOfDeath: $event })"
               :key="'dateOfDeath_' + value.id"
@@ -177,21 +185,21 @@
             <v-spacer class="my-5" />
             <text-field
               style="min-height: 60px"
-              label="Verwandtschaft"
+              :label="lemmaRowTranslations.kinship.de"
               :allow-new-line="true"
               :value="value.kinship"
               @input="debouncedUpdateData({kinship: $event })"
             />
             <text-field
               style="min-height: 60px"
-              label="Lebenslauf"
+              :label="lemmaRowTranslations.bioNote.de"
               :allow-new-line="true"
               :value="value.bioNote"
               @input="debouncedUpdateData({bioNote: $event })"
             />
             <text-field
               style="min-height: 60px"
-              label="Religiöses Bekenntnis"
+              :label="lemmaRowTranslations.religion.de"
               :allow-new-line="true"
               :value="value.religion"
               @input="debouncedUpdateData({religion: $event })"
@@ -199,7 +207,7 @@
             <v-spacer class="my-5" />
             <text-field
               style="min-height: 60px"
-              label="Berufsbezeichnung"
+              :label="lemmaRowTranslations.professionDetail.de"
               :allow-new-line="true"
               :value="value.professionDetail"
               @input="debouncedUpdateData({professionDetail: $event })"
@@ -218,7 +226,7 @@
               top: 0,
               background: ''
             }">
-            Erweiterte Daten
+            {{ lemmaRowTranslations.columns_user.de }}
           </h4>
           <v-card-text class="pt-0">
             <text-field
@@ -313,7 +321,7 @@
               </v-window-item>
               <v-window-item>
                 <lobid-gnd-search
-                  :value="value.gnd.length === 1 ? value.gnd[0] : null"
+                  :value="value.gnd"
                   :lemma="value"
                   :gnd="value.gnd"
                   @cancel="showGndSearch = false"
@@ -365,6 +373,9 @@ import fileDialog from 'file-dialog'
 import ZoteroManager from './ZoteroManager.vue'
 import ProfessionGroupField from '../lib/ProfessionGroupField.vue'
 
+
+import { lemmaRowTranslations } from '../../util/labels';
+
 const DRAG_CLASS = 'drag-over'
 
 interface ZoteroSection {
@@ -391,15 +402,16 @@ interface ZoteroSection {
 })
 export default class LemmaDetail extends Vue {
 
-  @Prop({ required: true }) value!: LemmaRow
-  @Prop({ default: true }) showHeader!: boolean
-  log = console.log
-  store = store
-  showGndSearch = false
-  detailPage = 0
-  dragEventDepth = 0
-  files: File[] = []
+  @Prop({ required: true }) value!: LemmaRow;
+  @Prop({ default: true }) showHeader!: boolean;
+  log = console.log;
+  store = store;
+  showGndSearch = false;
+  detailPage = 0;
+  dragEventDepth = 0;
+  files: File[] = [];
   genderOptions: String[] = Object.values(GenderAe0Enum);
+  lemmaRowTranslations = lemmaRowTranslations;
 
 
   get yearOfBirth(): number | undefined {
@@ -490,13 +502,9 @@ export default class LemmaDetail extends Vue {
     }
   }
 
-  selectGnd(gnd: string|null) {
+  selectGnd(gnd: string[]) {
     this.showGndSearch = false
-    if (gnd === null) {
-      this.$emit('update', { gnd: [] })
-    } else {
-      this.$emit('update', { gnd: [ gnd ] })
-    }
+    this.$emit('update', { gnd })
   }
 
   updateUserColumns(userKey: string, $event: string|number|string[]) {

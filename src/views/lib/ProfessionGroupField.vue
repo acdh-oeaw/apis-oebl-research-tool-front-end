@@ -7,7 +7,7 @@
             :search-input.sync="searchTerm"            
             :error-messages="errorMessages"
             cache-items
-            label="Berufsgruppe"
+            :label="lemmaRowTranslations.professionGroup.de"
             no-data-text="Bitte geben Sie einen Suchbegriff ein"
         ></v-autocomplete>
 
@@ -17,7 +17,8 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { OpenAPI } from '@/api/core/OpenAPI'
 import { ProfessionGroup } from '@/api';
-import { isEmpty, toNumber } from 'lodash';
+import { toNumber } from 'lodash';
+import { lemmaRowTranslations } from '../../util/labels';
 
 
 interface VAutoComplete {
@@ -34,14 +35,6 @@ interface ServerAutoCompleteResult {
 
 interface ServerAutoCompleteResultSet {
     results: Array<ServerAutoCompleteResult>,
-}
-
-
-function convertVAutoCompleteToProfessionGroup(vAutoComplete: VAutoComplete|null|undefined): ProfessionGroup | null {
-    if ((vAutoComplete === null)||(vAutoComplete == undefined)) {
-        return null;
-    }
-    return {id: vAutoComplete.id, name: vAutoComplete.text};
 }
 
 
@@ -70,6 +63,8 @@ export default class ProfessionGroupField extends Vue {
     professionGroupCache: ProfessionGroup[] = [];
     loading: boolean = false;
     errorMessages: string[] = [];
+    lemmaRowTranslations = lemmaRowTranslations;
+
 
 
     @Watch('selected', {immediate: true, deep: false})
