@@ -37,6 +37,26 @@
       ref="year"
     />
     <v-spacer></v-spacer>
+    <v-menu
+        v-model="datePickerIsOpen"
+        class="date-picker"
+      >
+      <template v-slot:activator="{on, attrs }">
+        <v-btn
+        v-on="on"
+        v-bind="attrs"
+        icon
+        ><v-icon>mdi-calendar</v-icon>
+      </v-btn>
+      </template>
+      <v-date-picker
+        no-title
+        scrollable
+        :value="defaultISOValue"
+        @change="updateFromDatePicker"
+        :first-day-of-week="1"
+      ></v-date-picker>
+    </v-menu>
     <v-btn @click="localDate.reset()" icon>
       <v-icon>mdi-close-circle-outline</v-icon>
     </v-btn>
@@ -73,6 +93,10 @@ export default class DateField extends Vue {
   @Prop() date!: DateContainer;
 
   localDate: DateContainer = new DateContainer();
+
+  // if v-datepicker is visible
+  datePickerIsOpen: boolean = false;
+
 
   @Watch("date", { immediate: true, deep: true })
   updateLocalDate() {
@@ -133,6 +157,28 @@ export default class DateField extends Vue {
 
     // No errors
     return [];
+  }
+
+  updateFromDatePicker(isoDate: string) {
+    this.localDate = DateContainer.fromISO_OnlyDate(isoDate);
+  }
+
+  get defaultISOValue(): string | null {
+    if (this.localDate.isEmpty()) {
+      return null;
+    }
+    
+    if (this.localDate.isValid()) {
+      return this.localDate.generateISO_OnlyDate();
+    }
+    
+    // Fallback to keep as muc information as possible
+    const year = this.localDate.calendarYear ?? 1970;
+    const month = this.localDate.calendarMonth ?? 1;
+    const date = this.localDate.calendarDate ?? 1;
+
+    return (new DateContainer(year, month, date)).generateISO_OnlyDate();
+    
   }
 }
 </script>
