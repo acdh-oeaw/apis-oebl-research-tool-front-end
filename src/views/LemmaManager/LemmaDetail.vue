@@ -6,7 +6,8 @@
     @dragenter.prevent.capture.stop="onDragEnter"
     @dragleave.prevent.capture.stop="onDragLeave"
     @drop.prevent.capture.stop="onDrop"
-    v-if="value !== undefined && value !== null">
+    v-if="value !== undefined && value !== null"
+    >
     <v-card-title class="flex-column pb-2">
       <div class="d-flex flex-row align-self-stretch" v-if="showHeader">
         <v-btn
@@ -22,6 +23,14 @@
         </v-btn>
         <div :key="value.id" class="text-center flex-grow-1" >
           {{ value.lastName }}, {{ value.firstName }}
+        </div>
+        <div class="printer">
+          <v-btn
+            icon
+            @click="print"
+          >
+            <v-icon>mdi-printer</v-icon>
+          </v-btn>
         </div>
         <v-btn
           style="margin-top: -8px; margin-right: -10px;"
@@ -371,8 +380,7 @@ import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 import ZoteroManager from './ZoteroManager.vue'
-import ProfessionGroupField from '../lib/ProfessionGroupField.vue'
-
+import ProfessionGroupField from '../lib/ProfessionGroupField.vue';
 
 import { lemmaRowTranslations } from '../../util/labels';
 
@@ -535,6 +543,23 @@ export default class LemmaDetail extends Vue {
   }
 
   debouncedUpdateData = _.debounce(this.updateData, 300)
+
+  /**
+   * Print LemmaDetail
+   * 
+   * The easiest and fastest way to do that, I could imagine, is to just make the lemmadetail full width, print, and go back. I am a little ashamed.
+   */
+  print() {
+    const lemmaDetailWitdth = this.store.settings.drawerRightWidth;
+    this.store.settings = { ... this.store.settings, drawerRightWidth: window.innerWidth};
+    this.$nextTick()
+      .then(
+        () => {
+          window.print(); // To Early – Lemma has not full width yet … Maybe some animation?
+          this.store.settings = { ... this.store.settings, drawerRightWidth: lemmaDetailWitdth};
+        });
+  }
+
 
 }
 </script>
