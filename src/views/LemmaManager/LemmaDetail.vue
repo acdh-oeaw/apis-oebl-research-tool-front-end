@@ -25,12 +25,7 @@
           {{ value.lastName }}, {{ value.firstName }}
         </div>
         <div class="printer">
-          <v-btn
-            icon
-            @click="print"
-          >
-            <v-icon>mdi-printer</v-icon>
-          </v-btn>
+          <lemma-printer :lemmaRow="value"></lemma-printer>
         </div>
         <v-btn
           style="margin-top: -8px; margin-right: -10px;"
@@ -381,6 +376,7 @@ import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 import ZoteroManager from './ZoteroManager.vue'
 import ProfessionGroupField from '../lib/ProfessionGroupField.vue';
+import LemmaPrinter from '../lib/LemmaPrinter.vue';
 
 import { lemmaRowTranslations } from '../../util/labels';
 
@@ -406,6 +402,7 @@ interface ZoteroSection {
     ZoteroManager,
     FullNameArrayField,
     ProfessionGroupField,
+    LemmaPrinter,
   }
 })
 export default class LemmaDetail extends Vue {
@@ -542,24 +539,7 @@ export default class LemmaDetail extends Vue {
     this.$emit('update', u)
   }
 
-  debouncedUpdateData = _.debounce(this.updateData, 300)
-
-  /**
-   * Print LemmaDetail
-   * 
-   * The easiest and fastest way to do that, I could imagine, is to just make the lemmadetail full width, print, and go back. I am a little ashamed.
-   */
-  print() {
-    const lemmaDetailWitdth = this.store.settings.drawerRightWidth;
-    this.store.settings = { ... this.store.settings, drawerRightWidth: window.innerWidth};
-    this.$nextTick()
-      .then(
-        () => {
-          window.print(); // To Early – Lemma has not full width yet … Maybe some animation?
-          this.store.settings = { ... this.store.settings, drawerRightWidth: lemmaDetailWitdth};
-        });
-  }
-
+  debouncedUpdateData = _.debounce(this.updateData, 300);
 
 }
 </script>

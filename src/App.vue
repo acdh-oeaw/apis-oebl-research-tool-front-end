@@ -78,7 +78,7 @@ export default class App extends Vue {
   }
 
   get showDrawer(): boolean {
-    return this.store.settings.showNavDrawer
+    return this.$route.query['minimal'] ? false : this.store.settings.showNavDrawer;
   }
 }
 </script>
