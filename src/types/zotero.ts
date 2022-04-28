@@ -60,3 +60,9 @@ export interface ZoteroItem {
       [ zoteroField: string ]: any
     }
   }
+
+export interface ZoteroView {
+    citation: string,
+    url?: string,
+    key: string,
+}

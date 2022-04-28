@@ -56,14 +56,10 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 
-interface ZoteroView {
-    citation: string,
-    url?: string,
-    key: string,
-}
 
-import { ZoteroLemmaManagmentController  } from '@/service/zotero';
-import { ZoteroItem } from '@/types/zotero';
+
+import { convertZoteroItemToView, ZoteroLemmaManagmentController  } from '@/service/zotero';
+import { ZoteroItem, ZoteroView } from '@/types/zotero';
 import ZoteroSearch from '@/views/lib/ZoteroSearch.vue';
 
 /**
@@ -144,18 +140,7 @@ export default class ZoteroManager extends Vue {
 
 
     get zoteroItemsView(): Array<ZoteroView> {
-        return this.zoteroItems.map(
-            (zoteroItem: ZoteroItem): ZoteroView => {
-                const authors = zoteroItem.data.creators.map(creator => creator.lastName).join(', ');
-                const title = zoteroItem.data.title;
-                const year = zoteroItem.data.date ? zoteroItem.data.date: 'o. J.';
-                return {
-                    citation: `${authors}: ${title}, ${year}`,
-                    url: zoteroItem.links?.alternate.href,
-                    key: zoteroItem.key,
-                }
-            }
-        );
+        return this.zoteroItems.map(convertZoteroItemToView);
     } 
 }
 
