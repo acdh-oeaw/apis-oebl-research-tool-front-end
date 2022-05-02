@@ -30,7 +30,7 @@ export default class LemmaPrinter extends Vue {
 
     // An attempt to get a A4-like shape
     const height = window.screen.availHeight;
-    const width = height * 1.414;
+    const width = height * 0.707;
 
     const printWindow = window.open(`/lemmas/print/${this.lemmaRow.id}?minimal=1`, '_printLemmaWindow', `popup,innerHeight=${height},innerWidth=${width}`);
 
