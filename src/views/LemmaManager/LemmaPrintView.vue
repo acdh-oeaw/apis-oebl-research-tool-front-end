@@ -98,6 +98,21 @@
       </section>
       <section class="external-resources">
         <h2>Externe Ressourcen</h2>
+        <lobid-preview-card
+          v-if="lemma.gnd.length > 0"
+          :limit="1"
+          :gnd="lemma.gnd" 
+        />
+        <div 
+          v-if="lemma.columns_scrape"
+          class="scrape-data">
+          <lemma-scrape-result
+            v-for="(source, sourceName) in lemma.columns_scrape"
+            :key="sourceName"
+            :value="source"
+            :title="sourceName" 
+          />
+        </div>
       </section>
     </section>
   </div>
@@ -115,13 +130,22 @@ import {
 } from "@/service/zotero";
 import { ZoteroView } from "@/types/zotero";
 
+import LobidPreviewCard from './LobidPreviewCard.vue';
+import LemmaScrapeResult from './LemmaScrapeResult.vue';
+
+
 const db = new LemmaDatabase();
 const zoteroBy: ZoteroLemmaManagmentController =
   new ZoteroLemmaManagmentController();
 const zoteroAbout: ZoteroLemmaManagmentController =
   new ZoteroLemmaManagmentController();
 
-@Component
+@Component({
+  components: {
+    LobidPreviewCard,
+    LemmaScrapeResult,
+  }
+})
 export default class LemmaPrintView extends Vue {
   @Prop() lemmaId!: number;
   lemma: null | LemmaRow = null;
@@ -141,7 +165,6 @@ export default class LemmaPrintView extends Vue {
           );
           throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
         }
-        console.debug({ serializedLemmaRow });
         this.lemma = unserializeLemmaRow(serializedLemmaRow);
         zoteroBy
           .load(this.lemma.zoteroKeysBy)
