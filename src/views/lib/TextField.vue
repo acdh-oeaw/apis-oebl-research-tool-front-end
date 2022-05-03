@@ -24,6 +24,7 @@
             :placeholder="placeholder"
             :value="localValue" 
             :disabled="disabled"
+            :maxlength="maxlength"
             />
         </slot>
       </div>
@@ -54,6 +55,7 @@ export default class TextField extends Vue {
   @Prop({ default: false }) selected!: boolean;
   @Prop({ default: null }) placeholder!: string|null;
   @Prop({default: null}) color!: string|null;
+  @Prop( {default: null }) maxlength!: number|null;
 
   msg: string|null = null
 

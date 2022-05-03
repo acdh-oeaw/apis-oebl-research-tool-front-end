@@ -214,6 +214,7 @@
               :label="lemmaRowTranslations.professionDetail.de"
               :allow-new-line="true"
               :value="value.professionDetail"
+              :maxlength="255"
               @input="debouncedUpdateData({professionDetail: $event })"
             />
             <profession-group-field
