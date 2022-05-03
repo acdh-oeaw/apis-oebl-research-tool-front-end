@@ -1,6 +1,6 @@
 <template>
   <div class="lemma-printer-container">
-    <v-btn icon @click="runPrintJob">
+    <v-btn icon @click="generatePrintWindow">
       <v-icon>mdi-printer</v-icon>
     </v-btn>
   </div>
@@ -9,22 +9,10 @@
 <script lang="ts">
 import { LemmaRow } from "@/types/lemma";
 import { Vue, Component, Prop } from "vue-property-decorator";
-import store from '@/store';
 
 @Component
 export default class LemmaPrinter extends Vue {
   @Prop() lemmaRow!: LemmaRow;
-
-  runPrintJob() {
-    const navBarSettings = store.settings.showNavDrawer;
-    store.settings.showNavDrawer = false;
-    console.debug(store.settings.showNavDrawer)
-    const printWindow = this.generatePrintWindow();
-    printWindow.focus();
-    //printWindow.print();
-    //printWindow.close();
-    //store.settings.showNavDrawer = navBarSettings;
-  }
 
   generatePrintWindow(): Window {
 

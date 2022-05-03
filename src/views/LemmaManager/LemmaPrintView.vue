@@ -2,13 +2,19 @@
   <v-container class="lemma-print-view-container ">
     <section v-if="lemma !== null" class="lemma-print-view">
       <v-row>
-        <v-col>
+        <v-col cols="11">
             <h1>
             <span class="last-name-title">{{ lemma.lastName }}</span>
             <span v-if="lemma.firstName" class="first-name-title">{{
               lemma.firstName
             }}</span>
           </h1>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col class="print-button" cols="1">
+          <v-btn icon @click="print">
+            <v-icon>mdi-printer</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
       <section class="main-data">
@@ -176,6 +182,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 import { LemmaRow } from "@/types/lemma";
+import store from '@/store';
 import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
 import {
@@ -187,7 +194,7 @@ import { ZoteroView } from "@/types/zotero";
 import LobidPreviewCard from './LobidPreviewCard.vue';
 import LemmaScrapeResult from './LemmaScrapeResult.vue';
 
-
+store.settings.showNavDrawer = false;
 const db = new LemmaDatabase();
 const zoteroBy: ZoteroLemmaManagmentController =
   new ZoteroLemmaManagmentController();
@@ -207,6 +214,10 @@ export default class LemmaPrintView extends Vue {
 
   zoteroCitationsBy: ZoteroView[] = [];
   zoteroCitationsAbout: ZoteroView[] = [];
+
+  print() {
+    window.print();
+  }
 
   // load data
   beforeCreate() {
@@ -307,6 +318,14 @@ export default class LemmaPrintView extends Vue {
 .scrape-data >>> div[role=button]
 {
   color: black;
+}
+
+@media print {
+
+  .print-button {
+    display: none;
+  }
+  
 }
 
 
