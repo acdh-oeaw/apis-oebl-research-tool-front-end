@@ -4,6 +4,7 @@
       ((Array.isArray(value) && value.length === 0) || value === undefined) && 'list-disabled',
       'scrape-result'
     ]"
+    :value="defaultExpand"
     >
     <template v-slot:activator>
       <v-list-item-title style="text-transform: uppercase; letter-spacing: .1em">
@@ -30,7 +31,9 @@
     <v-list-group
       sub-group
       v-for="(scrapeDataValue, key) in arrayable(value)" :key="key"
-      :class="[scrapeDataValue.length === 0 && 'list-disabled']">
+      :class="[scrapeDataValue.length === 0 && 'list-disabled']"
+      :value="defaultExpand"
+      >
       <template v-slot:activator>
         <v-list-item-title>{{ formatKey(key) }}</v-list-item-title>
         <v-list-item-action-text>{{ scrapeDataValue.length }}</v-list-item-action-text>
@@ -66,8 +69,10 @@ type ScrapeValue = ServerResearchLemma['columns_scrape'][keyof ServerResearchLem
 @Component
 export default class LemmaScrapeResult extends Vue {
 
-  @Prop({ required: true }) value!: ScrapeValue
-  @Prop({ required: true }) title!: string
+  @Prop({ required: true }) value!: ScrapeValue;
+  @Prop({ required: true }) title!: string;
+  /* Will expand all sublist as default*/
+  @Prop({ default: false }) defaultExpand!: boolean; 
 
   keyNamesReadable: { [key: string]: string } = {
     txt: ''

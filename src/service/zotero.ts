@@ -2,7 +2,7 @@
 import Dexie from 'dexie';
 import fetch from 'node-fetch'
 
-import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField, ZoteroPatchData, ZoteroItem } from '@/types/zotero';
+import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField, ZoteroPatchData, ZoteroItem, ZoteroView } from '@/types/zotero';
 
 
 class ZoteroStore {
@@ -373,5 +373,16 @@ export class ZoteroLemmaManagmentController {
     const newKeys = newCachedItems.map(item => item.key);
     const oldItems = this._cachedItemsToCheckForUpdate.filter(item => !newKeys.includes(item.key));
     this._cachedItemsToCheckForUpdate = oldItems.concat(newCachedItems);
+  }
+}
+
+export function convertZoteroItemToView(zoteroItem: ZoteroItem): ZoteroView {
+  const authors = zoteroItem.data.creators.map(creator => creator.lastName).join(', ');
+  const title = zoteroItem.data.title;
+  const year = zoteroItem.data.date ? zoteroItem.data.date: 'o. J.';
+  return {
+      citation: `${authors}: ${title}, ${year}`,
+      url: zoteroItem.links?.alternate.href,
+      key: zoteroItem.key,
   }
 }
