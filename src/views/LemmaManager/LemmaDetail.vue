@@ -28,6 +28,7 @@
           <lemma-printer :lemmaRow="value"></lemma-printer>
         </div>
         <v-btn
+          v-if="showTooggleSideBarButton"
           style="margin-top: -8px; margin-right: -10px;"
           width="48"
           height="48"
@@ -410,6 +411,7 @@ export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow;
   @Prop({ default: true }) showHeader!: boolean;
+  @Prop({ default: true }) showTooggleSideBarButton!: boolean;
   log = console.log;
   store = store;
   showGndSearch = false;
