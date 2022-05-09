@@ -16,7 +16,13 @@
         />
       </v-row>
       <v-row class="file-options">
-
+        <csv-importer 
+          v-if="file !== null && file.type === 'text/csv'"
+          :file="file"
+          :preloadedOptions="preloadedFileOptions"
+          @options="localOptions = $event"
+          @data="localData = $event"
+        />
 
       </v-row>
       <v-row class="data-preview">
@@ -33,11 +39,18 @@ import { Data2D } from '@/util/lemmaimport/datacontainers';
 import { SupportedFilesOptions } from '@/util/lemmaimport/options';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
+ 
+import CsvImporter from './CsvImporter.vue';
+
 
 /**
  * Select A File, Choose Options, Have A Preview
  */
-@Component
+@Component({
+  components: {
+    CsvImporter,
+  },
+})
 export default class ImportFileDialog extends Vue {
 
   /**
@@ -86,6 +99,6 @@ export default class ImportFileDialog extends Vue {
   watchLocalOptions() {
     this.emitOptions();
   }
-
 }
+
 </script>
