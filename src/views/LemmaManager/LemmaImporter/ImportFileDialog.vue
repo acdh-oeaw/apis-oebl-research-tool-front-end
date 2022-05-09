@@ -83,11 +83,13 @@ export default class ImportFileDialog extends Vue {
     this.$emit('data', this.localData);
   }
 
-  created() {
-    if (this.preloadedFileOptions !== null) {
-      this.localOptions = this.preloadedFileOptions;
-      this.fileType = this.preloadedFileOptions.fileType;
+  @Watch('preloadedOptions', {deep: true, immediate: true})
+  watchPreloadedOptions() {
+    if (this.preloadedFileOptions === null) {
+      return;
     }
+    this.localOptions = this.preloadedFileOptions;
+    this.fileType = this.preloadedFileOptions.fileType;
   }
 
   @Watch('localData')
