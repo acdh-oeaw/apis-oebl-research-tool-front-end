@@ -382,7 +382,7 @@ import confirm from '@/store/confirm'
     LobidPreviewCard,
     VirtualTable,
     DataFilter,
-    LemmaImporter: () => import('./LemmaImporter.vue'),
+    LemmaImporter: () => import('./LemmaImporter/LemmaImporter.vue'),
   }
 })
 export default class LemmaManager extends Vue {

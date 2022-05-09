@@ -23,7 +23,11 @@
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content step="1">
-            TODO: Datei auswählen
+            <import-file-dialog
+              :preloadedFileOptions="importOptions.fileOptions"
+              @options="importOptions.fileOptions = $event"
+              @data="rawImportData = $event"
+            />
           </v-stepper-content>
           <v-stepper-content step="2">
             TODO: Spalten zuweisen
@@ -38,8 +42,15 @@
       </v-stepper>
   </div>
 </template>
+
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+
+import { Vue, Component } from 'vue-property-decorator';
+
+
+import { Data2D } from '@/util/lemmaimport/datacontainers';
+import { ImportOptions } from '@/util/lemmaimport/options';
+import ImportFileDialog from './ImportFileDialog.vue';
 
 /**
  * Manage Import Steps
@@ -55,7 +66,11 @@ import { Vue, Component } from 'vue-property-decorator'
  *  - load them from save component, 
  *  - pass them to child importer components …
  */
-@Component
+@Component({
+  components: {
+    ImportFileDialog,
+  }
+})
 export default class LemmaImporter extends Vue {
 
   /**
@@ -80,6 +95,10 @@ export default class LemmaImporter extends Vue {
       throw new Error(`Can not adavance more than one step. greatestCompleteStep = ${this.greatestCompleteStep}, required step = ${step}`);
     }
   }
+
+  importOptions: ImportOptions = new ImportOptions();
+
+  rawImportData: null | Data2D = null;
 
 }
 </script>
