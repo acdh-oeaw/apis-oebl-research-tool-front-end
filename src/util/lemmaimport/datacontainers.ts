@@ -1,17 +1,34 @@
-
-type row = {[column: string]: string}
-
 // Wrapper class for x*y data coming from tabular data 
 export class Data2D {
 
-    data: row[] = [];
+    private _headers: string[];
+    private _data: Array<string[]> = [];
 
-    get columns(): string[] {
-        return this.data.length === 0 ? [] : Object.keys(this.data[0]);
+    constructor(
+        headers: string[],
+        data: Array<string[]> = [],
+    ) {
+        this._headers = headers;
+        this.data = data;
     }
 
-    get shape(): [number, number] {
-        return [this.columns.length, this.data.length];
+    get headers(): string[] {
+        return this._headers;
+    }
+
+    get data(): Array<string[]> {
+        return this._data;
+    }
+
+    addRow(row: string[]) {
+        if (row.length !== this.headers.length) {
+            throw new Error(`This class only handles tabular data with a constant width. This object has ${this.headers.length} columns, but the row has ${row.length} fields`);
+        }
+        this._data.push(row);
+    }
+
+    set data(data: Array<string[]>) {
+        data.forEach(row => this.addRow(row));
     }
 
 }

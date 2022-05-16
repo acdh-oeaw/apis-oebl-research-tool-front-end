@@ -1,6 +1,7 @@
 
 type FileOptions = {
     fileType: 'text/csv';
+    useFirstRowAsHeaders: boolean,
 };
 
 export type CsvOptions = FileOptions & {
