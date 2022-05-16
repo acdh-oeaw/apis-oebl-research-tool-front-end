@@ -7,7 +7,14 @@
           <v-stepper-step
             :complete="1 <= greatestCompleteStep"
             step="1"
-          >Datei auswählen</v-stepper-step>
+          >
+            Datei auswählen
+            <v-btn
+              v-if="greatestCompleteStep > 0"
+              @click="stepToDisplay = 1 "
+              small icon
+            ><v-icon>mdi-lead-pencil</v-icon></v-btn>
+            </v-stepper-step>
           <v-stepper-step
             :complete="2 <= greatestCompleteStep"
             step="2"
@@ -28,6 +35,10 @@
               @options="importOptions.fileOptions = $event"
               @data="rawImportData = $event"
             />
+            <v-btn
+              @click="markStepDone(1)"
+              :disabled="rawImportData === null"
+            >Weiter</v-btn>
           </v-stepper-content>
           <v-stepper-content step="2">
             TODO: Spalten zuweisen
