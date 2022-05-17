@@ -31,4 +31,16 @@ export class Data2D {
         data.forEach(row => this.addRow(row));
     }
 
+    selectByHeaderName(headerName: string): string[] {
+        const numericalHeaderName = this.headers.indexOf(headerName);
+        if (numericalHeaderName === undefined) {
+            const headers = JSON.stringify(this.headers);
+            throw new Error(`Did not find <${headerName}> in ${headers}`);
+        }
+
+        return this.data.map(
+            row => row[numericalHeaderName]
+        );
+    }
+
 }

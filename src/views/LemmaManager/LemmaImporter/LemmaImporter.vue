@@ -41,7 +41,10 @@
             >Weiter</v-btn>
           </v-stepper-content>
           <v-stepper-content step="2">
-            TODO: Spalten zuweisen
+            <lemma-builder 
+              :incommingData="rawImportData"
+              :preloadedOptions="importOptions.lemmaBuilderOptions"
+            />
           </v-stepper-content>
           <v-stepper-content step="3">
             TODO: Daten formatieren
@@ -58,10 +61,13 @@
 
 import { Vue, Component } from 'vue-property-decorator';
 
-
 import { Data2D } from '@/util/lemmaimport/datacontainers';
 import { ImportOptions } from '@/util/lemmaimport/options';
+
 import ImportFileDialog from './ImportFileDialog.vue';
+import LemmaBuilder from './LemmaBuilder.vue';
+
+
 
 /**
  * Manage Import Steps
@@ -80,6 +86,7 @@ import ImportFileDialog from './ImportFileDialog.vue';
 @Component({
   components: {
     ImportFileDialog,
+    LemmaBuilder,
   }
 })
 export default class LemmaImporter extends Vue {
@@ -109,7 +116,7 @@ export default class LemmaImporter extends Vue {
 
   importOptions: ImportOptions = new ImportOptions();
 
-  rawImportData: null | Data2D = null;
+  rawImportData: Data2D = new Data2D([], []);
 
 }
 </script>
