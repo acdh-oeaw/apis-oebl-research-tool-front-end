@@ -37,6 +37,7 @@ import { Vue, Prop, Watch, Component } from 'vue-property-decorator';
 
 const defaultOptions: CsvOptions = {
     fileType: 'text/csv',
+    useFirstRowAsHeaders: true,
     newLine: '\n',
     textDelimiter: '"',
     separator: ',',
