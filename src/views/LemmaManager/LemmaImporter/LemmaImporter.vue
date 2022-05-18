@@ -26,6 +26,10 @@
           <v-stepper-step
             :complete="4 <= greatestCompleteStep"
             step="4"
+          >Benutzerdefinierte Spalten</v-stepper-step>
+          <v-stepper-step
+            :complete="5 <= greatestCompleteStep"
+            step="5"
           >Liste auswählen</v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
@@ -48,6 +52,9 @@
           </v-stepper-content>
           <v-stepper-content step="3">
             TODO: Daten formatieren
+          </v-stepper-content>
+          <v-stepper-content step="4">
+            TODO: Benutzerdefinierte Spalten
           </v-stepper-content>
           <v-stepper-content step="4">
             TODO: Liste auswählen

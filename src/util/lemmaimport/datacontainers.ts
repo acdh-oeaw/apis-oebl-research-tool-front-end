@@ -47,9 +47,30 @@ export class Data2D {
 
 import { NewLemmaRow } from "@/types/lemma";
 
+        
+
 /**
  * A Lemma Prototype before type-casting / formatting
  */
 export type LemmaPrototype = {
-    [key in keyof NewLemmaRow]: string
+    [
+        key in keyof 
+        Omit<NewLemmaRow, 'columns_user'> // This will not be parsed as strings, but added later.
+    ]: string
 };
+
+
+export function createEmptyLemmaPrototype(): LemmaPrototype {
+    return {
+        lastName: '',
+        alternativeNames: '',
+        dateOfBirth: '',
+        dateOfDeath: '',
+        gnd: '',
+        loc: '',
+        viaf_id: '',
+        secondaryLiterature: '',
+        zoteroKeysBy: '',
+        zoteroKeysAbout: '',
+    };
+}
