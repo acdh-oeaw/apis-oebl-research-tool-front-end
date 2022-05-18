@@ -18,7 +18,7 @@
             </v-row>
             <v-row class="data-comparision-area">
                 <lemma-previewer
-                    :lemmas="newLemmas"
+                    :lemmas="lemmaPrototypes"
                 />
             </v-row>
         </v-container>
@@ -30,14 +30,14 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Data2D } from "@/util/lemmaimport/datacontainers";
 import { ColumnConversions, defaultLemmaBuilderOptions } from "@/util/lemmaimport/options";
-import { LemmaRow } from "@/types/lemma";
+import { LemmaPrototype } from "@/util/lemmaimport/types";
 
 import LemmaPreviewer from "./LemmaPreviewer.vue";
 import ColumnSelect from "./ColumnSelect.vue";
 
 
 /**
- * This components takes any tabular data, helps to user to map it to a LemmaRow, and if succesful emits an array of LemmaRows.
+ * This components takes any tabular data, helps to user to map it to a LemmaPrototype, and if succesful emits an array of LemmaPrototypes.
  */
 @Component(
     {
@@ -61,18 +61,18 @@ export default class LemmaBuilder extends Vue {
 
     @Watch('incommingData', {immediate: true, deep: true})
     createEmptyLemmas() {
-        if (this.incommingData.data.length === this.newLemmas.length) {
+        if (this.incommingData.data.length === this.lemmaPrototypes.length) {
             return; // Do not loose data, if there are already the same amount of lemmas.
         }
         // Else create the right amount of empty lemma objects
-        this.newLemmas = this.incommingData.data.map(() => new Object());
+        this.lemmaPrototypes = this.incommingData.data.map(() => new Object());
     }
 
 
-    newLemmas: Partial<LemmaRow>[] = [];
+    lemmaPrototypes: Partial<LemmaPrototype>[] = [];
 
-    updateData(column: Partial<LemmaRow>[]) {
-        this.newLemmas = this.newLemmas.map(
+    updateData(column: Partial<LemmaPrototype>[]) {
+        this.lemmaPrototypes = this.lemmaPrototypes.map(
             (newLemma, index) => {
                 return {
                     ... newLemma,
