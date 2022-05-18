@@ -32,7 +32,14 @@ export type ColumnConversions = {
 };
 
 export const defaultLemmaBuilderOptions: ColumnConversions = {
+    
     firstName: {
+        extractOptions: {
+            sourceKey: null,
+        }
+    },
+
+    lastName: {
         extractOptions: {
             sourceKey: null,
         }
