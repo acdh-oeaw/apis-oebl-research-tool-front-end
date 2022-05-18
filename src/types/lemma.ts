@@ -66,7 +66,6 @@ export interface NewLemmaRow {
   bioNote?: string|null,
   kinship?: string|null,
   religion?: string|null,
-  updated?: string|null,
 }
 
 /**
@@ -77,6 +76,7 @@ export interface LemmaRow extends NewLemmaRow {
   columns_scrape?: ServerResearchLemma['columns_scrape'],
   selected: boolean,
   wiki_edits: number|null,
+  updated?: string|null,
 }
 
 /**
