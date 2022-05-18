@@ -39,18 +39,15 @@ export interface SecondaryCitation {
 }
 
 /**
- * Dynamic property notation breaks keysof (for Omit, Pick)
+ * Contains data, that can be provided by the user.
  */
-export interface LemmaRow {
-  id: number,
+export interface NewLemmaRow {
   list?: {
     id?: number,
     title: string,
     editor?: number,
   },
-  columns_user: UserColumn,
-  columns_scrape?: ServerResearchLemma['columns_scrape'],
-  selected: boolean,
+  columns_user: UserColumn,  
   firstName?: string | null,
   lastName: string,
   alternativeNames: Array<FullName>,
@@ -60,7 +57,6 @@ export interface LemmaRow {
   gnd: string[],
   loc: number|null,
   viaf_id: number|null,
-  wiki_edits: number|null,
   professionDetail?: string|null,
   professionGroup?: ProfessionGroup|null,
   legacyGideonCitations?: null | Array<{id: Number, value: string}>,
@@ -71,6 +67,16 @@ export interface LemmaRow {
   kinship?: string|null,
   religion?: string|null,
   updated?: string|null,
+}
+
+/**
+ * Contains data, that is provided by software.
+ */
+export interface LemmaRow extends NewLemmaRow {
+  id: number,
+  columns_scrape?: ServerResearchLemma['columns_scrape'],
+  selected: boolean,
+  wiki_edits: number|null,
 }
 
 /**
