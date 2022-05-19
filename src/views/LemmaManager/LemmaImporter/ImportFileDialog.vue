@@ -33,6 +33,14 @@
           />
         </v-col>
       </v-row>
+      <v-row class="submit">
+        <v-col>
+          <v-btn
+            :disabled="rawData === null"
+            @click="submit()"
+          >Weiter</v-btn>
+        </v-col>
+      </v-row>
       <v-row class="data-preview">
         <v-data-table
           :headers="vuetifyDataTableHeaders"
@@ -139,6 +147,10 @@ export default class ImportFileDialog extends Vue {
     }
 
     this.$emit('data', this.localData);
+  }
+
+  submit(): void {
+    this.$emit('submit');
   }
 
   @Watch('preloadedOptions', {deep: true, immediate: true})

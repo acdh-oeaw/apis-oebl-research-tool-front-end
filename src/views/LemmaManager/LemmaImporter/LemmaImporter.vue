@@ -5,7 +5,7 @@
         >
         <v-stepper-header>
           <v-stepper-step
-            :complete="1 <= greatestCompleteStep"
+            :complete="greatestCompleteStep > 0"
             step="1"
           >
             Datei auswählen
@@ -18,7 +18,14 @@
           <v-stepper-step
             :complete="2 <= greatestCompleteStep"
             step="2"
-          >Spalten zuweisen</v-stepper-step>
+          >
+            Spalten zuweisen
+          <v-btn
+              v-if="greatestCompleteStep > 1"
+              @click="stepToDisplay = 2 "
+              small icon
+            ><v-icon>mdi-lead-pencil</v-icon></v-btn>
+          </v-stepper-step>
           <v-stepper-step
             :complete="3 <= greatestCompleteStep"
             step="3"
@@ -38,16 +45,16 @@
               :preloadedFileOptions="importOptions.fileOptions"
               @options="importOptions.fileOptions = $event"
               @data="rawImportData = $event"
+              @submit="markStepDone(1)"
             />
-            <v-btn
-              @click="markStepDone(1)"
-              :disabled="rawImportData === null"
-            >Weiter</v-btn>
           </v-stepper-content>
           <v-stepper-content step="2">
             <lemma-builder 
               :incommingData="rawImportData"
               :preloadedOptions="importOptions.lemmaBuilderOptions"
+              @options="importOptions.lemmaBuilderOptions = $event"
+              @data="lemmaPrototypes = $event"
+              @submit="markStepDone(2)"
             />
           </v-stepper-content>
           <v-stepper-content step="3">
@@ -68,7 +75,7 @@
 
 import { Vue, Component } from 'vue-property-decorator';
 
-import { Data2D } from '@/util/lemmaimport/datacontainers';
+import { Data2D, LemmaPrototype } from '@/util/lemmaimport/datacontainers';
 import { ImportOptions } from '@/util/lemmaimport/options';
 
 import ImportFileDialog from './ImportFileDialog.vue';
@@ -108,22 +115,31 @@ export default class LemmaImporter extends Vue {
   greatestCompleteStep = 0;
 
   markStepDone(step: number) {
-    this.stepToDisplay = step + 1;
-    // Make one step
-    if (this.greatestCompleteStep === (step - 1)) {
-      this.greatestCompleteStep = 1;
-    // Nothing to do
-    } else if (step <= this.greatestCompleteStep) {
-      return;
-    // We have a logic error:
-    } else {
+
+    // Save guard for logic errors
+    if ((step - this.greatestCompleteStep) > 1) {
       throw new Error(`Can not adavance more than one step. greatestCompleteStep = ${this.greatestCompleteStep}, required step = ${step}`);
     }
+
+    if (step === 4) {
+      throw new Error('NotImplemented Error / TODO. Crossed the finish line.');
+    }
+
+    // No reset of progress
+    if (step > this.greatestCompleteStep) {
+      this.greatestCompleteStep = step;
+    }
+
+    // Jump to next possible step
+    this.stepToDisplay = this.greatestCompleteStep + 1
+
   }
 
   importOptions: ImportOptions = new ImportOptions();
 
   rawImportData: Data2D = new Data2D([], []);
+
+  lemmaPrototypes: LemmaPrototype[] = []
 
 }
 </script>
