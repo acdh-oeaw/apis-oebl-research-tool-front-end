@@ -6,8 +6,10 @@
                 <v-col>
                     <v-select
                         label="Quellspalte"
-                        v-model="options.sourceKey"
+                        :value="options.sourceKey"
                         :items="vuetifySelectItems"
+                        clearable
+                        @change="options.sourceKey = $event"
                     />
                 </v-col>
             </v-row>
@@ -53,11 +55,30 @@ export default class ColumnSelect extends Vue {
         );
     }
 
-    @Watch('selectedSourceKey', {immediate: false, deep: true}) // deeeeep
-    @Watch('options', {immediate: false, deep: true})
+    @Watch('options', {immediate: true, deep: true})
     emitExtraction() {
+        // I'm not able to stop vuetify from doing this.
+        if (this.options.sourceKey === undefined) {
+            this.options.sourceKey = null;
+        }
+        
+        if (this.options.sourceKey === null) {
+            this.cancel();
+        } else {
+            this.submit();
+        }
+
+        
+    }
+
+    submit() {
         this.$emit('options', this.options);
         this.$emit('data', this.extractedData);
+    }
+
+    cancel() {
+        this.$emit('options', this.options);
+        this.$emit('cancel');
     }
 
     // https://vuetifyjs.com/en/api/v-select/#props-items

@@ -20,6 +20,7 @@
                                 lemmaKey="lastName"
                                 :sourceData="incommingData"
                                 @data="updateData($event)"
+                                @cancel="removeData('lastName')"
                                 @options="options.lastName.extractOptions = $event"
                                 :preloadedOptions="options.lastName.extractOptions"
                             />
@@ -29,6 +30,14 @@
                                 v-if="!lastNameIsFiled"
                                 type="info"
                             >Dieses Feld muss ausgewählt werden</v-alert>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-btn
+                                v-if="allRequiredFieldsSet"
+                                @click="submit"
+                            >Weiter</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -111,12 +120,24 @@ export default class LemmaBuilder extends Vue {
         );
     }
 
+    removeData(columnName: string) {
+        this.partialLemmaPrototypes.forEach(
+            partialLemmaPrototype => delete(partialLemmaPrototype[columnName as keyof Partial<LemmaPrototype>])
+        )
+    }
+
     get allRequiredFieldsSet(): boolean {
         return this.lastNameIsFiled;
     }
 
     get lastNameIsFiled(): boolean {
         return this.options.lastName?.extractOptions.sourceKey !== null;
+    }
+
+    submit() {
+        this.$emit('data', this.lemmaPrototypes);
+        this.$emit('options', this.options);
+        this.$emit('submit');
     }
     
 }
