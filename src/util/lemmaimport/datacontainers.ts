@@ -56,21 +56,21 @@ export type LemmaPrototype = {
     [
         key in keyof 
         Omit<NewLemmaRow, 'columns_user'> // This will not be parsed as strings, but added later.
-    ]: string
+    ]: string | null
 };
 
 
 export function createEmptyLemmaPrototype(): LemmaPrototype {
     return {
-        lastName: '',
-        alternativeNames: '',
-        dateOfBirth: '',
-        dateOfDeath: '',
-        gnd: '',
-        loc: '',
-        viaf_id: '',
-        secondaryLiterature: '',
-        zoteroKeysBy: '',
-        zoteroKeysAbout: '',
+        lastName: null,
+        alternativeNames: null,
+        dateOfBirth: null,
+        dateOfDeath: null,
+        gnd: null,
+        loc: null,
+        viaf_id: null,
+        secondaryLiterature: null,
+        zoteroKeysBy: null,
+        zoteroKeysAbout: null,
     };
 }
