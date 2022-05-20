@@ -58,7 +58,13 @@
             />
           </v-stepper-content>
           <v-stepper-content step="3">
-            TODO: Daten formatieren
+            <lemma-formatter
+              :lemmaPrototypes="lemmaPrototypes"
+              :preloadedOptions="importOptions.lemmaFormatterOptions"
+              @options="importOptions.lemmaFormatterOptions = $event"
+              @data="newLemmas = $event"
+              @submit="markStepDone(3)"
+            />
           </v-stepper-content>
           <v-stepper-content step="4">
             TODO: Benutzerdefinierte Spalten
@@ -80,6 +86,8 @@ import { ImportOptions } from '@/util/lemmaimport/options';
 
 import ImportFileDialog from './ImportFileDialog.vue';
 import LemmaBuilder from './LemmaBuilder.vue';
+import LemmaFormatter from './LemmaFormatter.vue';
+import { LemmaRow } from '@/types/lemma';
 
 
 
@@ -101,6 +109,7 @@ import LemmaBuilder from './LemmaBuilder.vue';
   components: {
     ImportFileDialog,
     LemmaBuilder,
+    LemmaFormatter,
   }
 })
 export default class LemmaImporter extends Vue {
@@ -139,7 +148,9 @@ export default class LemmaImporter extends Vue {
 
   rawImportData: Data2D = new Data2D([], []);
 
-  lemmaPrototypes: LemmaPrototype[] = []
+  lemmaPrototypes: LemmaPrototype[] = [];
+
+  newLemmas: LemmaRow[] = [];
 
 }
 </script>
