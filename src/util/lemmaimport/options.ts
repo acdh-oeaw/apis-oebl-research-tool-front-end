@@ -44,8 +44,19 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
             sourceKey: null,
         }
     }
-}
+};
 
+export type LemmaFormatterOptions = {
+    // Values, that should be converted into null
+    nullValues: string[];
+};
+
+export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
+    // Inspired but reduced version of na_values in https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html?highlight=read_excel#pandas.read_excel
+    nullValues:  [
+        '', '#N/A', '#NA', '<NA>', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', 'nan', 'null'
+    ],
+}
 
 export class ImportOptions {
     
@@ -53,6 +64,8 @@ export class ImportOptions {
 
     lemmaBuilderOptions: ColumnConversions = defaultLemmaBuilderOptions;
     
+    lemmaFormatterOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
+
     allIsFilledIn(): boolean {
         return this.fileOptions !== null;
     }
