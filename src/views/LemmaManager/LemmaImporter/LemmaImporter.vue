@@ -81,7 +81,7 @@
 
 import { Vue, Component } from 'vue-property-decorator';
 
-import { Data2D, LemmaPrototype } from '@/util/lemmaimport/datacontainers';
+import { Data2D, LemmaPrototypeStringType } from '@/util/lemmaimport/datacontainers';
 import { ImportOptions } from '@/util/lemmaimport/options';
 
 import ImportFileDialog from './ImportFileDialog.vue';
@@ -148,7 +148,7 @@ export default class LemmaImporter extends Vue {
 
   rawImportData: Data2D = new Data2D([], []);
 
-  lemmaPrototypes: LemmaPrototype[] = [];
+  lemmaPrototypes: LemmaPrototypeStringType[] = [];
 
   newLemmas: LemmaRow[] = [];
 

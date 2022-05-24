@@ -54,11 +54,12 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { Data2D, LemmaPrototype, createEmptyLemmaPrototype } from "@/util/lemmaimport/datacontainers";
+import { Data2D, LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
 import { ColumnConversions, defaultLemmaBuilderOptions } from "@/util/lemmaimport/options";
 
 import LemmaPreviewer from "./LemmaPreviewer.vue";
 import ColumnSelect from "./ColumnSelect.vue";
+import { createEmptyLemmaPrototype } from "@/util/lemmaimport/dataconversion";
 
 
 /**
@@ -94,9 +95,9 @@ export default class LemmaBuilder extends Vue {
     }
 
 
-    partialLemmaPrototypes: Partial<LemmaPrototype>[] = [];
+    partialLemmaPrototypes: Partial<LemmaPrototypeStringType>[] = [];
 
-    get lemmaPrototypes(): LemmaPrototype[] {
+    get lemmaPrototypes(): LemmaPrototypeStringType[] {
         return this.partialLemmaPrototypes.map(
             partialLemmaPrototype => {
                 return {
@@ -109,7 +110,7 @@ export default class LemmaBuilder extends Vue {
         );
     }
 
-    updateData(column: Partial<LemmaPrototype>[]) {
+    updateData(column: Partial<LemmaPrototypeStringType>[]) {
         this.partialLemmaPrototypes = this.partialLemmaPrototypes.map(
             (newLemma, index) => {
                 return {
@@ -122,7 +123,7 @@ export default class LemmaBuilder extends Vue {
 
     removeData(columnName: string) {
         this.partialLemmaPrototypes.forEach(
-            partialLemmaPrototype => delete(partialLemmaPrototype[columnName as keyof Partial<LemmaPrototype>])
+            partialLemmaPrototype => delete(partialLemmaPrototype[columnName as keyof Partial<LemmaPrototypeStringType>])
         )
     }
 

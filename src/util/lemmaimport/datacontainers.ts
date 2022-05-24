@@ -1,4 +1,11 @@
-// Wrapper class for x*y data coming from tabular data 
+
+import { GenderAe0Enum } from "@/api";
+import { NewLemmaRow } from "@/types/lemma";
+import { DateContainer } from "../dates";
+
+/**
+ * Wrapper class for x*y data coming from tabular data
+ */ 
 export class Data2D {
 
     private _headers: string[];
@@ -44,33 +51,28 @@ export class Data2D {
     }
 
 }
-
-import { NewLemmaRow } from "@/types/lemma";
-
         
 
 /**
- * A Lemma Prototype before type-casting / formatting
+ * A Lemma Prototype comming directly from csv/excel/… with only strings.
  */
-export type LemmaPrototype = {
-    [
-        key in keyof 
-        Omit<NewLemmaRow, 'columns_user'> // This will not be parsed as strings, but added later.
-    ]: string | null
+export type LemmaPrototypeStringType = {
+    [key in keyof NewLemmaRow]: string
 };
 
+/**
+ * A Lemma Porototype with nan values like 'NAN' replaced with null.
+ */
+export type LemmaPrototypeNullableStringType = {
+    [key in keyof NewLemmaRow]: string | null;
+};
 
-export function createEmptyLemmaPrototype(): LemmaPrototype {
-    return {
-        lastName: null,
-        alternativeNames: null,
-        dateOfBirth: null,
-        dateOfDeath: null,
-        gnd: null,
-        loc: null,
-        viaf_id: null,
-        secondaryLiterature: null,
-        zoteroKeysBy: null,
-        zoteroKeysAbout: null,
-    };
-}
+/**
+ * It has been made sure, that there are no missing values.
+ */
+export type LemmaPrototypeRequiredFieldsType = 
+    Omit<LemmaPrototypeNullableStringType, 'lastName'>
+    & {
+        lastName: NewLemmaRow['lastName'];
+    }
+;

@@ -7,7 +7,7 @@
 <script lang="ts">
 
 import { LemmaRow } from "@/types/lemma";
-import { LemmaPrototype } from "@/util/lemmaimport/datacontainers";
+import { LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
 import { LemmaFormatterOptions, defautLemmaFormatterOptions } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -18,7 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class LemmaFormatter extends Vue {
 
-    @Prop({required: true, default: Array}) lemmaPrototypes!: LemmaPrototype[];
+    @Prop({required: true, default: Array}) lemmaPrototypes!: LemmaPrototypeStringType[];
     @Prop({required: true }) preloadedOptions!: LemmaFormatterOptions;
 
     localOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
