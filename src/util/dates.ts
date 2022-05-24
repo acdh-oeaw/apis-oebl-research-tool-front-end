@@ -26,6 +26,7 @@ export class DateContainer {
         this.calendarDate = calendarDay;
     }
 
+
     // YYYY-MM-DD
     static fromISO_OnlyDate(isoDate: string | undefined | null ): DateContainer {
         if ((isoDate === undefined) || (isoDate === null)) {
@@ -179,4 +180,14 @@ export class DateContainer {
     }
 
 }
+
+export type SupportedDateFormatType = 'YYYY-MM-DD';
+type FactoryMethodType = (input: string | undefined | null) => DateContainer;
+type FactoryMethodMappingType = Record<SupportedDateFormatType, FactoryMethodType>;
+
+export const factoryMethods: FactoryMethodMappingType = {
+    'YYYY-MM-DD': DateContainer.fromISO_OnlyDate,
+}
+
+export const supportedDateFormats = Object.keys(factoryMethods);
 

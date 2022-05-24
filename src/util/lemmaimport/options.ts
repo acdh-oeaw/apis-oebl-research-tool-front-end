@@ -1,4 +1,5 @@
 import { LemmaRow } from "@/types/lemma";
+import { SupportedDateFormatType } from "../dates";
 
 type FileOptions = {
     fileType: 'text/csv';
@@ -49,6 +50,7 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
 export type LemmaFormatterOptions = {
     // Values, that should be converted into null
     nullValues: string[];
+    dateFormat: SupportedDateFormatType;
 };
 
 export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
@@ -56,6 +58,7 @@ export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
     nullValues:  [
         '', '#N/A', '#NA', '<NA>', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', 'nan', 'null'
     ],
+    dateFormat: 'YYYY-MM-DD',
 }
 
 export class ImportOptions {
