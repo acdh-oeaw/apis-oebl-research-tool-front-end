@@ -37,14 +37,32 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
     firstName: {
         extractOptions: {
             sourceKey: null,
-        }
+        },
     },
 
     lastName: {
         extractOptions: {
             sourceKey: null,
-        }
-    }
+        },
+    },
+
+    gender: {
+        extractOptions: {
+            sourceKey: null,
+        },
+    },
+
+    dateOfBirth: {
+        extractOptions: {
+            sourceKey: null,
+        },
+    },
+
+    dateOfDeath: {
+        extractOptions: {
+            sourceKey: null,
+        },
+    },
 };
 
 export type LemmaFormatterOptions = {

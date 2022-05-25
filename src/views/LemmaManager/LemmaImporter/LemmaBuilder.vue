@@ -32,6 +32,40 @@
                             />
                         </v-col>
                     </v-row>
+
+                    <v-row>
+                        <v-col>
+                            <column-select
+                                lemmaKey="gender"
+                                :sourceData="incommingData"
+                                @data="updateData($event)"
+                                @options="options.gender.extractOptions = $event"
+                                :preloadedOptions="options.gender.extractOptions"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <column-select
+                                lemmaKey="dateOfBirth"
+                                :sourceData="incommingData"
+                                @data="updateData($event)"
+                                @options="options.dateOfBirth.extractOptions = $event"
+                                :preloadedOptions="options.dateOfBirth.extractOptions"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <column-select
+                                lemmaKey="dateOfDeath"
+                                :sourceData="incommingData"
+                                @data="updateData($event)"
+                                @options="options.dateOfDeath.extractOptions = $event"
+                                :preloadedOptions="options.dateOfDeath.extractOptions"
+                            />
+                        </v-col>
+                    </v-row>
                     
                     <v-row>
                         <v-col>
