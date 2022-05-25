@@ -3,7 +3,7 @@
       <v-container>
           <v-row>
               <v-col>
-                  Vorschau
+                  {{label}}
               </v-col>
           </v-row>
           <v-row>
@@ -39,6 +39,7 @@ const showThisColumns: Array<keyof LemmaRow> = [
 export default class LemmaPreviewer extends Vue {
     
     @Prop() lemmas!: Partial<LemmaRow>[];
+    @Prop({default: 'Vorschau'}) label!: string;
 
     /**
      * https://vuetifyjs.com/en/api/v-data-table/#props-headers
