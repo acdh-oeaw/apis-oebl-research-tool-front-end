@@ -23,6 +23,17 @@
                     />
                 </v-expansion-panel-content>
             </v-expansion-panel>
+            <v-expansion-panel>
+                <v-expansion-panel-header>Gender</v-expansion-panel-header>
+                <v-expansion-panel-content eager>
+                    <gender-mapper 
+                        :lemmaPrototypes="lemmasPrototypesWithNullsAndRequiredFields"
+                        :preloadedOptions="localOptions.genderMapping"
+                        @data="genders = $event"
+                        @options="localOptions.genderMapping = $event"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
         </v-expansion-panels>
     </div>
 </template>
@@ -30,10 +41,11 @@
 <script lang="ts">
 
 import { LemmaRow } from "@/types/lemma";
-import { LemmaPrototypeStringType, LemmaPrototypeRequiredFieldsType, LemmaDates } from "@/util/lemmaimport/datacontainers";
+import { LemmaPrototypeStringType, LemmaPrototypeRequiredFieldsType, LemmaDates, LemmaGender } from "@/util/lemmaimport/datacontainers";
 import { LemmaFormatterOptions, defautLemmaFormatterOptions } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import DateFormatter from "./DateFormatter.vue";
+import GenderMapper from "./GenderMapper.vue";
 import NullManager from "./NullManager.vue";
 
 
@@ -44,6 +56,7 @@ import NullManager from "./NullManager.vue";
     components: {
         NullManager,  
         DateFormatter,
+        GenderMapper,
     },
 })
 export default class LemmaFormatter extends Vue {
@@ -60,6 +73,7 @@ export default class LemmaFormatter extends Vue {
     lemmasPrototypesWithNullsAndRequiredFields: LemmaPrototypeRequiredFieldsType[] = [];
 
     dates: LemmaDates[] = [];
+    genders: LemmaGender[] = [];
 
     newLemmas: LemmaRow[] = [];
 

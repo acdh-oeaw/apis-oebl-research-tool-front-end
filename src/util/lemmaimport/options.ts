@@ -1,3 +1,4 @@
+import { GenderAe0Enum } from "@/api";
 import { LemmaRow } from "@/types/lemma";
 import { SupportedDateFormatType } from "../dates";
 
@@ -65,10 +66,16 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
     },
 };
 
+export type GenderMappingOption = Record<
+    GenderAe0Enum, // Gender for the database
+    string  // Gender representation in lemma import
+>;
+
 export type LemmaFormatterOptions = {
     // Values, that should be converted into null
     nullValues: string[];
     dateFormat: SupportedDateFormatType;
+    genderMapping: GenderMappingOption;
 };
 
 export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
@@ -77,6 +84,11 @@ export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
         '', '#N/A', '#NA', '<NA>', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', 'nan', 'null'
     ],
     dateFormat: 'YYYY-MM-DD',
+    genderMapping: {
+        divers: 'divers',
+        männlich: 'männlich',
+        weiblich: 'weiblich',
+    },
 }
 
 export class ImportOptions {

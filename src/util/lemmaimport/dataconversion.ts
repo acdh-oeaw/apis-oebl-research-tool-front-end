@@ -1,9 +1,10 @@
+import { GenderAe0Enum } from "@/api";
 import { 
     LemmaPrototypeStringType,
     LemmaPrototypeNullableStringType,
     LemmaPrototypeRequiredFieldsType,
 } from "./datacontainers";
-import { defautLemmaFormatterOptions } from "./options";
+import { defautLemmaFormatterOptions, GenderMappingOption } from "./options";
 
 export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
     return {
@@ -52,4 +53,28 @@ export function showMissingRequiredFields(
     prototypes: LemmaPrototypeNullableStringType[],
 ): LemmaPrototypeNullableStringType[] {
     return prototypes.filter(prototype => prototype.lastName === null);
+}
+
+export function mapGender(gender: string | null | undefined, mapping: GenderMappingOption): GenderAe0Enum | undefined {
+    if ((gender === null) || (gender === undefined)) {
+        return undefined;
+    }
+
+    const options = Object.entries(mapping).filter(([_, genderStringRepresentation]) => gender === genderStringRepresentation);
+    
+    if (options.length === 0) {
+        return undefined;
+    }
+    const genderNormalized = options[0][0];
+
+    switch (genderNormalized) {
+        case GenderAe0Enum.DIVERS:
+            return GenderAe0Enum.DIVERS;
+        case GenderAe0Enum.WEIBLICH:
+            return GenderAe0Enum.WEIBLICH;
+        case GenderAe0Enum.M_NNLICH:
+            return GenderAe0Enum.M_NNLICH;
+        default:
+            return undefined;
+    }
 }
