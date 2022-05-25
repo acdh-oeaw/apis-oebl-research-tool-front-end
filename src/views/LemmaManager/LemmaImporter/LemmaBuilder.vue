@@ -6,17 +6,6 @@
                     <v-row>
                         <v-col>
                             <column-select
-                                lemmaKey="firstName"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @options="options.firstName.extractOptions = $event"
-                                :preloadedOptions="options.firstName.extractOptions"
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <column-select
                                 lemmaKey="lastName"
                                 :sourceData="incommingData"
                                 @data="updateData($event)"
@@ -32,6 +21,18 @@
                             >Dieses Feld muss ausgewählt werden</v-alert>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col>
+                            <column-select
+                                lemmaKey="firstName"
+                                :sourceData="incommingData"
+                                @data="updateData($event)"
+                                @options="options.firstName.extractOptions = $event"
+                                :preloadedOptions="options.firstName.extractOptions"
+                            />
+                        </v-col>
+                    </v-row>
+                    
                     <v-row>
                         <v-col>
                             <v-btn
