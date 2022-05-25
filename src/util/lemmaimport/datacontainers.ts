@@ -76,3 +76,5 @@ export type LemmaPrototypeRequiredFieldsType =
         lastName: NewLemmaRow['lastName'];
     }
 ;
+
+export type LemmaDates = Pick<NewLemmaRow, 'dateOfBirth' | 'dateOfDeath'>;

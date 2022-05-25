@@ -1,14 +1,25 @@
 <template>
     <div class="lemma-formatter-container">
-        <v-expansion-panels>
+        <v-expansion-panels multiple>
             <v-expansion-panel class="null-managment-row">
                 <v-expansion-panel-header>Null-Werte</v-expansion-panel-header>
-                <v-expansion-panel-content>
+                <v-expansion-panel-content eager>
                     <null-manager
                         :lemmaPrototypes="lemmaPrototypes"
                         :preloadedNullValues="localOptions.nullValues"
                         @options="localOptions.nullValues = $event"
                         @data="lemmasPrototypesWithNullsAndRequiredFields = $event"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+                <v-expansion-panel-header>Datumsformattierung</v-expansion-panel-header>
+                <v-expansion-panel-content eager>
+                    <date-formatter 
+                        :lemmaPrototypes="lemmasPrototypesWithNullsAndRequiredFields"
+                        :preloadedDateFormatOption="localOptions.dateFormat"
+                        @data="dates = $event"
+                        @options="localOptions.dateFormat = $event"
                     />
                 </v-expansion-panel-content>
             </v-expansion-panel>
@@ -19,9 +30,10 @@
 <script lang="ts">
 
 import { LemmaRow } from "@/types/lemma";
-import { LemmaPrototypeStringType, LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
+import { LemmaPrototypeStringType, LemmaPrototypeRequiredFieldsType, LemmaDates } from "@/util/lemmaimport/datacontainers";
 import { LemmaFormatterOptions, defautLemmaFormatterOptions } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue } from "vue-property-decorator";
+import DateFormatter from "./DateFormatter.vue";
 import NullManager from "./NullManager.vue";
 
 
@@ -31,6 +43,7 @@ import NullManager from "./NullManager.vue";
 @Component({
     components: {
         NullManager,  
+        DateFormatter,
     },
 })
 export default class LemmaFormatter extends Vue {
@@ -45,6 +58,8 @@ export default class LemmaFormatter extends Vue {
     }
 
     lemmasPrototypesWithNullsAndRequiredFields: LemmaPrototypeRequiredFieldsType[] = [];
+
+    dates: LemmaDates[] = [];
 
     newLemmas: LemmaRow[] = [];
 

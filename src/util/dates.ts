@@ -189,5 +189,5 @@ export const factoryMethods: FactoryMethodMappingType = {
     'YYYY-MM-DD': DateContainer.fromISO_OnlyDate,
 }
 
-export const supportedDateFormats = Object.keys(factoryMethods);
+export const supportedDateFormats = Object.keys(factoryMethods) as SupportedDateFormatType[];
 
