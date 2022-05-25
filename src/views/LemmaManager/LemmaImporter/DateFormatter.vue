@@ -22,7 +22,7 @@
     </div>
 </template>
 <script lang="ts">
-import { DateContainer, factoryMethods, supportedDateFormats, SupportedDateFormatType } from '@/util/dates';
+import { factoryMethods, supportedDateFormats, SupportedDateFormatType } from '@/util/dates';
 import { lemmaRowTranslations } from '@/util/labels';
 import { LemmaDates, LemmaPrototypeRequiredFieldsType } from '@/util/lemmaimport/datacontainers';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
