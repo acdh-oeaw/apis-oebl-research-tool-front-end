@@ -26,9 +26,12 @@ export function replaceNullStrings(
         nanValues: string[] = defautLemmaFormatterOptions.nullValues,
     ): LemmaPrototypeNullableStringType {
         const sourceEntries = Object.entries(source);
-        const targetEntries = sourceEntries.map(
-            ([key, value]: [key: string, value: string]) // We get an string key and value
-            : [key: string, value: string | null] =>    // return a string key and value string or null
+        const notUndefinedEntries = sourceEntries.filter(
+            (keyValue: [string, string | undefined]): keyValue is [string,string] => keyValue[1] !== undefined
+        );
+        const targetEntries = notUndefinedEntries.map(
+            ([key, value]: [string, string]) // We get an string key and value
+            : [string, string | null] =>    // return a string key and value string or null
              [key, nanValues.includes(value) ? null : value] // if it is in the nan list
         );
 
