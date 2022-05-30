@@ -91,17 +91,6 @@ export default class GenderMapper extends Vue {
         return Array.from(this.gendersInSource).filter(gender => !chosenGenders.includes(gender))
     }
 
-    get vuetifyGenders(): Array<{text: string, value: string}> {
-        return this.availableGenders.map(
-            gender => {
-                return {
-                    text: gender,
-                    value: gender,
-                };
-            }
-        );
-    }
-
     get chosenGendersAreUnique(): boolean {
         const genders = new Set();
         for (const gender in this.genders) {
