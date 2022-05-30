@@ -104,7 +104,7 @@ export default class GenderMapper extends Vue {
 
     get chosenGendersAreUnique(): boolean {
         const genders = new Set();
-        for (const gender in genders) {
+        for (const gender in this.genders) {
             if (gender === '') {
                 continue;
             }
