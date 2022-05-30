@@ -31,12 +31,21 @@
                     </v-col>
                 </v-row>
             </div>
-
+            <v-row class="gender-import-preview">
+                <v-col>
+                    <v-data-table
+                        label="Vorschau"
+                        :headers="genderPreviewHeaders"
+                        :items="genderPreviewRows"
+                    />
+                </v-col>
+            </v-row>
         </v-container>
     </div>
 </template>
 <script lang="ts">
 import { GenderAe0Enum } from '@/api';
+import { lemmaRowTranslations } from '@/util/labels';
 import { LemmaGender, LemmaPrototypeRequiredFieldsType } from '@/util/lemmaimport/datacontainers';
 import { mapGender } from '@/util/lemmaimport/dataconversion';
 import { defautLemmaFormatterOptions, GenderMappingOption } from '@/util/lemmaimport/options';
@@ -107,6 +116,38 @@ export default class GenderMapper extends Vue {
             genders.add(gender);
         }
         return true;
+    }
+
+    // https://vuetifyjs.com/en/api/v-data-table/#props-headers
+    get genderPreviewHeaders() {
+        return [
+            {text: lemmaRowTranslations.lastName.de, value: 'lastName'},
+            {text: `${lemmaRowTranslations.gender.de}-Quelle`, value: 'genderSource'},
+            {text: `${lemmaRowTranslations.gender.de}-Import`, value: 'genderImport'},
+        ];
+    }
+
+    get genderPreviewRows(): Array<{lastName: string, genderSource: string, genderImport: string}> 
+    {
+        const parsedGenders = this.genders;
+        const prototypes = this.lemmaPrototypes;
+
+        if (parsedGenders.length !== prototypes.length) {
+            console.error({message: 'Parsed genders do not have the same length as prototypes', parsedGenders, prototypes});
+        }
+
+        return parsedGenders.map(
+            (parsedGender, index) => {
+                const prototype = prototypes[index];
+                return {
+                    lastName: prototype.lastName,
+                    genderSource: prototype.gender ?? 'Kein Wert',
+                    genderImport: parsedGender.gender ?? 'Nicht erkannt'
+                };
+            }
+        )
+        ;
+
     }
 
 }
