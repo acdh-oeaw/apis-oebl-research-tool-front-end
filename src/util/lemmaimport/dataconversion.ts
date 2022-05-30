@@ -56,17 +56,38 @@ export function showMissingRequiredFields(
 }
 
 export function mapGender(gender: string | null | undefined, mapping: GenderMappingOption): GenderAe0Enum | undefined {
-    if ((gender === null) || (gender === undefined)) {
+    // All cases of empty value return undefined gender
+    if ((gender === null) || (gender === undefined) || (gender === '')) {
         return undefined;
     }
 
-    const options = Object.entries(mapping).filter(([_, genderStringRepresentation]) => gender === genderStringRepresentation);
+    // Check every gender:genderStringRepresentations for 1:n equality.
+    const matches = Object
+        .entries(mapping).
+        filter(
+            ([_, genderStringRepresentations]) => genderStringRepresentations.includes(gender)
+        )
+    ;
     
-    if (options.length === 0) {
+    if (matches.length === 0) {
         return undefined;
     }
-    const genderNormalized = options[0][0];
 
+    /**
+     * No uniqueness is enforced in the <{gender: [genderRepresentation, ]} -> genderRepresentation> overall the object / enum,
+     * instead it is treated as the users choice (however there should be a warning in the ux). 
+     */
+    const mappedGenders = new Set(matches.map(entry => entry[0]));
+
+    if (mappedGenders.size > 1) {
+        return GenderAe0Enum.DIVERS;
+    }
+
+    const [genderNormalized, ] = mappedGenders; // I would prefer just mappedGenders[0] or mappedGenders.pop()
+
+    /**
+     * This is … not cool. TODO
+     */
     switch (genderNormalized) {
         case GenderAe0Enum.DIVERS:
             return GenderAe0Enum.DIVERS;

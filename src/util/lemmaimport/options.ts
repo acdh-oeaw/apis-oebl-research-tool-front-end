@@ -68,7 +68,12 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
 
 export type GenderMappingOption = Record<
     GenderAe0Enum, // Gender for the database
-    string  // Gender representation in lemma import
+    /**
+     * Gender representations in lemma import
+     * 
+     * This could be multiple strings, since the source could have more granular ore ambigous gender definitions.
+     */
+    string[]  
 >;
 
 export type LemmaFormatterOptions = {
@@ -85,9 +90,9 @@ export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
     ],
     dateFormat: 'YYYY-MM-DD',
     genderMapping: {
-        divers: 'divers',
-        männlich: 'männlich',
-        weiblich: 'weiblich',
+        divers: ['divers', ],
+        männlich: ['männlich',],
+        weiblich: ['weiblich',],
     },
 }
 
