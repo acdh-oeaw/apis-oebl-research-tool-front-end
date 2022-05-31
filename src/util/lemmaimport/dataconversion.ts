@@ -63,8 +63,8 @@ export function mapGender(gender: string | null | undefined, mapping: GenderMapp
 
     // Check every gender:genderStringRepresentations for 1:n equality.
     const matches = Object
-        .entries(mapping).
-        filter(
+        .entries(mapping)
+        .filter(
             ([_, genderStringRepresentations]) => genderStringRepresentations.includes(gender)
         )
     ;
