@@ -49,6 +49,13 @@
               >Weiter</v-btn>
           </v-col>
       </v-row>
+      <v-row class="lemma-formatting-preview-row">
+        <v-col>
+          <lemma-previewer
+              :lemmas="newLemmas"
+          />
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -69,6 +76,7 @@ import {
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import DateFormatter from "./DateFormatter.vue";
 import GenderMapper from "./GenderMapper.vue";
+import LemmaPreviewer from "./LemmaPreviewer.vue";
 import NullManager from "./NullManager.vue";
 
 /**
@@ -79,6 +87,7 @@ import NullManager from "./NullManager.vue";
     NullManager,
     DateFormatter,
     GenderMapper,
+    LemmaPreviewer,
   },
 })
 export default class LemmaFormatter extends Vue {
