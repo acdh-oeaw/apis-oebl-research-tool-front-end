@@ -42,6 +42,13 @@
           </v-expansion-panels>
         </v-col>
       </v-row>
+      <v-row class="submit-lemma-formatting-row">
+          <v-col>
+              <v-btn
+                @click="submit"
+              >Weiter</v-btn>
+          </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -101,9 +108,12 @@ export default class LemmaFormatter extends Vue {
 
   @Watch("newLemmas", { immediate: true, deep: false }) // Let the browser rest. Watch options deep should cover all.
   @Watch("options", { immediate: true, deep: true })
-  submit() {
+  emit() {
     this.$emit("data", this.newLemmas);
     this.$emit("options", this.localOptions);
+  }
+
+  submit() {
     this.$emit("submit");
   }
 }
