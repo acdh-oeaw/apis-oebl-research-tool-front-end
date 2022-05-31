@@ -1,8 +1,11 @@
 import { GenderAe0Enum } from "@/api";
+import { NewLemmaRow } from "@/types/lemma";
 import { 
     LemmaPrototypeStringType,
     LemmaPrototypeNullableStringType,
     LemmaPrototypeRequiredFieldsType,
+    LemmaDates,
+    LemmaGender,
 } from "./datacontainers";
 import { defautLemmaFormatterOptions, GenderMappingOption } from "./options";
 
@@ -98,4 +101,81 @@ export function mapGender(gender: string | null | undefined, mapping: GenderMapp
         default:
             return undefined;
     }
+}
+
+/**
+ * Build A NewLemmaRow With Formatted Data And Fill In Empty / Not Yet Build Fields
+ * 
+ * @param lemmaPrototype
+ * @param lemmaDates 
+ * @param lemmaGender 
+ */
+export function buildNewLemmaRowAfterFormatting(
+    lemmaPrototype: LemmaPrototypeRequiredFieldsType,
+    lemmaDates: LemmaDates,
+    lemmaGender: LemmaGender,
+): NewLemmaRow {
+
+    return {
+        firstName: lemmaPrototype.firstName,
+        lastName: lemmaPrototype.lastName,
+        ... lemmaDates, // New Formatted Data
+        ... lemmaGender, // New Formatted Data
+
+        list: undefined, // This will be done later
+        columns_user: {a: 2}, // This will be done later
+
+        alternativeNames: [], // Not yet implemented,
+        gnd: [], // Not yet implemented,
+        loc: null, // Not yet implemented,
+        viaf_id: null, // Not yet implemented,
+        professionDetail: null, // Not yet implemented,
+        professionGroup: null, // Not yet implemented
+        secondaryLiterature: [], // Not yet implemented,
+        zoteroKeysBy: [], // Not yet implemented,
+        zoteroKeysAbout: [], // Not yet implemented,
+        bioNote: null, // Not yet implemented,
+        kinship: null, // Not yet implemented,
+        religion: null, // Not yet implemented,
+
+        legacyGideonCitations: null, // Legacy – no import
+    };
+}
+
+export function mergeBuildNewLemmaRows(
+    lemmaPrototypes: LemmaPrototypeRequiredFieldsType[],
+    lemmaDatesRows: LemmaDates[],
+    lemmaGenderRows: LemmaGender[],
+): NewLemmaRow[] {
+    // Check, that all subcomponents return data of the same length (amount of rows)
+    const numberOfRows = new Set([
+        lemmaPrototypes.length,
+        lemmaDatesRows.length,
+        lemmaGenderRows.length,
+    ]);
+
+    if (numberOfRows.size !== 1) {
+        // Inform harshly in console
+        console.error({
+                message: 'Not all columns have the same amount of rows',
+                lemmaGenderRows,
+                lemmaDatesRows,
+                lemmaPrototypes,
+            });
+        // But don't crash app …
+        return [];
+    }
+
+    return lemmaPrototypes.map(
+        (lemmaPrototype, index) => {
+            const lemmaDates = lemmaDatesRows[index];
+            const lemmaGender = lemmaGenderRows[index];
+            return buildNewLemmaRowAfterFormatting(
+                lemmaPrototype,
+                lemmaDates,
+                lemmaGender,
+            );
+        }
+    );
+
 }

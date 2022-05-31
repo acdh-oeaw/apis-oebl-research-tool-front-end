@@ -40,8 +40,9 @@
 
 <script lang="ts">
 
-import { LemmaRow } from "@/types/lemma";
+import { NewLemmaRow } from "@/types/lemma";
 import { LemmaPrototypeStringType, LemmaPrototypeRequiredFieldsType, LemmaDates, LemmaGender } from "@/util/lemmaimport/datacontainers";
+import { mergeBuildNewLemmaRows } from "@/util/lemmaimport/dataconversion";
 import { LemmaFormatterOptions, defautLemmaFormatterOptions } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import DateFormatter from "./DateFormatter.vue";
@@ -75,7 +76,13 @@ export default class LemmaFormatter extends Vue {
     dates: LemmaDates[] = [];
     genders: LemmaGender[] = [];
 
-    newLemmas: LemmaRow[] = [];
+    get newLemmas(): NewLemmaRow[] {
+        return mergeBuildNewLemmaRows(
+            this.lemmasPrototypesWithNullsAndRequiredFields,
+            this.dates,
+            this.genders,
+        );
+    }
 
     submit() {
         this.$emit('data', this.newLemmas);
