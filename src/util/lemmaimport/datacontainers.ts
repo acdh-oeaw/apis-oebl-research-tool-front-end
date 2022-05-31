@@ -1,7 +1,5 @@
 
-import { GenderAe0Enum } from "@/api";
 import { NewLemmaRow } from "@/types/lemma";
-import { DateContainer } from "../dates";
 
 /**
  * Wrapper class for x*y data coming from tabular data
