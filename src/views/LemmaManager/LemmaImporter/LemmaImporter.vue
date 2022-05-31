@@ -29,7 +29,14 @@
           <v-stepper-step
             :complete="3 <= greatestCompleteStep"
             step="3"
-          >Daten formatieren</v-stepper-step>
+          >
+          Daten formatieren
+          <v-btn
+              v-if="greatestCompleteStep > 2"
+              @click="stepToDisplay = 3 "
+              small icon
+            ><v-icon>mdi-lead-pencil</v-icon></v-btn>
+          </v-stepper-step>
           <v-stepper-step
             :complete="4 <= greatestCompleteStep"
             step="4"
