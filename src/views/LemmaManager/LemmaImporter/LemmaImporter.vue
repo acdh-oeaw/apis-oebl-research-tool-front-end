@@ -92,8 +92,14 @@
               @submit="markStepDone(4)"
             />
           </v-stepper-content>
-          <v-stepper-content step="4">
-            TODO: Liste auswählen
+          <v-stepper-content step="5">
+            <list-selector
+              :preloadedOptions="importOptions.selectedList"
+              :newLemmasRows="newLemmas"
+              @data="newLemmas = $event"
+              @options="importOptions.selectedList = $event;"
+              @submit="markStepDone(5)"
+            />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -112,6 +118,7 @@ import LemmaBuilder from './LemmaBuilder.vue';
 import LemmaFormatter from './LemmaFormatter.vue';
 import { LemmaRow } from '@/types/lemma';
 import UserColumnAdding from './UserColumnAdding.vue';
+import ListSelector from './ListSelector.vue';
 
 
 
@@ -135,6 +142,7 @@ import UserColumnAdding from './UserColumnAdding.vue';
     LemmaBuilder,
     LemmaFormatter,
     UserColumnAdding,
+    ListSelector,
   }
 })
 export default class LemmaImporter extends Vue {

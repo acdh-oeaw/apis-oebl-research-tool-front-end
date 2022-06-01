@@ -1,5 +1,5 @@
 import { GenderAe0Enum } from "@/api";
-import { LemmaRow } from "@/types/lemma";
+import { LemmaRow, NewLemmaRow } from "@/types/lemma";
 import { SupportedDateFormatType } from "../dates";
 
 type FileOptions = {
@@ -100,6 +100,8 @@ export type UserColumnMapping = {
     [sourceColumn: string]: string; // sourceColumn: targetColumn (lemma.user_columns.targetColumn)
 };
 
+export type SelectedList = NewLemmaRow['list'];
+
 export class ImportOptions {
     
     fileOptions: null | SupportedFilesOptions = null;
@@ -109,6 +111,8 @@ export class ImportOptions {
     lemmaFormatterOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
 
     userColumnMapping: UserColumnMapping = {};    
+
+    selectedList: SelectedList = undefined;
 
     allIsFilledIn(): boolean {
         return this.fileOptions !== null;
