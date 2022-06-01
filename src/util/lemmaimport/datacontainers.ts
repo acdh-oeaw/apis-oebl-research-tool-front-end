@@ -48,10 +48,17 @@ export class Data2D {
         );
     }
 
-    selectRows(missingRowsIndexes: number[]): Data2D {
+    /**
+     * Get a new Data2D object by row numbers
+     * 
+     * @param rowIndexes 
+     * @param inverseSelect If true, select the rows that are not in 
+     * @returns A new Data2D object
+     */
+    selectRows(rowIndexes: number[], inverseSelect: boolean = false): Data2D {
         return new Data2D(
             this.headers,
-            this.data.filter((_, index) => missingRowsIndexes.includes(index))
+            this.data.filter((_, index) => rowIndexes.includes(index) !== inverseSelect )
         );
       }
 
