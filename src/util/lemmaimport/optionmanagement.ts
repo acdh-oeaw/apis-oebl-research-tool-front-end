@@ -8,7 +8,7 @@ type ImportOptionsCollections = {
 
 
 
-export class ImportOptionManager {
+export class ImportOptionsManager {
 
     storageKey: string = 'lemmaImportOptions'; 
     importOptionsCollections: ImportOptionsCollections = {}
