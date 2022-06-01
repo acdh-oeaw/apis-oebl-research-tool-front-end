@@ -70,6 +70,7 @@
               :preloadedOptions="importOptions.lemmaFormatterOptions"
               @options="importOptions.lemmaFormatterOptions = $event"
               @data="newLemmas = $event"
+              @missingRowsIndexes="missingRowsIndexes = $event"
               @submit="markStepDone(3)"
             />
           </v-stepper-content>
@@ -155,9 +156,17 @@ export default class LemmaImporter extends Vue {
 
   rawImportData: Data2D = new Data2D([], []);
 
+  // Some rows, will not be imported. These are their indexes. 
+  missingRowsIndexes: number[] = [];
+
   lemmaPrototypes: LemmaPrototypeStringType[] = [];
 
   newLemmas: LemmaRow[] = [];
+
+  get filteredRawImportData(): Data2D {
+    return this.rawImportData.selectRows(this.missingRowsIndexes, true);
+  }
+
 
 }
 </script>

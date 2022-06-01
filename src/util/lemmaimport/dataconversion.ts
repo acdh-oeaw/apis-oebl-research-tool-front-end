@@ -42,20 +42,32 @@ export function replaceNullStrings(
         return Object.fromEntries(targetEntries) as LemmaPrototypeNullableStringType;
 }
 
+function hasMissingRequiredField(prototype: LemmaPrototypeNullableStringType) {
+    return prototype.lastName === null;
+}
+
 export function filterMissingRequiredFields(
     prototypes: LemmaPrototypeNullableStringType[],
 ): LemmaPrototypeRequiredFieldsType[] {
     return prototypes.filter(
             (prototype)
             : prototype is LemmaPrototypeRequiredFieldsType => 
-            prototype.lastName !== null
+            ! hasMissingRequiredField(prototype)
         );
 }
 
 export function showMissingRequiredFields(
     prototypes: LemmaPrototypeNullableStringType[],
 ): LemmaPrototypeNullableStringType[] {
-    return prototypes.filter(prototype => prototype.lastName === null);
+    return prototypes.filter(hasMissingRequiredField);
+}
+
+    
+export function getMissingRequiredFieldIndexes(prototypes: LemmaPrototypeNullableStringType[]): number[] {
+    return prototypes
+        .map((prototype, index) => hasMissingRequiredField(prototype) ? index : false)
+        .filter((value): value is number => value !== false)
+    ;
 }
 
 export function mapGender(gender: string | null | undefined, mapping: GenderMappingOption): GenderAe0Enum | undefined {

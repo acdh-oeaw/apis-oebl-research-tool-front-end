@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { LemmaPrototypeStringType, LemmaPrototypeNullableStringType, LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
-import { filterMissingRequiredFields, replaceNullStrings, showMissingRequiredFields } from "@/util/lemmaimport/dataconversion";
+import { filterMissingRequiredFields, getMissingRequiredFieldIndexes, replaceNullStrings, showMissingRequiredFields } from "@/util/lemmaimport/dataconversion";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import LemmaPreviewer from "./LemmaPreviewer.vue";
 
@@ -69,11 +69,16 @@ export default class NullManager extends Vue {
         return showMissingRequiredFields(this.lemmasWithNulls);
     }
 
+    get missingRequiredFieldIndexes(): number[] {
+        return getMissingRequiredFieldIndexes(this.nullPrototypes);
+    }
+
     @Watch('options', {deep: true, immediate: true})
     @Watch('lemmaPrototypesWithRequiredFields', {deep: true, immediate: true})
     submit() {
         this.$emit('options', this.localNullValues);
         this.$emit('data', this.lemmaPrototypesWithRequiredFields);
+        this.$emit('missingRowsIndexes', this.missingRequiredFieldIndexes);
     }
 
     // https://vuetifyjs.com/en/api/v-autocomplete/#props-items

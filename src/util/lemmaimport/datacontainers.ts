@@ -5,7 +5,7 @@ import { NewLemmaRow } from "@/types/lemma";
  * Wrapper class for x*y data coming from tabular data
  */ 
 export class Data2D {
-
+    
     private _headers: string[];
     private _data: Array<string[]> = [];
 
@@ -47,6 +47,13 @@ export class Data2D {
             row => row[numericalHeaderName]
         );
     }
+
+    selectRows(missingRowsIndexes: number[]): Data2D {
+        return new Data2D(
+            this.headers,
+            this.data.filter((_, index) => missingRowsIndexes.includes(index))
+        );
+      }
 
 }
         

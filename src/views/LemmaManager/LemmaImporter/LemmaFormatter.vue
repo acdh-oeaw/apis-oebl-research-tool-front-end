@@ -12,6 +12,7 @@
                   :preloadedNullValues="localOptions.nullValues"
                   @options="localOptions.nullValues = $event"
                   @data="lemmasPrototypesWithNullsAndRequiredFields = $event"
+                  @missingRowsIndexes="missingRowsIndexes = $event"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -101,8 +102,10 @@ export default class LemmaFormatter extends Vue {
     this.localOptions = this.preloadedOptions;
   }
 
-  lemmasPrototypesWithNullsAndRequiredFields: LemmaPrototypeRequiredFieldsType[] =
-    [];
+  lemmasPrototypesWithNullsAndRequiredFields: LemmaPrototypeRequiredFieldsType[] = [];
+
+  // Some rows, will not be imported. These are their indexes. 
+  missingRowsIndexes: number[] = [];
 
   dates: LemmaDates[] = [];
   genders: LemmaGender[] = [];
@@ -120,6 +123,7 @@ export default class LemmaFormatter extends Vue {
   emit() {
     this.$emit("data", this.newLemmas);
     this.$emit("options", this.localOptions);
+    this.$emit("missingRowsIndexes", this.missingRowsIndexes);
   }
 
   submit() {
