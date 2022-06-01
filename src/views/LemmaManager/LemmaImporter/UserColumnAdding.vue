@@ -8,7 +8,7 @@
     </div>
 </template>
 <script lang="ts">
-import { NewLemmaRow, UserColumn } from "@/types/lemma";
+import { NewLemmaRow } from "@/types/lemma";
 import { Data2D } from "@/util/lemmaimport/datacontainers";
 import { ColumnConversions, UserColumnMapping } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
