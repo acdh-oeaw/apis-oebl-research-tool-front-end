@@ -96,6 +96,10 @@ export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
     },
 }
 
+export type UserColumnMapping = {
+    [sourceColumn: string]: string; // sourceColumn: targetColumn (lemma.user_columns.targetColumn)
+};
+
 export class ImportOptions {
     
     fileOptions: null | SupportedFilesOptions = null;
@@ -103,6 +107,8 @@ export class ImportOptions {
     lemmaBuilderOptions: ColumnConversions = defaultLemmaBuilderOptions;
     
     lemmaFormatterOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
+
+    userColumnMapping: UserColumnMapping = {};    
 
     allIsFilledIn(): boolean {
         return this.fileOptions !== null;

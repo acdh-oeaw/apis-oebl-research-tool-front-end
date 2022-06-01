@@ -40,7 +40,14 @@
           <v-stepper-step
             :complete="4 <= greatestCompleteStep"
             step="4"
-          >Benutzerdefinierte Spalten</v-stepper-step>
+          >
+          Benutzerdefinierte Spalten
+          <v-btn
+              v-if="greatestCompleteStep > 3"
+              @click="stepToDisplay = 4 "
+              small icon
+            ><v-icon>mdi-lead-pencil</v-icon></v-btn>
+          </v-stepper-step>
           <v-stepper-step
             :complete="5 <= greatestCompleteStep"
             step="5"
@@ -75,7 +82,15 @@
             />
           </v-stepper-content>
           <v-stepper-content step="4">
-            TODO: Benutzerdefinierte Spalten
+            <user-column-adding
+              :preloadedOptions="importOptions.userColumnMapping"
+              :newLemmas="newLemmas"
+              :rawImportData="filteredRawImportData"
+              :columnMapping="importOptions.lemmaBuilderOptions"
+              @otions="importOptions.userColumnMapping = $event"
+              @data="newLemmas = $event"
+              @submit="markStepDone(4)"
+            />
           </v-stepper-content>
           <v-stepper-content step="4">
             TODO: Liste auswählen
@@ -96,6 +111,7 @@ import ImportFileDialog from './ImportFileDialog.vue';
 import LemmaBuilder from './LemmaBuilder.vue';
 import LemmaFormatter from './LemmaFormatter.vue';
 import { LemmaRow } from '@/types/lemma';
+import UserColumnAdding from './UserColumnAdding.vue';
 
 
 
@@ -118,6 +134,7 @@ import { LemmaRow } from '@/types/lemma';
     ImportFileDialog,
     LemmaBuilder,
     LemmaFormatter,
+    UserColumnAdding,
   }
 })
 export default class LemmaImporter extends Vue {
@@ -138,7 +155,7 @@ export default class LemmaImporter extends Vue {
       throw new Error(`Can not adavance more than one step. greatestCompleteStep = ${this.greatestCompleteStep}, required step = ${step}`);
     }
 
-    if (step === 4) {
+    if (step === 5) {
       throw new Error('NotImplemented Error / TODO. Crossed the finish line.');
     }
 
