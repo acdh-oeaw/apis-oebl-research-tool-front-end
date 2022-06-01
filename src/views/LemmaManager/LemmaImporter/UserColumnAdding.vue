@@ -31,12 +31,12 @@ export default class UserColumnAdding extends Vue {
         this.localOptions = this.preloadedOptions;
     }
 
-    userColumns: UserColumn[] = [];
+    localLemmas: NewLemmaRow[] = [];
 
     @Watch('localOptions', {deep: true, immediate: true})
-    @Watch('userColumns', {deep: false, immediate: true})
+    @Watch('localLemmas', {deep: false, immediate: true})
     emit() {
-        this.$emit('data', this.userColumns);
+        this.$emit('data', this.localLemmas);
         this.$emit('options', this.localOptions);
     }
 
