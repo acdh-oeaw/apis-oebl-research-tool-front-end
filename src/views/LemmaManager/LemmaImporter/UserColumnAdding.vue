@@ -27,7 +27,8 @@ export default class UserColumnAdding extends Vue {
 
     localOptions: UserColumnMapping = {};
 
-    created() {
+    @Watch('preloadedOptions', {immediate: true, deep: true})
+    setOptions() {
         this.localOptions = this.preloadedOptions;
     }
 

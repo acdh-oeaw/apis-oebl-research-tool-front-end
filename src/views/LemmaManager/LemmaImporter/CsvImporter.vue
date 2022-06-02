@@ -30,24 +30,18 @@
 </template>
 
 <script lang="ts">
-import { CsvOptions } from '@/util/lemmaimport/options';
+import { CsvOptions, defaultOptions } from '@/util/lemmaimport/options';
 import lodash from 'lodash';
 import neatCsv from 'neat-csv';
 import { Vue, Prop, Watch, Component } from 'vue-property-decorator';
 
-const defaultOptions: CsvOptions = {
-    fileType: 'text/csv',
-    useFirstRowAsHeaders: true,
-    newLine: '\n',
-    textDelimiter: '"',
-    separator: ',',
-};
+
 
 @Component
 export default class CsvImporter extends Vue {
 
     @Prop({required: true}) file!: File;
-    @Prop({default: null}) preloadedOptions!: CsvOptions|null;
+    @Prop({required: true}) preloadedOptions!: CsvOptions;
 
     @Watch('localOptions', {deep: true, immediate: true})
     emitOptions(): void {
@@ -72,9 +66,7 @@ export default class CsvImporter extends Vue {
 
     @Watch('preloadedOptions', {deep: true, immediate: true})
     watchPreloadedOptions() {
-        if (this.preloadedOptions !== null) {
-             this.localOptions = this.preloadedOptions;
-        }
+            this.localOptions = this.preloadedOptions;
     }
 
     @Watch('file', {deep: true, immediate: true})

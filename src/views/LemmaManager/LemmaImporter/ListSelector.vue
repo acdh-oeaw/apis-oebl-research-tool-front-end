@@ -17,7 +17,8 @@ export default class ListSelector extends Vue {
 
     selectedList: SelectedList = undefined;
 
-    created() {
+    @Watch('preloadedOptions', {immediate: true, deep: true})
+    setList() {
         this.selectedList = this.preloadedOptions;
     }
 

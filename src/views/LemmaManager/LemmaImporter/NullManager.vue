@@ -51,7 +51,8 @@ export default class NullManager extends Vue {
     
     localNullValues: string[] = [];
 
-    created() {
+    @Watch('preloadedNullValues', {immediate: true, deep: true})
+    setLocalOptions() {
         this.localNullValues = this.preloadedNullValues;
     }
 

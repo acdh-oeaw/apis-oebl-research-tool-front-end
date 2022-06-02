@@ -61,7 +61,8 @@ export default class GenderMapper extends Vue {
 
     genderEntries = Object.entries(GenderAe0Enum);
 
-    created() {
+    @Watch('preloadedOptions', {immediate: true, deep: true})
+    setLocalOptions() {
         this.localOptions = this.preloadedOptions;
     }
 

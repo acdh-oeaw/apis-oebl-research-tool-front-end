@@ -98,7 +98,8 @@ export default class LemmaFormatter extends Vue {
 
   localOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
 
-  created() {
+  @Watch('preloadedOptions', {immediate: true, deep: true})
+  setLocalOptions() {
     this.localOptions = this.preloadedOptions;
   }
 

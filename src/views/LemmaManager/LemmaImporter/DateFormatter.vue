@@ -42,7 +42,8 @@ export default class DateFormatter extends Vue {
     supportedDateFormats: SupportedDateFormatType[] = supportedDateFormats;
     localDateFormat: SupportedDateFormatType = supportedDateFormats[0];
 
-    created() {
+    @Watch('preloadedDateFormatOption', {immediate: true, deep: true})
+    setDateFormat() {
         this.localDateFormat = this.preloadedDateFormatOption;
     }
 

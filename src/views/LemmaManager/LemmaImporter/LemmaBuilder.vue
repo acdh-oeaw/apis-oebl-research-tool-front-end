@@ -115,7 +115,8 @@ export default class LemmaBuilder extends Vue {
 
     options: ColumnConversions = defaultLemmaBuilderOptions;
 
-    created() {
+    @Watch('preloadedOptions', {immediate: true, deep: true})
+    setOptions() {
         // This is not real reactive, only at startup, so no Watch
         this.options = this.preloadedOptions;
     }

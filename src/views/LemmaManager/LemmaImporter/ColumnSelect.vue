@@ -34,8 +34,6 @@ export default class ColumnSelect extends Vue {
     label: string = '';
 
     created() {
-        // This is not real reactive, only at startup, so no Watch
-        this.options = this.preloadedOptions;
         this.label = lemmaRowTranslations[this.lemmaKey].de;
     }
 
@@ -55,6 +53,11 @@ export default class ColumnSelect extends Vue {
         );
     }
 
+    @Watch('preloadedOptions', {immediate: true, deep: true})
+    setLocalOptions() {
+        this.options = this.preloadedOptions;
+    }
+
     @Watch('options', {immediate: true, deep: true})
     emitExtraction() {
         // I'm not able to stop vuetify from doing this.
@@ -66,9 +69,7 @@ export default class ColumnSelect extends Vue {
             this.cancel();
         } else {
             this.submit();
-        }
-
-        
+        }        
     }
 
     submit() {

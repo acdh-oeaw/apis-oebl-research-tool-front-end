@@ -19,6 +19,14 @@ export type XlsxOptions = FileOptions & {
 
 export type SupportedFilesOptions = CsvOptions | XlsxOptions;
 
+export const defaultOptions: CsvOptions = {
+    fileType: 'text/csv',
+    useFirstRowAsHeaders: true,
+    newLine: '\n',
+    textDelimiter: '"',
+    separator: ',',
+};
+
 export type ExtractColumnOptions = {
     // Use this key to extract data in rows
     sourceKey: string | null,
@@ -104,7 +112,7 @@ export type SelectedList = NewLemmaRow['list'];
 
 export class ImportOptions {
     
-    fileOptions: null | SupportedFilesOptions = null;
+    fileOptions: SupportedFilesOptions = defaultOptions;
 
     lemmaBuilderOptions: ColumnConversions = defaultLemmaBuilderOptions;
     
@@ -115,6 +123,6 @@ export class ImportOptions {
     selectedList: SelectedList = undefined;
 
     allIsFilledIn(): boolean {
-        return this.fileOptions !== null;
+        return this.lemmaBuilderOptions.lastName?.extractOptions.sourceKey !== null;
     }
 }

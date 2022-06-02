@@ -55,7 +55,7 @@
 <script lang="ts">
 
 import { Data2D } from '@/util/lemmaimport/datacontainers';
-import { SupportedFilesOptions } from '@/util/lemmaimport/options';
+import { defaultOptions, SupportedFilesOptions } from '@/util/lemmaimport/options';
 import lodash from 'lodash';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
@@ -76,11 +76,11 @@ export default class ImportFileDialog extends Vue {
   /**
    * Preloaded file options from storage
    */
-  @Prop({ default: null }) preloadedFileOptions!: null | SupportedFilesOptions;
+  @Prop({ required: true }) preloadedFileOptions!: SupportedFilesOptions;
 
   file: File | null = null;
 
-  localOptions: SupportedFilesOptions | null = null;
+  localOptions: SupportedFilesOptions = defaultOptions;
 
   rawData: Array<string[]> | null = null;
   fileType: SupportedFilesOptions['fileType'] = 'text/csv';
@@ -88,7 +88,6 @@ export default class ImportFileDialog extends Vue {
   get localData(): Data2D|null {
     if (
       (this.rawData === null)
-      || (this.localOptions === null)
       || (this.rawData.length === 0)
       ) {
       return null;
@@ -104,7 +103,6 @@ export default class ImportFileDialog extends Vue {
   get headers(): string[] {
     if (
       (this.rawData === null)
-      || (this.localOptions === null)
       || (this.rawData.length === 0)
       ) {
       return [];
@@ -118,7 +116,6 @@ export default class ImportFileDialog extends Vue {
   get tableBody(): Array<string[]> {
     if (
       (this.rawData === null)
-      || (this.localOptions === null)
       || (this.rawData.length === 0)
       ) {
       return [];
@@ -130,13 +127,8 @@ export default class ImportFileDialog extends Vue {
       ;
   }
   
-
-  
   emitOptions(): void
   {
-    if (this.localOptions === null) {
-      return;
-    }
     this.$emit('options', this.localOptions);
   }
 
@@ -155,9 +147,6 @@ export default class ImportFileDialog extends Vue {
 
   @Watch('preloadedOptions', {deep: true, immediate: true})
   watchPreloadedOptions() {
-    if (this.preloadedFileOptions === null) {
-      return;
-    }
     this.localOptions = this.preloadedFileOptions;
     this.fileType = this.preloadedFileOptions.fileType;
   }
