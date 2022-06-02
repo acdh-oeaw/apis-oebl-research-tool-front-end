@@ -1,7 +1,15 @@
 <template>
   <div class="lemma-importer-container">
-    <v-container>
-      <v-row>
+    <v-container >
+      <v-row class="lemma-import-saving">
+        <v-col>
+          <import-options-saver
+              :currentOptions="importOptions"
+              @options="importOptions = $event"
+          />
+        </v-col>
+      </v-row>
+      <v-row class="lemma-import-steps">
         <v-col>
           <v-stepper v-model="stepToDisplay">
             <v-stepper-header>
@@ -120,6 +128,7 @@ import LemmaFormatter from "./LemmaFormatter.vue";
 import { LemmaRow } from "@/types/lemma";
 import UserColumnAdding from "./UserColumnAdding.vue";
 import ListSelector from "./ListSelector.vue";
+import ImportOptionsSaver from "./ImportOptionsSaver.vue";
 
 /**
  * Manage Import Steps
@@ -142,6 +151,7 @@ import ListSelector from "./ListSelector.vue";
     LemmaFormatter,
     UserColumnAdding,
     ListSelector,
+    ImportOptionsSaver,
   },
 })
 export default class LemmaImporter extends Vue {
