@@ -14,7 +14,10 @@ export class ImportOptionsManager {
     importOptionsCollections: ImportOptionsCollections = {}
 
     constructor() {
+        this.load();
+    }
 
+    load() {
         const loadedString = localStorage.getItem(this.storageKey);
 
         if (loadedString === null) {
@@ -47,8 +50,14 @@ export class ImportOptionsManager {
     }
 
     addOrUpdateImportOptions(name: string, options: ImportOptions) {
-        this.importOptionsCollections[name] = options;
-        this.save();
+        /*
+         *  Often new options will reference to a changed instance of an already saved object. 
+        *   To avoid mutating the same object, I use some pseudo deep copy, like here: https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy  
+         */
+        this.load(); // Reinstate / reset RAM state from localStorage
+        this.importOptionsCollections[name] = options; // Add new options in RAM
+        this.save(); // Save it to LocalStorage
+        this.load(); // Loose references / Clean Up
     }
     
 }
