@@ -1,6 +1,54 @@
 <template>
     <div class='import-options-saver-container'>
-        TODO: UX
+        <v-container>
+            <v-row>
+                <v-col>
+                    <v-btn
+                        icon
+                        :disabled="!changed || currentlySaving || !optionsReady"
+                        @click="currentlySaving = true"
+                    >Importeinstellungen speichern</v-btn>
+                </v-col>
+                <v-col>
+                    <div 
+                        v-if="currentlySaving"
+                        class="saving-options-dialog"
+                    >
+                        <v-combobox
+                            label="Name"
+                            v-model="newOptionsName"
+                            :items="optionsNames"
+                            @input="saveOption"
+                        />
+                    </div>
+                    <div
+                        v-else-if="optionsNames.length > 0" 
+                        class="load-options-dialog"
+                    >
+                        <v-select
+                            label="Einstellungen laden"
+                            v-model="newOptionsName"
+                            :items="optionsNames"
+                        />
+                        <v-btn
+                                v-if="newOptionsName"
+                                @click="loadOption"
+                                icon
+                            >
+                            <v-icon>
+                                mdi-check
+                            </v-icon>
+                        </v-btn>
+                    </div>
+                </v-col>
+                <v-col>
+                    <div
+                        class="currently-loaded-import-options-name"
+                        v-if="selectedOptionsName"
+                    >{{selectedOptionsName}}</div>
+                </v-col>
+            </v-row>
+        </v-container>        
     </div>
 </template>
 
@@ -12,11 +60,13 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 @Component
 export default class ImportOptionsSaver extends Vue {
 
-    @Prop({required: true}) currentOptions!: ImportOptions;
+    @Prop({required: true}) globalOptions!: ImportOptions;
 
     importOptionsManager: ImportOptionsManager = new ImportOptionsManager();
 
-    selectedOptionsName?: string = undefined;
+    selectedOptionsName: string|null|undefined = null;
+
+    newOptionsName: string|null|undefined = null;
 
     localOptions: ImportOptions = new ImportOptions();
 
@@ -24,8 +74,11 @@ export default class ImportOptionsSaver extends Vue {
 
     optionsChangedByLoading: boolean = false;
 
-    created() {
-        this.localOptions = this.currentOptions;
+    currentlySaving = false;
+
+    @Watch('globalOptions', {deep: true, immediate: true})
+    updateLocalOptions() {
+        this.localOptions = this.globalOptions;
     }
 
     changed: boolean = false;
@@ -43,24 +96,49 @@ export default class ImportOptionsSaver extends Vue {
         }
     }
 
-    get optionsNames(): string[] {
-        return this.importOptionsManager.listImportOptionsNames();
+    optionsNames: string[] = [];
+
+    updateOptionsNames(): void {
+        this.optionsNames = this.importOptionsManager.listImportOptionsNames();
     }
 
-    loadOption(name: string) {
+    loadOption() {
+        if ((this.newOptionsName === null) || (this.newOptionsName === undefined)) {
+            console.error('Can not save with no options name defined.');
+            return;
+        }
         try {
-            this.localOptions = this.importOptionsManager.getImportOptionByName(name);
+            this.localOptions = this.importOptionsManager.getImportOptionByName(this.newOptionsName);
+            
         } catch (error) {
-            this.errorMessage = `${name} konnte nicht geladen werden`;
+            this.errorMessage = `${this.newOptionsName} konnte nicht geladen werden`;
+            this.newOptionsName = null;
         } finally {
+            
             this.optionsChangedByLoading = true;
-            this.selectedOptionsName = name;
+            this.selectedOptionsName = this.newOptionsName;
+            this.newOptionsName = null;
         }
     }
 
-    saveOption(name: string) {
-        this.importOptionsManager.addOrUpdateImportOptions(name, this.localOptions);
-        this.selectedOptionsName = name;
+    saveOption() {
+        if ((this.newOptionsName === null) || (this.newOptionsName === undefined)) {
+            console.error('Can not save with no options name defined.');
+            return;
+        }
+        this.importOptionsManager.addOrUpdateImportOptions(this.newOptionsName, this.localOptions);
+        this.selectedOptionsName = this.newOptionsName;
+        this.newOptionsName = null;
+        this.currentlySaving = false;
+        this.updateOptionsNames();
+    }
+
+    get optionsReady(): boolean {
+        return this.globalOptions.allIsFilledIn();
+    }
+
+    created() {
+        this.updateOptionsNames();
     }
 
 

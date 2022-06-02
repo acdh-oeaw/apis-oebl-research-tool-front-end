@@ -4,7 +4,7 @@
       <v-row class="lemma-import-saving">
         <v-col>
           <import-options-saver
-              :currentOptions="importOptions"
+              :globalOptions="importOptions"
               @options="importOptions = $event"
           />
         </v-col>
