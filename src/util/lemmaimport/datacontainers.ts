@@ -60,7 +60,19 @@ export class Data2D {
             this.headers,
             this.data.filter((_, index) => rowIndexes.includes(index) !== inverseSelect )
         );
-      }
+    }
+
+    get nRows(): number {
+        return this.data.length;
+    }
+
+    get nColumns(): number {
+        return this.headers.length;
+    }
+
+    get empty(): boolean {
+        return this.nRows === 0;
+    }
 
 }
         

@@ -5,7 +5,8 @@
         <v-col>
           <import-options-saver
               :globalOptions="importOptions"
-              @options="importOptions = $event"
+              :disabled="rawImportData.empty"
+              @options="setOptionsAndAdvanceToEnd($event)"
           />
         </v-col>
       </v-row>
@@ -198,6 +199,12 @@ export default class LemmaImporter extends Vue {
 
   get filteredRawImportData(): Data2D {
     return this.rawImportData.selectRows(this.missingRowsIndexes, true);
+  }
+
+  setOptionsAndAdvanceToEnd(options: ImportOptions) {
+    this.importOptions = options;
+    this.greatestCompleteStep = 4;
+    this.stepToDisplay = 4;
   }
 }
 </script>

@@ -171,9 +171,15 @@ export default class LemmaBuilder extends Vue {
         return this.options.lastName?.extractOptions.sourceKey !== null;
     }
 
-    submit() {
+
+    @Watch('incommingData', {immediate: true, deep: false})
+    @Watch('options', {immediate: false, deep: true})
+    emit() {
         this.$emit('data', this.lemmaPrototypes);
         this.$emit('options', this.options);
+    }
+
+    submit() {
         this.$emit('submit');
     }
     

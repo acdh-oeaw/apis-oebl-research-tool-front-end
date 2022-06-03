@@ -5,7 +5,7 @@
                 <v-col>
                     <v-btn
                         icon
-                        :disabled="!changed || currentlySaving || !optionsReady"
+                        :disabled="!changed || currentlySaving || !optionsReady || disabled || !';-)'"
                         @click="currentlySaving = true"
                     >Importeinstellungen speichern</v-btn>
                 </v-col>
@@ -29,6 +29,7 @@
                             label="Einstellungen laden"
                             v-model="newOptionsName"
                             :items="optionsNames"
+                            :disabled="disabled"
                         />
                         <v-btn
                                 v-if="newOptionsName"
@@ -61,6 +62,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 export default class ImportOptionsSaver extends Vue {
 
     @Prop({required: true}) globalOptions!: ImportOptions;
+    @Prop({default: false}) disabled!: boolean;
 
     importOptionsManager: ImportOptionsManager = new ImportOptionsManager();
 
