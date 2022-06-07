@@ -112,6 +112,18 @@ export default class LemmaFormatter extends Vue {
   genders: LemmaGender[] = [];
 
   get newLemmas(): NewLemmaRow[] {
+
+    // If not all columns are definied, do not create data.
+    if (
+      (new Set([
+          this.lemmasPrototypesWithNullsAndRequiredFields.length, // Basic data
+          this.dates.length, this.genders.length, // New formatted data
+        ])
+      ).size !== 1
+    ) {
+      return []; // Columns not ready: No result!
+    }
+
     return mergeBuildNewLemmaRows(
       this.lemmasPrototypesWithNullsAndRequiredFields,
       this.dates,
