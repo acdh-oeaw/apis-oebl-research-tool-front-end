@@ -2,80 +2,54 @@
     <div class="lemma-builder-container">
         <v-container>
             <v-row class="lemma-builder-ux">
-                <v-container>
-                    <v-row>
-                        <v-col>
-                            <column-select
-                                lemmaKey="lastName"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @cancel="removeData('lastName')"
-                                @options="options.lastName.extractOptions = $event"
-                                :preloadedOptions="options.lastName.extractOptions"
-                            />
-                        </v-col>
-                        <v-col>
-                            <v-alert
-                                v-if="!lastNameIsFiled"
-                                type="info"
-                            >Dieses Feld muss ausgewählt werden</v-alert>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <column-select
-                                lemmaKey="firstName"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @options="options.firstName.extractOptions = $event"
-                                :preloadedOptions="options.firstName.extractOptions"
-                            />
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col>
-                            <column-select
-                                lemmaKey="gender"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @options="options.gender.extractOptions = $event"
-                                :preloadedOptions="options.gender.extractOptions"
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <column-select
-                                lemmaKey="dateOfBirth"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @options="options.dateOfBirth.extractOptions = $event"
-                                :preloadedOptions="options.dateOfBirth.extractOptions"
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <column-select
-                                lemmaKey="dateOfDeath"
-                                :sourceData="incommingData"
-                                @data="updateData($event)"
-                                @options="options.dateOfDeath.extractOptions = $event"
-                                :preloadedOptions="options.dateOfDeath.extractOptions"
-                            />
-                        </v-col>
-                    </v-row>
-                    
-                    <v-row>
-                        <v-col>
-                            <v-btn
-                                v-if="allRequiredFieldsSet"
-                                @click="submit"
-                            >Weiter</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-container>
+                <v-col>
+                    <v-expansion-panels multiple>
+                        <v-expansion-panel
+                            v-for="(columns, groupName) in columnGroups"
+                            :key="groupName"
+                            class="import-column-select-group"
+                            >
+                            <v-expansion-panel-header 
+                                :class="'import-column-select-group-name' + (groupHasMissingRequiredValue(groupName) ? ' warning' : '')"
+                                >{{groupName}}</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                                <v-container>
+                                    <v-row
+                                        v-for="(column, index) in columns"
+                                        :key="`${column}-${index}`"
+                                    >
+                                        <v-col>
+                                            <column-select
+                                                :lemmaKey="column.name"
+                                                :sourceData="incommingData"
+                                                @data="updateData($event)"
+                                                @cancel="removeData(column.name)"
+                                                @options="setOptionsByName(column.name, $event)"
+                                                :preloadedOptions="getOptionsByName(column.name)"
+                                            />
+                                        </v-col>
+                                        <v-col>
+                                            <div
+                                                v-if="column.required && getOptionsByName(column.name).sourceKey === null"
+                                                class="missing-required-field-column-select"
+                                            >
+                                                <v-alert type="warning">Dieses Feld muss ausgefüllt werden</v-alert>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+                </v-col>
+            </v-row>
+            <v-row class="submit-column-selects">
+                <v-col>
+                    <v-btn
+                        :disabled="!allRequiredFieldsSet"
+                        @click="submit"
+                        >Weiter</v-btn>
+                </v-col>
             </v-row>
             <v-row class="data-comparision-area">
                 <lemma-previewer
@@ -90,11 +64,16 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Data2D, LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
-import { ColumnConversions, defaultLemmaBuilderOptions } from "@/util/lemmaimport/options";
+import { ColumnConversion, ColumnConversions, defaultLemmaBuilderOptions, ExtractColumnOptions, getEmptyColumnConversion } from "@/util/lemmaimport/options";
 
 import LemmaPreviewer from "./LemmaPreviewer.vue";
 import ColumnSelect from "./ColumnSelect.vue";
 import { createEmptyLemmaPrototype } from "@/util/lemmaimport/dataconversion";
+
+
+type ColumnGroups = {
+    [groupName: string]: Array<{name: keyof ColumnConversions, required?: boolean}>;
+};
 
 
 /**
@@ -183,6 +162,59 @@ export default class LemmaBuilder extends Vue {
         this.$emit('submit');
     }
     
+    get columnGroups(): ColumnGroups {
+        return {
+            "Basisdaten": [
+                {name: "firstName"}, {name: "lastName", required: true},
+                {name: "dateOfBirth"}, {name: "dateOfDeath"},
+                {name: "gender"},
+            ],
+            "Erweiterde Daten": [
+                {name: "professionDetail"}, {name: "bioNote"}, {name: "kinship"}, {name: "religion"},
+            ],
+            "Linked Data": [
+                {name: "gnd"}, {name: "loc"}, {name: "viaf_id"},
+            ],
+        }
+    } 
+
+    getOptionsByName(name: keyof ColumnConversions): ExtractColumnOptions {
+        return this.options[name]?.extractOptions ?? getEmptyColumnConversion().extractOptions;
+    }
+
+    setOptionsByName(name: keyof ColumnConversions, option: ExtractColumnOptions) {
+        /*
+         * Could not get a more simple typeguard to work here – maybe I am to much of a full stack dev, to find a better solution.
+         */
+        const storedColumnConversion: ColumnConversion|undefined = this.options[name];
+        const columnConversionInUse: ColumnConversion = storedColumnConversion ?? getEmptyColumnConversion();
+        if (storedColumnConversion === undefined) {
+            this.options[name] = columnConversionInUse;
+        }
+        columnConversionInUse.extractOptions = option;
+    }
+
+    groupHasMissingRequiredValue(group: string): boolean {
+        const columnConversions = this.columnGroups[group];
+        if (columnConversions === undefined) {
+            return false;
+        }
+        const requiredColumns = columnConversions.filter(columnConversion => columnConversion.required);
+        if (requiredColumns.length === 0) {
+            return false;
+        }
+
+        for (const requiredColumn of requiredColumns) {
+            const option = this.options[requiredColumn.name];
+            if (option === undefined || option.extractOptions.sourceKey === null) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
 }
 
 </script>

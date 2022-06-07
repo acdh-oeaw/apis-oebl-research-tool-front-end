@@ -1,5 +1,5 @@
 import { GenderAe0Enum } from "@/api";
-import { LemmaRow, NewLemmaRow } from "@/types/lemma";
+import { NewLemmaRow } from "@/types/lemma";
 import { SupportedDateFormatType } from "../dates";
 
 type FileOptions = {
@@ -37,41 +37,35 @@ export type ColumnConversion = {
 }
 
 export type ColumnConversions = {
-    [key in keyof Partial<LemmaRow>]: // We only want keys in lemma row, but we do not need all. 
-    ColumnConversion
+    [
+        key in keyof Omit<
+        NewLemmaRow, 
+        'list'              // Manual selection over the whole import 
+        | 'columns_user'    // Have their own options
+        | 'legacyGideonCitations'  // not imported
+         // Not (yet) implemented
+        | 'professionGroup' | 'alternativeNames'
+        | 'secondaryLiterature' | 'zoteroKeysBy' | 'zoteroKeysAbout'
+        >
+    ]:  ColumnConversion
 };
 
+
+export const getEmptyColumnConversion = (): ColumnConversion => {return {extractOptions: {sourceKey: null}};}
+
 export const defaultLemmaBuilderOptions: ColumnConversions = {
-    
-    firstName: {
-        extractOptions: {
-            sourceKey: null,
-        },
-    },
-
-    lastName: {
-        extractOptions: {
-            sourceKey: null,
-        },
-    },
-
-    gender: {
-        extractOptions: {
-            sourceKey: null,
-        },
-    },
-
-    dateOfBirth: {
-        extractOptions: {
-            sourceKey: null,
-        },
-    },
-
-    dateOfDeath: {
-        extractOptions: {
-            sourceKey: null,
-        },
-    },
+    firstName: getEmptyColumnConversion(),
+	lastName: getEmptyColumnConversion(),
+	dateOfBirth: getEmptyColumnConversion(),
+	dateOfDeath: getEmptyColumnConversion(),
+	gender: getEmptyColumnConversion(),
+	gnd: getEmptyColumnConversion(),
+	loc: getEmptyColumnConversion(),
+	viaf_id: getEmptyColumnConversion(),
+	professionDetail: getEmptyColumnConversion(),
+	bioNote: getEmptyColumnConversion(),
+	kinship: getEmptyColumnConversion(),
+	religion: getEmptyColumnConversion(),
 };
 
 export type GenderMappingOption = Record<
