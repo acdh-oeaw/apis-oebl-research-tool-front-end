@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div class="lemma-builder-container">
         <v-container>
             <v-row class="lemma-builder-ux">
@@ -12,7 +12,7 @@
                             <v-expansion-panel-header 
                                 :class="'import-column-select-group-name' + (groupHasMissingRequiredValue(groupName) ? ' warning' : '')"
                                 >{{groupName}}</v-expansion-panel-header>
-                            <v-expansion-panel-content>
+                            <v-expansion-panel-content eager>
                                 <v-container>
                                     <v-row
                                         v-for="(column, index) in columns"
@@ -22,9 +22,9 @@
                                             <column-select
                                                 :lemmaKey="column.name"
                                                 :sourceData="incommingData"
-                                                @data="updateData($event)"
-                                                @cancel="removeData(column.name)"
                                                 @options="setOptionsByName(column.name, $event)"
+                                                @cancel="removeData(column.name)"
+                                                @data="updateData($event)"
                                                 :preloadedOptions="getOptionsByName(column.name)"
                                             />
                                         </v-col>
@@ -92,11 +92,43 @@ export default class LemmaBuilder extends Vue {
     @Prop() incommingData!: Data2D;
     @Prop() preloadedOptions!: ColumnConversions;
 
-    options: ColumnConversions = defaultLemmaBuilderOptions;
 
+    options: ColumnConversions = defaultLemmaBuilderOptions;
+    // Interdmidiate lemma prototypes, before they are ready to submit
+    partialLemmaPrototypes: Partial<LemmaPrototypeStringType>[] = [];
+    // Result to emit
+    lemmaPrototypes: LemmaPrototypeStringType[] = [];
+
+    // Used to display column selections in an structured way.
+    get columnGroups(): ColumnGroups {
+        return {
+            "Basisdaten": [
+                {name: "firstName"}, {name: "lastName", required: true},
+                {name: "dateOfBirth"}, {name: "dateOfDeath"},
+                {name: "gender"},
+            ],
+            "Erweiterte Daten": [
+                {name: "professionDetail"}, {name: "bioNote"}, {name: "kinship"}, {name: "religion"},
+            ],
+            "Linked Data": [
+                {name: "gnd"}, {name: "loc"}, {name: "viaf_id"},
+            ],
+        }
+    }
+
+    get allRequiredFieldsSet(): boolean {
+        for (const groupName in this.columnGroups) {
+            if (this.groupHasMissingRequiredValue(groupName)) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    // Update local options, when preloaded options change.
     @Watch('preloadedOptions', {immediate: true, deep: true})
     setOptions() {
-        // This is not real reactive, only at startup, so no Watch
         this.options = this.preloadedOptions;
     }
 
@@ -109,11 +141,24 @@ export default class LemmaBuilder extends Vue {
         this.partialLemmaPrototypes = this.incommingData.data.map(() => new Object());
     }
 
+    @Watch('lemmaPrototypes', {immediate: true, deep: true})
+    @Watch('options', {immediate: false, deep: true})
+    emit() {
 
-    partialLemmaPrototypes: Partial<LemmaPrototypeStringType>[] = [];
+        this.$emit('options', this.options);
+        this.$emit('data', this.lemmaPrototypes);
+    }
 
-    get lemmaPrototypes(): LemmaPrototypeStringType[] {
-        return this.partialLemmaPrototypes.map(
+
+    @Watch('partialLemmaPrototypes', {immediate: true, deep: false})
+    @Watch('options', {immediate: false, deep: true})
+    updateLemmaPrototypes() {
+        // if it is not possible to compute any lemma prototype -> go empty list => empty preview and computations in the next components.
+        if (!this.allRequiredFieldsSet && this.lemmaPrototypes !== []) {
+            this.lemmaPrototypes = [];
+        }
+
+        this.lemmaPrototypes = this.partialLemmaPrototypes.map(
             partialLemmaPrototype => {
                 return {
                     // Add all properties empty
@@ -125,6 +170,10 @@ export default class LemmaBuilder extends Vue {
         );
     }
 
+    submit() {
+        this.$emit('submit');
+    }
+    
     updateData(column: Partial<LemmaPrototypeStringType>[]) {
         this.partialLemmaPrototypes = this.partialLemmaPrototypes.map(
             (newLemma, index) => {
@@ -141,43 +190,7 @@ export default class LemmaBuilder extends Vue {
             partialLemmaPrototype => delete(partialLemmaPrototype[columnName as keyof Partial<LemmaPrototypeStringType>])
         )
     }
-
-    get allRequiredFieldsSet(): boolean {
-        return this.lastNameIsFiled;
-    }
-
-    get lastNameIsFiled(): boolean {
-        return this.options.lastName?.extractOptions.sourceKey !== null;
-    }
-
-
-    @Watch('incommingData', {immediate: true, deep: false})
-    @Watch('options', {immediate: false, deep: true})
-    emit() {
-        this.$emit('data', this.lemmaPrototypes);
-        this.$emit('options', this.options);
-    }
-
-    submit() {
-        this.$emit('submit');
-    }
-    
-    get columnGroups(): ColumnGroups {
-        return {
-            "Basisdaten": [
-                {name: "firstName"}, {name: "lastName", required: true},
-                {name: "dateOfBirth"}, {name: "dateOfDeath"},
-                {name: "gender"},
-            ],
-            "Erweiterte Daten": [
-                {name: "professionDetail"}, {name: "bioNote"}, {name: "kinship"}, {name: "religion"},
-            ],
-            "Linked Data": [
-                {name: "gnd"}, {name: "loc"}, {name: "viaf_id"},
-            ],
-        }
-    } 
-
+     
     getOptionsByName(name: keyof ColumnConversions): ExtractColumnOptions {
         return this.options[name]?.extractOptions ?? getEmptyColumnConversion().extractOptions;
     }
@@ -192,6 +205,8 @@ export default class LemmaBuilder extends Vue {
             this.options[name] = columnConversionInUse;
         }
         columnConversionInUse.extractOptions = option;
+        // Trigger vue watch. Apperently, the above does not, event though it is deep.
+        this.options[name] = columnConversionInUse;
     }
 
     groupHasMissingRequiredValue(group: string): boolean {
@@ -212,7 +227,6 @@ export default class LemmaBuilder extends Vue {
         }
 
         return false;
-
     }
 
 }
