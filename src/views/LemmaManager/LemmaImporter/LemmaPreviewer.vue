@@ -32,6 +32,8 @@ import { lemmaRowTranslations } from '@/util/labels';
 const showThisColumns: Array<keyof LemmaRow> = [
     'firstName', 'lastName',
     'gender', 'dateOfBirth', 'dateOfDeath',
+    'professionDetail', 'bioNote', 'kinship', 'religion',
+    'gnd', 'loc', 'viaf_id', 
 ];
 
 
