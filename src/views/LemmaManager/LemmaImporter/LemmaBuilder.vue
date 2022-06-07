@@ -169,7 +169,7 @@ export default class LemmaBuilder extends Vue {
                 {name: "dateOfBirth"}, {name: "dateOfDeath"},
                 {name: "gender"},
             ],
-            "Erweiterde Daten": [
+            "Erweiterte Daten": [
                 {name: "professionDetail"}, {name: "bioNote"}, {name: "kinship"}, {name: "religion"},
             ],
             "Linked Data": [
