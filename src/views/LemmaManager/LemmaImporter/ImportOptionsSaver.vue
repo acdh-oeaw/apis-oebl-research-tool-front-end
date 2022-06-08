@@ -5,7 +5,7 @@
                 <v-col>
                     <v-btn
                         icon
-                        :disabled="!changed || currentlySaving || !optionsReady || disabled || !';-)'"
+                        :disabled="!changedByUserInteraction || currentlySaving || !optionsReady || disabled || !';-)'"
                         @click="currentlySaving = true"
                     >Importeinstellungen speichern</v-btn>
                 </v-col>
@@ -83,18 +83,19 @@ export default class ImportOptionsSaver extends Vue {
         this.localOptions = this.globalOptions;
     }
 
-    changed: boolean = false;
+    changedByUserInteraction: boolean = false;
 
     @Watch('localOptions', {immediate: true, deep: true})
     setChanged() {
         if (this.optionsChangedByLoading) {
             this.$emit('options', this.localOptions);
-            this.changed = false;
+            // These are not the user selected options anymore.
+            this.optionsChangedByLoading = false;
+            // These are 
+            this.changedByUserInteraction = false;
             return;
         } else {
-            this.changed = true;
-            // This are not the user selected options anymore.
-            this.optionsChangedByLoading = false;
+            this.changedByUserInteraction = true;
         }
     }
 
