@@ -103,7 +103,7 @@ export default class UserColumnAdding extends Vue {
     }
 
     deleteMapping(targetColumn: string) {
-        delete(this.localOptions[targetColumn]);
+        Vue.delete(this.localOptions, targetColumn);
     }
 
     get vuetifySourceColumns(): Array<{
