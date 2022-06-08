@@ -123,7 +123,6 @@ export default class LemmaFormatter extends Vue {
     ) {
       return []; // Columns not ready: No result!
     }
-
     return mergeBuildNewLemmaRows(
       this.lemmasPrototypesWithNullsAndRequiredFields,
       this.dates,
@@ -131,7 +130,7 @@ export default class LemmaFormatter extends Vue {
     );
   }
 
-  @Watch("newLemmas", { immediate: true, deep: false }) // Let the browser rest. Watch options deep should cover all.
+  @Watch("newLemmas", { immediate: true, deep: true })
   @Watch("options", { immediate: true, deep: true })
   emit() {
     this.$emit("data", this.newLemmas);

@@ -98,8 +98,11 @@ export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
     },
 }
 
+/**
+ * Map to NewLemmaRow.columns_user: UserColumn
+ */
 export type UserColumnMapping = {
-    [sourceColumn: string]: string; // sourceColumn: targetColumn (lemma.user_columns.targetColumn)
+    [targetColumn: string]: string; // targetColumn: sourceColumn (lemma.user_columns.targetColumn)
 };
 
 export type SelectedList = NewLemmaRow['list'];

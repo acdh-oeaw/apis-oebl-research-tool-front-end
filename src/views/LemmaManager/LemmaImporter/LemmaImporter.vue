@@ -92,7 +92,7 @@
                   :newLemmas="newLemmas"
                   :rawImportData="filteredRawImportData"
                   :columnMapping="importOptions.lemmaBuilderOptions"
-                  @otions="importOptions.userColumnMapping = $event"
+                  @options="importOptions.userColumnMapping = $event"
                   @data="newLemmas = $event"
                   @submit="markStepDone(4)"
                 />

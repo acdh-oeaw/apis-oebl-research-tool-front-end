@@ -1,13 +1,14 @@
 import { GenderAe0Enum } from "@/api";
-import { NewLemmaRow } from "@/types/lemma";
+import { NewLemmaRow, UserColumn } from "@/types/lemma";
 import { 
     LemmaPrototypeStringType,
     LemmaPrototypeNullableStringType,
     LemmaPrototypeRequiredFieldsType,
     LemmaDates,
     LemmaGender,
+    Data2D,
 } from "./datacontainers";
-import { defautLemmaFormatterOptions, GenderMappingOption } from "./options";
+import { defautLemmaFormatterOptions, GenderMappingOption, UserColumnMapping } from "./options";
 
 export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
     return {
@@ -135,7 +136,7 @@ export function buildNewLemmaRowAfterFormatting(
         ... lemmaGender, // New Formatted Data
 
         list: undefined, // This will be done later
-        columns_user: {a: 2}, // This will be done later
+        columns_user: {}, // This will be done later
 
         alternativeNames: [], // Not yet implemented,
         gnd: [], // Not yet implemented,
@@ -189,5 +190,46 @@ export function mergeBuildNewLemmaRows(
             );
         }
     );
+}
 
+export function createUserColumns(table: Data2D, options: UserColumnMapping): UserColumn[] {
+    
+    const mappings: Array<[
+        number, // numericalSourceColumn, 
+        string, // targetColumn
+    ]> = Object.entries(options).map(
+        ([targetColumn, sourceColumn]) => [
+            table.getNumericalHeaderName(sourceColumn),
+            targetColumn,
+        ]
+    );
+
+    return table.data.map(
+        (row: string[]) => {
+            return Object.fromEntries(
+                mappings.map(
+                    ([numericalSourceColumn, targetColumn]) => {
+                        return [
+                            targetColumn,
+                            row[numericalSourceColumn]
+                        ];
+                    }
+                )
+            );
+        }
+    );
+}
+
+
+export function addUserColumns(lemmas: NewLemmaRow[], columns: UserColumn[]): NewLemmaRow[] {
+    
+    if (columns.length === 0) {
+        return lemmas;
+    }
+    if (lemmas.length !== columns.length) {
+        throw new Error(`Can not combine ${lemmas.length} lemmas with ${columns.length} rows of columns`);
+    }
+    return lemmas.map(
+        (lemma, index) => Object.assign(lemma, {columns_user: columns[index]})
+    );
 }

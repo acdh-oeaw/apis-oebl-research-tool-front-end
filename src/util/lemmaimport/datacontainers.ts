@@ -37,15 +37,20 @@ export class Data2D {
     }
 
     selectByHeaderName(headerName: string): string[] {
+        const numericalHeaderName = this.getNumericalHeaderName(headerName);
+        return this.data.map(
+            row => row[numericalHeaderName]
+        );
+    }
+
+    getNumericalHeaderName(headerName: string): number {
         const numericalHeaderName = this.headers.indexOf(headerName);
         if (numericalHeaderName === undefined) {
             const headers = JSON.stringify(this.headers);
             throw new Error(`Did not find <${headerName}> in ${headers}`);
         }
+        return numericalHeaderName;
 
-        return this.data.map(
-            row => row[numericalHeaderName]
-        );
     }
 
     /**
