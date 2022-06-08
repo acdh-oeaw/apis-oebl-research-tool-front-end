@@ -22,9 +22,23 @@ export class ImportOptionsManager {
 
         if (loadedString === null) {
             this.importOptionsCollections = {};
-        } else {
-            this.importOptionsCollections = JSON.parse(loadedString);
+            return;
         }
+
+        // Convert plain json objects into ImportOptions class.
+        this.importOptionsCollections = Object.fromEntries(
+            Object.entries(JSON.parse(loadedString))
+            .map(
+                ([importOptionsName, importOptions]) => [
+                    importOptionsName,
+                    Object.assign(
+                        new ImportOptions(),
+                        importOptions
+                    )
+                ]
+            )
+        ); 
+        
     }
 
     save() {
