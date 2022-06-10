@@ -57,6 +57,8 @@
               <v-stepper-step :complete="5 <= greatestCompleteStep" step="5"
                 >Liste auswählen</v-stepper-step
               >
+              <v-stepper-step :complete="false" step="6"
+                >Import abschließen</v-stepper-step>
             </v-stepper-header>
             <v-stepper-items>
               <v-stepper-content step="1">
@@ -106,6 +108,12 @@
                   @submit="markStepDone(5)"
                 />
               </v-stepper-content>
+              <v-stepper-content step="6">
+                <lemma-importer
+                  :lemmasToImport="newLemmasWithList"
+                  @submit="$emit('submit')"
+                />
+              </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
         </v-col>
@@ -130,6 +138,7 @@ import { NewLemmaRow } from "@/types/lemma";
 import UserColumnAdding from "./UserColumnAdding.vue";
 import ListSelector from "./ListSelector.vue";
 import ImportOptionsSaver from "./ImportOptionsSaver.vue";
+import LemmaImporter from "./LemmaImporter.vue";
 
 /**
  * Manage Import Steps
@@ -153,6 +162,7 @@ import ImportOptionsSaver from "./ImportOptionsSaver.vue";
     UserColumnAdding,
     ListSelector,
     ImportOptionsSaver,
+    LemmaImporter,
   },
 })
 export default class LemmaImportManager extends Vue {
@@ -206,8 +216,8 @@ export default class LemmaImportManager extends Vue {
 
   setOptionsAndAdvanceToEnd(options: ImportOptions) {
     this.importOptions = options;
-    this.greatestCompleteStep = 5;
-    this.stepToDisplay = 5;
+    this.greatestCompleteStep = 6;
+    this.stepToDisplay = 6;
   }
 }
 </script>
