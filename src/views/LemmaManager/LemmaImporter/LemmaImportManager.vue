@@ -155,7 +155,7 @@ import ImportOptionsSaver from "./ImportOptionsSaver.vue";
     ImportOptionsSaver,
   },
 })
-export default class LemmaImporter extends Vue {
+export default class LemmaImportManager extends Vue {
   /**
    * Which step is currently displayed. We start with step 1.
    */

@@ -48,7 +48,7 @@
       hide-overlay
       fullscreen
       >
-      <lemma-importer/>
+      <lemma-import-manager/>
     </v-dialog>
     <v-app-bar
       data-deskgap-drag="true"
@@ -365,8 +365,8 @@ import DataFilter from '../lib/DataFilter.vue'
 
 import _ from 'lodash';
 
-import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
+
 import { LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
@@ -382,7 +382,7 @@ import confirm from '@/store/confirm'
     LobidPreviewCard,
     VirtualTable,
     DataFilter,
-    LemmaImporter: () => import('./LemmaImporter/LemmaImporter.vue'),
+    LemmaImportManager: () => import('./LemmaImporter/LemmaImportManager.vue'),
   }
 })
 export default class LemmaManager extends Vue {
