@@ -93,15 +93,15 @@
                   :rawImportData="filteredRawImportData"
                   :columnMapping="importOptions.lemmaBuilderOptions"
                   @options="importOptions.userColumnMapping = $event"
-                  @data="newLemmas = $event"
+                  @data="newLemmasWithUserColumns = $event"
                   @submit="markStepDone(4)"
                 />
               </v-stepper-content>
               <v-stepper-content step="5">
                 <list-selector
                   :preloadedOptions="importOptions.selectedList"
-                  :newLemmasRows="newLemmas"
-                  @data="newLemmas = $event"
+                  :newLemmasRows="newLemmasWithUserColumns"
+                  @data="newLemmasWithList = $event"
                   @options="importOptions.selectedList = $event"
                   @submit="markStepDone(5)"
                 />
@@ -126,7 +126,7 @@ import { ImportOptions } from "@/util/lemmaimport/options";
 import ImportFileDialog from "./ImportFileDialog.vue";
 import LemmaBuilder from "./LemmaBuilder.vue";
 import LemmaFormatter from "./LemmaFormatter.vue";
-import { LemmaRow } from "@/types/lemma";
+import { NewLemmaRow } from "@/types/lemma";
 import UserColumnAdding from "./UserColumnAdding.vue";
 import ListSelector from "./ListSelector.vue";
 import ImportOptionsSaver from "./ImportOptionsSaver.vue";
@@ -195,7 +195,10 @@ export default class LemmaImporter extends Vue {
 
   lemmaPrototypes: LemmaPrototypeStringType[] = [];
 
-  newLemmas: LemmaRow[] = [];
+  newLemmas: NewLemmaRow[] = [];
+  newLemmasWithUserColumns: NewLemmaRow[] = [];
+  newLemmasWithList: NewLemmaRow[] = [];
+  
 
   get filteredRawImportData(): Data2D {
     return this.rawImportData.selectRows(this.missingRowsIndexes, true);
@@ -203,8 +206,8 @@ export default class LemmaImporter extends Vue {
 
   setOptionsAndAdvanceToEnd(options: ImportOptions) {
     this.importOptions = options;
-    this.greatestCompleteStep = 4;
-    this.stepToDisplay = 4;
+    this.greatestCompleteStep = 5;
+    this.stepToDisplay = 5;
   }
 }
 </script>
