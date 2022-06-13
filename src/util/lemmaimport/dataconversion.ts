@@ -134,22 +134,23 @@ export function buildNewLemmaRowAfterFormatting(
         lastName: lemmaPrototype.lastName,
         ... lemmaDates, // New Formatted Data
         ... lemmaGender, // New Formatted Data
+        gnd: lemmaPrototype.gnd ? [lemmaPrototype.gnd]: [], 
+        loc: lemmaPrototype.loc === null ? null : Number(lemmaPrototype.loc),
+        viaf_id: lemmaPrototype.viaf_id === null ? null : Number(lemmaPrototype.viaf_id),
+        professionDetail: lemmaPrototype.professionDetail,
+        bioNote: lemmaPrototype.bioNote,
+        kinship: lemmaPrototype.kinship,
+        religion: lemmaPrototype.religion,
 
         list: undefined, // This will be done later
         columns_user: {}, // This will be done later
 
         alternativeNames: [], // Not yet implemented,
-        gnd: [], // Not yet implemented,
-        loc: null, // Not yet implemented,
-        viaf_id: null, // Not yet implemented,
-        professionDetail: null, // Not yet implemented,
         professionGroup: null, // Not yet implemented
         secondaryLiterature: [], // Not yet implemented,
         zoteroKeysBy: [], // Not yet implemented,
         zoteroKeysAbout: [], // Not yet implemented,
-        bioNote: null, // Not yet implemented,
-        kinship: null, // Not yet implemented,
-        religion: null, // Not yet implemented,
+        
 
         legacyGideonCitations: null, // Legacy – no import
     };
