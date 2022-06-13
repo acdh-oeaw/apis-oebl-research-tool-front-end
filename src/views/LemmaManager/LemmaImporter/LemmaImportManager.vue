@@ -204,7 +204,7 @@ export default class LemmaImportManager extends Vue {
       // Jump to next possible step
     }
 
-      this.stepToDisplay = step === lastStep ? step : this.greatestCompleteStep + 1;
+    this.stepToDisplay = this.greatestCompleteStep === lastStep ? lastStep : this.greatestCompleteStep + 1;
     
   }
 
