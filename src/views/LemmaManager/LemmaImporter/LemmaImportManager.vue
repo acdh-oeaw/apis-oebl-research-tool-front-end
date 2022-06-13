@@ -55,7 +55,15 @@
                 >
               </v-stepper-step>
               <v-stepper-step :complete="5 <= greatestCompleteStep" step="5"
-                >Liste auswählen</v-stepper-step
+                >Liste auswählen
+                <v-btn
+                  v-if="greatestCompleteStep > 4"
+                  @click="stepToDisplay = 5"
+                  small
+                  icon
+                  ><v-icon>mdi-lead-pencil</v-icon></v-btn
+                >
+                </v-stepper-step
               >
               <v-stepper-step :complete="false" step="6"
                 >Import abschließen</v-stepper-step>
@@ -176,6 +184,12 @@ export default class LemmaImportManager extends Vue {
   greatestCompleteStep = 0;
 
   markStepDone(step: number) {
+    
+    const lastStep = 6;
+    if (step > lastStep) {
+      throw new Error("NotImplemented Error");
+    }
+    
     // Save guard for logic errors
     if (step - this.greatestCompleteStep > 1) {
       throw new Error(
@@ -183,17 +197,17 @@ export default class LemmaImportManager extends Vue {
       );
     }
 
-    if (step === 5) {
-      throw new Error("NotImplemented Error / TODO. Crossed the finish line.");
-    }
 
     // No reset of progress
     if (step > this.greatestCompleteStep) {
       this.greatestCompleteStep = step;
+      // Jump to next possible step
+      this.stepToDisplay = this.greatestCompleteStep + 1;
+    } else {
+      this.stepToDisplay = lastStep;
     }
 
-    // Jump to next possible step
-    this.stepToDisplay = this.greatestCompleteStep + 1;
+    
   }
 
   importOptions: ImportOptions = new ImportOptions();
