@@ -3,7 +3,7 @@
         <v-container>
             <v-row class="null-managment-options">
                 <v-col>
-                    <v-autocomplete
+                    <v-combobox
                         multiple
                         v-model="localNullValues"
                         :items="vuetifyNullSelect"
