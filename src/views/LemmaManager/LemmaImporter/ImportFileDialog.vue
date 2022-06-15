@@ -43,6 +43,7 @@
       </v-row>
       <v-row class="data-preview">
         <v-data-table
+          dense
           :headers="vuetifyDataTableHeaders"
           :items="vuetifyDataTableItems"
         />
@@ -56,7 +57,7 @@
 
 import { Data2D } from '@/util/lemmaimport/datacontainers';
 import { defaultOptions, SupportedFilesOptions } from '@/util/lemmaimport/options';
-import lodash from 'lodash';
+import lodash, { truncate } from 'lodash';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
  
@@ -186,7 +187,10 @@ export default class ImportFileDialog extends Vue {
    */
   get vuetifyDataTableItems() {
     const headers = this.headers;
-    return this.tableBody.map(
+    const truncatedRows = this.tableBody.map(
+      row => row.map(value => truncate(value, {length: 25, omission: ' […]'}))
+    );
+    return truncatedRows.map(
       row => Object.fromEntries(
         lodash.zip(headers, row)
       )
