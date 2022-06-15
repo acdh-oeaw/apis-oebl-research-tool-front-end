@@ -2,12 +2,14 @@
   <div class="lemma-importer-container">
     <v-container >
       <v-row class="lemma-import-saving">
-        <v-col>
-          <import-options-saver
-              :globalOptions="importOptions"
-              :disabled="rawImportData.empty"
-              @options="setOptionsAndAdvanceToEnd($event)"
-          />
+        <v-col >
+          <v-card>
+            <import-options-saver
+                      :globalOptions="importOptions"
+                      :disabled="rawImportData.empty"
+                      @options="setOptionsAndAdvanceToEnd($event)"
+                  />
+          </v-card>
         </v-col>
       </v-row>
       <v-row class="lemma-import-steps">

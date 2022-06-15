@@ -2,10 +2,9 @@
     <div class='import-options-saver-container'>
         <v-container>
             <v-row>
-                <v-col>
+                <v-col class='import-options-saver'>
                     <v-btn
-                        icon
-                        :disabled="!changedByUserInteraction || currentlySaving || !optionsReady || disabled || !';-)'"
+                        :disabled="!changedByUserInteraction || currentlySaving || !optionsReady || disabled || !';-)'" 
                         @click="currentlySaving = true"
                     >Importeinstellungen speichern</v-btn>
                 </v-col>
@@ -15,7 +14,7 @@
                         class="saving-options-dialog"
                     >
                         <v-combobox
-                            label="Name"
+                            label="Speichern unter"
                             v-model="newOptionsName"
                             :items="optionsNames"
                             @input="saveOption"
@@ -46,7 +45,7 @@
                     <div
                         class="currently-loaded-import-options-name"
                         v-if="selectedOptionsName"
-                    >{{selectedOptionsName}}</div>
+                    >"{{selectedOptionsName}}" geladen</div>
                 </v-col>
             </v-row>
         </v-container>        
