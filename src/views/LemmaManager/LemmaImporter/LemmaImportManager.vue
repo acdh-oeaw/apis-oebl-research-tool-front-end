@@ -15,7 +15,7 @@
       <v-row class="lemma-import-steps">
         <v-col>
           <v-stepper v-model="stepToDisplay">
-            <v-stepper-header>
+            <v-stepper-header >
               <v-stepper-step :complete="greatestCompleteStep > 0" step="1">
                 Datei auswählen
                 <v-btn
@@ -237,9 +237,22 @@ export default class LemmaImportManager extends Vue {
 </script>
 
 <style scoped>
+
+/* Show background blurred */
 div.lemma-importer-container {
   background-color: #f5f6f8ee;
   height: 100%;
 }
+
+/**
+* For some reasons v-stepper-header has a height of 72px. 
+ * This leads to some steps being outside of the contantainer, with medium screen sizes.
+ * This is an easy solution.
+*/
+/deep/ .v-stepper__header {
+  height: inherit;
+}
+
+
 </style>
 
