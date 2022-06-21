@@ -44,19 +44,11 @@
     </v-dialog>
     <!-- IMPORT LEMMAS -->
     <v-dialog
-      :value="fileToImport.file !== null"
-      @input="fileToImport = { file: null, buffer: null }"
-      scrollable
-      overlay-color="#000"
-      max-width="1000px">
-      <lemma-importer
-        v-if="fileToImport.file !== null"
-        :file-type="fileToImport.file.type"
-        :file-name="fileToImport.file.name"
-        :buffer="fileToImport.buffer"
-        @cancel="fileToImport = { file: null, buffer: null }"
-        @confirm="fileToImport = { file: null, buffer: null }"
-      />
+      v-model="importerOpened"
+      hide-overlay
+      fullscreen
+      >
+      <lemma-import-manager/>
     </v-dialog>
     <v-app-bar
       data-deskgap-drag="true"
@@ -166,7 +158,7 @@
                   Lemma hinzufügen…
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click="openFileDialog(importFile)" dense>
+              <v-list-item @click="importerOpened = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-database-import-outline</v-icon>
                 </v-list-item-avatar>
@@ -373,8 +365,8 @@ import DataFilter from '../lib/DataFilter.vue'
 
 import _ from 'lodash';
 
-import { fileToArrayBuffer } from '../../util'
 import store from '@/store'
+
 import { LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
@@ -390,7 +382,7 @@ import confirm from '@/store/confirm'
     LobidPreviewCard,
     VirtualTable,
     DataFilter,
-    LemmaImporter: () => import('./LemmaImporter.vue'),
+    LemmaImportManager: () => import('./LemmaImporter/LemmaImportManager.vue'),
   }
 })
 export default class LemmaManager extends Vue {
@@ -398,24 +390,21 @@ export default class LemmaManager extends Vue {
   @Prop({ default: null }) lemmaListId!: number|null
   @Prop({ default: null }) highlightId!: number|null
 
-  scrollToRow: number|null = null
-  store = store
-  tableHeight = 0
-  toolbarMinHeight = 80
-  toolbarPaddingY = 15
-  showAddLemmaDialog = false
-  log = console.log
+  scrollToRow: number|null = null;
+  store = store;
+  tableHeight = 0;
+  toolbarMinHeight = 80;
+  toolbarPaddingY = 15;
+  showAddLemmaDialog = false;
+  log = console.log;
 
-  filterItems: LemmaFilterItem[] = []
+  filterItems: LemmaFilterItem[] = [];
 
-  previewPopupCoords: [number, number] = [0, 0]
-  lobidPreviewGnds: string[] = []
-  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
+  previewPopupCoords: [number, number] = [0, 0];
+  lobidPreviewGnds: string[] = [];
+  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas;
 
-  fileToImport = {
-    file: null as null|File,
-    buffer: null as null|ArrayBuffer
-  }
+  importerOpened: boolean = false;
 
   onKeyDown(e: KeyboardEvent) {
     if (e.key.toLowerCase() === 'enter') {
@@ -663,14 +652,6 @@ export default class LemmaManager extends Vue {
     store.lemma.updateStoredLemmaFilter(id, { name })
   }
 
-  async importFile(f: File) {
-    console.log('import file called.')
-    const b = await fileToArrayBuffer(f)
-    this.fileToImport = {
-      file: f,
-      buffer: b
-    }
-  }
 
   openFileDialog(cb: (f: File) => unknown) {
     const input: HTMLInputElement = document.createElement('input')
