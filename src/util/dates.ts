@@ -1,4 +1,4 @@
-import { format, formatISO, getDaysInMonth, isValid, parseISO } from "date-fns";
+    import { format, formatISO, getDaysInMonth, isValid, parse, parseISO } from "date-fns";
 
 
 /**
@@ -29,14 +29,38 @@ export class DateContainer {
 
     // YYYY-MM-DD
     static fromISO_OnlyDate(isoDate: string | undefined | null ): DateContainer {
-        if ((isoDate === undefined) || (isoDate === null)) {
+        return DateContainer.standardFactory(isoDate, parseISO, isValid);
+    }
+
+    // DD.MM.YYYY
+    static fromGermanDate(germanDate: string | undefined | null): DateContainer {
+        
+        const germanDateParser = (date: string) => parse(
+            date,     
+            // | Name: |        Pattern |   Examples |
+            'dd.'           // Day of month:	dd          01, 02, ..., 31
+            + 'MM.'         // Month:           MM          01, 02, ..., 12
+            + 'y',          // Calendar year:   y           44, 1, 1900, 2017, 9999
+            new Date(),
+        );
+        
+        return DateContainer.standardFactory(germanDate, germanDateParser, isValid);
+
+    }
+
+    private static standardFactory(date: string | undefined | null, parseCallback: (date: string) => Date, validCallback: (parseAttempt: any) => boolean): DateContainer {
+        
+        if ((date === undefined) || (date === null)) {
             return new DateContainer();
         }
-        const parseAttempt = parseISO(isoDate);
-        if (isValid(parseAttempt)) {
+        
+        const parseAttempt = parseCallback(date);
+        
+        if (validCallback(parseAttempt)) {
             return DateContainer.fromDate(parseAttempt);
         }
-        return new DateContainer()
+
+        return new DateContainer();
     }
 
     static fromDate(date: Date): DateContainer {
@@ -181,12 +205,13 @@ export class DateContainer {
 
 }
 
-export type SupportedDateFormatType = 'YYYY-MM-DD';
+export type SupportedDateFormatType = 'YYYY-MM-DD' | 'DD.MM.YYYY';
 type FactoryMethodType = (input: string | undefined | null) => DateContainer;
 type FactoryMethodMappingType = Record<SupportedDateFormatType, FactoryMethodType>;
 
 export const factoryMethods: FactoryMethodMappingType = {
     'YYYY-MM-DD': DateContainer.fromISO_OnlyDate,
+    'DD.MM.YYYY': DateContainer.fromGermanDate,
 }
 
 export const supportedDateFormats = Object.keys(factoryMethods) as SupportedDateFormatType[];
