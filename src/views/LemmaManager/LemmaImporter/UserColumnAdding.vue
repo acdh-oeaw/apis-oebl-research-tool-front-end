@@ -167,9 +167,9 @@ export default class UserColumnAdding extends Vue {
 
     userColumns: UserColumn[] = [];
 
+    @Watch('newLemmas', {deep: true, immediate: true})
     @Watch('localOptions', {immediate: true, deep: true}) 
     updateUserColumns() {
-        this.userColumns = createUserColumns(this.rawImportData, this.localOptions);
 
     }
 
