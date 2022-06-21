@@ -53,7 +53,13 @@ export default class LemmaImporter extends Vue {
         this.percentDone = 50; // Give feeling of progress
         importLemmas(this.lemmasToImport)
             .then(() => {this.percentDone = 100; this.doingImport = false;})
-            .catch(reason => {this.doingImport = false; this.percentDone = 0; this.errorMessage = 'Der Import ist leider fehlgeschlagen';})
+            .catch(reason => {
+                this.doingImport = false; 
+                this.percentDone = 0; 
+                this.errorMessage = 'Der Import ist leider fehlgeschlagen';
+                console.error({message: 'Could not iport lemmas.', reason})
+                }
+            )
         ;
 
     }
