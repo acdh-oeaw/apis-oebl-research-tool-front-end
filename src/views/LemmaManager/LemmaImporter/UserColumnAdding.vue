@@ -92,7 +92,7 @@ export default class UserColumnAdding extends Vue {
     }
 
     @Watch('localOptions', {deep: true, immediate: true})
-    @Watch('localLemmas', {deep: false, immediate: true})
+    @Watch('newLemmas', {deep: true, immediate: true})
     emit() {
         this.$emit('data', this.enrichedLemmas);
         this.$emit('options', this.localOptions);
