@@ -66,6 +66,7 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
 	bioNote: getEmptyColumnConversion(),
 	kinship: getEmptyColumnConversion(),
 	religion: getEmptyColumnConversion(),
+    notes: getEmptyColumnConversion(),
 };
 
 export type GenderMappingOption = Record<

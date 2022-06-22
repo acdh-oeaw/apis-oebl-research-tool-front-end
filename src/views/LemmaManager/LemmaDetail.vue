@@ -223,6 +223,15 @@
               :selected="value.professionGroup"
               @input="debouncedUpdateData({professionGroup: $event })"
             />
+            <v-spacer class="my-5" />
+            <text-field
+              style="min-height: 60px"
+              :label="lemmaRowTranslations.notes.de"
+              :allow-new-line="true"
+              :value="value.notes"
+              :maxlength="255"
+              @input="debouncedUpdateData({notes: $event })"
+            />
           </v-card-text>
           <h4
             class="py-2 px-5 background"

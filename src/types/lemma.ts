@@ -66,6 +66,7 @@ export interface NewLemmaRow {
   bioNote?: string|null,
   kinship?: string|null,
   religion?: string|null,
+  notes?: string|null,
 }
 
 /**

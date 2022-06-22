@@ -717,6 +717,7 @@ LemmaStore {
       columns_scrape: rs.columns_scrape,
       professionDetail: rs.professionDetail,
       professionGroup: rs.professionGroup,
+      notes: rs.notes,
       // TODO: yuck.
       list: rs.list ? {
         id: rs.list.id,
