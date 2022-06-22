@@ -23,6 +23,7 @@ export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
         zoteroKeysBy: '',
         zoteroKeysAbout: '',
         columns_user: '',
+        notes: '',
     };
 }
 
@@ -141,6 +142,7 @@ export function buildNewLemmaRowAfterFormatting(
         bioNote: lemmaPrototype.bioNote,
         kinship: lemmaPrototype.kinship,
         religion: lemmaPrototype.religion,
+        notes: lemmaPrototype.notes,
 
         list: undefined, // This will be done later
         columns_user: {}, // This will be done later
