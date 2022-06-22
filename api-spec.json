@@ -60865,6 +60865,10 @@
                     "religion": {
                         "type": "string",
                         "nullable": true
+                    },
+                    "notes": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "required": [
