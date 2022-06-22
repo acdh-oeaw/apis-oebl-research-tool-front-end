@@ -31,4 +31,5 @@ export const lemmaRowTranslations: translations = {
     secondaryLiterature: {de: 'Sekundärliteratur'},
     zoteroKeysBy: {de: 'Literatur von'},
     zoteroKeysAbout: {de: 'Literatur über'},
+    notes: {de: "Notizen"},
 }
