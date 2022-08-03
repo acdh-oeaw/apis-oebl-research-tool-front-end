@@ -61430,10 +61430,6 @@
                     },
                     "published": {
                         "type": "boolean"
-                    },
-                    "current_version": {
-                        "type": "integer",
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -61448,10 +61444,6 @@
                     },
                     "published": {
                         "type": "boolean"
-                    },
-                    "current_version": {
-                        "type": "integer",
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -64777,10 +64769,6 @@
                     },
                     "published": {
                         "type": "boolean"
-                    },
-                    "current_version": {
-                        "type": "integer",
-                        "nullable": true
                     }
                 }
             },
