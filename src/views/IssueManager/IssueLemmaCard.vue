@@ -97,11 +97,8 @@ export default class IssueLemmaCard extends Vue {
   }
 
   get author() {
-    if (this.value.author) {
-      return store.authors.getById(this.value.author) || null
-    } else {
-      return null
-    }
+    console.warn('get author is currently not implemented. This is a TODO!');
+    return null;
   }
 }
 </script>

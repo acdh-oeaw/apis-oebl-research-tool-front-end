@@ -402,13 +402,17 @@ export default class IssueManager extends Vue {
   }
 
   get lemmaAuthors() {
-    return _(this.issueLemmas)
-      .map(l => l.author)
-      .filter(notEmpty)
-      .uniqBy('author')
-      .map(id => store.authors.getById(id))
-      .filter(notEmpty)
-      .value()
+    console.warn('Get lemma authors is currently not implemented. This is a TODO!');
+    return [];
+    // A reminder, how this woorked. TODO: remove comment
+    // return _(this.issueLemmas)
+    //   .map(l => l.author)
+    //   .filter(notEmpty)
+    //   .uniqBy('author')
+    //   .map(id => store.authors.getById(id))
+    //   .filter(notEmpty)
+    //   .value()
+    // ;
   }
 
   get lemmaLabels(): LemmaLabel[] {
@@ -432,6 +436,7 @@ export default class IssueManager extends Vue {
   }
 
   get autocompleteItems() {
+    console.warn('Auto complete for authors is currently not implemented. This is a TODO!');
     return [
       ...this.lemmaEditors.map(e => ({
         type: 'editor',
@@ -441,13 +446,14 @@ export default class IssueManager extends Vue {
         image: '', // e.profilePicture,
         description: 'Redakteur'
       })),
-      ...this.lemmaAuthors.map(e => ({
-        type: 'author',
-        text: e.name,
-        id: e.userId,
-        value: 'author:' + e.userId,
-        description: 'Autor'
-      })),
+      // This is a reminder, how this used to look like. TODO: Remove that comment.
+      // ...this.lemmaAuthors.map(e => ({
+      //   type: 'author',
+      //   text: e.name,
+      //   id: e.userId,
+      //   value: 'author:' + e.userId,
+      //   description: 'Autor'
+      // })),
       ...this.lemmaLabels.map(e => ({
         type: 'label',
         text: e.name,
@@ -473,14 +479,16 @@ export default class IssueManager extends Vue {
   }
 
   get filteredIssues(): WithId<IssueLemma>[] {
+    console.warn('Filtereing by author is currentl not impemented. this is a TODO!');
     return this.issueLemmas.filter(issue => {
       return this.searchItems.length === 0 || (
         this.searchItems.find(si => si.type === 'editor' && si.id === issue.editor) !== undefined ||
-        this.searchItems.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
         this.searchItems.find(si => si.type === 'label' && issue.labels !== undefined && issue.labels.find(l => l === si.id) !== undefined) !== undefined ||
         this.searchItems.find(si => si.type === 'text' && si.id === issue.id) !== undefined
-      )
-    })
+        // this.searchItems.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
+        )
+      }
+    );
   }
 
   openLemma(l: WithId<IssueLemma>) {

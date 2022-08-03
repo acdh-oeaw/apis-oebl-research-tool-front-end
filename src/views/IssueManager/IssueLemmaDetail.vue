@@ -50,16 +50,22 @@
           />
         </form-row>
         <form-row label="Autor">
+          <div style="display: none;">{{temporary_warn_method('Auto complete for author select is currentlx not implemented. This is a TODO!"')}}</div>
+           <!--  
+            This is a reminder, how this used to look like. TODO: Remove this comment.
+
+            :items="store.authors.authors"
+            @input="updateLemma({ author: $event })"
+           -->
           <select-menu
             :show-chevron="true"
             btn-class="px-4 float-right background darken-2"
-            :items="store.authors.authors"
+            :items="[]"
             search-placeholder="Autor suchen …"
             :value="lemmaAuthor"
             add-null-option="Kein Autor"
             key-value="userId"
             :return-value="true"
-            @input="updateLemma({ author: $event })"
             background-color="transparent"
           />
         </form-row>
@@ -157,6 +163,9 @@ import de from 'date-fns/esm/locale/de'
 })
 export default class IssueLemmaDetail extends Vue {
 
+  // TODO: Remove me!
+  temporary_warn_method = window.console.warn
+
   @Prop({ required: true }) lemma!: IssueLemma
 
   notes: LemmaNote[] = []
@@ -195,11 +204,14 @@ export default class IssueLemmaDetail extends Vue {
   }
 
   get lemmaAuthor(): Author|null {
-    if (this.lemma.author) {
-      return store.authors.getById(this.lemma.author) || null
-    } else {
-      return null
-    }
+    console.warn('This author feature is currently not implemented. This is a TODO!');
+    return null;
+    // This is is a reminder, how this used to look like. TODO. Remove this comment.
+    // if (this.lemma.author) {
+    //   return store.authors.getById(this.lemma.author) || null
+    // } else {
+    //   return null
+    // }
   }
 
   get researchLemma() {
