@@ -55,12 +55,14 @@ export class EditorService {
     }
 
     /**
+     * @param lemmaArticle
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @returns PaginatedLemmaArticleVersionList
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionList(
+        lemmaArticle?: number,
         limit?: number,
         offset?: number,
     ): Promise<PaginatedLemmaArticleVersionList> {
@@ -68,6 +70,7 @@ export class EditorService {
             method: 'GET',
             path: `/editor/api/v1/lemma-article-version/`,
             query: {
+                'lemma_article': lemmaArticle,
                 'limit': limit,
                 'offset': offset,
             },

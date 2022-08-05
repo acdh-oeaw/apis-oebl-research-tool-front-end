@@ -53928,6 +53928,13 @@
                 "operationId": "editor_api_v1_lemma_article_version_list",
                 "parameters": [
                     {
+                        "in": "query",
+                        "name": "lemma_article",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "limit",
                         "required": false,
                         "in": "query",
