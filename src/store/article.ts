@@ -31,7 +31,9 @@ export interface ArticleStoreInterface {
 }
 
 export async function loadArticle(article_id: number): Promise<ArticleStoreInterface> {
-    throw new Error('Not iemplemented');
+    const listResponse = await EditorService.editorApiV1LemmaArticleVersionList(article_id);
+    const versions = listResponse['results'] as SavedArticleVersion[];
+    return new ArticleStore(article_id, versions);
 }
 
 
