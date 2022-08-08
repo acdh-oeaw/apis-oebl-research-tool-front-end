@@ -7,26 +7,26 @@ import { EditorService } from "@/api/services/EditorService";
  */
 type SavedArticleVersion = LemmaArticleVersion & { date_created: string, date_modified: string, id: number };
 
-
+type Markup = LemmaArticleVersion['markup'];
 
 export interface ArticleStoreInterface {
 
 
-    get versions(): SavedArticleVersion[];
+    versions: SavedArticleVersion[];
 
     /**
      * The newest version of an article is undefined, if there is no version
      */
-    get newestVersion(): SavedArticleVersion | undefined;
+    newestVersion: SavedArticleVersion | undefined;
 
     /**
      * Updates tthe markup of the newest version, if there is one.
      * 
      * @param new_markup 
      */
-    updateMarkup(new_markup: LemmaArticleVersion['markup']): Promise<ArticleStoreInterface>;
+    updateMarkup(new_markup: Markup): Promise<ArticleStoreInterface>;
 
-    addVersion(new_markup: LemmaArticleVersion['markup']): Promise<ArticleStoreInterface>;
+    addVersion(new_markup: Markup): Promise<ArticleStoreInterface>;
 
 }
 
@@ -63,7 +63,7 @@ export class ArticleStore implements ArticleStoreInterface {
 
     }
 
-    async updateMarkup(new_markup: Record<string, any>): Promise<ArticleStoreInterface> {
+    async updateMarkup(new_markup: Markup): Promise<ArticleStoreInterface> {
         const newestVersion = this.newestVersion;
         if (newestVersion === undefined) {
             throw new Error('Can not update markup – newest version not found');
@@ -78,8 +78,8 @@ export class ArticleStore implements ArticleStoreInterface {
         return this;
     }
 
-    async addVersion(new_markup: Record<string, any>): Promise<ArticleStoreInterface> {
-        const newVersion = await EditorService.editorApiV1LemmaArticleVersionCreate({ lemma_article: this.article_id, markup = new_markup }) as SavedArticleVersion;
+    async addVersion(new_markup: Markup): Promise<ArticleStoreInterface> {
+        const newVersion = await EditorService.editorApiV1LemmaArticleVersionCreate({ lemma_article: this.article_id, markup: new_markup }) as SavedArticleVersion;
         this.versions.push(newVersion);
         return this;
     }
