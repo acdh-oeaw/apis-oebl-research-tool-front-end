@@ -7,8 +7,6 @@ import { v4 as uuid } from 'uuid'
 import CommentThread from './CommentThread.vue'
 import popupMark from './popupPlugin'
 
-import store from '@/store'
-
 export interface CommentOptions {
   HTMLAttributes: Record<string, any>,
 }
@@ -76,6 +74,7 @@ export const Comment = popupMark.extend({
   },
 
   addCommands() {
+    console.warn('This whole module is not working. TODO');
     return {
       setComment: (attributes) => ({ commands }) => {
         console.log('new comment')
@@ -85,7 +84,7 @@ export const Comment = popupMark.extend({
         if (this.editor.isActive(this.name)) {
           return commands.unsetMark('comment')
         } else {
-          const id = store.article.createCommentThread()
+          const id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
           const command = commands.toggleMark('comment', { id })
           return command
         }

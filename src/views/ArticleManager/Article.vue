@@ -180,15 +180,18 @@
           <v-icon>mdi-share</v-icon>
         </v-btn>
         <!-- SHOW SIDEBAR BUTTON -->
-        <v-btn
+        <!-- TODO: remove:
           @click="store.article.showSidebar = !store.article.showSidebar"
           :color="store.article.showSidebar ? 'primary' : ''"
+        -->
+        <v-btn
           tile
           class="rounded-lg"
           icon>
           <v-icon>mdi-information-outline</v-icon>
         </v-btn>
     </v-app-bar>
+    <!-- TODO remove: :value="store.article.showSidebar"> --> 
     <resizable-drawer
       color="background darken-2"
       :card="false"
@@ -196,7 +199,7 @@
       :min-width="300"
       :width="store.settings.drawerRightWidth"
       @update:width="store.settings = { ...store.settings, drawerRightWidth: $event}"
-      :value="store.article.showSidebar">
+      :value="true">
       <v-card
         class="transparent flex-column d-flex fill-height lemma-detail"
         flat>
@@ -222,15 +225,17 @@
               <issue-lemma-detail v-if="issueLemma !== null" :lemma="issueLemma" />
             </v-window-item>
             <v-window-item value="annotations">
+              <!-- TODO: Remove. :show-lines="store.article.showSidebar === true && sidebarTab === 'annotations'"-->
               <annotation-sidebar
                 :editor="editor"
-                :show-lines="store.article.showSidebar === true && sidebarTab === 'annotations'"
+                :show-lines="true"
               />
             </v-window-item>
             <v-window-item value="comments">
+              <!-- TODO: Remove. :show-lines="store.article.showSidebar === true && sidebarTab === 'comments'"-->
               <comments-sidebar
                 :editor="editor"
-                :show-lines="store.article.showSidebar === true && sidebarTab === 'comments'"
+                :show-lines="true"
               />
             </v-window-item>
             <v-window-item value="person-details">
@@ -288,7 +293,6 @@ import CommentsSidebar from './CommentsSidebar.vue'
 import CitationList from './CitationList.vue'
 
 import store from '@/store'
-import ArticleStore from '@/store/article'
 import { IssueLemma } from '@/api'
 
 @Component({
@@ -358,7 +362,7 @@ export default class Article extends Vue {
 
   @Watch('issueLemmaId', { immediate: true })
   onChangeIssueLemmaId() {
-    store.article = new ArticleStore(Number(this.issueLemmaId))
+    // TODO: remove: store.article = new ArticleStore(Number(this.issueLemmaId))
   }
 
   async insertImage() {
@@ -403,12 +407,12 @@ export default class Article extends Vue {
 
   async mounted() {
     this.issueLemma = (await this.store.issue.getIssueLemmaById(this.issueLemmaId)) || null
-    await store.article.loadArticle(this.issueLemmaId)
+    // All dummy content: await store.article.loadArticle(this.issueLemmaId)
     // await store.article.loadComments(this.issueLemmaId)
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const articleComponent = this
     this.editor = new Editor({
-      content: store.article.article,
+      content: 'This is and was dummy content', // store.article.article,
       extensions: [
         CitationExtension,
         CommentExtension,

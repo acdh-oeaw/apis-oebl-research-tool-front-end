@@ -7,7 +7,6 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/scale.css'
 import 'tippy.js/themes/light.css'
 import CitationComponent from './Citation.vue'
-import store from '@/store'
 import popupExtension from './popupPlugin'
 
 export interface CitationOptions {
@@ -76,12 +75,17 @@ export const Citation = popupExtension.extend({
   },
 
   addCommands() {
+    console.warn('This whole module is not working. TODO');
     return {
       setCitation: (attributes) => ({ commands }) => {
-        return commands.setMark(this.name, { id: store.article.createCitation(), zoteroKey: null })
+        return commands.setMark(this.name, { 
+          id: null, // Removed for refactorization. Was `store.article.createCitation()` TODO: rm comment
+          zoteroKey: null })
       },
       toggleCitation: (attributes) => ({ commands }) => {
-        const command = commands.toggleMark(this.name, { id: store.article.createCitation(), zoteroKey: null })
+        const command = commands.toggleMark(this.name, { 
+          id: null, // Removed for refactorization. Was `store.article.createCitation()` TODO: rm comment
+          zoteroKey: null })
         return command
       },
       unsetCitation: () => ({ commands }) => {

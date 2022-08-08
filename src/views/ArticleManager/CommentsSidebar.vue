@@ -19,7 +19,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import CommentThread from './CommentThread.vue'
-import { CommentThread as CommentThreadType } from '@/store/article'
 import store from '@/store'
 import { Editor } from '@tiptap/vue-2'
 import { Transaction } from 'prosemirror-state'
@@ -41,7 +40,7 @@ export default class CommentsSidebar extends Vue {
   @Prop({ required: true }) editor!: Editor
 
   store = store
-  visibleComments: CommentThreadType[] = []
+  visibleComments: any[] = []; // CommentThreadType TODO: remove comment
 
   showLine(id: string) {
     const els = document.querySelectorAll(`[data-id="${ id }"]`)
@@ -79,15 +78,17 @@ export default class CommentsSidebar extends Vue {
   }
 
   mounted() {
-    this.visibleComments = this.findCommentIdsInDoc()
-      .map((c) => store.article.getThread(c))
-      .filter(notEmpty)
+    console.warn('nothing is implemented here. TODO');
+    this.visibleComments = []; 
+    //this.findCommentIdsInDoc()
+    //   .map((c) => store.article.getThread(c))
+    //   .filter(notEmpty)
     this.editor.on('transaction', ({ transaction }: { transaction: Transaction }) => {
-      if (transaction.docChanged) {
-        this.visibleComments = this.findCommentIdsInDoc()
-          .map((c) => store.article.getThread(c))
-          .filter(notEmpty)
-      }
+      // if (transaction.docChanged) {
+      //   this.visibleComments = this.findCommentIdsInDoc()
+      //     .map((c) => store.article.getThread(c))
+      //     .filter(notEmpty)
+      // }
       // const hasCommentMarks = transaction.steps.filter(s => {
       //   const t = s.toJSON()
       //   return (t.stepType === 'addMark' || t.stepType === 'removeMark') && t.mark.type === 'comment'

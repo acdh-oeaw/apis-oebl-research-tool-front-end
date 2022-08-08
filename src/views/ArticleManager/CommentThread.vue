@@ -129,9 +129,11 @@ export default class CommentThread extends Vue {
   showOverlay = false
 
   get comment() {
-    if (this.id !== null) {
-      return this.store.article.getThread(this.id)
-    }
+    console.warn('not implemented TODO');
+    return undefined;
+    // if (this.id !== null) {
+    //   return this.store.article.getThread(this.id)
+    // }
   }
 
   storeLastCaretPos(e: Event) {
@@ -145,13 +147,14 @@ export default class CommentThread extends Vue {
   }
 
   toggleStatus() {
-    if (this.comment !== undefined) {
-      if (this.comment?.status === 'open') {
-        this.comment.status = 'private'
-      } else {
-        this.comment.status = 'open'
-      }
-    }
+    // TODO
+    // if (this.comment !== undefined) {
+    //   if (this.comment?.status === 'open') {
+    //     this.comment.status = 'private'
+    //   } else {
+    //     this.comment.status = 'open'
+    //   }
+    // }
   }
 
   removeComment() {
@@ -160,20 +163,21 @@ export default class CommentThread extends Vue {
   }
 
   async appendComment() {
-    this.shouldShowEmojiPicker = false
-    if (this.id !== null) {
-      this.store.article.addComment(this.id, {
-        commentId: uuid(),
-        date: new Date(),
-        user: 4,
-        text: this.newMessage
-      })
-      this.newMessage = ''
-      await this.repositionTooltip()
-      this.scrollToBottom()
-    } else {
-      throw new Error('Can’t append comment. No Thread Id given.')
-    }
+    console.warn('Not implemented – TODO: Refactor!');
+// this.shouldShowEmojiPicker = false
+    // if (this.id !== null) {
+    //   this.store.article.addComment(this.id, {
+    //     commentId: uuid(),
+    //     date: new Date(),
+    //     user: 4,
+    //     text: this.newMessage
+    //   })
+    //   this.newMessage = ''
+    //   await this.repositionTooltip()
+    //   this.scrollToBottom()
+    // } else {
+    //   throw new Error('Can’t append comment. No Thread Id given.')
+    // }
   }
 
   toggleEmojiPicker() {
@@ -217,9 +221,11 @@ export default class CommentThread extends Vue {
   }
 
   get thread() {
-    if (this.id !== null) {
-      return this.store.article.getThread(this.id)
-    }
+    console.warn('this is also ot implemented. TODO');
+    return undefined;
+    // if (this.id !== null) {
+    //   return this.store.article.getThread(this.id)
+    // }
   }
 
   formatTimeDistance(d: string|undefined): string {

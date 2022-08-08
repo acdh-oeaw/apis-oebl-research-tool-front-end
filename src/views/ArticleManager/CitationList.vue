@@ -14,14 +14,13 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Editor, NodeWithPos, Mark } from '@tiptap/vue-2'
-import { CitationAttributes } from '@/store/article'
 import { findChildrenByMark } from 'prosemirror-utils'
 import { Node } from 'prosemirror-model'
 import { Transaction } from 'prosemirror-state'
 import CitationDisplay from './CitationDisplay.vue'
 
 interface CitationMark extends Mark {
-  attrs: CitationAttributes
+  attrs: any; // CitationAttributes TODO: remove comment
 }
 
 interface CitationNode extends NodeWithPos {
@@ -49,8 +48,8 @@ export default class CitationList extends Vue {
     this.editor.off('transaction', this.onTransaction)
   }
 
-  getAttrsFromNode(n: CitationNode): CitationAttributes {
-    return n.node.marks[0].attrs
+  getAttrsFromNode(n: CitationNode): void {
+    return;
   }
 
   findCitationsInDoc(): CitationNode[] {
