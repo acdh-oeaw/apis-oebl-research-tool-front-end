@@ -38,24 +38,6 @@
               :value="activeFormatting"
               @input="onSelectFormatting"
             />
-            <v-btn
-              class="rounded-lg"
-              small
-              text
-              icon
-              @click="editor.chain().focus().toggleItalic().run()"
-            >
-              <v-icon small>mdi-format-italic</v-icon>
-            </v-btn>
-            <v-btn
-              class="rounded-lg"
-              small
-              text
-              icon
-              @click="editor.chain().focus().toggleBold()"
-            >
-              <v-icon small>mdi-format-bold</v-icon>
-            </v-btn>
           </v-card>
         </v-slide-item>
         <v-slide-item>
