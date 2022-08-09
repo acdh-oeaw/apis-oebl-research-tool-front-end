@@ -197,11 +197,9 @@ export default class Article extends Vue {
   lastSaveDateObject: Date | null = null;
 
   set lastSaveDate(lastSaveDate: string | null) {
-    console.debug({setting: lastSaveDate})
     this.lastSaveDateObject = lastSaveDate === null ? null : new Date(lastSaveDate);
   }
   get lastSaveDate(): string | null {
-    console.debug({getting: this.lastSaveDateObject})
     if (this.lastSaveDateObject === null) {
       return null;
     }
