@@ -212,7 +212,19 @@ export default class Article extends Vue {
     });
   }
 
-  lastSaveDate: string | null = null;
+  lastSaveDateObject: Date | null = null;
+
+  set lastSaveDate(lastSaveDate: string | null) {
+    console.debug({setting: lastSaveDate})
+    this.lastSaveDateObject = lastSaveDate === null ? null : new Date(lastSaveDate);
+  }
+  get lastSaveDate(): string | null {
+    console.debug({getting: this.lastSaveDateObject})
+    if (this.lastSaveDateObject === null) {
+      return null;
+    }
+    return `${this.lastSaveDateObject.toLocaleDateString('de')}, ${this.lastSaveDateObject.toLocaleTimeString('de')}`;
+  }
 
   /**
    * Again making this NOT-REACTIVE by design. vue does not need to watch the whole editor
