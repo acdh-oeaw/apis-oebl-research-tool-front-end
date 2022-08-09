@@ -92,7 +92,7 @@
             class="rounded-lg pa-1 ml-5 mr-5"
           >
             <v-btn class="rounded-lg" small text @click="save()">
-              <v-icon small left>mdi-message-outline</v-icon>
+              <v-icon small left>mdi-content-save</v-icon>
               Speichern
             </v-btn>
           </v-card>
