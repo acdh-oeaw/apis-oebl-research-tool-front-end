@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="fill-height">
     <v-app-bar app flat>
       <div>
@@ -6,6 +6,21 @@
       </div>
       <v-spacer />
       <v-slide-group class="">
+        <v-slide-item>
+          <v-card
+            color="background darken-2"
+            elevation="0"
+            class="ml-5 rounded-lg pa-1"
+          >
+            <div class="tb-tooltip caption muted">
+              {{
+                lastSaveDate === null
+                  ? "nicht gespeichert"
+                  : `Zuletzt gespeichert: ${lastSaveDate}`
+              }}
+            </div>
+          </v-card>
+        </v-slide-item>
         <v-slide-item>
           <v-card
             color="background darken-2"
@@ -70,6 +85,18 @@
             </v-btn>
           </v-card>
         </v-slide-item>
+        <v-slide-item>
+          <v-card
+            color="background darken-2"
+            elevation="0"
+            class="rounded-lg pa-1 ml-5 mr-5"
+          >
+            <v-btn class="rounded-lg" small text @click="save()">
+              <v-icon small left>mdi-message-outline</v-icon>
+              Speichern
+            </v-btn>
+          </v-card>
+        </v-slide-item>
       </v-slide-group>
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
@@ -120,8 +147,8 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { Editor, EditorContent } from "@tiptap/vue-2";
+import { Vue, Component, Watch, Prop } from "vue-property-decorator";
+import { Content, Editor, EditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 
 import { Comment as CommentExtension } from "./extensionComment";
@@ -130,7 +157,7 @@ import { Annotation as AnnotationExtension } from "./extensionAnnotation";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
 import AnnotationSidebar from "./AnnotationSidebar.vue";
-
+import { ArticleStoreInterface, loadArticle, Markup } from "@/store/article";
 
 @Component({
   components: {
@@ -141,7 +168,71 @@ import AnnotationSidebar from "./AnnotationSidebar.vue";
   },
 })
 export default class Article extends Vue {
-  editor: Editor | null = null;
+  /**
+   * This is NOT-REACTIVE by design.
+   *
+   * How: https://class-component.vuejs.org/guide/class-component.html#data
+   *
+   * > Note that if the initial value is undefined,
+   * > the class property will not be reactive
+   * > which means the changes for the properties will not be detected:
+   *
+   * Why:
+   *
+   *  I would like to have the objects on the component, but not to watch it with vue, excpacially versions[].markup.
+   *
+   *  Changes will be triggered by 3 actions: Load of article, save version and new version.
+   */
+  articleStore: ArticleStoreInterface | undefined = undefined;
+
+  @Prop() issueLemmaId!: number | null;
+  @Watch("issueLemmaId", { immediate: true })
+  async loadArticleData(): Promise<void> {
+    // This is almost poetical ;-)
+    // Reset to null
+    if (this.issueLemmaId === null) {
+      this.editor = undefined;
+      this.articleStore = undefined;
+      this.lastSaveDate = null;
+      return;
+    }
+    // Else set data
+    this.articleStore = await loadArticle(this.issueLemmaId);
+    this.lastSaveDate = this.articleStore.newestVersion?.date_modified ?? null;
+    const articleComponent = this;
+    this.editor = new Editor({
+      content: (this.articleStore.newestVersion?.markup as Content) ?? "",
+      extensions: [CommentExtension, AnnotationExtension, StarterKit],
+      onTransaction(a) {
+        articleComponent.activeFormatting =
+          articleComponent.formattingItems.find((fi) =>
+            fi.isActive(articleComponent.editor!)
+          );
+      },
+    });
+  }
+
+  lastSaveDate: string | null = null;
+
+  /**
+   * Again making this NOT-REACTIVE by design. vue does not need to watch the whole editor
+   */
+  editor: Editor | undefined = undefined;
+
+  async save(): Promise<void> {
+    const markup = this.editor?.getJSON();
+    if (markup === null) {
+      return;
+    }
+    await this.articleStore?.updateMarkup(markup as Markup);
+    this.lastSaveDate = this.articleStore?.newestVersion?.date_modified ?? null;
+  }
+
+  beforeDestroy() {
+    if (this.editor !== undefined) {
+      this.editor.destroy();
+    }
+  }
 
   formattingItems = [
     {
@@ -168,30 +259,6 @@ export default class Article extends Vue {
 
   onSelectFormatting(v: any) {
     v.onSelect(this.editor);
-  }
-
-  async mounted() {
-    const articleComponent = this;
-    this.editor = new Editor({
-      content: "This is and was dummy content",
-      extensions: [
-        CommentExtension,
-        AnnotationExtension,
-        StarterKit,
-      ],
-      onTransaction(a) {
-        articleComponent.activeFormatting =
-          articleComponent.formattingItems.find((fi) =>
-            fi.isActive(articleComponent.editor!)
-          );
-      },
-    });
-  }
-
-  beforeDestroy() {
-    if (this.editor !== null) {
-      this.editor.destroy();
-    }
   }
 }
 </script>

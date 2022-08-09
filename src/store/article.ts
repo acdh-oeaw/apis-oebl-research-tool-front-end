@@ -7,7 +7,7 @@ import { EditorService } from "@/api/services/EditorService";
  */
 type SavedArticleVersion = LemmaArticleVersion & { date_created: string, date_modified: string, id: number };
 
-type Markup = LemmaArticleVersion['markup'];
+export type Markup = LemmaArticleVersion['markup'];
 
 export interface ArticleStoreInterface {
 
