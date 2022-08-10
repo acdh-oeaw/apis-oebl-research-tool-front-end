@@ -43,7 +43,7 @@ export class ArticleStore implements ArticleStoreInterface {
 
     constructor(
         private article_id: number,
-        private _versions: SavedArticleVersion[],
+        private _versions: SavedArticleVersion[] = [],
     ) { }
 
 

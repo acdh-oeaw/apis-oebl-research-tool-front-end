@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 
 import IssueManager from '../views/IssueManager/IssueManager.vue'
 import LemmaManager from '../views/LemmaManager/LemmaManager.vue'
-import Editor from '../views/ArticleManager/Editor.vue'
+import EditorLoader from '../views/ArticleManager/EditorLoader.vue'
 
 
 Vue.use(VueRouter)
@@ -45,7 +45,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/article/:issueLemmaId',
-    component: Editor,
+    component: EditorLoader,
     props: (route) => {
       return {
         issueLemmaId: Number(route.params.issueLemmaId) || null

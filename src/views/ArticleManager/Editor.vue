@@ -1,8 +1,8 @@
-  <template>
-  <div class="fill-height">
+<template>
+  <div class="editor-container">
     <v-app-bar app flat>
       <div>
-        <h1 class="editor-title text-h5">TODO: Title or something</h1>
+        <h1 class="editor-title text-h5">Version vom "Datum.created" TODO!</h1>
       </div>
       <v-spacer />
       <v-slide-group class="">
@@ -13,11 +13,7 @@
             class="ml-5 rounded-lg pa-1"
           >
             <div class="tb-tooltip caption muted">
-              {{
-                lastSaveDate === null
-                  ? "nicht gespeichert"
-                  : `Zuletzt gespeichert: ${lastSaveDate}`
-              }}
+              Zuletzt gespeichert TODO
             </div>
           </v-card>
         </v-slide-item>
@@ -51,7 +47,7 @@
               class="rounded-lg"
               small
               text
-              @click="editor.chain().focus().toggleAnnotation().run()"
+              @click="insertAnnotation()"
             >
               <v-icon small left>mdi-earth</v-icon>
               Annotation
@@ -60,7 +56,7 @@
               class="rounded-lg"
               small
               text
-              @click="editor.chain().focus().toggleComment().run()"
+              @click="insertComment()"
             >
               <v-icon small left>mdi-message-outline</v-icon>
               Kommentar
@@ -87,14 +83,13 @@
           </v-btn>
         </template>
         <v-list
-          v-if="editor !== null"
           class="text-body-2 rounded-lg elevation-0 x-dense"
           dense
           nav
         >
           <v-list-item
-            :disabled="!editor.can().undo()"
-            @click="editor.chain().focus().undo().run()"
+            :disabled="!undoPossible"
+            @click="undo()"
           >
             <v-list-item-avatar
               ><v-icon small>mdi-undo</v-icon></v-list-item-avatar
@@ -105,8 +100,8 @@
             >
           </v-list-item>
           <v-list-item
-            :disabled="!editor.can().redo()"
-            @click="editor.chain().focus().redo().run()"
+            :disabled="!redoPossible"
+            @click="redo()"
           >
             <v-list-item-avatar
               ><v-icon small>mdi-redo</v-icon></v-list-item-avatar
@@ -123,22 +118,27 @@
 
     <v-main>
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
-        <editor-content class="tiptap-editor" :editor="editor" />
+        <tip-tap-editor-content class="tiptap-editor" :editor="tipTapEditor" />
       </div>
     </v-main>
   </div>
 </template>
-<script lang="ts">
-import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import { Content as TipTapContent, Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
-import StarterKit from "@tiptap/starter-kit";
 
-import { Comment as CommentExtension } from "./extensionComment";
-import { Annotation as AnnotationExtension } from "./extensionAnnotation";
+<script lang='ts'>
+
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+import { Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
+
 
 import SelectMenu from "@/views/lib/SelectMenu.vue";
-import { ArticleStoreInterface, loadArticle, Markup } from "@/store/article";
 
+import { ArticleStoreInterface, Markup } from "@/store/article";
+import { LemmaArticleVersion } from "@/api";
+
+/**
+ * Edits a single version of an article.
+ */
 @Component({
   components: {
     SelectMenu,
@@ -146,81 +146,10 @@ import { ArticleStoreInterface, loadArticle, Markup } from "@/store/article";
   },
 })
 export default class Editor extends Vue {
-  /**
-   * This is NOT-REACTIVE by design.
-   *
-   * How: https://class-component.vuejs.org/guide/class-component.html#data
-   *
-   * > Note that if the initial value is undefined,
-   * > the class property will not be reactive
-   * > which means the changes for the properties will not be detected:
-   *
-   * Why:
-   *
-   *  I would like to have the objects on the component, but not to watch it with vue, excpacially versions[].markup.
-   *
-   *  Changes will be triggered by 3 actions: Load of article, save version and new version.
-   */
-  articleStore: ArticleStoreInterface | undefined = undefined;
 
-  @Prop() issueLemmaId!: number | null;
-  @Watch("issueLemmaId", { immediate: true })
-  async loadArticleData(): Promise<void> {
-    // This is almost poetical ;-)
-    // Reset to null
-    if (this.issueLemmaId === null) {
-      this.editor = undefined;
-      this.articleStore = undefined;
-      this.lastSaveDate = null;
-      return;
-    }
-    // Else set data
-    this.articleStore = await loadArticle(this.issueLemmaId);
-    this.lastSaveDate = this.articleStore.newestVersion?.date_modified ?? null;
-    const articleComponent = this;
-    this.editor = new TipTapEditor({
-      content: (this.articleStore.newestVersion?.markup as TipTapContent) ?? "",
-      extensions: [CommentExtension, AnnotationExtension, StarterKit],
-      onTransaction(a) {
-        articleComponent.activeFormatting =
-          articleComponent.formattingItems.find((fi) =>
-            fi.isActive(articleComponent.editor!)
-          );
-      },
-    });
-  }
-
-  lastSaveDateObject: Date | null = null;
-
-  set lastSaveDate(lastSaveDate: string | null) {
-    this.lastSaveDateObject = lastSaveDate === null ? null : new Date(lastSaveDate);
-  }
-  get lastSaveDate(): string | null {
-    if (this.lastSaveDateObject === null) {
-      return null;
-    }
-    return `${this.lastSaveDateObject.toLocaleDateString('de')}, ${this.lastSaveDateObject.toLocaleTimeString('de')}`;
-  }
-
-  /**
-   * Again making this NOT-REACTIVE by design. vue does not need to watch the whole editor
-   */
-  editor: TipTapEditor | undefined = undefined;
-
-  async save(): Promise<void> {
-    const markup = this.editor?.getJSON();
-    if (markup === null) {
-      return;
-    }
-    await this.articleStore?.updateMarkup(markup as Markup);
-    this.lastSaveDate = this.articleStore?.newestVersion?.date_modified ?? null;
-  }
-
-  beforeDestroy() {
-    if (this.editor !== undefined) {
-      this.editor.destroy();
-    }
-  }
+  @Prop({required: true}) articleStore!:  ArticleStoreInterface;
+  @Prop({required: true}) version!:  LemmaArticleVersion;
+  @Prop({required: true}) tipTapEditor!: TipTapEditor;
 
   formattingItems = [
     {
@@ -245,8 +174,45 @@ export default class Editor extends Vue {
 
   activeFormatting: any = this.formattingItems[0];
 
-  onSelectFormatting(v: any) {
-    v.onSelect(this.editor);
+  async save(): Promise<void> {
+    const markup = this.tipTapEditor.getJSON();
+    if (markup === null) {
+      return;
+    }
+    await this.articleStore.updateMarkup(markup as Markup);
   }
+
+  onSelectFormatting(v: any) {
+    v.onSelect(this.tipTapEditor);
+  }
+
+  insertAnnotation(): void {
+    this.tipTapEditor.chain().focus().toggleAnnotation().run();
+  }
+
+  insertComment(): void {
+    this.tipTapEditor.chain().focus().toggleComment().run();
+  }
+
+  get undoPossible(): boolean {
+    return this.tipTapEditor.can().undo();
+  }
+
+  undo(): void {
+    this.tipTapEditor.chain().focus().undo().run();
+  }
+
+  redoPossible(): boolean {
+    return this.tipTapEditor.can().redo();
+  }
+
+  redo(): void {
+    this.tipTapEditor.chain().focus().redo().run();
+  }
+
+  beforeDestroy() {
+    this.tipTapEditor.destroy();
+  }
+
 }
 </script>
