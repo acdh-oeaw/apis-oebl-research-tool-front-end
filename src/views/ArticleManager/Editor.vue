@@ -130,7 +130,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import { Content, Editor, EditorContent } from "@tiptap/vue-2";
+import { Content as TipTapContent, Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 
 import { Comment as CommentExtension } from "./extensionComment";
@@ -142,10 +142,10 @@ import { ArticleStoreInterface, loadArticle, Markup } from "@/store/article";
 @Component({
   components: {
     SelectMenu,
-    EditorContent,
+    TipTapEditorContent,
   },
 })
-export default class Article extends Vue {
+export default class Editor extends Vue {
   /**
    * This is NOT-REACTIVE by design.
    *
@@ -178,8 +178,8 @@ export default class Article extends Vue {
     this.articleStore = await loadArticle(this.issueLemmaId);
     this.lastSaveDate = this.articleStore.newestVersion?.date_modified ?? null;
     const articleComponent = this;
-    this.editor = new Editor({
-      content: (this.articleStore.newestVersion?.markup as Content) ?? "",
+    this.editor = new TipTapEditor({
+      content: (this.articleStore.newestVersion?.markup as TipTapContent) ?? "",
       extensions: [CommentExtension, AnnotationExtension, StarterKit],
       onTransaction(a) {
         articleComponent.activeFormatting =
@@ -205,7 +205,7 @@ export default class Article extends Vue {
   /**
    * Again making this NOT-REACTIVE by design. vue does not need to watch the whole editor
    */
-  editor: Editor | undefined = undefined;
+  editor: TipTapEditor | undefined = undefined;
 
   async save(): Promise<void> {
     const markup = this.editor?.getJSON();
@@ -226,20 +226,20 @@ export default class Article extends Vue {
     {
       name: "Text",
       value: "paragraph",
-      isActive: (e: Editor) => e.isActive("paragraph"),
-      onSelect: (e: Editor) => e.chain().focus().setParagraph().run(),
+      isActive: (e: TipTapEditor) => e.isActive("paragraph"),
+      onSelect: (e: TipTapEditor) => e.chain().focus().setParagraph().run(),
     },
     {
       name: "Überschrift 1",
       value: "heading-1",
-      isActive: (e: Editor) => e.isActive("heading", { level: 1 }),
-      onSelect: (e: Editor) => e.chain().focus().setHeading({ level: 1 }).run(),
+      isActive: (e: TipTapEditor) => e.isActive("heading", { level: 1 }),
+      onSelect: (e: TipTapEditor) => e.chain().focus().setHeading({ level: 1 }).run(),
     },
     {
       name: "Überschrift 2",
       value: "heading-2",
-      isActive: (e: Editor) => e.isActive("heading", { level: 2 }),
-      onSelect: (e: Editor) => e.chain().focus().setHeading({ level: 2 }).run(),
+      isActive: (e: TipTapEditor) => e.isActive("heading", { level: 2 }),
+      onSelect: (e: TipTapEditor) => e.chain().focus().setHeading({ level: 2 }).run(),
     },
   ];
 
