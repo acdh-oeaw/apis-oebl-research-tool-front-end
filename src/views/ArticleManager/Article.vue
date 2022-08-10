@@ -137,16 +137,12 @@ import { Comment as CommentExtension } from "./extensionComment";
 import { Annotation as AnnotationExtension } from "./extensionAnnotation";
 
 import SelectMenu from "@/views/lib/SelectMenu.vue";
-import TextField from "@/views/lib/TextField.vue";
-import AnnotationSidebar from "./AnnotationSidebar.vue";
 import { ArticleStoreInterface, loadArticle, Markup } from "@/store/article";
 
 @Component({
   components: {
     SelectMenu,
     EditorContent,
-    AnnotationSidebar,
-    TextField,
   },
 })
 export default class Article extends Vue {
