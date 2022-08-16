@@ -41,7 +41,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import { ApiError, LemmaArticleVersion } from "@/api";
+import { LemmaArticleVersion } from "@/api";
 import {
   Content as TipTapContent,
   Editor as TipTapEditor,
