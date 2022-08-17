@@ -57214,6 +57214,48 @@
                 }
             }
         },
+        "/workflow/api/v1/own-issue-lemma-assignment/{id}/": {
+            "get": {
+                "operationId": "workflow_api_v1_own_issue_lemma_assignment_retrieve",
+                "description": "Utility class to view / retrieve all edit types for a user / issue-lemma pair.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IssueLemmaUserAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/workflow/api/v1/research2workflow/": {
             "post": {
                 "operationId": "workflow_api_v1_research2workflow_create",
@@ -57617,6 +57659,15 @@
                 ]
             },
             "EditTypeEnum": {
+                "enum": [
+                    "VIEW",
+                    "COMMENT",
+                    "ANNOTATE",
+                    "WRITE"
+                ],
+                "type": "string"
+            },
+            "EditTypesEnum": {
                 "enum": [
                     "VIEW",
                     "COMMENT",
@@ -61198,6 +61249,19 @@
                     "lemma",
                     "status"
                 ]
+            },
+            "IssueLemmaUserAssignment": {
+                "type": "object",
+                "description": "Utility class to list EditTypes",
+                "properties": {
+                    "edit_types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EditTypesEnum"
+                        },
+                        "readOnly": true
+                    }
+                }
             },
             "IssueRequest": {
                 "type": "object",

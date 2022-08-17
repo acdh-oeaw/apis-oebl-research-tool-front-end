@@ -8,6 +8,7 @@ import type { Editor } from '../models/Editor';
 import type { Issue } from '../models/Issue';
 import type { IssueLemma } from '../models/IssueLemma';
 import type { IssueLemmaNoEditorRequest } from '../models/IssueLemmaNoEditorRequest';
+import type { IssueLemmaUserAssignment } from '../models/IssueLemmaUserAssignment';
 import type { IssueRequest } from '../models/IssueRequest';
 import type { Lemma } from '../models/Lemma';
 import type { LemmaLabel } from '../models/LemmaLabel';
@@ -796,6 +797,22 @@ export class WorkflowService {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * Utility class to view / retrieve all edit types for a user / issue-lemma pair.
+     * @param id
+     * @returns IssueLemmaUserAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1OwnIssueLemmaAssignmentRetrieve(
+        id: string,
+    ): Promise<IssueLemmaUserAssignment> {
+        const result = await __request({
+            method: 'GET',
+            path: `/workflow/api/v1/own-issue-lemma-assignment/${id}/`,
         });
         return result.body;
     }

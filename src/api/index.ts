@@ -21,6 +21,7 @@ export type { CreateResearchListAPIViewRequest } from './models/CreateResearchLi
 export type { Editor } from './models/Editor';
 export type { EditorRequest } from './models/EditorRequest';
 export { EditTypeEnum } from './models/EditTypeEnum';
+export { EditTypesEnum } from './models/EditTypesEnum';
 export type { Entity } from './models/Entity';
 export type { EntityUri } from './models/EntityUri';
 export type { Event } from './models/Event';
@@ -77,6 +78,7 @@ export type { Issue } from './models/Issue';
 export type { IssueLemma } from './models/IssueLemma';
 export type { IssueLemmaNoEditorRequest } from './models/IssueLemmaNoEditorRequest';
 export type { IssueLemmaSerializerOpenApi } from './models/IssueLemmaSerializerOpenApi';
+export type { IssueLemmaUserAssignment } from './models/IssueLemmaUserAssignment';
 export type { IssueRequest } from './models/IssueRequest';
 export type { Label } from './models/Label';
 export type { LabelSerializerLegacy } from './models/LabelSerializerLegacy';
