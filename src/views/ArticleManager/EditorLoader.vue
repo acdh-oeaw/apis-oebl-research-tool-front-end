@@ -2,8 +2,44 @@
   <div class="editor-loader-container">
     <v-main>
       <v-container>
-        <v-row>
-          <v-col>
+        <v-row class="version-list-row">
+          <v-col class="version-list-col">
+            <v-expansion-panels v-if="articleStore">
+              <v-expansion-panel>
+                <v-expansion-panel-header>Versionen ({{sortedVersionViews.length}})</v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-container>
+                    <v-row 
+                      v-for="(version, index) in sortedVersionViews" 
+                      :key="index" 
+                      :class="version.isShownInEditor ? 'version-in-list grey lighten-2' : 'version-in-list'"
+                    >
+                      <v-col>
+                        <span class="version-nr">Version Nr. {{version.ordinalNumber}} </span>  
+                        <span>erstellt am {{version.dateCreatedDELocale}} </span>
+                        <span v-if="version.dateCreatedDELocale !== version.dateModifiedDELocale">(bearbeitet: {{version.dateModifiedDELocale}}) </span>
+                      </v-col>
+                      <v-col>
+                        <v-simple-checkbox
+                          :disabled="version.isShownInEditor"
+                          :value="version.isShownInEditor"
+                          @click="selectVersion(version.id)"
+                        />
+                      </v-col>
+                  </v-row>
+                  </v-container>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+            <div v-else>
+              <div class="loading">
+                <v-progress-circular indeterminate />
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row class="editor-row">
+          <v-col class="editor-col">
             <!-- We have three basic states: Loading, loaded and error -->
             <div v-if="loadingState === 'LOADING'">
               <div class="loading">
@@ -156,11 +192,7 @@ export default class EditorLoader extends Vue {
     }
 
     // Create tap editor
-    const tipTapEditor = new TipTapEditor({
-      content: newestVersion.markup as TipTapContent,
-      editable: assignmentStore.userCanWrite,
-      extensions: [CommentExtension, AnnotationExtension, TipTapStarterKit],
-    });
+    const tipTapEditor = this.createTipTapEditor(newestVersion.markup as TipTapContent, assignmentStore.userCanWrite);
 
     this.setInitialState(
       "LOADED",
@@ -171,6 +203,77 @@ export default class EditorLoader extends Vue {
       newestVersion
     );
     return;
+  }
+
+  get sortedVersionViews(): Array<
+    {
+      id: number, 
+      ordinalNumber: number,
+      dateCreatedDELocale: string,
+      dateModifiedDELocale: string,
+      isShownInEditor: boolean,
+      }
+  > {
+      if (this.articleStore === null) {
+        return [];
+      }
+      type SavedArticleVersionWithDate = { 
+          id: number,
+          date_created: Date, date_modified: Date,
+        };
+      const versionsWithDate: SavedArticleVersionWithDate[] = this.articleStore.versions.map(
+        version => {
+          return {
+            id: version.id, 
+            date_created: new Date(version.date_created), 
+            date_modified: new Date(version.date_modified),
+          };
+        }
+      );
+       const sortedVersions = versionsWithDate.sort(
+         (version1, version2) => {
+           if (version1.date_created > version2.date_created) {
+             return 1;
+           } else if (version1.date_created < version2.date_created) {
+             return -1;
+           }
+           return 0;
+         }
+        );
+
+      return sortedVersions.map(
+        (version, index) => {
+          return {
+            id: version.id,
+            ordinalNumber: index + 1,
+            dateCreatedDELocale: version.date_created.toLocaleDateString('de'),
+            dateModifiedDELocale: version.date_modified.toLocaleDateString('de'),
+            isShownInEditor: this.versionToEdit !== null &&   version.id === this.versionToEdit.id
+          };
+        }
+      );
+     }
+
+     selectVersion(versionId: number): void {
+       if (this.articleStore === null) {
+         console.error({message: 'There must be some programming error. Article store should be loaded, when calling this method. Check it out.'});
+         return;
+       }
+       const versionToSelect = this.articleStore.versions.find(version => version.id === versionId);
+      if (versionToSelect === undefined) {
+         console.error({message: 'There must be some programming error. This method should only be called with existing versions. Check it out.'});
+         return;
+       }
+       this.versionToEdit = versionToSelect;
+       this.tipTapEditor = this.createTipTapEditor(this.versionToEdit.markup as TipTapContent, false);
+  }
+
+  createTipTapEditor(content: TipTapContent, editable: boolean): TipTapEditor{
+    return new TipTapEditor({
+      content: content,
+      editable: editable,
+      extensions: [CommentExtension, AnnotationExtension, TipTapStarterKit],
+    });;
   }
 }
 </script>
