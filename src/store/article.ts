@@ -1,4 +1,4 @@
-import { LemmaArticleVersion } from "@/api";
+import { EditTypesEnum, LemmaArticleVersion, WorkflowService } from "@/api";
 import { EditorService } from "@/api/services/EditorService";
 
 
@@ -30,10 +30,32 @@ export interface ArticleStoreInterface {
 
 }
 
+/**
+ * Summarizes the rights an user has for an article.
+ */
+export interface UserArticleAssignmentStoreInterface {
+    
+    userCanView: boolean;
+    userCanComment: boolean;
+    userCanAnnotate: boolean;
+    userCanWrite: boolean;
+
+}
+
 export async function loadArticle(article_id: number): Promise<ArticleStoreInterface> {
     const listResponse = await EditorService.editorApiV1LemmaArticleVersionList(article_id);
     const versions = listResponse['results'] as SavedArticleVersion[];
     return new ArticleStore(article_id, versions);
+}
+
+/**
+ * 
+ * @param article_id Load assignments for this article and the authenticated user.
+ */
+export async function loadAssignments(article_id: number): Promise<UserArticleAssignmentStoreInterface> {
+    const article_param = String(article_id);
+    const assignments = await WorkflowService.workflowApiV1OwnIssueLemmaAssignmentRetrieve(article_param);
+    return new UserArticleAssignmentStore(assignments.edit_types ?? []);  // with readonly types, our model generator makes them possibly undefined, even if they aren't.
 }
 
 
@@ -85,3 +107,29 @@ export class ArticleStore implements ArticleStoreInterface {
     }
 
 }
+
+
+export class UserArticleAssignmentStore implements UserArticleAssignmentStoreInterface {
+
+    constructor(
+        private editTypes: EditTypesEnum[]
+    ) {}
+
+    get userCanView(): boolean {
+        return this.editTypes.length > 0;
+    }
+
+    get userCanComment(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.COMMENT);
+    }
+
+    get userCanAnnotate(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.ANNOTATE);
+    }
+    get userCanWrite(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE);
+    }
+
+}
+
+

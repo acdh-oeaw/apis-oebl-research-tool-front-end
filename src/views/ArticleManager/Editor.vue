@@ -151,6 +151,10 @@ export default class Editor extends Vue {
   @Prop({required: true}) version!:  LemmaArticleVersion;
   @Prop({required: true}) tipTapEditor!: TipTapEditor;
 
+  @Prop({required: true}) userCanAnnotate!: boolean;
+  @Prop({required: true}) userCanComment!: boolean;
+
+
   formattingItems = [
     {
       name: "Text",

@@ -10,12 +10,15 @@
                 <v-progress-circular indeterminate />
               </div>
             </div>
-            <div v-else-if="loadingState === 'LOADED'">
+            <div v-else-if="loadingState === 'LOADED' && userCanView">
               <div class="loaded-editor">
                 <editor
                   :articleStore="articleStore"
                   :version="versionToEdit"
                   :tipTapEditor="tipTapEditor"
+                  :userCanAnnotate="userCanAnnotate"
+                  :userCanComment="userCanComment"
+
                 />
               </div>
             </div>
@@ -52,7 +55,7 @@ import TipTapStarterKit from "@tiptap/starter-kit";
 import { Comment as CommentExtension } from "./extensionComment";
 import { Annotation as AnnotationExtension } from "./extensionAnnotation";
 
-import { ArticleStoreInterface, loadArticle } from "@/store/article";
+import { ArticleStoreInterface, loadArticle, loadAssignments, UserArticleAssignmentStoreInterface } from "@/store/article";
 import Editor from "./Editor.vue";
 
 /**
@@ -67,26 +70,40 @@ export default class EditorLoader extends Vue {
   @Prop() issueLemmaId!: number | null;
 
   articleStore: ArticleStoreInterface | null = null;
+  assignmentStore: UserArticleAssignmentStoreInterface | null = null;
   tipTapEditor: TipTapEditor | null = null;
   versionToEdit: LemmaArticleVersion | null = null;
   loadingState: "LOADING" | "LOADED" | "ERROR" = "LOADING";
   errorMessage: string = "";
 
+  userCanView: boolean = false;
+  userCanComment: boolean = false;
+  userCanAnnotate: boolean = false;
+
+
   /**
-   * Setting the whole state of the module in a method, to avoid forgetting states on the way.
+   * Setting the whole state of the start up of the module in a method, to avoid forgetting states on the way.
    */
-  setState(
+  setInitialState(
     loadingState: "LOADING" | "LOADED" | "ERROR",
     errorMessage: string = "",
     articleStore: ArticleStoreInterface | null = null,
+    assignmentStore: UserArticleAssignmentStoreInterface | null = null,
     tipTapEditor: TipTapEditor | null = null,
     versionToEdit: LemmaArticleVersion | null = null
   ): void {
     this.loadingState = loadingState;
     this.errorMessage = errorMessage;
     this.articleStore = articleStore;
+    this.assignmentStore = assignmentStore;
     this.tipTapEditor = tipTapEditor;
     this.versionToEdit = versionToEdit;
+
+    if (this.assignmentStore !== null) {
+      this.userCanView = this.assignmentStore.userCanView;
+      this.userCanComment = this.assignmentStore.userCanComment;
+      this.userCanAnnotate = this.assignmentStore.userCanAnnotate;
+    }
   }
 
   @Watch("issueLemmaId", { immediate: true })
@@ -94,11 +111,11 @@ export default class EditorLoader extends Vue {
     // This is almost poetical ;-)
 
     // Reset
-    this.setState("LOADING");
+    this.setInitialState("LOADING");
 
     // The url param could not be parsed into a number, for example http://localhost:8080/article/THIS_IS_NOT_NUMBER
     if (this.issueLemmaId === null) {
-      this.setState(
+      this.setInitialState(
         "ERROR",
         // This URL is wrong. Contact the technical support team.
         `Diese URL ist leider nicht korrekt. Bitte nehmen Sie mit dem technischen Support-Team Kontakt auf.`
@@ -106,19 +123,31 @@ export default class EditorLoader extends Vue {
       return;
     }
 
+    const assignmentStore = await loadAssignments(this.issueLemmaId);
+
+    if (!assignmentStore.userCanView) {
+      this.setInitialState(
+        "ERROR",
+        // You can't read this article. Contact the technical support team.
+        "Sie können diesen Artikel leider nicht betrachten. Bitte wenden Sie sich an die Chefredaktion oder den techischen Support."
+      );
+      return;
+    }
+
+
     // Try to load data – inform the user on failure
     // Unfortunatly, there is nothing to catch here,
     // because errors get catched in scr/api/core/requests.ts or src/service/requests.ts
     // and the user gets a global message,
     // but this component has no idea about that.
-    let articleStore: ArticleStoreInterface = await loadArticle(this.issueLemmaId);
+    const articleStore: ArticleStoreInterface = await loadArticle(this.issueLemmaId);
 
     // If anything went wrong however, we have no data,
-    const newestVersion: LemmaArticleVersion | undefined =articleStore.newestVersion;
+    const newestVersion: LemmaArticleVersion | undefined = articleStore.newestVersion;
 
     // and give the user great feedback!
     if (newestVersion === undefined) {
-      this.setState(
+      this.setInitialState(
         "ERROR",
         // We could not load any version for this article.
         "Es konnte keine Version dieses Artikels geladen werden."
@@ -129,13 +158,15 @@ export default class EditorLoader extends Vue {
     // Create tap editor
     const tipTapEditor = new TipTapEditor({
       content: newestVersion.markup as TipTapContent,
+      editable: assignmentStore.userCanWrite,
       extensions: [CommentExtension, AnnotationExtension, TipTapStarterKit],
     });
 
-    this.setState(
+    this.setInitialState(
       "LOADED",
       "Alles geladen.",  // "Everything is loaded." – This will not been displayed.
       articleStore,
+      assignmentStore,
       tipTapEditor,
       newestVersion
     );
