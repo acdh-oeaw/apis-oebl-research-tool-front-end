@@ -39,6 +39,10 @@ export interface UserArticleAssignmentStoreInterface {
     userCanComment: boolean;
     userCanAnnotate: boolean;
     userCanWrite: boolean;
+    /**
+     * Shortcut boolean, if use can write or annotate or comment / more than just view or nothing.
+     */
+    userCanEditInAnyWay: boolean;
 
 }
 
@@ -126,8 +130,13 @@ export class UserArticleAssignmentStore implements UserArticleAssignmentStoreInt
     get userCanAnnotate(): boolean {
         return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.ANNOTATE);
     }
+
     get userCanWrite(): boolean {
         return this.editTypes.includes(EditTypesEnum.WRITE);
+    }
+
+    get userCanEditInAnyWay(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.ANNOTATE) || this.editTypes.includes(EditTypesEnum.COMMENT);
     }
 
 }

@@ -6,7 +6,12 @@
           <v-col class="version-list-col">
             <v-expansion-panels v-if="articleStore">
               <v-expansion-panel>
-                <v-expansion-panel-header>Versionen ({{sortedVersionViews.length}})</v-expansion-panel-header>
+                <v-expansion-panel-header>
+                  <span>Versionen ({{sortedVersionViews.length}})</span>
+                  <span v-if="userCanEditInAnyWay">
+                    <v-btn @click="createNewVersion()">Neue Version erstellen</v-btn>
+                  </span>
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-container>
                     <v-row 
@@ -115,12 +120,13 @@ export default class EditorLoader extends Vue {
   userCanView: boolean = false;
   userCanComment: boolean = false;
   userCanAnnotate: boolean = false;
+  userCanEditInAnyWay: boolean = false;
 
 
   /**
    * Setting the whole state of the start up of the module in a method, to avoid forgetting states on the way.
    */
-  setInitialState(
+  setState(
     loadingState: "LOADING" | "LOADED" | "ERROR",
     errorMessage: string = "",
     articleStore: ArticleStoreInterface | null = null,
@@ -139,6 +145,7 @@ export default class EditorLoader extends Vue {
       this.userCanView = this.assignmentStore.userCanView;
       this.userCanComment = this.assignmentStore.userCanComment;
       this.userCanAnnotate = this.assignmentStore.userCanAnnotate;
+      this.userCanEditInAnyWay = this.assignmentStore.userCanEditInAnyWay;
     }
   }
 
@@ -147,11 +154,11 @@ export default class EditorLoader extends Vue {
     // This is almost poetical ;-)
 
     // Reset
-    this.setInitialState("LOADING");
+    this.setState("LOADING");
 
     // The url param could not be parsed into a number, for example http://localhost:8080/article/THIS_IS_NOT_NUMBER
     if (this.issueLemmaId === null) {
-      this.setInitialState(
+      this.setState(
         "ERROR",
         // This URL is wrong. Contact the technical support team.
         `Diese URL ist leider nicht korrekt. Bitte nehmen Sie mit dem technischen Support-Team Kontakt auf.`
@@ -162,7 +169,7 @@ export default class EditorLoader extends Vue {
     const assignmentStore = await loadAssignments(this.issueLemmaId);
 
     if (!assignmentStore.userCanView) {
-      this.setInitialState(
+      this.setState(
         "ERROR",
         // You can't read this article. Contact the technical support team.
         "Sie können diesen Artikel leider nicht betrachten. Bitte wenden Sie sich an die Chefredaktion oder den techischen Support."
@@ -183,7 +190,7 @@ export default class EditorLoader extends Vue {
 
     // and give the user great feedback!
     if (newestVersion === undefined) {
-      this.setInitialState(
+      this.setState(
         "ERROR",
         // We could not load any version for this article.
         "Es konnte keine Version dieses Artikels geladen werden."
@@ -194,7 +201,7 @@ export default class EditorLoader extends Vue {
     // Create tap editor
     const tipTapEditor = this.createTipTapEditor(newestVersion.markup as TipTapContent, assignmentStore.userCanWrite);
 
-    this.setInitialState(
+    this.setState(
       "LOADED",
       "Alles geladen.",  // "Everything is loaded." – This will not been displayed.
       articleStore,
@@ -274,6 +281,30 @@ export default class EditorLoader extends Vue {
       editable: editable,
       extensions: [CommentExtension, AnnotationExtension, TipTapStarterKit],
     });;
+  }
+
+  async createNewVersion(): Promise<void> {
+    if (this.articleStore === null || this.tipTapEditor === null) {
+         console.error({message: 'There must be some programming error. Article store and editor should be loaded, when calling this method. Check it out.'});
+         return;
+    }
+    // Creatre a local copy of the objects
+    const localStore = this.articleStore;
+    const localEditor = this.tipTapEditor;
+    // because the properties are set to null on loading
+    this.setState("LOADING");
+    // Adding a version, creates a new version / copy of the store
+    const newStore = await localStore.addVersion(localEditor.getJSON());
+    this.setState(
+      "LOADED",
+      "Alles geladen.",  // "Everything is loaded." – This will not been displayed.
+      newStore,
+      this.assignmentStore,
+      this.createTipTapEditor(
+        newStore.newestVersion ? newStore.newestVersion.markup as TipTapContent : 'Fehler beim laden', true
+      ),
+      newStore.newestVersion,
+    );
   }
 }
 </script>
