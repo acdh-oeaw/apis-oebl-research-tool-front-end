@@ -276,6 +276,9 @@ export default class EditorLoader extends Vue {
   }
 
   createTipTapEditor(content: TipTapContent, editable: boolean): TipTapEditor{
+    if (this.tipTapEditor !== null) {
+      this.tipTapEditor.destroy();
+    }
     return new TipTapEditor({
       content: content,
       editable: editable,
