@@ -272,7 +272,14 @@ export default class EditorLoader extends Vue {
          return;
        }
        this.versionToEdit = versionToSelect;
-       this.tipTapEditor = this.createTipTapEditor(this.versionToEdit.markup as TipTapContent, false);
+       this.tipTapEditor = this.createTipTapEditor(
+         this.versionToEdit.markup as TipTapContent, 
+         (
+           this.versionToEdit.id !== undefined
+          && this.articleStore.newestVersion !== undefined 
+          && this.versionToEdit.id === this.articleStore.newestVersion.id
+          )
+        );
   }
 
   createTipTapEditor(content: TipTapContent, editable: boolean): TipTapEditor{
