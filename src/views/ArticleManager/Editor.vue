@@ -2,7 +2,7 @@
   <div class="editor-container">
     <v-app-bar app flat>
       <div>
-        <h1 class="editor-title text-h5">Version vom "Datum.created" TODO!</h1>
+        <h1 class="editor-title text-h5">Version vom {{dateToLocale(version.date_created)}}</h1>
       </div>
       <v-spacer />
       <v-slide-group class="">
@@ -13,7 +13,7 @@
             class="ml-5 rounded-lg pa-1"
           >
             <div class="tb-tooltip caption muted">
-              Zuletzt gespeichert TODO
+              <div>Zuletzt gespeichert</div><div>{{dateToLocale(version.date_modified)}}</div>
             </div>
           </v-card>
         </v-slide-item>
@@ -153,6 +153,10 @@ export default class Editor extends Vue {
 
   @Prop({required: true}) userCanAnnotate!: boolean;
   @Prop({required: true}) userCanComment!: boolean;
+
+  dateToLocale(isoDate?: string): string {
+      return isoDate === undefined ? '(Das Datum konnte nicht ermittelt werden)' : (new Date(isoDate)).toLocaleString('de');
+  }
 
 
   formattingItems = [
