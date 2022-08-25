@@ -101,15 +101,6 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from "vue-property-decorator";
 import { LemmaArticleVersion } from "@/api";
-import {
-  Content as TipTapContent,
-  Editor as TipTapEditor,
-} from "@tiptap/vue-2";
-
-import TipTapStarterKit from "@tiptap/starter-kit";
-
-import { Comment as CommentExtension } from "./extensionComment";
-import { Annotation as AnnotationExtension } from "./extensionAnnotation";
 
 import {
   ArticleStoreInterface,
@@ -117,6 +108,7 @@ import {
   loadAssignments,
   UserArticleAssignmentStoreInterface,
 } from "@/store/article";
+
 import Editor from "./Editor.vue";
 
 /**
@@ -132,7 +124,6 @@ export default class EditorLoader extends Vue {
 
   articleStore: ArticleStoreInterface | null = null;
   assignmentStore: UserArticleAssignmentStoreInterface | null = null;
-  tipTapEditor: TipTapEditor | null = null;
   versionToEdit: LemmaArticleVersion | null = null;
   loadingState: "LOADING" | "LOADED" | "ERROR" = "LOADING";
   errorMessage: string = "";
@@ -150,14 +141,12 @@ export default class EditorLoader extends Vue {
     errorMessage: string = "",
     articleStore: ArticleStoreInterface | null = null,
     assignmentStore: UserArticleAssignmentStoreInterface | null = null,
-    tipTapEditor: TipTapEditor | null = null,
     versionToEdit: LemmaArticleVersion | null = null
   ): void {
     this.loadingState = loadingState;
     this.errorMessage = errorMessage;
     this.articleStore = articleStore;
     this.assignmentStore = assignmentStore;
-    this.tipTapEditor = tipTapEditor;
     this.versionToEdit = versionToEdit;
 
     if (this.assignmentStore !== null) {
@@ -219,18 +208,12 @@ export default class EditorLoader extends Vue {
       return;
     }
 
-    // Create tap editor
-    const tipTapEditor = this.createTipTapEditor(
-      newestVersion.markup as TipTapContent,
-      assignmentStore.userCanWrite
-    );
 
     this.setState(
       "LOADED",
       "Alles geladen.", // "Everything is loaded." – This will not been displayed.
       articleStore,
       assignmentStore,
-      tipTapEditor,
       newestVersion
     );
     return;
@@ -299,52 +282,31 @@ export default class EditorLoader extends Vue {
       return;
     }
     this.versionToEdit = versionToSelect;
-    this.tipTapEditor = this.createTipTapEditor(
-      this.versionToEdit.markup as TipTapContent,
-      this.versionToEdit.id !== undefined &&
-        this.articleStore.newestVersion !== undefined &&
-        this.versionToEdit.id === this.articleStore.newestVersion.id
-    );
-  }
-
-  createTipTapEditor(content: TipTapContent, editable: boolean): TipTapEditor {
-    if (this.tipTapEditor !== null) {
-      this.tipTapEditor.destroy();
-    }
-    return new TipTapEditor({
-      content: content,
-      editable: editable,
-      extensions: [CommentExtension, AnnotationExtension, TipTapStarterKit],
-    });
   }
 
   async createNewVersion(): Promise<void> {
-    if (this.articleStore === null || this.tipTapEditor === null) {
+    if (this.articleStore === null) {
       console.error({
         message:
-          "There must be some programming error. Article store and editor should be loaded, when calling this method. Check it out.",
+          "There must be some programming error. The article store hould be loaded, when calling this method. Check it out.",
       });
       return;
     }
     // Creatre a local copy of the objects
     const localStore = this.articleStore;
-    const localEditor = this.tipTapEditor;
     // because the properties are set to null on loading
     this.setState("LOADING");
     // Adding a version, creates a new version / copy of the store
-    const newStore = await localStore.addVersion(localEditor.getJSON());
+    const newStore = await localStore.addVersion(
+      //localEditor.getJSON());
+      {}, // TODO: get this from editor
+    );
     this.setState(
       "LOADED",
       "Alles geladen.", // "Everything is loaded." – This will not been displayed.
       newStore,
       this.assignmentStore,
-      this.createTipTapEditor(
-        newStore.newestVersion
-          ? (newStore.newestVersion.markup as TipTapContent)
-          : "Fehler beim laden",
-        true
-      ),
-      newStore.newestVersion
+      newStore.newestVersion,
     );
   }
 }

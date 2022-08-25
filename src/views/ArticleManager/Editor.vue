@@ -21,25 +21,6 @@
           <v-card
             color="background darken-2"
             elevation="0"
-            class="ml-5 rounded-lg pa-1"
-          >
-            <div class="tb-tooltip caption muted">Format</div>
-            <select-menu
-              :hide-searchbar="true"
-              :show-chevron="true"
-              class="rounded-lg"
-              btn-class="pl-2"
-              style="width: 100px"
-              :items="formattingItems"
-              :value="activeFormatting"
-              @input="onSelectFormatting"
-            />
-          </v-card>
-        </v-slide-item>
-        <v-slide-item>
-          <v-card
-            color="background darken-2"
-            elevation="0"
             class="rounded-lg pa-1 ml-5 mr-5"
           >
             <div class="tb-tooltip caption muted">Einfügen</div>
@@ -118,7 +99,7 @@
 
     <v-main>
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
-        <tip-tap-editor-content class="tiptap-editor" :editor="tipTapEditor" />
+        <v-alert type="warning">This is currentl not implemented</v-alert>
       </div>
     </v-main>
   </div>
@@ -127,8 +108,6 @@
 <script lang='ts'>
 
 import { Component, Prop, Vue } from "vue-property-decorator";
-
-import { Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
 
 
 import SelectMenu from "@/views/lib/SelectMenu.vue";
@@ -142,14 +121,12 @@ import { LemmaArticleVersion } from "@/api";
 @Component({
   components: {
     SelectMenu,
-    TipTapEditorContent,
   },
 })
 export default class Editor extends Vue {
 
   @Prop({required: true}) articleStore!:  ArticleStoreInterface;
   @Prop({required: true}) version!:  LemmaArticleVersion;
-  @Prop({required: true}) tipTapEditor!: TipTapEditor;
 
   @Prop({required: true}) userCanAnnotate!: boolean;
   @Prop({required: true}) userCanComment!: boolean;
@@ -158,68 +135,35 @@ export default class Editor extends Vue {
       return isoDate === undefined ? '(Das Datum konnte nicht ermittelt werden)' : (new Date(isoDate)).toLocaleString('de');
   }
 
-
-  formattingItems = [
-    {
-      name: "Text",
-      value: "paragraph",
-      isActive: (e: TipTapEditor) => e.isActive("paragraph"),
-      onSelect: (e: TipTapEditor) => e.chain().focus().setParagraph().run(),
-    },
-    {
-      name: "Überschrift 1",
-      value: "heading-1",
-      isActive: (e: TipTapEditor) => e.isActive("heading", { level: 1 }),
-      onSelect: (e: TipTapEditor) => e.chain().focus().setHeading({ level: 1 }).run(),
-    },
-    {
-      name: "Überschrift 2",
-      value: "heading-2",
-      isActive: (e: TipTapEditor) => e.isActive("heading", { level: 2 }),
-      onSelect: (e: TipTapEditor) => e.chain().focus().setHeading({ level: 2 }).run(),
-    },
-  ];
-
-  activeFormatting: any = this.formattingItems[0];
-
   async save(): Promise<void> {
-    const markup = this.tipTapEditor.getJSON();
-    if (markup === null) {
-      return;
-    }
-    await this.articleStore.updateMarkup(markup as Markup);
-  }
-
-  onSelectFormatting(v: any) {
-    v.onSelect(this.tipTapEditor);
+    console.error('NOT IMPLEMENTED!');
+    return;
   }
 
   insertAnnotation(): void {
-    this.tipTapEditor.chain().focus().toggleAnnotation().run();
+    console.error('NOT IMPLEMENTED!');
   }
 
   insertComment(): void {
-    this.tipTapEditor.chain().focus().toggleComment().run();
+    console.error('NOT IMPLEMENTED!');
   }
 
   get undoPossible(): boolean {
-    return this.tipTapEditor.can().undo();
+    console.warn('NOT IMPLEMENTED!');
+    return false;
   }
 
   undo(): void {
-    this.tipTapEditor.chain().focus().undo().run();
+    console.error('NOT IMPLEMENTED!');
   }
 
   redoPossible(): boolean {
-    return this.tipTapEditor.can().redo();
+    console.warn('NOT IMPLEMENTED!');
+    return false;
   }
 
   redo(): void {
-    this.tipTapEditor.chain().focus().redo().run();
-  }
-
-  beforeDestroy() {
-    this.tipTapEditor.destroy();
+    console.error('NOT IMPLEMENTED!');
   }
 
 }
