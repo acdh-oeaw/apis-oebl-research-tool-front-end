@@ -153,7 +153,7 @@ export default class Editor extends Vue {
   }
 
   async save(): Promise<void> {
-    console.error('NOT IMPLEMENTED!');
+    await this.articleStore.updateMarkup(this.documentContainer);
     return;
   }
 
