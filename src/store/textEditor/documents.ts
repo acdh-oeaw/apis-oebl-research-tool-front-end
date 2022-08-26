@@ -19,6 +19,8 @@ export class DocumentContainer {
 /**
  * Convert backends markup Record<string, any> to a DocumentContainer
  * 
+ * If properties in an object / child object does not match, it will will use empty data fallbacks.
+ * 
  * This function does:
  *   - Make sure the data has the right shape and types and provide fallbacks
  *   - Converts date strings to Date types.
@@ -30,8 +32,8 @@ export class DocumentContainer {
  * @param backEndMarkup 
  */
 export function createDocumentContainerFromBackendMarkup(backEndMarkup: LemmaArticleVersion['markup']): DocumentContainer {
-    return {
-        textStore: createDocumentTextStoreFromBackendMarkup(backEndMarkup.textStore),
-        commentStore: createCommentStoreFromBackendMarkup(backEndMarkup.commentStore),
-    };
+    return new DocumentContainer(
+        createDocumentTextStoreFromBackendMarkup(backEndMarkup.textStore),
+        createCommentStoreFromBackendMarkup(backEndMarkup.commentStore),
+    );
 }
