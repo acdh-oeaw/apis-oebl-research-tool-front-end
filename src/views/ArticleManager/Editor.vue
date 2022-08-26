@@ -99,7 +99,12 @@
 
     <v-main>
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
-        <v-alert type="warning">This is currentl not implemented</v-alert>
+        <full-text 
+          :canEdit="userCanWrite" 
+          :documentTextStore="documentContainer.textStore"
+          @[annotatedTextSequenceSelectEventType]="reactToTextSelect($event);"
+          >
+        </full-text>
       </div>
     </v-main>
   </div>
@@ -112,8 +117,11 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 
-import { ArticleStoreInterface, Markup } from "@/store/article";
+import { ArticleStoreInterface, } from "@/store/article";
+import { AnnotatedTextSequenceSelectEventType, DocumentTextStore } from '@/store/textEditor/texts';
+import  {DocumentContainer, createDocumentContainerFromBackendMarkup } from '@/store/textEditor/documents';
 import { LemmaArticleVersion } from "@/api";
+import FullText from "./FullText.vue";
 
 /**
  * Edits a single version of an article.
@@ -121,6 +129,7 @@ import { LemmaArticleVersion } from "@/api";
 @Component({
   components: {
     SelectMenu,
+    FullText,
   },
 })
 export default class Editor extends Vue {
@@ -130,9 +139,17 @@ export default class Editor extends Vue {
 
   @Prop({required: true}) userCanAnnotate!: boolean;
   @Prop({required: true}) userCanComment!: boolean;
+  @Prop({required: true}) userCanWrite!: boolean;
+
+  documentContainer: DocumentContainer = createDocumentContainerFromBackendMarkup(this.version.markup);
+  annotatedTextSequenceSelectEventType = AnnotatedTextSequenceSelectEventType;
 
   dateToLocale(isoDate?: string): string {
       return isoDate === undefined ? '(Das Datum konnte nicht ermittelt werden)' : (new Date(isoDate)).toLocaleString('de');
+  }
+
+  reactToTextSelect(event: any): void {
+    console.warn('TODO: Not implemented');
   }
 
   async save(): Promise<void> {

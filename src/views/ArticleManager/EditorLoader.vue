@@ -72,9 +72,9 @@
                 <editor
                   :articleStore="articleStore"
                   :version="versionToEdit"
-                  :tipTapEditor="tipTapEditor"
                   :userCanAnnotate="userCanAnnotate"
                   :userCanComment="userCanComment"
+                  :userCanWrite="userCanWrite"
                 />
               </div>
             </div>
@@ -131,6 +131,7 @@ export default class EditorLoader extends Vue {
   userCanView: boolean = false;
   userCanComment: boolean = false;
   userCanAnnotate: boolean = false;
+  userCanWrite: boolean = false;
   userCanEditInAnyWay: boolean = false;
 
   /**
@@ -153,6 +154,7 @@ export default class EditorLoader extends Vue {
       this.userCanView = this.assignmentStore.userCanView;
       this.userCanComment = this.assignmentStore.userCanComment;
       this.userCanAnnotate = this.assignmentStore.userCanAnnotate;
+      this.userCanWrite = this.userCanWrite;
       this.userCanEditInAnyWay = this.assignmentStore.userCanEditInAnyWay;
     }
   }
