@@ -1,14 +1,21 @@
 <template>
-    <div class='FullText-container'>
-        <text-segment 
-            v-for="(textSegment, key) in documentTextStore.segments" 
-            :key="key"
-            :annotatedTextSequenceStore="textSegment"
-            :canEdit="canEdit"
-            @[annotatedTextSequenceSelectEventType]="$emit(annotatedTextSequenceSelectEventType, $event);"
-        >
-        </text-segment>
-    </div>
+    <v-container class='FullText-container'>
+        <v-row>
+            <v-col>
+                <v-sheet elevation="2">
+                    <text-segment 
+                        v-for="(textSegment, key) in documentTextStore.segments" 
+                        :key="key"
+                        :annotatedTextSequenceStore="textSegment"
+                        :canEdit="canEdit"
+                        @[annotatedTextSequenceSelectEventType]="$emit(annotatedTextSequenceSelectEventType, $event);"
+                    >
+                    </text-segment>
+                </v-sheet>
+            </v-col>
+        </v-row>
+        <v-row><v-col><v-btn icon @click="addTextSegment"><v-icon>mdi-plus</v-icon></v-btn></v-col></v-row>
+    </v-container>
 </template>
 
 <script lang='ts'>
@@ -31,6 +38,10 @@ export default class FullText extends Vue {
      * To pass events to parent in template
      */
     annotatedTextSequenceSelectEventType = AnnotatedTextSequenceSelectEventType;
+    
+    addTextSegment() {
+        this.documentTextStore.addEmptyTextSegment();
+    }
 
 }
 

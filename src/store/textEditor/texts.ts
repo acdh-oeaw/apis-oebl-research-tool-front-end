@@ -34,6 +34,7 @@ export class AnnotatedTextSequence {
  * A container for AnnotatedTextSequences, which form used to render tags like h1, h1, p
  */
 export class AnnotatedTextSequenceStore {
+    
 
     /**
      * 
@@ -44,6 +45,13 @@ export class AnnotatedTextSequenceStore {
         public tag: 'h1' | 'h2' | 'p' = 'p',
         public textSequences: Array<AnnotatedTextSequence> = [], 
     ){}
+
+    addEmptyTextSequence(): AnnotatedTextSequenceStore {
+        this.textSequences.push(
+            new AnnotatedTextSequence()
+        );
+        return this;
+    }
 }
 
 
@@ -55,6 +63,13 @@ export class DocumentTextStore {
     constructor(
         public segments: Array<AnnotatedTextSequenceStore> = [],
     ){}
+
+    addEmptyTextSegment(): DocumentTextStore {
+        this.segments.push(
+            new AnnotatedTextSequenceStore()
+        );
+        return this;
+    }
 
 }
 
