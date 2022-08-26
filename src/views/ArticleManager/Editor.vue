@@ -2,7 +2,7 @@
   <div class="editor-container">
     <v-app-bar app flat>
       <div>
-        <h1 class="editor-title text-h5">Version vom {{dateToLocale(version.date_created)}}</h1>
+        <h1 class="editor-title text-h5">Version vom {{dateToLocale(dateCreated)}}</h1>
       </div>
       <v-spacer />
       <v-slide-group class="">
@@ -13,7 +13,7 @@
             class="ml-5 rounded-lg pa-1"
           >
             <div class="tb-tooltip caption muted">
-              <div>Zuletzt gespeichert</div><div>{{dateToLocale(version.date_modified)}}</div>
+              <div>Zuletzt gespeichert</div><div>{{dateToLocale(dateModified)}}</div>
             </div>
           </v-card>
         </v-slide-item>
@@ -143,6 +143,9 @@ export default class Editor extends Vue {
 
   documentContainer: DocumentContainer = createDocumentContainerFromBackendMarkup(this.version.markup);
   annotatedTextSequenceSelectEventType = AnnotatedTextSequenceSelectEventType;
+  dateCreated?: string = this.version.date_created;
+  dateModified?: string = this.version.date_modified;
+
 
   dateToLocale(isoDate?: string): string {
       return isoDate === undefined ? '(Das Datum konnte nicht ermittelt werden)' : (new Date(isoDate)).toLocaleString('de');
@@ -154,6 +157,7 @@ export default class Editor extends Vue {
 
   async save(): Promise<void> {
     await this.articleStore.updateMarkup(this.documentContainer);
+    this.dateModified = this.articleStore.newestVersion?.date_modified;
     return;
   }
 
