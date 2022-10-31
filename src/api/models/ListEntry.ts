@@ -30,4 +30,5 @@ export type ListEntry = {
     kinship?: string | null;
     religion?: string | null;
     notes?: string | null;
+    titleOfNobility?: string | null;
 }

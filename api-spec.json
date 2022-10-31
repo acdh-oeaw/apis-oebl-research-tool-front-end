@@ -60869,6 +60869,10 @@
                     "notes": {
                         "type": "string",
                         "nullable": true
+                    },
+                    "titleOfNobility": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "required": [
