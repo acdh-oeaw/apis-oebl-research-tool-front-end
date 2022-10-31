@@ -61,7 +61,11 @@ var io = socketIo(server, {
         origin: [
             'http://localhost:8080',
             'https://localhost:8080',
-            'https://oebl-research.acdh-dev.oeaw.ac.at'
+            'https://oebl-research.acdh-dev.oeaw.ac.at',
+            'http://backend',
+            'http://frontend:8080',
+            'http://backend:8080',
+            'http://127.0.0.1:8080'
         ]
     }
 });
@@ -72,6 +76,7 @@ app.use(compression());
 app.use(express.json({ limit: '100mb' }));
 app.use(['/', '/css', '/img', '/js'], express.static('./dist'));
 app.post('/message/import-issue-lemmas', function (req, res) {
+    console.log('triggered import issue lemma before secret check');
     if (req.headers['x-secret'] === serviceSecret) {
         console.log('triggered importIssueLemmas', req.body);
         io.sockets.emit('importIssueLemmas', req.body);
@@ -110,19 +115,31 @@ app.get('/zotero/search/:query', function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-app.get('/zotero/item/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var x;
+app.get('/zotero/item/:id', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var zoteroHeaders, zoteroResponse, responseBody;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + req.params.id, {
-                    headers: {
-                        'Zotero-API-Key': process.env.ZOTERO_API_KEY
-                    }
-                })];
-            case 1: return [4 /*yield*/, (_a.sent()).json()];
+            case 0:
+                zoteroHeaders = new node_fetch_1.Headers();
+                zoteroHeaders.set('Zotero-API-Key', process.env.ZOTERO_API_KEY);
+                zoteroHeaders.set('Zotero-Api-Version', '3');
+                zoteroHeaders.set('Content-Type', 'application/json');
+                if ('if-Modified-Since-Version' in request.headers) {
+                    zoteroHeaders.set('if-Modified-Since-Version', String(request.headers['if-Modified-Since-Version']));
+                }
+                return [4 /*yield*/, node_fetch_1["default"]('https://api.zotero.org/users/' + process.env.ZOTERO_USER + '/items/' + request.params.id, { headers: zoteroHeaders })];
+            case 1:
+                zoteroResponse = _a.sent();
+                response.header['zoteroStatus'] = String(zoteroResponse.status);
+                response.header['zoteroStatusText'] = zoteroResponse.statusText;
+                responseBody = null;
+                if (!(zoteroResponse.status == 200)) return [3 /*break*/, 3];
+                return [4 /*yield*/, zoteroResponse.json()];
             case 2:
-                x = _a.sent();
-                res.send(JSON.stringify(x));
+                responseBody = _a.sent();
+                _a.label = 3;
+            case 3:
+                response.send(JSON.stringify(responseBody));
                 return [2 /*return*/];
         }
     });

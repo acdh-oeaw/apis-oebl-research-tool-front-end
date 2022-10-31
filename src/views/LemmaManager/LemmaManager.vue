@@ -44,19 +44,11 @@
     </v-dialog>
     <!-- IMPORT LEMMAS -->
     <v-dialog
-      :value="fileToImport.file !== null"
-      @input="fileToImport = { file: null, buffer: null }"
-      scrollable
-      overlay-color="#000"
-      max-width="1000px">
-      <lemma-importer
-        v-if="fileToImport.file !== null"
-        :file-type="fileToImport.file.type"
-        :file-name="fileToImport.file.name"
-        :buffer="fileToImport.buffer"
-        @cancel="fileToImport = { file: null, buffer: null }"
-        @confirm="fileToImport = { file: null, buffer: null }"
-      />
+      v-model="importerOpened"
+      hide-overlay
+      fullscreen
+      >
+      <lemma-import-manager/>
     </v-dialog>
     <v-app-bar
       data-deskgap-drag="true"
@@ -166,7 +158,7 @@
                   Lemma hinzufügen…
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click="openFileDialog(importFile)" dense>
+              <v-list-item @click="importerOpened = true" dense>
                 <v-list-item-avatar size="15">
                   <v-icon small>mdi-database-import-outline</v-icon>
                 </v-list-item-avatar>
@@ -361,7 +353,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import _, { clone, indexOf } from 'lodash'
+
 import ResizableDrawer from '../lib/ResizableDrawer.vue'
 import DragImage from './DragImage.vue'
 import LobidPreviewCard from './LobidPreviewCard.vue'
@@ -371,9 +363,11 @@ import LemmaDetail from './LemmaDetail.vue'
 import LemmaAdd from './LemmaAdd.vue'
 import DataFilter from '../lib/DataFilter.vue'
 
-import { fileToArrayBuffer } from '../../util'
+import _ from 'lodash';
+
 import store from '@/store'
-import { LemmaRow, LemmaFilterItem, LemmaColumn, ImportablePerson } from '@/types/lemma'
+
+import { LemmaRow, LemmaFilterItem, LemmaColumn } from '@/types/lemma'
 import { v4 as uuid } from 'uuid'
 import prompt from '@/store/prompt'
 import confirm from '@/store/confirm'
@@ -388,7 +382,7 @@ import confirm from '@/store/confirm'
     LobidPreviewCard,
     VirtualTable,
     DataFilter,
-    LemmaImporter: () => import('./LemmaImporter.vue'),
+    LemmaImportManager: () => import('./LemmaImporter/LemmaImportManager.vue'),
   }
 })
 export default class LemmaManager extends Vue {
@@ -396,26 +390,21 @@ export default class LemmaManager extends Vue {
   @Prop({ default: null }) lemmaListId!: number|null
   @Prop({ default: null }) highlightId!: number|null
 
-  scrollToRow: number|null = null
-  store = store
-  tableHeight = 0
-  toolbarMinHeight = 80
-  toolbarPaddingY = 15
-  showAddLemmaDialog = false
-  log = console.log
+  scrollToRow: number|null = null;
+  store = store;
+  tableHeight = 0;
+  toolbarMinHeight = 80;
+  toolbarPaddingY = 15;
+  showAddLemmaDialog = false;
+  log = console.log;
 
-  filterItems: LemmaFilterItem[] = []
+  filterItems: LemmaFilterItem[] = [];
 
-  previewPopupCoords: [number, number] = [0, 0]
-  lobidPreviewGnds: string[] = []
-  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas
+  previewPopupCoords: [number, number] = [0, 0];
+  lobidPreviewGnds: string[] = [];
+  filteredLemmas: LemmaRow[] = this.store.lemma.lemmas;
 
-  filterDataDebounced = _.debounce(this.filterData, 150)
-
-  fileToImport = {
-    file: null as null|File,
-    buffer: null as null|ArrayBuffer
-  }
+  importerOpened: boolean = false;
 
   onKeyDown(e: KeyboardEvent) {
     if (e.key.toLowerCase() === 'enter') {
@@ -518,21 +507,8 @@ export default class LemmaManager extends Vue {
     }
   }
 
-  updateLemmaFromTable(l: LemmaRow, u: Partial<LemmaRow>) {
-    const update: Partial<LemmaRow> = {}
-    _.mapValues(u, (v, k) => {
-      if (k.includes('user.')) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        update.columns_user = {
-          ...l.columns_user,
-          [ k ]: v
-        }
-      } else {
-        update[k] = v
-      }
-    })
-    console.log({update})
-    this.updateLemma(l, update)
+  updateLemmaFromTable(lemma: LemmaRow, tableUpdate: Partial<LemmaRow>) {
+    this.updateLemma(lemma, tableUpdate)
   }
 
   async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
@@ -540,9 +516,8 @@ export default class LemmaManager extends Vue {
     if (this.selectedRows.length > 0 && this.selectedRows[0].id === l.id) {
       this.selectedRows[0] = { ...l, ...u }
     }
-    // update store and server
+    // update store, server and local storage
     await store.lemma.updateLemmas([ l ], u)
-    this.filterData()
   }
 
   async deleteList(id: number|null) {
@@ -661,11 +636,9 @@ export default class LemmaManager extends Vue {
       const l = store.lemma.getStoredLemmaFilterById(id)
       if (l !== undefined) {
         this.store.lemma.currentFilters = l.filterItems
-        this.filterData()
       }
     } else {
       this.store.lemma.setFilter({})
-      this.filterData()
     }
   }
 
@@ -679,14 +652,6 @@ export default class LemmaManager extends Vue {
     store.lemma.updateStoredLemmaFilter(id, { name })
   }
 
-  async importFile(f: File) {
-    console.log('import file called.')
-    const b = await fileToArrayBuffer(f)
-    this.fileToImport = {
-      file: f,
-      buffer: b
-    }
-  }
 
   openFileDialog(cb: (f: File) => unknown) {
     const input: HTMLInputElement = document.createElement('input')
@@ -740,24 +705,6 @@ export default class LemmaManager extends Vue {
       if (dragImage !== null) {
         ev.dataTransfer.setDragImage(dragImage, 0, 0)
       }
-    }
-  }
-
-  filterData(q?: { [key: string]: string|boolean|null }) {
-    if (q !== undefined) {
-      this.filteredLemmas = this.store.lemma.lemmas.filter(l => {
-        return _(q).each((value, name) => {
-          const v = String(value)
-          return (
-            (
-              l[name] !== undefined && l[name].indexOf(v) > -1 ||
-              l.columns_user[name] !== undefined && l.columns_user[name].toString().indexOf(v) > -1
-            )
-          )
-        })
-      })
-    } else {
-      this.filteredLemmas = this.store.lemma.lemmas
     }
   }
 }

@@ -22,7 +22,10 @@
             @keydown="onKeyDown"
             @input="onInput"
             :placeholder="placeholder"
-            :value="localValue" />
+            :value="localValue" 
+            :disabled="disabled"
+            :maxlength="maxlength"
+            />
         </slot>
       </div>
       <div>
@@ -44,13 +47,15 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 export default class TextField extends Vue {
 
   @Prop({ default: () => [] }) rules!: Array<(e: string|null) => string|false>
-  @Prop({ default: false }) allowNewLine!: boolean
-  @Prop({ default: '' }) value!: string
-  @Prop({ default: false }) clearable!: boolean
-  @Prop({ default: false }) required!: boolean
-  @Prop({ default: false }) selected!: boolean
-  @Prop({ default: null }) placeholder!: string|null
-  @Prop() color?: string
+  @Prop({ default: false }) allowNewLine!: boolean;
+  @Prop({ default: '' }) value!: string;
+  @Prop({ default: false }) clearable!: boolean;
+  @Prop( { default: false }) disabled!: boolean;
+  @Prop({ default: false }) required!: boolean;
+  @Prop({ default: false }) selected!: boolean;
+  @Prop({ default: null }) placeholder!: string|null;
+  @Prop({default: null}) color!: string|null;
+  @Prop( {default: null }) maxlength!: number|null;
 
   msg: string|null = null
 

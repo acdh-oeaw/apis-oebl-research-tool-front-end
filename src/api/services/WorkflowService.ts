@@ -37,7 +37,7 @@ export class WorkflowService {
      * Viewset to retrieve Author objects
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param username username
+     * @param username
      * @returns PaginatedAuthorList
      * @throws ApiError
      */
@@ -78,7 +78,7 @@ export class WorkflowService {
      * Viewset to retrieve Editor objects
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param username username
+     * @param username
      * @returns PaginatedEditorList
      * @throws ApiError
      */
@@ -116,10 +116,10 @@ export class WorkflowService {
     }
 
     /**
-     * @param author author
-     * @param editor editor
-     * @param issue issue
-     * @param lemma lemma
+     * @param author
+     * @param editor
+     * @param issue
+     * @param lemma
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @returns PaginatedIssueLemmaList
@@ -214,9 +214,9 @@ export class WorkflowService {
 
     /**
      * @param limit Number of results to return per page.
-     * @param name name
+     * @param name
      * @param offset The initial index from which to return the results.
-     * @param pubDate pubDate
+     * @param pubDate
      * @returns PaginatedIssueList
      * @throws ApiError
      */
@@ -343,14 +343,14 @@ export class WorkflowService {
     }
 
     /**
-     * @param issuelemma issuelemma
+     * @param issuelemma
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @returns PaginatedLemmaLabelList
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelList(
-        issuelemma?: number,
+        issuelemma?: Array<number>,
         limit?: number,
         offset?: number,
     ): Promise<PaginatedLemmaLabelList> {
@@ -449,7 +449,7 @@ export class WorkflowService {
     }
 
     /**
-     * @param lemma lemma
+     * @param lemma
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @returns PaginatedLemmaNoteList
@@ -555,16 +555,16 @@ export class WorkflowService {
     }
 
     /**
-     * @param issue issue
-     * @param issuelemma issuelemma
+     * @param issue
+     * @param issuelemma
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @returns PaginatedLemmaStatusList
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusList(
-        issue?: number,
-        issuelemma?: number,
+        issue?: Array<number>,
+        issuelemma?: Array<number>,
         limit?: number,
         offset?: number,
     ): Promise<PaginatedLemmaStatusList> {
