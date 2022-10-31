@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PatchedEditorRequest } from './PatchedEditorRequest';
+import type { EditorRequest } from './EditorRequest';
 
 export type PatchedListRequest = {
-    editor?: PatchedEditorRequest;
+    editor?: EditorRequest;
     title?: string;
 }

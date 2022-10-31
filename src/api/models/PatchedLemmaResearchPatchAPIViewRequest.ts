@@ -3,10 +3,10 @@
 /* eslint-disable */
 
 import type { GenderAe0Enum } from './GenderAe0Enum';
-import type { PatchedLemmaresearchEditorRequest } from './PatchedLemmaresearchEditorRequest';
+import type { LemmaresearchEditorRequest } from './LemmaresearchEditorRequest';
 
 export type PatchedLemmaResearchPatchAPIViewRequest = {
-    list?: PatchedLemmaresearchEditorRequest;
+    list?: LemmaresearchEditorRequest;
     selected: boolean;
     gnd?: Array<string>;
     firstName?: string;

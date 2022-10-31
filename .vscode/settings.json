@@ -18,5 +18,6 @@
     "viaf",
     "vuetify",
     "zotero"
-  ]
+  ],
+  "vetur.experimental.templateInterpolationService": true
 }

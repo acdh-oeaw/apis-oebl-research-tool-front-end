@@ -2,15 +2,17 @@
     <div class="full-name-input-wrapper">
         <text-field
             :required="false"
-            label="Vorname"
+            :label="lemmaRowTranslations.firstName.de"
             v-model="fullName.firstName"
             @input="emitInput($event, 'firstName')"
+            :disabled="disabled"
         ></text-field>
         <text-field
             :required="false"
-            label="Nachname"
+            :label="lemmaRowTranslations.lastName.de"
             v-model="fullName.lastName"
             @input="emitInput($event, 'lastName')"
+            :disabled="disabled"
         ></text-field>
     </div>
 </template>
@@ -20,6 +22,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { FullName as FullNameType } from '@/types/lemma';
 import TextField from '@/views/lib/TextField.vue'
+import { lemmaRowTranslations } from '../../util/labels';
 
 
 @Component({
@@ -30,6 +33,10 @@ import TextField from '@/views/lib/TextField.vue'
 export default class FullNameField extends Vue {
     
     @Prop( {default: () => { return { firstName: null, lastName: null} } }) fullName!: FullNameType;
+    @Prop( { default: true }) disabled!: boolean;
+
+    lemmaRowTranslations = lemmaRowTranslations;
+
 
     emitInput(eventData: string, property: 'firstName' | 'lastName') {
         if (! ['firstName', 'lastName'].includes(property)) {

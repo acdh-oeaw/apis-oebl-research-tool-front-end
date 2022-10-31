@@ -71,7 +71,7 @@
                             {{ lemma.firstName }} {{ lemma.lastName }}
                           </v-list-item-title>
                           <v-list-item-subtitle>
-                            {{ lemma.birthYear }} - {{ lemma.deathYear }}
+                            {{ lemma.dateOfBirth }} - {{ lemma.dateOfDeath }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -109,12 +109,13 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { findPerson } from '@/service/lobid'
-import { ImportablePerson, LemmaRow } from '@/types/lemma'
+import { LemmaRow } from '@/types/lemma'
 import LobidPreviewCard from './LobidPreviewCard.vue'
 import LemmaDetail from './LemmaDetail.vue'
 import TextField from '../lib/TextField.vue'
 import store from '@/store'
 import _ from 'lodash'
+import { DateContainer } from '@/util/dates'
 
 @Component({
   components: {
@@ -140,8 +141,6 @@ export default class LemmaAdd extends Vue {
     firstName: '',
     lastName: '',
     alternativeNames: [],
-    birthYear: '',
-    deathYear: '',
     gender: undefined,
     columns_user: {},
     columns_scrape: {},
@@ -153,7 +152,15 @@ export default class LemmaAdd extends Vue {
     legacyGideonCitations: null,
     secondaryLiterature: [],
     zoteroKeysBy: [],
-    zoteroKeysAbout: []
+    zoteroKeysAbout: [],
+    professionDetail: '',
+    professionGroup: {},
+    dateOfBirth: new DateContainer(),
+    dateOfDeath: new DateContainer(),
+    bioNote: null,
+    kinship: null,
+    religion: null,
+    notes: null,
   }
 
   person = _.clone(this.emptyPerson)
@@ -177,7 +184,22 @@ export default class LemmaAdd extends Vue {
 
   get filteredList() {
     return store.lemma.lemmas.filter((l) => {
-      return l.firstName.toLowerCase().startsWith(this.person.firstName?.toLowerCase() || '~') || l.lastName.toLowerCase().startsWith(this.person.lastName?.toLowerCase() || '~')
+      
+      let firstNameAlike = false;
+      let lastNameAlike = false;
+      const personFirstName = this.person.firstName ? this.person.firstName.toLowerCase() : '~';
+      const personLastName = this.person.lastName ? this.person.lastName.toLowerCase() : '~';
+      
+      if (l.firstName) {
+        firstNameAlike = l.firstName.startsWith(personFirstName);
+      }
+
+      if (l.lastName) {
+        lastNameAlike = l.lastName.startsWith(personLastName);
+      }
+      
+      
+      return firstNameAlike || lastNameAlike;
     })
   }
 
@@ -189,8 +211,8 @@ export default class LemmaAdd extends Vue {
     this.possibleGnds = (await findPerson({
       firstName: this.person.firstName,
       lastName: this.person.lastName,
-      dateOfBirth: this.person.birthYear,
-      dateOfDeath: this.person.deathYear,
+      dateOfBirth: this.person.dateOfBirth.calendarYear === undefined ? null : String(this.person.dateOfBirth.calendarYear),
+      dateOfDeath: this.person.dateOfDeath.calendarYear === undefined ? null : String(this.person.dateOfDeath.calendarYear),
       gnd: this.person.gnd
     })).map(p => (p as any).gndIdentifier)
   }
