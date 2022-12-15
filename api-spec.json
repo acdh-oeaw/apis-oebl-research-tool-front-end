@@ -53821,6 +53821,603 @@
                 }
             }
         },
+        "/editor/api/v1/lemma-article/": {
+            "get": {
+                "operationId": "editor_api_v1_lemma_article_list",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedLemmaArticleList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "editor_api_v1_lemma_article_create",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/editor/api/v1/lemma-article-version/": {
+            "get": {
+                "operationId": "editor_api_v1_lemma_article_version_list",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "lemma_article",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedLemmaArticleVersionList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "editor_api_v1_lemma_article_version_create",
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticleVersion"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/editor/api/v1/lemma-article-version/{id}/": {
+            "get": {
+                "operationId": "editor_api_v1_lemma_article_version_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this lemma article version.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticleVersion"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "editor_api_v1_lemma_article_version_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this lemma article version.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleVersionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticleVersion"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "editor_api_v1_lemma_article_version_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this lemma article version.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleVersionRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleVersionRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleVersionRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticleVersion"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "editor_api_v1_lemma_article_version_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this lemma article version.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/editor/api/v1/lemma-article/{id}/": {
+            "get": {
+                "operationId": "editor_api_v1_lemma_article_retrieve",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "editor_api_v1_lemma_article_update",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LemmaArticleRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "editor_api_v1_lemma_article_partial_update",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLemmaArticleRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LemmaArticle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "editor_api_v1_lemma_article_destroy",
+                "description": "Helper class that provides a standard way to create an ABC using\ninheritance.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "editor"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/entity/{id}/": {
             "get": {
                 "operationId": "entity_retrieve",
@@ -54481,6 +55078,296 @@
                 }
             }
         },
+        "/workflow/api/v1/author-issue-assignment/": {
+            "get": {
+                "operationId": "workflow_api_v1_author_issue_assignment_list",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAuthorIssueLemmaAssignmentList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "workflow_api_v1_author_issue_assignment_create",
+                "tags": [
+                    "workflow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorIssueLemmaAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/workflow/api/v1/author-issue-assignment/{id}/": {
+            "get": {
+                "operationId": "workflow_api_v1_author_issue_assignment_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorIssueLemmaAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "workflow_api_v1_author_issue_assignment_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorIssueLemmaAssignmentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorIssueLemmaAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "workflow_api_v1_author_issue_assignment_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthorIssueLemmaAssignmentRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthorIssueLemmaAssignmentRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorIssueLemmaAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "workflow_api_v1_author_issue_assignment_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/workflow/api/v1/authors/": {
             "get": {
                 "operationId": "workflow_api_v1_authors_list",
@@ -54691,13 +55578,6 @@
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "author",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "in": "query",
                         "name": "editor",
                         "schema": {
                             "type": "integer"
@@ -54772,17 +55652,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
                             }
                         },
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/IssueLemmaRequest"
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
                             }
                         }
                     },
@@ -54854,6 +55734,66 @@
                     }
                 }
             },
+            "put": {
+                "operationId": "workflow_api_v1_issue_lemma_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this issue lemma.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IssueLemmaNoEditorRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IssueLemma"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
             "patch": {
                 "operationId": "workflow_api_v1_issue_lemma_partial_update",
                 "parameters": [
@@ -54874,17 +55814,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedIssueLemmaRequest"
+                                "$ref": "#/components/schemas/PatchedIssueLemmaNoEditorRequest"
                             }
                         },
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedIssueLemmaRequest"
+                                "$ref": "#/components/schemas/PatchedIssueLemmaNoEditorRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedIssueLemmaRequest"
+                                "$ref": "#/components/schemas/PatchedIssueLemmaNoEditorRequest"
                             }
                         }
                     }
@@ -56274,6 +57214,48 @@
                 }
             }
         },
+        "/workflow/api/v1/own-issue-lemma-assignment/{id}/": {
+            "get": {
+                "operationId": "workflow_api_v1_own_issue_lemma_assignment_retrieve",
+                "description": "Utility class to view / retrieve all edit types for a user / issue-lemma pair.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "workflow"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IssueLemmaUserAssignment"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/workflow/api/v1/research2workflow/": {
             "post": {
                 "operationId": "workflow_api_v1_research2workflow_create",
@@ -56402,6 +57384,48 @@
                 },
                 "required": [
                     "userId"
+                ]
+            },
+            "AuthorIssueLemmaAssignment": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "author": {
+                        "type": "integer"
+                    },
+                    "edit_type": {
+                        "$ref": "#/components/schemas/EditTypeEnum"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "author",
+                    "edit_type",
+                    "issue_lemma"
+                ]
+            },
+            "AuthorIssueLemmaAssignmentRequest": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "author": {
+                        "type": "integer"
+                    },
+                    "edit_type": {
+                        "$ref": "#/components/schemas/EditTypeEnum"
+                    }
+                },
+                "required": [
+                    "author",
+                    "edit_type",
+                    "issue_lemma"
                 ]
             },
             "BlankEnum": {
@@ -56633,6 +57657,24 @@
                 "required": [
                     "title"
                 ]
+            },
+            "EditTypeEnum": {
+                "enum": [
+                    "VIEW",
+                    "COMMENT",
+                    "ANNOTATE",
+                    "WRITE"
+                ],
+                "type": "string"
+            },
+            "EditTypesEnum": {
+                "enum": [
+                    "VIEW",
+                    "COMMENT",
+                    "ANNOTATE",
+                    "WRITE"
+                ],
+                "type": "string"
             },
             "Editor": {
                 "type": "object",
@@ -60071,6 +61113,7 @@
             },
             "IssueLemma": {
                 "type": "object",
+                "description": "TODO: This class really needs some refactorization.\n    - It is unclear, what the \"serialization\" field is for,\n    - why extened schema field?\n    - update and create are very simular, spaghetti, and not very pythonic.\nI do not do it now, because, we have no tests and I don't have no time.",
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -60093,6 +61136,13 @@
                     "lemma": {
                         "$ref": "#/components/schemas/Lemma"
                     },
+                    "authors": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "readOnly": true
+                    },
                     "order": {
                         "type": "integer",
                         "maximum": 2147483647,
@@ -60111,10 +61161,6 @@
                         "type": "integer",
                         "nullable": true
                     },
-                    "author": {
-                        "type": "integer",
-                        "nullable": true
-                    },
                     "editor": {
                         "type": "integer",
                         "nullable": true
@@ -60130,8 +61176,9 @@
                     "lemma"
                 ]
             },
-            "IssueLemmaRequest": {
+            "IssueLemmaNoEditorRequest": {
                 "type": "object",
+                "description": "A Serialization Of IssueLemma Without The Editor Field\n\nOur requirement is, that authors and editors can not see, who is assigned for IssueLemmas.",
                 "properties": {
                     "lemma": {
                         "$ref": "#/components/schemas/LemmaRequest"
@@ -60146,14 +61193,6 @@
                         "nullable": true
                     },
                     "status": {
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "author": {
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "editor": {
                         "type": "integer",
                         "nullable": true
                     },
@@ -60181,9 +61220,6 @@
                     "lemma": {
                         "$ref": "#/components/schemas/Lemma"
                     },
-                    "author": {
-                        "$ref": "#/components/schemas/Author"
-                    },
                     "editor": {
                         "$ref": "#/components/schemas/Editor"
                     },
@@ -60208,12 +61244,24 @@
                     }
                 },
                 "required": [
-                    "author",
                     "editor",
                     "issue",
                     "lemma",
                     "status"
                 ]
+            },
+            "IssueLemmaUserAssignment": {
+                "type": "object",
+                "description": "Utility class to list EditTypes",
+                "properties": {
+                    "edit_types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EditTypesEnum"
+                        },
+                        "readOnly": true
+                    }
+                }
             },
             "IssueRequest": {
                 "type": "object",
@@ -60443,6 +61491,80 @@
                 "required": [
                     "firstName",
                     "lastName"
+                ]
+            },
+            "LemmaArticle": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "issue_lemma"
+                ]
+            },
+            "LemmaArticleRequest": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "issue_lemma"
+                ]
+            },
+            "LemmaArticleVersion": {
+                "type": "object",
+                "properties": {
+                    "lemma_article": {
+                        "type": "integer"
+                    },
+                    "markup": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    },
+                    "date_created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "date_modified": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "lemma_article",
+                    "markup"
+                ]
+            },
+            "LemmaArticleVersionRequest": {
+                "type": "object",
+                "properties": {
+                    "lemma_article": {
+                        "type": "integer"
+                    },
+                    "markup": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "required": [
+                    "lemma_article",
+                    "markup"
                 ]
             },
             "LemmaLabel": {
@@ -61008,6 +62130,33 @@
                 "enum": [
                     null
                 ]
+            },
+            "PaginatedAuthorIssueLemmaAssignmentList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AuthorIssueLemmaAssignment"
+                        }
+                    }
+                }
             },
             "PaginatedAuthorList": {
                 "type": "object",
@@ -61626,6 +62775,60 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Labeltype"
+                        }
+                    }
+                }
+            },
+            "PaginatedLemmaArticleList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LemmaArticle"
+                        }
+                    }
+                }
+            },
+            "PaginatedLemmaArticleVersionList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LemmaArticleVersion"
                         }
                     }
                 }
@@ -62805,6 +64008,20 @@
                     "uid"
                 ]
             },
+            "PatchedAuthorIssueLemmaAssignmentRequest": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "author": {
+                        "type": "integer"
+                    },
+                    "edit_type": {
+                        "$ref": "#/components/schemas/EditTypeEnum"
+                    }
+                }
+            },
             "PatchedCollectionDetailRequest": {
                 "type": "object",
                 "properties": {
@@ -63548,8 +64765,9 @@
                     }
                 }
             },
-            "PatchedIssueLemmaRequest": {
+            "PatchedIssueLemmaNoEditorRequest": {
                 "type": "object",
+                "description": "A Serialization Of IssueLemma Without The Editor Field\n\nOur requirement is, that authors and editors can not see, who is assigned for IssueLemmas.",
                 "properties": {
                     "lemma": {
                         "$ref": "#/components/schemas/LemmaRequest"
@@ -63564,14 +64782,6 @@
                         "nullable": true
                     },
                     "status": {
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "author": {
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "editor": {
                         "type": "integer",
                         "nullable": true
                     },
@@ -63619,6 +64829,29 @@
                     },
                     "status": {
                         "$ref": "#/components/schemas/StatusEnum"
+                    }
+                }
+            },
+            "PatchedLemmaArticleRequest": {
+                "type": "object",
+                "properties": {
+                    "issue_lemma": {
+                        "type": "integer"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PatchedLemmaArticleVersionRequest": {
+                "type": "object",
+                "properties": {
+                    "lemma_article": {
+                        "type": "integer"
+                    },
+                    "markup": {
+                        "type": "object",
+                        "additionalProperties": {}
                     }
                 }
             },

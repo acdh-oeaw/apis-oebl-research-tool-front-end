@@ -2,10 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Author } from '../models/Author';
+import type { AuthorIssueLemmaAssignment } from '../models/AuthorIssueLemmaAssignment';
+import type { AuthorIssueLemmaAssignmentRequest } from '../models/AuthorIssueLemmaAssignmentRequest';
 import type { Editor } from '../models/Editor';
 import type { Issue } from '../models/Issue';
 import type { IssueLemma } from '../models/IssueLemma';
-import type { IssueLemmaRequest } from '../models/IssueLemmaRequest';
+import type { IssueLemmaNoEditorRequest } from '../models/IssueLemmaNoEditorRequest';
+import type { IssueLemmaUserAssignment } from '../models/IssueLemmaUserAssignment';
 import type { IssueRequest } from '../models/IssueRequest';
 import type { Lemma } from '../models/Lemma';
 import type { LemmaLabel } from '../models/LemmaLabel';
@@ -14,6 +17,7 @@ import type { LemmaNote } from '../models/LemmaNote';
 import type { LemmaNoteRequest } from '../models/LemmaNoteRequest';
 import type { LemmaStatus } from '../models/LemmaStatus';
 import type { LemmaStatusRequest } from '../models/LemmaStatusRequest';
+import type { PaginatedAuthorIssueLemmaAssignmentList } from '../models/PaginatedAuthorIssueLemmaAssignmentList';
 import type { PaginatedAuthorList } from '../models/PaginatedAuthorList';
 import type { PaginatedEditorList } from '../models/PaginatedEditorList';
 import type { PaginatedIssueLemmaList } from '../models/PaginatedIssueLemmaList';
@@ -22,7 +26,8 @@ import type { PaginatedLemmaLabelList } from '../models/PaginatedLemmaLabelList'
 import type { PaginatedLemmaList } from '../models/PaginatedLemmaList';
 import type { PaginatedLemmaNoteList } from '../models/PaginatedLemmaNoteList';
 import type { PaginatedLemmaStatusList } from '../models/PaginatedLemmaStatusList';
-import type { PatchedIssueLemmaRequest } from '../models/PatchedIssueLemmaRequest';
+import type { PatchedAuthorIssueLemmaAssignmentRequest } from '../models/PatchedAuthorIssueLemmaAssignmentRequest';
+import type { PatchedIssueLemmaNoEditorRequest } from '../models/PatchedIssueLemmaNoEditorRequest';
 import type { PatchedIssueRequest } from '../models/PatchedIssueRequest';
 import type { PatchedLemmaLabelRequest } from '../models/PatchedLemmaLabelRequest';
 import type { PatchedLemmaNoteRequest } from '../models/PatchedLemmaNoteRequest';
@@ -32,6 +37,109 @@ import type { ResearchLemma2WorkflowLemmaRequest } from '../models/ResearchLemma
 import { request as __request } from '../core/request';
 
 export class WorkflowService {
+
+    /**
+     * @param limit Number of results to return per page.
+     * @param offset The initial index from which to return the results.
+     * @returns PaginatedAuthorIssueLemmaAssignmentList
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentList(
+        limit?: number,
+        offset?: number,
+    ): Promise<PaginatedAuthorIssueLemmaAssignmentList> {
+        const result = await __request({
+            method: 'GET',
+            path: `/workflow/api/v1/author-issue-assignment/`,
+            query: {
+                'limit': limit,
+                'offset': offset,
+            },
+        });
+        return result.body;
+    }
+
+    /**
+     * @param requestBody
+     * @returns AuthorIssueLemmaAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentCreate(
+        requestBody: AuthorIssueLemmaAssignmentRequest,
+    ): Promise<AuthorIssueLemmaAssignment> {
+        const result = await __request({
+            method: 'POST',
+            path: `/workflow/api/v1/author-issue-assignment/`,
+            body: requestBody,
+        });
+        return result.body;
+    }
+
+    /**
+     * @param id
+     * @returns AuthorIssueLemmaAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentRetrieve(
+        id: string,
+    ): Promise<AuthorIssueLemmaAssignment> {
+        const result = await __request({
+            method: 'GET',
+            path: `/workflow/api/v1/author-issue-assignment/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AuthorIssueLemmaAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentUpdate(
+        id: string,
+        requestBody: AuthorIssueLemmaAssignmentRequest,
+    ): Promise<AuthorIssueLemmaAssignment> {
+        const result = await __request({
+            method: 'PUT',
+            path: `/workflow/api/v1/author-issue-assignment/${id}/`,
+            body: requestBody,
+        });
+        return result.body;
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AuthorIssueLemmaAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentPartialUpdate(
+        id: string,
+        requestBody?: PatchedAuthorIssueLemmaAssignmentRequest,
+    ): Promise<AuthorIssueLemmaAssignment> {
+        const result = await __request({
+            method: 'PATCH',
+            path: `/workflow/api/v1/author-issue-assignment/${id}/`,
+            body: requestBody,
+        });
+        return result.body;
+    }
+
+    /**
+     * @param id
+     * @returns void
+     * @throws ApiError
+     */
+    public static async workflowApiV1AuthorIssueAssignmentDestroy(
+        id: string,
+    ): Promise<void> {
+        const result = await __request({
+            method: 'DELETE',
+            path: `/workflow/api/v1/author-issue-assignment/${id}/`,
+        });
+        return result.body;
+    }
 
     /**
      * Viewset to retrieve Author objects
@@ -116,7 +224,6 @@ export class WorkflowService {
     }
 
     /**
-     * @param author
      * @param editor
      * @param issue
      * @param lemma
@@ -126,7 +233,6 @@ export class WorkflowService {
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaList(
-        author?: number,
         editor?: number,
         issue?: number,
         lemma?: number,
@@ -137,7 +243,6 @@ export class WorkflowService {
             method: 'GET',
             path: `/workflow/api/v1/issue-lemma/`,
             query: {
-                'author': author,
                 'editor': editor,
                 'issue': issue,
                 'lemma': lemma,
@@ -154,7 +259,7 @@ export class WorkflowService {
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaCreate(
-        requestBody: IssueLemmaRequest,
+        requestBody: IssueLemmaNoEditorRequest,
     ): Promise<IssueLemma> {
         const result = await __request({
             method: 'POST',
@@ -185,9 +290,27 @@ export class WorkflowService {
      * @returns IssueLemma
      * @throws ApiError
      */
+    public static async workflowApiV1IssueLemmaUpdate(
+        id: number,
+        requestBody: IssueLemmaNoEditorRequest,
+    ): Promise<IssueLemma> {
+        const result = await __request({
+            method: 'PUT',
+            path: `/workflow/api/v1/issue-lemma/${id}/`,
+            body: requestBody,
+        });
+        return result.body;
+    }
+
+    /**
+     * @param id A unique integer value identifying this issue lemma.
+     * @param requestBody
+     * @returns IssueLemma
+     * @throws ApiError
+     */
     public static async workflowApiV1IssueLemmaPartialUpdate(
         id: number,
-        requestBody?: PatchedIssueLemmaRequest,
+        requestBody?: PatchedIssueLemmaNoEditorRequest,
     ): Promise<IssueLemma> {
         const result = await __request({
             method: 'PATCH',
@@ -674,6 +797,22 @@ export class WorkflowService {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma/${id}/`,
+        });
+        return result.body;
+    }
+
+    /**
+     * Utility class to view / retrieve all edit types for a user / issue-lemma pair.
+     * @param id
+     * @returns IssueLemmaUserAssignment
+     * @throws ApiError
+     */
+    public static async workflowApiV1OwnIssueLemmaAssignmentRetrieve(
+        id: string,
+    ): Promise<IssueLemmaUserAssignment> {
+        const result = await __request({
+            method: 'GET',
+            path: `/workflow/api/v1/own-issue-lemma-assignment/${id}/`,
         });
         return result.body;
     }

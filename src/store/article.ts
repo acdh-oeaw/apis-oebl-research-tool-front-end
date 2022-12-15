@@ -1,144 +1,144 @@
-import zotero  from '@/service/zotero'
-import { v4 as uuid } from 'uuid'
+import { EditTypesEnum, LemmaArticleVersion, WorkflowService } from "@/api";
+import { EditorService } from "@/api/services/EditorService";
 
-interface Comment {
-  commentId: string,
-  date: Date,
-  user: number,
-  text: string
+
+/**
+ * Server side versions have default values for this properties and are not nullable 
+ */
+type SavedArticleVersion = LemmaArticleVersion & { date_created: string, date_modified: string, id: number };
+
+export type Markup = LemmaArticleVersion['markup'];
+
+export interface ArticleStoreInterface {
+
+
+    versions: SavedArticleVersion[];
+
+    /**
+     * The newest version of an article is undefined, if there is no version
+     */
+    newestVersion: SavedArticleVersion | undefined;
+
+    /**
+     * Updates tthe markup of the newest version, if there is one.
+     * 
+     * @param new_markup 
+     */
+    updateMarkup(new_markup: Markup): Promise<ArticleStoreInterface>;
+
+    addVersion(new_markup: Markup): Promise<ArticleStoreInterface>;
+
 }
 
-export interface CommentThread {
-  threadId: ThreadId
-  status: 'open'|'private'
-  comments: Comment[]
+/**
+ * Summarizes the rights an user has for an article.
+ */
+export interface UserArticleAssignmentStoreInterface {
+    
+    userCanView: boolean;
+    userCanComment: boolean;
+    userCanAnnotate: boolean;
+    userCanWrite: boolean;
+    /**
+     * Shortcut boolean, if use can write or annotate or comment / more than just view or nothing.
+     */
+    userCanEditInAnyWay: boolean;
+
 }
 
-export interface CitationAttributes {
-  id: string|null
-  zoteroKey: string|null
-  quotedRange: string|null
+export async function loadArticle(article_id: number): Promise<ArticleStoreInterface> {
+    const listResponse = await EditorService.editorApiV1LemmaArticleVersionList(article_id);
+    const versions = listResponse['results'] as SavedArticleVersion[];
+    return new ArticleStore(article_id, versions);
 }
 
-type ThreadId = string
+/**
+ * 
+ * @param article_id Load assignments for this article and the authenticated user.
+ */
+export async function loadAssignments(article_id: number): Promise<UserArticleAssignmentStoreInterface> {
+    const article_param = String(article_id);
+    const assignments = await WorkflowService.workflowApiV1OwnIssueLemmaAssignmentRetrieve(article_param);
+    return new UserArticleAssignmentStore(assignments.edit_types ?? []);  // with readonly types, our model generator makes them possibly undefined, even if they aren't.
+}
 
-export default class ArticleStore {
 
-  constructor(id: number|null) {
-    if (id !== null) {
-      console.log('called constructor')
-      // this.loadComments(id)
-      // this.loadCitations(id)
-      // this.loadArticle(id)
+
+
+export class ArticleStore implements ArticleStoreInterface {
+
+    constructor(
+        private article_id: number,
+        private _versions: SavedArticleVersion[] = [],
+    ) { }
+
+
+    get versions(): SavedArticleVersion[] {
+        return this._versions;
     }
-  }
 
-  showSidebar = false
+    get newestVersion(): SavedArticleVersion | undefined {
 
-  private _commentThreads: CommentThread[] = []
-  public article = ''
+        if (this.versions.length === 0) {
+            return undefined;
+        }
 
-  async loadComments(articleId: number) {
-    this._commentThreads = [
-      {
-        threadId: '1',
-        status: 'open',
-        comments: [
-          {
-            date: new Date(),
-            commentId: '1',
-            user: 1,
-            text: 'Exercitation officia ad mollit cillum duis culpa est anim voluptate occaecat nostrud.'
-          },
-          {
-            date: new Date(),
-            commentId: '2',
-            user: 2,
-            text: 'Nostrud duis minim et laboris labore.'
-          }
-        ]
-      },
-      {
-        threadId: '2',
-        status: 'open',
-        comments: [
-          {
-            date: new Date(),
-            commentId: '1',
-            user: 1,
-            text: 'Aliquip nisi et Lorem anim dolore ut eiusmod tempor velit minim.'
-          },
-          {
-            date: new Date(),
-            commentId: '2',
-            user: 2,
-            text: 'Pariatur ut eu dolor enim duis deserunt.'
-          }
-        ]
-      }
-    ]
-  }
+        return this.versions.reduce(
+            (version1, version2) => new Date(version1.date_created) > new Date(version2.date_created) ? version1 : version2
+        );
 
-  async loadArticle(articleId: number) {
-    this.loadComments(articleId)
-    this.article = `
-      <h1>Test Headlines look like this</h1>
-      <p>Non labore occaecat
-        <mark
-          data-id="67b86600-2550-43be-957e-23d7c3034a24"
-          data-entity-id="4074335-4"
-          data-relation-type-id="1"
-          data-is-confirmed="false">London</mark> dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
-      Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa <comment data-id="1">excepteur</comment>
-      deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
-      <p>Non labore occaecat deserunt dolor aliquip
-      consectetur fugiat <footnote data-zotero-key="HZ9BKUUJ" data-id="9cee2f2a-212d-43eb-b351-0ad4098c6834">laboris</footnote> velit adipisicing laboris
-      aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
-      Est ut cupidatat exercitation et ea quis commodo.</p>
-      Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua.
-      Culpa cupidatat anim qui adipisicing ea <comment data-id="2">consectetur qui Lorem culpa excepteur</comment>
-      deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.</p>
-      <h2>Or possibly like this.</h2>
-      <p>Non labore occaecat deserunt dolor aliquip
-      consectetur fugiat <footnote data-zotero-key="KHPCHKFV" data-id="9cee2f2b-212d-43eb-b351-0ad4098c6835">laboris</footnote> velit adipisicing laboris
-      aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut.
-      Est ut cupidatat exercitation et ea quis commodo.</p>
-      Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua. Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.
-      Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua. Culpa cupidatat anim qui1 adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.
-      Non labore occaecat deserunt dolor aliquip consectetur fugiat laboris velit adipisicing laboris aliqua est aliqua. Culpa cupidatat anim qui adipisicing ea consectetur qui Lorem culpa excepteur deserunt enim ut. Est ut cupidatat exercitation et ea quis commodo.
-    `
-  }
-
-  get threads() {
-    return this._commentThreads
-  }
-
-  getThread(id: string): CommentThread|undefined {
-    return this._commentThreads.find(c => c.threadId === id)
-  }
-
-  addComment(threadId: string, comment: Comment) {
-    const i = this.threads.findIndex(t => t.threadId === threadId)
-    if (i > -1) {
-      this._commentThreads[i].comments.push(comment)
-    } else {
-      throw new Error('Can’t add comment. Thread not found.')
     }
-  }
 
-  createCommentThread(): ThreadId {
-    const threadId = uuid()
-    this._commentThreads.push({
-      threadId,
-      status: 'open',
-      comments: []
-    })
-    return threadId
-  }
+    async updateMarkup(new_markup: Markup): Promise<ArticleStoreInterface> {
+        const newestVersion = this.newestVersion;
+        if (newestVersion === undefined) {
+            throw new Error('Can not update markup – newest version not found');
+        }
 
-  createCitation() {
-    const id = uuid()
-    return id
-  }
+        const index = this.versions.indexOf(newestVersion);
+
+        const updatedVersion = await EditorService.editorApiV1LemmaArticleVersionPartialUpdate(newestVersion.id, { markup: new_markup }) as SavedArticleVersion;
+
+        this._versions[index] = updatedVersion;
+
+        return this;
+    }
+
+    async addVersion(new_markup: Markup): Promise<ArticleStoreInterface> {
+        const newVersion = await EditorService.editorApiV1LemmaArticleVersionCreate({ lemma_article: this.article_id, markup: new_markup }) as SavedArticleVersion;
+        this.versions.push(newVersion);
+        return this;
+    }
 
 }
+
+
+export class UserArticleAssignmentStore implements UserArticleAssignmentStoreInterface {
+
+    constructor(
+        private editTypes: EditTypesEnum[]
+    ) {}
+
+    get userCanView(): boolean {
+        return this.editTypes.length > 0;
+    }
+
+    get userCanComment(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.COMMENT);
+    }
+
+    get userCanAnnotate(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.ANNOTATE);
+    }
+
+    get userCanWrite(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE);
+    }
+
+    get userCanEditInAnyWay(): boolean {
+        return this.editTypes.includes(EditTypesEnum.WRITE) || this.editTypes.includes(EditTypesEnum.ANNOTATE) || this.editTypes.includes(EditTypesEnum.COMMENT);
+    }
+
+}
+
+
