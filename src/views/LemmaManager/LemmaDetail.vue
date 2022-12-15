@@ -6,7 +6,8 @@
     @dragenter.prevent.capture.stop="onDragEnter"
     @dragleave.prevent.capture.stop="onDragLeave"
     @drop.prevent.capture.stop="onDrop"
-    v-if="value !== undefined && value !== null">
+    v-if="value !== undefined && value !== null"
+    >
     <v-card-title class="flex-column pb-2">
       <div class="d-flex flex-row align-self-stretch" v-if="showHeader">
         <v-btn
@@ -23,7 +24,11 @@
         <div :key="value.id" class="text-center flex-grow-1" >
           {{ value.lastName }}, {{ value.firstName }}
         </div>
+        <div class="printer">
+          <lemma-printer :lemmaRow="value"></lemma-printer>
+        </div>
         <v-btn
+          v-if="showTooggleSideBarButton"
           style="margin-top: -8px; margin-right: -10px;"
           width="48"
           height="48"
@@ -210,12 +215,22 @@
               :label="lemmaRowTranslations.professionDetail.de"
               :allow-new-line="true"
               :value="value.professionDetail"
+              :maxlength="255"
               @input="debouncedUpdateData({professionDetail: $event })"
             />
             <profession-group-field
             :key="value.id + '_professionGroupField'"
               :selected="value.professionGroup"
               @input="debouncedUpdateData({professionGroup: $event })"
+            />
+            <v-spacer class="my-5" />
+            <text-field
+              style="min-height: 60px"
+              :label="lemmaRowTranslations.notes.de"
+              :allow-new-line="true"
+              :value="value.notes"
+              :maxlength="255"
+              @input="debouncedUpdateData({notes: $event })"
             />
           </v-card-text>
           <h4
@@ -371,8 +386,8 @@ import { GenderAe0Enum, List } from '@/api'
 import confirm from '@/store/confirm'
 import fileDialog from 'file-dialog'
 import ZoteroManager from './ZoteroManager.vue'
-import ProfessionGroupField from '../lib/ProfessionGroupField.vue'
-
+import ProfessionGroupField from '../lib/ProfessionGroupField.vue';
+import LemmaPrinter from '../lib/LemmaPrinter.vue';
 
 import { lemmaRowTranslations } from '../../util/labels';
 
@@ -398,12 +413,14 @@ interface ZoteroSection {
     ZoteroManager,
     FullNameArrayField,
     ProfessionGroupField,
+    LemmaPrinter,
   }
 })
 export default class LemmaDetail extends Vue {
 
   @Prop({ required: true }) value!: LemmaRow;
   @Prop({ default: true }) showHeader!: boolean;
+  @Prop({ default: true }) showTooggleSideBarButton!: boolean;
   log = console.log;
   store = store;
   showGndSearch = false;
@@ -534,7 +551,7 @@ export default class LemmaDetail extends Vue {
     this.$emit('update', u)
   }
 
-  debouncedUpdateData = _.debounce(this.updateData, 300)
+  debouncedUpdateData = _.debounce(this.updateData, 300);
 
 }
 </script>

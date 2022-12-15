@@ -1,11 +1,10 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
-import IssueManager from '../views/IssueManager/IssueManager.vue'
-import LemmaManager from '../views/LemmaManager/LemmaManager.vue'
-import Article from '../views/ArticleManager/Article.vue'
-import store from '@/store'
-import ArticleStore from '@/store/article'
+import IssueManager from '../views/IssueManager/IssueManager.vue';
+import LemmaManager from '../views/LemmaManager/LemmaManager.vue';
+import Article from '../views/ArticleManager/Article.vue';
+import LemmaPrintView from '../views/LemmaManager/LemmaPrintView.vue';
 
 Vue.use(VueRouter)
 
@@ -50,6 +49,15 @@ const routes: Array<RouteConfig> = [
     props: (route) => {
       return {
         issueLemmaId: Number(route.params.issueLemmaId) || null
+      }
+    }
+  },
+  {
+    path: '/lemmas/print/:lemmaId',
+    component: LemmaPrintView,
+    props: (route) => {
+      return {
+        lemmaId: Number(route.params.lemmaId),
       }
     }
   }

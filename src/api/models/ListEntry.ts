@@ -29,4 +29,5 @@ export type ListEntry = {
     bioNote?: string | null;
     kinship?: string | null;
     religion?: string | null;
+    notes?: string | null;
 }

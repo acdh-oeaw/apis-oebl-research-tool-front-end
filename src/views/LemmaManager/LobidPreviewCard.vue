@@ -26,7 +26,7 @@
           <br /> {{ fragment.data.description || fragment.data.type }}
         </div>
         <a class="mt-2 d-inline-block text-decoration-none" target="_blank" :href="'https://lobid.org/gnd/' + fragment.gnd">
-        &rarr; {{ fragment.gnd }}</a>
+        &rarr; {{ showFullLink ? `https://lobid.org/gnd/${fragment.gnd}` : fragment.gnd }}</a>
       </div>
     </v-row>
   </div>
@@ -55,6 +55,7 @@ export default class LobidPreviewCard extends Vue {
   @Prop({ default: Array, }) gnd!: string[];
   @Prop({ default: Infinity, }) limit!: number;
   @Prop({ default: Array, }) value!: string[];
+  @Prop({ default: false }) showFullLink!: boolean;
 
   allFragments: Fragment[] = []
   loading = false

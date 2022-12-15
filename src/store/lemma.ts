@@ -32,7 +32,7 @@ function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
 }
 
 
-function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
+export function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
   return {
     ... serializedLemmaRow,
     dateOfBirth: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfBirth),
@@ -50,7 +50,7 @@ export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn)
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = '2.0'
 
-class LemmaDatabase extends Dexie {
+export class LemmaDatabase extends Dexie {
   public lemmas: Dexie.Table<SerializedLemmaRow, number>
   public constructor() {
     super('LemmaDb', {allowEmptyDB: true})
@@ -717,6 +717,7 @@ LemmaStore {
       columns_scrape: rs.columns_scrape,
       professionDetail: rs.professionDetail,
       professionGroup: rs.professionGroup,
+      notes: rs.notes,
       // TODO: yuck.
       list: rs.list ? {
         id: rs.list.id,

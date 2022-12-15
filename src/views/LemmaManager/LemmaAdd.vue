@@ -160,6 +160,7 @@ export default class LemmaAdd extends Vue {
     bioNote: null,
     kinship: null,
     religion: null,
+    notes: null,
   }
 
   person = _.clone(this.emptyPerson)

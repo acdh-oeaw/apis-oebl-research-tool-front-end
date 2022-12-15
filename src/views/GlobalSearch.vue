@@ -76,7 +76,9 @@
               <lemma-detail
                 @update="updateLemma"
                 v-if="selectedLemma !== null"
-                :value="selectedLemma.item" />
+                :value="selectedLemma.item" 
+                :showTooggleSideBarButton="false"
+                />
             </div>
           </div>
         </v-card-text>
