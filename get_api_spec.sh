@@ -1,0 +1,1 @@
+curl  -L -v --insecure -H "Accept: application/json" ${VUE_APP_API_HOST}/apis/swagger/schema > ./api-spec.json
