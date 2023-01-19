@@ -100,12 +100,19 @@ class Store {
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => res.json())
-        .then(res => {
-          localStorage.setItem('token', res.auth_token);
-          OpenAPI.TOKEN = res.auth_token
-          return true
-        });
+      }).then(async (res) => {
+        let result
+        const data = await res.json()
+        if (res.status === 200) {
+          console.log(res.status)
+          localStorage.setItem('token', data.auth_token)
+          OpenAPI.TOKEN = data.auth_token
+          result = true
+        } else {
+          result = false
+        }
+        return result
+      })
       if (me) {
         console.log('me.ok', me)
         console.log(this.loginCallbacks)
