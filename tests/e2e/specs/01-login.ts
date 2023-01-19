@@ -14,10 +14,10 @@ describe('The IRS Login', () => {
   })
 
   it('allows a privileged user to login', () => {
-    cy.get('[test-id="user-field"]').clear().type('TestUser1')
-    cy.get('[test-id="password-field"]').clear().type('celoyimeperomiromo')
+    cy.get('[test-id="user-field"]').clear().type(Cypress.env('username'))
+    cy.get('[test-id="password-field"]').clear().type(Cypress.env('password'))
     cy.get('[test-id="login-form"]').submit()
-    cy.wait(10 * 1000)
+    cy.get('[test-id="login-form"]', { timeout: 10000 }).should('not.exist')
   })
 
 })

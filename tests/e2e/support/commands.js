@@ -12,8 +12,8 @@
 // -- This is a parent command --
 Cypress.Commands.add('login', () => {
   cy.visit('/')
-  cy.get('[test-id="user-field"]').type('TestUser1')
-  cy.get('[test-id="password-field"]').type('celoyimeperomiromo')
+  cy.get('[test-id="user-field"]').type(Cypress.env('username'))
+  cy.get('[test-id="password-field"]').type(Cypress.env('password'))
   cy.get('[test-id="login-form"]').submit()
 })
 //
