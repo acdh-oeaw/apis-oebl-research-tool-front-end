@@ -27,13 +27,13 @@ export class AuthService {
 
     /**
      * Use this endpoint to obtain user authentication token.
-     * @param requestBody
-     * @returns TokenCreate
+     * @param requestBody 
+     * @returns TokenCreate 
      * @throws ApiError
      */
     public static async authTokenLoginCreate(
-        requestBody?: TokenCreateRequest,
-    ): Promise<TokenCreate> {
+requestBody?: TokenCreateRequest,
+): Promise<TokenCreate> {
         const result = await __request({
             method: 'POST',
             path: `/auth/token/login/`,
@@ -58,13 +58,13 @@ export class AuthService {
     /**
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedUserList
+     * @returns PaginatedUserList 
      * @throws ApiError
      */
     public static async authUsersList(
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedUserList> {
+limit?: number,
+offset?: number,
+): Promise<PaginatedUserList> {
         const result = await __request({
             method: 'GET',
             path: `/auth/users/`,
@@ -77,13 +77,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns UserCreate
+     * @param requestBody 
+     * @returns UserCreate 
      * @throws ApiError
      */
     public static async authUsersCreate(
-        requestBody: UserCreateRequest,
-    ): Promise<UserCreate> {
+requestBody: UserCreateRequest,
+): Promise<UserCreate> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/`,
@@ -94,12 +94,12 @@ export class AuthService {
 
     /**
      * @param id A unique integer value identifying this Benutzer.
-     * @returns User
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersRetrieve(
-        id: number,
-    ): Promise<User> {
+id: number,
+): Promise<User> {
         const result = await __request({
             method: 'GET',
             path: `/auth/users/${id}/`,
@@ -109,14 +109,14 @@ export class AuthService {
 
     /**
      * @param id A unique integer value identifying this Benutzer.
-     * @param requestBody
-     * @returns User
+     * @param requestBody 
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersUpdate(
-        id: number,
-        requestBody?: UserRequest,
-    ): Promise<User> {
+id: number,
+requestBody?: UserRequest,
+): Promise<User> {
         const result = await __request({
             method: 'PUT',
             path: `/auth/users/${id}/`,
@@ -127,14 +127,14 @@ export class AuthService {
 
     /**
      * @param id A unique integer value identifying this Benutzer.
-     * @param requestBody
-     * @returns User
+     * @param requestBody 
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersPartialUpdate(
-        id: number,
-        requestBody?: PatchedUserRequest,
-    ): Promise<User> {
+id: number,
+requestBody?: PatchedUserRequest,
+): Promise<User> {
         const result = await __request({
             method: 'PATCH',
             path: `/auth/users/${id}/`,
@@ -145,12 +145,12 @@ export class AuthService {
 
     /**
      * @param id A unique integer value identifying this Benutzer.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async authUsersDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/auth/users/${id}/`,
@@ -159,13 +159,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns Activation
+     * @param requestBody 
+     * @returns Activation 
      * @throws ApiError
      */
     public static async authUsersActivationCreate(
-        requestBody: ActivationRequest,
-    ): Promise<Activation> {
+requestBody: ActivationRequest,
+): Promise<Activation> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/activation/`,
@@ -175,7 +175,7 @@ export class AuthService {
     }
 
     /**
-     * @returns User
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersMeRetrieve(): Promise<User> {
@@ -187,13 +187,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns User
+     * @param requestBody 
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersMeUpdate(
-        requestBody?: UserRequest,
-    ): Promise<User> {
+requestBody?: UserRequest,
+): Promise<User> {
         const result = await __request({
             method: 'PUT',
             path: `/auth/users/me/`,
@@ -203,13 +203,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns User
+     * @param requestBody 
+     * @returns User 
      * @throws ApiError
      */
     public static async authUsersMePartialUpdate(
-        requestBody?: PatchedUserRequest,
-    ): Promise<User> {
+requestBody?: PatchedUserRequest,
+): Promise<User> {
         const result = await __request({
             method: 'PATCH',
             path: `/auth/users/me/`,
@@ -219,7 +219,7 @@ export class AuthService {
     }
 
     /**
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async authUsersMeDestroy(): Promise<void> {
@@ -231,13 +231,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns SendEmailReset
+     * @param requestBody 
+     * @returns SendEmailReset 
      * @throws ApiError
      */
     public static async authUsersResendActivationCreate(
-        requestBody: SendEmailResetRequest,
-    ): Promise<SendEmailReset> {
+requestBody: SendEmailResetRequest,
+): Promise<SendEmailReset> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/resend_activation/`,
@@ -247,13 +247,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns SendEmailReset
+     * @param requestBody 
+     * @returns SendEmailReset 
      * @throws ApiError
      */
     public static async authUsersResetPasswordCreate(
-        requestBody: SendEmailResetRequest,
-    ): Promise<SendEmailReset> {
+requestBody: SendEmailResetRequest,
+): Promise<SendEmailReset> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/reset_password/`,
@@ -263,13 +263,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns PasswordResetConfirm
+     * @param requestBody 
+     * @returns PasswordResetConfirm 
      * @throws ApiError
      */
     public static async authUsersResetPasswordConfirmCreate(
-        requestBody: PasswordResetConfirmRequest,
-    ): Promise<PasswordResetConfirm> {
+requestBody: PasswordResetConfirmRequest,
+): Promise<PasswordResetConfirm> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/reset_password_confirm/`,
@@ -279,13 +279,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns SendEmailReset
+     * @param requestBody 
+     * @returns SendEmailReset 
      * @throws ApiError
      */
     public static async authUsersResetUsernameCreate(
-        requestBody: SendEmailResetRequest,
-    ): Promise<SendEmailReset> {
+requestBody: SendEmailResetRequest,
+): Promise<SendEmailReset> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/reset_username/`,
@@ -295,13 +295,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns UsernameResetConfirm
+     * @param requestBody 
+     * @returns UsernameResetConfirm 
      * @throws ApiError
      */
     public static async authUsersResetUsernameConfirmCreate(
-        requestBody: UsernameResetConfirmRequest,
-    ): Promise<UsernameResetConfirm> {
+requestBody: UsernameResetConfirmRequest,
+): Promise<UsernameResetConfirm> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/reset_username_confirm/`,
@@ -311,13 +311,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns SetPassword
+     * @param requestBody 
+     * @returns SetPassword 
      * @throws ApiError
      */
     public static async authUsersSetPasswordCreate(
-        requestBody: SetPasswordRequest,
-    ): Promise<SetPassword> {
+requestBody: SetPasswordRequest,
+): Promise<SetPassword> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/set_password/`,
@@ -327,13 +327,13 @@ export class AuthService {
     }
 
     /**
-     * @param requestBody
-     * @returns SetUsername
+     * @param requestBody 
+     * @returns SetUsername 
      * @throws ApiError
      */
     public static async authUsersSetUsernameCreate(
-        requestBody: SetUsernameRequest,
-    ): Promise<SetUsername> {
+requestBody: SetUsernameRequest,
+): Promise<SetUsername> {
         const result = await __request({
             method: 'POST',
             path: `/auth/users/set_username/`,

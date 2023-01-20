@@ -15,16 +15,16 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
+ * inheritance.
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaArticleList
+     * @returns PaginatedLemmaArticleList 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleList(
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaArticleList> {
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaArticleList> {
         const result = await __request({
             method: 'GET',
             path: `/editor/api/v1/lemma-article/`,
@@ -38,14 +38,14 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
-     * @param requestBody
-     * @returns LemmaArticle
+ * inheritance.
+     * @param requestBody 
+     * @returns LemmaArticle 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleCreate(
-        requestBody: LemmaArticleRequest,
-    ): Promise<LemmaArticle> {
+requestBody: LemmaArticleRequest,
+): Promise<LemmaArticle> {
         const result = await __request({
             method: 'POST',
             path: `/editor/api/v1/lemma-article/`,
@@ -55,17 +55,17 @@ export class EditorService {
     }
 
     /**
-     * @param lemmaArticle
+     * @param lemmaArticle 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaArticleVersionList
+     * @returns PaginatedLemmaArticleVersionList 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionList(
-        lemmaArticle?: number,
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaArticleVersionList> {
+lemmaArticle?: number,
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaArticleVersionList> {
         const result = await __request({
             method: 'GET',
             path: `/editor/api/v1/lemma-article-version/`,
@@ -79,13 +79,13 @@ export class EditorService {
     }
 
     /**
-     * @param requestBody
-     * @returns LemmaArticleVersion
+     * @param requestBody 
+     * @returns LemmaArticleVersion 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionCreate(
-        requestBody: LemmaArticleVersionRequest,
-    ): Promise<LemmaArticleVersion> {
+requestBody: LemmaArticleVersionRequest,
+): Promise<LemmaArticleVersion> {
         const result = await __request({
             method: 'POST',
             path: `/editor/api/v1/lemma-article-version/`,
@@ -96,12 +96,12 @@ export class EditorService {
 
     /**
      * @param id A unique integer value identifying this lemma article version.
-     * @returns LemmaArticleVersion
+     * @returns LemmaArticleVersion 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionRetrieve(
-        id: number,
-    ): Promise<LemmaArticleVersion> {
+id: number,
+): Promise<LemmaArticleVersion> {
         const result = await __request({
             method: 'GET',
             path: `/editor/api/v1/lemma-article-version/${id}/`,
@@ -111,14 +111,14 @@ export class EditorService {
 
     /**
      * @param id A unique integer value identifying this lemma article version.
-     * @param requestBody
-     * @returns LemmaArticleVersion
+     * @param requestBody 
+     * @returns LemmaArticleVersion 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionUpdate(
-        id: number,
-        requestBody: LemmaArticleVersionRequest,
-    ): Promise<LemmaArticleVersion> {
+id: number,
+requestBody: LemmaArticleVersionRequest,
+): Promise<LemmaArticleVersion> {
         const result = await __request({
             method: 'PUT',
             path: `/editor/api/v1/lemma-article-version/${id}/`,
@@ -129,14 +129,14 @@ export class EditorService {
 
     /**
      * @param id A unique integer value identifying this lemma article version.
-     * @param requestBody
-     * @returns LemmaArticleVersion
+     * @param requestBody 
+     * @returns LemmaArticleVersion 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionPartialUpdate(
-        id: number,
-        requestBody?: PatchedLemmaArticleVersionRequest,
-    ): Promise<LemmaArticleVersion> {
+id: number,
+requestBody?: PatchedLemmaArticleVersionRequest,
+): Promise<LemmaArticleVersion> {
         const result = await __request({
             method: 'PATCH',
             path: `/editor/api/v1/lemma-article-version/${id}/`,
@@ -147,12 +147,12 @@ export class EditorService {
 
     /**
      * @param id A unique integer value identifying this lemma article version.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleVersionDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/editor/api/v1/lemma-article-version/${id}/`,
@@ -162,14 +162,14 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
-     * @param id
-     * @returns LemmaArticle
+ * inheritance.
+     * @param id 
+     * @returns LemmaArticle 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleRetrieve(
-        id: string,
-    ): Promise<LemmaArticle> {
+id: string,
+): Promise<LemmaArticle> {
         const result = await __request({
             method: 'GET',
             path: `/editor/api/v1/lemma-article/${id}/`,
@@ -179,16 +179,16 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
-     * @param id
-     * @param requestBody
-     * @returns LemmaArticle
+ * inheritance.
+     * @param id 
+     * @param requestBody 
+     * @returns LemmaArticle 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleUpdate(
-        id: string,
-        requestBody: LemmaArticleRequest,
-    ): Promise<LemmaArticle> {
+id: string,
+requestBody: LemmaArticleRequest,
+): Promise<LemmaArticle> {
         const result = await __request({
             method: 'PUT',
             path: `/editor/api/v1/lemma-article/${id}/`,
@@ -199,16 +199,16 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
-     * @param id
-     * @param requestBody
-     * @returns LemmaArticle
+ * inheritance.
+     * @param id 
+     * @param requestBody 
+     * @returns LemmaArticle 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticlePartialUpdate(
-        id: string,
-        requestBody?: PatchedLemmaArticleRequest,
-    ): Promise<LemmaArticle> {
+id: string,
+requestBody?: PatchedLemmaArticleRequest,
+): Promise<LemmaArticle> {
         const result = await __request({
             method: 'PATCH',
             path: `/editor/api/v1/lemma-article/${id}/`,
@@ -219,14 +219,14 @@ export class EditorService {
 
     /**
      * Helper class that provides a standard way to create an ABC using
-     * inheritance.
-     * @param id
-     * @returns void
+ * inheritance.
+     * @param id 
+     * @returns void 
      * @throws ApiError
      */
     public static async editorApiV1LemmaArticleDestroy(
-        id: string,
-    ): Promise<void> {
+id: string,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/editor/api/v1/lemma-article/${id}/`,

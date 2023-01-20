@@ -18,22 +18,22 @@ export class ResearchService {
 
     /**
      * APIView to process scraping requests
-     *
-     * Args:
-     * GenericAPIView ([type]): [description]
-     * @param deleted
+ *
+ * Args:
+ * GenericAPIView ([type]): [description]
+     * @param deleted 
      * @param limit Number of results to return per page.
-     * @param modifiedAfter
+     * @param modifiedAfter 
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedListEntryList
+     * @returns PaginatedListEntryList 
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchList(
-        deleted?: boolean,
-        limit?: number,
-        modifiedAfter?: string,
-        offset?: number,
-    ): Promise<PaginatedListEntryList> {
+deleted?: boolean,
+limit?: number,
+modifiedAfter?: string,
+offset?: number,
+): Promise<PaginatedListEntryList> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/lemmaresearch/`,
@@ -49,15 +49,15 @@ export class ResearchService {
 
     /**
      * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
-     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
-     *
-     * @param requestBody
-     * @returns ListCreateAPIViewResponse
+ * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
+ * 
+     * @param requestBody 
+     * @returns ListCreateAPIViewResponse 
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchCreate(
-        requestBody: ListCreateAPIViewRequest,
-    ): Promise<ListCreateAPIViewResponse> {
+requestBody: ListCreateAPIViewRequest,
+): Promise<ListCreateAPIViewResponse> {
         const result = await __request({
             method: 'POST',
             path: `/research/api/v1/lemmaresearch/`,
@@ -68,16 +68,16 @@ export class ResearchService {
 
     /**
      * APIView to process scraping requests
-     *
-     * Args:
-     * GenericAPIView ([type]): [description]
+ *
+ * Args:
+ * GenericAPIView ([type]): [description]
      * @param id A unique integer value identifying this list entry.
-     * @returns ListEntry
+     * @returns ListEntry 
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchRetrieve(
-        id: number,
-    ): Promise<ListEntry> {
+id: number,
+): Promise<ListEntry> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/lemmaresearch/${id}/`,
@@ -87,17 +87,17 @@ export class ResearchService {
 
     /**
      * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
-     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
-     *
+ * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
+ * 
      * @param id A unique integer value identifying this list entry.
-     * @param requestBody
-     * @returns ListPatchAPIViewResponse
+     * @param requestBody 
+     * @returns ListPatchAPIViewResponse 
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchPartialUpdate(
-        id: number,
-        requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
-    ): Promise<ListPatchAPIViewResponse> {
+id: number,
+requestBody?: PatchedLemmaResearchPatchAPIViewRequest,
+): Promise<ListPatchAPIViewResponse> {
         const result = await __request({
             method: 'PATCH',
             path: `/research/api/v1/lemmaresearch/${id}/`,
@@ -108,16 +108,16 @@ export class ResearchService {
 
     /**
      * APIView to process scraping requests
-     *
-     * Args:
-     * GenericAPIView ([type]): [description]
+ *
+ * Args:
+ * GenericAPIView ([type]): [description]
      * @param id A unique integer value identifying this list entry.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async researchApiV1LemmaresearchDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/research/api/v1/lemmaresearch/${id}/`,
@@ -126,19 +126,19 @@ export class ResearchService {
     }
 
     /**
-     * @param editor
+     * @param editor 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param title
-     * @returns PaginatedListList
+     * @param title 
+     * @returns PaginatedListList 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchList(
-        editor?: number,
-        limit?: number,
-        offset?: number,
-        title?: string,
-    ): Promise<PaginatedListList> {
+editor?: number,
+limit?: number,
+offset?: number,
+title?: string,
+): Promise<PaginatedListList> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/listresearch/`,
@@ -154,14 +154,14 @@ export class ResearchService {
 
     /**
      * Endpoint that allows to create a Research Lemma List
-     *
-     * @param requestBody
-     * @returns List
+ * 
+     * @param requestBody 
+     * @returns List 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchCreate(
-        requestBody: CreateResearchListAPIViewRequest,
-    ): Promise<List> {
+requestBody: CreateResearchListAPIViewRequest,
+): Promise<List> {
         const result = await __request({
             method: 'POST',
             path: `/research/api/v1/listresearch/`,
@@ -172,12 +172,12 @@ export class ResearchService {
 
     /**
      * @param id A unique integer value identifying this list.
-     * @returns List
+     * @returns List 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchRetrieve(
-        id: number,
-    ): Promise<List> {
+id: number,
+): Promise<List> {
         const result = await __request({
             method: 'GET',
             path: `/research/api/v1/listresearch/${id}/`,
@@ -187,14 +187,14 @@ export class ResearchService {
 
     /**
      * @param id A unique integer value identifying this list.
-     * @param requestBody
-     * @returns List
+     * @param requestBody 
+     * @returns List 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchUpdate(
-        id: number,
-        requestBody: ListRequest,
-    ): Promise<List> {
+id: number,
+requestBody: ListRequest,
+): Promise<List> {
         const result = await __request({
             method: 'PUT',
             path: `/research/api/v1/listresearch/${id}/`,
@@ -205,14 +205,14 @@ export class ResearchService {
 
     /**
      * @param id A unique integer value identifying this list.
-     * @param requestBody
-     * @returns List
+     * @param requestBody 
+     * @returns List 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchPartialUpdate(
-        id: number,
-        requestBody?: PatchedListRequest,
-    ): Promise<List> {
+id: number,
+requestBody?: PatchedListRequest,
+): Promise<List> {
         const result = await __request({
             method: 'PATCH',
             path: `/research/api/v1/listresearch/${id}/`,
@@ -223,12 +223,12 @@ export class ResearchService {
 
     /**
      * @param id A unique integer value identifying this list.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async researchApiV1ListresearchDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/research/api/v1/listresearch/${id}/`,

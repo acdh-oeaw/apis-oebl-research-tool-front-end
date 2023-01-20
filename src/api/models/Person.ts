@@ -4,9 +4,9 @@
 
 import type { ApisBase } from './ApisBase';
 import type { BlankEnum } from './BlankEnum';
-import type { Gender616Enum } from './Gender616Enum';
 import type { Label } from './Label';
 import type { NullEnum } from './NullEnum';
+import type { PersonGenderEnum } from './PersonGenderEnum';
 
 export type Person = {
     readonly url?: string;
@@ -32,10 +32,11 @@ export type Person = {
      * The persons´s forename. In case of more then one name...
      */
     first_name?: string | null;
-    gender?: (Gender616Enum | BlankEnum | NullEnum) | null;
+    gender?: (PersonGenderEnum | BlankEnum | NullEnum) | null;
     readonly source?: ApisBase;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
     readonly profession?: Array<Label>;
     readonly title?: Array<Label>;
+    readonly sameAs?: string;
 }

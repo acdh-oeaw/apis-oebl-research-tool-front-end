@@ -41,13 +41,13 @@ export class WorkflowService {
     /**
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedAuthorIssueLemmaAssignmentList
+     * @returns PaginatedAuthorIssueLemmaAssignmentList 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentList(
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedAuthorIssueLemmaAssignmentList> {
+limit?: number,
+offset?: number,
+): Promise<PaginatedAuthorIssueLemmaAssignmentList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/author-issue-assignment/`,
@@ -60,13 +60,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns AuthorIssueLemmaAssignment
+     * @param requestBody 
+     * @returns AuthorIssueLemmaAssignment 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentCreate(
-        requestBody: AuthorIssueLemmaAssignmentRequest,
-    ): Promise<AuthorIssueLemmaAssignment> {
+requestBody: AuthorIssueLemmaAssignmentRequest,
+): Promise<AuthorIssueLemmaAssignment> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/author-issue-assignment/`,
@@ -76,13 +76,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param id
-     * @returns AuthorIssueLemmaAssignment
+     * @param id 
+     * @returns AuthorIssueLemmaAssignment 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentRetrieve(
-        id: string,
-    ): Promise<AuthorIssueLemmaAssignment> {
+id: string,
+): Promise<AuthorIssueLemmaAssignment> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/author-issue-assignment/${id}/`,
@@ -91,15 +91,15 @@ export class WorkflowService {
     }
 
     /**
-     * @param id
-     * @param requestBody
-     * @returns AuthorIssueLemmaAssignment
+     * @param id 
+     * @param requestBody 
+     * @returns AuthorIssueLemmaAssignment 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentUpdate(
-        id: string,
-        requestBody: AuthorIssueLemmaAssignmentRequest,
-    ): Promise<AuthorIssueLemmaAssignment> {
+id: string,
+requestBody: AuthorIssueLemmaAssignmentRequest,
+): Promise<AuthorIssueLemmaAssignment> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/author-issue-assignment/${id}/`,
@@ -109,15 +109,15 @@ export class WorkflowService {
     }
 
     /**
-     * @param id
-     * @param requestBody
-     * @returns AuthorIssueLemmaAssignment
+     * @param id 
+     * @param requestBody 
+     * @returns AuthorIssueLemmaAssignment 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentPartialUpdate(
-        id: string,
-        requestBody?: PatchedAuthorIssueLemmaAssignmentRequest,
-    ): Promise<AuthorIssueLemmaAssignment> {
+id: string,
+requestBody?: PatchedAuthorIssueLemmaAssignmentRequest,
+): Promise<AuthorIssueLemmaAssignment> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/author-issue-assignment/${id}/`,
@@ -127,13 +127,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param id
-     * @returns void
+     * @param id 
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorIssueAssignmentDestroy(
-        id: string,
-    ): Promise<void> {
+id: string,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/author-issue-assignment/${id}/`,
@@ -145,15 +145,15 @@ export class WorkflowService {
      * Viewset to retrieve Author objects
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param username
-     * @returns PaginatedAuthorList
+     * @param username 
+     * @returns PaginatedAuthorList 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorsList(
-        limit?: number,
-        offset?: number,
-        username?: string,
-    ): Promise<PaginatedAuthorList> {
+limit?: number,
+offset?: number,
+username?: string,
+): Promise<PaginatedAuthorList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/authors/`,
@@ -169,12 +169,12 @@ export class WorkflowService {
     /**
      * Viewset to retrieve Author objects
      * @param id A unique integer value identifying this Benutzer.
-     * @returns Author
+     * @returns Author 
      * @throws ApiError
      */
     public static async workflowApiV1AuthorsRetrieve(
-        id: number,
-    ): Promise<Author> {
+id: number,
+): Promise<Author> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/authors/${id}/`,
@@ -186,15 +186,15 @@ export class WorkflowService {
      * Viewset to retrieve Editor objects
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @param username
-     * @returns PaginatedEditorList
+     * @param username 
+     * @returns PaginatedEditorList 
      * @throws ApiError
      */
     public static async workflowApiV1EditorsList(
-        limit?: number,
-        offset?: number,
-        username?: string,
-    ): Promise<PaginatedEditorList> {
+limit?: number,
+offset?: number,
+username?: string,
+): Promise<PaginatedEditorList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/editors/`,
@@ -210,12 +210,12 @@ export class WorkflowService {
     /**
      * Viewset to retrieve Editor objects
      * @param id A unique integer value identifying this Benutzer.
-     * @returns Editor
+     * @returns Editor 
      * @throws ApiError
      */
     public static async workflowApiV1EditorsRetrieve(
-        id: number,
-    ): Promise<Editor> {
+id: number,
+): Promise<Editor> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/editors/${id}/`,
@@ -224,21 +224,21 @@ export class WorkflowService {
     }
 
     /**
-     * @param editor
-     * @param issue
-     * @param lemma
+     * @param editor 
+     * @param issue 
+     * @param lemma 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedIssueLemmaList
+     * @returns PaginatedIssueLemmaList 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaList(
-        editor?: number,
-        issue?: number,
-        lemma?: number,
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedIssueLemmaList> {
+editor?: number,
+issue?: number,
+lemma?: number,
+limit?: number,
+offset?: number,
+): Promise<PaginatedIssueLemmaList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/issue-lemma/`,
@@ -254,13 +254,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns IssueLemma
+     * @param requestBody 
+     * @returns IssueLemma 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaCreate(
-        requestBody: IssueLemmaNoEditorRequest,
-    ): Promise<IssueLemma> {
+requestBody: IssueLemmaNoEditorRequest,
+): Promise<IssueLemma> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/issue-lemma/`,
@@ -271,12 +271,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue lemma.
-     * @returns IssueLemma
+     * @returns IssueLemma 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaRetrieve(
-        id: number,
-    ): Promise<IssueLemma> {
+id: number,
+): Promise<IssueLemma> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
@@ -286,14 +286,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue lemma.
-     * @param requestBody
-     * @returns IssueLemma
+     * @param requestBody 
+     * @returns IssueLemma 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaUpdate(
-        id: number,
-        requestBody: IssueLemmaNoEditorRequest,
-    ): Promise<IssueLemma> {
+id: number,
+requestBody: IssueLemmaNoEditorRequest,
+): Promise<IssueLemma> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
@@ -304,14 +304,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue lemma.
-     * @param requestBody
-     * @returns IssueLemma
+     * @param requestBody 
+     * @returns IssueLemma 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaPartialUpdate(
-        id: number,
-        requestBody?: PatchedIssueLemmaNoEditorRequest,
-    ): Promise<IssueLemma> {
+id: number,
+requestBody?: PatchedIssueLemmaNoEditorRequest,
+): Promise<IssueLemma> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
@@ -322,12 +322,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue lemma.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1IssueLemmaDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/issue-lemma/${id}/`,
@@ -337,18 +337,18 @@ export class WorkflowService {
 
     /**
      * @param limit Number of results to return per page.
-     * @param name
+     * @param name 
      * @param offset The initial index from which to return the results.
-     * @param pubDate
-     * @returns PaginatedIssueList
+     * @param pubDate 
+     * @returns PaginatedIssueList 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesList(
-        limit?: number,
-        name?: string,
-        offset?: number,
-        pubDate?: string,
-    ): Promise<PaginatedIssueList> {
+limit?: number,
+name?: string,
+offset?: number,
+pubDate?: string,
+): Promise<PaginatedIssueList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/issues/`,
@@ -363,13 +363,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns Issue
+     * @param requestBody 
+     * @returns Issue 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesCreate(
-        requestBody: IssueRequest,
-    ): Promise<Issue> {
+requestBody: IssueRequest,
+): Promise<Issue> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/issues/`,
@@ -380,12 +380,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue.
-     * @returns Issue
+     * @returns Issue 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesRetrieve(
-        id: number,
-    ): Promise<Issue> {
+id: number,
+): Promise<Issue> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/issues/${id}/`,
@@ -395,14 +395,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue.
-     * @param requestBody
-     * @returns Issue
+     * @param requestBody 
+     * @returns Issue 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesUpdate(
-        id: number,
-        requestBody: IssueRequest,
-    ): Promise<Issue> {
+id: number,
+requestBody: IssueRequest,
+): Promise<Issue> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/issues/${id}/`,
@@ -413,14 +413,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue.
-     * @param requestBody
-     * @returns Issue
+     * @param requestBody 
+     * @returns Issue 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesPartialUpdate(
-        id: number,
-        requestBody?: PatchedIssueRequest,
-    ): Promise<Issue> {
+id: number,
+requestBody?: PatchedIssueRequest,
+): Promise<Issue> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/issues/${id}/`,
@@ -431,12 +431,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this issue.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1IssuesDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/issues/${id}/`,
@@ -447,13 +447,13 @@ export class WorkflowService {
     /**
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaList
+     * @returns PaginatedLemmaList 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaList(
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaList> {
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma/`,
@@ -466,17 +466,17 @@ export class WorkflowService {
     }
 
     /**
-     * @param issuelemma
+     * @param issuelemma 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaLabelList
+     * @returns PaginatedLemmaLabelList 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelList(
-        issuelemma?: Array<number>,
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaLabelList> {
+issuelemma?: Array<number>,
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaLabelList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-label/`,
@@ -490,13 +490,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns LemmaLabel
+     * @param requestBody 
+     * @returns LemmaLabel 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelCreate(
-        requestBody: LemmaLabelRequest,
-    ): Promise<LemmaLabel> {
+requestBody: LemmaLabelRequest,
+): Promise<LemmaLabel> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/lemma-label/`,
@@ -507,12 +507,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma label.
-     * @returns LemmaLabel
+     * @returns LemmaLabel 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelRetrieve(
-        id: number,
-    ): Promise<LemmaLabel> {
+id: number,
+): Promise<LemmaLabel> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-label/${id}/`,
@@ -522,14 +522,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma label.
-     * @param requestBody
-     * @returns LemmaLabel
+     * @param requestBody 
+     * @returns LemmaLabel 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelUpdate(
-        id: number,
-        requestBody: LemmaLabelRequest,
-    ): Promise<LemmaLabel> {
+id: number,
+requestBody: LemmaLabelRequest,
+): Promise<LemmaLabel> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/lemma-label/${id}/`,
@@ -540,14 +540,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma label.
-     * @param requestBody
-     * @returns LemmaLabel
+     * @param requestBody 
+     * @returns LemmaLabel 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelPartialUpdate(
-        id: number,
-        requestBody?: PatchedLemmaLabelRequest,
-    ): Promise<LemmaLabel> {
+id: number,
+requestBody?: PatchedLemmaLabelRequest,
+): Promise<LemmaLabel> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/lemma-label/${id}/`,
@@ -558,12 +558,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma label.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaLabelDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-label/${id}/`,
@@ -572,17 +572,17 @@ export class WorkflowService {
     }
 
     /**
-     * @param lemma
+     * @param lemma 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaNoteList
+     * @returns PaginatedLemmaNoteList 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteList(
-        lemma?: number,
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaNoteList> {
+lemma?: number,
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaNoteList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-note/`,
@@ -596,13 +596,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns LemmaNote
+     * @param requestBody 
+     * @returns LemmaNote 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteCreate(
-        requestBody: LemmaNoteRequest,
-    ): Promise<LemmaNote> {
+requestBody: LemmaNoteRequest,
+): Promise<LemmaNote> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/lemma-note/`,
@@ -613,12 +613,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma note.
-     * @returns LemmaNote
+     * @returns LemmaNote 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteRetrieve(
-        id: number,
-    ): Promise<LemmaNote> {
+id: number,
+): Promise<LemmaNote> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-note/${id}/`,
@@ -628,14 +628,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma note.
-     * @param requestBody
-     * @returns LemmaNote
+     * @param requestBody 
+     * @returns LemmaNote 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteUpdate(
-        id: number,
-        requestBody: LemmaNoteRequest,
-    ): Promise<LemmaNote> {
+id: number,
+requestBody: LemmaNoteRequest,
+): Promise<LemmaNote> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/lemma-note/${id}/`,
@@ -646,14 +646,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma note.
-     * @param requestBody
-     * @returns LemmaNote
+     * @param requestBody 
+     * @returns LemmaNote 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNotePartialUpdate(
-        id: number,
-        requestBody?: PatchedLemmaNoteRequest,
-    ): Promise<LemmaNote> {
+id: number,
+requestBody?: PatchedLemmaNoteRequest,
+): Promise<LemmaNote> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/lemma-note/${id}/`,
@@ -664,12 +664,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma note.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaNoteDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-note/${id}/`,
@@ -678,19 +678,19 @@ export class WorkflowService {
     }
 
     /**
-     * @param issue
-     * @param issuelemma
+     * @param issue 
+     * @param issuelemma 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
-     * @returns PaginatedLemmaStatusList
+     * @returns PaginatedLemmaStatusList 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusList(
-        issue?: Array<number>,
-        issuelemma?: Array<number>,
-        limit?: number,
-        offset?: number,
-    ): Promise<PaginatedLemmaStatusList> {
+issue?: Array<number>,
+issuelemma?: Array<number>,
+limit?: number,
+offset?: number,
+): Promise<PaginatedLemmaStatusList> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-status/`,
@@ -705,13 +705,13 @@ export class WorkflowService {
     }
 
     /**
-     * @param requestBody
-     * @returns LemmaStatus
+     * @param requestBody 
+     * @returns LemmaStatus 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusCreate(
-        requestBody: LemmaStatusRequest,
-    ): Promise<LemmaStatus> {
+requestBody: LemmaStatusRequest,
+): Promise<LemmaStatus> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/lemma-status/`,
@@ -722,12 +722,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma status.
-     * @returns LemmaStatus
+     * @returns LemmaStatus 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusRetrieve(
-        id: number,
-    ): Promise<LemmaStatus> {
+id: number,
+): Promise<LemmaStatus> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma-status/${id}/`,
@@ -737,14 +737,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma status.
-     * @param requestBody
-     * @returns LemmaStatus
+     * @param requestBody 
+     * @returns LemmaStatus 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusUpdate(
-        id: number,
-        requestBody: LemmaStatusRequest,
-    ): Promise<LemmaStatus> {
+id: number,
+requestBody: LemmaStatusRequest,
+): Promise<LemmaStatus> {
         const result = await __request({
             method: 'PUT',
             path: `/workflow/api/v1/lemma-status/${id}/`,
@@ -755,14 +755,14 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma status.
-     * @param requestBody
-     * @returns LemmaStatus
+     * @param requestBody 
+     * @returns LemmaStatus 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusPartialUpdate(
-        id: number,
-        requestBody?: PatchedLemmaStatusRequest,
-    ): Promise<LemmaStatus> {
+id: number,
+requestBody?: PatchedLemmaStatusRequest,
+): Promise<LemmaStatus> {
         const result = await __request({
             method: 'PATCH',
             path: `/workflow/api/v1/lemma-status/${id}/`,
@@ -773,12 +773,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma status.
-     * @returns void
+     * @returns void 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaStatusDestroy(
-        id: number,
-    ): Promise<void> {
+id: number,
+): Promise<void> {
         const result = await __request({
             method: 'DELETE',
             path: `/workflow/api/v1/lemma-status/${id}/`,
@@ -788,12 +788,12 @@ export class WorkflowService {
 
     /**
      * @param id A unique integer value identifying this lemma.
-     * @returns Lemma
+     * @returns Lemma 
      * @throws ApiError
      */
     public static async workflowApiV1LemmaRetrieve(
-        id: number,
-    ): Promise<Lemma> {
+id: number,
+): Promise<Lemma> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/lemma/${id}/`,
@@ -803,13 +803,13 @@ export class WorkflowService {
 
     /**
      * Utility class to view / retrieve all edit types for a user / issue-lemma pair.
-     * @param id
-     * @returns IssueLemmaUserAssignment
+     * @param id 
+     * @returns IssueLemmaUserAssignment 
      * @throws ApiError
      */
     public static async workflowApiV1OwnIssueLemmaAssignmentRetrieve(
-        id: string,
-    ): Promise<IssueLemmaUserAssignment> {
+id: string,
+): Promise<IssueLemmaUserAssignment> {
         const result = await __request({
             method: 'GET',
             path: `/workflow/api/v1/own-issue-lemma-assignment/${id}/`,
@@ -819,15 +819,15 @@ export class WorkflowService {
 
     /**
      * Endpoint that allows to POST a list of lemmas to the research pipeline for processing.
-     * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
-     *
-     * @param requestBody
-     * @returns ResearchLemma2WorkfloweResponse
+ * All additional fields not mentioned in the Schema are stored and retrieved as user specific fields.
+ * 
+     * @param requestBody 
+     * @returns ResearchLemma2WorkfloweResponse 
      * @throws ApiError
      */
     public static async workflowApiV1Research2WorkflowCreate(
-        requestBody: ResearchLemma2WorkflowLemmaRequest,
-    ): Promise<ResearchLemma2WorkfloweResponse> {
+requestBody: ResearchLemma2WorkflowLemmaRequest,
+): Promise<ResearchLemma2WorkfloweResponse> {
         const result = await __request({
             method: 'POST',
             path: `/workflow/api/v1/research2workflow/`,

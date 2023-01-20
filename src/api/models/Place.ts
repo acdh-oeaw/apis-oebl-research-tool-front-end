@@ -31,4 +31,5 @@ export type Place = {
     readonly kind?: Label;
     readonly text?: Array<ApisBase>;
     readonly collection?: Array<ApisBase>;
+    readonly sameAs?: string;
 }
