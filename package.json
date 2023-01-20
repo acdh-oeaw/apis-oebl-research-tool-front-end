@@ -12,7 +12,7 @@
     "dev:server": "env-cmd -f .env.development ts-node-dev --project ./server/tsconfig.json ./server/index.ts",
     "get-api-types": "env-cmd -f .env.production sh get_api_spec.sh && openapi -i api-spec.json -o ./src/api --request ./src/service/request.ts && npm run pick-services WorkflowService ResearchService MeService",
     "get-api-types:dev": "env-cmd -f .env.development sh get_api_spec.sh && openapi -i api-spec.json -o ./src/api --request ./src/service/request.ts && npm run pick-services WorkflowService ResearchService MeService",
-    "pick-services": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/pick-services.ts",
+    "pick-services": "ts-node ./scripts/pick-services.ts",
     "schema": "typescript-json-schema \"src/types/*ts\" \"Requests\" > src/types/schema.json",
     "start": "env-cmd -f \"./.env.production\" node ./server/index.js",
     "type-check-template": "vue-type-check --workspace . --srcDir ./src --onlyTemplate",

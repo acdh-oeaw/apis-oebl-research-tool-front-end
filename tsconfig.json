@@ -43,5 +43,8 @@
     "node_modules",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ]
+  ],
+  "ts-node": {
+    "compilerOptions": {"module":"commonjs"}
+  }
 }
