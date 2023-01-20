@@ -2,3 +2,6 @@ wwwroot/*.js
 node_modules
 typings
 dist
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+cypress.env.json
