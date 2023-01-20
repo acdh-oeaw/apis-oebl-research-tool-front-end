@@ -23,10 +23,10 @@ interface LemmaFilter {
 function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
   const copy: any = {... lemmaRow};
   if (lemmaRow.dateOfBirth) {
-    copy.dateOfBirth = lemmaRow.dateOfBirth.generateISO_OnlyDate();
+    copy.dateOfBirth = new DateContainer(lemmaRow.dateOfBirth.calendarYear, lemmaRow.dateOfBirth.calendarMonth, lemmaRow.dateOfBirth.calendarDate).generateISO_OnlyDate();
   }
   if (lemmaRow.dateOfDeath) {
-    copy.dateOfDeath = lemmaRow.dateOfDeath.generateISO_OnlyDate();
+    copy.dateOfDeath = new DateContainer(lemmaRow.dateOfDeath.calendarYear, lemmaRow.dateOfDeath.calendarMonth, lemmaRow.dateOfDeath.calendarDate).generateISO_OnlyDate();
   }
   return copy;
 }
@@ -332,6 +332,7 @@ LemmaStore {
     this.listenForRemoteLemmaUpdates()
     this.listenForRemoteListUpdates()
     this.listenForRemoteImports()
+    this.listenForRemoteLemmaCreation()
   }
 
   listenForRemoteListUpdates() {
@@ -348,6 +349,12 @@ LemmaStore {
       this.upsertLemmasLocally(rows)
       // update the status
       this.importStatus.incrementStatus(rows)
+    })
+  }
+
+  listenForRemoteLemmaCreation() {
+    notifyService.on('addLemma', (lemma) => {
+      this.upsertLemmasLocally([lemma])
     })
   }
 
@@ -580,6 +587,7 @@ LemmaStore {
         gnd: lemmaRow.gnd,
       } ]
     }))
+    notifyService.emit('addLemma', lemmaRow)
   }
 
   async loadRemoteLemmaLists() {

@@ -7,15 +7,16 @@ import { WithId } from '@/types'
 
 /** All possible Events that can be sent over the bus. Add new Event Types here. */
 export interface NotifyEvents {
-  disconnect: () => void
-  updateIssueLemmas: (ids: number[], ils: Partial<IssueLemma>) => void
-  updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>, e: Editor) => void
-  importLemmas: (ls: ServerResearchLemma[]) => void
-  importIssueLemmas: (ls: (WithId<IssueLemma>)[]) => void
-  deleteLemmas: (ids: number[]) => void
-  createLemmaList: (l: LemmaList) => void
-  updateLemmaList: (l: LemmaList) => void
-  deleteLemmaList: (l: LemmaList) => void
+  disconnect: () => void;
+  updateIssueLemmas: (ids: number[], ils: Partial<IssueLemma>) => void;
+  addLemma: (ls: LemmaRow) => void;
+  updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>, e: Editor) => void;
+  importLemmas: (ls: ServerResearchLemma[]) => void;
+  importIssueLemmas: (ls: (WithId<IssueLemma>)[]) => void;
+  deleteLemmas: (ids: number[]) => void;
+  createLemmaList: (l: LemmaList) => void;
+  updateLemmaList: (l: LemmaList) => void;
+  deleteLemmaList: (l: LemmaList) => void;
 }
 
 interface NotifyClient extends Socket {
@@ -26,7 +27,7 @@ interface NotifyClient extends Socket {
 const client = io(process.env.VUE_APP_EVENTBUS_HOST || 'http://localhost:3333') as NotifyClient
 
 client.onAny((...args: any) => {
-  // console.log('message from server:', args)
+  console.log('message from server:', args)
 })
 
 export default client
