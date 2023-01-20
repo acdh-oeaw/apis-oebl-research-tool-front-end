@@ -17,7 +17,9 @@
     "start": "env-cmd -f \"./.env.production\" node ./server/index.js",
     "type-check-template": "vue-type-check --workspace . --srcDir ./src --onlyTemplate",
     "test:interactive": "NODE_ENV=production vue-cli-service test:e2e --env PORT=8080",
-    "test": "NODE_ENV=production vue-cli-service test:e2e --headless --env PORT=8080"
+    "test:interactive:dev": "NODE_ENV=development vue-cli-service test:e2e --mode=development --env PORT=8080",
+    "test": "NODE_ENV=production vue-cli-service test:e2e --headless --env PORT=8080",
+    "test:dev": "NODE_ENV=development vue-cli-service test:e2e --mode=development --headless  --env PORT=8080"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
