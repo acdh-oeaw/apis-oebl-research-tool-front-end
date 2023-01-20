@@ -51,6 +51,11 @@ var socketIo = require("socket.io");
 var node_fetch_1 = require("node-fetch");
 var cors = require("cors");
 var zotero_1 = require("./zotero");
+if (process.env.ZOTERO_API_KEY === undefined
+    || process.env.ZOTERO_USER === undefined) {
+    var environment = JSON.stringify({ ZOTERO_USER: process.env.ZOTERO_USER, ZOTERO_API_KEY: process.env.ZOTERO_API_KEY });
+    throw new Error("Zotero is not correctly configered. See environment: " + environment);
+}
 var app = express();
 var port = process.env.NODE_PORT || process.env.PORT || 3333;
 var serviceSecret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C';
@@ -58,15 +63,7 @@ var server = http.createServer(app);
 // @ts-ignore
 var io = socketIo(server, {
     cors: {
-        origin: [
-            'http://localhost:8080',
-            'https://localhost:8080',
-            'https://oebl-research.acdh-dev.oeaw.ac.at',
-            'http://backend',
-            'http://frontend:8080',
-            'http://backend:8080',
-            'http://127.0.0.1:8080'
-        ]
+        origin: JSON.parse(process.env.ALLOWED_ORIGIN)
     }
 });
 var index = fs.readFileSync('./dist/index.html', { encoding: 'utf-8' });

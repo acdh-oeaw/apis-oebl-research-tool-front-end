@@ -27,15 +27,7 @@ const server = http.createServer(app)
 // @ts-ignore
 const io = socketIo(server, {
   cors: {
-    origin: [
-      'http://localhost:8080',
-      'https://localhost:8080',
-      'https://oebl-research.acdh-dev.oeaw.ac.at',
-      'http://backend',
-      'http://frontend:8080',
-      'http://backend:8080',
-      'http://127.0.0.1:8080'
-    ]
+    origin: JSON.parse(process.env.ALLOWED_ORIGIN)
   }
 })
 
