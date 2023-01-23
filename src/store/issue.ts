@@ -59,7 +59,7 @@ export default class IssueStore {
     if (id === null) {
       return [];
     }
-    return ((await WorkflowService.workflowApiV1IssueLemmaList(undefined, undefined, id)).results) as WithId<IssueLemma>[]
+    return ((await WorkflowService.workflowApiV1IssueLemmaList(undefined, id, undefined)).results) as WithId<IssueLemma>[]
   }
 
   async loadIssueLemmas(id: number | null) {
