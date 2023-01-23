@@ -18,7 +18,11 @@ const routes: Array<RouteConfig> = [
     path: '/issue/:issueId',
     name: 'Issue',
     component: IssueManager,
-    props: (route) => ({ ...route.params, ...route.query }),
+    props: (route) => {
+      return { 
+        issueId: Number(route.params.issueId) || null
+      }
+    },
   },
   {
     path: '/lemmas',
