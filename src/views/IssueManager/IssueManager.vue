@@ -319,6 +319,10 @@ export default class IssueManager extends Vue {
       issueLemmaSearchItems: this.searchItems
     }
   }
+ 
+  mounted() {
+    store.issue.loadIssue(Number(this.issueId))
+  }
 
   convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
     if (this.issueStatus.find(s => s.id === l.status) === undefined) {
