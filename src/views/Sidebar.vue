@@ -109,7 +109,7 @@
           @dragenter.prevent="onDragEnter($event, true)"
           @dragover.prevent=""
           @drop.prevent="addLemmaToIssue(issue.id, $event)"
-          @click="loadIssueLemmas(issue.id || null)">
+          @click="loadIssue(issue.id || null)">
           <v-list-item-avatar tile>
             <v-icon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</v-icon>
           </v-list-item-avatar>
@@ -345,6 +345,13 @@ export default class Sidebar extends Vue {
       if (e.target instanceof HTMLInputElement) {
         e.target.blur()
       }
+    }
+  }
+
+  async loadIssue(issueId: number | null) {
+    if (issueId !== null) {
+      store.lemma.selectedLemmaIssueId = issueId
+      store.issue.loadIssue(issueId)
     }
   }
 
