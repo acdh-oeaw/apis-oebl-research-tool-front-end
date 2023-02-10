@@ -46,7 +46,7 @@ export interface UserArticleAssignmentStoreInterface {
 
 }
 
-export async function loadArticle(article_id: number): Promise<ArticleStoreInterface> {
+export async function loadArticle(article_id: number): Promise<ArticleStore> {
     const listResponse = await EditorService.editorApiV1LemmaArticleVersionList(article_id);
     const versions = listResponse['results'] as SavedArticleVersion[];
     return new ArticleStore(article_id, versions);
@@ -70,6 +70,8 @@ export class ArticleStore implements ArticleStoreInterface {
     constructor(
         private article_id: number,
         private _versions: SavedArticleVersion[] = [],
+        public showSidebar: Boolean = true,
+        public sideBarWidth: number = 370
     ) { }
 
 
@@ -89,7 +91,7 @@ export class ArticleStore implements ArticleStoreInterface {
 
     }
 
-    async updateMarkup(new_markup: Markup): Promise<ArticleStoreInterface> {
+    async updateMarkup(new_markup: Markup): Promise<ArticleStore> {
         const newestVersion = this.newestVersion;
         if (newestVersion === undefined) {
             throw new Error('Can not update markup – newest version not found');
@@ -104,7 +106,7 @@ export class ArticleStore implements ArticleStoreInterface {
         return this;
     }
 
-    async addVersion(new_markup: Markup): Promise<ArticleStoreInterface> {
+    async addVersion(new_markup: Markup): Promise<ArticleStore> {
         const newVersion = await EditorService.editorApiV1LemmaArticleVersionCreate({ lemma_article: this.article_id, markup: new_markup }) as SavedArticleVersion;
         this.versions.push(newVersion);
         return this;
