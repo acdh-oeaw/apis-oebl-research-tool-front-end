@@ -33,3 +33,11 @@ export const lemmaRowTranslations: translations = {
     zoteroKeysAbout: {de: 'Literatur über'},
     notes: {de: "Notizen"},
 }
+
+export const EntityTranslations: translations = {
+    person: {de: 'Person'},
+    place: {de: 'Ort'},
+    institution: {de: 'Institution'},
+    work: {de: 'Werk'},
+    event: {de: 'Ereignis'},
+}
