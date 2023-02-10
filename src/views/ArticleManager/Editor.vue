@@ -67,7 +67,7 @@
         </v-slide-item>
       </v-slide-group>
     </div>
-    <v-main>
+    <v-main class=" px-0">
       <div class="px-5 mt-5 pb-5 mb-5 outer-editor mx-auto">
         <tip-tap-editor-content class="tiptap-editor" :editor="tipTapEditor" />
       </div>
