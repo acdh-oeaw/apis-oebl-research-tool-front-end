@@ -14,13 +14,13 @@
         Kommentar entfernen
       </v-btn>
       <v-btn
-        v-if="comment !== undefined"
+        v-if="commentThread !== undefined"
         block
         @click="toggleStatus(); showOverlay = false"
         outlined
         class="mb-1 rounded-lg"
         color="grey">
-        <v-icon left v-if="comment.status === 'private'">mdi-check</v-icon>
+        <v-icon left v-if="commentThread.status === 'private'">mdi-check</v-icon>
         Als “Privat” markieren
       </v-btn>
       <v-btn
@@ -32,7 +32,7 @@
         Abbrechen
       </v-btn>
     </v-overlay>
-    <div v-if="showHeader && comment !== undefined" class="d-flex flex-row align-self-stretch">
+    <div v-if="showHeader && commentThread !== undefined" class="d-flex flex-row align-self-stretch">
       <v-btn icon tile class="rounded-lg" disabled small>
       </v-btn>
       <div
@@ -45,29 +45,29 @@
         tile
         class="rounded-lg"
         small>
-        <v-icon v-if="comment.status === 'open'">mdi-dots-horizontal</v-icon>
-        <v-icon small v-else-if="comment.status === 'private'">mdi-lock</v-icon>
+        <v-icon v-if="commentThread.status === 'open'">mdi-dots-horizontal</v-icon>
+        <v-icon small v-else-if="commentThread.status === 'private'">mdi-lock</v-icon>
       </v-btn>
     </div>
     <div
-      v-if="thread !== undefined"
+      v-if="commentThread !== undefined"
       ref="threadContainer"
       :class="['thread-container', scrollable && 'scrollable']">
-      <div class="comment-container" v-for="(comment, i) in thread.comments" :key="comment.commentId">
+      <div class="comment-container" v-for="(comment, i) in commentThread.comments" :key="comment.commentId">
         <div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
-          User {{ comment.user }} <v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
+          <span class="comment-user-name">{{ comment.user }}</span><v-spacer /> {{ formatTimeDistance(comment.date.toString()) }}
         </div>
         <div class="px-2">
           {{ comment.text }}
         </div>
-        <v-divider class="mt-2" v-if="thread !== undefined && i !== thread.comments.length - 1" />
+        <v-divider class="mt-2" v-if="commentThread !== undefined && i !== commentThread.comments.length - 1" />
       </div>
     </div>
-    <v-divider v-if="thread !== undefined && thread.comments.length > 0" class="my-2" />
+    <v-divider v-if="commentThread !== undefined && commentThread.comments.length > 0" class="my-2" />
     <text-field
-      v-if="thread !== undefined"
+      v-if="commentThread !== undefined"
       v-model="newMessage"
-      @keydown.enter="appendComment"
+      @keydown.enter.native="appendComment"
       @keyup.native="storeLastCaretPos"
       @mouseup.native="storeLastCaretPos"
       class="py-0 pl-1 pr-1 mt-1 mb-0"
@@ -108,6 +108,7 @@ import de from 'date-fns/esm/locale/de'
 import { v4 as uuid } from 'uuid'
 import { emoji } from '@/service/emoji'
 import { Editor } from '@tiptap/vue-2'
+import { CommentThreadAttributes } from './extensionComment'
 
 @Component({
   components: {
@@ -117,6 +118,7 @@ import { Editor } from '@tiptap/vue-2'
 export default class CommentThread extends Vue {
 
   @Prop({ default: null }) id!: string|null
+  @Prop({ default: null }) commentThread!: CommentThreadAttributes|null
   @Prop({ default: true }) scrollable!: boolean
   @Prop({ default: true }) showHeader!: boolean
   @Prop({ required: true }) editor!: Editor
@@ -136,6 +138,10 @@ export default class CommentThread extends Vue {
     // }
   }
 
+  get userName() {
+    return this.store.user.getFullName()
+  }
+
   storeLastCaretPos(e: Event) {
     if (e.target instanceof HTMLTextAreaElement) {
       this.lastCaretPos = e.target.selectionStart
@@ -147,14 +153,14 @@ export default class CommentThread extends Vue {
   }
 
   toggleStatus() {
-    // TODO
-    // if (this.comment !== undefined) {
-    //   if (this.comment?.status === 'open') {
-    //     this.comment.status = 'private'
-    //   } else {
-    //     this.comment.status = 'open'
-    //   }
-    // }
+    
+    if (this.commentThread !== undefined && this.commentThread !== null) {
+      if (this.commentThread?.status === 'open') {
+          this.commentThread.status = 'private'
+      } else {
+        this.commentThread.status = 'open'
+      }
+    }
   }
 
   removeComment() {
@@ -163,7 +169,16 @@ export default class CommentThread extends Vue {
   }
 
   async appendComment() {
-    console.warn('Not implemented – TODO: Refactor!');
+    if (this.commentThread) {
+    this.commentThread.comments.push({
+      text:this.newMessage,
+      date: new Date(),
+      user: this.userName
+    })
+    this.newMessage = ''
+    await this.repositionTooltip()
+    this.scrollToBottom()
+  }
 // this.shouldShowEmojiPicker = false
     // if (this.id !== null) {
     //   this.store.article.addComment(this.id, {
@@ -214,6 +229,7 @@ export default class CommentThread extends Vue {
   @Watch('id')
   onChangeThreadId() {
     this.scrollToBottom()
+    this.showOverlay = false
   }
 
   mounted() {
@@ -258,4 +274,7 @@ export default class CommentThread extends Vue {
   left 0
   background var(--v-background-base)
   z-index 1
+
+.comment-user-name
+  font-weight:bold
 </style>

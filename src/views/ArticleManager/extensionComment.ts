@@ -11,6 +11,20 @@ export interface CommentOptions {
   HTMLAttributes: Record<string, any>,
 }
 
+export interface CommentWrapperAttributes {
+  id: string,
+  commentThread: CommentThreadAttributes,
+}
+
+export interface CommentThreadAttributes {
+  status: 'open'|'private',
+  comments: { 
+    date: Date,
+    user: string,
+    text: string
+  }[],
+}
+
 declare module '@tiptap/core' {
   interface Commands {
     comment: {
@@ -26,7 +40,7 @@ declare module '@tiptap/core' {
        * Unset a mark
        */
       unsetComment: () => Command,
-      showCommentPopUp: (attributes: { id: string, shouldFocus: boolean }) => Command
+      //showCommentPopUp: (attributes: { id: string, shouldFocus: boolean }) => Command
     }
   }
 }
@@ -58,19 +72,34 @@ export const Comment = popupMark.extend({
           }
         },
       },
+      commentThread: {
+        default: {comments:[], status: 'open'},
+        parseHTML: element => {
+          return {
+            commentThread: element.getAttribute('data-comment-thread')
+          }
+        },
+        renderHTML: attributes => {
+          if (!attributes.commentThread) {
+            return {}
+          } else {
+            return { 'data-comment-thread': JSON.stringify(attributes.commentThread) }
+          }
+        },
+      },
     }
   },
 
   parseHTML() {
     return [
       {
-        tag: 'comment',
+        tag: 'comment'
       }
     ]
   },
 
-  renderHTML({ HTMLAttributes }) {
-    return ['comment', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+  renderHTML (props ) {
+    return ['comment', mergeAttributes(this.options.HTMLAttributes, props.HTMLAttributes), 0]
   },
 
   addCommands() {
@@ -78,19 +107,19 @@ export const Comment = popupMark.extend({
     return {
       setComment: (attributes) => ({ commands }) => {
         console.log('new comment')
-        return commands.setMark('comment', { id: uuid() })
+        return commands.setMark(this.name, { id: uuid()})
       },
       toggleComment: (attributes) => ({ commands }) => {
         if (this.editor.isActive(this.name)) {
-          return commands.unsetMark('comment')
+          return commands.unsetMark(this.name)
         } else {
           const id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
-          const command = commands.toggleMark('comment', { id })
+          const command = commands.toggleMark(this.name, {id: uuid()})
           return command
         }
       },
       unsetComment: () => ({ commands }) => {
-        return commands.unsetMark('comment')
+        return commands.unsetMark(this.name)
       },
     }
   },
