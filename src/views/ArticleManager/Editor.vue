@@ -175,3 +175,9 @@ export default class Editor extends Vue {
 
 }
 </script>
+
+<style lang="stylus" scoped>
+.editor-container >>> comment
+  background var(--v-comment-base)
+
+</style>
