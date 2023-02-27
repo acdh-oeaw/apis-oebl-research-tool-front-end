@@ -30,4 +30,11 @@ export default class UserStore {
     this.hasLoaded = true
   }
 
+  getFullName() {
+    if (this.userProfile.first_name !== '' && this.userProfile.first_name !== '') {
+      return `${this.userProfile.first_name} ${this.userProfile.last_name}` 
+    }
+    else return `User ${this.userProfile.userId}`
+  }
+
 }

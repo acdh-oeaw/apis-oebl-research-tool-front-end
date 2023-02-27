@@ -2,6 +2,7 @@ import { Editor, getMarkAttributes } from '@tiptap/core'
 import { Command, Mark, VueRenderer } from '@tiptap/vue-2'
 import tippy, { sticky, hideAll, Instance as TippyInstance } from 'tippy.js'
 import Vue, { VueConstructor } from 'vue'
+import vuetify from '@/plugins/vuetify'
 
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/scale.css'
@@ -49,6 +50,7 @@ function showPopUp(
       })
     } else {
       vueComponents[name] = new VueRenderer(vueComp, {
+        vuetify,
         propsData: {
           ...attributes,
           editor

@@ -1,64 +1,79 @@
-  <template>
+<template>
   <div class="editor-loader-container">
+    <v-app-bar app flat>
+      <v-spacer></v-spacer>
+      <div v-if="articleStore">
+        <v-btn v-if="!articleStore.showSidebar" tile class="rounded-lg" icon @click="toggleSidebar()">
+          <v-icon>mdi-dock-right</v-icon>
+        </v-btn>
+      </div>
+    </v-app-bar>
+    <resizable-drawer v-if="articleStore" color="background darken-1" :card="false" :right="true" :min-width="300"
+      :width="articleStore.sideBarWidth" @update:width="articleStore.sideBarWidth = $event"
+      :value="articleStore.showSidebar">
+      <v-card class="transparent flex-column d-flex fill-height lemma-detail" elevation="0" @dragover.prevent="">
+        <v-card-title class="flex-column pb-2">
+          <div class="d-flex flex-row align-self-stretch">
+            <v-btn style="margin-top: -8px; margin-right: -10px;" width="48" height="48" tile class="rounded-lg" icon
+              @click="toggleSidebar()">
+              <v-icon>mdi-dock-right</v-icon>
+            </v-btn>
+          </div>
+        </v-card-title>
+        <v-tabs v-model="tab" background-color="transparent">
+          <v-tab>
+            Versionen ({{ sortedVersionViews.length }})
+          </v-tab>
+          <v-tab>
+            Annotationen
+          </v-tab>
+          <v-tab>
+            Kommentare
+          </v-tab>
+          <v-tabs-slider color="transparent"></v-tabs-slider>
+          <v-tabs-items v-model="tab">
+            <v-tab-item>
+              <span class="pl-3" v-if="userCanEditInAnyWay">
+                <v-btn  class="rounded-lg" elevation="0" color="primary" @click="createNewVersion()">Neue Version erstellen</v-btn>
+              </span>
+              <v-list v-if="articleStore">
+                <v-list-item v-for="(version, index) in sortedVersionViews">
+                  <template v-slot:default>
+                    <v-list-item-action>
+                      <v-simple-checkbox :disabled="version.isShownInEditor" :value="version.isShownInEditor"
+                        @click="selectVersion(version.id)" />
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title>Version Nr. {{ version.ordinalNumber }}</v-list-item-title>
+                      <v-list-item-subtitle>erstellt am {{ version.dateCreatedDELocale }}</v-list-item-subtitle>
+                      <v-list-item-subtitle v-if="
+                        version.dateCreatedDELocale !==
+                        version.dateModifiedDELocale
+                      ">(bearbeitet: {{ version.dateModifiedDELocale }})</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card flat>
+                <v-card-text>Annotationen</v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card flat>
+                <v-card-text>Kommentare</v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-tabs>
+        <v-divider />
+      </v-card>
+      <!--<article-detail :articleStore="articleStore">
+      </article-detail>-->
+    </resizable-drawer>
     <v-main>
       <v-container>
-        <v-row class="version-list-row">
-          <v-col class="version-list-col">
-            <v-expansion-panels v-if="articleStore">
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  <span>Versionen ({{ sortedVersionViews.length }})</span>
-                  <span v-if="userCanEditInAnyWay">
-                    <v-btn @click="createNewVersion()"
-                      >Neue Version erstellen</v-btn
-                    >
-                  </span>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-container>
-                    <v-row
-                      v-for="(version, index) in sortedVersionViews"
-                      :key="index"
-                      :class="
-                        version.isShownInEditor
-                          ? 'version-in-list grey lighten-2'
-                          : 'version-in-list'
-                      "
-                    >
-                      <v-col>
-                        <span class="version-nr"
-                          >Version Nr. {{ version.ordinalNumber }}
-                        </span>
-                        <span
-                          >erstellt am {{ version.dateCreatedDELocale }}
-                        </span>
-                        <span
-                          v-if="
-                            version.dateCreatedDELocale !==
-                            version.dateModifiedDELocale
-                          "
-                          >(bearbeitet: {{ version.dateModifiedDELocale }})
-                        </span>
-                      </v-col>
-                      <v-col>
-                        <v-simple-checkbox
-                          :disabled="version.isShownInEditor"
-                          :value="version.isShownInEditor"
-                          @click="selectVersion(version.id)"
-                        />
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <div v-else>
-              <div class="loading">
-                <v-progress-circular indeterminate />
-              </div>
-            </div>
-          </v-col>
-        </v-row>
         <v-row class="editor-row">
           <v-col class="editor-col">
             <!-- We have three basic states: Loading, loaded and error -->
@@ -69,13 +84,8 @@
             </div>
             <div v-else-if="loadingState === 'LOADED' && userCanView">
               <div class="loaded-editor">
-                <editor
-                  :articleStore="articleStore"
-                  :version="versionToEdit"
-                  :tipTapEditor="tipTapEditor"
-                  :userCanAnnotate="userCanAnnotate"
-                  :userCanComment="userCanComment"
-                />
+                <editor :articleStore="articleStore" :version="versionToEdit" :tipTapEditor="tipTapEditor"
+                  :userCanAnnotate="userCanAnnotate" :userCanComment="userCanComment" />
               </div>
             </div>
             <div v-else-if="loadingState === 'ERROR'">
@@ -86,10 +96,8 @@
             <div v-else>
               <div class="state-error">
                 <!-- There was an error. Please contact the technical support-team -->
-                <v-alert type="error"
-                  >Es gab leider einen internen Fehler. Bitte kontaktieren Sie
-                  das technische Support-Team.</v-alert
-                >
+                <v-alert type="error">Es gab leider einen internen Fehler. Bitte kontaktieren Sie
+                  das technische Support-Team.</v-alert>
               </div>
             </div>
           </v-col>
@@ -100,6 +108,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from "vue-property-decorator";
+import ResizableDrawer from '../lib/ResizableDrawer.vue';
 import { LemmaArticleVersion } from "@/api";
 import {
   Content as TipTapContent,
@@ -112,7 +121,7 @@ import { Comment as CommentExtension } from "./extensionComment";
 import { Annotation as AnnotationExtension } from "./extensionAnnotation";
 
 import {
-  ArticleStoreInterface,
+  ArticleStore,
   loadArticle,
   loadAssignments,
   UserArticleAssignmentStoreInterface,
@@ -125,12 +134,13 @@ import Editor from "./Editor.vue";
 @Component({
   components: {
     Editor,
+    ResizableDrawer,
   },
 })
 export default class EditorLoader extends Vue {
   @Prop() issueLemmaId!: number | null;
 
-  articleStore: ArticleStoreInterface | null = null;
+  articleStore: ArticleStore | null = null;
   assignmentStore: UserArticleAssignmentStoreInterface | null = null;
   tipTapEditor: TipTapEditor | null = null;
   versionToEdit: LemmaArticleVersion | null = null;
@@ -142,13 +152,15 @@ export default class EditorLoader extends Vue {
   userCanAnnotate: boolean = false;
   userCanEditInAnyWay: boolean = false;
 
+  tab = null;
+
   /**
    * Setting the whole state of the start up of the module in a method, to avoid forgetting states on the way.
    */
   setState(
     loadingState: "LOADING" | "LOADED" | "ERROR",
     errorMessage: string = "",
-    articleStore: ArticleStoreInterface | null = null,
+    articleStore: ArticleStore | null = null,
     assignmentStore: UserArticleAssignmentStoreInterface | null = null,
     tipTapEditor: TipTapEditor | null = null,
     versionToEdit: LemmaArticleVersion | null = null
@@ -201,7 +213,7 @@ export default class EditorLoader extends Vue {
     // because errors get catched in scr/api/core/requests.ts or src/service/requests.ts
     // and the user gets a global message,
     // but this component has no idea about that.
-    const articleStore: ArticleStoreInterface = await loadArticle(
+    const articleStore: ArticleStore = await loadArticle(
       this.issueLemmaId
     );
 
@@ -302,8 +314,8 @@ export default class EditorLoader extends Vue {
     this.tipTapEditor = this.createTipTapEditor(
       this.versionToEdit.markup as TipTapContent,
       this.versionToEdit.id !== undefined &&
-        this.articleStore.newestVersion !== undefined &&
-        this.versionToEdit.id === this.articleStore.newestVersion.id
+      this.articleStore.newestVersion !== undefined &&
+      this.versionToEdit.id === this.articleStore.newestVersion.id
     );
   }
 
@@ -347,5 +359,41 @@ export default class EditorLoader extends Vue {
       newStore.newestVersion
     );
   }
+
+  toggleSidebar() {
+    if (this.articleStore) {
+      this.articleStore.showSidebar = !this.articleStore.showSidebar
+    }
+  }
 }
 </script>
+
+<style lang="stylus" scoped>
+
+.v-tab 
+  text-transform: capitalize
+  letter-spacing: normal
+  height:36px
+  border-radius: 4px
+
+.v-tab--active
+  color: black !important
+  font-weight:bold
+  background-color: var(--v-background-darken5)
+
+.theme--light.v-list, .theme--light.v-tabs-items
+  background: transparent;
+
+.v-list-item__action:first-child
+  margin-right:18px !important
+
+.v-list-item__title
+  font-size: 0.9rem
+
+.v-list-item__subtitle
+  font-size: 0.8rem  
+
+.v-list-item__action  .v-icon.v-icon
+  font-size:18px
+  
+</style>

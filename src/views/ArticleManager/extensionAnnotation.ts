@@ -14,6 +14,7 @@ export interface AnnotationOptions {
 export interface AnnotationAttributes {
   id: string,
   entityId: string|null,
+  entityType: string|null,
   relationTypeId: string|null,
   relationStartTime: string|null,
   relationEndTime: string|null,
@@ -71,6 +72,19 @@ export const Annotation = popupMark.extend({
         },
         renderHTML(attrs) {
           return { 'data-entity-id': attrs.entityId }
+        }
+      },
+      entityType: {
+        default: null,
+        parseHTML(el) {
+          return {
+            entityType: el.getAttribute('data-entityType-type')
+          }
+        },
+        renderHTML(attrs) {
+          return {
+            'data-entityType-type': attrs.entityType
+          }
         }
       },
       relationTypeId: {
