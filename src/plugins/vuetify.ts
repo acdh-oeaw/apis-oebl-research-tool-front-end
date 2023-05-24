@@ -41,7 +41,12 @@ export default new Vuetify({
         info: '#2196F3',
         success: '#4CAF50',
         warning: '#FFC107',
-        comment: '#5EFA81'
+        comment: colors.green.accent2,
+        annotation_person: colors.orange.lighten3,
+        annotation_place: colors.blue.lighten3,
+        annotation_institution: colors.pink.lighten3,
+        annotation_event: colors.red.lighten3,
+        annotation_work: colors.lime.lighten3,
       },
       // NORD:
       dark: {
