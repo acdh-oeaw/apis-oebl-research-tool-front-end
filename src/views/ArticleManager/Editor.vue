@@ -32,6 +32,7 @@
               <v-icon small left>mdi-message-outline</v-icon>
               Kommentar
             </v-btn>
+            <char-picker @returnSpecialChar="insertSpecialChar"/>
           </v-card>
         </v-slide-item>
         <v-slide-item>
@@ -81,6 +82,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
 
+import CharPicker from "@/views/lib/CharPicker.vue";
 
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 
@@ -94,6 +96,7 @@ import { LemmaArticleVersion } from "@/api";
   components: {
     SelectMenu,
     TipTapEditorContent,
+    CharPicker,
   },
 })
 export default class Editor extends Vue {
@@ -151,6 +154,10 @@ export default class Editor extends Vue {
 
   insertComment(): void {
     this.tipTapEditor.chain().focus().toggleComment().run();
+  }
+
+  insertSpecialChar(char: string): void {
+    this.tipTapEditor.commands.insertContentAt(this.tipTapEditor.view.state.selection, char);
   }
 
   get undoPossible(): boolean {
