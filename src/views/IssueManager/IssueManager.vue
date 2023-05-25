@@ -243,6 +243,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { WithId } from '../../types'
+import { DateContainer } from '../../util/dates'
 import { LemmaStatus, IssueLemma, LemmaLabel } from '../../api/index'
 import _ from 'lodash'
 import ThemeToggle from '../ThemeToggle.vue'
@@ -428,15 +429,13 @@ export default class IssueManager extends Vue {
       .value()
   }
 
-  get lemmaText(): { text: string, description: string, issueLemmaId: string }[] {
-    // FIXME:
-    return []
-    // return this.issueLemmas
-    //   .map(l => ({
-    //     text: l.lemma + ', ' + l.lemma.firstName,
-    //     description: (l.lemma as any).description,
-    //     issueLemmaId: l.id
-    //   }))
+  get lemmaText(): { text: string, info: string | null | undefined, issueLemmaId: number }[] {
+    return this.issueLemmas
+      .map(l => ({
+        text: l.lemma.lastName + ', ' + l.lemma.firstName + ' ' +  (DateContainer.fromISO_OnlyDate(l.lemma.dateOfBirth)?.calendarYear || '') + '-' + (DateContainer.fromISO_OnlyDate(l.lemma.dateOfDeath)?.calendarYear ||''),
+        info: l.lemma.info,
+        issueLemmaId: l.id
+      }))
   }
 
   get autocompleteItems() {
@@ -471,7 +470,7 @@ export default class IssueManager extends Vue {
         text: e.text,
         id: e.issueLemmaId,
         value: 'lemma:' + e.issueLemmaId,
-        description: e.description
+        info: e.info
       }))
     ]
   }
