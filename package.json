@@ -22,7 +22,8 @@
 		"lint:check": "eslint . --cache --ext .js,.ts,.vue --ignore-path ./.gitignore",
 		"lint:fix": "npm run lint:check -- --fix",
 		"pick-services": "ts-node ./scripts/pick-services.ts",
-		"prepare": "npm run generate:api-client:prod",
+		"prepare": "run-s setup generate:api-client:prod",
+		"setup": "simple-git-hooks || exit 0",
 		"start": "env-cmd --silent -f .env.local node ./server/dist/server/index.js",
 		"test": "NODE_ENV=production vue-cli-service test:e2e --headless --env PORT=8080",
 		"test:dev": "NODE_ENV=development vue-cli-service test:e2e --mode=development --headless  --env PORT=8080",
@@ -30,7 +31,7 @@
 		"test:interactive:dev": "NODE_ENV=development vue-cli-service test:e2e --mode=development --env PORT=8080",
 		"test:unit": "vue-cli-service test:unit",
 		"types:check": "tsc --noEmit",
-		"validate": "run-p lint:check types:check test:unit test"
+		"validate": "run-p format:check lint:check types:check test:unit test"
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
@@ -103,6 +104,7 @@
 		"env-cmd": "^10.1.0",
 		"eslint": "^8.43.0",
 		"flush-promises": "^1.0.2",
+		"lint-staged": "^13.2.2",
 		"nodemon": "^2.0.7",
 		"npm-run-all2": "^6.0.5",
 		"openapi-typescript-codegen": "^0.9.3",
@@ -111,6 +113,7 @@
 		"sass": "^1.32.4",
 		"sass-loader": "^10.1.1",
 		"schema-dts": "^0.8.2",
+		"simple-git-hooks": "^2.8.1",
 		"skeleton-loader": "^2.0.0",
 		"stylus": "^0.54.7",
 		"stylus-loader": "^3.0.2",
@@ -161,7 +164,29 @@
 		},
 		"testURL": "http://localhost/:8080"
 	},
+	"lint-staged": {
+		"*.@(vue)": [
+			"eslint --cache --fix",
+			"stylelint --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.@(js|ts)": [
+			"eslint --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.@(css)": [
+			"stylelint --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.!(css|js|ts|vue)": "prettier --cache --ignore-unknown --write"
+	},
 	"prettier": "@acdh-oeaw/prettier-config",
+	"simple-git-hooks": {
+		"pre-commit": "pnpm exec lint-staged"
+	},
+	"stylelint": {
+		"extends": "@acdh-oeaw/stylelint-config"
+	},
 	"volta": {
 		"node": "16.20.1"
 	}
