@@ -46,7 +46,7 @@ app.post('/message/import-issue-lemmas', (req, res) => {
     io.sockets.emit('importIssueLemmas', req.body)
     res.end()
   } else {
-    res.status(402)
+    res.status(401)
     res.end('out.')
   }
 })
@@ -57,7 +57,7 @@ app.post('/message/import-lemmas', (req, res) => {
     io.sockets.emit('importLemmas', req.body)
     res.end()
   } else {
-    res.status(402)
+    res.status(401)
     res.end('out.')
   }
 })
