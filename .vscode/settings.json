@@ -1,23 +1,21 @@
 {
-  "cSpell.words": [
-    "Abgabe",
-    "Dexie",
-    "Errored",
-    "Lemmaresearch",
-    "Lobid",
-    "Queryable",
-    "codegen",
-    "falsches",
-    "irs",
-    "mixins",
-    "openapi",
-    "passwort",
-    "unpatched",
-    "upsert",
-    "upserted",
-    "viaf",
-    "vuetify",
-    "zotero"
-  ],
-  "vetur.experimental.templateInterpolationService": true
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.inlayHints.enabled": "offUnlessPressed",
+	"editor.linkedEditing": true,
+	"editor.rulers": [100],
+	"eslint.enable": true,
+	"eslint.validate": ["javascript", "typescript", "vue"],
+	"files.eol": "\n",
+	"html.autoCreateQuotes": false,
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.inlayHints.parameterNames.enabled": "all",
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"[markdown]": {
+		"editor.wordWrap": "on"
+	}
 }
