@@ -7,3 +7,7 @@ dist
 cypress.env.json
 /src/api/
 api-spec.json
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.auth/
