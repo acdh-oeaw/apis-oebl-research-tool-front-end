@@ -710,9 +710,9 @@ LemmaStore {
     return {
       id: rs.id,
       selected: rs.selected || false,
-      loc: _.get(rs, 'columns_scrape.wikidata.loc'),
-      viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf'),
-      wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count'),
+      loc: _.get(rs, 'columns_scrape.wikidata.loc') ?? null,
+      viaf_id: _.get(rs, 'columns_scrape.wikidata.viaf') ?? null,
+      wiki_edits: _.get(rs, 'columns_scrape.wikipedia.edits_count') ?? null,
       firstName: rs.firstName,
       lastName: rs.lastName,
       alternativeNames: rs.alternativeNames as FullName[],

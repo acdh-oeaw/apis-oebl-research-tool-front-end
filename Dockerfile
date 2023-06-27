@@ -1,19 +1,44 @@
-FROM node:12-alpine
+# syntax=docker/dockerfile:1
 
+FROM node:16-slim AS build
 
+# RUN corepack enable
 
+RUN mkdir /app && chown -R node:node /app
+WORKDIR /app
 
+USER node
 
+COPY --chown=node:node .npmrc package.json package-lock.json ./
+COPY --chown=node:node tsconfig.json vue.config.js ./
+COPY --chown=node:node public ./public
+COPY --chown=node:node scripts ./scripts
+COPY --chown=node:node server ./server
+COPY --chown=node:node src ./src
 
-# https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#node-gyp-alpine
-RUN apk add --no-cache python3 make g++ curl
+ARG VUE_APP_API_HOST
+ARG VUE_APP_WEBAPP_HOST
+ARG VUE_APP_EVENTBUS_HOST
 
-WORKDIR /app/
+RUN npm install --ci --no-audit --no-fund
 
-COPY . /app
-RUN npm install && npm install -g @vue/cli-service
+ENV NODE_ENV=production
+
+RUN npm run build
+
+# # serve
+# FROM node:16-slim AS serve
+
+# RUN mkdir /app && chown -R node:node /app
+# WORKDIR /appv
+
+# USER node
+
+# COPY --from=build --chown=node:node /app/dist ./dist
+# COPY --from=build --chown=node:node /app/server ./server
+
+# ENV NODE_ENV=production
 
 EXPOSE 3333
-EXPOSE 8080
 
-CMD ["sh", "start.sh"]
+CMD ["node", "./server/dist/server/index.js"]

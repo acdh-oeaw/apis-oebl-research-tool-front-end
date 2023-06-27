@@ -9,8 +9,7 @@ module.exports = {
   runtimeCompiler: true,
   configureWebpack: (config) => {
     if (
-      process.env.NODE_ENV !== 'production' &&
-      process.env.GITLAB_CI === undefined
+      process.env.NODE_ENV !== 'production'
     ) {
       config
         .plugins

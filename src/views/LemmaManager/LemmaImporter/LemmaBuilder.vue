@@ -154,7 +154,7 @@ export default class LemmaBuilder extends Vue {
     @Watch('options', {immediate: false, deep: true})
     updateLemmaPrototypes() {
         // if it is not possible to compute any lemma prototype -> go empty list => empty preview and computations in the next components.
-        if (!this.allRequiredFieldsSet && this.lemmaPrototypes !== []) {
+        if (!this.allRequiredFieldsSet && this.lemmaPrototypes.length > 0) {
             this.lemmaPrototypes = [];
         }
 

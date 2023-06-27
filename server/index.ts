@@ -21,7 +21,7 @@ if (
 const app = express()
 const port = process.env.NODE_PORT || process.env.PORT || 3333
 
-const serviceSecret = 's49DsDzfeJRJDwuHyWu4aY13dZnEk43C'
+const serviceSecret = process.env.SERVICE_SECRET
 
 const server = http.createServer(app)
 // @ts-ignore
@@ -159,4 +159,6 @@ io.on('connection', (socket: any) => {
   })
 })
 
-server.listen(port)
+server.listen(port, () => {
+  console.info('🚀 ', `Server listening on port ${port}.`)
+})
