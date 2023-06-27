@@ -11,7 +11,7 @@
           Lemma anlegen
         </v-col>
         <v-col class="text-right">
-          <v-btn @click="addLemma" class="rounded-lg px-4" color="primary" elevation="0">
+          <v-btn @click="addLemma" class="rounded-lg px-4" color="primary" elevation="0" data-testid="addlemma_btn">
             Lemma hinzufügen
           </v-btn>
         </v-col>

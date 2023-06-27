@@ -93,12 +93,14 @@
               :label="lemmaRowTranslations.firstName.de"
               :value="value.firstName"
               @input="debouncedUpdateData({ firstName: $event })"
+              data-testid="addlemma_firstname"
             ></text-field>
             <text-field
               :required="true"
               :label="lemmaRowTranslations.lastName.de"
               :value="value.lastName"
               @input="debouncedUpdateData({ lastName: $event })"
+              data-testid="addlemma_lastname"
             ></text-field>
             <full-name-array-field
               :fullNames="value.alternativeNames"

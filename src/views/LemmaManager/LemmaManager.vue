@@ -143,7 +143,7 @@
                 v-on="on"
                 v-bind="props"
                 tile
-                test-id="lemma-menu-btn"
+                data-testid="lemma_menu_btn"
                 class="rounded-lg"
                 icon>
                 <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
@@ -273,7 +273,7 @@
     <v-main class="fill-width fill-height transition-none">
       <virtual-table
         ref="vTable"
-        test-id="lemma-table"
+        data-testid="lemma_table"
         class="virtual-table text-body-3"
         :show-filter="store.settings.showLemmaFilter"
         :columns="columns"
