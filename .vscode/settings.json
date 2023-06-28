@@ -1,4 +1,5 @@
 {
+	"css.validate": false,
 	"editor.codeActionsOnSave": {
 		"source.fixAll": true
 	},
@@ -11,6 +12,11 @@
 	"eslint.validate": ["javascript", "typescript", "vue"],
 	"files.eol": "\n",
 	"html.autoCreateQuotes": false,
+	"less.validate": false,
+	"scss.validate": false,
+	"stylelint.enable": true,
+	"stylelint.snippet": ["css", "postcss", "stylus", "vue"],
+	"stylelint.validate": ["css", "postcss", "stylus", "vue"],
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.inlayHints.parameterNames.enabled": "all",
 	"typescript.preferences.importModuleSpecifier": "non-relative",

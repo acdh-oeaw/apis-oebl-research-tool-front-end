@@ -11,6 +11,11 @@ dist/
 .env.local
 .env.*.local
 
+# caches
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
 # cypress
 /tests/e2e/videos/
 /tests/e2e/screenshots/
