@@ -72,9 +72,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            VUE_APP_API_HOST
-            VUE_APP_WEBAPP_HOST
-            VUE_APP_EVENTBUS_HOST
+            VUE_APP_API_HOST=https://oebl-irs-backend.acdh-dev.oeaw.ac.at
+            VUE_APP_WEBAPP_HOST=https://oebl-research.acdh-dev.oeaw.ac.at
+            VUE_APP_EVENTBUS_HOST=https://oebl-research.acdh-dev.oeaw.ac.at
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
