@@ -88,6 +88,6 @@ jobs:
       APP_ROOT: "/"
       SERVICE_ID: "18549"
       PUBLIC_URL: "https://oebl-research.acdh-dev.oeaw.ac.at"
-      POSTGRES_ENABLED: "false"
+      POSTGRES_ENABLED: false
       environment: "${{ needs.env.outputs.environment }}"
       default_port: "3333"
