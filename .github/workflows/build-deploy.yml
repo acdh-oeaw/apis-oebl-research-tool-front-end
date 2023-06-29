@@ -56,13 +56,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ needs.env.outputs.registry }}/${{ needs.env.outputs.image }}
-          # tags: |
+          tags: |
+             type=raw,value={{sha}}
           #   type=ref,event=branch
           #   type=ref,event=pr
           #   type=semver,pattern={{version}}
           #   type=semver,pattern={{major}}.{{minor}}
           #   type=raw,value=latest
-          #   type=raw,value={{sha}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
