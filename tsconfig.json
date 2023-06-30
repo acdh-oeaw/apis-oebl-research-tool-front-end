@@ -22,9 +22,18 @@
 		"useDefineForClassFields": true,
 		"verbatimModuleSyntax": true
 	},
-	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./*.config.js"],
+	"include": [
+		"./src/**/*.ts",
+		"./src/**/*.tsx",
+		"./src/**/*.vue",
+		"./*.config.js",
+		"./scripts/**/*.ts"
+	],
 	"ts-node": {
-		"compilerOptions": { "module": "commonjs" }
+		"compilerOptions": {
+			"module": "commonjs",
+			"verbatimModuleSyntax": false
+		}
 	},
 	"vueCompilerOptions": {
 		"target": 2.7
