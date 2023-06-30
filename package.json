@@ -77,7 +77,7 @@
 	"devDependencies": {
 		"@acdh-oeaw/eslint-config": "^1.0.0",
 		"@acdh-oeaw/eslint-config-node": "^1.0.0",
-		"@acdh-oeaw/eslint-config-vue2": "^1.0.0",
+		"@acdh-oeaw/eslint-config-vue2": "^1.0.1",
 		"@acdh-oeaw/prettier-config": "^1.0.1",
 		"@acdh-oeaw/stylelint-config": "^1.0.3",
 		"@acdh-oeaw/tsconfig": "^1.0.1",
@@ -158,13 +158,16 @@
 	},
 	"prettier": "@acdh-oeaw/prettier-config",
 	"simple-git-hooks": {
-		"pre-commit": "pnpm exec lint-staged"
+		"pre-commit": "npx lint-staged"
 	},
 	"stylelint": {
 		"extends": [
 			"stylelint-stylus/standard",
 			"@acdh-oeaw/stylelint-config"
-		]
+		],
+		"rules": {
+			"selector-class-pattern": "off"
+		}
 	},
 	"volta": {
 		"node": "16.20.1"
