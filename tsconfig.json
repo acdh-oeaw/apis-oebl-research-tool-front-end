@@ -3,6 +3,7 @@
 		"target": "es5",
 		"module": "esnext",
 		"strict": true,
+		"allowJs": true,
 		"jsx": "preserve",
 		"importHelpers": true,
 		"downlevelIteration": true,
@@ -18,7 +19,7 @@
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue"],
+	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./*.config.js"],
 	"ts-node": {
 		"compilerOptions": { "module": "commonjs" }
 	},

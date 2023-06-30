@@ -137,6 +137,14 @@
 					"./server/**/*.ts"
 				],
 				"extends": "@acdh-oeaw/eslint-config-node"
+			},
+			{
+				"files": [
+					"./*.config.js"
+				],
+				"rules": {
+					"@typescript-eslint/no-var-requires": "off"
+				}
 			}
 		]
 	},
