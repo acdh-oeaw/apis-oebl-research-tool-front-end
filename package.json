@@ -174,7 +174,7 @@
 			"@acdh-oeaw/stylelint-config"
 		],
 		"rules": {
-			"selector-class-pattern": "off"
+			"selector-class-pattern": null
 		}
 	},
 	"volta": {
