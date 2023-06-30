@@ -1,38 +1,37 @@
 <template>
-  <switch-button
-    :items="[
-      {
-        icon: 'mdi-brightness-5',
-        value: true
-      },
-      {
-        icon: 'mdi-brightness-7',
-        value: false
-      }
-    ]"
-    :value="theme"
-    @input="updateTheme"
-  />
+	<switch-button
+		:items="[
+			{
+				icon: 'mdi-brightness-5',
+				value: true,
+			},
+			{
+				icon: 'mdi-brightness-7',
+				value: false,
+			},
+		]"
+		:value="theme"
+		@input="updateTheme"
+	/>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import store from '../store'
-import SwitchButton from './lib/SwitchButton.vue'
+import { Vue, Component } from "vue-property-decorator";
+import store from "../store";
+import SwitchButton from "./lib/SwitchButton.vue";
 
 @Component({
-  components: {
-    SwitchButton
-  }
+	components: {
+		SwitchButton,
+	},
 })
 export default class ThemeToggle extends Vue {
+	get theme() {
+		return store.settings.darkTheme;
+	}
 
-  get theme() {
-    return store.settings.darkTheme
-  }
-
-  updateTheme(dark: boolean) {
-    store.settings = { ...store.settings, darkTheme: dark }
-    this.$vuetify.theme.dark = store.settings.darkTheme
-  }
+	updateTheme(dark: boolean) {
+		store.settings = { ...store.settings, darkTheme: dark };
+		this.$vuetify.theme.dark = store.settings.darkTheme;
+	}
 }
 </script>

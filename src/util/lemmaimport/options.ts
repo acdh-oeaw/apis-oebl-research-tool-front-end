@@ -3,58 +3,60 @@ import { NewLemmaRow } from "@/types/lemma";
 import { SupportedDateFormatType } from "../dates";
 
 type FileOptions = {
-    fileType: 'text/csv';
-    useFirstRowAsHeaders: boolean,
+	fileType: "text/csv";
+	useFirstRowAsHeaders: boolean;
 };
 
 export type CsvOptions = FileOptions & {
-    newLine: string;
-    textDelimiter: string;
-    separator: string;
+	newLine: string;
+	textDelimiter: string;
+	separator: string;
 };
 
 export type XlsxOptions = FileOptions & {
-    sheetName: string | null;
+	sheetName: string | null;
 };
 
 export type SupportedFilesOptions = CsvOptions | XlsxOptions;
 
 export const defaultOptions: CsvOptions = {
-    fileType: 'text/csv',
-    useFirstRowAsHeaders: true,
-    newLine: '\n',
-    textDelimiter: '"',
-    separator: ',',
+	fileType: "text/csv",
+	useFirstRowAsHeaders: true,
+	newLine: "\n",
+	textDelimiter: '"',
+	separator: ",",
 };
 
 export type ExtractColumnOptions = {
-    // Use this key to extract data in rows
-    sourceKey: string | null,
-}
-
-export type ColumnConversion = {
-    extractOptions: ExtractColumnOptions,
-}
-
-export type ColumnConversions = {
-    [
-        key in keyof Omit<
-        NewLemmaRow, 
-        'list'              // Manual selection over the whole import 
-        | 'columns_user'    // Have their own options
-        | 'legacyGideonCitations'  // not imported
-         // Not (yet) implemented
-        | 'professionGroup' | 'alternativeNames'
-        | 'secondaryLiterature' | 'zoteroKeysBy' | 'zoteroKeysAbout'
-        >
-    ]:  ColumnConversion
+	// Use this key to extract data in rows
+	sourceKey: string | null;
 };
 
+export type ColumnConversion = {
+	extractOptions: ExtractColumnOptions;
+};
 
-export const getEmptyColumnConversion = (): ColumnConversion => {return {extractOptions: {sourceKey: null}};}
+export type ColumnConversions = {
+	[key in keyof Omit<
+		NewLemmaRow,
+		| "list" // Manual selection over the whole import
+		| "columns_user" // Have their own options
+		| "legacyGideonCitations" // not imported
+		// Not (yet) implemented
+		| "professionGroup"
+		| "alternativeNames"
+		| "secondaryLiterature"
+		| "zoteroKeysBy"
+		| "zoteroKeysAbout"
+	>]: ColumnConversion;
+};
+
+export const getEmptyColumnConversion = (): ColumnConversion => {
+	return { extractOptions: { sourceKey: null } };
+};
 
 export const defaultLemmaBuilderOptions: ColumnConversions = {
-    firstName: getEmptyColumnConversion(),
+	firstName: getEmptyColumnConversion(),
 	lastName: getEmptyColumnConversion(),
 	dateOfBirth: getEmptyColumnConversion(),
 	dateOfDeath: getEmptyColumnConversion(),
@@ -66,61 +68,58 @@ export const defaultLemmaBuilderOptions: ColumnConversions = {
 	bioNote: getEmptyColumnConversion(),
 	kinship: getEmptyColumnConversion(),
 	religion: getEmptyColumnConversion(),
-    notes: getEmptyColumnConversion(),
+	notes: getEmptyColumnConversion(),
 };
 
 export type GenderMappingOption = Record<
-    GenderAe0Enum, // Gender for the database
-    /**
-     * Gender representations in lemma import
-     * 
-     * This could be multiple strings, since the source could have more granular ore ambigous gender definitions.
-     */
-    string[]  
+	GenderAe0Enum, // Gender for the database
+	/**
+	 * Gender representations in lemma import
+	 *
+	 * This could be multiple strings, since the source could have more granular ore ambigous gender definitions.
+	 */
+	string[]
 >;
 
 export type LemmaFormatterOptions = {
-    // Values, that should be converted into null
-    nullValues: string[];
-    dateFormat: SupportedDateFormatType;
-    genderMapping: GenderMappingOption;
+	// Values, that should be converted into null
+	nullValues: string[];
+	dateFormat: SupportedDateFormatType;
+	genderMapping: GenderMappingOption;
 };
 
 export const defautLemmaFormatterOptions: LemmaFormatterOptions = {
-    // Inspired but reduced version of na_values in https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html?highlight=read_excel#pandas.read_excel
-    nullValues:  [
-        '', '#N/A', '#NA', '<NA>', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', 'nan', 'null'
-    ],
-    dateFormat: 'YYYY-MM-DD',
-    genderMapping: {
-        divers: ['divers', ],
-        männlich: ['männlich',],
-        weiblich: ['weiblich',],
-    },
-}
+	// Inspired but reduced version of na_values in https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html?highlight=read_excel#pandas.read_excel
+	nullValues: ["", "#N/A", "#NA", "<NA>", "N/A", "NA", "NULL", "NaN", "n/a", "nan", "null"],
+	dateFormat: "YYYY-MM-DD",
+	genderMapping: {
+		divers: ["divers"],
+		männlich: ["männlich"],
+		weiblich: ["weiblich"],
+	},
+};
 
 /**
  * Map to NewLemmaRow.columns_user: UserColumn
  */
 export type UserColumnMapping = {
-    [targetColumn: string]: string; // targetColumn: sourceColumn (lemma.user_columns.targetColumn)
+	[targetColumn: string]: string; // targetColumn: sourceColumn (lemma.user_columns.targetColumn)
 };
 
-export type SelectedList = NewLemmaRow['list'];
+export type SelectedList = NewLemmaRow["list"];
 
 export class ImportOptions {
-    
-    fileOptions: SupportedFilesOptions = defaultOptions;
+	fileOptions: SupportedFilesOptions = defaultOptions;
 
-    lemmaBuilderOptions: ColumnConversions = defaultLemmaBuilderOptions;
-    
-    lemmaFormatterOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
+	lemmaBuilderOptions: ColumnConversions = defaultLemmaBuilderOptions;
 
-    userColumnMapping: UserColumnMapping = {};    
+	lemmaFormatterOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
 
-    selectedList: SelectedList = undefined;
+	userColumnMapping: UserColumnMapping = {};
 
-    allIsFilledIn(): boolean {
-        return this.lemmaBuilderOptions.lastName?.extractOptions.sourceKey !== null;
-    }
+	selectedList: SelectedList = undefined;
+
+	allIsFilledIn(): boolean {
+		return this.lemmaBuilderOptions.lastName?.extractOptions.sourceKey !== null;
+	}
 }

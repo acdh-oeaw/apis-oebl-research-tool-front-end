@@ -1,26 +1,24 @@
 <template>
-  <div
-    class="badge"
-    :class="[ color, $vuetify.theme.dark ? 'theme--dark' : '' ]">
-    {{ readable }}
-  </div>
+	<div class="badge" :class="[color, $vuetify.theme.dark ? 'theme--dark' : '']">
+		{{ readable }}
+	</div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import HRNumbers from 'human-readable-numbers'
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import HRNumbers from "human-readable-numbers";
 
 @Component
 export default class Badge extends Vue {
-  @Prop({ default: '' }) content!: string|number
-  @Prop({ default: '' }) color!: string
+	@Prop({ default: "" }) content!: string | number;
+	@Prop({ default: "" }) color!: string;
 
-  get readable() {
-    if (typeof this.content === 'number' && this.content >= 1000) {
-      return HRNumbers.toHumanString(this.content)
-    } else {
-      return this.content
-    }
-  }
+	get readable() {
+		if (typeof this.content === "number" && this.content >= 1000) {
+			return HRNumbers.toHumanString(this.content);
+		} else {
+			return this.content;
+		}
+	}
 }
 </script>
 <style lang="stylus" scoped>
