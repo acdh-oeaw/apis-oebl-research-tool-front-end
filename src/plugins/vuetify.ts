@@ -1,19 +1,23 @@
-import Vue from "vue";
-import Vuetify from "vuetify";
+import "@mdi/font/css/materialdesignicons.min.css";
 import "vuetify/dist/vuetify.min.css";
-import de from "vuetify/src/locale/de";
-import store from "../store";
+
+import Vue from "vue";
+import Vuetify from "vuetify/lib/framework";
 import colors from "vuetify/lib/util/colors";
+import de from "vuetify/src/locale/de";
+
+import store from "../store";
+
 Vue.use(Vuetify);
 
-// override (disable) ripple effect.
+/** Disable ripple effect. */
 Vue.mixin({
 	directives: {
 		ripple: {},
 	},
 });
 
-export default new Vuetify({
+const plugin = new Vuetify({
 	theme: {
 		dark: store.settings.darkTheme,
 		options: {
@@ -78,3 +82,5 @@ export default new Vuetify({
 		current: "de",
 	},
 });
+
+export default plugin;

@@ -83,9 +83,6 @@ export default class App extends Vue {
 	}
 }
 </script>
-<style lang="stylus">
-@import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
-</style>
 
 // GLOBAL STYLES
 <style lang="stylus">
