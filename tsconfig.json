@@ -29,13 +29,31 @@
 		"./*.config.js",
 		"./scripts/**/*.ts"
 	],
+	"exclude": ["dist", "node_modules"],
 	"ts-node": {
 		"compilerOptions": {
 			"module": "commonjs",
 			"verbatimModuleSyntax": false
-		}
+		},
+		"transpileOnly": true
 	},
 	"vueCompilerOptions": {
-		"target": 2.7
+		"target": 2.7,
+		"experimentalModelPropName": {
+			"input-value": {
+				"v-checkbox": true,
+				"v-switch": true,
+				"v-chip": true,
+				"v-btn": true,
+				"v-list-item": true,
+				"v-bottom-navigation": true
+			},
+			"": { "input": true },
+			"value": {
+				"input": { "type": "text" },
+				"textarea": true,
+				"select": true
+			}
+		}
 	}
 }
