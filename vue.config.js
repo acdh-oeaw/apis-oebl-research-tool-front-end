@@ -10,7 +10,7 @@ const config = defineConfig({
 		/** Disable typechecking via webpack plugin. */
 		config.plugins = config.plugins.filter((p) => !(p instanceof ForkTsCheckerWebpackPlugin));
 
-		if (process.env.NODE_ENV !== "production") {
+		if (process.env.BUNDLE_ANALYZER === "enabled") {
 			config.plugins.push(new BundleAnalyzerPlugin({ defaultSizes: "gzip" }));
 		}
 	},
