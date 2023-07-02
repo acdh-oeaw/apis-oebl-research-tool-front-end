@@ -107,7 +107,7 @@ body .v-application .text-body-2
 
 body
 .v-application
-  font-family --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  font-family Roboto Flex, ui-sans-serif, system-ui, sans-serif
 
 .rotate-180
   transform rotate(180deg)

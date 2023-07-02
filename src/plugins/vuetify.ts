@@ -1,4 +1,5 @@
-import "@mdi/font/css/materialdesignicons.min.css";
+import "@fontsource-variable/roboto-flex/standard.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
@@ -17,6 +18,13 @@ Vue.mixin({
 });
 
 const plugin = new Vuetify({
+	icons: {
+		iconfont: "mdi",
+	},
+	lang: {
+		locales: { de },
+		current: "de",
+	},
 	theme: {
 		dark: store.settings.darkTheme,
 		options: {
@@ -66,10 +74,6 @@ const plugin = new Vuetify({
 				},
 			},
 		},
-	},
-	lang: {
-		locales: { de },
-		current: "de",
 	},
 });
 
