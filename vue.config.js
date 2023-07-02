@@ -1,6 +1,7 @@
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const { defineConfig } = require("@vue/cli-service");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
-const config = {
+const config = defineConfig({
 	lintOnSave: false,
 	transpileDependencies: ["vuetify", "get-stream"],
 	runtimeCompiler: true,
@@ -34,16 +35,9 @@ const config = {
 	},
 	parallel: true,
 	devServer: {
-		open: "Google Chrome",
-		// https: true,
-		// writeToDisk: true,
-		disableHostCheck: true,
-		host: "localhost",
-		port: "8080",
-		watchOptions: {
-			poll: false,
-		},
+		compress: true,
+		port: 8080,
 	},
-};
+});
 
 module.exports = config;
