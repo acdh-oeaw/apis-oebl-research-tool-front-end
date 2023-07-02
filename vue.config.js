@@ -11,11 +11,7 @@ const config = defineConfig({
 		config.plugins = config.plugins.filter((p) => !(p instanceof ForkTsCheckerWebpackPlugin));
 
 		if (process.env.NODE_ENV !== "production") {
-			config.plugins.push(
-				new BundleAnalyzerPlugin({
-					defaultSizes: "gzip",
-				}),
-			);
+			config.plugins.push(new BundleAnalyzerPlugin({ defaultSizes: "gzip" }));
 		}
 
 		config.module.rules.unshift({
@@ -28,12 +24,6 @@ const config = defineConfig({
 					},
 				},
 			],
-		});
-
-		config.module.rules.unshift({
-			test: require("path").resolve(__dirname, "node_modules/leader-line/"),
-			loader: "skeleton-loader",
-			options: { procedure: (content) => `${content} export default LeaderLine` },
 		});
 	},
 	devServer: {
