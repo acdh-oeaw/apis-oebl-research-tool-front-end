@@ -13,18 +13,6 @@ const config = defineConfig({
 		if (process.env.NODE_ENV !== "production") {
 			config.plugins.push(new BundleAnalyzerPlugin({ defaultSizes: "gzip" }));
 		}
-
-		config.module.rules.unshift({
-			test: /\.worker\.ts$/,
-			use: [
-				{
-					loader: "worker-loader",
-					options: {
-						inline: "no-fallback",
-					},
-				},
-			],
-		});
 	},
 	devServer: {
 		compress: true,
