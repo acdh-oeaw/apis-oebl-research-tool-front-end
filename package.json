@@ -127,19 +127,6 @@
 			"not op_mini all"
 		]
 	},
-	"jest": {
-		"moduleFileExtensions": [
-			"js",
-			"ts",
-			"json",
-			"vue"
-		],
-		"transform": {
-			".*\\.(vue)$": "vue-jest",
-			"^.+\\.tsx?$": "ts-jest"
-		},
-		"testURL": "http://localhost/:8080"
-	},
 	"prettier": "@acdh-oeaw/prettier-config",
 	"volta": {
 		"node": "16.20.1"
