@@ -13,12 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "mocha",
-      "chai",
-      "node"
-    ],
     "paths": {
       "@/*": [
         "src/*"
@@ -38,8 +32,7 @@
   ],
   "exclude": [
     "node_modules",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "dist"
   ],
   "ts-node": {
     "compilerOptions": {"module":"commonjs"}
