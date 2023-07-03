@@ -1,5 +1,5 @@
 import realFetch from "node-fetch";
-import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField } from "../src/types/zotero";
+import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField } from "../src/types/zotero.js";
 
 const fetchCache: { [url: string]: any } = {};
 

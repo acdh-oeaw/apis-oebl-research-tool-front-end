@@ -1,11 +1,13 @@
-import * as express from "express";
-import * as compression from "compression";
-import * as fs from "fs";
-import * as http from "http";
-import * as socketIo from "socket.io";
+/* eslint-disable import/no-named-as-default-member */
+
+import express from "express";
+import compression from "compression";
+import fs from "fs";
+import http from "http";
+import socketIo from "socket.io";
 import fetch, { Headers } from "node-fetch";
-import * as cors from "cors";
-import zotero from "./zotero";
+import cors from "cors";
+import zotero from "./zotero.js";
 
 if (process.env.ZOTERO_API_KEY === undefined || process.env.ZOTERO_USER === undefined) {
 	const environment = JSON.stringify({
