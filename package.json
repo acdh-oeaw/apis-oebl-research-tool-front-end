@@ -75,6 +75,7 @@
 	},
 	"devDependencies": {
 		"@acdh-oeaw/prettier-config": "^1.0.1",
+		"@playwright/test": "^1.35.1",
 		"@types/chai": "^4.2.11",
 		"@types/compression": "^1.7.0",
 		"@types/express": "^4.17.17",
