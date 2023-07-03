@@ -9,11 +9,6 @@ dist/
 .env.local
 .env.*.local
 
-# cypress
-/tests/e2e/videos/
-/tests/e2e/screenshots/
-cypress.env.json
-
 # generated api client
 /api-spec.json
 /src/api/

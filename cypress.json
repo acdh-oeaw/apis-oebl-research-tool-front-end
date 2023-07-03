@@ -1,6 +1,0 @@
-{
-  "pluginsFile": "tests/e2e/plugins/index.js",
-  "viewportHeight": 800,
-  "viewportWidth": 1280,
-    "chromeWebSecurity": false
-}
