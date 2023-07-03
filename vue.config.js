@@ -11,10 +11,10 @@ const config = defineConfig({
 			config.plugins.push(new BundleAnalyzerPlugin({ defaultSizes: "gzip" }));
 		}
 
-		/** Don't add browser polyfills for node dependencies needed by `neat-csv`. */
+		/** Add browser polyfills for node dependencies needed by `neat-csv`. */
 		config.resolve.fallback = {
-			buffer: false,
-			stream: false,
+			buffer: require.resolve("buffer"),
+			stream: require.resolve("stream-browserify"),
 		};
 	},
 	devServer: {

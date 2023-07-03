@@ -7,7 +7,7 @@ import http from "http";
 import socketIo from "socket.io";
 import fetch, { Headers } from "node-fetch";
 import cors from "cors";
-import zotero from "./zotero.js";
+import zotero from "./zotero";
 
 if (process.env.ZOTERO_API_KEY === undefined || process.env.ZOTERO_USER === undefined) {
 	const environment = JSON.stringify({
