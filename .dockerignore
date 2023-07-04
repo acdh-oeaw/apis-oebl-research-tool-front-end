@@ -16,17 +16,18 @@ dist/
 .stylelintcache
 *.tsbuildinfo
 
-# cypress
-/tests/e2e/videos/
-/tests/e2e/screenshots/
-cypress.env.json
-
 # generated api client
 /api-spec.json
 /src/api/
 
 # misc
 .DS_Store
+
+# e2e tests
+.auth
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 
 ## .dockerignore ##
