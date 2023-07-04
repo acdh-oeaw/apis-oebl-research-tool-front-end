@@ -16,7 +16,6 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
 
 			const id = test.info().parallelIndex;
 			const fileName = path.resolve(test.info().project.outputDir, `.auth/${id}.json`);
-			console.log(fileName);
 			if (fs.existsSync(fileName)) {
 				// Reuse existing authentication state if any.
 				await use(fileName);
@@ -24,13 +23,15 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
 			}
 
 			// Important: make sure we authenticate in a clean environment by unsetting storage state.
-			const page = await browser.newPage({ storageState: undefined });
+			const page = await browser.newPage({
+				storageState: undefined,
+				baseURL: test.info().project.use.baseURL,
+			});
 
 			const user = authUsers[id];
-			console.log(user);
 			// Perform authentication steps. Replace these actions with your own.
 
-			await page.goto("http://localhost:8080/lemmas");
+			await page.goto("/lemmas");
 			await page.getByPlaceholder("User Name").click();
 			await page.getByPlaceholder("User Name").fill(user.username);
 			await page.getByPlaceholder("User Name").press("Tab");
