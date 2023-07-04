@@ -30,7 +30,7 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
 			console.log(user);
 			// Perform authentication steps. Replace these actions with your own.
 
-			await page.goto("http://localhost:8080/lemmas");
+			await page.goto("/lemmas");
 			await page.getByPlaceholder("User Name").click();
 			await page.getByPlaceholder("User Name").fill(user.username);
 			await page.getByPlaceholder("User Name").press("Tab");
