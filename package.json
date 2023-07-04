@@ -102,6 +102,7 @@
 		"npm-run-all2": "^6.0.5",
 		"openapi-typescript-codegen": "^0.9.3",
 		"prettier": "^2.8.8",
+		"process": "^0.11.10",
 		"sass": "~1.32.13",
 		"sass-loader": "^10.4.1",
 		"schema-dts": "^0.8.2",

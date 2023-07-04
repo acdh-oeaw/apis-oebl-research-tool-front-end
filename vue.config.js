@@ -1,6 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const config = defineConfig({
 	configureWebpack: (config) => {
@@ -16,6 +17,8 @@ const config = defineConfig({
 			buffer: require.resolve("buffer"),
 			stream: require.resolve("stream-browserify"),
 		};
+		config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));
+		config.plugins.push(new ProvidePlugin({ process: "process/browser" }));
 	},
 	devServer: {
 		compress: true,
