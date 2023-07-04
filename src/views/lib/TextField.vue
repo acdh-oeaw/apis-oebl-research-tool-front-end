@@ -58,7 +58,7 @@ export default class TextField extends Vue {
 
 	msg: string | null = null;
 
-	localValue = this.value;
+	localValue = this.value || '';
 
 	@Watch("value")
 	onChangeValue() {

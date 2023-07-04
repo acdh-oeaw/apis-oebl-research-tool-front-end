@@ -46,7 +46,7 @@ export default class ResizableDrawer extends Vue {
 	@Prop({ default: true }) floating!: boolean;
 	@Prop() color!: string;
 
-	localWidth = this.width;
+	localWidth = this.width || 300;
 	transitionValues: { [selector: string]: string } = {};
 	maxWidth = 750;
 	isDragging = false;
