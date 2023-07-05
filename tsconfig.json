@@ -7,7 +7,6 @@
 		"experimentalDecorators": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"lib": ["dom", "dom.iterable", "esnext", "scripthost"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": true,

@@ -166,6 +166,21 @@
 			},
 			{
 				"files": [
+					"./e2e/**/*.ts"
+				],
+				"parserOptions": {
+					"project": "./e2e/tsconfig.json"
+				},
+				"settings": {
+					"import/resolver": {
+						"typescript": {
+							"project": "./e2e/tsconfig.json"
+						}
+					}
+				}
+			},
+			{
+				"files": [
 					"./*.config.js"
 				],
 				"rules": {
