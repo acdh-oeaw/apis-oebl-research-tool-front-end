@@ -4,17 +4,17 @@
 			<v-row no-gutters>
 				<v-col>
 					<v-btn
-						@click="$emit('cancel')"
 						class="rounded-lg px-4"
 						color="background darken-1"
 						elevation="0"
+						@click="$emit('cancel')"
 					>
 						Abbrechen
 					</v-btn>
 				</v-col>
 				<v-col class="text-center">Lemma anlegen</v-col>
 				<v-col class="text-right">
-					<v-btn @click="addLemma" class="rounded-lg px-4" color="primary" elevation="0">
+					<v-btn class="rounded-lg px-4" color="primary" elevation="0" @click="addLemma">
 						Lemma hinzufügen
 					</v-btn>
 				</v-col>
@@ -23,11 +23,11 @@
 		<v-divider :style="{ opacity: showDivider ? 1 : 0, transition: '.5s opacity' }" />
 		<v-card-text class="pa-0 flex-grow-1 overflow-y-hidden fill-height">
 			<v-row no-gutters class="fill-height">
-				<v-col @scroll.passive="onScroll" class="pa-5 fill-height overflow-y-auto">
+				<v-col class="pa-5 fill-height overflow-y-auto" @scroll.passive="onScroll">
 					<lemma-detail
-						@update="person = { ...person, ...$event }"
 						:show-header="false"
 						:value="person"
+						@update="person = { ...person, ...$event }"
 					/>
 				</v-col>
 				<v-col
@@ -47,18 +47,18 @@
 									<v-btn text rounded small class="rounded-lg mr-2">
 										ÖBL/IRS
 										<v-badge
+											v-if="filteredList.length > 0"
 											offset-x="-3"
 											color="secondary"
-											v-if="filteredList.length > 0"
 											:content="filteredList.length.toString()"
 										/>
 									</v-btn>
 									<v-btn text rounded small class="rounded-lg">
 										GND-Suche
 										<v-badge
+											v-if="possibleGnds.length > 0"
 											offset-x="-3"
 											color="secondary"
-											v-if="possibleGnds.length > 0"
 											:content="possibleGnds.length.toString()"
 										/>
 									</v-btn>
@@ -77,9 +77,9 @@
 										</v-overlay>
 										<v-list dense class="overflow-y-auto fill-height" color="transparent">
 											<v-list-item
-												class="rounded-lg"
 												v-for="lemma in filteredList"
 												:key="lemma.id"
+												class="rounded-lg"
 												dense
 												@click="viewLemmaDetail = lemma"
 											>
@@ -87,7 +87,7 @@
 													<span v-if="lemma.selected === true" style="color: var(--v-primary-base)">
 														★
 													</span>
-													<span v-else style="opacity: 0.5">☆</span>
+													<span v-else style="opacity: 50%">☆</span>
 												</v-list-item-avatar>
 												<v-list-item-content>
 													<v-list-item-title>
@@ -104,15 +104,15 @@
 										<lobid-preview-card
 											class="fill-height overflow-y-auto"
 											:value="person.gnd"
-											@input="person.gnd = $event"
 											:gnd="possibleGnds"
+											@input="person.gnd = $event"
 										/>
 										<v-overlay
+											v-if="possibleGnds.length === 0"
 											light
 											style="color: #333"
 											color="background darken-1"
 											class="muted"
-											v-if="possibleGnds.length === 0"
 											absolute
 										>
 											Keine GNDs bei Lobid gefunden
@@ -123,13 +123,13 @@
 						</v-window-item>
 						<v-window-item class="fill-height" :value="1">
 							<div class="d-flex flex-column fill-height">
-								<v-btn color="primary" @click="viewLemmaDetail = null" text>
+								<v-btn color="primary" text @click="viewLemmaDetail = null">
 									<v-icon left>mdi-chevron-left</v-icon>
 									Ergebnisse
 								</v-btn>
 								<lemma-detail
-									class="flex-grow-1 fill-height background mt-2"
 									v-if="viewLemmaDetail !== null"
+									class="flex-grow-1 fill-height background mt-2"
 									:value="viewLemmaDetail"
 								/>
 							</div>
@@ -140,16 +140,19 @@
 		</v-card-text>
 	</v-card>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { findPerson } from "@/service/lobid";
-import { LemmaRow } from "@/types/lemma";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
-import LemmaDetail from "./LemmaDetail.vue";
-import TextField from "../lib/TextField.vue";
-import store from "@/store";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { findPerson } from "@/service/lobid";
+import store from "@/store";
+import { type LemmaRow } from "@/types/lemma";
 import { DateContainer } from "@/util/dates";
+
+import TextField from "../lib/TextField.vue";
+import LemmaDetail from "./LemmaDetail.vue";
+import LobidPreviewCard from "./LobidPreviewCard.vue";
 
 @Component({
 	components: {
@@ -165,7 +168,7 @@ export default class LemmaAdd extends Vue {
 	window = 0;
 	showDivider = false;
 	store = store;
-	possibleGnds: string[] = [];
+	possibleGnds: Array<string> = [];
 	viewLemmaDetail: LemmaRow | null = null;
 
 	/* eslint-disable @typescript-eslint/camelcase */
@@ -264,4 +267,5 @@ export default class LemmaAdd extends Vue {
 	}
 }
 </script>
+
 <style lang="scss" scoped></style>

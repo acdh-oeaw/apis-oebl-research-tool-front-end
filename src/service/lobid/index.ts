@@ -1,10 +1,11 @@
-import { Person as LdPerson } from "schema-dts";
-import { ImportablePerson } from "../../types/lemma";
 import _ from "lodash";
+import { type Person as LdPerson } from "schema-dts";
+
+import { type ImportablePerson } from "../../types/lemma";
 
 const previewCache: { [gnd: string]: string | null } = {};
 
-export async function getPreviews(gnds: (string | null)[]): Promise<(string | null)[]> {
+export async function getPreviews(gnds: Array<string | null>): Promise<Array<string | null>> {
 	return Promise.all(
 		gnds.map(async (gnd) => {
 			if (gnd !== null && previewCache[gnd] !== undefined) {
@@ -42,7 +43,7 @@ function makeLobidQueryString(p: ImportablePerson): string {
 		(m, e, k) => {
 			return m.concat(isQueryableValue(e) ? k + ":" + e : []);
 		},
-		[] as string[],
+		[] as Array<string>,
 	).join(" AND ");
 }
 
@@ -74,9 +75,9 @@ export async function get(gnd: string) {
 	};
 }
 
-export async function findPerson(p: ImportablePerson, secondTry = false): Promise<LdPerson[]> {
+export async function findPerson(p: ImportablePerson, secondTry = false): Promise<Array<LdPerson>> {
 	// const u = http://lobid.org/gnd/search?q=preferredName%3AFranz*%20AND%20dateOfDeath:1910*&filter=type%3APerson&format=json:preferredName,dateOfDeath,dateOfBirth,%20placeOfDeath,placeOfBirth&size=100
-	let res: LdPerson[] = [];
+	let res: Array<LdPerson> = [];
 	const qp = new URLSearchParams({
 		q: makeLobidQueryString(p).replaceAll(/\(|\)/g, ""),
 		filter: "type:Person",

@@ -1,8 +1,9 @@
-import { WorkflowService, Author, Lemma, LemmaLabel } from "@/api";
 import _ from "lodash";
 
+import { Author, Lemma, type LemmaLabel,WorkflowService } from "@/api";
+
 export default class LabelStore {
-	private _labels: LemmaLabel[] = [];
+	private _labels: Array<LemmaLabel> = [];
 
 	constructor() {
 		this.initLabels();

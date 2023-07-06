@@ -2,7 +2,7 @@
 	<v-card class="rounded-lg soft-shadow" style="position: absolute; left: -1000px">
 		<badge
 			color="primary darken-2 white--text"
-			style="position: absolute; right: -6px; top: -6px"
+			style="position: absolute; top: -6px; right: -6px"
 			:content="rows.length"
 		/>
 		<v-list class="text-body-2" dense>
@@ -10,20 +10,23 @@
 				<v-list-item-content>{{ s.lastName }}, {{ s.firstName }}</v-list-item-content>
 			</v-list-item>
 			<v-list-item
-				class="font-weight-bold"
-				style="opacity: 0.7"
 				v-if="limitedRows.length < rows.length"
+				class="font-weight-bold"
+				style="opacity: 70%"
 			>
 				<v-list-item-content>+ {{ rows.length - maxItems }} weitere…</v-list-item-content>
 			</v-list-item>
 		</v-list>
 	</v-card>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type LemmaRow } from "@/types/lemma";
+
 import Badge from "../lib/Badge.vue";
-import { LemmaRow } from "@/types/lemma";
 
 @Component({
 	components: {
@@ -31,7 +34,7 @@ import { LemmaRow } from "@/types/lemma";
 	},
 })
 export default class DragImage extends Vue {
-	@Prop({ default: [] }) rows!: LemmaRow[];
+	@Prop({ default: [] }) rows!: Array<LemmaRow>;
 	@Prop({ default: 5 }) maxItems!: number;
 
 	get limitedRows() {
@@ -39,4 +42,5 @@ export default class DragImage extends Vue {
 	}
 }
 </script>
+
 <style lang="scss" scoped></style>

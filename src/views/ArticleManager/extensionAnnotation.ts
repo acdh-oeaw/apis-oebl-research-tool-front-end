@@ -1,4 +1,4 @@
-import { Command, mergeAttributes } from "@tiptap/core";
+import { type Command, mergeAttributes } from "@tiptap/core";
 import { v4 as uuid } from "uuid";
 
 import AnnotationComponent from "./Annotation.vue";
@@ -15,7 +15,7 @@ export interface AnnotationAttributes {
 	relationTypeId: string | null;
 	relationStartTime: string | null;
 	relationEndTime: string | null;
-	isConfirmed: "true" | "false";
+	isConfirmed: "false" | "true";
 }
 
 declare module "@tiptap/core" {

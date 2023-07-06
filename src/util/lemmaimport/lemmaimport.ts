@@ -1,7 +1,7 @@
-import { LemmasCreateRequest, ResearchService } from "@/api";
-import { NewLemmaRow } from "@/types/lemma";
+import { type LemmasCreateRequest, ResearchService } from "@/api";
+import { type NewLemmaRow } from "@/types/lemma";
 
-export async function importLemmas(lemmas: NewLemmaRow[]): Promise<void> {
+export async function importLemmas(lemmas: Array<NewLemmaRow>): Promise<void> {
 	const lists = new Set(lemmas.map((lemma) => lemma.list?.id));
 	if (lists.size !== 1) {
 		throw new Error("Can only import lemmas belonging to one list at a time");
@@ -19,7 +19,7 @@ export async function importLemmas(lemmas: NewLemmaRow[]): Promise<void> {
 		throw new Error("can not import with a list, without an ID");
 	}
 
-	const requestReadyLemmas: LemmasCreateRequest[] = lemmas.map((lemma) =>
+	const requestReadyLemmas: Array<LemmasCreateRequest> = lemmas.map((lemma) =>
 		Object.assign(lemma, {
 			selected: false, // Now this makes sense, doesn't it?
 			dateOfBirth: lemma.dateOfBirth.generateISO_OnlyDate(),

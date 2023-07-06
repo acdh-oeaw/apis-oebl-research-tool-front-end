@@ -12,11 +12,11 @@
 		<v-card-text>
 			<v-form test-id="login-form" @submit.prevent="login">
 				<v-text-field
+					v-model="user"
 					test-id="user-field"
 					class="input-no-stroke"
 					hide-details
 					dark
-					v-model="user"
 					flat
 					:autocomplete="false"
 					autofocus
@@ -24,20 +24,20 @@
 				/>
 				<v-divider />
 				<v-text-field
+					ref="passwordField"
+					v-model="password"
 					:append-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
 					:type="showPassword ? 'text' : 'password'"
 					test-id="password-field"
-					ref="passwordField"
 					class="input-no-stroke mt-1 pt-0"
 					hide-details
 					:autocomplete="false"
 					name="password"
-					@click:append="showPassword = !showPassword"
 					dark
-					v-model="password"
 					style="box-shadow: inset 0 0 20px 20px #252525"
 					flat
 					placeholder="Password"
+					@click:append="showPassword = !showPassword"
 				/>
 				<v-btn type="submit" class="rounded-lg mt-3" block elevation="0">Login</v-btn>
 				<v-alert
@@ -53,10 +53,13 @@
 		</v-card-text>
 	</v-card>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import store from "../store";
 import LoadingSpinner from "./lib/LoadingSpinner.vue";
+
 @Component({
 	components: { LoadingSpinner },
 })
@@ -86,17 +89,19 @@ export default class LoginForm extends Vue {
 	}
 }
 </script>
-<style lang="stylus">
-@-webkit-keyframes autofill {
-  0%,100% {
-    color: #666;
-    background: transparent;
-  }
-}
 
-input:-webkit-autofill {
-  -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
-  -webkit-animation-name: autofill;
-  -webkit-animation-fill-mode: both;
-}
+<style lang="stylus">
+@keyframes autofill
+  0%
+  100%
+    background transparent
+    color #666
+
+
+
+input:-webkit-autofill
+  animation-name autofill
+  animation-delay 1s // Safari support - any positive time runs instantly
+  animation-fill-mode both
+
 </style>

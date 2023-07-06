@@ -22,12 +22,12 @@
 									<v-row v-for="(column, index) in columns" :key="`${column}-${index}`">
 										<v-col>
 											<column-select
-												:lemmaKey="column.name"
-												:sourceData="incommingData"
+												:lemma-key="column.name"
+												:source-data="incommingData"
+												:preloaded-options="getOptionsByName(column.name)"
 												@options="setOptionsByName(column.name, $event)"
 												@cancel="removeData(column.name)"
 												@data="updateData($event)"
-												:preloadedOptions="getOptionsByName(column.name)"
 											/>
 										</v-col>
 										<v-col>
@@ -60,18 +60,18 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { Data2D, LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
+import { type Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
+import { createEmptyLemmaPrototype } from "@/util/lemmaimport/dataconversion";
 import {
-	ColumnConversion,
-	ColumnConversions,
+	type ColumnConversion,
+	type ColumnConversions,
 	defaultLemmaBuilderOptions,
-	ExtractColumnOptions,
+	type ExtractColumnOptions,
 	getEmptyColumnConversion,
 } from "@/util/lemmaimport/options";
 
-import LemmaPreviewer from "./LemmaPreviewer.vue";
 import ColumnSelect from "./ColumnSelect.vue";
-import { createEmptyLemmaPrototype } from "@/util/lemmaimport/dataconversion";
+import LemmaPreviewer from "./LemmaPreviewer.vue";
 
 type ColumnGroups = {
 	[groupName: string]: Array<{ name: keyof ColumnConversions; required?: boolean }>;
@@ -92,9 +92,9 @@ export default class LemmaBuilder extends Vue {
 
 	options: ColumnConversions = defaultLemmaBuilderOptions;
 	// Interdmidiate lemma prototypes, before they are ready to submit
-	partialLemmaPrototypes: Partial<LemmaPrototypeStringType>[] = [];
+	partialLemmaPrototypes: Array<Partial<LemmaPrototypeStringType>> = [];
 	// Result to emit
-	lemmaPrototypes: LemmaPrototypeStringType[] = [];
+	lemmaPrototypes: Array<LemmaPrototypeStringType> = [];
 
 	// Used to display column selections in an structured way.
 	get columnGroups(): ColumnGroups {
@@ -169,7 +169,7 @@ export default class LemmaBuilder extends Vue {
 		this.$emit("submit");
 	}
 
-	updateData(column: Partial<LemmaPrototypeStringType>[]) {
+	updateData(column: Array<Partial<LemmaPrototypeStringType>>) {
 		this.partialLemmaPrototypes = this.partialLemmaPrototypes.map((newLemma, index) => {
 			return {
 				...newLemma,

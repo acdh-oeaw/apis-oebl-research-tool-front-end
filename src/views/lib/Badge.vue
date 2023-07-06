@@ -3,13 +3,14 @@
 		{{ readable }}
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import HRNumbers from "human-readable-numbers";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Badge extends Vue {
-	@Prop({ default: "" }) content!: string | number;
+	@Prop({ default: "" }) content!: number | string;
 	@Prop({ default: "" }) color!: string;
 
 	get readable() {
@@ -21,23 +22,25 @@ export default class Badge extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .badge
-  border-radius 10px
-  color #fff
-  font-size 11px
-  height 18px
-  letter-spacing 0
+  top auto
   min-width 20px
+  height 18px
   padding 1px 6px
+  border-radius 10px
+  background var(--v-background-darken3)
+  color #fff
+  color rgb(0 0 0 / 80%)
+  font-size 11px
+  letter-spacing 0
   text-align center
   text-indent 0
-  top auto
-  transition .3s cubic-bezier(.25,.8,.5,1)
   white-space nowrap
-  color rgba(0,0,0,.8)
-  background var(--v-background-darken3)
+  transition 0.3s cubic-bezier(0.25,0.8,0.5,1)
+
   &.theme--dark
-    color rgba(255,255,255, .8)
     background var(--v-background-lighten2)
+    color rgb(255 255 255 / 80%)
 </style>

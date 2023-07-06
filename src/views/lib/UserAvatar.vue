@@ -9,13 +9,15 @@
 		{{ initials }}
 	</v-avatar>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Editor, Author } from "@/api";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type Author,type Editor } from "@/api";
 
 @Component
 export default class UserAvatar extends Vue {
-	@Prop({ default: null }) value!: Editor | Author | null;
+	@Prop({ default: null }) value!: Author | Editor | null;
 
 	get initials(): string {
 		if (this.value !== null) {
@@ -31,4 +33,5 @@ export default class UserAvatar extends Vue {
 	}
 }
 </script>
+
 <style lang="scss" scoped></style>

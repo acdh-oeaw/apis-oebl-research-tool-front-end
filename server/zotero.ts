@@ -1,5 +1,6 @@
 import realFetch from "node-fetch";
-import { ZoteroItemType, ZoteroItemCreatorType, ZoteroItemTypeField } from "../src/types/zotero";
+
+import { type ZoteroItemCreatorType, type ZoteroItemType, type ZoteroItemTypeField } from "../src/types/zotero";
 
 const fetchCache: { [url: string]: any } = {};
 
@@ -19,8 +20,8 @@ class Zotero {
 	}
 
 	async getItemTypeFields(
-		itemTypes: ZoteroItemType[],
-	): Promise<{ [itemType: string]: ZoteroItemTypeField[] }> {
+		itemTypes: Array<ZoteroItemType>,
+	): Promise<{ [itemType: string]: Array<ZoteroItemTypeField> }> {
 		return Promise.all(
 			itemTypes.map(async (it) => {
 				return {
@@ -36,13 +37,13 @@ class Zotero {
 			return its.reduce((m, e) => {
 				m[e.itemType] = e.fields;
 				return m;
-			}, {} as { [itemType: string]: ZoteroItemTypeField[] });
+			}, {} as { [itemType: string]: Array<ZoteroItemTypeField> });
 		});
 	}
 
 	async getItemTypeCreators(
-		itemTypes: ZoteroItemType[],
-	): Promise<{ [itemType: string]: ZoteroItemCreatorType[] }> {
+		itemTypes: Array<ZoteroItemType>,
+	): Promise<{ [itemType: string]: Array<ZoteroItemCreatorType> }> {
 		return Promise.all(
 			itemTypes.map(async (it) => {
 				return {
@@ -58,7 +59,7 @@ class Zotero {
 			return its.reduce((m, e) => {
 				m[e.itemType] = e.creators;
 				return m;
-			}, {} as { [itemType: string]: ZoteroItemCreatorType[] });
+			}, {} as { [itemType: string]: Array<ZoteroItemCreatorType> });
 		});
 	}
 }

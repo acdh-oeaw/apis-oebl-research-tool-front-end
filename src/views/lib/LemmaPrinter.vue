@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { LemmaRow } from "@/types/lemma";
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop,Vue } from "vue-property-decorator";
+
+import { type LemmaRow } from "@/types/lemma";
 
 @Component
 export default class LemmaPrinter extends Vue {

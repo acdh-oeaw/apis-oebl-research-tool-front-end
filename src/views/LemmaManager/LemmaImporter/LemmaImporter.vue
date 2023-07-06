@@ -23,10 +23,12 @@
 </template>
 
 <script lang="ts">
-import { NewLemmaRow } from "@/types/lemma";
 import { Component, Prop, Vue } from "vue-property-decorator";
-import LemmaPreviewer from "./LemmaPreviewer.vue";
+
+import { type NewLemmaRow } from "@/types/lemma";
 import { importLemmas } from "@/util/lemmaimport/lemmaimport";
+
+import LemmaPreviewer from "./LemmaPreviewer.vue";
 
 @Component({
 	components: {
@@ -34,13 +36,13 @@ import { importLemmas } from "@/util/lemmaimport/lemmaimport";
 	},
 })
 export default class LemmaImporter extends Vue {
-	@Prop({ required: true }) lemmasToImport!: NewLemmaRow[];
+	@Prop({ required: true }) lemmasToImport!: Array<NewLemmaRow>;
 
 	/**
 	 * Percent of already imported lemmas as 0 <= p <= 100
 	 */
-	percentDone: number = 0;
-	doingImport: boolean = false;
+	percentDone = 0;
+	doingImport = false;
 	errorMessage: string | null = null;
 
 	importLemmas() {

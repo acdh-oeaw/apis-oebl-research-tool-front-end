@@ -18,8 +18,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { LemmaRow } from "@/types/lemma";
-
+import { type LemmaRow } from "@/types/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
 
 const showThisColumns: Array<keyof LemmaRow> = [
@@ -39,7 +38,7 @@ const showThisColumns: Array<keyof LemmaRow> = [
 
 @Component({})
 export default class LemmaPreviewer extends Vue {
-	@Prop() lemmas!: Partial<LemmaRow>[];
+	@Prop() lemmas!: Array<Partial<LemmaRow>>;
 	@Prop({ default: "Vorschau" }) label!: string;
 
 	/**

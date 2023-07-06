@@ -12,11 +12,14 @@
 		></v-autocomplete>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import { OpenAPI } from "@/api/core/OpenAPI";
-import { ProfessionGroup } from "@/api";
 import { toNumber } from "lodash";
+import { Component, Prop,Vue, Watch } from "vue-property-decorator";
+
+import { type ProfessionGroup } from "@/api";
+import { OpenAPI } from "@/api/core/OpenAPI";
+
 import { lemmaRowTranslations } from "../../util/labels";
 
 interface VAutoComplete {
@@ -60,12 +63,12 @@ function convertServerAutoCompleteResultProfessionGroup(
 export default class ProfessionGroupField extends Vue {
 	@Prop({ default: null }) selected!: ProfessionGroup | null;
 
-	searchTerm: string = "";
+	searchTerm = "";
 	localSelected: string | null = null;
 	searchResults: Array<VAutoComplete> = [];
-	professionGroupCache: ProfessionGroup[] = [];
-	loading: boolean = false;
-	errorMessages: string[] = [];
+	professionGroupCache: Array<ProfessionGroup> = [];
+	loading = false;
+	errorMessages: Array<string> = [];
 	lemmaRowTranslations = lemmaRowTranslations;
 
 	@Watch("selected", { immediate: true, deep: false })

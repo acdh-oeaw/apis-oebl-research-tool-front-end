@@ -4,7 +4,7 @@
 			{{ listName }} Lemma
 
 			<span v-if="loading" class="loading-zotero">…</span>
-			<span v-else class="zotero-results">{{ this.zoteroItems.length }}</span>
+			<span v-else class="zotero-results">{{ zoteroItems.length }}</span>
 			<div class="add-more-zotero-items">
 				<zotero-search :exclude="zoteroItems" @submit="addNewZoteroItem($event)"></zotero-search>
 			</div>
@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
-import { ZoteroItem, ZoteroView } from "@/types/zotero";
+import { type ZoteroItem, type ZoteroView } from "@/types/zotero";
 import ZoteroSearch from "@/views/lib/ZoteroSearch.vue";
 
 /**
@@ -47,13 +47,13 @@ import ZoteroSearch from "@/views/lib/ZoteroSearch.vue";
 	},
 })
 export default class ZoteroManager extends Vue {
-	@Prop({ default: () => [] }) zoteroKeysFromServer!: string[];
+	@Prop({ default: () => [] }) zoteroKeysFromServer!: Array<string>;
 	@Prop() lemmaName!: string;
 	@Prop() listName!: string;
 
-	detailedView: boolean = true;
-	loading: boolean = false;
-	updating: boolean = false;
+	detailedView = true;
+	loading = false;
+	updating = false;
 
 	zoteroItems: Array<ZoteroItem> = [];
 	_zoteroLemmaManagmentController?: ZoteroLemmaManagmentController = undefined; // make it not reactive
@@ -114,27 +114,28 @@ export default class ZoteroManager extends Vue {
 	}
 }
 </script>
+
 <style scoped>
 .loading-zotero {
-	margin: 0 1em 0 1em;
+  margin: 0 1em;
 }
 
 .zotero-results {
-	padding: 0;
-	margin: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .zotero-results::before {
-	margin-left: 1em;
-	content: "(";
+  content: "(";
+  margin-left: 1em;
 }
 
 .zotero-results::after {
-	content: ")";
+  content: ")";
 }
 
 .zotero-list-title {
-	font-size: 100%;
-	font-weight: 500;
+  font-weight: 500;
+  font-size: 100%;
 }
 </style>

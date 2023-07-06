@@ -1,8 +1,9 @@
-import { WorkflowService, Editor } from "@/api";
 import _ from "lodash";
 
+import { type Editor,WorkflowService } from "@/api";
+
 export default class EditorStore {
-	private _editors: Editor[] = [];
+	private _editors: Array<Editor> = [];
 	public editorsById: { [id: number]: Editor } = {};
 
 	constructor() {

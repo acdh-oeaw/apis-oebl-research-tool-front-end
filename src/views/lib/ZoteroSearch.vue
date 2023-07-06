@@ -6,16 +6,18 @@
 			:search-input.sync="searchTerm"
 			label="Aus Zotero hinzufügen"
 			:loading="loading"
+			no-data-text="Bitte geben Sie einen Suchbegriff ein"
 			@upddate:search-input="searchTerm = $event"
 			@input="submitItem($event)"
-			no-data-text="Bitte geben Sie einen Suchbegriff ein"
 		></v-autocomplete>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import zoteroStore from "@/service/zotero";
-import { ZoteroItem } from "@/types/zotero";
+import { type ZoteroItem } from "@/types/zotero";
 
 /**
  * Search And Select Citations From Zotero
@@ -24,12 +26,12 @@ import { ZoteroItem } from "@/types/zotero";
  */
 @Component
 export default class ZoteroSearch extends Vue {
-	@Prop({ default: [] }) exclude!: ZoteroItem[];
+	@Prop({ default: [] }) exclude!: Array<ZoteroItem>;
 
 	searchTerm: string | null | undefined = "";
-	zoteroResults: ZoteroItem[] = [];
-	zoteroErrorMessages: string[] = [];
-	loading: boolean = false;
+	zoteroResults: Array<ZoteroItem> = [];
+	zoteroErrorMessages: Array<string> = [];
+	loading = false;
 
 	clearZoteroResults(): void {
 		this.zoteroResults = [];
@@ -47,7 +49,7 @@ export default class ZoteroSearch extends Vue {
 		this.loading = true;
 		zoteroStore
 			.searchItem(this.searchTerm)
-			.then((zoteroItems: ZoteroItem[]) => {
+			.then((zoteroItems: Array<ZoteroItem>) => {
 				this.zoteroResults = zoteroItems;
 				this.zoteroErrorMessages = [];
 				this.loading = false;

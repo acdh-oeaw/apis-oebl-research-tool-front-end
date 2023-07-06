@@ -181,7 +181,7 @@
 							v-if="lemma.gnd.length > 0"
 							:limit="1"
 							:gnd="lemma.gnd"
-							:showFullLink="true"
+							:show-full-link="true"
 						/>
 					</v-col>
 				</v-row>
@@ -191,7 +191,7 @@
 						:key="sourceName"
 						:value="source"
 						:title="sourceName"
-						:defaultExpand="true"
+						:default-expand="true"
 					/>
 				</div>
 			</section>
@@ -200,17 +200,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop,Vue } from "vue-property-decorator";
 
-import { LemmaRow } from "@/types/lemma";
+import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
 import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
+import { type LemmaRow } from "@/types/lemma";
+import { type ZoteroView } from "@/types/zotero";
 import { lemmaRowTranslations } from "@/util/labels";
-import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
-import { ZoteroView } from "@/types/zotero";
 
-import LobidPreviewCard from "./LobidPreviewCard.vue";
 import LemmaScrapeResult from "./LemmaScrapeResult.vue";
+import LobidPreviewCard from "./LobidPreviewCard.vue";
 
 store.settings.showNavDrawer = false;
 const db = new LemmaDatabase();
@@ -225,11 +225,11 @@ const zoteroAbout: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentCont
 })
 export default class LemmaPrintView extends Vue {
 	@Prop() lemmaId!: number;
-	lemma: null | LemmaRow = null;
+	lemma: LemmaRow | null = null;
 	labels = lemmaRowTranslations;
 
-	zoteroCitationsBy: ZoteroView[] = [];
-	zoteroCitationsAbout: ZoteroView[] = [];
+	zoteroCitationsBy: Array<ZoteroView> = [];
+	zoteroCitationsAbout: Array<ZoteroView> = [];
 
 	print() {
 		window.print();
@@ -264,66 +264,67 @@ export default class LemmaPrintView extends Vue {
 	}
 }
 </script>
+
 <style scoped>
 .first-name-title::before {
-	content: ", ";
+  content: ", ";
 }
 
 .left-align {
-	margin-left: 1em;
+  margin-left: 1em;
 }
 
 .fieldname {
-	font-weight: 600;
-	margin-right: 1em;
+  margin-right: 1em;
+  font-weight: 600;
 }
 
 .fieldname::after {
-	content: ":";
+  content: ":";
 }
 
 .alternative-names h3::after {
-	content: ":";
+  content: ":";
 }
 
 .alternative-names .field .fieldname {
-	display: none;
+  display: none;
 }
 
 .alternative-names .field,
 .alternative-names .fieldvalue {
-	display: inline;
+  display: inline;
 }
 
 .field.alternative-name .fieldvalue:empty::after {
-	content: "(N/A)";
-	font-style: italic;
+  content: "(N/A)";
+  font-style: italic;
 }
 
 .field.alternative-last-name::after {
-	content: ",";
+  content: ",";
 }
 
 .field.alternative-name::after {
-	content: ";";
+  content: ";";
 }
 
 .field.alternative-first-name {
-	padding-right: 0;
+  padding-right: 0;
 }
 
 .field.alternative-last-name {
-	padding-right: 0;
+  padding-right: 0;
 }
 
 .external-resources >>> a,
 .scrape-data >>> div[role="button"] {
-	color: black;
+  color: black;
 }
 
 @media print {
-	.print-button {
-		display: none;
-	}
+  .print-button {
+    display: none;
+  }
 }
 </style>

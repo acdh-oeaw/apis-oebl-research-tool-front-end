@@ -1,6 +1,6 @@
 import { writeFile } from "fs/promises";
-import { join } from "path";
 import fetch from "node-fetch";
+import { join } from "path";
 
 console.assert(process.env.VUE_APP_API_HOST, "Missing environment variable.");
 

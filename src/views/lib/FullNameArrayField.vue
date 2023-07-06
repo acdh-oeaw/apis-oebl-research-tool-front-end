@@ -6,16 +6,16 @@
 				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit === null }"
 			>
 				<div v-if="selectedToEdit === null" class="add-new-full-name-btn">
-					<v-btn @click.stop="createEmptyItem()" class="rounded-lg" icon>
+					<v-btn class="rounded-lg" icon @click.stop="createEmptyItem()">
 						Weiteren Namen hinzufügen
 						<v-icon class="pl-6">mdi-plus-circle-outline</v-icon>
 					</v-btn>
 				</div>
 				<div v-else class="edit-full-name-input">
-					<full-name-field :fullName="selectedToEdit" :disabled="false"></full-name-field>
+					<full-name-field :full-name="selectedToEdit" :disabled="false"></full-name-field>
 					<v-btn-toggle class="transparent mt-1 ml-1 justify-center" borderless>
 						<v-btn text class="rounded-lg" @click="saveSelectedItem()">Speichern</v-btn>
-						<v-btn @click="deleteSelectedItem()" text class="rounded-lg ml-3">
+						<v-btn text class="rounded-lg ml-3" @click="deleteSelectedItem()">
 							{{ disregardText }}
 						</v-btn>
 					</v-btn-toggle>
@@ -30,16 +30,16 @@
 					>
 						<v-row>
 							<v-col cols="11">
-								<full-name-field :fullName="fullName" :disabled="true"></full-name-field>
+								<full-name-field :full-name="fullName" :disabled="true"></full-name-field>
 							</v-col>
 							<v-col cols="1">
 								<v-container fill-height class="px-0 justify">
 									<v-btn
-										@click.stop="editItem(index)"
 										class="rounded-lg"
 										icon
 										small
 										:disabled="isLocked"
+										@click.stop="editItem(index)"
 									>
 										<v-icon>mdi-pencil-circle-outline</v-icon>
 									</v-btn>
@@ -55,9 +55,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { FullName as FullNameType } from "@/types/lemma";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type FullName as FullNameType } from "@/types/lemma";
 import FullNameField from "@/views/lib/FullNameField.vue";
+
 import { lemmaRowTranslations } from "../../util/labels";
 
 @Component({
@@ -66,7 +68,7 @@ import { lemmaRowTranslations } from "../../util/labels";
 	},
 })
 export default class FullNameArrayField extends Vue {
-	@Prop({ default: () => [] }) fullNames!: FullNameType[];
+	@Prop({ default: () => [] }) fullNames!: Array<FullNameType>;
 	lemmaRowTranslations = lemmaRowTranslations;
 
 	// A new or existing full name, selected to edit.
@@ -79,13 +81,13 @@ export default class FullNameArrayField extends Vue {
 		if (this.selectedToEdit === null) {
 			throw new ErrorEvent("Nothing to disregard: No Item selected");
 		}
-		if (this.selectedToEdit?.firstName || this.selectedToEdit?.lastName) {
+		if (this.selectedToEdit.firstName || this.selectedToEdit.lastName) {
 			return "Löschen";
 		}
 		return "Abbrechen";
 	}
 	// Local copy of the props
-	localFullNames: FullNameType[] = [];
+	localFullNames: Array<FullNameType> = [];
 	/**
 	 * Fill and change on parent update, when not locked
 	 *
@@ -134,10 +136,10 @@ export default class FullNameArrayField extends Vue {
 
 <style lang="css" scoped>
 .full-name-array {
-	padding-left: 0;
+  padding-left: 0;
 }
 
 .edit-full-name-input {
-	width: 100%;
+  width: 100%;
 }
 </style>

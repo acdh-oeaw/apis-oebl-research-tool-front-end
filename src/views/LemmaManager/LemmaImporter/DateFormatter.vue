@@ -3,7 +3,7 @@
 		<v-container>
 			<v-row>
 				<v-col>
-					<v-select label="Datumsformat" :items="supportedDateFormats" v-model="localDateFormat" />
+					<v-select v-model="localDateFormat" label="Datumsformat" :items="supportedDateFormats" />
 				</v-col>
 			</v-row>
 			<v-row class="date-parse-preview">
@@ -14,11 +14,13 @@
 		</v-container>
 	</div>
 </template>
+
 <script lang="ts">
-import { factoryMethods, supportedDateFormats, SupportedDateFormatType } from "@/util/dates";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { factoryMethods, supportedDateFormats, type SupportedDateFormatType } from "@/util/dates";
 import { lemmaRowTranslations } from "@/util/labels";
-import { LemmaDates, LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { type LemmaDates, type LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
 
 type DateComparisionView = {
 	firstName: string;
@@ -31,10 +33,10 @@ type DateComparisionView = {
 
 @Component
 export default class DateFormatter extends Vue {
-	@Prop({ default: Array }) lemmaPrototypes!: LemmaPrototypeRequiredFieldsType[];
+	@Prop({ default: Array }) lemmaPrototypes!: Array<LemmaPrototypeRequiredFieldsType>;
 	@Prop({ required: true }) preloadedDateFormatOption!: SupportedDateFormatType;
 
-	supportedDateFormats: SupportedDateFormatType[] = supportedDateFormats;
+	supportedDateFormats: Array<SupportedDateFormatType> = supportedDateFormats;
 	localDateFormat: SupportedDateFormatType = supportedDateFormats[0];
 
 	@Watch("preloadedDateFormatOption", { immediate: true, deep: true })
@@ -42,7 +44,7 @@ export default class DateFormatter extends Vue {
 		this.localDateFormat = this.preloadedDateFormatOption;
 	}
 
-	get dates(): LemmaDates[] {
+	get dates(): Array<LemmaDates> {
 		const factoryMethod = factoryMethods[this.localDateFormat];
 		return this.lemmaPrototypes.map((lemmaPrototype) => {
 			return {
@@ -59,13 +61,13 @@ export default class DateFormatter extends Vue {
 		this.$emit("data", this.dates);
 	}
 
-	get dateViews(): DateComparisionView[] {
-		const comparisionViews: DateComparisionView[] = [];
+	get dateViews(): Array<DateComparisionView> {
+		const comparisionViews: Array<DateComparisionView> = [];
 
 		let dateRow: LemmaDates;
 		let lemmaPrototype: LemmaPrototypeRequiredFieldsType;
 
-		for (let index: number = 0; index < this.lemmaPrototypes.length; index++) {
+		for (let index = 0; index < this.lemmaPrototypes.length; index++) {
 			dateRow = this.dates[index];
 			lemmaPrototype = this.lemmaPrototypes[index];
 

@@ -11,8 +11,8 @@
 		:items="initialTable"
 		:items-per-page="100"
 	>
-		<template v-for="(h, i) in headers" v-slot:[`header.${h.value}`]="{}">
-			<div class="py-1 custom-header" :key="h.value">
+		<template v-for="(h, i) in headers" #[`header.${h.value}`]="{}">
+			<div :key="h.value" class="py-1 custom-header">
 				<span class="initial-header">
 					{{ h.text }}
 				</span>
@@ -21,29 +21,29 @@
 					solo
 					flat
 					:value="h.matchWith"
-					@input="matchHeaderWith(i, $event)"
 					background-color="background darken-1"
 					:class="['col-select', h.matchWith === null ? 'not-selected' : '', 'rounded-lg']"
 					dense
 					:items="getTargetColumnsOptions(h)"
+					@input="matchHeaderWith(i, $event)"
 				/>
 			</div>
 		</template>
-		<template v-slot:item="{ item }">
+		<template #item="{ item }">
 			<tr>
 				<td
 					v-for="(h, i) in headers"
+					:key="i"
 					:class="[
 						isIgnoredValue(item[h.value]) && 'is-null-equivalent',
 						h.matchWith === null && 'do-not-import',
 					]"
-					:key="i"
 				>
 					{{ item[h.value] }}
 				</td>
 			</tr>
 		</template>
-		<template v-slot:footer="{}">
+		<template #footer="{}">
 			<v-divider />
 			<v-row no-gutters class="pa-4 ma-0">
 				<v-col cols="3">
@@ -56,10 +56,10 @@
 						class="rounded-lg"
 						solo
 						:value="separator"
-						@change="updateSeparator"
 						:items="allSeparators"
+						@change="updateSeparator"
 					>
-						<template v-slot:prepend-inner>
+						<template #prepend-inner>
 							<span class="caption">Trennzeichen</span>
 						</template>
 					</v-select>
@@ -73,18 +73,18 @@
 						class="rounded-lg"
 						flat
 						:value="sheetName"
-						@change="updateSheetName"
 						:items="sheetNames"
+						@change="updateSheetName"
 					>
-						<template v-slot:prepend-inner>
+						<template #prepend-inner>
 							<span class="caption">Tabellenblatt</span>
 						</template>
 					</v-select>
 				</v-col>
 				<v-col cols="4" class="pl-4">
 					<v-combobox
-						hide-details
 						v-model="nullValues"
+						hide-details
 						chips
 						deletable-chips
 						small-chips
@@ -95,13 +95,13 @@
 						background-color="background darken-1"
 						multiple
 					>
-						<template v-slot:prepend-inner>
+						<template #prepend-inner>
 							<span class="caption text-no-wrap">Zellen Ignorieren</span>
 						</template>
 					</v-combobox>
 				</v-col>
 				<v-col class="text-right">
-					<v-btn :disabled="tablePage === 1" @click="tablePage = tablePage - 1" icon>
+					<v-btn :disabled="tablePage === 1" icon @click="tablePage = tablePage - 1">
 						<v-icon>mdi-chevron-left</v-icon>
 					</v-btn>
 					<select class="px-2" :value="tablePage" @change="tablePage = Number($event.target.value)">
@@ -111,8 +111,8 @@
 					</select>
 					<v-btn
 						:disabled="tablePage === Math.ceil(initialTable.length / 100)"
-						@click="tablePage = tablePage + 1"
 						icon
+						@click="tablePage = tablePage + 1"
 					>
 						<v-icon>mdi-chevron-right</v-icon>
 					</v-btn>
@@ -121,17 +121,19 @@
 		</template>
 	</v-data-table>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import * as XLSX from "xlsx";
 import * as _ from "lodash";
 import neatCsv from "neat-csv";
-import { Column, Header, Table, Row, SelectOptions } from "../../types/lemma";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import * as XLSX from "xlsx";
+
+import { type Column, type Header, type Row, type SelectOptions,type Table } from "../../types/lemma";
 
 @Component
 export default class ColumnMatcher extends Vue {
 	@Prop({ required: true }) buffer!: ArrayBuffer;
-	@Prop({ required: true }) targetColumns!: Column[];
+	@Prop({ required: true }) targetColumns!: Array<Column>;
 	@Prop({ required: true }) fileName!: string;
 	@Prop({ required: true }) fileType!: string;
 	@Prop({ default: false }) returnIgnoredColumns!: boolean;
@@ -141,14 +143,14 @@ export default class ColumnMatcher extends Vue {
 	mimeTypeXls = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	mimeTypeXlsx = "application/vnd.ms-excel";
 
-	headers: Header[] = [];
+	headers: Array<Header> = [];
 	initialTable: Table<Row> = [];
 	tablePage = 1;
 	separator = ";";
 	sheetName = "";
-	sheetNames: string[] = [];
+	sheetNames: Array<string> = [];
 
-	allSeparators: SelectOptions[] = [
+	allSeparators: Array<SelectOptions> = [
 		{
 			text: ",",
 			value: ",",
@@ -184,7 +186,7 @@ export default class ColumnMatcher extends Vue {
 		return this.nullValues.indexOf(v) > -1;
 	}
 
-	convertTable(t: Table<Row>, hs: Header[]): Table<Row> {
+	convertTable(t: Table<Row>, hs: Array<Header>): Table<Row> {
 		const targetColumnsByValue = _.keyBy(this.targetColumns, "value");
 		return t.map((r) => {
 			return hs.reduce((m, e) => {
@@ -210,7 +212,7 @@ export default class ColumnMatcher extends Vue {
 		});
 	}
 
-	getTargetColumnsOptions(h: Header): SelectOptions[] {
+	getTargetColumnsOptions(h: Header): Array<SelectOptions> {
 		return [
 			{
 				text: this.returnIgnoredColumns ? "erweitertes Feld" : "nicht importieren",
@@ -226,7 +228,7 @@ export default class ColumnMatcher extends Vue {
 		];
 	}
 
-	async parseCsvToJson(csv: string, separator: string): Promise<[Header[], Table<Row>]> {
+	async parseCsvToJson(csv: string, separator: string): Promise<[Array<Header>, Table<Row>]> {
 		const c = await neatCsv(csv, { separator });
 		const firstRow = c[0];
 		const h = _.map(firstRow, (v, k) => ({
@@ -258,13 +260,13 @@ export default class ColumnMatcher extends Vue {
 	async parseExcelToJson(
 		b: ArrayBuffer,
 		useSheetName: string | null = null,
-	): Promise<[Header[], Table<Row>]> {
+	): Promise<[Array<Header>, Table<Row>]> {
 		// const { default: XLSX } = await import('xlsx')
 		const doc = XLSX.read(b, { type: "buffer", WTF: false });
 		const sheets = doc.SheetNames.map((s) => XLSX.utils.sheet_to_json(doc.Sheets[s]));
 		const useSheetIndex = doc.SheetNames.findIndex((s) => s === useSheetName);
-		const rows = sheets[useSheetIndex === -1 ? 0 : useSheetIndex] as Row[];
-		const headers: Header[] = _.map(rows[0], (v, k) => ({
+		const rows = sheets[useSheetIndex === -1 ? 0 : useSheetIndex] as Array<Row>;
+		const headers: Array<Header> = _.map(rows[0], (v, k) => ({
 			value: k,
 			text: k,
 			sortable: true,
@@ -291,44 +293,51 @@ export default class ColumnMatcher extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
-.do-not-import {
-  opacity: .5
-}
-.is-null-equivalent{
-  opcaity: .3
-}
-.target-selector{
-  width: 100%
-}
-/deep/ .v-data-table-header,
-/deep/ .v-data-table-header tr,
-/deep/ .v-data-table-header th {
+.do-not-import
+  opacity 50%
+
+
+.is-null-equivalent
+  opcaity 0.3
+
+
+.target-selector
+  width 100%
+
+
+/deep/ .v-data-table-header
+/deep/ .v-data-table-header tr
+/deep/ .v-data-table-header th
   // background: #f0f0f0 !important;
-}
-/deep/ .v-data-table th:first-child,
-/deep/ .v-data-table td:first-child {
-  padding-left: 2em !important;
-}
-.custom-header .initial-header {
-  display: block
-  padding-left: 0em
-  padding-bottom: .3em
-}
-.custom-header .col-select {
-  font-size: 13px
-  font-weight: normal
-}
-.custom-header .col-select.not-selected {
-  opacity: .6
-}
-select {
+
+
+/deep/ .v-data-table th:first-child
+/deep/ .v-data-table td:first-child
+  padding-left 2em !important
+
+
+.custom-header .initial-header
+  display block
+  padding-bottom 0.3em
+  padding-left 0
+
+
+.custom-header .col-select
+  font-weight 400
+  font-size 13px
+
+
+.custom-header .col-select.not-selected
+  opacity 60%
+
+
+select
   user-select none
-  -webkit-user-select none
-  -moz-appearance none
-  -webkit-appearance none
   appearance none
-}
+
+
 .theme--dark select
   color white
 </style>

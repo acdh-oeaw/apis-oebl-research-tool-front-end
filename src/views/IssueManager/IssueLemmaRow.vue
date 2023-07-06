@@ -4,7 +4,7 @@
 			<user-avatar :value="editor" />
 			<user-avatar :value="author" style="margin-left: -5px" />
 		</td>
-		<td style="font-weight: 500; width: 20%" class="pr-1">
+		<td style=" width: 20%;font-weight: 500" class="pr-1">
 			<template v-if="value.lemma">{{ lemma.lastName }} {{ lemma.firstName }}</template>
 			<span v-else>Lemma nicht gefunden.</span>
 		</td>
@@ -12,11 +12,11 @@
 		<td>
 			<div class="float-right fill-height d-flex">
 				<v-chip
+					v-for="label in labelsLimited"
+					:key="label.id"
 					small
 					class="label align-self-center"
-					v-for="label in labelsLimited"
 					:color="label.color"
-					:key="label.id"
 				>
 					{{ label.name }}
 				</v-chip>
@@ -24,14 +24,17 @@
 		</td>
 	</tr>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { IssueLemma } from "../../types/issue";
+import format from "date-fns/esm/format";
 import _ from "lodash";
-import { LemmaLabel, Editor, Author } from "@/api";
+import { Component, Prop,Vue } from "vue-property-decorator";
+
+import { type Author,type Editor, type LemmaLabel } from "@/api";
 import store from "@/store";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
-import format from "date-fns/esm/format";
+
+import { type IssueLemma } from "../../types/issue";
 
 @Component({
 	components: {
@@ -65,7 +68,7 @@ export default class IssueLemmaRow extends Vue {
 		return _.keyBy(store.issue.labels, "id");
 	}
 
-	get labelsLimited(): LemmaLabel[] {
+	get labelsLimited(): Array<LemmaLabel> {
 		return this.maxLabels !== null
 			? _.take(this.value.labels, this.maxLabels).map((id) => this.labelsById[id])
 			: this.value.labels.map((id) => this.labelsById[id]);
@@ -88,8 +91,9 @@ export default class IssueLemmaRow extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .label
-  color white !important
   margin-left 1px
+  color white !important
 </style>

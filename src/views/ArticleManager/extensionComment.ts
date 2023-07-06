@@ -1,6 +1,6 @@
-import { Command, mergeAttributes } from "@tiptap/core";
-
+import { type Command, mergeAttributes } from "@tiptap/core";
 import { v4 as uuid } from "uuid";
+
 import CommentThread from "./CommentThread.vue";
 import popupMark from "./popupPlugin";
 
@@ -15,11 +15,11 @@ export interface CommentWrapperAttributes {
 
 export interface CommentThreadAttributes {
 	status: "open" | "private";
-	comments: {
+	comments: Array<{
 		date: Date;
 		user: string;
 		text: string;
-	}[];
+	}>;
 }
 
 declare module "@tiptap/core" {

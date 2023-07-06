@@ -4,9 +4,9 @@
 			<v-row class="import-list-selection">
 				<v-col class="select-import-list">
 					<v-combobox
+						v-model="selectedListTitle"
 						label="Eine Liste auswählen"
 						:items="vuetifyItems"
-						v-model="selectedListTitle"
 						:return-object="false"
 						clearable
 					/>
@@ -32,10 +32,11 @@
 </template>
 
 <script lang="ts">
-import { NewLemmaRow } from "@/types/lemma";
-import { SelectedList } from "@/util/lemmaimport/options";
-import { ListManager } from "@/util/lemmaimport/listmanagement";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type NewLemmaRow } from "@/types/lemma";
+import { ListManager } from "@/util/lemmaimport/listmanagement";
+import { type SelectedList } from "@/util/lemmaimport/options";
 
 const listManager = ListManager.createObservableListManager();
 
@@ -45,7 +46,7 @@ const listManager = ListManager.createObservableListManager();
 @Component
 export default class ListSelector extends Vue {
 	@Prop({ required: true }) preloadedOptions!: SelectedList;
-	@Prop({ required: true }) newLemmasRows!: NewLemmaRow[];
+	@Prop({ required: true }) newLemmasRows!: Array<NewLemmaRow>;
 
 	/**
 	 * SelectedList is undefined or a "List" object, but not nullable.
@@ -66,7 +67,7 @@ export default class ListSelector extends Vue {
 	selectedList: SelectedList;
 
 	selectedListTitle: string | null | undefined = null;
-	loadingList: boolean = false;
+	loadingList = false;
 	listCreationFailedMessage: string | null = null;
 
 	@Watch("selectedListTitle")
@@ -114,7 +115,7 @@ export default class ListSelector extends Vue {
 		this.selectedList = this.preloadedOptions;
 	}
 
-	get updatedNewLemmaRows(): NewLemmaRow[] {
+	get updatedNewLemmaRows(): Array<NewLemmaRow> {
 		return this.newLemmasRows.map((newLemmaRow) =>
 			Object.assign(newLemmaRow, { list: this.selectedList }),
 		);
@@ -140,7 +141,7 @@ export default class ListSelector extends Vue {
 		});
 	}
 
-	get lemmasWithLists(): NewLemmaRow[] {
+	get lemmasWithLists(): Array<NewLemmaRow> {
 		return this.newLemmasRows.map((lemma) => Object.assign(lemma, { list: this.selectedList }));
 	}
 }

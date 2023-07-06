@@ -1,14 +1,15 @@
 import { GenderAe0Enum } from "@/api";
-import { NewLemmaRow, UserColumn } from "@/types/lemma";
+import { type NewLemmaRow, type UserColumn } from "@/types/lemma";
+
 import {
-	LemmaPrototypeStringType,
-	LemmaPrototypeNullableStringType,
-	LemmaPrototypeRequiredFieldsType,
-	LemmaDates,
-	LemmaGender,
-	Data2D,
+	type Data2D,
+	type LemmaDates,
+	type LemmaGender,
+	type LemmaPrototypeNullableStringType,
+	type LemmaPrototypeRequiredFieldsType,
+	type LemmaPrototypeStringType,
 } from "./datacontainers";
-import { defautLemmaFormatterOptions, GenderMappingOption, UserColumnMapping } from "./options";
+import { defautLemmaFormatterOptions, type GenderMappingOption, type UserColumnMapping } from "./options";
 
 export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
 	return {
@@ -29,7 +30,7 @@ export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
 
 export function replaceNullStrings(
 	source: LemmaPrototypeStringType,
-	nanValues: string[] = defautLemmaFormatterOptions.nullValues,
+	nanValues: Array<string> = defautLemmaFormatterOptions.nullValues,
 ): LemmaPrototypeNullableStringType {
 	const sourceEntries = Object.entries(source);
 	const notUndefinedEntries = sourceEntries.filter(
@@ -50,8 +51,8 @@ function hasMissingRequiredField(prototype: LemmaPrototypeNullableStringType) {
 }
 
 export function filterMissingRequiredFields(
-	prototypes: LemmaPrototypeNullableStringType[],
-): LemmaPrototypeRequiredFieldsType[] {
+	prototypes: Array<LemmaPrototypeNullableStringType>,
+): Array<LemmaPrototypeRequiredFieldsType> {
 	return prototypes.filter(
 		(prototype): prototype is LemmaPrototypeRequiredFieldsType =>
 			!hasMissingRequiredField(prototype),
@@ -59,14 +60,14 @@ export function filterMissingRequiredFields(
 }
 
 export function showMissingRequiredFields(
-	prototypes: LemmaPrototypeNullableStringType[],
-): LemmaPrototypeNullableStringType[] {
+	prototypes: Array<LemmaPrototypeNullableStringType>,
+): Array<LemmaPrototypeNullableStringType> {
 	return prototypes.filter(hasMissingRequiredField);
 }
 
 export function getMissingRequiredFieldIndexes(
-	prototypes: LemmaPrototypeNullableStringType[],
-): number[] {
+	prototypes: Array<LemmaPrototypeNullableStringType>,
+): Array<number> {
 	return prototypes
 		.map((prototype, index) => (hasMissingRequiredField(prototype) ? index : false))
 		.filter((value): value is number => value !== false);
@@ -156,10 +157,10 @@ export function buildNewLemmaRowAfterFormatting(
 }
 
 export function mergeBuildNewLemmaRows(
-	lemmaPrototypes: LemmaPrototypeRequiredFieldsType[],
-	lemmaDatesRows: LemmaDates[],
-	lemmaGenderRows: LemmaGender[],
-): NewLemmaRow[] {
+	lemmaPrototypes: Array<LemmaPrototypeRequiredFieldsType>,
+	lemmaDatesRows: Array<LemmaDates>,
+	lemmaGenderRows: Array<LemmaGender>,
+): Array<NewLemmaRow> {
 	// Check, that all subcomponents return data of the same length (amount of rows)
 	const numberOfRows = new Set([
 		lemmaPrototypes.length,
@@ -186,7 +187,7 @@ export function mergeBuildNewLemmaRows(
 	});
 }
 
-export function createUserColumns(table: Data2D, options: UserColumnMapping): UserColumn[] {
+export function createUserColumns(table: Data2D, options: UserColumnMapping): Array<UserColumn> {
 	const mappings: Array<
 		[
 			number, // numericalSourceColumn,
@@ -197,7 +198,7 @@ export function createUserColumns(table: Data2D, options: UserColumnMapping): Us
 		targetColumn,
 	]);
 
-	return table.data.map((row: string[]) => {
+	return table.data.map((row: Array<string>) => {
 		return Object.fromEntries(
 			mappings.map(([numericalSourceColumn, targetColumn]) => {
 				return [targetColumn, row[numericalSourceColumn]];
@@ -206,7 +207,7 @@ export function createUserColumns(table: Data2D, options: UserColumnMapping): Us
 	});
 }
 
-export function addUserColumns(lemmas: NewLemmaRow[], columns: UserColumn[]): NewLemmaRow[] {
+export function addUserColumns(lemmas: Array<NewLemmaRow>, columns: Array<UserColumn>): Array<NewLemmaRow> {
 	if (columns.length === 0) {
 		return lemmas;
 	}

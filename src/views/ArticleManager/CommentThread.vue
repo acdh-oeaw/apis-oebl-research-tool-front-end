@@ -6,24 +6,24 @@
 			style="border-radius: 11px"
 			color="background darken-1"
 		>
-			<v-btn @click="removeComment" elevation="0" class="mb-1 rounded-lg" block color="red">
+			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeComment">
 				Kommentar entfernen
 			</v-btn>
 			<v-btn
 				v-if="commentThread !== undefined"
 				block
+				outlined
+				class="mb-1 rounded-lg"
+				color="grey"
 				@click="
 					toggleStatus();
 					showOverlay = false;
 				"
-				outlined
-				class="mb-1 rounded-lg"
-				color="grey"
 			>
-				<v-icon left v-if="commentThread.status === 'private'">mdi-check</v-icon>
+				<v-icon v-if="commentThread.status === 'private'" left>mdi-check</v-icon>
 				Als “Privat” markieren
 			</v-btn>
-			<v-btn block @click="showOverlay = false" outlined class="rounded-lg" color="grey">
+			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
 				Abbrechen
 			</v-btn>
 		</v-overlay>
@@ -33,9 +33,9 @@
 		>
 			<v-btn icon tile class="rounded-lg" disabled small></v-btn>
 			<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Kommentar</div>
-			<v-btn @click="showOverlay = true" icon tile class="rounded-lg" small>
+			<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
 				<v-icon v-if="commentThread.status === 'open'">mdi-dots-horizontal</v-icon>
-				<v-icon small v-else-if="commentThread.status === 'private'">mdi-lock</v-icon>
+				<v-icon v-else-if="commentThread.status === 'private'" small>mdi-lock</v-icon>
 			</v-btn>
 		</div>
 		<div
@@ -44,9 +44,9 @@
 			:class="['thread-container', scrollable && 'scrollable']"
 		>
 			<div
-				class="comment-container"
 				v-for="(comment, i) in commentThread.comments"
 				:key="comment.commentId"
+				class="comment-container"
 			>
 				<div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
 					<span class="comment-user-name">{{ comment.user }}</span>
@@ -57,8 +57,8 @@
 					{{ comment.text }}
 				</div>
 				<v-divider
-					class="mt-2"
 					v-if="commentThread !== undefined && i !== commentThread.comments.length - 1"
+					class="mt-2"
 				/>
 			</div>
 		</div>
@@ -69,35 +69,35 @@
 		<text-field
 			v-if="commentThread !== undefined"
 			v-model="newMessage"
-			@keydown.enter.native="appendComment"
-			@keyup.native="storeLastCaretPos"
-			@mouseup.native="storeLastCaretPos"
 			class="py-0 pl-1 pr-1 mt-1 mb-0"
 			:style="{ background: 'rgba(0,0,0,.05) !important' }"
 			placeholder="Kommentar hinzufügen …"
+			@keydown.enter.native="appendComment"
+			@keyup.native="storeLastCaretPos"
+			@mouseup.native="storeLastCaretPos"
 		>
-			<template v-slot:prepend>
-				<v-btn small class="rounded-lg mt-1 mr-0" @click="toggleEmojiPicker" icon tile text>
+			<template #prepend>
+				<v-btn small class="rounded-lg mt-1 mr-0" icon tile text @click="toggleEmojiPicker">
 					<v-icon :color="shouldShowEmojiPicker ? 'primary' : ''" small>
 						mdi-emoticon-outline
 					</v-icon>
 				</v-btn>
 			</template>
-			<v-btn class="rounded-lg" @click="appendComment" icon tile text>
+			<v-btn class="rounded-lg" icon tile text @click="appendComment">
 				<v-icon small>mdi-send</v-icon>
 			</v-btn>
 		</text-field>
-		<div class="emoji-picker scrollable" v-if="shouldShowEmojiPicker">
+		<div v-if="shouldShowEmojiPicker" class="emoji-picker scrollable">
 			<span v-for="(group, i) in groups" :key="i">
 				<div class="emoji-group caption pl-2">
 					<span class="muted">{{ group.group }}</span>
 				</div>
 				<span v-for="(subgroup, i) in group.subgroups" :key="'sg' + i">
 					<span
-						class="emoji"
-						@click="insertEmoji(lastCaretPos, toEmoji(emoji[0]))"
 						v-for="(emoji, i) in subgroup.emojis"
 						:key="'em' + i"
+						class="emoji"
+						@click="insertEmoji(lastCaretPos, toEmoji(emoji[0]))"
 					>
 						{{ toEmoji(emoji[0]) }}
 					</span>
@@ -106,16 +106,19 @@
 		</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import TextField from "../lib/TextField.vue";
-import store from "@/store";
+import { type Editor } from "@tiptap/vue-2";
 import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
 import de from "date-fns/esm/locale/de";
 import { v4 as uuid } from "uuid";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { emoji } from "@/service/emoji";
-import { Editor } from "@tiptap/vue-2";
-import { CommentThreadAttributes } from "./extensionComment";
+import store from "@/store";
+
+import TextField from "../lib/TextField.vue";
+import { type CommentThreadAttributes } from "./extensionComment";
 
 @Component({
 	components: {
@@ -160,7 +163,7 @@ export default class CommentThread extends Vue {
 
 	toggleStatus() {
 		if (this.commentThread !== undefined && this.commentThread !== null) {
-			if (this.commentThread?.status === "open") {
+			if (this.commentThread.status === "open") {
 				this.commentThread.status = "private";
 			} else {
 				this.commentThread.status = "open";
@@ -204,10 +207,10 @@ export default class CommentThread extends Vue {
 		this.shouldShowEmojiPicker = !this.shouldShowEmojiPicker;
 	}
 
-	toEmoji(s: string | number): string {
+	toEmoji(s: number | string): string {
 		if (typeof s === "string") {
 			const nums = s.split("_").map((val) => parseInt(val, 16));
-			// eslint-disable-next-line prefer-spread
+			 
 			return String.fromCodePoint.apply(String, nums);
 		} else {
 			return "";
@@ -258,27 +261,29 @@ export default class CommentThread extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .scrollable
-  max-height 300px
   overflow auto
+  max-height 300px
 
 .emoji-picker
   max-height 200px
 
 .emoji-picker .emoji
-  font-size: 1.6em;
-  cursor: pointer;
-  width: 39px;
-  display: inline-block;
-  text-align: center;
+  display inline-block
+  width 39px
+  font-size 1.6em
+  text-align center
+  cursor pointer
+
 .emoji-group
   position sticky
   top 0
   left 0
-  background var(--v-background-base)
   z-index 1
+  background var(--v-background-base)
 
 .comment-user-name
-  font-weight:bold
+  font-weight 700
 </style>

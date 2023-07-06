@@ -1,24 +1,24 @@
 <template>
 	<div class="pb-1" style="width: 320px; min-height: 250px">
 		<v-overlay
+			v-if="showOverlay"
 			opacity=".9"
 			style="border-radius: 11px"
 			color="background darken-1"
-			v-if="showOverlay"
 		>
-			<v-btn @click="removeAnnotation" elevation="0" class="mb-1 rounded-lg" block color="red">
+			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeAnnotation">
 				Annotation entfernen
 			</v-btn>
-			<v-btn block @click="showOverlay = false" outlined class="rounded-lg" color="grey">
+			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
 				Abbrechen
 			</v-btn>
 		</v-overlay>
-		<v-window reverse v-model="page">
+		<v-window v-model="page" reverse>
 			<v-window-item>
 				<div class="d-flex flex-row align-self-stretch">
 					<v-btn icon tile class="rounded-lg" small></v-btn>
 					<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Annotation</div>
-					<v-btn @click="showOverlay = true" icon tile class="rounded-lg" small>
+					<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
 						<v-icon>mdi-dots-horizontal</v-icon>
 					</v-btn>
 				</div>
@@ -27,12 +27,12 @@
 					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
 				>
 					<v-select
+						v-model="entityType"
 						class="pt-0 custom-v-select"
 						hide-details
 						:items="entityTypes"
 						attach
 						placeholder="Entität"
-						v-model="entityType"
 					></v-select>
 				</div>
 				<div
@@ -40,29 +40,29 @@
 					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
 				>
 					<v-select
+						v-model="selectedRelationType"
 						class="pt-0 custom-v-select"
 						hide-details
 						:items="availableRelations"
 						attach
 						placeholder="Relation"
 						item-value="id"
-						v-model="selectedRelationType"
 					></v-select>
 				</div>
 				{{ searchTerm }}
 				<text-field
 					ref="searchTerm"
-					@input="debouncedSearchEntity"
 					v-model="searchTerm"
 					class="flex-grow-1"
 					:clearable="true"
 					placeholder="Enität suchen …"
+					@input="debouncedSearchEntity"
 				>
-					<template v-slot:prepend>
+					<template #prepend>
 						<div v-if="loading === true" class="mt-1 ml-2">
 							<loading-spinner :size="25" />
 						</div>
-						<v-icon size="16" class="ml-3" v-else>mdi-magnify</v-icon>
+						<v-icon v-else size="16" class="ml-3">mdi-magnify</v-icon>
 					</template>
 				</text-field>
 				<v-list v-if="results.length > 0" dense nav color="transparent" class="pa-0 result-list">
@@ -70,11 +70,11 @@
 						<v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
 							<template>
 								<v-btn
-									@click.stop.prevent.capture="selectEntity(result.id)"
 									tile
 									icon
 									class="rounded-lg"
 									elevation="0"
+									@click.stop.prevent.capture="selectEntity(result.id)"
 								>
 									<v-icon v-if="result.id === entityId" color="primary">mdi-check-circle</v-icon>
 									<v-icon v-else>mdi-circle-outline</v-icon>
@@ -88,27 +88,27 @@
 					</v-list-item>
 				</v-list>
 				<div
-					class="pa-5 my-5 text-center caption muted"
 					v-else-if="results.length === 0 && searchTerm.trim() !== '' && loading === true"
+					class="pa-5 my-5 text-center caption muted"
 				>
 					Suche …
 				</div>
 				<div
-					class="pa-5 my-5 text-center caption muted"
 					v-else-if="results.length === 0 && searchTerm.trim() === ''"
+					class="pa-5 my-5 text-center caption muted"
 				>
 					Suchen Sie nach einer Entität
 				</div>
 				<div
-					class="pa-5 my-5 text-center caption muted"
 					v-else-if="results.length === 0 && searchTerm.trim() !== ''"
+					class="pa-5 my-5 text-center caption muted"
 				>
 					Nichts gefunden.
 				</div>
 			</v-window-item>
 			<v-window-item>
 				<div>
-					<v-btn elevation="0" color="primary" text @click="page = 0" class="rounded-lg mb-2" small>
+					<v-btn elevation="0" color="primary" text class="rounded-lg mb-2" small @click="page = 0">
 						<v-icon left>mdi-chevron-left</v-icon>
 						Zurück
 					</v-btn>
@@ -118,16 +118,16 @@
 		</v-window>
 		<div class="d-flex flex-row mt-1">
 			<text-field
-				placeholder="YYYY"
 				v-model="relationStartTime"
+				placeholder="YYYY"
 				class="mr-1"
 				style="width: 49.5%"
 				label="von"
 				@input="updateProps({ relationStartTime: $event })"
 			/>
 			<text-field
-				placeholder="YYYY"
 				v-model="relationEndTime"
+				placeholder="YYYY"
 				label="bis"
 				style="width: 49.5%"
 				@input="updateProps({ relationEndTime: $event })"
@@ -139,8 +139,8 @@
 				elevation="0"
 				block
 				class="rounded-lg white--text"
-				@click="updateProps({ isConfirmed: 'true' })"
 				color="green lighten-1"
+				@click="updateProps({ isConfirmed: 'true' })"
 			>
 				Vorschlag annehmen
 			</v-btn>
@@ -149,25 +149,28 @@
 				elevation="0"
 				block
 				class="rounded-lg mt-1"
-				@click="removeAnnotation"
 				color="background darken-2"
+				@click="removeAnnotation"
 			>
 				Vorschlag ablehen
 			</v-btn>
 		</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import TextField from "../lib/TextField.vue";
-import LoadingSpinner from "../lib/LoadingSpinner.vue";
+import { type Editor } from "@tiptap/vue-2";
 import _, { update } from "lodash";
-import * as lobid from "../../service/lobid";
-import * as apis_autocomplete from "../../service/apis_autocomplete";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { EntityTranslations } from "@/util/labels";
+
+import * as apis_autocomplete from "../../service/apis_autocomplete";
+import * as lobid from "../../service/lobid";
 import LobidPreviewCard from "../LemmaManager/LobidPreviewCard.vue";
-import { Editor } from "@tiptap/vue-2";
-import { AnnotationAttributes } from "./extensionAnnotation";
+import LoadingSpinner from "../lib/LoadingSpinner.vue";
+import TextField from "../lib/TextField.vue";
+import { type AnnotationAttributes } from "./extensionAnnotation";
 
 @Component({
 	components: {
@@ -195,7 +198,7 @@ export default class Annotation extends Vue {
 	showDetailsForGnd: string | null = null;
 	results: Array<{ type: string; name: string; id: string }> = [];
 	availableRelations: Array<{ id: string; text: string }> = [];
-	annotation: { entityId: null | string } = {
+	annotation: { entityId: string | null } = {
 		entityId: null,
 	};
 	entityTypes = [
@@ -286,7 +289,7 @@ export default class Annotation extends Vue {
 	async searchEntity(v: string | null) {
 		if (this.entityType !== null) {
 			this.loading = true;
-			if (v !== null && v?.trim() !== "") {
+			if (v !== null && v.trim() !== "") {
 				this.results = await apis_autocomplete.searchEntity(this.entityType, v);
 			} else {
 				this.searchTerm = "";
@@ -334,12 +337,13 @@ export default class Annotation extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .result-list
-  height 300px
   overflow-y auto
+  height 300px
 
-.custom-v-select >>> .v-input__slot:after
+.custom-v-select >>> .v-input__slot::after
   border-style none
 
 .custom-v-select >>> .v-input__slot
@@ -347,10 +351,11 @@ export default class Annotation extends Vue {
 
 .ac-result  >>> *
   display flex
-  flex-direction: column
+  flex-direction column
 
 .ac-result > span small:first-child
   order 2
+
 .ac-result > span b
   order 1
 </style>

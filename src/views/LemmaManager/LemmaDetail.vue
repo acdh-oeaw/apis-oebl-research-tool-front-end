@@ -1,32 +1,32 @@
 <template>
 	<v-card
+		v-if="value !== undefined && value !== null"
 		class="transparent flex-column d-flex fill-height lemma-detail"
 		elevation="0"
 		@dragover.prevent=""
 		@dragenter.prevent.capture.stop="onDragEnter"
 		@dragleave.prevent.capture.stop="onDragLeave"
 		@drop.prevent.capture.stop="onDrop"
-		v-if="value !== undefined && value !== null"
 	>
 		<v-card-title class="flex-column pb-2">
-			<div class="d-flex flex-row align-self-stretch" v-if="showHeader">
+			<div v-if="showHeader" class="d-flex flex-row align-self-stretch">
 				<v-btn
 					style="margin-top: -8px; margin-left: -10px"
 					width="48"
 					height="48"
 					tile
-					@click="$emit('update', { selected: !value.selected })"
 					class="rounded-lg"
 					icon
+					@click="$emit('update', { selected: !value.selected })"
 				>
-					<span style="color: var(--v-primary-base)" v-if="value.selected">★</span>
-					<span style="opacity: 0.5" v-else>☆</span>
+					<span v-if="value.selected" style="color: var(--v-primary-base)">★</span>
+					<span v-else style="opacity: 50%">☆</span>
 				</v-btn>
 				<div :key="value.id" class="text-center flex-grow-1">
 					{{ value.lastName }}, {{ value.firstName }}
 				</div>
 				<div class="printer">
-					<lemma-printer :lemmaRow="value"></lemma-printer>
+					<lemma-printer :lemma-row="value"></lemma-printer>
 				</div>
 				<v-btn
 					v-if="showTooggleSideBarButton"
@@ -41,14 +41,14 @@
 					<v-icon>mdi-dock-right</v-icon>
 				</v-btn>
 			</div>
-			<div style="margin-top: -5px" class="text-caption text-center" v-if="showHeader">
+			<div v-if="showHeader" style="margin-top: -5px" class="text-caption text-center">
 				{{ yearOfBirth || "?" }} - {{ yearOfDeath || "?" }}
 			</div>
 			<v-btn-toggle
+				v-model="detailPage"
 				max
 				class="transparent mx-auto mt-1 mb-0"
 				active-class="background darken-3"
-				v-model="detailPage"
 				mandatory
 				borderless
 			>
@@ -88,10 +88,10 @@
 							:show-chevron="true"
 							:value="value.list || null"
 							:items="store.lemma.lemmaLists"
-							@input="updateList"
 							key-name="title"
 							key-description="editor.name"
 							key-value="id"
+							@input="updateList"
 						/>
 					</h4>
 					<v-card-text>
@@ -108,21 +108,21 @@
 							@input="debouncedUpdateData({ lastName: $event })"
 						></text-field>
 						<full-name-array-field
-							:fullNames="value.alternativeNames"
+							:key="value.id"
+							:full-names="value.alternativeNames"
 							:value="value.alternativeNames"
 							@submit="updateUserColumns('alternativeNames', $event)"
-							:key="value.id"
 						></full-name-array-field>
 
 						<text-field :label="lemmaRowTranslations.gender.de">
-							<template v-slot:input>
+							<template #input>
 								<v-btn-toggle
 									class="transparent mt-1 ml-1"
 									active-class="background darken-3"
 									:value="value.gender"
-									@change="debouncedUpdateData({ gender: $event })"
 									borderless
 									max="1"
+									@change="debouncedUpdateData({ gender: $event })"
 								>
 									<div v-for="genderOption in genderOptions" :key="genderOption">
 										<v-btn :value="genderOption" text class="rounded-lg" small>
@@ -132,11 +132,11 @@
 								</v-btn-toggle>
 								<v-btn
 									v-if="value.gender"
-									@click="value.gender = undefined"
 									text
 									small
 									class="rounded-lg ml-5"
 									icon
+									@click="value.gender = undefined"
 								>
 									<v-icon>mdi-close-circle-outline</v-icon>
 								</v-btn>
@@ -146,10 +146,15 @@
 							tabindex="-1"
 							:label="lemmaRowTranslations.nobleTitle.de"
 							placeholder="(kein)"
-							@input="updateUserColumns('nobleTitle', $event)"
 							:value="value.columns_user.nobleTitle"
+							@input="updateUserColumns('nobleTitle', $event)"
 						>
 							<v-btn
+								tile
+								tabindex="-1"
+								class="rounded-lg mt-1 mr-1"
+								icon
+								small
 								@click="
 									updateUserColumns(
 										'alternativeNobleTitle',
@@ -158,11 +163,6 @@
 											: [''],
 									)
 								"
-								tile
-								tabindex="-1"
-								class="rounded-lg mt-1 mr-1"
-								icon
-								small
 							>
 								<v-icon>mdi-plus-circle-outline</v-icon>
 							</v-btn>
@@ -174,16 +174,16 @@
 						/>
 						<v-spacer class="my-5" />
 						<date-field
+							:key="'dateOfBirth_' + value.id"
 							:label="lemmaRowTranslations.dateOfBirth.de"
 							:date="value.dateOfBirth"
 							@submit="debouncedUpdateData({ dateOfBirth: $event })"
-							:key="'dateOfBirth_' + value.id"
 						></date-field>
 						<date-field
+							:key="'dateOfDeath_' + value.id"
 							:label="lemmaRowTranslations.dateOfDeath.de"
 							:date="value.dateOfDeath"
 							@submit="debouncedUpdateData({ dateOfDeath: $event })"
-							:key="'dateOfDeath_' + value.id"
 						></date-field>
 						<v-spacer class="my-5" />
 						<text-field
@@ -247,8 +247,8 @@
 							v-for="(userValue, userKey) in value.columns_user"
 							:key="userKey"
 							:value="userValue"
-							@input="debouncedUpdateUserColumns(userKey, $event)"
 							:label="userKey"
+							@input="debouncedUpdateUserColumns(userKey, $event)"
 						/>
 					</v-card-text>
 				</v-window-item>
@@ -257,12 +257,12 @@
 						Dateien
 						<v-spacer />
 						<v-btn
-							@click.capture.prevent.stop="pickFile"
 							class="droppable rounded-lg mr-2"
 							elevation="0"
 							text
 							small
 							color="primary darken-1"
+							@click.capture.prevent.stop="pickFile"
 						>
 							Datei hinzufügen
 							<v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
@@ -277,9 +277,9 @@
 						<zotero-manager
 							v-for="(zoteroSection, key) in zoteroSections"
 							:key="`${value.id}_${key}`"
-							:lemmaName="zoteroSection.lemmaName"
-							:listName="zoteroSection.listName"
-							:zoteroKeysFromServer="zoteroSection.zoteroKeys"
+							:lemma-name="zoteroSection.lemmaName"
+							:list-name="zoteroSection.listName"
+							:zotero-keys-from-server="zoteroSection.zoteroKeys"
 							@submit="debouncedUpdateData({ [zoteroSection.column]: $event })"
 						></zotero-manager>
 					</v-expansion-panels>
@@ -305,8 +305,8 @@
 						GND: {{ value.gnd[0] }}
 						<v-spacer />
 						<v-badge
-							color="primary"
 							v-if="value.gnd.length > 1"
+							color="primary"
 							:content="value.gnd.length.toString()"
 							inline
 						/>
@@ -315,31 +315,31 @@
 						<v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
 							<v-window-item>
 								<lobid-preview-card
-									class="mb-2"
 									v-if="value.gnd.length > 0"
-									@update="log"
+									class="mb-2"
 									:limit="1"
 									:gnd="value.gnd"
+									@update="log"
 								/>
 								<v-btn
-									@click="showGndSearch = true"
+									v-if="value.gnd.length === 0"
 									small
 									color="background darken-3"
 									class="rounded-lg"
 									block
-									v-if="value.gnd.length === 0"
 									elevation="0"
+									@click="showGndSearch = true"
 								>
 									GND hinzufügen…
 								</v-btn>
 								<v-btn
 									v-if="value.gnd.length > 0"
-									@click="showGndSearch = true"
 									small
 									class="rounded-lg"
 									color="background darken-3"
 									block
 									elevation="0"
+									@click="showGndSearch = true"
 								>
 									GND ändern…
 								</v-btn>
@@ -377,35 +377,37 @@
 		</div>
 	</v-card>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { LemmaRow } from "@/types/lemma";
-import LemmaScrapeResult from "./LemmaScrapeResult.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
-import LobidGndSearch from "./LobidGndSearch.vue";
-import TextField from "@/views/lib/TextField.vue";
+import fileDialog from "file-dialog";
+import _ from "lodash";
+import { Component, Prop,Vue } from "vue-property-decorator";
+
+import { GenderAe0Enum, type List } from "@/api";
+import store from "@/store";
+import confirm from "@/store/confirm";
+import { type LemmaRow } from "@/types/lemma";
 import DateField from "@/views/lib/DateField.vue";
-import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
 import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
-import VueFileList from "./FileList.vue";
-import store from "@/store";
-import _ from "lodash";
-import { GenderAe0Enum, List } from "@/api";
-import confirm from "@/store/confirm";
-import fileDialog from "file-dialog";
-import ZoteroManager from "./ZoteroManager.vue";
-import ProfessionGroupField from "../lib/ProfessionGroupField.vue";
-import LemmaPrinter from "../lib/LemmaPrinter.vue";
+import TextField from "@/views/lib/TextField.vue";
+import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
 
 import { lemmaRowTranslations } from "../../util/labels";
+import LemmaPrinter from "../lib/LemmaPrinter.vue";
+import ProfessionGroupField from "../lib/ProfessionGroupField.vue";
+import VueFileList from "./FileList.vue";
+import LemmaScrapeResult from "./LemmaScrapeResult.vue";
+import LobidGndSearch from "./LobidGndSearch.vue";
+import LobidPreviewCard from "./LobidPreviewCard.vue";
+import ZoteroManager from "./ZoteroManager.vue";
 
 const DRAG_CLASS = "drag-over";
 
 interface ZoteroSection {
 	lemmaName: string;
 	listName: string;
-	zoteroKeys: string[];
+	zoteroKeys: Array<string>;
 	column: string;
 }
 
@@ -434,8 +436,8 @@ export default class LemmaDetail extends Vue {
 	showGndSearch = false;
 	detailPage = 0;
 	dragEventDepth = 0;
-	files: File[] = [];
-	genderOptions: String[] = Object.values(GenderAe0Enum);
+	files: Array<File> = [];
+	genderOptions: Array<string> = Object.values(GenderAe0Enum);
 	lemmaRowTranslations = lemmaRowTranslations;
 
 	get yearOfBirth(): number | undefined {
@@ -531,12 +533,12 @@ export default class LemmaDetail extends Vue {
 		}
 	}
 
-	selectGnd(gnd: string[]) {
+	selectGnd(gnd: Array<string>) {
 		this.showGndSearch = false;
 		this.$emit("update", { gnd });
 	}
 
-	updateUserColumns(userKey: string, $event: string | number | string[]) {
+	updateUserColumns(userKey: string, $event: Array<string> | number | string) {
 		this.$emit("update", {
 			// eslint-disable-next-line @typescript-eslint/camelcase
 			columns_user: {
@@ -566,23 +568,24 @@ export default class LemmaDetail extends Vue {
 	debouncedUpdateData = _.debounce(this.updateData, 300);
 }
 </script>
+
 <style lang="stylus" scoped>
 // tell the browser not to cache this.
 .lemma-detail
   will-change contents
 
 .drag-over
-  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+  box-shadow inset 0 0 0 3px var(--v-primary-base) !important
 
 h4
-  z-index: 1
-  position: sticky
-  top: 0
-  background: transparent
+  position sticky
+  top 0
+  z-index 1
+  background transparent
 
 .gideon-legacy-literature > li
-  display: inline
+  display inline
 
 .gideon-legacy-literature > li:not(:last-child)::after
-  content: ', '
+  content ', '
 </style>

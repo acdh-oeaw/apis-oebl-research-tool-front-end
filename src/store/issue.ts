@@ -1,13 +1,14 @@
-import { Issue, WorkflowService, IssueLemma, LemmaStatus, LemmaLabel, LemmaNote } from "@/api";
-import { WithId } from "@/types";
+import { type Issue, type IssueLemma, type LemmaLabel, type LemmaNote,type LemmaStatus, WorkflowService } from "@/api";
 import notifyService from "@/service/notify/notify";
-import { LemmaRow } from "@/types/lemma";
+import { type WithId } from "@/types";
+import { type LemmaRow } from "@/types/lemma";
+
 export default class IssueStore {
 	id: number | null = null;
-	private _issues: Issue[] = [];
-	private _issueLemmas: WithId<IssueLemma>[] = [];
-	private _statuses: WithId<LemmaStatus>[] = [];
-	private _labels: LemmaLabel[] = [];
+	private _issues: Array<Issue> = [];
+	private _issueLemmas: Array<WithId<IssueLemma>> = [];
+	private _statuses: Array<WithId<LemmaStatus>> = [];
+	private _labels: Array<LemmaLabel> = [];
 	public selectedLemma: WithId<IssueLemma> | null = null;
 
 	constructor(id: number | null) {
@@ -26,7 +27,7 @@ export default class IssueStore {
 		});
 	}
 
-	private updateIssueLemmasLocally(ids: number[], update: Partial<IssueLemma>) {
+	private updateIssueLemmasLocally(ids: Array<number>, update: Partial<IssueLemma>) {
 		this._issueLemmas = this._issueLemmas.map((il) => {
 			if (ids.indexOf(il.id) > -1) {
 				return { ...il, ...update };
@@ -36,7 +37,7 @@ export default class IssueStore {
 		});
 	}
 
-	async addLemmaToIssue(id: number, ls: LemmaRow[]): Promise<void> {
+	async addLemmaToIssue(id: number, ls: Array<LemmaRow>): Promise<void> {
 		await WorkflowService.workflowApiV1Research2WorkflowCreate({
 			lemmas: ls.map((l) => l.id),
 			issue: id,
@@ -59,7 +60,7 @@ export default class IssueStore {
 			return [];
 		}
 		return (await WorkflowService.workflowApiV1IssueLemmaList(undefined, id, undefined))
-			.results as WithId<IssueLemma>[];
+			.results as Array<WithId<IssueLemma>>;
 	}
 
 	async loadIssueLemmas(id: number | null) {
@@ -88,7 +89,7 @@ export default class IssueStore {
 		return l;
 	}
 
-	async getIssueLemmaNotes(issueLemmaId: number): Promise<LemmaNote[]> {
+	async getIssueLemmaNotes(issueLemmaId: number): Promise<Array<LemmaNote>> {
 		return (await WorkflowService.workflowApiV1LemmaNoteList(issueLemmaId)).results || [];
 	}
 
@@ -97,7 +98,7 @@ export default class IssueStore {
 			return [];
 		}
 		this._statuses = (await WorkflowService.workflowApiV1LemmaStatusList([id]))
-			.results as WithId<LemmaStatus>[];
+			.results as Array<WithId<LemmaStatus>>;
 	}
 
 	async loadLabels() {
@@ -177,7 +178,7 @@ export default class IssueStore {
 		return this._issueLemmas;
 	}
 
-	set issueLemmas(ls: WithId<IssueLemma>[]) {
+	set issueLemmas(ls: Array<WithId<IssueLemma>>) {
 		this._issueLemmas = ls;
 	}
 

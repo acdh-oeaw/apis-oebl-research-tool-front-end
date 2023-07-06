@@ -1,22 +1,25 @@
 <template>
 	<div class="results">
-		<v-overlay absolute v-if="loading">
+		<v-overlay v-if="loading" absolute>
 			<loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
 		</v-overlay>
 		<lobid-preview-card
 			v-if="resultGnds.length !== 0"
-			@input="$emit('input', $event)"
 			:gnd="resultGnds"
+			@input="$emit('input', $event)"
 		/>
-		<div v-else style="opacity: 0.7" class="caption text-center">(Nichts gefunden)</div>
+		<div v-else style="opacity: 70%" class="caption text-center">(Nichts gefunden)</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { findPerson } from "@/service/lobid";
-import { ImportablePerson } from "@/types/lemma";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
+import { type ImportablePerson } from "@/types/lemma";
 import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+
+import LobidPreviewCard from "./LobidPreviewCard.vue";
 
 @Component({
 	components: {
@@ -26,10 +29,10 @@ import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 })
 export default class LobidGndSearchResults extends Vue {
 	@Prop({ default: null }) searchPerson!: Partial<ImportablePerson> | null;
-	@Prop({ default: () => [] }) value!: string[];
+	@Prop({ default: () => [] }) value!: Array<string>;
 
 	loading = false;
-	resultGnds: string[] = [];
+	resultGnds: Array<string> = [];
 
 	emptyPerson: ImportablePerson = {
 		firstName: null,
@@ -59,4 +62,5 @@ export default class LobidGndSearchResults extends Vue {
 	}
 }
 </script>
+
 <style lang="scss" scoped></style>

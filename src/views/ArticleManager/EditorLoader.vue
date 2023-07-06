@@ -21,8 +21,8 @@
 			:right="true"
 			:min-width="300"
 			:width="articleStore.sideBarWidth"
-			@update:width="articleStore.sideBarWidth = $event"
 			:value="articleStore.showSidebar"
+			@update:width="articleStore.sideBarWidth = $event"
 		>
 			<v-card
 				class="transparent flex-column d-flex fill-height lemma-detail"
@@ -51,14 +51,14 @@
 					<v-tabs-slider color="transparent"></v-tabs-slider>
 					<v-tabs-items v-model="tab">
 						<v-tab-item>
-							<span class="pl-3" v-if="userCanEditInAnyWay">
+							<span v-if="userCanEditInAnyWay" class="pl-3">
 								<v-btn class="rounded-lg" elevation="0" color="primary" @click="createNewVersion()">
 									Neue Version erstellen
 								</v-btn>
 							</span>
 							<v-list v-if="articleStore">
 								<v-list-item v-for="(version, index) in sortedVersionViews">
-									<template v-slot:default>
+									<template #default>
 										<v-list-item-action>
 											<v-simple-checkbox
 												:disabled="version.isShownInEditor"
@@ -111,11 +111,11 @@
 						<div v-else-if="loadingState === 'LOADED' && userCanView">
 							<div class="loaded-editor">
 								<editor
-									:articleStore="articleStore"
+									:article-store="articleStore"
 									:version="versionToEdit"
-									:tipTapEditor="tipTapEditor"
-									:userCanAnnotate="userCanAnnotate"
-									:userCanComment="userCanComment"
+									:tip-tap-editor="tipTapEditor"
+									:user-can-annotate="userCanAnnotate"
+									:user-can-comment="userCanComment"
 								/>
 							</div>
 						</div>
@@ -139,24 +139,24 @@
 		</v-main>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import ResizableDrawer from "../lib/ResizableDrawer.vue";
-import { LemmaArticleVersion } from "@/api";
-import { Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/vue-2";
-
 import TipTapStarterKit from "@tiptap/starter-kit";
+import { type Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/vue-2";
+import { Component, Prop,Vue, Watch } from "vue-property-decorator";
 
-import { Comment as CommentExtension } from "./extensionComment";
-import { Annotation as AnnotationExtension } from "./extensionAnnotation";
-
+import { type LemmaArticleVersion } from "@/api";
 import {
-	ArticleStore,
+	type ArticleStore,
 	loadArticle,
 	loadAssignments,
-	UserArticleAssignmentStoreInterface,
+	type UserArticleAssignmentStoreInterface,
 } from "@/store/article";
+
+import ResizableDrawer from "../lib/ResizableDrawer.vue";
 import Editor from "./Editor.vue";
+import { Annotation as AnnotationExtension } from "./extensionAnnotation";
+import { Comment as CommentExtension } from "./extensionComment";
 
 /**
  * A container for loading and passing data to the editor and conditionaly rendering it.
@@ -174,13 +174,13 @@ export default class EditorLoader extends Vue {
 	assignmentStore: UserArticleAssignmentStoreInterface | null = null;
 	tipTapEditor: TipTapEditor | null = null;
 	versionToEdit: LemmaArticleVersion | null = null;
-	loadingState: "LOADING" | "LOADED" | "ERROR" = "LOADING";
-	errorMessage: string = "";
+	loadingState: "ERROR" | "LOADED" | "LOADING" = "LOADING";
+	errorMessage = "";
 
-	userCanView: boolean = false;
-	userCanComment: boolean = false;
-	userCanAnnotate: boolean = false;
-	userCanEditInAnyWay: boolean = false;
+	userCanView = false;
+	userCanComment = false;
+	userCanAnnotate = false;
+	userCanEditInAnyWay = false;
 
 	tab = null;
 
@@ -188,8 +188,8 @@ export default class EditorLoader extends Vue {
 	 * Setting the whole state of the start up of the module in a method, to avoid forgetting states on the way.
 	 */
 	setState(
-		loadingState: "LOADING" | "LOADED" | "ERROR",
-		errorMessage: string = "",
+		loadingState: "ERROR" | "LOADED" | "LOADING",
+		errorMessage = "",
 		articleStore: ArticleStore | null = null,
 		assignmentStore: UserArticleAssignmentStoreInterface | null = null,
 		tipTapEditor: TipTapEditor | null = null,
@@ -290,7 +290,7 @@ export default class EditorLoader extends Vue {
 			date_created: Date;
 			date_modified: Date;
 		};
-		const versionsWithDate: SavedArticleVersionWithDate[] = this.articleStore.versions.map(
+		const versionsWithDate: Array<SavedArticleVersionWithDate> = this.articleStore.versions.map(
 			(version) => {
 				return {
 					id: version.id,
@@ -396,28 +396,29 @@ export default class EditorLoader extends Vue {
 <style lang="stylus" scoped>
 
 .v-tab
-  text-transform: capitalize
-  letter-spacing: normal
-  height:36px
-  border-radius: 4px
+  height 36px
+  border-radius 4px
+  letter-spacing normal
+  text-transform capitalize
 
 .v-tab--active
-  color: black !important
-  font-weight:bold
-  background-color: var(--v-background-darken5)
+  background-color var(--v-background-darken5)
+  color black !important
+  font-weight 700
 
-.theme--light.v-list, .theme--light.v-tabs-items
-  background: transparent;
+.theme--light.v-list
+.theme--light.v-tabs-items
+  background transparent
 
 .v-list-item__action:first-child
-  margin-right:18px !important
+  margin-right 18px !important
 
 .v-list-item__title
-  font-size: 0.9rem
+  font-size 0.9rem
 
 .v-list-item__subtitle
-  font-size: 0.8rem
+  font-size 0.8rem
 
 .v-list-item__action  .v-icon.v-icon
-  font-size:18px
+  font-size 18px
 </style>

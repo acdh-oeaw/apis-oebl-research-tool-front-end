@@ -11,23 +11,23 @@
 		>
 			<v-card v-if="value" class="pa-0 rounded-lg" color="transparent" flat>
 				<v-card-title class="pa-0 background rounded-tl-lg rounded-tr-lg d-flex flex-nowrap">
-					<v-icon style="opacity: 0.5" class="ml-3" large>mdi-magnify</v-icon>
+					<v-icon style="opacity: 50%" class="ml-3" large>mdi-magnify</v-icon>
 					<input
+						ref="input"
+						v-model="searchText"
+						class="pl-2 py-4 rounded-lg global-search"
+						placeholder="Suchen…"
+						type="text"
 						@keydown.down.prevent="selectResult(1)"
 						@keydown.up.prevent="selectResult(-1)"
 						@keydown.esc.capture.prevent.stop="onEsc"
 						@keydown.enter.prevent="openSelectedResult"
-						v-model="searchText"
 						@input="onInput"
-						ref="input"
-						class="pl-2 py-4 rounded-lg global-search"
-						placeholder="Suchen…"
-						type="text"
 					/>
 				</v-card-title>
 				<v-card-text
 					class="overflow-hidden pa-0"
-					style="height: 450px; position: relative; background: transparent"
+					style=" position: relative;height: 450px; background: transparent"
 				>
 					<v-divider />
 					<div class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
@@ -45,16 +45,16 @@
 								{{ searchText === "" ? "Zuletzt gesucht" : "Lemmata" }}
 							</v-subheader>
 							<v-list-item
-								@click="selectedResult = i"
-								:input-value="i === selectedResult"
 								v-for="(result, i) in results"
 								:key="i"
+								:input-value="i === selectedResult"
+								@click="selectedResult = i"
 							>
 								<v-list-item-avatar width="15">
 									<span v-if="result.item.selected === true" style="color: var(--v-primary-base)">
 										★
 									</span>
-									<span v-if="result.item.selected === false" style="opacity: 0.5">☆</span>
+									<span v-if="result.item.selected === false" style="opacity: 50%">☆</span>
 								</v-list-item-avatar>
 								<v-list-item-content>
 									<v-list-item-title>
@@ -69,7 +69,7 @@
 									</v-list-item-subtitle>
 								</v-list-item-content>
 								<v-list-item-action-text
-									style="white-space: nowrap; overflow: hidden; max-width: 50%"
+									style=" overflow: hidden; max-width: 50%;white-space: nowrap"
 								>
 									<div v-if="result.item.list" class="text-right font-weight-bold">
 										<v-icon x-small>mdi-format-list-bulleted</v-icon>
@@ -80,10 +80,10 @@
 						</v-list>
 						<div style="width: 40%" class="preview-panel background">
 							<lemma-detail
-								@update="updateLemma"
 								v-if="selectedLemma !== null"
 								:value="selectedLemma.item"
-								:showTooggleSideBarButton="false"
+								:show-tooggle-side-bar-button="false"
+								@update="updateLemma"
 							/>
 						</div>
 					</div>
@@ -92,13 +92,16 @@
 		</v-dialog>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import store from "@/store";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import store from "@/store";
+import { type SearchItem } from "@/store/search";
+import { type LemmaRow } from "@/types/lemma";
+
 import LemmaDetail from "./LemmaManager/LemmaDetail.vue";
-import { LemmaRow } from "@/types/lemma";
-import { SearchItem } from "@/store/search";
 
 @Component({
 	components: {
@@ -114,7 +117,7 @@ export default class GlobalSearch extends Vue {
 		return this.results[this.selectedResult] || null;
 	}
 
-	async selectResult(dir: 1 | -1) {
+	async selectResult(dir: -1 | 1) {
 		if (dir === -1) {
 			this.selectedResult = Math.max(this.selectedResult - 1, 0);
 		} else {
@@ -186,14 +189,14 @@ export default class GlobalSearch extends Vue {
 		}
 	}
 
-	get results(): SearchItem[] {
+	get results(): Array<SearchItem> {
 		if (this.searchText === null || this.searchText === "") {
 			return store.search.recentSearchItems;
 		}
 
 		const searchTerms = this.searchText.split(/\s/).map((term) => term.toLocaleLowerCase());
 
-		const foundItems: SearchItem[] = [];
+		const foundItems: Array<SearchItem> = [];
 		const limitItems = 40;
 
 		for (const lemma of store.lemma.allLemmas) {
@@ -215,7 +218,7 @@ export default class GlobalSearch extends Vue {
 	/**
 	 * Check if any of the values include the searcht term.
 	 */
-	lemmaPassesOrSearch(lemma: LemmaRow, searchTerms: string[]): boolean {
+	lemmaPassesOrSearch(lemma: LemmaRow, searchTerms: Array<string>): boolean {
 		for (let value of this.yieldLemmaSearchFields(lemma)) {
 			if (value === undefined || value === null || value === "") {
 				continue;
@@ -262,12 +265,14 @@ export default class GlobalSearch extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .global-search
-  font-size: 1.7em
-  width: 100%
-  outline: 0
+  width 100%
+  outline 0
+  font-size 1.7em
 </style>
+
 <style lang="stylus">
 .theme--dark .global-search
   color white

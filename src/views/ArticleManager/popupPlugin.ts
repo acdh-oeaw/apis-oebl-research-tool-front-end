@@ -1,13 +1,14 @@
-import { Editor, getMarkAttributes } from "@tiptap/core";
-import { Command, Mark, VueRenderer } from "@tiptap/vue-2";
-import tippy, { sticky, hideAll, Instance as TippyInstance } from "tippy.js";
-import Vue, { VueConstructor } from "vue";
-import vuetify from "@/plugins/vuetify";
-
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/dist/backdrop.css";
+
+import { type Editor, getMarkAttributes } from "@tiptap/core";
+import { Command, Mark, VueRenderer } from "@tiptap/vue-2";
+import tippy, { hideAll, type Instance as TippyInstance,sticky } from "tippy.js";
+import Vue, { type VueConstructor } from "vue";
+
+import vuetify from "@/plugins/vuetify";
 
 let t: TippyInstance | null = null;
 const vueComponents: { [name: string]: VueRenderer } = {};
@@ -55,7 +56,7 @@ function showPopUp(
 		t.setContent(vueComponents[name].element);
 		if (shouldFocus) {
 			requestAnimationFrame(() => {
-				// eslint-disable-next-line no-unused-expressions
+				 
 				t!.popper.querySelector("textarea")?.focus();
 			});
 		}

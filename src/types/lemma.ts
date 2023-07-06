@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import { Person as LdPerson } from "schema-dts";
-import { ListEntry } from "@/api/models/ListEntry";
-import { GenderAe0Enum } from "@/api/models/GenderAe0Enum";
-import { DateContainer } from "@/util/dates";
+import { type Person as LdPerson } from "schema-dts";
+
+import { type GenderAe0Enum } from "@/api/models/GenderAe0Enum";
+import { type ListEntry } from "@/api/models/ListEntry";
+import { type DateContainer } from "@/util/dates";
 
 export interface UserColumn {
-	[key: string]: string | number | string[];
+	[key: string]: Array<string> | number | string;
 }
 
 export interface ServerResearchLemma extends ListEntry {
 	id: number;
 	columns_user: {
-		[key: string]: string | number;
+		[key: string]: number | string;
 	};
 	columns_scrape: {
 		[source: string]:
 			| {
-					[key: string]: string | number | string[];
+					[key: string]: Array<string> | number | string;
 			  }
 			| [];
 	};
@@ -55,15 +56,15 @@ export interface NewLemmaRow {
 	dateOfBirth: DateContainer;
 	dateOfDeath: DateContainer;
 	gender?: GenderAe0Enum;
-	gnd: string[];
+	gnd: Array<string>;
 	loc: number | null;
 	viaf_id: number | null;
 	professionDetail?: string | null;
 	professionGroup?: ProfessionGroup | null;
-	legacyGideonCitations?: null | Array<{ id: Number; value: string }>;
-	secondaryLiterature: null | Array<SecondaryCitation>;
-	zoteroKeysBy: string[];
-	zoteroKeysAbout: string[];
+	legacyGideonCitations?: Array<{ id: number; value: string }> | null;
+	secondaryLiterature: Array<SecondaryCitation> | null;
+	zoteroKeysBy: Array<string>;
+	zoteroKeysAbout: Array<string>;
 	bioNote?: string | null;
 	kinship?: string | null;
 	religion?: string | null;
@@ -92,12 +93,12 @@ export type SerializedLemmaRow = LemmaRow & {
 export interface LemmaColumn {
 	name: string;
 	value: string | keyof LemmaRow;
-	type: "text" | "link" | "number" | "boolean" | "array";
+	type: "array" | "boolean" | "link" | "number" | "text";
 	filterable: boolean;
 	show: boolean;
 	getSimilarityFactor?: (a: LemmaRow, b: LemmaRow) => number;
 	width?: number;
-	sort?: null | "asc" | "desc";
+	sort?: "asc" | "desc" | null;
 	isUserColumn: boolean;
 	editable: boolean;
 }
@@ -118,7 +119,7 @@ export interface LemmaFilterComparator {
 export interface Column {
 	value: string | null;
 	text: string;
-	convert?: (e: string | number) => number | string;
+	convert?: (e: number | string) => number | string;
 }
 
 export interface Header {
@@ -129,21 +130,21 @@ export interface Header {
 }
 
 export interface Row {
-	[key: string]: string | number;
+	[key: string]: number | string;
 }
-export type Table<T> = T[];
+export type Table<T> = Array<T>;
 
 export interface ImportablePerson {
 	firstName?: string | null;
 	lastName: string | null;
 	dateOfBirth: string | null;
 	dateOfDeath: string | null;
-	gnd: string[];
+	gnd: Array<string>;
 }
 
 export interface PersonMatchable extends ImportablePerson {
 	id: string;
-	lobid: LdPerson[];
+	lobid: Array<LdPerson>;
 	candidateSelected: number;
 	loaded: boolean;
 }
@@ -153,7 +154,7 @@ export interface PersonField {
 	text: string;
 	hint?: string;
 	rules?: Array<(e: string) => boolean>;
-	convert?: (e: string) => number | string | Date | null;
+	convert?: (e: string) => Date | number | string | null;
 }
 
 export interface SelectOptions {

@@ -1,22 +1,23 @@
 <template>
 	<v-tabs
-		@click.native.prevent.stop=""
 		grow
 		slider-size="40"
 		class="rounded-lg"
 		height="40"
 		:value="valueIndex"
-		@change="updateValue"
 		background-color="transparent"
+		@click.native.prevent.stop=""
+		@change="updateValue"
 	>
-		<v-tab v-for="item in items" :key="item.value" class="rounded-lg" v-ripple="false">
+		<v-tab v-for="item in items" :key="item.value" v-ripple="false" class="rounded-lg">
 			<v-icon class="rotate-180">{{ item.icon }}</v-icon>
 		</v-tab>
 		<v-tabs-slider class="custom-tab-slider rounded-lg" />
 	</v-tabs>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class SwitchButton extends Vue {
@@ -32,13 +33,16 @@ export default class SwitchButton extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus">
 .v-tabs-slider-wrapper
   z-index -1
-.v-tabs .v-tab:hover:before
+
+.v-tabs .v-tab:hover::before
   border-radius 7px
 </style>
+
 <style lang="stylus" scoped>
 .custom-tab-slider
-  background-color rgba(0,0,0,.15) !important
+  background-color rgb(0 0 0 / 15%) !important
 </style>

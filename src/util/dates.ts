@@ -25,12 +25,12 @@ export class DateContainer {
 	}
 
 	// YYYY-MM-DD
-	static fromISO_OnlyDate(isoDate: string | undefined | null): DateContainer {
+	static fromISO_OnlyDate(isoDate: string | null | undefined): DateContainer {
 		return DateContainer.standardFactory(isoDate, parseISO, isValid);
 	}
 
 	// DD.MM.YYYY
-	static fromGermanDate(germanDate: string | undefined | null): DateContainer {
+	static fromGermanDate(germanDate: string | null | undefined): DateContainer {
 		const germanDateParser = (date: string) =>
 			parse(
 				date,
@@ -45,7 +45,7 @@ export class DateContainer {
 	}
 
 	private static standardFactory(
-		date: string | undefined | null,
+		date: string | null | undefined,
 		parseCallback: (date: string) => Date,
 		validCallback: (parseAttempt: any) => boolean,
 	): DateContainer {
@@ -161,7 +161,7 @@ export class DateContainer {
 		);
 	}
 
-	equalsDate(date: Date, ignoreDay: boolean = false): boolean {
+	equalsDate(date: Date, ignoreDay = false): boolean {
 		return (
 			this.calendarYear === date.getFullYear() &&
 			this.calendarMonth === date.getMonth() + 1 &&
@@ -203,8 +203,8 @@ export class DateContainer {
 	}
 }
 
-export type SupportedDateFormatType = "YYYY-MM-DD" | "DD.MM.YYYY";
-type FactoryMethodType = (input: string | undefined | null) => DateContainer;
+export type SupportedDateFormatType = "DD.MM.YYYY" | "YYYY-MM-DD";
+type FactoryMethodType = (input: string | null | undefined) => DateContainer;
 type FactoryMethodMappingType = Record<SupportedDateFormatType, FactoryMethodType>;
 
 export const factoryMethods: FactoryMethodMappingType = {
@@ -212,4 +212,4 @@ export const factoryMethods: FactoryMethodMappingType = {
 	"DD.MM.YYYY": DateContainer.fromGermanDate,
 };
 
-export const supportedDateFormats = Object.keys(factoryMethods) as SupportedDateFormatType[];
+export const supportedDateFormats = Object.keys(factoryMethods) as Array<SupportedDateFormatType>;

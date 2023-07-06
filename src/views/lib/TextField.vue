@@ -3,9 +3,9 @@
 		<div class="d-flex flex-grow-1">
 			<slot name="prepend">
 				<div
-					@click="selectAll"
 					v-if="$attrs && $attrs.label"
 					class="caption pa-2 text-field-label"
+					@click="selectAll"
 					v-text="$attrs.label"
 				/>
 			</slot>
@@ -18,13 +18,13 @@
 					<textarea
 						ref="textarea"
 						class="fill-height fill-width pa-2 text-body-2"
-						style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"
-						@keydown="onKeyDown"
-						@input="onInput"
+						style="position: absolute; inset: 0"
 						:placeholder="placeholder"
 						:value="localValue"
 						:disabled="disabled"
 						:maxlength="maxlength"
+						@keydown="onKeyDown"
+						@input="onInput"
 					/>
 				</slot>
 			</div>
@@ -37,11 +37,12 @@
 				</v-btn>
 			</div>
 		</div>
-		<div class="text-center caption hint" v-if="msg !== null" v-text="msg" />
+		<div v-if="msg !== null" class="text-center caption hint" v-text="msg" />
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class TextField extends Vue {
@@ -140,39 +141,41 @@ export default class TextField extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus">
 .theme--dark .text-field-outer textarea
   color white
 </style>
+
 <style lang="stylus" scoped>
 textarea
-  resize none
   outline 0
+  resize none
 
 :placeholder
-  text-overflow ellipsis
   overflow hidden
+  text-overflow ellipsis
   white-space nowrap
 
 .fake-textarea
   min-height 1.6em
+  word-break break-word
   visibility hidden
   will-change contents, height
-  word-break break-word
 
 .text-field-label
   flex 0 0 100px
-  opacity .7
   hyphens auto
+  opacity 70%
 
 .text-field-outer
   display flex
   overflow hidden
-  transition .2s box-shadow
+  transition 0.2s box-shadow
 
 .text-field-outer:focus-within
   box-shadow 0 0 0 1px var(--v-primary-base), inset 0 0 0 2px var(--v-primary-base)
 
 .hint
-  background rgba(255,255,255,.1)
+  background rgb(255 255 255 / 10%)
 </style>

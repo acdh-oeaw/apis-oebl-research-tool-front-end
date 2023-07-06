@@ -1,4 +1,4 @@
-import { EditTypesEnum, LemmaArticleVersion, WorkflowService } from "@/api";
+import { EditTypesEnum, type LemmaArticleVersion, WorkflowService } from "@/api";
 import { EditorService } from "@/api/services/EditorService";
 
 /**
@@ -13,7 +13,7 @@ type SavedArticleVersion = LemmaArticleVersion & {
 export type Markup = LemmaArticleVersion["markup"];
 
 export interface ArticleStoreInterface {
-	versions: SavedArticleVersion[];
+	versions: Array<SavedArticleVersion>;
 
 	/**
 	 * The newest version of an article is undefined, if there is no version
@@ -46,7 +46,7 @@ export interface UserArticleAssignmentStoreInterface {
 
 export async function loadArticle(article_id: number): Promise<ArticleStore> {
 	const listResponse = await EditorService.editorApiV1LemmaArticleVersionList(article_id);
-	const versions = listResponse["results"] as SavedArticleVersion[];
+	const versions = listResponse["results"] as Array<SavedArticleVersion>;
 	return new ArticleStore(article_id, versions);
 }
 
@@ -67,12 +67,12 @@ export async function loadAssignments(
 export class ArticleStore implements ArticleStoreInterface {
 	constructor(
 		private article_id: number,
-		private _versions: SavedArticleVersion[] = [],
-		public showSidebar: Boolean = true,
+		private _versions: Array<SavedArticleVersion> = [],
+		public showSidebar: boolean = true,
 		public sideBarWidth: number = 370,
 	) {}
 
-	get versions(): SavedArticleVersion[] {
+	get versions(): Array<SavedArticleVersion> {
 		return this._versions;
 	}
 
@@ -115,7 +115,7 @@ export class ArticleStore implements ArticleStoreInterface {
 }
 
 export class UserArticleAssignmentStore implements UserArticleAssignmentStoreInterface {
-	constructor(private editTypes: EditTypesEnum[]) {}
+	constructor(private editTypes: Array<EditTypesEnum>) {}
 
 	get userCanView(): boolean {
 		return this.editTypes.length > 0;

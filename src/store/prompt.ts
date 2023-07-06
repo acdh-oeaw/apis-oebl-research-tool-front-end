@@ -4,7 +4,7 @@ interface PromptOptions {
 	abortText?: string;
 	confirmText?: string;
 	placeholder?: string;
-	rules?: ((s: string) => string | boolean)[];
+	rules?: Array<(s: string) => boolean | string>;
 }
 
 export const bus = new Vue();

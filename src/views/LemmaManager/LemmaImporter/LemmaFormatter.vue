@@ -8,8 +8,8 @@
 							<v-expansion-panel-header>Null-Werte</v-expansion-panel-header>
 							<v-expansion-panel-content eager>
 								<null-manager
-									:lemmaPrototypes="lemmaPrototypes"
-									:preloadedNullValues="localOptions.nullValues"
+									:lemma-prototypes="lemmaPrototypes"
+									:preloaded-null-values="localOptions.nullValues"
 									@options="localOptions.nullValues = $event"
 									@data="lemmasPrototypesWithNullsAndRequiredFields = $event"
 									@missingRowsIndexes="missingRowsIndexes = $event"
@@ -20,8 +20,8 @@
 							<v-expansion-panel-header>Datumsformattierung</v-expansion-panel-header>
 							<v-expansion-panel-content eager>
 								<date-formatter
-									:lemmaPrototypes="lemmasPrototypesWithNullsAndRequiredFields"
-									:preloadedDateFormatOption="localOptions.dateFormat"
+									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
+									:preloaded-date-format-option="localOptions.dateFormat"
 									@data="dates = $event"
 									@options="localOptions.dateFormat = $event"
 								/>
@@ -31,8 +31,8 @@
 							<v-expansion-panel-header>Gender</v-expansion-panel-header>
 							<v-expansion-panel-content eager>
 								<gender-mapper
-									:lemmaPrototypes="lemmasPrototypesWithNullsAndRequiredFields"
-									:preloadedOptions="localOptions.genderMapping"
+									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
+									:preloaded-options="localOptions.genderMapping"
 									@data="genders = $event"
 									@options="localOptions.genderMapping = $event"
 								/>
@@ -56,16 +56,18 @@
 </template>
 
 <script lang="ts">
-import { NewLemmaRow } from "@/types/lemma";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type NewLemmaRow } from "@/types/lemma";
 import {
-	LemmaPrototypeStringType,
-	LemmaPrototypeRequiredFieldsType,
-	LemmaDates,
-	LemmaGender,
+	type LemmaDates,
+	type LemmaGender,
+	type LemmaPrototypeRequiredFieldsType,
+	type LemmaPrototypeStringType,
 } from "@/util/lemmaimport/datacontainers";
 import { mergeBuildNewLemmaRows } from "@/util/lemmaimport/dataconversion";
-import { LemmaFormatterOptions, defautLemmaFormatterOptions } from "@/util/lemmaimport/options";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { defautLemmaFormatterOptions,type LemmaFormatterOptions } from "@/util/lemmaimport/options";
+
 import DateFormatter from "./DateFormatter.vue";
 import GenderMapper from "./GenderMapper.vue";
 import LemmaPreviewer from "./LemmaPreviewer.vue";
@@ -84,7 +86,7 @@ import NullManager from "./NullManager.vue";
 })
 export default class LemmaFormatter extends Vue {
 	@Prop({ required: true, default: Array })
-	lemmaPrototypes!: LemmaPrototypeStringType[];
+	lemmaPrototypes!: Array<LemmaPrototypeStringType>;
 	@Prop({ required: true }) preloadedOptions!: LemmaFormatterOptions;
 
 	localOptions: LemmaFormatterOptions = defautLemmaFormatterOptions;
@@ -94,15 +96,15 @@ export default class LemmaFormatter extends Vue {
 		this.localOptions = this.preloadedOptions;
 	}
 
-	lemmasPrototypesWithNullsAndRequiredFields: LemmaPrototypeRequiredFieldsType[] = [];
+	lemmasPrototypesWithNullsAndRequiredFields: Array<LemmaPrototypeRequiredFieldsType> = [];
 
 	// Some rows, will not be imported. These are their indexes.
-	missingRowsIndexes: number[] = [];
+	missingRowsIndexes: Array<number> = [];
 
-	dates: LemmaDates[] = [];
-	genders: LemmaGender[] = [];
+	dates: Array<LemmaDates> = [];
+	genders: Array<LemmaGender> = [];
 
-	get newLemmas(): NewLemmaRow[] {
+	get newLemmas(): Array<NewLemmaRow> {
 		// If not all columns are definied, do not create data.
 		if (
 			new Set([

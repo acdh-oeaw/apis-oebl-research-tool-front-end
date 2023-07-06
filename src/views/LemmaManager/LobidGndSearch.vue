@@ -1,21 +1,21 @@
 <template>
 	<div tabindex="-1" @keyup.esc="$emit('cancel')">
 		<text-field
-			@input="debouncedSearchGnd"
 			v-model="localLemma.firstName"
 			:label="lemmaRowTranslations.firstName.de"
+			@input="debouncedSearchGnd"
 		></text-field>
 		<text-field
-			@input="debouncedSearchGnd"
 			v-model="localLemma.lastName"
 			:label="lemmaRowTranslations.lastName.de"
+			@input="debouncedSearchGnd"
 		></text-field>
 		<text-field
 			:value="localValue.length > 0 ? localValue[0] : ''"
-			@input="useCustomGnd($event)"
 			placeholder="manuell wählen…"
 			:label="lemmaRowTranslations.gnd.de"
 			:color="undefined"
+			@input="useCustomGnd($event)"
 		></text-field>
 		<div class="results pt-3">
 			<v-overlay v-if="loading" absolute>
@@ -23,43 +23,46 @@
 			</v-overlay>
 			<lobid-preview-card
 				v-if="resultGnds.length !== 0"
-				@input="onSelectGnd"
 				:value="localValue"
 				:gnd="resultGnds"
+				@input="onSelectGnd"
 			/>
-			<div v-else style="opacity: 0.7" class="caption text-center">(Nichts gefunden)</div>
+			<div v-else style="opacity: 70%" class="caption text-center">(Nichts gefunden)</div>
 		</div>
 		<div class="background mt-3 pb-3" style="position: sticky; bottom: 0">
 			<v-btn
-				@click="$emit('input', localValue)"
 				color="secondary"
 				class="mb-2 rounded-lg"
 				block
 				elevation="0"
+				@click="$emit('input', localValue)"
 			>
 				{{ localValue.length > 0 ? "Auswahl speichern" : "Zurücksetzten" }}
 			</v-btn>
 			<v-btn
-				@click="$emit('cancel')"
 				color="background darken-2"
 				class="rounded-lg"
 				block
 				elevation="0"
+				@click="$emit('cancel')"
 			>
 				abbrechen
 			</v-btn>
 		</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { LemmaRow } from "@/types/lemma";
 import { clone, debounce } from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { findPerson } from "@/service/lobid";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
+import { type LemmaRow } from "@/types/lemma";
 import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import TextField from "@/views/lib/TextField.vue";
+
 import { lemmaRowTranslations } from "../../util/labels";
+import LobidPreviewCard from "./LobidPreviewCard.vue";
 
 @Component({
 	components: {
@@ -70,22 +73,22 @@ import { lemmaRowTranslations } from "../../util/labels";
 })
 export default class LobidGndSearch extends Vue {
 	@Prop({ required: true }) lemma!: LemmaRow;
-	@Prop({ default: () => [] }) gnd!: string[];
-	@Prop({ default: Array }) value!: string[];
+	@Prop({ default: () => [] }) gnd!: Array<string>;
+	@Prop({ default: Array }) value!: Array<string>;
 	lemmaRowTranslations = lemmaRowTranslations;
 
 	loading = false;
 	localLemma: LemmaRow = clone(this.lemma);
-	localValue: string[] = clone(this.value);
+	localValue: Array<string> = clone(this.value);
 	debouncedSearchGnd = debounce(this.searchGnd, 150);
-	resultGnds: string[] = [];
+	resultGnds: Array<string> = [];
 
 	@Watch("value", { immediate: true })
 	onChangeValue() {
 		this.localValue = this.value;
 	}
 
-	onSelectGnd(gnds: string[]) {
+	onSelectGnd(gnds: Array<string>) {
 		this.localValue = gnds;
 	}
 
@@ -94,7 +97,7 @@ export default class LobidGndSearch extends Vue {
 	}
 
 	@Watch("gnd", { immediate: true, deep: true })
-	onChangeGnd(g: string[]) {
+	onChangeGnd(g: Array<string>) {
 		this.resultGnds = clone(g);
 	}
 
@@ -130,7 +133,8 @@ export default class LobidGndSearch extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .results
-  position: relative;
+  position relative
 </style>

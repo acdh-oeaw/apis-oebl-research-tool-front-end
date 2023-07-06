@@ -6,8 +6,8 @@
 		:max-width="200"
 		offset-x
 	>
-		<template v-slot:activator="{ on, attrs }">
-			<v-btn v-bind="attrs" v-on="on" class="rounded-lg" small text>
+		<template #activator="{ on, attrs }">
+			<v-btn v-bind="attrs" class="rounded-lg" small text v-on="on">
 				<v-icon small left>mdi-omega</v-icon>
 				Sonderzeichen
 			</v-btn>
@@ -18,12 +18,12 @@
 					<span class="muted">{{ group.group }}</span>
 				</div>
 				<v-btn
+					v-for="(char, i) in group.chars"
+					:key="'em' + i"
 					text
 					small
 					class="special-char"
 					@click="$emit('returnSpecialChar', toSpecialChar(char[0]))"
-					v-for="(char, i) in group.chars"
-					:key="'em' + i"
 				>
 					{{ toSpecialChar(char[0]) }}
 				</v-btn>
@@ -31,8 +31,10 @@
 		</v-card>
 	</v-menu>
 </template>
+
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component,Vue } from "vue-property-decorator";
+
 import { specialChar } from "@/service/specialchars";
 
 @Component
@@ -41,9 +43,9 @@ export default class Annotation extends Vue {
 
 	specialCharGroups = specialChar.groups;
 
-	toSpecialChar(s: string | number): string {
+	toSpecialChar(s: number | string): string {
 		if (typeof s === "number") {
-			// eslint-disable-next-line prefer-spread
+			 
 			return String.fromCodePoint(s);
 		} else {
 			return "";
@@ -54,9 +56,9 @@ export default class Annotation extends Vue {
 
 <style lang="stylus" scoped>
 .special-char
-  font-size: 1.1em;
-  cursor: pointer;
-  width: 39px;
-  display: inline-block;
-  text-align: center;
+  display inline-block
+  width 39px
+  font-size 1.1em
+  text-align center
+  cursor pointer
 </style>

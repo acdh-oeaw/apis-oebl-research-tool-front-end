@@ -5,7 +5,7 @@
 				<v-col>
 					<v-card>
 						<import-options-saver
-							:globalOptions="importOptions"
+							:global-options="importOptions"
 							:disabled="rawImportData.empty"
 							@options="setOptionsAndAdvanceToEnd($event)"
 						/>
@@ -18,31 +18,31 @@
 						<v-stepper-header>
 							<v-stepper-step :complete="greatestCompleteStep > 0" step="1">
 								Datei auswählen
-								<v-btn v-if="greatestCompleteStep > 0" @click="stepToDisplay = 1" small icon>
+								<v-btn v-if="greatestCompleteStep > 0" small icon @click="stepToDisplay = 1">
 									<v-icon>mdi-lead-pencil</v-icon>
 								</v-btn>
 							</v-stepper-step>
 							<v-stepper-step :complete="2 <= greatestCompleteStep" step="2">
 								Spalten zuweisen
-								<v-btn v-if="greatestCompleteStep > 1" @click="stepToDisplay = 2" small icon>
+								<v-btn v-if="greatestCompleteStep > 1" small icon @click="stepToDisplay = 2">
 									<v-icon>mdi-lead-pencil</v-icon>
 								</v-btn>
 							</v-stepper-step>
 							<v-stepper-step :complete="3 <= greatestCompleteStep" step="3">
 								Daten formatieren
-								<v-btn v-if="greatestCompleteStep > 2" @click="stepToDisplay = 3" small icon>
+								<v-btn v-if="greatestCompleteStep > 2" small icon @click="stepToDisplay = 3">
 									<v-icon>mdi-lead-pencil</v-icon>
 								</v-btn>
 							</v-stepper-step>
 							<v-stepper-step :complete="4 <= greatestCompleteStep" step="4">
 								Benutzerdefinierte Spalten
-								<v-btn v-if="greatestCompleteStep > 3" @click="stepToDisplay = 4" small icon>
+								<v-btn v-if="greatestCompleteStep > 3" small icon @click="stepToDisplay = 4">
 									<v-icon>mdi-lead-pencil</v-icon>
 								</v-btn>
 							</v-stepper-step>
 							<v-stepper-step :complete="5 <= greatestCompleteStep" step="5">
 								Liste auswählen
-								<v-btn v-if="greatestCompleteStep > 4" @click="stepToDisplay = 5" small icon>
+								<v-btn v-if="greatestCompleteStep > 4" small icon @click="stepToDisplay = 5">
 									<v-icon>mdi-lead-pencil</v-icon>
 								</v-btn>
 							</v-stepper-step>
@@ -51,7 +51,7 @@
 						<v-stepper-items>
 							<v-stepper-content step="1">
 								<import-file-dialog
-									:preloadedFileOptions="importOptions.fileOptions"
+									:preloaded-file-options="importOptions.fileOptions"
 									@options="importOptions.fileOptions = $event"
 									@data="rawImportData = $event"
 									@submit="markStepDone(1)"
@@ -59,8 +59,8 @@
 							</v-stepper-content>
 							<v-stepper-content step="2">
 								<lemma-builder
-									:incommingData="rawImportData"
-									:preloadedOptions="importOptions.lemmaBuilderOptions"
+									:incomming-data="rawImportData"
+									:preloaded-options="importOptions.lemmaBuilderOptions"
 									@options="importOptions.lemmaBuilderOptions = $event"
 									@data="lemmaPrototypes = $event"
 									@submit="markStepDone(2)"
@@ -68,8 +68,8 @@
 							</v-stepper-content>
 							<v-stepper-content step="3">
 								<lemma-formatter
-									:lemmaPrototypes="lemmaPrototypes"
-									:preloadedOptions="importOptions.lemmaFormatterOptions"
+									:lemma-prototypes="lemmaPrototypes"
+									:preloaded-options="importOptions.lemmaFormatterOptions"
 									@options="importOptions.lemmaFormatterOptions = $event"
 									@data="newLemmas = $event"
 									@missingRowsIndexes="missingRowsIndexes = $event"
@@ -78,10 +78,10 @@
 							</v-stepper-content>
 							<v-stepper-content step="4">
 								<user-column-adding
-									:preloadedOptions="importOptions.userColumnMapping"
-									:newLemmas="newLemmas"
-									:rawImportData="filteredRawImportData"
-									:columnMapping="importOptions.lemmaBuilderOptions"
+									:preloaded-options="importOptions.userColumnMapping"
+									:new-lemmas="newLemmas"
+									:raw-import-data="filteredRawImportData"
+									:column-mapping="importOptions.lemmaBuilderOptions"
 									@options="importOptions.userColumnMapping = $event"
 									@data="newLemmasWithUserColumns = $event"
 									@submit="markStepDone(4)"
@@ -89,15 +89,15 @@
 							</v-stepper-content>
 							<v-stepper-content step="5">
 								<list-selector
-									:preloadedOptions="importOptions.selectedList"
-									:newLemmasRows="newLemmasWithUserColumns"
+									:preloaded-options="importOptions.selectedList"
+									:new-lemmas-rows="newLemmasWithUserColumns"
 									@data="newLemmasWithList = $event"
 									@options="importOptions.selectedList = $event"
 									@submit="markStepDone(5)"
 								/>
 							</v-stepper-content>
 							<v-stepper-content step="6">
-								<lemma-importer :lemmasToImport="newLemmasWithList" @submit="$emit('submit')" />
+								<lemma-importer :lemmas-to-import="newLemmasWithList" @submit="$emit('submit')" />
 							</v-stepper-content>
 						</v-stepper-items>
 					</v-stepper>
@@ -108,19 +108,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component,Vue } from "vue-property-decorator";
 
-import { Data2D, LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
+import { type NewLemmaRow } from "@/types/lemma";
+import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
 import { ImportOptions } from "@/util/lemmaimport/options";
 
 import ImportFileDialog from "./ImportFileDialog.vue";
+import ImportOptionsSaver from "./ImportOptionsSaver.vue";
 import LemmaBuilder from "./LemmaBuilder.vue";
 import LemmaFormatter from "./LemmaFormatter.vue";
-import { NewLemmaRow } from "@/types/lemma";
-import UserColumnAdding from "./UserColumnAdding.vue";
-import ListSelector from "./ListSelector.vue";
-import ImportOptionsSaver from "./ImportOptionsSaver.vue";
 import LemmaImporter from "./LemmaImporter.vue";
+import ListSelector from "./ListSelector.vue";
+import UserColumnAdding from "./UserColumnAdding.vue";
 
 /**
  * Manage Import Steps
@@ -185,13 +185,13 @@ export default class LemmaImportManager extends Vue {
 	rawImportData: Data2D = new Data2D([], []);
 
 	// Some rows, will not be imported. These are their indexes.
-	missingRowsIndexes: number[] = [];
+	missingRowsIndexes: Array<number> = [];
 
-	lemmaPrototypes: LemmaPrototypeStringType[] = [];
+	lemmaPrototypes: Array<LemmaPrototypeStringType> = [];
 
-	newLemmas: NewLemmaRow[] = [];
-	newLemmasWithUserColumns: NewLemmaRow[] = [];
-	newLemmasWithList: NewLemmaRow[] = [];
+	newLemmas: Array<NewLemmaRow> = [];
+	newLemmasWithUserColumns: Array<NewLemmaRow> = [];
+	newLemmasWithList: Array<NewLemmaRow> = [];
 
 	get filteredRawImportData(): Data2D {
 		return this.rawImportData.selectRows(this.missingRowsIndexes, true);
@@ -208,16 +208,16 @@ export default class LemmaImportManager extends Vue {
 <style scoped>
 /* Show background blurred */
 div.lemma-importer-container {
-	background-color: #f5f6f8ee;
-	height: 100%;
+  height: 100%;
+  background-color: #f5f6f8ee;
 }
 
 /**
-* For some reasons v-stepper-header has a height of 72px. 
+* For some reasons v-stepper-header has a height of 72px.
  * This leads to some steps being outside of the contantainer, with medium screen sizes.
  * This is an easy solution.
 */
 /deep/ .v-stepper__header {
-	height: inherit;
+  height: inherit;
 }
 </style>

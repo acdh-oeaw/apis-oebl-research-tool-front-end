@@ -7,8 +7,8 @@
 						v-for="(targetColumn, sourceColumn) in localOptions"
 						:key="`${targetColumn}`"
 						close
-						@click:close="deleteMapping(targetColumn)"
 						class="chosen-user-column"
+						@click:close="deleteMapping(targetColumn)"
 					>
 						{{ sourceColumn }}: {{ targetColumn }}
 					</v-chip>
@@ -17,22 +17,22 @@
 			<v-row class="user-columns-adding-select">
 				<v-col class="user-columns-adding-select-source">
 					<v-select
+						v-model="chosenSourceColumn"
 						label="Quellspalte"
 						:items="vuetifySourceColumns"
-						v-model="chosenSourceColumn"
 						clearable
 					/>
 				</v-col>
 				<v-col class="user-columns-adding-select-target">
 					<v-text-field
-						label="Zielspalte"
 						v-model="chosenTargetColumn"
+						label="Zielspalte"
 						clearable
 						:rules="[targetColumnChosenMessage]"
 					/>
 				</v-col>
 				<v-col class="user-columns-adding-select-submit">
-					<v-btn @click="addUserColumn" :disabled="!columnFiledsAreSet()">Hinzufügen</v-btn>
+					<v-btn :disabled="!columnFiledsAreSet()" @click="addUserColumn">Hinzufügen</v-btn>
 				</v-col>
 			</v-row>
 			<v-row class="user-columns-adding-submit">
@@ -44,12 +44,14 @@
 		</v-container>
 	</div>
 </template>
+
 <script lang="ts">
-import { NewLemmaRow, UserColumn } from "@/types/lemma";
-import { Data2D } from "@/util/lemmaimport/datacontainers";
-import { addUserColumns, createUserColumns } from "@/util/lemmaimport/dataconversion";
-import { ColumnConversions, UserColumnMapping } from "@/util/lemmaimport/options";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type NewLemmaRow, type UserColumn } from "@/types/lemma";
+import { type Data2D } from "@/util/lemmaimport/datacontainers";
+import { addUserColumns, createUserColumns } from "@/util/lemmaimport/dataconversion";
+import { type ColumnConversions, type UserColumnMapping } from "@/util/lemmaimport/options";
 
 /**
  * Add custum user columns to lemmas. Called it UserColumn
@@ -57,7 +59,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class UserColumnAdding extends Vue {
 	@Prop({ required: true }) preloadedOptions!: UserColumnMapping;
-	@Prop({ required: true }) newLemmas!: NewLemmaRow[];
+	@Prop({ required: true }) newLemmas!: Array<NewLemmaRow>;
 	@Prop({ required: true }) rawImportData!: Data2D;
 	// This is needed to show the user, which columns, she/he had already chosen.
 	@Prop({ required: true }) columnMapping!: ColumnConversions;
@@ -98,11 +100,11 @@ export default class UserColumnAdding extends Vue {
 		text: string;
 		value: string;
 	}> {
-		const allSourceColumns: string[] = this.rawImportData.headers;
-		const selectedUserSourceColumns: string[] = Object.values(this.localOptions);
-		const topLevelSelectedSourceColumns: string[] = Object.values(this.columnMapping)
+		const allSourceColumns: Array<string> = this.rawImportData.headers;
+		const selectedUserSourceColumns: Array<string> = Object.values(this.localOptions);
+		const topLevelSelectedSourceColumns: Array<string> = Object.values(this.columnMapping)
 			.map(
-				(columnConversion): string | null | undefined => columnConversion?.extractOptions.sourceKey,
+				(columnConversion): string | null | undefined => columnConversion.extractOptions.sourceKey,
 			)
 			.filter((sourceKey): sourceKey is string => typeof sourceKey === "string");
 		const selectedSourceColumns = selectedUserSourceColumns.concat(topLevelSelectedSourceColumns);
@@ -153,7 +155,7 @@ export default class UserColumnAdding extends Vue {
 		);
 	}
 
-	userColumns: UserColumn[] = [];
+	userColumns: Array<UserColumn> = [];
 
 	@Watch("newLemmas", { deep: true, immediate: true })
 	@Watch("localOptions", { immediate: true, deep: true })
@@ -176,7 +178,7 @@ export default class UserColumnAdding extends Vue {
 		});
 	}
 
-	get enrichedLemmas(): NewLemmaRow[] {
+	get enrichedLemmas(): Array<NewLemmaRow> {
 		return addUserColumns(this.newLemmas, this.userColumns);
 	}
 }

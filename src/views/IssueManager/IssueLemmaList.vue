@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-row class="ml-5 mr-1" v-for="(column, columnIndex) in columns" :key="column.id">
+		<v-row v-for="(column, columnIndex) in columns" :key="column.id" class="ml-5 mr-1">
 			<v-subheader class="sticky-header background mt-3">
 				<v-badge
 					:content="column.items.length.toString()"
@@ -17,6 +17,11 @@
 					:value="column.items"
 					tag="tbody"
 					:scroll-sensitivity="200"
+					:data-status-id="column.id"
+					animation="200"
+					class="drop-target rounded-lg"
+					ghost-class="ghost"
+					group="people"
 					@input="
 						$emit(
 							'update-column',
@@ -26,25 +31,20 @@
 					"
 					@end="$emit('end-drag', $event)"
 					@start="onDragStart"
-					:data-status-id="column.id"
-					animation="200"
-					class="drop-target rounded-lg"
-					ghost-class="ghost"
-					group="people"
 				>
 					<!-- <transition-group type="transition" :name="animate ? 'flip-list' : null"> -->
 					<issue-lemma-row
+						v-for="(item, itemIndex) in column.items"
+						:key="item.id"
 						v-ripple="false"
 						:style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
 						class="pa-5 cursor-grab rounded-lg"
-						@select-lemma="$emit('select-lemma', item)"
 						:data-issue-lemma-id="item.id"
-						@dragstart="onDragStart($event, item)"
 						:tabindex="(columnIndex + 1) * 100 + itemIndex"
-						:key="item.id"
-						v-for="(item, itemIndex) in column.items"
 						:lemma="store.lemma.getLemmaById(item.lemma)"
 						:value="item"
+						@select-lemma="$emit('select-lemma', item)"
+						@dragstart="onDragStart($event, item)"
 					/>
 					<!-- </transition-group> -->
 				</draggable>
@@ -52,15 +52,18 @@
 		</v-row>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { IssueLemma, LemmaStatus, Label } from "@/types/issue";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Draggable from "vuedraggable";
-import IssueLemmaRow from "./IssueLemmaRow.vue";
+
+import { type IssueLemma, Label,type LemmaStatus } from "@/types/issue";
+
 import store from "../../store";
+import IssueLemmaRow from "./IssueLemmaRow.vue";
 
 interface Column extends LemmaStatus {
-	items: IssueLemma[];
+	items: Array<IssueLemma>;
 }
 
 @Component({
@@ -70,7 +73,7 @@ interface Column extends LemmaStatus {
 	},
 })
 export default class IssueLemmaList extends Vue {
-	@Prop({ default: [] }) columns!: Column[];
+	@Prop({ default: [] }) columns!: Array<Column>;
 	@Prop({ default: false }) animate!: boolean;
 	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
 
@@ -86,20 +89,21 @@ export default class IssueLemmaList extends Vue {
 	};
 }
 </script>
+
 <style lang="stylus" scoped>
 .sticky-header
   position sticky
   // TODO: dynamic based on app-bar height
   top 64px
-  width 100%
   z-index 1
+  width 100%
   font-weight 600
-  letter-spacing .1em
+  letter-spacing 0.1em
   text-transform uppercase
 
 .ghost
-  opacity: 0;
-  background: #c8ebfb;
+  background #c8ebfb
+  opacity 0%
 
 .cursor-grab
   cursor default
@@ -111,9 +115,9 @@ tr:focus
   margin-left -10px
 
 .label
-  color white !important
-  font-weight 600
   margin-right 1px
   padding 0 7px
-  letter-spacing -.05em
+  color white !important
+  font-weight 600
+  letter-spacing -0.05em
 </style>

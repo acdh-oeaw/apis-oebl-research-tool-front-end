@@ -5,7 +5,7 @@ type ImportOptionsCollections = {
 };
 
 export class ImportOptionsManager {
-	storageKey: string = "lemmaImportOptions";
+	storageKey = "lemmaImportOptions";
 	importOptionsCollections: ImportOptionsCollections = {};
 
 	constructor() {
@@ -33,7 +33,7 @@ export class ImportOptionsManager {
 		localStorage.setItem(this.storageKey, JSON.stringify(this.importOptionsCollections));
 	}
 
-	listImportOptionsNames(): string[] {
+	listImportOptionsNames(): Array<string> {
 		return Object.keys(this.importOptionsCollections);
 	}
 

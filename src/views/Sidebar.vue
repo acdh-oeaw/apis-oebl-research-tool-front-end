@@ -6,25 +6,25 @@
 	>
 		<div :style="{ zIndex: 1 }">
 			<div class="d-flex pb-2">
-				<v-btn @click="toggleDrawer" tile depressed class="rounded-lg mr-1" icon>
+				<v-btn tile depressed class="rounded-lg mr-1" icon @click="toggleDrawer">
 					<v-icon>mdi-dock-left</v-icon>
 				</v-btn>
 				<text-field
+					v-model="searchQuery"
 					class="flex-grow-1 mr-2"
 					:clearable="true"
 					color="background darken-3"
-					@keydown.esc.native="onEscSearch"
-					v-model="searchQuery"
 					:placeholder="showLoader === true ? 'Lade…' : 'Listen filtern…'"
+					@keydown.esc.native="onEscSearch"
 				>
-					<template v-slot:prepend>
+					<template #prepend>
 						<div v-if="showLoader === true" class="ml-2 mt-1">
 							<loading-spinner
 								:size="25"
 								:color="$vuetify.theme.dark === true ? 'white' : 'grey'"
 							/>
 						</div>
-						<v-icon size="16" class="ml-2 mr-0" v-else>mdi-magnify</v-icon>
+						<v-icon v-else size="16" class="ml-2 mr-0">mdi-magnify</v-icon>
 					</template>
 				</text-field>
 				<!-- <v-text-field
@@ -78,7 +78,7 @@
 				</v-list-item>
 			</v-list>
 			<!-- Abgaben -->
-			<v-subheader @click="showIssues = !showIssues" :class="['pl-1', showIssues && 'active']">
+			<v-subheader :class="['pl-1', showIssues && 'active']" @click="showIssues = !showIssues">
 				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
 				Abgaben
 			</v-subheader>
@@ -106,8 +106,8 @@
 				</v-list-item>
 			</v-list>
 			<v-subheader
-				@click="showMyLists = !showMyLists"
 				:class="['pl-1', 'pr-0', showMyLists && 'active']"
+				@click="showMyLists = !showMyLists"
 				@dragenter.prevent="onDragEnter($event)"
 				@dragover.prevent=""
 				@drop.prevent="createLemmaList($event)"
@@ -116,25 +116,25 @@
 				Meine Listen
 				<v-spacer />
 				<v-btn
-					@click.capture.prevent.stop="createLemmaList"
 					class="droppable rounded-lg"
 					style="margin-right: -2px"
-					@dragenter.prevent="onDragEnter($event)"
 					elevation="0"
 					text
 					test-id="create-list-btn"
 					small
 					color="primary darken-1"
+					@click.capture.prevent.stop="createLemmaList"
+					@dragenter.prevent="onDragEnter($event)"
 				>
 					Liste anlegen
 					<v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
 				</v-btn>
 			</v-subheader>
-			<v-list class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav v-show="showMyLists">
+			<v-list v-show="showMyLists" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
 				<v-list-item
-					:ripple="false"
 					v-for="list in filteredLemmaListsCurrentUser"
 					:key="list.id"
+					:ripple="false"
 					:input-value="store.lemma.selectedLemmaListId === list.id"
 					:to="'/lemmas/list/' + list.id"
 					class="mb-0 droppable"
@@ -152,33 +152,33 @@
 					</v-list-item-content>
 					<v-list-item-action>
 						<transition name="roll">
-							<badge test-id="lemma-list-count" :key="list.count" :content="list.count" />
+							<badge :key="list.count" test-id="lemma-list-count" :content="list.count" />
 						</transition>
 					</v-list-item-action>
-					<v-list-item-action class="ml-0" v-if="list.countNew !== 0">
+					<v-list-item-action v-if="list.countNew !== 0" class="ml-0">
 						<badge :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
 					</v-list-item-action>
 				</v-list-item>
 			</v-list>
 			<v-subheader
-				@click="showTeamLists = !showTeamLists"
 				:class="['pl-1', showTeamLists && 'active']"
+				@click="showTeamLists = !showTeamLists"
 			>
 				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
 				Team-Listen
 			</v-subheader>
 			<v-list
+				v-show="showTeamLists"
 				two-line
 				class="pa-0 ma-0 lemma-nav-list x-dense"
 				color="transparent"
 				nav
-				v-show="showTeamLists"
 			>
 				<v-list-item
-					two-line
-					:ripple="false"
 					v-for="list in filteredLemmaListsOtherUsers"
 					:key="list.id"
+					two-line
+					:ripple="false"
 					tabindex="-1"
 					:input-value="store.lemma.selectedLemmaListId === list.id"
 					:to="`/lemmas/list/${list.id}`"
@@ -207,21 +207,21 @@
 				</v-list-item>
 			</v-list>
 			<v-subheader
-				@click="showQueries = !showQueries"
 				:class="['px-0', showQueries && 'active']"
 				class="pl-1"
+				@click="showQueries = !showQueries"
 			>
 				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
 				Meine Abfragen
 			</v-subheader>
-			<v-list class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav v-show="showQueries">
+			<v-list v-show="showQueries" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
 				<v-list-item
+					v-for="(filter, i) in filteredStoredLemmaFilters"
+					:key="'l' + i"
 					:ripple="false"
 					class="mb-0"
 					:input-value="filter.id === store.lemma.selectedLemmaFilterId"
 					@click="selectLemmaFilter(filter.id)"
-					v-for="(filter, i) in filteredStoredLemmaFilters"
-					:key="'l' + i"
 				>
 					<v-list-item-avatar tile>
 						<v-icon color="primary darken-1" small>mdi-filter-variant</v-icon>
@@ -249,19 +249,22 @@
 		</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import store from "../store";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-import { LemmaRow } from "@/types/lemma";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { requestState } from "@/api/core/request";
+import { type List as LemmaList, type List } from "@/api/models/List";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
-import { List as LemmaList, List } from "@/api/models/List";
-import { WithId } from "@/types";
-import { requestState } from "@/api/core/request";
-import TextField from "./lib/TextField.vue";
+import { type WithId } from "@/types";
+import { type LemmaRow } from "@/types/lemma";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+
+import store from "../store";
 import Badge from "./lib/Badge.vue";
+import TextField from "./lib/TextField.vue";
 
 @Component({
 	components: {
@@ -358,7 +361,7 @@ export default class Sidebar extends Vue {
 	async copyLemmasToList(list: WithId<List>, e: DragEvent) {
 		console.log("copy lemma to list", e);
 		console.log("data transfer!", e.dataTransfer?.getData("text/plain"));
-		const lemmas = JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as LemmaRow[];
+		const lemmas = JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
 		const listItems = store.lemma.getLemmasByList(list.id);
 		const newLemmaList = _.uniq([...lemmas.map((l) => l.id), ...listItems]);
 		const diff = newLemmaList.length - listItems.length;
@@ -380,7 +383,7 @@ export default class Sidebar extends Vue {
 	async addLemmaToIssue(issueId: number, e: DragEvent) {
 		const lemmas =
 			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as LemmaRow[])
+				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
 				: [];
 		store.issue.addLemmaToIssue(issueId, lemmas);
 	}
@@ -388,7 +391,7 @@ export default class Sidebar extends Vue {
 	async createLemmaList(e: DragEvent | MouseEvent) {
 		const lemmas =
 			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as LemmaRow[])
+				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
 				: [];
 		const lemmaNameRules = [
 			(n: string | null) =>
@@ -473,11 +476,13 @@ export default class Sidebar extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus">
 
 .droppable *
   pointer-events none !important
 </style>
+
 <style lang="stylus" scoped>
 
 .sidebar:focus .v-list-item--active
@@ -486,16 +491,16 @@ export default class Sidebar extends Vue {
   color white
 
 .drag-over
-  box-shadow inset 0px 0px 0px 3px var(--v-primary-base) !important
+  box-shadow inset 0 0 0 3px var(--v-primary-base) !important
 
 .v-subheader
-  font-size .75rem
-  font-weight 500
-  opacity .8
-  cursor default
   height 24px
   margin-top 16px
   margin-bottom 3px
+  font-weight 500
+  font-size 0.75rem
+  opacity 80%
+  cursor default
   user-select none
 
 .v-subheader .v-icon
@@ -512,31 +517,38 @@ export default class Sidebar extends Vue {
   min-height 32px !important
 
 .v-list-item .v-list-item__content
-  opacity .8
+  opacity 80%
 
 .v-list-item__action
-  margin 0 0
+  margin 0
 
 .lemma-nav-list /deep/ .v-list-group__header
-  &:before
-    opacity 0 !important
+  &::before
+    opacity 0% !important
+
   .v-icon
-    opacity 0
+    opacity 0%
+
   &:hover .v-icon
-    opacity 1
+    opacity 100%
 
 .lemma-nav-list
 .lemma-nav-list /deep/ *
   cursor default !important
 
-.roll-enter-active, .roll-leave-active
+.roll-enter-active
+.roll-leave-active
   position relative
-  transition: all .3s ease;
-.roll-enter, .roll-leave-to
+  transition all 0.3s ease
+
+.roll-enter
+.roll-leave-to
   position absolute
-  opacity: 0
+  opacity 0%
+
 .roll-enter
   transform translateY(20px)
+
 .roll-leave-to
   transform translateY(-20px)
 </style>

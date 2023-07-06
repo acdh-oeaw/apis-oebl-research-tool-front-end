@@ -4,8 +4,8 @@
 			<v-row class="null-managment-options">
 				<v-col>
 					<v-combobox
-						multiple
 						v-model="localNullValues"
+						multiple
 						:items="vuetifyNullSelect"
 						label="Nullwerte"
 						deletable-chips
@@ -13,7 +13,7 @@
 					/>
 				</v-col>
 			</v-row>
-			<v-row class="fields-missing" v-if="nullPrototypes.length">
+			<v-row v-if="nullPrototypes.length" class="fields-missing">
 				<v-col>
 					<lemma-previewer
 						:lemmas="nullPrototypes"
@@ -34,10 +34,12 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import {
-	LemmaPrototypeStringType,
-	LemmaPrototypeNullableStringType,
-	LemmaPrototypeRequiredFieldsType,
+	type LemmaPrototypeNullableStringType,
+	type LemmaPrototypeRequiredFieldsType,
+	type LemmaPrototypeStringType,
 } from "@/util/lemmaimport/datacontainers";
 import {
 	filterMissingRequiredFields,
@@ -45,7 +47,7 @@ import {
 	replaceNullStrings,
 	showMissingRequiredFields,
 } from "@/util/lemmaimport/dataconversion";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import LemmaPreviewer from "./LemmaPreviewer.vue";
 
 @Component({
@@ -54,31 +56,31 @@ import LemmaPreviewer from "./LemmaPreviewer.vue";
 	},
 })
 export default class NullManager extends Vue {
-	@Prop({ required: true }) lemmaPrototypes!: LemmaPrototypeStringType[];
-	@Prop({ required: true }) preloadedNullValues!: string[];
+	@Prop({ required: true }) lemmaPrototypes!: Array<LemmaPrototypeStringType>;
+	@Prop({ required: true }) preloadedNullValues!: Array<string>;
 
-	localNullValues: string[] = [];
+	localNullValues: Array<string> = [];
 
 	@Watch("preloadedNullValues", { immediate: true, deep: true })
 	setLocalOptions() {
 		this.localNullValues = this.preloadedNullValues;
 	}
 
-	get lemmasWithNulls(): LemmaPrototypeNullableStringType[] {
+	get lemmasWithNulls(): Array<LemmaPrototypeNullableStringType> {
 		return this.lemmaPrototypes.map((lemmaPrototype) =>
 			replaceNullStrings(lemmaPrototype, this.localNullValues),
 		);
 	}
 
-	get lemmaPrototypesWithRequiredFields(): LemmaPrototypeRequiredFieldsType[] {
+	get lemmaPrototypesWithRequiredFields(): Array<LemmaPrototypeRequiredFieldsType> {
 		return filterMissingRequiredFields(this.lemmasWithNulls);
 	}
 
-	get nullPrototypes(): LemmaPrototypeNullableStringType[] {
+	get nullPrototypes(): Array<LemmaPrototypeNullableStringType> {
 		return showMissingRequiredFields(this.lemmasWithNulls);
 	}
 
-	get missingRequiredFieldIndexes(): number[] {
+	get missingRequiredFieldIndexes(): Array<number> {
 		return getMissingRequiredFieldIndexes(this.nullPrototypes);
 	}
 

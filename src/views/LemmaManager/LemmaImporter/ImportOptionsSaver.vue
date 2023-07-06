@@ -15,26 +15,26 @@
 				<v-col>
 					<div v-if="currentlySaving" class="saving-options-dialog">
 						<v-combobox
-							label="Speichern unter"
 							v-model="newOptionsName"
+							label="Speichern unter"
 							:items="optionsNames"
 							@input="saveOption"
 						/>
 					</div>
 					<div v-else-if="optionsNames.length > 0" class="load-options-dialog">
 						<v-select
-							label="Einstellungen laden"
 							v-model="newOptionsName"
+							label="Einstellungen laden"
 							:items="optionsNames"
 							:disabled="disabled"
 						/>
-						<v-btn v-if="newOptionsName" @click="loadOption" icon>
+						<v-btn v-if="newOptionsName" icon @click="loadOption">
 							<v-icon>mdi-check</v-icon>
 						</v-btn>
 					</div>
 				</v-col>
 				<v-col>
-					<div class="currently-loaded-import-options-name" v-if="selectedOptionsName">
+					<div v-if="selectedOptionsName" class="currently-loaded-import-options-name">
 						"{{ selectedOptionsName }}" geladen
 					</div>
 				</v-col>
@@ -44,9 +44,10 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { ImportOptionsManager } from "@/util/lemmaimport/optionmanagement";
 import { ImportOptions } from "@/util/lemmaimport/options";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class ImportOptionsSaver extends Vue {
@@ -63,7 +64,7 @@ export default class ImportOptionsSaver extends Vue {
 
 	errorMessage: string | null = null;
 
-	optionsChangedByLoading: boolean = false;
+	optionsChangedByLoading = false;
 
 	currentlySaving = false;
 
@@ -72,7 +73,7 @@ export default class ImportOptionsSaver extends Vue {
 		this.localOptions = this.globalOptions;
 	}
 
-	changedByUserInteraction: boolean = false;
+	changedByUserInteraction = false;
 
 	@Watch("localOptions", { immediate: true, deep: true })
 	setChanged() {
@@ -88,7 +89,7 @@ export default class ImportOptionsSaver extends Vue {
 		}
 	}
 
-	optionsNames: string[] = [];
+	optionsNames: Array<string> = [];
 
 	updateOptionsNames(): void {
 		this.optionsNames = this.importOptionsManager.listImportOptionsNames();

@@ -1,7 +1,7 @@
-import { WorkflowService, Author } from "@/api";
+import { type Author,WorkflowService } from "@/api";
 
 export default class AuthorStore {
-	private _authors: Author[] = [];
+	private _authors: Array<Author> = [];
 
 	constructor() {
 		this.loadAuthors();

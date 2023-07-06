@@ -8,57 +8,60 @@
 		<div class="caption label">{{ label }}</div>
 		<v-spacer></v-spacer>
 		<input
+			ref="date"
+			v-model.number="localDate.calendarDate"
 			min="1"
 			:max="localDate.getMaxDate()"
 			maxlength="2"
-			v-model.number="localDate.calendarDate"
 			class="pa-1 text--primary"
 			style="width: 40px"
 			placeholder="TT"
-			ref="date"
 		/>
 		<input
+			ref="month"
+			v-model.number="localDate.calendarMonth"
 			maxlength="2"
 			min="1"
 			max="12"
-			v-model.number="localDate.calendarMonth"
 			class="pa-1 text--primary"
 			style="width: 40px"
 			placeholder="MM"
-			ref="month"
 		/>
 		<input
+			ref="year"
+			v-model.number="localDate.calendarYear"
 			minlength="4"
 			maxlength="4"
-			v-model.number="localDate.calendarYear"
 			class="pa-1 text--primary"
 			style="width: 50px"
 			placeholder="JJJJ"
-			ref="year"
 		/>
 		<v-spacer></v-spacer>
 		<v-menu v-model="datePickerIsOpen" class="date-picker">
-			<template v-slot:activator="{ on, attrs }">
-				<v-btn v-on="on" v-bind="attrs" icon><v-icon>mdi-calendar</v-icon></v-btn>
+			<template #activator="{ on, attrs }">
+				<v-btn v-bind="attrs" icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
 			</template>
 			<v-date-picker
 				no-title
 				scrollable
 				:value="defaultISOValue"
-				@change="updateFromDatePicker"
 				:first-day-of-week="1"
+				@change="updateFromDatePicker"
 			></v-date-picker>
 		</v-menu>
-		<v-btn @click="localDate.reset()" icon>
+		<v-btn icon @click="localDate.reset()">
 			<v-icon>mdi-close-circle-outline</v-icon>
 		</v-btn>
 	</v-input>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import TextField from "./TextField.vue";
-import { DateContainer } from "@/util/dates";
 import { debounce } from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { DateContainer } from "@/util/dates";
+
+import TextField from "./TextField.vue";
 
 const standaloneUpdateGlobalStateFunction = (instance: DateField) => {
 	if (
@@ -84,7 +87,7 @@ export default class DateField extends Vue {
 	localDate: DateContainer = new DateContainer();
 
 	// if v-datepicker is visible
-	datePickerIsOpen: boolean = false;
+	datePickerIsOpen = false;
 
 	@Watch("date", { immediate: true, deep: true })
 	updateLocalDate() {
@@ -102,7 +105,7 @@ export default class DateField extends Vue {
 		return this.errorMessages.length > 0;
 	}
 
-	get errorMessages(): string[] {
+	get errorMessages(): Array<string> {
 		if (
 			this.localDate.calendarYear === undefined ||
 			this.localDate.calendarMonth === undefined ||
@@ -167,25 +170,27 @@ export default class DateField extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
-.date-field {
-  font-size: 0.85rem;
-}
+.date-field
+  font-size 0.85rem
 
-.label {
-  opacity: 0.7;
-}
 
-input {
-  text-align: center;
-}
+.label
+  opacity 70%
 
-.v-alert {
-  font-size: 14px;
-}
+
+input
+  text-align center
+
+
+.v-alert
+  font-size 14px
+
 </style>
+
 <style lang="stylus">
-.modifier-menu {
-  width: 62px;
-}
+.modifier-menu
+  width 62px
+
 </style>

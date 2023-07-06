@@ -9,18 +9,20 @@
 			@input="updateItem(i, $event)"
 		>
 			<div class="text-no-wrap align-self-center">
-				<v-btn tabindex="-1" @click="removeItem(i)" tile class="rounded-lg mt-1" icon small>
+				<v-btn tabindex="-1" tile class="rounded-lg mt-1" icon small @click="removeItem(i)">
 					<v-icon>mdi-minus-circle-outline</v-icon>
 				</v-btn>
-				<v-btn tabindex="-1" @click="insertItemAt(i)" tile class="rounded-lg mt-1 mr-1" icon small>
+				<v-btn tabindex="-1" tile class="rounded-lg mt-1 mr-1" icon small @click="insertItemAt(i)">
 					<v-icon>mdi-plus-circle-outline</v-icon>
 				</v-btn>
 			</div>
 		</text-field>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import TextField from "./TextField.vue";
 
 @Component({
@@ -29,7 +31,7 @@ import TextField from "./TextField.vue";
 	},
 })
 export default class TextFieldAlternatives extends Vue {
-	@Prop({ default: () => [] }) value!: string[];
+	@Prop({ default: () => [] }) value!: Array<string>;
 	@Prop({ default: "" }) label!: string;
 
 	updateItem(i: number, v: string) {
@@ -51,4 +53,5 @@ export default class TextFieldAlternatives extends Vue {
 	}
 }
 </script>
+
 <style lang="scss" scoped></style>

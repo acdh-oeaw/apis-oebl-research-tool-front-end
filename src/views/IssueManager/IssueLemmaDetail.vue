@@ -1,5 +1,5 @@
 <template>
-	<v-card class="transparent flex-column d-flex fill-height" flat v-if="lemma">
+	<v-card v-if="lemma" class="transparent flex-column d-flex fill-height" flat>
 		<v-card-title v-if="researchLemma !== null">
 			<v-container class="pa-0">
 				<v-row no-gutters>
@@ -33,8 +33,8 @@
 						key-value="id"
 						key-name="name"
 						:return-value="true"
-						@input="updateLemma({ status: $event })"
 						background-color="transparent"
+						@input="updateLemma({ status: $event })"
 					/>
 				</form-row>
 				<form-row label="Redakteur">
@@ -46,8 +46,8 @@
 						:value="lemmaEditor"
 						key-value="userId"
 						key-name="name"
-						@input="updateLemma({ editor: $event.userId })"
 						background-color="transparent"
+						@input="updateLemma({ editor: $event.userId })"
 					/>
 				</form-row>
 				<form-row label="Autor">
@@ -112,6 +112,7 @@
 			</h4>
 			<v-card-text style="position: relative" class="pt-0">
 				<v-textarea
+					v-model="newNote"
 					placeholder="Notiz hinzufügen…"
 					rows="1"
 					hide-details
@@ -120,30 +121,29 @@
 					solo
 					flat
 					:disabled="isAddingNote || isLoadingNotes"
-					v-model="newNote"
+					background-color="background darken-2"
 					@keydown.meta.enter.prevent="addNote"
 					@keydown.ctrl.enter.prevent="addNote"
-					background-color="background darken-2"
 				>
-					<template v-slot:append>
+					<template #append>
 						<v-btn
 							small
 							:disabled="newNote === null || newNote.trim() === ''"
 							elevation="0"
-							@click="addNote"
 							class="rounded-lg"
 							icon
 							tile
+							@click="addNote"
 						>
 							<v-icon small>mdi-send</v-icon>
 						</v-btn>
 					</template>
 				</v-textarea>
-				<div class="rounded-lg background darken-1 pa-2 mb-1" v-for="(note, i) in notes" :key="i">
-					<div style="opacity: 0.7" class="px-1 caption note">
+				<div v-for="(note, i) in notes" :key="i" class="rounded-lg background darken-1 pa-2 mb-1">
+					<div style="opacity: 70%" class="px-1 caption note">
 						{{ getUserName(note.user) }} — {{ formatTimeDistance(note.created) }}
 					</div>
-					<div v-text="note.text" class="px-1 pb-2" />
+					<div class="px-1 pb-2" v-text="note.text" />
 				</div>
 			</v-card-text>
 		</div>
@@ -153,18 +153,21 @@
 		</v-card-actions>
 	</v-card>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { LemmaStatus } from "@/types/issue";
+import format from "date-fns/esm/format";
+import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
+import de from "date-fns/esm/locale/de";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type Author,type Editor, type IssueLemma, type LemmaNote } from "@/api";
+import { type LemmaStatus } from "@/types/issue";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
+
+import store from "../../store";
+import FormRow from "../lib/FormRow.vue";
 import LoadingSpinner from "../lib/LoadingSpinner.vue";
 import LemmaLabels from "./LemmaLabels.vue";
-import FormRow from "../lib/FormRow.vue";
-import store from "../../store";
-import { LemmaNote, IssueLemma, Editor, Author } from "@/api";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
-import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
-import format from "date-fns/esm/format";
-import de from "date-fns/esm/locale/de";
 
 @Component({
 	components: {
@@ -180,7 +183,7 @@ export default class IssueLemmaDetail extends Vue {
 
 	@Prop({ required: true }) lemma!: IssueLemma;
 
-	notes: LemmaNote[] = [];
+	notes: Array<LemmaNote> = [];
 	newNote = "";
 	store = store;
 
@@ -199,7 +202,7 @@ export default class IssueLemmaDetail extends Vue {
 		}
 	}
 
-	get lemmaStatuses(): LemmaStatus[] {
+	get lemmaStatuses(): Array<LemmaStatus> {
 		return store.issue.statuses;
 	}
 
@@ -268,7 +271,7 @@ export default class IssueLemmaDetail extends Vue {
 		this.$emit("update", this.lemma.id, l);
 	}
 
-	updateLabels(labels: number[]) {
+	updateLabels(labels: Array<number>) {
 		this.updateLemma({ labels });
 	}
 
@@ -290,21 +293,25 @@ export default class IssueLemmaDetail extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 // allow whitespace in notes
 .note
   white-space break-spaces
 
-.roll-enter-active, .roll-leave-active
+.roll-enter-active
+.roll-leave-active
   position relative
-  transition: all .3s ease;
+  transition all 0.3s ease
 
-.roll-enter, .roll-leave-to
+.roll-enter
+.roll-leave-to
   position absolute
-  opacity: 0
+  opacity 0%
 
 .roll-enter
   transform translateY(20px)
+
 .roll-leave-to
   transform translateY(-20px)
 </style>

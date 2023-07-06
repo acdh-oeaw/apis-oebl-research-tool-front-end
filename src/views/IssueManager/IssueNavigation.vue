@@ -2,6 +2,7 @@
 	<div class="d-flex fill-height flex-column overflow-y-hidden">
 		<div class="background darken-2" :style="{ zIndex: 1 }">
 			<v-text-field
+				v-model="searchQuery"
 				placeholder="Abgaben suchen…"
 				solo
 				autofocus
@@ -9,11 +10,10 @@
 				dense
 				prepend-inner-icon="mdi-magnify"
 				background-color="background darken-3"
-				@keydown.esc="searchQuery = ''"
-				v-model="searchQuery"
 				hide-details
 				clearable
 				flat
+				@keydown.esc="searchQuery = ''"
 			/>
 			<v-divider class="mt-3" />
 		</div>
@@ -22,17 +22,17 @@
 				subheader
 				class="mt-4 pr-0"
 				color="transparent"
-				@dragleave.prevent="highlighted = null"
 				nav
 				dense
+				@dragleave.prevent="highlighted = null"
 			>
 				<v-subheader class="sticky background darken-2" :style="{ zIndex: 1 }">Abgaben</v-subheader>
 				<v-list-item
+					v-for="i in store.issue.issues"
+					:key="i.id"
 					dense
 					class="rounded-lg mb-0"
 					:to="'/issue/' + i.id"
-					v-for="i in store.issue.issues"
-					:key="i.id"
 				>
 					<v-list-item-avatar size="15" tile>
 						<v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>
@@ -47,8 +47,10 @@
 		</div>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import store from "../../store";
 
 @Component
@@ -63,6 +65,7 @@ export default class LemmaNavigation extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 
 .search-field /deep/ .v-icon.v-icon
@@ -72,5 +75,5 @@ export default class LemmaNavigation extends Vue {
   margin 10px 0
 
 .drag-over
-  box-shadow inset 0px 0px 0px 3px var(--v-primary-base)
+  box-shadow inset 0 0 0 3px var(--v-primary-base)
 </style>

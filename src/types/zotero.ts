@@ -32,7 +32,7 @@ export interface ZoteroItem {
 		// archiveLocation: string
 		// callNumber: string
 		// collections: Array<unknown>
-		creators: ZoteroItemCreator[];
+		creators: Array<ZoteroItemCreator>;
 		// date: string
 		dateAdded: string;
 		dateModified: string;

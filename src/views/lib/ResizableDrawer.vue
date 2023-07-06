@@ -1,12 +1,12 @@
 <template>
 	<v-navigation-drawer
-		:color="color"
 		v-bind="{ ...$props, ...$attrs }"
+		ref="drawer"
+		:color="color"
 		:right="right"
 		stateless
 		:clipped="clipped"
 		:width="localWidth"
-		ref="drawer"
 		:class="{
 			'display-card': card,
 			'nav-drawer': true,
@@ -14,14 +14,14 @@
 		}"
 		:floating="floating"
 		:value="value"
-		@input="handleInput"
 		app
+		@input="handleInput"
 	>
 		<div
 			v-if="!mini"
+			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"
 			@dblclick="expandOrShrink"
 			@mousedown="startDrag"
-			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"
 		>
 			<div
 				class="resize-handle"
@@ -31,8 +31,9 @@
 		<slot />
 	</v-navigation-drawer>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class ResizableDrawer extends Vue {
@@ -83,7 +84,7 @@ export default class ResizableDrawer extends Vue {
 		document.body.style.webkitUserSelect = "initial";
 	}
 
-	disableTransitions(...selectors: string[]) {
+	disableTransitions(...selectors: Array<string>) {
 		selectors.forEach((s) => {
 			document.querySelectorAll(s).forEach((e) => {
 				if (e instanceof HTMLElement) {
@@ -149,17 +150,19 @@ export default class ResizableDrawer extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus">
 .nav-drawer .v-navigation-drawer__content
+  position relative
   background var(--bg-color)
-  position: relative;
 </style>
 
 <style lang="stylus" scoped>
 .nav-drawer:not(.v-navigation-drawer--custom-mini-variant)
+  overflow visible
   min-width 100px
   will-change width
-  overflow visible
+
   & /deep/ .v-navigation-drawer__content
     background-color var(--v-color)
 
@@ -167,8 +170,8 @@ export default class ResizableDrawer extends Vue {
   paddding-left 100px
 
 .nav-drawer.display-card /deep/ .v-navigation-drawer__content
-  box-shadow 10px 10px 100px rgba(0,0,50,.15)
   border-radius 13px
+  box-shadow 10px 10px 100px rgb(0 0 50 / 15%)
 
 .nav-drawer.display-card /deep/ .v-navigation-drawer__content
   margin 10px 0 10px 10px
@@ -178,27 +181,29 @@ export default class ResizableDrawer extends Vue {
 
 .resize-handle-outer
   position absolute
+  right -6px
+  z-index 6
   width 12px
   height 100%
-  right -6px
-  cursor ew-resize;
-  z-index 6
+  cursor ew-resize
+
   &.right
     right auto
     left -6px
+
   &:hover .resize-handle
   &.dragging .resize-handle
-    opacity 1
+    opacity 100%
 
 .resize-handle
-  transition .2s
-  opacity 0
   position absolute
-  width 1px
   top 0
   bottom 0
-  left 6px;
+  left 6px
+  width 1px
+  opacity 0%
+  transition 0.2s
 
 .theme--light
-  color rgba(0,0,0,.7)
+  color rgb(0 0 0 / 70%)
 </style>

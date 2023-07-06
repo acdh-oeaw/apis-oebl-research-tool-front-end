@@ -1,7 +1,8 @@
-import { List } from "@/api/models/List";
-import store from "@/store";
-import { NewLemmaRow } from "@/types/lemma";
 import Vue from "vue";
+
+import { type List } from "@/api/models/List";
+import store from "@/store";
+import { type NewLemmaRow } from "@/types/lemma";
 
 type ChosenLemmaList = NonNullable<NewLemmaRow["list"]>;
 
@@ -12,7 +13,7 @@ export class ListManager {
 
 	private store = store;
 
-	get lemmaLists(): ChosenLemmaList[] {
+	get lemmaLists(): Array<ChosenLemmaList> {
 		const listsInOtherListFormat = this.store.lemma.lemmaLists;
 		return listsInOtherListFormat.map((otherFormat) => {
 			return {
@@ -24,7 +25,7 @@ export class ListManager {
 	}
 
 	public async createNewLemmaList(title: string): Promise<ChosenLemmaList> {
-		if (title in this.lemmaLists.map((list) => list?.title)) {
+		if (title in this.lemmaLists.map((list) => list.title)) {
 			throw Error(`Lemma list with title <${title}> can not be created: It already exists`);
 		}
 
@@ -38,7 +39,7 @@ export class ListManager {
 
 	public async getLemmaList(title: string): Promise<ChosenLemmaList> {
 		const lemmaLists = this.lemmaLists.filter(
-			(list) => list?.title !== undefined && list.title === title,
+			(list) => list.title !== undefined && list.title === title,
 		);
 		if (lemmaLists.length === 1) {
 			return lemmaLists[0];

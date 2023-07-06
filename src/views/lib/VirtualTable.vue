@@ -1,19 +1,20 @@
 <template>
 	<div class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
 		<v-menu
+			v-if="editPopUp !== null"
 			:close-on-content-click="false"
 			min-width="130"
 			max-width="400"
 			content-class="transition-left"
 			class="soft-shadow"
-			v-if="editPopUp !== null"
 			:value="editPopUp !== null"
-			@input="(e) => e === false && (editPopUp = null)"
 			:position-x="editPopUp.x - 3"
 			:position-y="editPopUp.y - 10"
+			@input="(e) => e === false && (editPopUp = null)"
 		>
 			<v-card elevation="0" color="background lighten-2" rounded="lg">
 				<text-field
+					v-model="editPopUp.value"
 					class="mx-2"
 					style="min-height: 1em"
 					color="background lighten-2"
@@ -22,29 +23,28 @@
 					@keydown.native.tab.exact.prevent="editNextField(1)"
 					@keydown.native.tab.shift.exact.prevent="editNextField(-1)"
 					@keydown.native.enter="onEditItem"
-					v-model="editPopUp.value"
 				/>
 				<v-divider />
 				<v-card-actions>
-					<v-btn @click="editPopUp = null" text rounded x-small>Abbrechen</v-btn>
+					<v-btn text rounded x-small @click="editPopUp = null">Abbrechen</v-btn>
 					<v-spacer />
-					<v-btn @click="onEditItem" elevation="0" rounded x-small>Speichern</v-btn>
+					<v-btn elevation="0" rounded x-small @click="onEditItem">Speichern</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-menu>
 		<draggable
 			:disabled="sortableColumns === false"
 			:value="visibleColumns"
-			@start.stop.prevent.capture=""
-			@end.stop.prevent.capture=""
-			@input="updateColumnOrder"
 			tag="div"
 			:class="['header-row', 'rounded-lg', headerColor]"
 			animation="200"
-			:style="{ transform: `translateX(-${this.scrollLeft}px)` }"
+			:style="{ transform: `translateX(-${scrollLeft}px)` }"
 			drag-class="header-row-drag"
 			ghost-class="header-row-ghost"
 			direction="horizontal"
+			@start.stop.prevent.capture=""
+			@end.stop.prevent.capture=""
+			@input="updateColumnOrder"
 		>
 			<div
 				v-for="column in visibleColumns"
@@ -68,37 +68,37 @@
 				<text-field
 					v-if="showFilter && column.type !== 'boolean'"
 					placeholder="Suchen…"
-					@input="emitFilterEvent(column, $event)"
-					@keydown.esc="emitFilterEvent(column, '')"
 					class="mb-0"
 					color="background darken-3 mx-0"
+					@input="emitFilterEvent(column, $event)"
+					@keydown.esc="emitFilterEvent(column, '')"
 				/>
 				<select-menu
 					v-else-if="showFilter && column.type === 'boolean'"
 					:hide-searchbar="true"
-					@input="emitFilterEvent(column, $event.value)"
 					:items="[
 						{ name: 'egal', value: null },
 						{ name: 'ja', value: true },
 						{ name: 'nein', value: false },
 					]"
+					@input="emitFilterEvent(column, $event.value)"
 				/>
 				<!-- <input @keyup.stop="" v-show="showFilter" type="text" placeholder="☉ Suchen…" /> -->
 			</div>
 		</draggable>
 		<v-virtual-scroll
-			style="contain: content"
 			ref="scroller"
+			style="contain: content"
 			:bench="10"
 			tabindex="-1"
-			@keyup="$emit('keyup', $event)"
-			@scroll.passive="onScroll"
 			class="virtual-scroller"
 			:items="data"
 			:height="height - rowHeight"
 			:item-height="rowHeight"
+			@keyup="$emit('keyup', $event)"
+			@scroll.passive="onScroll"
 		>
-			<template v-slot:default="{ item, index }">
+			<template #default="{ item, index }">
 				<div
 					test-id="lemma-row"
 					:draggable="$listeners['drag:row']"
@@ -121,9 +121,9 @@
 							width: column.width ? column.width + 'px' : defaultWidth,
 							maxHeight: rowHeight - 5 + 'px',
 						}"
+						:class="['table-cell', column.editable && 'editable']"
 						@click="$emit('click:cell', item, $event, column.value, index)"
 						@dblclick="onDblClickCell(item, $event, column, index)"
-						:class="['table-cell', column.editable && 'editable']"
 					>
 						<slot
 							name="cell"
@@ -139,15 +139,17 @@
 		</v-virtual-scroll>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import Draggable from "vuedraggable";
-import TextField from "@/views/lib/TextField.vue";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
 import _ from "lodash";
-import { LemmaColumn, LemmaRow } from "@/types/lemma";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Draggable from "vuedraggable";
+
 import { getValueFromLemmaRowByColumn } from "@/store/lemma";
+import { type LemmaColumn, type LemmaRow } from "@/types/lemma";
 import { DateContainer } from "@/util/dates";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
+import TextField from "@/views/lib/TextField.vue";
 
 function getNextSibling(el: HTMLElement, selector: string): HTMLElement | undefined {
 	// Get the next sibling element
@@ -182,27 +184,27 @@ function getPreviousSibling(el: HTMLElement, selector: string): HTMLElement | un
 	},
 })
 export default class VirtualTable extends Vue {
-	@Prop({ default: [] }) columns!: LemmaColumn[];
+	@Prop({ default: [] }) columns!: Array<LemmaColumn>;
 	@Prop({ required: true }) height!: number;
-	@Prop({ default: [] }) data!: LemmaRow[];
+	@Prop({ default: [] }) data!: Array<LemmaRow>;
 	@Prop({ default: 40 }) rowHeight!: number;
 	@Prop({ default: true }) sortableColumns!: boolean;
 	@Prop({ default: true }) keyboardSelection!: boolean;
 	@Prop({ default: "" }) headerColor!: string;
 	@Prop({ default: null }) scrollToRow!: number | null;
-	@Prop({ default: () => [] }) selectedRows!: LemmaRow[];
+	@Prop({ default: () => [] }) selectedRows!: Array<LemmaRow>;
 	@Prop({ default: false }) showFilter!: boolean;
 
 	selected: { [key: number]: LemmaRow } = {};
 	log = console.log;
 	scrollLeft = 0;
 
-	columnQueries: { [key: string]: string | boolean | null } = {};
+	columnQueries: { [key: string]: boolean | string | null } = {};
 
 	editPopUp: {
 		x: number;
 		y: number;
-		value: string | null | string[];
+		value: Array<string> | string | null;
 		item: LemmaRow;
 		column: LemmaColumn;
 		el: HTMLElement;
@@ -231,7 +233,7 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): string | null | string[] {
+	getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): Array<string> | string | null {
 		const value = getValueFromLemmaRowByColumn(lemma, column);
 		if (value === null || value == undefined) {
 			return null;
@@ -245,13 +247,13 @@ export default class VirtualTable extends Vue {
 		}
 
 		if (column.value === "gnd") {
-			return value as string[];
+			return value as Array<string>;
 		}
 
 		return JSON.stringify(value);
 	}
 
-	emitFilterEvent(c: LemmaColumn, ev?: string | boolean | null) {
+	emitFilterEvent(c: LemmaColumn, ev?: boolean | string | null) {
 		if (ev !== undefined && ev !== null && ev !== "") {
 			this.columnQueries[c.value] = ev;
 		} else {
@@ -424,7 +426,7 @@ export default class VirtualTable extends Vue {
 		return 100 / this.visibleColumns.length + "%";
 	}
 
-	updateColumnOrder(cs: LemmaColumn[]) {
+	updateColumnOrder(cs: Array<LemmaColumn>) {
 		this.$emit("update:columns", [...cs, ...this.columns.filter((c) => c.show === false)]);
 	}
 }
@@ -433,7 +435,7 @@ export default class VirtualTable extends Vue {
 <style lang="stylus" scoped>
 
 .transition-left
-  transition left .1s
+  transition left 0.1s
 
 // tell browser NOT to cache the millions
 // of rows/DOM elements we’re gonna put here.
@@ -442,11 +444,11 @@ export default class VirtualTable extends Vue {
 
 // header when sorting
 .header-row-drag
-  background var(--v-background-darken2)
   border-radius 10px
+  background var(--v-background-darken2)
 
 .header-row-ghost
-  opacity 0 !important
+  opacity 0% !important
 
 // general layout
 
@@ -456,61 +458,67 @@ export default class VirtualTable extends Vue {
   line-height 1.2
 
 .header-row
+  position relative
+  z-index 5
   // the scrollbar width
   padding-right 8px
   background var(--v-background-darken3)
-  z-index 5
-  position relative
 
-.header-cell:first-child,
+.header-cell:first-child
 .table-cell:first-child
   text-align right
 
 .header-cell
-  border-right 1px solid transparent
   display flex
-  padding 4px
   flex-direction column
-  opacity .7
-  user-select none
   overflow hidden
+  padding 4px
+  border-right 1px solid transparent
+  opacity 70%
+  user-select none
+
   .column-name
+    overflow hidden
+    width 100%
     padding 2px
     text-overflow ellipsis
     white-space nowrap
-    overflow hidden
-    width 100%
+
   &:focus-within
-    opacity 1
+    opacity 100%
+
   &:hover
-    opacity 1
+    opacity 100%
+
   &.sort-active
-    opacity 1
-    font-weight 500
     background var(--v-background-darken3)
+    font-weight 500
+    opacity 100%
+
   input
-    padding 0 3px
-    height 20px
-    margin-bottom 1px
-    margin 0 -3px 1px -3px
     width 100%
+    height 20px
+    margin 0 -3px 1px
+    margin-bottom 1px
+    padding 0 3px
     background var(--v-primary-base)
+
     &:empty
       background transparent
 
 .header-sort-arrow
   float left
-  font-size 70%
-  margin-right 2px
   margin-top 2px
+  margin-right 2px
+  font-size 70%
 
 .table-row
   align-items center
 
 .header-cell
 .table-cell
-  min-width 60px
   overflow hidden
+  min-width 60px
   text-overflow ellipsis
 
 .clickable

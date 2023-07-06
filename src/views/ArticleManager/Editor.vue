@@ -54,8 +54,8 @@
 				</v-slide-item>
 				<v-slide-item>
 					<v-menu :close-on-content-click="false">
-						<template v-slot:activator="{ on, attrs }">
-							<v-btn v-bind="attrs" v-on="on" tile class="rounded-lg ml-5" icon>
+						<template #activator="{ on, attrs }">
+							<v-btn v-bind="attrs" tile class="rounded-lg ml-5" icon v-on="on">
 								<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
 							</v-btn>
 						</template>
@@ -85,16 +85,13 @@
 </template>
 
 <script lang="ts">
+import { type Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { Editor as TipTapEditor, EditorContent as TipTapEditorContent } from "@tiptap/vue-2";
-
+import { type LemmaArticleVersion } from "@/api";
+import { type ArticleStore, type Markup } from "@/store/article";
 import CharPicker from "@/views/lib/CharPicker.vue";
-
 import SelectMenu from "@/views/lib/SelectMenu.vue";
-
-import { ArticleStore, Markup } from "@/store/article";
-import { LemmaArticleVersion } from "@/api";
 
 /**
  * Edits a single version of an article.

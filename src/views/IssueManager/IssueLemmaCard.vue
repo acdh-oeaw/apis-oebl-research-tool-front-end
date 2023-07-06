@@ -2,11 +2,11 @@
 	<div style="user-select: none" @click="$emit('select-lemma', value)">
 		<template v-if="value.lemma">
 			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
-			<h5 class="pa-0 ma-0" v-if="showBirthAndDeath">
+			<h5 v-if="showBirthAndDeath" class="pa-0 ma-0">
 				{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}
 			</h5>
 		</template>
-		<span class="caption" v-else>Lemma nicht gefunden.</span>
+		<span v-else class="caption">Lemma nicht gefunden.</span>
 		<v-row class="mt-2" no-gutters>
 			<v-col class="align-self-end">
 				<user-avatar v-if="showEditor" :value="editor" />
@@ -14,11 +14,11 @@
 			</v-col>
 			<v-col class="text-right">
 				<v-chip
+					v-for="label in labelsLimited"
+					:key="label.id"
 					small
 					class="label px-2"
-					v-for="label in labelsLimited"
 					:color="label.color"
-					:key="label.id"
 				>
 					{{ label.name }}
 				</v-chip>
@@ -34,13 +34,15 @@
 		</v-row>
 	</div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import store from "@/store";
-import _ from "lodash";
-import { LemmaLabel, IssueLemma } from "@/api";
-import UserAvatar from "@/views/lib/UserAvatar.vue";
 import format from "date-fns/esm/format";
+import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type IssueLemma,type LemmaLabel } from "@/api";
+import store from "@/store";
+import UserAvatar from "@/views/lib/UserAvatar.vue";
 
 @Component({
 	components: {
@@ -74,7 +76,7 @@ export default class IssueLemmaCard extends Vue {
 		}
 	}
 
-	get labels(): LemmaLabel[] {
+	get labels(): Array<LemmaLabel> {
 		if (this.value.labels !== undefined) {
 			return this.value.labels.map((id) => this.labelsById[id]);
 		} else {
@@ -82,7 +84,7 @@ export default class IssueLemmaCard extends Vue {
 		}
 	}
 
-	get labelsLimited(): LemmaLabel[] {
+	get labelsLimited(): Array<LemmaLabel> {
 		if (this.maxLabels !== null) {
 			return _.take(this.labels, this.maxLabels);
 		} else {
@@ -104,27 +106,32 @@ export default class IssueLemmaCard extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 h2
-  font-size 115%
   font-weight 500
-  opacity .8
+  font-size 115%
+  opacity 80%
+
 h5
-  font-weight normal
-  opacity .8
   overflow hidden
-  white-space nowrap
+  font-weight 400
   text-overflow ellipsis
+  white-space nowrap
+  opacity 80%
+
 .label
+  overflow hidden
+  margin-bottom 1px
+  margin-left 1px
   color white !important
   font-weight 600
-  margin-left 1px
-  margin-bottom 1px
-  overflow hidden
   text-overflow ellipsis
   white-space nowrap
+
 .id-img
-  font-size .8em
+  font-size 0.8em
+
   &.author
     margin-left -3px
 </style>

@@ -1,16 +1,16 @@
 import Vue from "vue";
 
-import IssueStore from "./issue";
-import AuthorStore from "./author";
-import EditorStore from "./editor";
-import LemmaStore from "./lemma";
-import LabelStore from "./label";
-import UserStore from "./user";
-import SearchStore from "./search";
+import { request } from "@/api/core/request";
+import { type LemmaFilterItem } from "@/types/lemma";
 
 import { OpenAPI } from "../api";
-import { LemmaFilterItem } from "@/types/lemma";
-import { request } from "@/api/core/request";
+import AuthorStore from "./author";
+import EditorStore from "./editor";
+import IssueStore from "./issue";
+import LabelStore from "./label";
+import LemmaStore from "./lemma";
+import SearchStore from "./search";
+import UserStore from "./user";
 
 OpenAPI.BASE = process.env.VUE_APP_API_HOST || "";
 OpenAPI.WITH_CREDENTIALS = true;
@@ -23,13 +23,13 @@ OpenAPI.TOKEN = localStorage.getItem("token") || "" || undefined;
 export interface StoredLemmaFilter {
 	name: string;
 	id: string;
-	filterItems: LemmaFilterItem[];
+	filterItems: Array<LemmaFilterItem>;
 }
 
 interface Settings {
 	darkTheme: boolean;
 	issueLayout: "board" | "list";
-	issueLemmaSearchItems: any[];
+	issueLemmaSearchItems: Array<any>;
 	drawerRightWidth: number;
 	drawerLeftWidth: number;
 	showNavDrawer: boolean;
@@ -54,7 +54,7 @@ class Store {
 	public isLoggedIn = OpenAPI.TOKEN !== undefined;
 
 	/** This is where we put functions that we want to run after the login. */
-	private loginCallbacks: (() => any)[] = [];
+	private loginCallbacks: Array<() => any> = [];
 	private _selectedIssueId: number | null = null;
 	private _selectedBiographyId = 1;
 	public showSearchDialog = false;
@@ -80,7 +80,7 @@ class Store {
 		this.loginCallbacks.push(cb);
 	}
 
-	private async runCallbacks(cbs: (() => unknown)[]) {
+	private async runCallbacks(cbs: Array<() => unknown>) {
 		for (const cb of cbs) {
 			await cb();
 		}

@@ -1,20 +1,20 @@
 <template>
 	<v-menu max-height="80vh" content-class="soft-shadow">
-		<template v-slot:activator="{ on, attrs }">
+		<template #activator="{ on, attrs }">
 			<v-btn
 				small
 				:width="width"
 				text
 				class="px-1 ellipsis select-button rounded-lg"
 				:class="[btnClass, value === null && 'muted']"
-				@click="onClickActivator"
 				v-bind="attrs"
+				@click="onClickActivator"
 				v-on="on"
 			>
-				<v-icon class="mr-1" v-if="prependIcon !== null" small>{{ prependIcon }}</v-icon>
+				<v-icon v-if="prependIcon !== null" class="mr-1" small>{{ prependIcon }}</v-icon>
 				{{ label ? label + ": " : "" }}
 				{{ displayValue }}
-				<v-icon small v-if="showChevron">mdi-unfold-more-horizontal</v-icon>
+				<v-icon v-if="showChevron" small>mdi-unfold-more-horizontal</v-icon>
 			</v-btn>
 		</template>
 		<v-card
@@ -26,19 +26,19 @@
 				<v-icon class="mr-2" small>mdi-magnify</v-icon>
 				<input
 					ref="input"
+					v-model.trim="searchText"
 					:placeholder="searchPlaceholder"
 					class="search-input text-body-2"
-					v-model.trim="searchText"
 					@keydown="onKeyDownSearch"
 					@click.prevent.stop=""
 				/>
 				<v-btn
 					v-if="searchText !== null && searchText !== ''"
 					color="primary"
-					@click.prevent.stop="searchText = ''"
 					icon
 					x-small
 					text
+					@click.prevent.stop="searchText = ''"
 				>
 					<v-icon small>mdi-close</v-icon>
 				</v-btn>
@@ -51,13 +51,13 @@
 				:two-line="keyDescription !== null"
 				nav
 			>
-				<v-list-item @click="selectItem(item)" v-for="item in filteredItems" :key="item[keyValue]">
+				<v-list-item v-for="item in filteredItems" :key="item[keyValue]" @click="selectItem(item)">
 					<v-list-item-avatar>
 						<v-icon
-							small
 							v-if="
 								value === item[keyValue] || (value !== null && value[keyValue] === item[keyValue])
 							"
+							small
 						>
 							mdi-check
 						</v-icon>
@@ -72,7 +72,7 @@
 					</v-list-item-content>
 				</v-list-item>
 				<v-divider v-if="addNullOption" />
-				<v-list-item @click="returnNull" v-if="addNullOption">
+				<v-list-item v-if="addNullOption" @click="returnNull">
 					<v-list-item-avatar>
 						<v-icon v-if="value === null || value[keyValue] === null" small>mdi-check</v-icon>
 					</v-list-item-avatar>
@@ -93,15 +93,16 @@
 		</v-card>
 	</v-menu>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 type Item = any;
 
 @Component
 export default class SelectMenu extends Vue {
-	@Prop({ default: () => [] }) items!: Item[];
+	@Prop({ default: () => [] }) items!: Array<Item>;
 	@Prop({ default: null }) value!: Item | null;
 	@Prop({ default: "name" }) keyName!: string;
 	@Prop({ default: "value" }) keyValue!: string;
@@ -198,18 +199,20 @@ export default class SelectMenu extends Vue {
 	}
 }
 </script>
+
 <style lang="stylus" scoped>
 .search-input
   width 100%
   outline 0
 </style>
+
 <style lang="stylus">
 .theme--dark .search-input
   color white
 
 .select-button .v-btn__content
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
+  display block
+  overflow hidden
+  max-width 100%
+  text-overflow ellipsis
 </style>

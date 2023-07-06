@@ -9,8 +9,8 @@
 				></v-file-input>
 				<v-spacer />
 				<v-select
-					label="Dateityp"
 					v-model="fileType"
+					label="Dateityp"
 					:items="[{ text: 'csv', value: 'text/csv' }]"
 				/>
 			</v-row>
@@ -18,7 +18,7 @@
 				<csv-importer
 					v-if="file !== null && file.type === 'text/csv'"
 					:file="file"
-					:preloadedOptions="preloadedFileOptions"
+					:preloaded-options="preloadedFileOptions"
 					@options="localOptions = $event"
 					@data="rawData = $event"
 				/>
@@ -27,8 +27,8 @@
 				<v-col>
 					<v-checkbox
 						v-if="localOptions"
-						label="Enthält Spaltenüberschriften"
 						v-model="localOptions.useFirstRowAsHeaders"
+						label="Enthält Spaltenüberschriften"
 					/>
 				</v-col>
 			</v-row>
@@ -45,10 +45,11 @@
 </template>
 
 <script lang="ts">
-import { Data2D } from "@/util/lemmaimport/datacontainers";
-import { defaultOptions, SupportedFilesOptions } from "@/util/lemmaimport/options";
 import lodash, { truncate } from "lodash";
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { Data2D } from "@/util/lemmaimport/datacontainers";
+import { defaultOptions, type SupportedFilesOptions } from "@/util/lemmaimport/options";
 
 import CsvImporter from "./CsvImporter.vue";
 
@@ -70,7 +71,7 @@ export default class ImportFileDialog extends Vue {
 
 	localOptions: SupportedFilesOptions = defaultOptions;
 
-	rawData: Array<string[]> | null = null;
+	rawData: Array<Array<string>> | null = null;
 	fileType: SupportedFilesOptions["fileType"] = "text/csv";
 
 	get localData(): Data2D | null {
@@ -81,7 +82,7 @@ export default class ImportFileDialog extends Vue {
 		return new Data2D(this.headers, this.tableBody);
 	}
 
-	get headers(): string[] {
+	get headers(): Array<string> {
 		if (this.rawData === null || this.rawData.length === 0) {
 			return [];
 		}
@@ -90,7 +91,7 @@ export default class ImportFileDialog extends Vue {
 			: lodash.range(1, this.rawData[0].length + 1).map(String);
 	}
 
-	get tableBody(): Array<string[]> {
+	get tableBody(): Array<Array<string>> {
 		if (this.rawData === null || this.rawData.length === 0) {
 			return [];
 		}

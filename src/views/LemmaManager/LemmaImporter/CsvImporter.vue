@@ -4,15 +4,15 @@
 			<v-row justify="start">
 				<v-col cols="4" class="separator-field">
 					<v-autocomplete
-						label="Trennzeichen"
 						v-model="localOptions.separator"
+						label="Trennzeichen"
 						:items="separatorSuggestions"
 					/>
 				</v-col>
 				<v-col cols="4" class="text-delimiter-field">
 					<v-autocomplete
-						label="Texttrenner"
 						v-model="localOptions.textDelimiter"
+						label="Texttrenner"
 						:items="textDelimiterSuggestions"
 					/>
 				</v-col>
@@ -30,10 +30,11 @@
 </template>
 
 <script lang="ts">
-import { CsvOptions, defaultOptions } from "@/util/lemmaimport/options";
 import lodash from "lodash";
 import neatCsv from "neat-csv";
-import { Vue, Prop, Watch, Component } from "vue-property-decorator";
+import { Component,Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type CsvOptions, defaultOptions } from "@/util/lemmaimport/options";
 
 @Component
 export default class CsvImporter extends Vue {
@@ -54,7 +55,7 @@ export default class CsvImporter extends Vue {
 	}
 
 	plainText: string | null = null;
-	data: Array<string[]> = [[]];
+	data: Array<Array<string>> = [[]];
 	localOptions: CsvOptions = defaultOptions;
 
 	separatorSuggestions = [",", ";", "\t"];

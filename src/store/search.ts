@@ -1,5 +1,6 @@
-import { LemmaRow } from "@/types/lemma";
 import _ from "lodash";
+
+import { type LemmaRow } from "@/types/lemma";
 
 interface SearchItemLemma {
 	type: "lemma";
@@ -9,7 +10,7 @@ interface SearchItemLemma {
 export type SearchItem = SearchItemLemma;
 
 export default class SearchStore {
-	_recentSearchItems: SearchItem[] = JSON.parse(localStorage.getItem("recentSearchItems") || "[]");
+	_recentSearchItems: Array<SearchItem> = JSON.parse(localStorage.getItem("recentSearchItems") || "[]");
 	private maxSearchItems = 10;
 
 	get recentSearchItems() {

@@ -12,8 +12,8 @@
 				<v-row>
 					<v-col>
 						<v-combobox
-							:label="entry[1]"
 							v-model="localOptions[entry[1]]"
+							:label="entry[1]"
 							small-chips
 							deletable-chips
 							:items="availableGenders"
@@ -34,18 +34,20 @@
 		</v-container>
 	</div>
 </template>
+
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { GenderAe0Enum } from "@/api";
 import { lemmaRowTranslations } from "@/util/labels";
-import { LemmaGender, LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
+import { type LemmaGender, type LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
 import { mapGender } from "@/util/lemmaimport/dataconversion";
-import { defautLemmaFormatterOptions, GenderMappingOption } from "@/util/lemmaimport/options";
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { defautLemmaFormatterOptions, type GenderMappingOption } from "@/util/lemmaimport/options";
 
 @Component
 export default class GenderMapper extends Vue {
 	@Prop({ required: true }) preloadedOptions!: GenderMappingOption;
-	@Prop({ default: Array }) lemmaPrototypes!: LemmaPrototypeRequiredFieldsType[];
+	@Prop({ default: Array }) lemmaPrototypes!: Array<LemmaPrototypeRequiredFieldsType>;
 
 	localOptions: GenderMappingOption = defautLemmaFormatterOptions.genderMapping;
 
@@ -78,15 +80,15 @@ export default class GenderMapper extends Vue {
 		return new Set(
 			this.lemmaPrototypes
 				.map((lemma) => lemma.gender)
-				.filter((value: string | undefined | null): value is string => typeof value === "string"),
+				.filter((value: string | null | undefined): value is string => typeof value === "string"),
 		);
 	}
 
-	get allChosenGenders(): string[] {
+	get allChosenGenders(): Array<string> {
 		return Object.values(this.localOptions).flat();
 	}
 
-	get availableGenders(): string[] {
+	get availableGenders(): Array<string> {
 		return Array.from(this.gendersInSource).filter(
 			(gender) => !this.allChosenGenders.includes(gender),
 		);

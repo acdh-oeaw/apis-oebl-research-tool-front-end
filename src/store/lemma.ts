@@ -1,30 +1,31 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import _ from "lodash";
 import Dexie from "dexie";
-import { ResearchService, List as LemmaList, IssueLemma, List, Editor, GenderAe0Enum } from "@/api";
+import _ from "lodash";
+
+import { type Editor, type GenderAe0Enum,type IssueLemma, type List as LemmaList, type List, ResearchService } from "@/api";
 import notifyService from "@/service/notify/notify";
+import { type WithId } from "@/types";
 import {
-	FullName,
-	ImportablePerson,
-	LemmaColumn,
-	LemmaFilterComparator,
+	type FullName,
+	type ImportablePerson,
+	type LemmaColumn,
+	type LemmaFilterComparator,
 	LemmaFilterItem,
-	LemmaRow,
-	SecondaryCitation,
-	SerializedLemmaRow,
-	ServerResearchLemma,
+	type LemmaRow,
+	type SecondaryCitation,
+	type SerializedLemmaRow,
+	type ServerResearchLemma,
 } from "@/types/lemma";
-import { WithId } from "@/types";
-import store from ".";
-import { UserProfile } from "./user";
 import { DateContainer } from "@/util/dates";
 
 import { lemmaRowTranslations } from "../util/labels";
+import store from ".";
+import { type UserProfile } from "./user";
 
 interface LemmaFilter {
 	id: string;
 	name: string;
-	filterItems: { [key: string]: string | boolean | null };
+	filterItems: { [key: string]: boolean | string | null };
 }
 
 function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
@@ -79,18 +80,18 @@ export class LemmaDatabase extends Dexie {
 export default class LemmaStore {
 	private localDb = new LemmaDatabase();
 
-	private _lemmas: LemmaRow[] = [];
-	private _lemmaLists: LemmaList[] = [];
-	private _columns: LemmaColumn[] = [];
+	private _lemmas: Array<LemmaRow> = [];
+	private _lemmaLists: Array<LemmaList> = [];
+	private _columns: Array<LemmaColumn> = [];
 
-	private _selectedLemmaListId: null | number = null;
-	private _selectedLemmaFilterId: null | string = null;
-	private _selectedLemmaIssueId: null | number = null;
-	private _selectedLemmas: LemmaRow[] = [];
+	private _selectedLemmaListId: number | null = null;
+	private _selectedLemmaFilterId: string | null = null;
+	private _selectedLemmaIssueId: number | null = null;
+	private _selectedLemmas: Array<LemmaRow> = [];
 
-	private _storedLemmaFilters: LemmaFilter[] = [];
+	private _storedLemmaFilters: Array<LemmaFilter> = [];
 
-	public currentFilters: { [key: string]: string | boolean | null } = {};
+	public currentFilters: { [key: string]: boolean | string | null } = {};
 	public importStatus = {
 		target: 0,
 		status: 0,
@@ -99,7 +100,7 @@ export default class LemmaStore {
 			this.target = this.target + n;
 		},
 
-		incrementStatus(ls: LemmaRow[]) {
+		incrementStatus(ls: Array<LemmaRow>) {
 			const userLemmasCount = ls.filter(
 				(l) => l.list !== undefined && l.list.editor === store.user.userProfile.userId,
 			).length;
@@ -121,45 +122,45 @@ export default class LemmaStore {
 	};
 
 	public showSideBar = true;
-	public selectedIssueLemmas: WithId<IssueLemma>[] = [];
+	public selectedIssueLemmas: Array<WithId<IssueLemma>> = [];
 	public newLemmasInUserList: {
 		[listId: number]: { [lemmaId: number]: { editor: Editor; item: LemmaRow } };
 	} = {};
 
-	readonly comparators: LemmaFilterComparator[] = [
+	readonly comparators: Array<LemmaFilterComparator> = [
 		{
 			icon: "∈",
 			name: "enthält",
 			value: "contains",
-			predicate: (e: string | number | null, q: string) =>
+			predicate: (e: number | string | null, q: string) =>
 				String(e).toLocaleLowerCase().indexOf(q) > -1,
 		},
 		{
 			name: "enthält nicht",
 			value: "not-contains",
 			icon: "∉",
-			predicate: (e: string | number | null, q: string) =>
+			predicate: (e: number | string | null, q: string) =>
 				String(e).toLocaleLowerCase().indexOf(q) === -1,
 		},
 		{
 			name: "ist",
 			value: "equals",
 			icon: "=",
-			predicate: (e: string | number | null, q: string | number | null) =>
+			predicate: (e: number | string | null, q: number | string | null) =>
 				String(e).toLocaleLowerCase() === String(q).toLocaleLowerCase(),
 		},
 		{
 			name: "ist nicht",
 			value: "not",
 			icon: "≠",
-			predicate: (e: string | number | null, q: string | number | null) =>
+			predicate: (e: number | string | null, q: number | string | null) =>
 				String(e).toLocaleLowerCase() !== String(q).toLocaleLowerCase(),
 		},
 		{
 			name: "ist vorhanden",
 			value: "exists",
 			icon: ".",
-			predicate: (e: string | number | null | number[], q: unknown) =>
+			predicate: (e: Array<number> | number | string | null, q: unknown) =>
 				e !== "" &&
 				e !== null &&
 				e !== undefined &&
@@ -171,7 +172,7 @@ export default class LemmaStore {
 			name: "ist nicht vorhanden",
 			value: "exists-not",
 			icon: ".",
-			predicate: (e: string | number | null | number[], q: unknown) => !e,
+			predicate: (e: Array<number> | number | string | null, q: unknown) => !e,
 		},
 		{
 			name: "größer als",
@@ -199,7 +200,7 @@ export default class LemmaStore {
 		},
 	];
 
-	public defaultColumns: LemmaColumn[] = [
+	public defaultColumns: Array<LemmaColumn> = [
 		{
 			name: lemmaRowTranslations.selected.de,
 			value: "selected",
@@ -326,24 +327,24 @@ export default class LemmaStore {
 		this.listenForRemoteEvents();
 	}
 
-	doesUpdateDescribeListChange(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
+	doesUpdateDescribeListChange(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
 			update.list !== undefined &&
 			update.list !== undefined &&
-			update.list?.id !== undefined &&
+			update.list.id !== undefined &&
 			ls.length > 0 &&
 			ls[0].list !== undefined &&
 			ls[0].list.id !== update.list.id
 		);
 	}
 
-	getUserLists(lists: List[], u: UserProfile): List[] {
+	getUserLists(lists: Array<List>, u: UserProfile): Array<List> {
 		return lists.filter((ll) => {
 			return ll.editor !== undefined && ll.editor.userId === u.userId;
 		});
 	}
 
-	isMovementToUserList(ls: LemmaRow[], update: Partial<LemmaRow>): boolean {
+	isMovementToUserList(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
 			this.doesUpdateDescribeListChange(ls, update) &&
 			this.getUserLists(this.lemmaLists, store.user.userProfile).some(
@@ -388,8 +389,8 @@ export default class LemmaStore {
 			if (this.isMovementToUserList(lemmas, updates)) {
 				if (updates.list?.id !== undefined) {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));
-					this.newLemmasInUserList[updates.list?.id] = {
-						...this.newLemmasInUserList[updates.list?.id],
+					this.newLemmasInUserList[updates.list.id] = {
+						...this.newLemmasInUserList[updates.list.id],
 						..._.keyBy(lemmasWithEditor, (e) => e.item.id),
 					};
 				}
@@ -427,12 +428,12 @@ export default class LemmaStore {
 		return this._storedLemmaFilters;
 	}
 
-	set storedLemmaFilters(ls: LemmaFilter[]) {
+	set storedLemmaFilters(ls: Array<LemmaFilter>) {
 		this._storedLemmaFilters = ls;
 		localStorage.setItem("storedLemmaFilters", JSON.stringify(ls));
 	}
 
-	get lemmaLists(): ({ count?: number; countNew?: number } & LemmaList)[] {
+	get lemmaLists(): Array<LemmaList & { count?: number; countNew?: number }> {
 		return this._lemmaLists.map((ll) => {
 			return {
 				...ll,
@@ -453,7 +454,7 @@ export default class LemmaStore {
 
 	get selectedLemmas() {
 		const localSelectedLemmasJSON = localStorage.getItem("selectedLemmas");
-		const localSelectedLemmasObjects: SerializedLemmaRow[] = localSelectedLemmasJSON
+		const localSelectedLemmasObjects: Array<SerializedLemmaRow> = localSelectedLemmasJSON
 			? JSON.parse(localSelectedLemmasJSON)
 			: [];
 		const unserializedSelectedLemmas = localSelectedLemmasObjects.map(unserializeLemmaRow);
@@ -461,7 +462,7 @@ export default class LemmaStore {
 		return this._selectedLemmas;
 	}
 
-	set selectedLemmas(lemmas: LemmaRow[]) {
+	set selectedLemmas(lemmas: Array<LemmaRow>) {
 		this._selectedLemmas = lemmas;
 		localStorage.setItem("selectedLemmas", JSON.stringify(lemmas.map(serializeLemmaRow)));
 	}
@@ -511,14 +512,14 @@ export default class LemmaStore {
 		return this.getStoredLemmaFilterById(id);
 	}
 
-	async addLemmasToList(list: LemmaRow["list"], lemmas: LemmaRow[]) {
+	async addLemmasToList(list: LemmaRow["list"], lemmas: Array<LemmaRow>) {
 		if (list === undefined) {
 			return;
 		}
 		await this.updateLemmas(lemmas, { list });
 	}
 
-	private async updateLemmasInIndexedDB(newLemmas: LemmaRow[]): Promise<void> {
+	private async updateLemmasInIndexedDB(newLemmas: Array<LemmaRow>): Promise<void> {
 		const serializedLemmas = newLemmas.map(serializeLemmaRow);
 		try {
 			await this.localDb.lemmas.bulkPut(serializedLemmas);
@@ -527,7 +528,7 @@ export default class LemmaStore {
 		}
 	}
 
-	private async updateLemmasOnServer(newLemmas: LemmaRow[]) {
+	private async updateLemmasOnServer(newLemmas: Array<LemmaRow>) {
 		const serializedLemmas = newLemmas.map(serializeLemmaRow);
 		await Promise.all(
 			serializedLemmas.map(async (lemma) => {
@@ -540,21 +541,21 @@ export default class LemmaStore {
 	}
 
 	private mergeUpdates(
-		updateThisLemmas: LemmaRow[],
+		updateThisLemmas: Array<LemmaRow>,
 		withThisUpdate: Partial<LemmaRow>,
-	): LemmaRow[] {
+	): Array<LemmaRow> {
 		return updateThisLemmas.map((lemmaRow) => {
 			return { ...lemmaRow, ...withThisUpdate };
 		});
 	}
 
-	private rightMergeLemmas(oldLemmas: LemmaRow[], newLemmas: LemmaRow[]): LemmaRow[] {
+	private rightMergeLemmas(oldLemmas: Array<LemmaRow>, newLemmas: Array<LemmaRow>): Array<LemmaRow> {
 		const newIds = newLemmas.map((lemma) => lemma.id);
 		const unchangingLemmas = oldLemmas.filter((lemma) => !newIds.includes(lemma.id));
 		return unchangingLemmas.concat(newLemmas);
 	}
 
-	private innerMergeLemmas(oldLemmas: LemmaRow[], updateLemmas: LemmaRow[]): LemmaRow[] {
+	private innerMergeLemmas(oldLemmas: Array<LemmaRow>, updateLemmas: Array<LemmaRow>): Array<LemmaRow> {
 		const oldIds = oldLemmas.map((lemma) => lemma.id);
 		const updateIds = updateLemmas.map((lemma) => lemma.id);
 
@@ -571,10 +572,10 @@ export default class LemmaStore {
 	 * @param withThisUpdate
 	 */
 	async updateLemmas(
-		updateThisLemmas: LemmaRow[],
+		updateThisLemmas: Array<LemmaRow>,
 		withThisUpdate: Partial<LemmaRow>,
-		global: boolean = true,
-	): Promise<LemmaRow[]> {
+		global = true,
+	): Promise<Array<LemmaRow>> {
 		const newLemmas = this.mergeUpdates(updateThisLemmas, withThisUpdate);
 		// optimistic update: Change, even if others fail
 		await this.upsertLemmasLocally(newLemmas);
@@ -587,7 +588,7 @@ export default class LemmaStore {
 		return newLemmas;
 	}
 
-	private async upsertLemmasLocally(newLemmas: LemmaRow[]) {
+	private async upsertLemmasLocally(newLemmas: Array<LemmaRow>) {
 		this._lemmas = this.rightMergeLemmas(this._lemmas, newLemmas);
 		this.selectedLemmas = this.innerMergeLemmas(this.selectedLemmas, newLemmas);
 		await this.updateLemmasInIndexedDB(newLemmas);
@@ -631,7 +632,7 @@ export default class LemmaStore {
 		this.lemmaLists = (await ResearchService.researchApiV1ListresearchList()).results || [];
 	}
 
-	getAllUserColumns(lemmas: LemmaRow[]): LemmaColumn[] {
+	getAllUserColumns(lemmas: Array<LemmaRow>): Array<LemmaColumn> {
 		const allColumnKeys = new Set(lemmas.flatMap((lemma) => Object.keys(lemma.columns_user)));
 
 		return Array.from(allColumnKeys).map((key) => {
@@ -682,8 +683,8 @@ export default class LemmaStore {
 		return this.lemmaLists.find((i) => i.id === id);
 	}
 
-	async getLocalLemmaCache(): Promise<LemmaRow[]> {
-		let lemmas: SerializedLemmaRow[] = [];
+	async getLocalLemmaCache(): Promise<Array<LemmaRow>> {
+		let lemmas: Array<SerializedLemmaRow> = [];
 		try {
 			lemmas = await this.localDb.lemmas.toArray();
 		} catch (error) {
@@ -693,7 +694,7 @@ export default class LemmaStore {
 		return lemmas.map(unserializeLemmaRow);
 	}
 
-	private async deleteLemmasLocally(ids: number[]) {
+	private async deleteLemmasLocally(ids: Array<number>) {
 		this._lemmas = this._lemmas.filter((l) => ids.indexOf(l.id) === -1);
 		try {
 			await this.localDb.lemmas.bulkDelete(ids);
@@ -702,13 +703,13 @@ export default class LemmaStore {
 		}
 	}
 
-	async deleteLemma(ids: number[]) {
+	async deleteLemma(ids: Array<number>) {
 		await this.deleteLemmasLocally(ids);
 		await Promise.all(ids.map((id) => ResearchService.researchApiV1LemmaresearchDestroy(id)));
 		notifyService.emit("deleteLemmas", ids);
 	}
 
-	async importLemmas(ls: ImportablePerson[], listName: string) {
+	async importLemmas(ls: Array<ImportablePerson>, listName: string) {
 		// create list
 		const list = await (async () => {
 			return this.createList(listName);
@@ -740,7 +741,7 @@ export default class LemmaStore {
 			wiki_edits: _.get(rs, "columns_scrape.wikipedia.edits_count") ?? null,
 			firstName: rs.firstName,
 			lastName: rs.lastName,
-			alternativeNames: rs.alternativeNames as FullName[],
+			alternativeNames: rs.alternativeNames as Array<FullName>,
 			gender: rs.gender as GenderAe0Enum,
 			dateOfBirth: DateContainer.fromISO_OnlyDate(rs.dateOfBirth),
 			dateOfDeath: DateContainer.fromISO_OnlyDate(rs.dateOfDeath),
@@ -763,9 +764,9 @@ export default class LemmaStore {
 				id: number;
 				value: string;
 			}> | null,
-			secondaryLiterature: rs.secondaryLiterature as SecondaryCitation[],
-			zoteroKeysBy: rs.zoteroKeysBy as string[],
-			zoteroKeysAbout: rs.zoteroKeysAbout as string[],
+			secondaryLiterature: rs.secondaryLiterature as Array<SecondaryCitation>,
+			zoteroKeysBy: rs.zoteroKeysBy as Array<string>,
+			zoteroKeysAbout: rs.zoteroKeysAbout as Array<string>,
 			bioNote: rs.bioNote,
 			kinship: rs.kinship,
 			religion: rs.religion,
@@ -776,8 +777,8 @@ export default class LemmaStore {
 		deleted: boolean | undefined,
 		modifiedAfter: string | undefined,
 		chunkSize: number,
-		onProgress?: (ls: LemmaRow[]) => any,
-	): Promise<LemmaRow[]> {
+		onProgress?: (ls: Array<LemmaRow>) => any,
+	): Promise<Array<LemmaRow>> {
 		// get the first page
 		const firstRes = await ResearchService.researchApiV1LemmaresearchList(
 			deleted,
@@ -787,13 +788,13 @@ export default class LemmaStore {
 		// call progress handler if available
 		if (onProgress !== undefined) {
 			await onProgress(
-				((firstRes.results as ServerResearchLemma[]) || []).map(this.convertRemoteLemmaToLemmaRow),
+				((firstRes.results as Array<ServerResearchLemma>) || []).map(this.convertRemoteLemmaToLemmaRow),
 			);
 		}
 		// if there’s more than on page: loop from second page until we have all items and return
 		if (firstRes.count !== undefined && firstRes.count > chunkSize) {
 			const chunks = Math.ceil(firstRes.count / chunkSize);
-			let lemmaAgg: LemmaRow[] = [];
+			let lemmaAgg: Array<LemmaRow> = [];
 			for (let i = 1; i < chunks; i++) {
 				const res =
 					((
@@ -803,7 +804,7 @@ export default class LemmaStore {
 							modifiedAfter,
 							i * chunkSize,
 						)
-					).results as ServerResearchLemma[]) || [];
+					).results as Array<ServerResearchLemma>) || [];
 				const converted = res.map(this.convertRemoteLemmaToLemmaRow);
 				if (onProgress !== undefined) {
 					await onProgress(converted);
@@ -813,7 +814,7 @@ export default class LemmaStore {
 			return lemmaAgg;
 			// if there’s only one page: return
 		} else {
-			return ((firstRes.results as ServerResearchLemma[]) || []).map(
+			return ((firstRes.results as Array<ServerResearchLemma>) || []).map(
 				this.convertRemoteLemmaToLemmaRow,
 			);
 		}
@@ -830,7 +831,7 @@ export default class LemmaStore {
 	}
 
 	async getAndApplyRemoteLemmas(modifiedAfter: Date | null = null): Promise<void> {
-		let currentLemmasLength: number = 0;
+		let currentLemmasLength = 0;
 		try {
 			currentLemmasLength = await this.localDb.lemmas.count();
 		} catch (error) {
@@ -889,11 +890,11 @@ export default class LemmaStore {
 		return this._lemmas.filter((l) => l.list?.id === listId);
 	}
 
-	setFilter(columnQueries: { [key: string]: string | boolean | null } = {}) {
+	setFilter(columnQueries: { [key: string]: boolean | string | null } = {}) {
 		this.currentFilters = { ...columnQueries };
 	}
 
-	filterLemmas(lemmas: LemmaRow[]): LemmaRow[] {
+	filterLemmas(lemmas: Array<LemmaRow>): Array<LemmaRow> {
 		return lemmas.filter(this.lemmaPassesFilter.bind(this));
 	}
 
@@ -963,7 +964,7 @@ export default class LemmaStore {
 		return this.filterLemmas(lemmas);
 	}
 
-	set lemmas(ls: LemmaRow[]) {
+	set lemmas(ls: Array<LemmaRow>) {
 		this._lemmas = ls;
 	}
 

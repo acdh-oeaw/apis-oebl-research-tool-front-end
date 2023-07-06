@@ -1,19 +1,20 @@
-import { LemmaRow, ServerResearchLemma } from "@/types/lemma";
-import { io, Socket } from "socket.io-client";
-import { List as LemmaList } from "@/api/models/List";
-import { Editor } from "@/api";
-import { IssueLemma } from "@/api/models/IssueLemma";
-import { WithId } from "@/types";
+import { io, type Socket } from "socket.io-client";
+
+import { type Editor } from "@/api";
+import { type IssueLemma } from "@/api/models/IssueLemma";
+import { type List as LemmaList } from "@/api/models/List";
+import { type WithId } from "@/types";
+import { type LemmaRow, type ServerResearchLemma } from "@/types/lemma";
 
 /** All possible Events that can be sent over the bus. Add new Event Types here. */
 export interface NotifyEvents {
 	disconnect: () => void;
-	updateIssueLemmas: (ids: number[], ils: Partial<IssueLemma>) => void;
+	updateIssueLemmas: (ids: Array<number>, ils: Partial<IssueLemma>) => void;
 	addLemma: (ls: LemmaRow) => void;
-	updateLemmas: (ls: LemmaRow[], u: Partial<LemmaRow>, e: Editor) => void;
-	importLemmas: (ls: ServerResearchLemma[]) => void;
-	importIssueLemmas: (ls: WithId<IssueLemma>[]) => void;
-	deleteLemmas: (ids: number[]) => void;
+	updateLemmas: (ls: Array<LemmaRow>, u: Partial<LemmaRow>, e: Editor) => void;
+	importLemmas: (ls: Array<ServerResearchLemma>) => void;
+	importIssueLemmas: (ls: Array<WithId<IssueLemma>>) => void;
+	deleteLemmas: (ids: Array<number>) => void;
 	createLemmaList: (l: LemmaList) => void;
 	updateLemmaList: (l: LemmaList) => void;
 	deleteLemmaList: (l: LemmaList) => void;

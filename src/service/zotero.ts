@@ -1,13 +1,15 @@
 import Dexie from "dexie";
 import fetch from "node-fetch";
+// If not imported, there is some type error, with auto-imported (?) stuff
+import { Headers,type Response } from "node-fetch";
 
 import {
-	ZoteroItemType,
-	ZoteroItemCreatorType,
-	ZoteroItemTypeField,
-	ZoteroPatchData,
-	ZoteroItem,
-	ZoteroView,
+	type ZoteroItem,
+	type ZoteroItemCreatorType,
+	type ZoteroItemType,
+	type ZoteroItemTypeField,
+	type ZoteroPatchData,
+	type ZoteroView,
 } from "@/types/zotero";
 
 class ZoteroStore {
@@ -15,9 +17,9 @@ class ZoteroStore {
 		this.init();
 	}
 
-	itemTypes: ZoteroItemType[] = [];
-	itemTypeFields: { [key: string]: ZoteroItemTypeField[] } = {};
-	itemTypeCreators: { [key: string]: ZoteroItemCreatorType[] } = {};
+	itemTypes: Array<ZoteroItemType> = [];
+	itemTypeFields: { [key: string]: Array<ZoteroItemTypeField> } = {};
+	itemTypeCreators: { [key: string]: Array<ZoteroItemCreatorType> } = {};
 
 	async init() {
 		const initialData = await this.getInitialData();
@@ -42,7 +44,7 @@ class ZoteroStore {
 		).json();
 	}
 
-	async searchItem(q: string): Promise<ZoteroItem[]> {
+	async searchItem(q: string): Promise<Array<ZoteroItem>> {
 		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
 	}
 
@@ -83,10 +85,10 @@ class ZoteroItemCache {
 		});
 	}
 
-	async select(zoteroKeys: string[]): Promise<ZoteroItem[]> {
+	async select(zoteroKeys: Array<string>): Promise<Array<ZoteroItem>> {
 		const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
 		return allResults.filter(
-			(row: ZoteroItem | undefined | null) => row !== undefined && row !== null,
+			(row: ZoteroItem | null | undefined) => row !== undefined && row !== null,
 		);
 	}
 
@@ -95,7 +97,7 @@ class ZoteroItemCache {
 	 * @param zoteroItems
 	 * @returns The key of the last insert
 	 */
-	async insert(zoteroItems: ZoteroItem[]): Promise<string> {
+	async insert(zoteroItems: Array<ZoteroItem>): Promise<string> {
 		return await this.database.zoteroItems.bulkAdd(zoteroItems);
 	}
 
@@ -104,7 +106,7 @@ class ZoteroItemCache {
 	 * @param zoteroItems
 	 * @returns The key of the last update
 	 */
-	async update(zoteroItems: ZoteroItem[]): Promise<string> {
+	async update(zoteroItems: Array<ZoteroItem>): Promise<string> {
 		return await this.database.zoteroItems.bulkPut(zoteroItems);
 	}
 
@@ -113,13 +115,10 @@ class ZoteroItemCache {
 	 * @param zoteroKeys
 	 * @returns I have no clue
 	 */
-	async delete(zoteroKeys: string[]): Promise<any> {
+	async delete(zoteroKeys: Array<string>): Promise<any> {
 		return await this.database.zoteroItems.bulkDelete();
 	}
 }
-
-// If not imported, there is some type error, with auto-imported (?) stuff
-import { Response, Headers } from "node-fetch";
 
 async function getZoteroResponse(
 	zoteroKey: string,
@@ -218,8 +217,8 @@ class ZoteroSyncManager {
  */
 export class ZoteroLemmaManagmentController {
 	// Data
-	private _zoteroItems: ZoteroItem[] = [];
-	private _cachedItemsToCheckForUpdate: ZoteroItem[] = []; // Keep record for updates
+	private _zoteroItems: Array<ZoteroItem> = [];
+	private _cachedItemsToCheckForUpdate: Array<ZoteroItem> = []; // Keep record for updates
 
 	// Dependencies
 	private _cache: ZoteroItemCache | null;
@@ -228,10 +227,10 @@ export class ZoteroLemmaManagmentController {
 	);
 
 	// States
-	private _loaded: boolean = false;
-	private _loading: boolean = false;
-	private _uptodate: boolean = false;
-	private _updating: boolean = false;
+	private _loaded = false;
+	private _loading = false;
+	private _uptodate = false;
+	private _updating = false;
 
 	constructor() {
 		try {
@@ -242,21 +241,21 @@ export class ZoteroLemmaManagmentController {
 		}
 	}
 
-	get zoteroItems(): ZoteroItem[] {
+	get zoteroItems(): Array<ZoteroItem> {
 		return this._zoteroItems;
 	}
 
 	/**
 	 * Load Zotero Items
 	 */
-	async load(zoteroItemKeys: string[]): Promise<ZoteroLemmaManagmentController> {
+	async load(zoteroItemKeys: Array<string>): Promise<ZoteroLemmaManagmentController> {
 		// Set state, so components can use that
 		this._loading = true;
 		// Only load data, that has not already been loaded into memory
 		const alreadyLoadedKeys = this.zoteroItems.map((item) => item.key);
 		zoteroItemKeys = zoteroItemKeys.filter((key) => !alreadyLoadedKeys.includes(key));
 		// If there is a cache, load data from there
-		let cachedItems: ZoteroItem[] = [];
+		let cachedItems: Array<ZoteroItem> = [];
 		try {
 			cachedItems = this._cache === null ? [] : await this._cache.select(zoteroItemKeys);
 		} catch (error) {
@@ -331,7 +330,7 @@ export class ZoteroLemmaManagmentController {
 		return this;
 	}
 
-	async add(zoteroItems: ZoteroItem[]) {
+	async add(zoteroItems: Array<ZoteroItem>) {
 		if (this._cache !== null) {
 			try {
 				await this._cache.update(zoteroItems);
@@ -362,7 +361,7 @@ export class ZoteroLemmaManagmentController {
 		return this._updating;
 	}
 
-	private addZoteroItems(newZoteroItems: ZoteroItem[], overwrite: boolean): void {
+	private addZoteroItems(newZoteroItems: Array<ZoteroItem>, overwrite: boolean): void {
 		const oldZoteroItems = this._zoteroItems;
 
 		const itemsToFilter = overwrite ? oldZoteroItems : newZoteroItems;
@@ -372,7 +371,7 @@ export class ZoteroLemmaManagmentController {
 		this._zoteroItems = itemsToStay.concat(filteredItems);
 	}
 
-	private addItemsToCachedList(newCachedItems: ZoteroItem[]): void {
+	private addItemsToCachedList(newCachedItems: Array<ZoteroItem>): void {
 		const newKeys = newCachedItems.map((item) => item.key);
 		const oldItems = this._cachedItemsToCheckForUpdate.filter(
 			(item) => !newKeys.includes(item.key),

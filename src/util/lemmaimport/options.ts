@@ -1,6 +1,7 @@
-import { GenderAe0Enum } from "@/api";
-import { NewLemmaRow } from "@/types/lemma";
-import { SupportedDateFormatType } from "../dates";
+import { type GenderAe0Enum } from "@/api";
+import { type NewLemmaRow } from "@/types/lemma";
+
+import { type SupportedDateFormatType } from "../dates";
 
 type FileOptions = {
 	fileType: "text/csv";
@@ -78,12 +79,12 @@ export type GenderMappingOption = Record<
 	 *
 	 * This could be multiple strings, since the source could have more granular ore ambigous gender definitions.
 	 */
-	string[]
+	Array<string>
 >;
 
 export type LemmaFormatterOptions = {
 	// Values, that should be converted into null
-	nullValues: string[];
+	nullValues: Array<string>;
 	dateFormat: SupportedDateFormatType;
 	genderMapping: GenderMappingOption;
 };
@@ -120,6 +121,6 @@ export class ImportOptions {
 	selectedList: SelectedList = undefined;
 
 	allIsFilledIn(): boolean {
-		return this.lemmaBuilderOptions.lastName?.extractOptions.sourceKey !== null;
+		return this.lemmaBuilderOptions.lastName.extractOptions.sourceKey !== null;
 	}
 }

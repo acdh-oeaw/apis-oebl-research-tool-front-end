@@ -1,21 +1,22 @@
-import { IssueLemma as ApiIssueLemma, LemmaLabel, LemmaStatus as ApiLemmaStatus } from "@/api";
-import { Modify } from "./index";
+import { type IssueLemma as ApiIssueLemma, type LemmaLabel, type LemmaStatus as ApiLemmaStatus } from "@/api";
+
+import { type Modify } from "./index";
 
 export interface Requests {
 	/** GET /issues */
-	getIssues: Issue[];
+	getIssues: Array<Issue>;
 
 	/** GET /issues/:issue_id/lemma */
-	getLemmata: IssueLemma[];
+	getLemmata: Array<IssueLemma>;
 
 	/** GET /authors */
-	getAuthors: Author[];
+	getAuthors: Array<Author>;
 
 	/** GET /editors */
-	getEditors: Editor[];
+	getEditors: Array<Editor>;
 
 	/** GET /lemma-status */
-	getStatuses: LemmaStatus[];
+	getStatuses: Array<LemmaStatus>;
 
 	/** POST /lemmas/:id/note */
 	postLemmaComment: Pick<LemmaNote, "text">;
@@ -63,8 +64,8 @@ export type IssueLemma = Modify<
 		tokenCount: number;
 		characterCount: number;
 		entityCount: number;
-		labels: number[];
-		notes: LemmaNote[];
+		labels: Array<number>;
+		notes: Array<LemmaNote>;
 	}
 >;
 

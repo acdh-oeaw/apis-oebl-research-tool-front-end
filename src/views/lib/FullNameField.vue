@@ -1,26 +1,28 @@
 <template>
 	<div class="full-name-input-wrapper">
 		<text-field
+			v-model="fullName.firstName"
 			:required="false"
 			:label="lemmaRowTranslations.firstName.de"
-			v-model="fullName.firstName"
-			@input="emitInput($event, 'firstName')"
 			:disabled="disabled"
+			@input="emitInput($event, 'firstName')"
 		></text-field>
 		<text-field
+			v-model="fullName.lastName"
 			:required="false"
 			:label="lemmaRowTranslations.lastName.de"
-			v-model="fullName.lastName"
-			@input="emitInput($event, 'lastName')"
 			:disabled="disabled"
+			@input="emitInput($event, 'lastName')"
 		></text-field>
 	</div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { FullName as FullNameType } from "@/types/lemma";
+import { Component, Prop,Vue } from "vue-property-decorator";
+
+import { type FullName as FullNameType } from "@/types/lemma";
 import TextField from "@/views/lib/TextField.vue";
+
 import { lemmaRowTranslations } from "../../util/labels";
 
 @Component({

@@ -27,8 +27,8 @@
 			left
 			mini-variant-width="73"
 			class="pa-0"
-			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
 			:width="store.settings.drawerLeftWidth"
+			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
 		>
 			<sidebar v-if="showDrawer" class="px-3 pt-5" />
 		</resizable-drawer>
@@ -40,15 +40,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
-import store from "@/store";
-import LoginForm from "@/views/LoginForm.vue";
-import Confirm from "@/views/lib/Confirm.vue";
-import Prompt from "@/views/lib/Prompt.vue";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { requestState } from "@/api/core/request";
+import store from "@/store";
 import GlobalSearch from "@/views/GlobalSearch.vue";
+import Confirm from "@/views/lib/Confirm.vue";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+import Prompt from "@/views/lib/Prompt.vue";
+import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
+import LoginForm from "@/views/LoginForm.vue";
 import Sidebar from "@/views/Sidebar.vue";
 
 @Component({
@@ -103,45 +104,45 @@ export default class App extends Vue {
 
 body .v-application .text-body-3
 body .v-application .text-body-2
-  font-size .8rem !important
+  font-size 0.8rem !important
 
 body
 .v-application
-  font-family Roboto Flex, ui-sans-serif, system-ui, sans-serif
+  font-family "Roboto Flex", ui-sans-serif, system-ui, sans-serif
 
 .rotate-180
   transform rotate(180deg)
 
 .theme--light .soft-shadow
-  box-shadow 0 5px 55px rgba(0,0,50,.2) !important
+  box-shadow 0 5px 55px rgb(0 0 50 / 20%) !important
 
 .theme--dark .soft-shadow
-  box-shadow 0 0 55px rgba(0,0,0,.3) !important
+  box-shadow 0 0 55px rgb(0 0 0 / 30%) !important
 
 .v-application .v-btn
-  text-transform none
   letter-spacing normal
+  text-transform none
 
 ::-webkit-scrollbar
-  background: transparent;
+  background transparent
 
 ::-webkit-scrollbar-track
 ::-moz-scrol
   padding 3px
-  background: transparent /* color of the tracking area */
+  background transparent /* color of the tracking area */
 
 ::-webkit-scrollbar
   width 8px
   height 8px
 
 ::-webkit-scrollbar-thumb
-  border-radius: 20px;
+  border-radius 20px
 
 .theme--dark ::-webkit-scrollbar-thumb
-  background-color rgba(255,255,255,.5)
+  background-color rgb(255 255 255 / 50%)
 
 .theme--light ::-webkit-scrollbar-thumb
-  background-color rgba(0,0,25,.253)
+  background-color rgb(0 0 25 / 25.3%)
 
 .sticky
   position sticky
@@ -150,27 +151,28 @@ body
 .badge
   display inline-block
   margin-left 3px
-  border-radius 10px
   padding 0 5px
-  text-decoration none
-  font-size 12px
+  border-radius 10px
   color white
+  font-size 12px
+  text-decoration none
 
 header h1
-  text-transform none
-  letter-spacing normal
-  opacity .85
-  font-weight 900
-  line-height 1em
-  font-size 1.5em
-  white-space nowrap
   overflow hidden
+  font-weight 900
+  font-size 1.5em
+  line-height 1em
+  letter-spacing normal
+  text-transform none
   text-overflow ellipsis
+  white-space nowrap
+  opacity 85%
+
   &:focus
     text-overflow clip
 
 .muted
-  opacity .7
+  opacity 70%
 
 .fill-width
   width 100%
@@ -188,12 +190,12 @@ header h1
   outline none
 
 .transition-none
-  transition: none !important
+  transition none !important
 
 .ellipsis
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
 
 // tippy.js theme
 .tippy-content
@@ -202,7 +204,7 @@ header h1
 .tippy-box
   border-radius 13px !important
   background var(--v-background-base) !important
-  box-shadow 0 5px 55px rgba(0,0,50,.2) !important
+  box-shadow 0 5px 55px rgb(0 0 50 / 20%) !important
 
 .tippy-box[data-placement^='top'] > .tippy-arrow::before
   border-top-color var(--v-background-base) !important
@@ -218,18 +220,21 @@ header h1
 
 .v-list.x-dense .v-list-item
 .v-list-item.x-dense
-  max-height 32px
   min-height auto
+  max-height 32px
   margin-bottom 1px !important
+
   .v-list-item__action
-    margin 0 0
+    margin 0
+
   .v-list-item__title
   .v-list-item__subtitle
-    font-size 13px
     margin-bottom 0 !important
+    font-size 13px
+
   .v-list-item__avatar
-    min-width 15px !important
     width 15px !important
+    min-width 15px !important
     margin-right 8px
 
 .v-list.x-dense.v-list--two-line .v-list-item
@@ -240,21 +245,22 @@ header h1
   cursor pointer
 
 select
-  // A reset of styles, including removing the default dropdown arrow
-  appearance: none;
+  width 100%
+  margin 0
+  padding 0 1em 0 0
+  border none
   // Additional resets for further consistency
-  background-color: transparent;
-  border: none;
-  padding: 0 1em 0 0;
-  margin: 0;
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-  line-height: inherit;
-  outline: none;
+  background-color transparent
+  outline none
+  font-size inherit
+  font-family inherit
+  line-height inherit
+  cursor inherit
+  // A reset of styles, including removing the default dropdown arrow
+  appearance none
+
 select::after
   content "\F0140"
-  font normal normal normal 24px/1 "Material Design Icons"
   display block
+  font 400 normal normal 24px/1 "Material Design Icons"
 </style>

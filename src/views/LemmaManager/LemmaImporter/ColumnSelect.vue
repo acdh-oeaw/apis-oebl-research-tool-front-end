@@ -16,12 +16,14 @@
 		</v-container>
 	</div>
 </template>
+
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type LemmaRow } from "@/types/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
-import { LemmaRow } from "@/types/lemma";
-import { Data2D } from "@/util/lemmaimport/datacontainers";
-import { ExtractColumnOptions } from "@/util/lemmaimport/options";
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { type Data2D } from "@/util/lemmaimport/datacontainers";
+import { type ExtractColumnOptions } from "@/util/lemmaimport/options";
 
 @Component
 export default class ColumnSelect extends Vue {
@@ -30,13 +32,13 @@ export default class ColumnSelect extends Vue {
 	@Prop() preloadedOptions!: ExtractColumnOptions;
 
 	options: ExtractColumnOptions = { sourceKey: null };
-	label: string = "";
+	label = "";
 
 	created() {
 		this.label = lemmaRowTranslations[this.lemmaKey].de;
 	}
 
-	get extractedData(): Partial<LemmaRow>[] {
+	get extractedData(): Array<Partial<LemmaRow>> {
 		if (this.options.sourceKey === null) {
 			return [];
 		}
