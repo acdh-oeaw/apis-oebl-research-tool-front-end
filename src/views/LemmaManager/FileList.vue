@@ -42,8 +42,7 @@ export default class FileList extends Vue {
 
 	get totalSize(): number {
 		return this.value.reduce((m, e) => {
-			m = m + e.size;
-			return m;
+			return m + e.size;
 		}, 0);
 	}
 }
