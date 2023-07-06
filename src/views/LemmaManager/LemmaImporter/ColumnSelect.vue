@@ -58,12 +58,7 @@ export default class ColumnSelect extends Vue {
 
 	@Watch("options", { immediate: true, deep: true })
 	emitExtraction() {
-		// I'm not able to stop vuetify from doing this.
-		if (this.options.sourceKey === undefined) {
-			this.options.sourceKey = null;
-		}
-
-		if (this.options.sourceKey === null) {
+		if (this.options.sourceKey == null) {
 			this.cancel();
 		} else {
 			this.submit();
