@@ -1,90 +1,88 @@
 <template>
-  <v-app :style="{ background: 'var(--v-background-base)' }">
-    <!-- LOGIN FORM -->
-    <v-overlay
-      v-if="store.isLoggedIn === false"
-      :value="store.isLoggedIn === false"
-      opacity="1"
-      z-index="99"
-      absolute>
-      <login-form />
-    </v-overlay>
-    <!-- GLOBAL SEARCH -->
-    <global-search v-model="store.showSearchDialog" />
-    <!-- CONFIRM AND PROMPT -->
-    <confirm />
-    <prompt />
-    <!-- LEFT NAVIGATION -->
-    <resizable-drawer
-      :card="false"
-      :right="false"
-      :floating="true"
-      color="background darken-2"
-      stateless
-      app
-      :value="showDrawer"
-      left
-      mini-variant-width="73"
-      class="pa-0"
-      @update:width="store.settings = {...store.settings, drawerLeftWidth: $event}"
-      :width="store.settings.drawerLeftWidth">
-      <sidebar v-if="showDrawer" class="px-3 pt-5" />
-    </resizable-drawer>
-    <!-- THE CONTENT -->
-    <keep-alive>
-      <router-view />
-    </keep-alive>
-  </v-app>
+	<v-app :style="{ background: 'var(--v-background-base)' }">
+		<!-- LOGIN FORM -->
+		<v-overlay
+			v-if="store.isLoggedIn === false"
+			:value="store.isLoggedIn === false"
+			opacity="1"
+			z-index="99"
+			absolute
+		>
+			<login-form />
+		</v-overlay>
+		<!-- GLOBAL SEARCH -->
+		<global-search v-model="store.showSearchDialog" />
+		<!-- CONFIRM AND PROMPT -->
+		<confirm />
+		<prompt />
+		<!-- LEFT NAVIGATION -->
+		<resizable-drawer
+			:card="false"
+			:right="false"
+			:floating="true"
+			color="background darken-2"
+			stateless
+			app
+			:value="showDrawer"
+			left
+			mini-variant-width="73"
+			class="pa-0"
+			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
+			:width="store.settings.drawerLeftWidth"
+		>
+			<sidebar v-if="showDrawer" class="px-3 pt-5" />
+		</resizable-drawer>
+		<!-- THE CONTENT -->
+		<keep-alive>
+			<router-view />
+		</keep-alive>
+	</v-app>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import LoadingSpinner from '@/views/lib/LoadingSpinner.vue'
-import ResizableDrawer from '@/views/lib/ResizableDrawer.vue'
-import store from '@/store'
-import LoginForm from '@/views/LoginForm.vue'
-import Confirm from '@/views/lib/Confirm.vue'
-import Prompt from '@/views/lib/Prompt.vue'
-import { requestState } from '@/api/core/request'
-import GlobalSearch from '@/views/GlobalSearch.vue'
-import Sidebar from '@/views/Sidebar.vue'
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
+import store from "@/store";
+import LoginForm from "@/views/LoginForm.vue";
+import Confirm from "@/views/lib/Confirm.vue";
+import Prompt from "@/views/lib/Prompt.vue";
+import { requestState } from "@/api/core/request";
+import GlobalSearch from "@/views/GlobalSearch.vue";
+import Sidebar from "@/views/Sidebar.vue";
 
 @Component({
-  components: {
-    ResizableDrawer,
-    GlobalSearch,
-    LoadingSpinner,
-    LoginForm,
-    Confirm,
-    Prompt,
-    Sidebar
-  }
+	components: {
+		ResizableDrawer,
+		GlobalSearch,
+		LoadingSpinner,
+		LoginForm,
+		Confirm,
+		Prompt,
+		Sidebar,
+	},
 })
 export default class App extends Vue {
+	store = store;
+	requestState = requestState;
 
-  store = store
-  requestState = requestState
+	onKeyDown(e: KeyboardEvent) {
+		if (e.key === "f" && (e.ctrlKey || e.metaKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			store.showSearchDialog = !store.showSearchDialog;
+		}
+	}
 
-  onKeyDown(e: KeyboardEvent) {
-    if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
-      e.stopPropagation()
-      store.showSearchDialog = !store.showSearchDialog
-    }
-  }
+	mounted() {
+		window.addEventListener("keydown", this.onKeyDown);
+	}
 
-  mounted() {
-    window.addEventListener('keydown', this.onKeyDown)
-  }
-
-  get showDrawer(): boolean {
-    return this.$route.query['minimal'] ? false : this.store.settings.showNavDrawer;
-  }
+	get showDrawer(): boolean {
+		return this.$route.query["minimal"] ? false : this.store.settings.showNavDrawer;
+	}
 }
 </script>
-<style lang="stylus">
-  @import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css);
-</style>
 
 // GLOBAL STYLES
 <style lang="stylus">
@@ -109,7 +107,7 @@ body .v-application .text-body-2
 
 body
 .v-application
-  font-family --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  font-family Roboto Flex, ui-sans-serif, system-ui, sans-serif
 
 .rotate-180
   transform rotate(180deg)

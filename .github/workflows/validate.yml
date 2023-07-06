@@ -46,3 +46,31 @@ jobs:
 
       - name: Typecheck
         run: npm run types:check
+
+      - name: Test
+        run: npm run test
+
+      - name: Install playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build app
+        run: npm run build
+        env:
+          VUE_APP_API_HOST: "https://oebl-irs-backend.acdh-dev.oeaw.ac.at"
+          VUE_APP_EVENTBUS_HOST: "http://localhost:3333"
+          VUE_APP_WEBAPP_HOST: "http://localhost:3333"
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+        env:
+          SERVICE_SECRET: "${{ secrets.K8S_SECRET_SERVICE_SECRET }}"
+          ALLOWED_ORIGIN: '["http://localhost:3333"]'
+          ZOTERO_USER: "${{secrets.K8S_SECRET_ZOTERO_USER }}"
+          ZOTERO_API_KEY: "${{secrets.K8S_SECRET_ZOTERO_API_KEY }}"
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

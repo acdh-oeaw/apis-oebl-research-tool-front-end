@@ -1,44 +1,48 @@
 <template>
-  <div class="outer fill-height flex-column">
-    <div class="file-list" v-if="value.length > 0">
-      <div :title="`${file.name} (${formatNumber(file.size)}b)`" class="file-icon flex-grow-1" v-for="(file, i) in value" :key="i">
-        <img @error="replaceWithDefaultIcon" :src="`/img/file-icons/${ file.name.toLowerCase().split('.').pop() }.svg`" />
-        <div class="caption text-center muted">{{ file.name }}</div>
-      </div>
-    </div>
-    <div class="text-center py-5 text-body-1 muted" v-else>
-      Ziehen Sie Dateien hierher.
-    </div>
-    <div class="caption grey--text text-center mt-4">
-      {{ value.length }} Datei(en), {{ formatNumber(totalSize) }}b.
-    </div>
-  </div>
+	<div class="outer fill-height flex-column">
+		<div class="file-list" v-if="value.length > 0">
+			<div
+				:title="`${file.name} (${formatNumber(file.size)}b)`"
+				class="file-icon flex-grow-1"
+				v-for="(file, i) in value"
+				:key="i"
+			>
+				<img
+					@error="replaceWithDefaultIcon"
+					:src="`/img/file-icons/${file.name.toLowerCase().split('.').pop()}.svg`"
+				/>
+				<div class="caption text-center muted">{{ file.name }}</div>
+			</div>
+		</div>
+		<div class="text-center py-5 text-body-1 muted" v-else>Ziehen Sie Dateien hierher.</div>
+		<div class="caption grey--text text-center mt-4">
+			{{ value.length }} Datei(en), {{ formatNumber(totalSize) }}b.
+		</div>
+	</div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import HRNumbers from 'human-readable-numbers'
+import { Vue, Component, Prop } from "vue-property-decorator";
+import HRNumbers from "human-readable-numbers";
 @Component
 export default class FileList extends Vue {
+	@Prop({ default: () => [] }) value!: Array<{ name: string; url: string; size: number }>;
 
-  @Prop({ default: () => [] }) value!: Array<{ name: string, url: string, size: number }>
+	replaceWithDefaultIcon(e: Event) {
+		if (e.target instanceof HTMLImageElement) {
+			e.target.src = "/img/file-icons/unknown.svg";
+		}
+	}
 
-  replaceWithDefaultIcon(e: Event) {
-    if (e.target instanceof HTMLImageElement) {
-      e.target.src = '/img/file-icons/unknown.svg'
-    }
-  }
+	formatNumber(n: number) {
+		return HRNumbers.toHumanString(n);
+	}
 
-  formatNumber(n: number) {
-    return HRNumbers.toHumanString(n)
-  }
-
-  get totalSize(): number {
-    return this.value.reduce((m, e) => {
-      m = m + e.size
-      return m
-    }, 0)
-  }
-
+	get totalSize(): number {
+		return this.value.reduce((m, e) => {
+			m = m + e.size;
+			return m;
+		}, 0);
+	}
 }
 </script>
 <style lang="stylus" scoped>

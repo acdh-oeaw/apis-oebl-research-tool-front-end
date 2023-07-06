@@ -11,10 +11,10 @@ dist/
 .env.local
 .env.*.local
 
-# cypress
-/tests/e2e/videos/
-/tests/e2e/screenshots/
-cypress.env.json
+# caches
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
 
 # generated api client
 /api-spec.json
@@ -22,6 +22,12 @@ cypress.env.json
 
 # misc
 .DS_Store
+
+# e2e tests
+.auth
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 
 ## .dockerignore ##

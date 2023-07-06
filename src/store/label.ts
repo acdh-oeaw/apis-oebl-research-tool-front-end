@@ -1,19 +1,18 @@
-import { WorkflowService, Author, Lemma, LemmaLabel } from '@/api'
-import _ from 'lodash'
+import { WorkflowService, Author, Lemma, LemmaLabel } from "@/api";
+import _ from "lodash";
 
 export default class LabelStore {
+	private _labels: LemmaLabel[] = [];
 
-  private _labels: LemmaLabel[] = []
+	constructor() {
+		this.initLabels();
+	}
 
-  constructor() {
-    this.initLabels()
-  }
+	async initLabels() {
+		this._labels = (await WorkflowService.workflowApiV1LemmaLabelList()).results || [];
+	}
 
-  async initLabels() {
-    this._labels = (await WorkflowService.workflowApiV1LemmaLabelList()).results || []
-  }
-
-  get labels() {
-    return this._labels
-  }
+	get labels() {
+		return this._labels;
+	}
 }

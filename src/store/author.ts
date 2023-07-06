@@ -1,22 +1,21 @@
-import { WorkflowService, Author } from '@/api'
+import { WorkflowService, Author } from "@/api";
 
 export default class AuthorStore {
+	private _authors: Author[] = [];
 
-  private _authors: Author[] = []
+	constructor() {
+		this.loadAuthors();
+	}
 
-  constructor() {
-    this.loadAuthors()
-  }
+	getById(id: number): Author | undefined {
+		return this.authors.find((a) => a.userId === id);
+	}
 
-  getById(id: number): Author|undefined {
-    return this.authors.find(a => a.userId === id)
-  }
+	get authors() {
+		return this._authors;
+	}
 
-  get authors() {
-    return this._authors
-  }
-
-  async loadAuthors() {
-    this._authors = (await WorkflowService.workflowApiV1AuthorsList()).results || []
-  }
+	async loadAuthors() {
+		this._authors = (await WorkflowService.workflowApiV1AuthorsList()).results || [];
+	}
 }

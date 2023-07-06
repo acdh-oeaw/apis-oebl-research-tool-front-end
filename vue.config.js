@@ -1,52 +1,31 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { defineConfig } = require("@vue/cli-service");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
-module.exports = {
-  lintOnSave: false,
-  transpileDependencies: [
-    'vuetify',
-    'get-stream'
-  ],
-  runtimeCompiler: true,
-  configureWebpack: (config) => {
-    if (
-      process.env.NODE_ENV !== 'production'
-    ) {
-      config
-        .plugins
-        .push(new BundleAnalyzerPlugin({
-          defaultSizes: 'gzip'
-        }))
-    }
-    config.module.rules.unshift({
-      test: /\.worker\.ts$/,
-      use: [
-        {
-          loader: 'worker-loader',
-          options: {
-            inline: 'no-fallback'
-          }
-        }
-      ]
-    })
-    config.module.rules.unshift({
-      test: require('path').resolve(__dirname, 'node_modules/leader-line/'),
-      loader: 'skeleton-loader',
-      options: { procedure: content => `${content} export default LeaderLine` }
-    })
-  },
-  chainWebpack: (config) => {
-    config.plugins.delete('prefetch')
-  },
-  parallel: true,
-  devServer: {
-    open: 'Google Chrome',
-    // https: true,
-    // writeToDisk: true,
-    disableHostCheck: true,
-    host: 'localhost',
-    port: '8080',
-    watchOptions: {
-      poll: false
-    }
-  }
-}
+const config = defineConfig({
+	configureWebpack: (config) => {
+		/** Disable typechecking via webpack plugin. */
+		config.plugins = config.plugins.filter((p) => !(p instanceof ForkTsCheckerWebpackPlugin));
+
+		if (process.env.BUNDLE_ANALYZER === "enabled") {
+			config.plugins.push(new BundleAnalyzerPlugin({ defaultSizes: "gzip" }));
+		}
+
+		/** Add browser polyfills for node dependencies needed by `neat-csv`. */
+		config.resolve.fallback = {
+			buffer: require.resolve("buffer"),
+			stream: require.resolve("stream-browserify"),
+		};
+		config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));
+		config.plugins.push(new ProvidePlugin({ process: "process/browser" }));
+	},
+	devServer: {
+		compress: true,
+		port: 8080,
+	},
+	runtimeCompiler: true,
+	transpileDependencies: ["vuetify"],
+});
+
+module.exports = config;

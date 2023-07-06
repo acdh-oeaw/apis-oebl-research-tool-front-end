@@ -9,6 +9,11 @@ dist/
 .env.local
 .env.*.local
 
+# caches
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
 # generated api client
 /api-spec.json
 /src/api/
@@ -16,7 +21,7 @@ dist/
 # misc
 .DS_Store
 
-#testing 
+# e2e tests
 .auth
 /test-results/
 /playwright-report/

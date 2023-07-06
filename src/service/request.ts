@@ -1,209 +1,218 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { ApiError } from '@/api/core/ApiError'
-import type { ApiRequestOptions } from '@/api/core/ApiRequestOptions'
-import type { ApiResult } from '@/api/core/ApiResult'
-import { OpenAPI } from '@/api/core/OpenAPI'
-import store from '@/store'
-import confirm from '@/store/confirm'
+import { ApiError } from "@/api/core/ApiError";
+import type { ApiRequestOptions } from "@/api/core/ApiRequestOptions";
+import type { ApiResult } from "@/api/core/ApiResult";
+import { OpenAPI } from "@/api/core/OpenAPI";
+import store from "@/store";
+import confirm from "@/store/confirm";
 
 /** Singleton for State */
 export const requestState = {
-  countWriteRequests: 0,
-  countRequests: 0,
-  hasErrored: false,
-  get isLoading() {
-    return this.countWriteRequests > 0 || this.countRequests > 0
-  }
+	countWriteRequests: 0,
+	countRequests: 0,
+	hasErrored: false,
+	get isLoading() {
+		return this.countWriteRequests > 0 || this.countRequests > 0;
+	},
+};
+
+function warnBeforeLeave(e: BeforeUnloadEvent): string | undefined {
+	if (requestState.countWriteRequests > 0) {
+		e.returnValue = "";
+		return "Synchronisierung läuft noch. Beim Beenden können Änderungen verloren gehen. Wirklich beenden?";
+	}
 }
 
-function warnBeforeLeave(e: BeforeUnloadEvent): string|undefined {
-  if (requestState.countWriteRequests > 0) {
-    e.returnValue = ''
-    return 'Synchronisierung läuft noch. Beim Beenden können Änderungen verloren gehen. Wirklich beenden?'
-  }
-}
-
-window.addEventListener('beforeunload', warnBeforeLeave)
+window.addEventListener("beforeunload", warnBeforeLeave);
 
 function isDefined<T>(value: T | null | undefined): value is Exclude<T, null | undefined> {
-    return value !== undefined && value !== null;
+	return value !== undefined && value !== null;
 }
 
 function isString(value: any): value is string {
-    return typeof value === 'string';
+	return typeof value === "string";
 }
 
 function isStringWithValue(value: any): value is string {
-    return isString(value) && value !== '';
+	return isString(value) && value !== "";
 }
 
 function isBlob(value: any): value is Blob {
-    return value instanceof Blob;
+	return value instanceof Blob;
 }
 
 function getQueryString(params: Record<string, any>): string {
-    const qs: string[] = [];
-    Object.keys(params).forEach(key => {
-        const value = params[key];
-        if (isDefined(value)) {
-            if (Array.isArray(value)) {
-                value.forEach(value => {
-                    qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-                });
-            } else {
-                qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-            }
-        }
-    });
-    if (qs.length > 0) {
-        return `?${qs.join('&')}`;
-    }
-    return '';
+	const qs: string[] = [];
+	Object.keys(params).forEach((key) => {
+		const value = params[key];
+		if (isDefined(value)) {
+			if (Array.isArray(value)) {
+				value.forEach((value) => {
+					qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+				});
+			} else {
+				qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+			}
+		}
+	});
+	if (qs.length > 0) {
+		return `?${qs.join("&")}`;
+	}
+	return "";
 }
 
 function getUrl(options: ApiRequestOptions): string {
-    const path = options.path.replace(/[:]/g, '_');
-    const url = `${OpenAPI.BASE}${path}`;
+	const path = options.path.replace(/[:]/g, "_");
+	const url = `${OpenAPI.BASE}${path}`;
 
-    if (options.query) {
-        return `${url}${getQueryString(options.query)}`;
-    }
-    return url;
+	if (options.query) {
+		return `${url}${getQueryString(options.query)}`;
+	}
+	return url;
 }
 
 function getFormData(params: Record<string, any>): FormData {
-    const formData = new FormData();
-    Object.keys(params).forEach(key => {
-        const value = params[key];
-        if (isDefined(value)) {
-            formData.append(key, value);
-        }
-    });
-    return formData;
+	const formData = new FormData();
+	Object.keys(params).forEach((key) => {
+		const value = params[key];
+		if (isDefined(value)) {
+			formData.append(key, value);
+		}
+	});
+	return formData;
 }
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 
-async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>): Promise<T | undefined> {
-    if (typeof resolver === 'function') {
-        return (resolver as Resolver<T>)(options);
-    }
-    return resolver;
+async function resolve<T>(
+	options: ApiRequestOptions,
+	resolver?: T | Resolver<T>,
+): Promise<T | undefined> {
+	if (typeof resolver === "function") {
+		return (resolver as Resolver<T>)(options);
+	}
+	return resolver;
 }
 
 async function getHeaders(options: ApiRequestOptions): Promise<Headers> {
-    const token = await resolve(options, OpenAPI.TOKEN);
-    const username = await resolve(options, OpenAPI.USERNAME);
-    const password = await resolve(options, OpenAPI.PASSWORD);
-    const defaultHeaders = await resolve(options, OpenAPI.HEADERS);
+	const token = await resolve(options, OpenAPI.TOKEN);
+	const username = await resolve(options, OpenAPI.USERNAME);
+	const password = await resolve(options, OpenAPI.PASSWORD);
+	const defaultHeaders = await resolve(options, OpenAPI.HEADERS);
 
-    const headers = new Headers({
-        Accept: 'application/json',
-        ...defaultHeaders,
-        ...options.headers,
-    });
+	const headers = new Headers({
+		Accept: "application/json",
+		...defaultHeaders,
+		...options.headers,
+	});
 
-    if (isStringWithValue(token)) {
-        console.log(`token ${token}`)
-        headers.append('Authorization', `Token ${token}`);
-    }
+	if (isStringWithValue(token)) {
+		console.log(`token ${token}`);
+		headers.append("Authorization", `Token ${token}`);
+	}
 
-    if (isStringWithValue(username) && isStringWithValue(password)) {
-        const credentials = btoa(`${username}:${password}`);
-        headers.append('Authorization', `Basic ${credentials}`);
-    }
+	if (isStringWithValue(username) && isStringWithValue(password)) {
+		const credentials = btoa(`${username}:${password}`);
+		headers.append("Authorization", `Basic ${credentials}`);
+	}
 
-    if (options.body) {
-        if (isBlob(options.body)) {
-            headers.append('Content-Type', options.body.type || 'application/octet-stream');
-        } else if (isString(options.body)) {
-            headers.append('Content-Type', 'text/plain');
-        } else {
-            headers.append('Content-Type', 'application/json');
-        }
-    }
-    return headers;
+	if (options.body) {
+		if (isBlob(options.body)) {
+			headers.append("Content-Type", options.body.type || "application/octet-stream");
+		} else if (isString(options.body)) {
+			headers.append("Content-Type", "text/plain");
+		} else {
+			headers.append("Content-Type", "application/json");
+		}
+	}
+	return headers;
 }
 
 function getRequestBody(options: ApiRequestOptions): BodyInit | undefined {
-    if (options.formData) {
-        return getFormData(options.formData);
-    }
-    if (options.body) {
-        if (isString(options.body) || isBlob(options.body)) {
-            return options.body;
-        } else {
-            return JSON.stringify(options.body);
-        }
-    }
-    return undefined;
+	if (options.formData) {
+		return getFormData(options.formData);
+	}
+	if (options.body) {
+		if (isString(options.body) || isBlob(options.body)) {
+			return options.body;
+		} else {
+			return JSON.stringify(options.body);
+		}
+	}
+	return undefined;
 }
 
 async function sendRequest(options: ApiRequestOptions, url: string): Promise<Response> {
-    const request: RequestInit = {
-        method: options.method,
-        headers: await getHeaders(options),
-        body: getRequestBody(options),
-    };
-    if (OpenAPI.WITH_CREDENTIALS) {
-        request.credentials = 'include';
-    }
-    return await fetch(url, request);
+	const request: RequestInit = {
+		method: options.method,
+		headers: await getHeaders(options),
+		body: getRequestBody(options),
+	};
+	if (OpenAPI.WITH_CREDENTIALS) {
+		request.credentials = "include";
+	}
+	return await fetch(url, request);
 }
 
 function getResponseHeader(response: Response, responseHeader?: string): string | null {
-    if (responseHeader) {
-        const content = response.headers.get(responseHeader);
-        if (isString(content)) {
-            return content;
-        }
-    }
-    return null;
+	if (responseHeader) {
+		const content = response.headers.get(responseHeader);
+		if (isString(content)) {
+			return content;
+		}
+	}
+	return null;
 }
 
 async function getResponseBody(response: Response): Promise<any> {
-    try {
-        const contentType = response.headers.get('Content-Type');
-        if (contentType) {
-            const isJSON = contentType.toLowerCase().startsWith('application/json');
-            if (isJSON) {
-                return await response.json();
-            } else {
-                return await response.text();
-            }
-        }
-    } catch (error) {
-        console.error(error);
-    }
-    return null;
+	try {
+		const contentType = response.headers.get("Content-Type");
+		if (contentType) {
+			const isJSON = contentType.toLowerCase().startsWith("application/json");
+			if (isJSON) {
+				return await response.json();
+			} else {
+				return await response.text();
+			}
+		}
+	} catch (error) {
+		console.error(error);
+	}
+	return null;
 }
 
 function catchErrors(options: ApiRequestOptions, result: ApiResult): void {
-    const errors: Record<number, string> = {
-        400: 'Bad Request',
-        401: 'Unauthorized',
-        403: 'Forbidden',
-        404: 'Not Found',
-        500: 'Internal Server Error',
-        502: 'Bad Gateway',
-        503: 'Service Unavailable',
-        ...options.errors,
-    }
+	const errors: Record<number, string> = {
+		400: "Bad Request",
+		401: "Unauthorized",
+		403: "Forbidden",
+		404: "Not Found",
+		500: "Internal Server Error",
+		502: "Bad Gateway",
+		503: "Service Unavailable",
+		...options.errors,
+	};
 
-    const error = errors[result.status];
-    if (error) {
-        throw new ApiError(result, error);
-    }
+	const error = errors[result.status];
+	if (error) {
+		throw new ApiError(result, error);
+	}
 
-    if (!result.ok) {
-        throw new ApiError(result, 'Generic Error');
-    }
+	if (!result.ok) {
+		throw new ApiError(result, "Generic Error");
+	}
 }
 
 function isHttpWriteCall(opts?: ApiRequestOptions): boolean {
-  return opts !== undefined && opts.method !== undefined && opts.method !== 'GET' && opts.method !== 'HEAD' && opts.method !== 'OPTIONS'
+	return (
+		opts !== undefined &&
+		opts.method !== undefined &&
+		opts.method !== "GET" &&
+		opts.method !== "HEAD" &&
+		opts.method !== "OPTIONS"
+	);
 }
 
 /**
@@ -213,52 +222,54 @@ function isHttpWriteCall(opts?: ApiRequestOptions): boolean {
  * @throws ApiError
  */
 export async function request(options: ApiRequestOptions): Promise<ApiResult> {
+	const isWriteCall = isHttpWriteCall(options);
+	if (isWriteCall) {
+		requestState.countWriteRequests = requestState.countWriteRequests + 1;
+	}
+	requestState.countRequests = requestState.countRequests + 1;
 
-  const isWriteCall = isHttpWriteCall(options)
-  if (isWriteCall) {
-    requestState.countWriteRequests = requestState.countWriteRequests + 1
-  }
-  requestState.countRequests = requestState.countRequests + 1
-  
-  const url = getUrl(options);
-  const response = await sendRequest(options, url);
-  const responseBody = await getResponseBody(response);
-  const responseHeader = getResponseHeader(response, options.responseHeader);
+	const url = getUrl(options);
+	const response = await sendRequest(options, url);
+	const responseBody = await getResponseBody(response);
+	const responseHeader = getResponseHeader(response, options.responseHeader);
 
-  const result: ApiResult = {
-      url,
-      ok: response.ok,
-      status: response.status,
-      statusText: response.statusText,
-      body: responseHeader || responseBody,
-  };
+	const result: ApiResult = {
+		url,
+		ok: response.ok,
+		status: response.status,
+		statusText: response.statusText,
+		body: responseHeader || responseBody,
+	};
 
-  if (isWriteCall) {
-    requestState.countWriteRequests = requestState.countWriteRequests - 1
-  }
-  requestState.countRequests = requestState.countRequests - 1
+	if (isWriteCall) {
+		requestState.countWriteRequests = requestState.countWriteRequests - 1;
+	}
+	requestState.countRequests = requestState.countRequests - 1;
 
-  if (result.ok) {
-    return result
-  } else {
-    // the user’s not logged in.
-    if (result.status === 401) {
-      console.log('Unauthorized Access. Waiting for log-in before continuing.')
-      store.isLoggedIn = false
-      // return a new, long-running promise.
-      return new Promise((resolve, reject) => {
-        // this promise only resolves after the user logs in.
-        store.onLoginSuccess(async () => {
-          // recursion (with the same parameters, i. e. repeating the same request).
-          return request(options).then(resolve).catch(reject)
-        })
-      })
-    // a normal error: alert user.
-    } else {
-      requestState.hasErrored = true
-      console.error(result)
-      await confirm.confirm('Serverfehler. Details in der Console.', { showCancel: false, icon: 'mdi-error' })
-      return result
-    }
-  }
+	if (result.ok) {
+		return result;
+	} else {
+		// the user’s not logged in.
+		if (result.status === 401) {
+			console.log("Unauthorized Access. Waiting for log-in before continuing.");
+			store.isLoggedIn = false;
+			// return a new, long-running promise.
+			return new Promise((resolve, reject) => {
+				// this promise only resolves after the user logs in.
+				store.onLoginSuccess(async () => {
+					// recursion (with the same parameters, i. e. repeating the same request).
+					return request(options).then(resolve).catch(reject);
+				});
+			});
+			// a normal error: alert user.
+		} else {
+			requestState.hasErrored = true;
+			console.error(result);
+			await confirm.confirm("Serverfehler. Details in der Console.", {
+				showCancel: false,
+				icon: "mdi-error",
+			});
+			return result;
+		}
+	}
 }

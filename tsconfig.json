@@ -1,40 +1,59 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "ts-node": {
-    "compilerOptions": {"module":"commonjs"}
-  }
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"paths": {
+			"@/*": ["src/*"]
+		},
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"verbatimModuleSyntax": true
+	},
+	"include": [
+		"./src/**/*.ts",
+		"./src/**/*.tsx",
+		"./src/**/*.vue",
+		"./*.config.js",
+		"./*.config.ts",
+		"./scripts/**/*.ts"
+	],
+	"exclude": ["dist", "node_modules"],
+	"ts-node": {
+		"compilerOptions": {
+			"module": "commonjs",
+			"verbatimModuleSyntax": false
+		},
+		"transpileOnly": true
+	},
+	"vueCompilerOptions": {
+		"target": 2.7,
+		"experimentalModelPropName": {
+			"input-value": {
+				"v-checkbox": true,
+				"v-switch": true,
+				"v-chip": true,
+				"v-btn": true,
+				"v-list-item": true,
+				"v-bottom-navigation": true
+			},
+			"": { "input": true },
+			"value": {
+				"input": { "type": "text" },
+				"textarea": true,
+				"select": true
+			}
+		}
+	}
 }
