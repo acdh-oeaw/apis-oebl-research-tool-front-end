@@ -159,7 +159,6 @@ export default class UserColumnAdding extends Vue {
 
 	@Watch("newLemmas", { deep: true, immediate: true })
 	@Watch("localOptions", { immediate: true, deep: true })
-	updateUserColumns() {}
 
 	// https://vuetifyjs.com/en/api/v-data-table/#props-headers
 	get vuetifyUserColumnHeaders(): Array<{
