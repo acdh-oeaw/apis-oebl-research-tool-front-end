@@ -291,10 +291,10 @@
 				@dblclick:cell="store.lemma.showSideBar = true"
 				@update:selection="selectedRows = $event"
 				@update:item="updateLemmaFromTable"
-				@update:filter="(f) => store.lemma.setFilter(f)"
+				@update:filter="(f: any) => store.lemma.setFilter(f)"
 				@update:columns="columns = $event"
 			>
-				<template #cell="{ item, index, column, value }">
+				<template #cell="{ item, column, value }">
 					<template v-if="item[column.value] === 'Not available'"></template>
 					<!-- the star column -->
 					<template v-else-if="column.value === 'selected'">
@@ -586,7 +586,7 @@ export default class LemmaManager extends Vue {
 		await this.store.lemma.updateLemmas(l, { list: null as any });
 	}
 
-	async removeLemmasFromIssue(l: Array<LemmaRow>) {
+	async removeLemmasFromIssue(_l: Array<LemmaRow>) {
 		// FIXME:
 		// backend method missing
 		// await this.store.issue.deleteLemma(l)
@@ -670,7 +670,7 @@ export default class LemmaManager extends Vue {
 		input.click();
 	}
 
-	onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, index: number) {
+	onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, _index: number) {
 		if (prop === "selected") {
 			this.updateLemma(item, { selected: !item.selected });
 		}
