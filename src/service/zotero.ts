@@ -117,7 +117,7 @@ class ZoteroItemCache {
 	 * @param zoteroKeys
 	 * @returns I have no clue
 	 */
-	async delete(zoteroKeys: Array<string>): Promise<any> {
+	async delete(_zoteroKeys: Array<string>): Promise<any> {
 		return await this.database.zoteroItems.bulkDelete();
 	}
 }

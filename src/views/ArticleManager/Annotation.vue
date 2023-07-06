@@ -219,7 +219,7 @@ export default class Annotation extends Vue {
 	get searchTerm(): string {
 		// if possible, use the cached search term
 		if (this.id !== null && this.searchQueries[this.id] !== undefined) {
-			return this.searchQueries[this.id];
+			return this.searchQueries[this.id]!;
 			// otherwise it’s empty
 		} else {
 			return "";
@@ -233,7 +233,7 @@ export default class Annotation extends Vue {
 
 	updateProps(p: Partial<AnnotationAttributes>) {
 		console.log(p);
-		const res = this.editor.commands.updateAttributes("annotation", {
+		const _res = this.editor.commands.updateAttributes("annotation", {
 			entityId: this.entityId,
 			entityType: this.entityType,
 			id: this.id,
@@ -329,7 +329,7 @@ export default class Annotation extends Vue {
 		if (this.selectedRelationType !== null) {
 			this.updateProps({ relationTypeId: this.selectedRelationType });
 			const SearchTextField = this.$refs.searchTerm as TextField;
-			if (SearchTextField.value != "") {
+			if (SearchTextField.value !== "") {
 				SearchTextField.$emit("input", SearchTextField.localValue);
 			}
 		}

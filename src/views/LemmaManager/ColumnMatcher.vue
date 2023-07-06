@@ -123,7 +123,7 @@
 </template>
 
 <script lang="ts">
-import * as _ from "lodash";
+import _ from "lodash";
 import neatCsv from "neat-csv";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import * as XLSX from "xlsx";

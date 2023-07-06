@@ -113,7 +113,7 @@ export const Comment = popupMark.extend({
 					if (this.editor.isActive(this.name)) {
 						return commands.unsetMark(this.name);
 					} else {
-						const id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
+						const _id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
 						const command = commands.toggleMark(this.name, { id: uuid() });
 						return command;
 					}

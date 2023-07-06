@@ -122,7 +122,7 @@ export default class LemmaStore {
 		},
 
 		get isImporting() {
-			return this.target !== 0 && !isNaN(this.progress) && this.progress !== 1;
+			return this.target !== 0 && !Number.isNaN(this.progress) && this.progress !== 1;
 		},
 	};
 
@@ -165,10 +165,9 @@ export default class LemmaStore {
 			name: "ist vorhanden",
 			value: "exists",
 			icon: ".",
-			predicate: (e: Array<number> | number | string | null, q: unknown) =>
+			predicate: (e: Array<number> | number | string | null, _q: unknown) =>
 				e !== "" &&
-				e !== null &&
-				e !== undefined &&
+				e != null &&
 				e !== "Not available" &&
 				e !== "None" &&
 				(Array.isArray(e) ? e : []).length > 0,
@@ -177,7 +176,7 @@ export default class LemmaStore {
 			name: "ist nicht vorhanden",
 			value: "exists-not",
 			icon: ".",
-			predicate: (e: Array<number> | number | string | null, q: unknown) => !e,
+			predicate: (e: Array<number> | number | string | null, _q: unknown) => !e,
 		},
 		{
 			name: "größer als",
@@ -335,7 +334,6 @@ export default class LemmaStore {
 	doesUpdateDescribeListChange(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
 			update.list !== undefined &&
-			update.list !== undefined &&
 			update.list.id !== undefined &&
 			ls.length > 0 &&
 			ls[0].list !== undefined &&
@@ -390,7 +388,7 @@ export default class LemmaStore {
 
 	listenForRemoteLemmaUpdates() {
 		notifyService.on("updateLemmas", (lemmas, updates, e) => {
-			const updatedLemmas = this.updateLemmas(lemmas, updates, false);
+			const _updatedLemmas = this.updateLemmas(lemmas, updates, false);
 			if (this.isMovementToUserList(lemmas, updates)) {
 				if (updates.list?.id !== undefined) {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));

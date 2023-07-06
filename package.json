@@ -164,7 +164,7 @@
 					}
 				},
 				"rules": {
-					"no-missing-imports": "off"
+					"no-missing-import": "off"
 				}
 			},
 			{
