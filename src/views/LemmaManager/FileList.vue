@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import HRNumbers from "human-readable-numbers";
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class FileList extends Vue {

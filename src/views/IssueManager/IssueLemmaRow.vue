@@ -4,7 +4,7 @@
 			<user-avatar :value="editor" />
 			<user-avatar :value="author" style="margin-left: -5px" />
 		</td>
-		<td style=" width: 20%;font-weight: 500" class="pr-1">
+		<td style="width: 20%; font-weight: 500" class="pr-1">
 			<template v-if="value.lemma">{{ lemma.lastName }} {{ lemma.firstName }}</template>
 			<span v-else>Lemma nicht gefunden.</span>
 		</td>
@@ -28,9 +28,9 @@
 <script lang="ts">
 import format from "date-fns/esm/format";
 import _ from "lodash";
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { type Author,type Editor, type LemmaLabel } from "@/api";
+import { type Author, type Editor, type LemmaLabel } from "@/api";
 import store from "@/store";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
 

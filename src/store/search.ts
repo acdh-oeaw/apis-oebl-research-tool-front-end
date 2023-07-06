@@ -10,7 +10,9 @@ interface SearchItemLemma {
 export type SearchItem = SearchItemLemma;
 
 export default class SearchStore {
-	_recentSearchItems: Array<SearchItem> = JSON.parse(localStorage.getItem("recentSearchItems") || "[]");
+	_recentSearchItems: Array<SearchItem> = JSON.parse(
+		localStorage.getItem("recentSearchItems") || "[]",
+	);
 	private maxSearchItems = 10;
 
 	get recentSearchItems() {

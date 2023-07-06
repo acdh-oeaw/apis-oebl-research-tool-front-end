@@ -1,4 +1,4 @@
-import { type Author,WorkflowService } from "@/api";
+import { type Author, WorkflowService } from "@/api";
 
 export default class AuthorStore {
 	private _authors: Array<Author> = [];

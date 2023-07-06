@@ -128,7 +128,13 @@ import neatCsv from "neat-csv";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import * as XLSX from "xlsx";
 
-import { type Column, type Header, type Row, type SelectOptions,type Table } from "../../types/lemma";
+import {
+	type Column,
+	type Header,
+	type Row,
+	type SelectOptions,
+	type Table,
+} from "../../types/lemma";
 
 @Component
 export default class ColumnMatcher extends Vue {

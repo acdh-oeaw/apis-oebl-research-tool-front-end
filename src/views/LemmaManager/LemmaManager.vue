@@ -190,7 +190,7 @@
 						<v-divider />
 						<div class="caption muted px-3 pt-2">Spalten anzeigen</div>
 						<v-list
-							style=" overflow: scroll;max-height: 50vh"
+							style="overflow: scroll; max-height: 50vh"
 							color="background"
 							class="elevation-0 rounded-lg text-body-2 mb-0 pb-0 x-dense"
 							dense
@@ -355,7 +355,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
-import { type LemmaColumn,type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
+import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 
 import DataFilter from "../lib/DataFilter.vue";
 import ResizableDrawer from "../lib/ResizableDrawer.vue";

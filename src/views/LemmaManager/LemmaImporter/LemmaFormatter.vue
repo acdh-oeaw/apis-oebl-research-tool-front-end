@@ -66,7 +66,10 @@ import {
 	type LemmaPrototypeStringType,
 } from "@/util/lemmaimport/datacontainers";
 import { mergeBuildNewLemmaRows } from "@/util/lemmaimport/dataconversion";
-import { defautLemmaFormatterOptions,type LemmaFormatterOptions } from "@/util/lemmaimport/options";
+import {
+	defautLemmaFormatterOptions,
+	type LemmaFormatterOptions,
+} from "@/util/lemmaimport/options";
 
 import DateFormatter from "./DateFormatter.vue";
 import GenderMapper from "./GenderMapper.vue";

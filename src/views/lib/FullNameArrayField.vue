@@ -136,10 +136,10 @@ export default class FullNameArrayField extends Vue {
 
 <style lang="css" scoped>
 .full-name-array {
-  padding-left: 0;
+	padding-left: 0;
 }
 
 .edit-full-name-input {
-  width: 100%;
+	width: 100%;
 }
 </style>

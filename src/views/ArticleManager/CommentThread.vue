@@ -210,7 +210,7 @@ export default class CommentThread extends Vue {
 	toEmoji(s: number | string): string {
 		if (typeof s === "string") {
 			const nums = s.split("_").map((val) => parseInt(val, 16));
-			 
+
 			return String.fromCodePoint.apply(String, nums);
 		} else {
 			return "";

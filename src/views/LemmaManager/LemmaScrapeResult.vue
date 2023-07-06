@@ -7,7 +7,7 @@
 		:value="defaultExpand"
 	>
 		<template #activator>
-			<v-list-item-title style=" letter-spacing: 0.1em;text-transform: uppercase">
+			<v-list-item-title style="letter-spacing: 0.1em; text-transform: uppercase">
 				{{ title }}
 			</v-list-item-title>
 			<v-list-item-action-text class="ellipsis">
@@ -72,7 +72,7 @@ import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type ServerResearchLemma } from "@/types/lemma";
-import { isValidHttpUrl,maybeParseDate } from "@/util";
+import { isValidHttpUrl, maybeParseDate } from "@/util";
 
 type ScrapeValue =
 	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];

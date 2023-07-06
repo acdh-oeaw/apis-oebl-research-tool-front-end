@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import { specialChar } from "@/service/specialchars";
 
@@ -45,7 +45,6 @@ export default class Annotation extends Vue {
 
 	toSpecialChar(s: number | string): string {
 		if (typeof s === "number") {
-			 
 			return String.fromCodePoint(s);
 		} else {
 			return "";

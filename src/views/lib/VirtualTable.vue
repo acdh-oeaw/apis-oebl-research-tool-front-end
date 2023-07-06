@@ -233,7 +233,10 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	getStringFromLemmaRowByColumn(lemma: LemmaRow, column: LemmaColumn): Array<string> | string | null {
+	getStringFromLemmaRowByColumn(
+		lemma: LemmaRow,
+		column: LemmaColumn,
+	): Array<string> | string | null {
 		const value = getValueFromLemmaRowByColumn(lemma, column);
 		if (value === null || value == undefined) {
 			return null;

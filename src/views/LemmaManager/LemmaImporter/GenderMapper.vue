@@ -40,7 +40,10 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { GenderAe0Enum } from "@/api";
 import { lemmaRowTranslations } from "@/util/labels";
-import { type LemmaGender, type LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
+import {
+	type LemmaGender,
+	type LemmaPrototypeRequiredFieldsType,
+} from "@/util/lemmaimport/datacontainers";
 import { mapGender } from "@/util/lemmaimport/dataconversion";
 import { defautLemmaFormatterOptions, type GenderMappingOption } from "@/util/lemmaimport/options";
 

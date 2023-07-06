@@ -108,7 +108,7 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import { type NewLemmaRow } from "@/types/lemma";
 import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
@@ -208,8 +208,8 @@ export default class LemmaImportManager extends Vue {
 <style scoped>
 /* Show background blurred */
 div.lemma-importer-container {
-  height: 100%;
-  background-color: #f5f6f8ee;
+	height: 100%;
+	background-color: #f5f6f8ee;
 }
 
 /**
@@ -218,6 +218,6 @@ div.lemma-importer-container {
  * This is an easy solution.
 */
 /deep/ .v-stepper__header {
-  height: inherit;
+	height: inherit;
 }
 </style>

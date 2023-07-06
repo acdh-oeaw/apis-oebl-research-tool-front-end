@@ -160,7 +160,7 @@ export default class LemmaBoard extends Vue {
 
 .flip-list-enter
 .flip-list-leave-to
-/* .list-complete-leave-active below version 2.1.8 */ 
+/* .list-complete-leave-active below version 2.1.8 */
   opacity 0%
   // transform: translateY(30px);
 
@@ -192,5 +192,4 @@ export default class LemmaBoard extends Vue {
 
 .list-group-item i
   cursor pointer
-
 </style>

@@ -20,7 +20,10 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { factoryMethods, supportedDateFormats, type SupportedDateFormatType } from "@/util/dates";
 import { lemmaRowTranslations } from "@/util/labels";
-import { type LemmaDates, type LemmaPrototypeRequiredFieldsType } from "@/util/lemmaimport/datacontainers";
+import {
+	type LemmaDates,
+	type LemmaPrototypeRequiredFieldsType,
+} from "@/util/lemmaimport/datacontainers";
 
 type DateComparisionView = {
 	firstName: string;

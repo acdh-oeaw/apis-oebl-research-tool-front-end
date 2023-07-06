@@ -5,7 +5,7 @@ import "tippy.js/dist/backdrop.css";
 
 import { type Editor, getMarkAttributes } from "@tiptap/core";
 import { Command, Mark, VueRenderer } from "@tiptap/vue-2";
-import tippy, { hideAll, type Instance as TippyInstance,sticky } from "tippy.js";
+import tippy, { hideAll, type Instance as TippyInstance, sticky } from "tippy.js";
 import Vue, { type VueConstructor } from "vue";
 
 import vuetify from "@/plugins/vuetify";
@@ -56,7 +56,6 @@ function showPopUp(
 		t.setContent(vueComponents[name].element);
 		if (shouldFocus) {
 			requestAnimationFrame(() => {
-				 
 				t!.popper.querySelector("textarea")?.focus();
 			});
 		}

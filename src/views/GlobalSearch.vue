@@ -27,7 +27,7 @@
 				</v-card-title>
 				<v-card-text
 					class="overflow-hidden pa-0"
-					style=" position: relative;height: 450px; background: transparent"
+					style="position: relative; height: 450px; background: transparent"
 				>
 					<v-divider />
 					<div class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
@@ -69,7 +69,7 @@
 									</v-list-item-subtitle>
 								</v-list-item-content>
 								<v-list-item-action-text
-									style=" overflow: hidden; max-width: 50%;white-space: nowrap"
+									style="overflow: hidden; max-width: 50%; white-space: nowrap"
 								>
 									<div v-if="result.item.list" class="text-right font-weight-bold">
 										<v-icon x-small>mdi-format-list-bulleted</v-icon>

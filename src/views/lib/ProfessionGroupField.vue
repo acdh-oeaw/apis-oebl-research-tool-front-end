@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { toNumber } from "lodash";
-import { Component, Prop,Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type ProfessionGroup } from "@/api";
 import { OpenAPI } from "@/api/core/OpenAPI";

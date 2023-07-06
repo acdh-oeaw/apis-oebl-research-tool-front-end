@@ -143,7 +143,7 @@
 <script lang="ts">
 import TipTapStarterKit from "@tiptap/starter-kit";
 import { type Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/vue-2";
-import { Component, Prop,Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type LemmaArticleVersion } from "@/api";
 import {

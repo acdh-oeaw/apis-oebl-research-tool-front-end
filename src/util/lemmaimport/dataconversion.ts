@@ -9,7 +9,11 @@ import {
 	type LemmaPrototypeRequiredFieldsType,
 	type LemmaPrototypeStringType,
 } from "./datacontainers";
-import { defautLemmaFormatterOptions, type GenderMappingOption, type UserColumnMapping } from "./options";
+import {
+	defautLemmaFormatterOptions,
+	type GenderMappingOption,
+	type UserColumnMapping,
+} from "./options";
 
 export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
 	return {
@@ -207,7 +211,10 @@ export function createUserColumns(table: Data2D, options: UserColumnMapping): Ar
 	});
 }
 
-export function addUserColumns(lemmas: Array<NewLemmaRow>, columns: Array<UserColumn>): Array<NewLemmaRow> {
+export function addUserColumns(
+	lemmas: Array<NewLemmaRow>,
+	columns: Array<UserColumn>,
+): Array<NewLemmaRow> {
 	if (columns.length === 0) {
 		return lemmas;
 	}

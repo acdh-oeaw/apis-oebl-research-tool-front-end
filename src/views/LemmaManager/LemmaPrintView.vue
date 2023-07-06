@@ -200,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
@@ -267,64 +267,64 @@ export default class LemmaPrintView extends Vue {
 
 <style scoped>
 .first-name-title::before {
-  content: ", ";
+	content: ", ";
 }
 
 .left-align {
-  margin-left: 1em;
+	margin-left: 1em;
 }
 
 .fieldname {
-  margin-right: 1em;
-  font-weight: 600;
+	margin-right: 1em;
+	font-weight: 600;
 }
 
 .fieldname::after {
-  content: ":";
+	content: ":";
 }
 
 .alternative-names h3::after {
-  content: ":";
+	content: ":";
 }
 
 .alternative-names .field .fieldname {
-  display: none;
+	display: none;
 }
 
 .alternative-names .field,
 .alternative-names .fieldvalue {
-  display: inline;
+	display: inline;
 }
 
 .field.alternative-name .fieldvalue:empty::after {
-  content: "(N/A)";
-  font-style: italic;
+	content: "(N/A)";
+	font-style: italic;
 }
 
 .field.alternative-last-name::after {
-  content: ",";
+	content: ",";
 }
 
 .field.alternative-name::after {
-  content: ";";
+	content: ";";
 }
 
 .field.alternative-first-name {
-  padding-right: 0;
+	padding-right: 0;
 }
 
 .field.alternative-last-name {
-  padding-right: 0;
+	padding-right: 0;
 }
 
 .external-resources >>> a,
 .scrape-data >>> div[role="button"] {
-  color: black;
+	color: black;
 }
 
 @media print {
-  .print-button {
-    display: none;
-  }
+	.print-button {
+		display: none;
+	}
 }
 </style>

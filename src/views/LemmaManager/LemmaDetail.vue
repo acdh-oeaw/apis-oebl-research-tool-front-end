@@ -381,7 +381,7 @@
 <script lang="ts">
 import fileDialog from "file-dialog";
 import _ from "lodash";
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { GenderAe0Enum, type List } from "@/api";
 import store from "@/store";

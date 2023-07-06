@@ -102,7 +102,7 @@
 import { clone, debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type LemmaColumn, type LemmaFilterComparator,type LemmaFilterItem } from "@/types/lemma";
+import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
 
 import SelectMenu from "./SelectMenu.vue";
 

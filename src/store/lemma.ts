@@ -2,7 +2,14 @@
 import Dexie from "dexie";
 import _ from "lodash";
 
-import { type Editor, type GenderAe0Enum,type IssueLemma, type List as LemmaList, type List, ResearchService } from "@/api";
+import {
+	type Editor,
+	type GenderAe0Enum,
+	type IssueLemma,
+	type List as LemmaList,
+	type List,
+	ResearchService,
+} from "@/api";
 import notifyService from "@/service/notify/notify";
 import { type WithId } from "@/types";
 import {
@@ -549,13 +556,19 @@ export default class LemmaStore {
 		});
 	}
 
-	private rightMergeLemmas(oldLemmas: Array<LemmaRow>, newLemmas: Array<LemmaRow>): Array<LemmaRow> {
+	private rightMergeLemmas(
+		oldLemmas: Array<LemmaRow>,
+		newLemmas: Array<LemmaRow>,
+	): Array<LemmaRow> {
 		const newIds = newLemmas.map((lemma) => lemma.id);
 		const unchangingLemmas = oldLemmas.filter((lemma) => !newIds.includes(lemma.id));
 		return unchangingLemmas.concat(newLemmas);
 	}
 
-	private innerMergeLemmas(oldLemmas: Array<LemmaRow>, updateLemmas: Array<LemmaRow>): Array<LemmaRow> {
+	private innerMergeLemmas(
+		oldLemmas: Array<LemmaRow>,
+		updateLemmas: Array<LemmaRow>,
+	): Array<LemmaRow> {
 		const oldIds = oldLemmas.map((lemma) => lemma.id);
 		const updateIds = updateLemmas.map((lemma) => lemma.id);
 
@@ -788,7 +801,9 @@ export default class LemmaStore {
 		// call progress handler if available
 		if (onProgress !== undefined) {
 			await onProgress(
-				((firstRes.results as Array<ServerResearchLemma>) || []).map(this.convertRemoteLemmaToLemmaRow),
+				((firstRes.results as Array<ServerResearchLemma>) || []).map(
+					this.convertRemoteLemmaToLemmaRow,
+				),
 			);
 		}
 		// if there’s more than on page: loop from second page until we have all items and return

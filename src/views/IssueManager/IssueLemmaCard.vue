@@ -40,7 +40,7 @@ import format from "date-fns/esm/format";
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type IssueLemma,type LemmaLabel } from "@/api";
+import { type IssueLemma, type LemmaLabel } from "@/api";
 import store from "@/store";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
 

@@ -160,7 +160,7 @@ import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
 import de from "date-fns/esm/locale/de";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type Author,type Editor, type IssueLemma, type LemmaNote } from "@/api";
+import { type Author, type Editor, type IssueLemma, type LemmaNote } from "@/api";
 import { type LemmaStatus } from "@/types/issue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 

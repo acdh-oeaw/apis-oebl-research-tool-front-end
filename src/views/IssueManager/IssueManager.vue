@@ -272,7 +272,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import confirm from "@/store/confirm";
 
-import { type IssueLemma, type LemmaLabel,type LemmaStatus } from "../../api/index";
+import { type IssueLemma, type LemmaLabel, type LemmaStatus } from "../../api/index";
 import { type WithId } from "../../types";
 import { DateContainer } from "../../util/dates";
 import LoadingSpinner from "../lib/LoadingSpinner.vue";

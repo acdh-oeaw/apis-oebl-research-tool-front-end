@@ -103,5 +103,4 @@ input:-webkit-autofill
   animation-name autofill
   animation-delay 1s // Safari support - any positive time runs instantly
   animation-fill-mode both
-
 </style>

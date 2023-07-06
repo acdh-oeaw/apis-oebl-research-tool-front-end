@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type FullName as FullNameType } from "@/types/lemma";
 import TextField from "@/views/lib/TextField.vue";

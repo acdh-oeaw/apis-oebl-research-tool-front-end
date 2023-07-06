@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type Author,type Editor } from "@/api";
+import { type Author, type Editor } from "@/api";
 
 @Component
 export default class UserAvatar extends Vue {
