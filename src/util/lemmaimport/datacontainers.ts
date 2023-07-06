@@ -20,6 +20,10 @@ export class Data2D {
 		return this._data;
 	}
 
+	set data(data: Array<Array<string>>) {
+		data.forEach((row) => this.addRow(row));
+	}
+
 	addRow(row: Array<string>) {
 		if (row.length !== this.headers.length) {
 			throw new Error(
@@ -27,10 +31,6 @@ export class Data2D {
 			);
 		}
 		this._data.push(row);
-	}
-
-	set data(data: Array<Array<string>>) {
-		data.forEach((row) => this.addRow(row));
 	}
 
 	selectByHeaderName(headerName: string): Array<string> {

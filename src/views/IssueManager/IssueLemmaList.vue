@@ -54,10 +54,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
 
-import { type IssueLemma, Label, type LemmaStatus } from "@/types/issue";
+import { type IssueLemma, type LemmaStatus } from "@/types/issue";
 
 import store from "../../store";
 import IssueLemmaRow from "./IssueLemmaRow.vue";

@@ -8,6 +8,7 @@
 				class="file-icon flex-grow-1"
 			>
 				<img
+					alt=""
 					:src="`/img/file-icons/${file.name.toLowerCase().split('.').pop()}.svg`"
 					@error="replaceWithDefaultIcon"
 				/>

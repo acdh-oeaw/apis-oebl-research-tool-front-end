@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import { requestState } from "@/api/core/request";
 import store from "@/store";

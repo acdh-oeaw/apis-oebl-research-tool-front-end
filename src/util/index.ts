@@ -18,7 +18,9 @@ export async function fileToArrayBuffer(f: File): Promise<ArrayBuffer> {
 }
 
 export function maybeParseDate(s: string): Date | null {
-	return typeof s === "string" && isNaN(Number(s)) && !isNaN(Date.parse(s)) ? new Date(s) : null;
+	return typeof s === "string" && Number.isNaN(Number(s)) && !Number.isNaN(Date.parse(s))
+		? new Date(s)
+		: null;
 }
 
 export function isValidHttpUrl(string: string): boolean {

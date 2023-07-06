@@ -540,7 +540,6 @@ export default class LemmaDetail extends Vue {
 
 	updateUserColumns(userKey: string, $event: Array<string> | number | string) {
 		this.$emit("update", {
-			// eslint-disable-next-line @typescript-eslint/camelcase
 			columns_user: {
 				...this.value.columns_user,
 				[userKey]: $event,

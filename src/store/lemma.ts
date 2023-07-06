@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import Dexie from "dexie";
 import _ from "lodash";
 
@@ -17,7 +16,6 @@ import {
 	type ImportablePerson,
 	type LemmaColumn,
 	type LemmaFilterComparator,
-	LemmaFilterItem,
 	type LemmaRow,
 	type SecondaryCitation,
 	type SerializedLemmaRow,

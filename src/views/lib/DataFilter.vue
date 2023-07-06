@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import { clone, debounce } from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
 

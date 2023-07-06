@@ -68,4 +68,6 @@ class Zotero {
 	}
 }
 
-export default new Zotero();
+const zotero = new Zotero();
+
+export default zotero;

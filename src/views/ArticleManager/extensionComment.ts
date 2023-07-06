@@ -102,13 +102,13 @@ export const Comment = popupMark.extend({
 		console.warn("This whole module is not working. TODO");
 		return {
 			setComment:
-				(attributes) =>
+				(_attributes) =>
 				({ commands }) => {
 					console.log("new comment");
 					return commands.setMark(this.name, { id: uuid() });
 				},
 			toggleComment:
-				(attributes) =>
+				(_attributes) =>
 				({ commands }) => {
 					if (this.editor.isActive(this.name)) {
 						return commands.unsetMark(this.name);

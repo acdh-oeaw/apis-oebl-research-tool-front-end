@@ -252,7 +252,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";

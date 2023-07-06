@@ -238,7 +238,7 @@ export default class VirtualTable extends Vue {
 		column: LemmaColumn,
 	): Array<string> | string | null {
 		const value = getValueFromLemmaRowByColumn(lemma, column);
-		if (value === null || value == undefined) {
+		if (value == null) {
 			return null;
 		}
 		if (typeof value === "string") {
@@ -292,7 +292,7 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	onDblClickCell(item: LemmaRow, e: MouseEvent, column: LemmaColumn, index: number) {
+	onDblClickCell(item: LemmaRow, e: MouseEvent, column: LemmaColumn) {
 		if (column.editable === true && e.currentTarget instanceof HTMLElement) {
 			this.editPopUp = {
 				x: e.currentTarget.getBoundingClientRect().left,
@@ -305,7 +305,7 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	onDblClickRow(e: MouseEvent, item: LemmaRow, index: number) {
+	onDblClickRow(e: MouseEvent, item: LemmaRow) {
 		this.$emit("dblclick:row", item, e);
 	}
 

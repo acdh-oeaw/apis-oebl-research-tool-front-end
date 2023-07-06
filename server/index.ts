@@ -1,5 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
-
 import compression from "compression";
 import cors from "cors";
 import express from "express";
@@ -24,7 +22,7 @@ const port = process.env.NODE_PORT || process.env.PORT || 3333;
 const serviceSecret = process.env.SERVICE_SECRET;
 
 const server = http.createServer(app);
-// @ts-ignore
+// @ts-expect-error FIXME:
 const io = socketIo(server, {
 	cors: {
 		origin: JSON.parse(process.env.ALLOWED_ORIGIN),
@@ -97,7 +95,7 @@ app.get("/zotero/item/:id", async (request, response) => {
 	response.header["zoteroStatusText"] = zoteroResponse.statusText;
 
 	let responseBody = null;
-	if (zoteroResponse.status == 200) {
+	if (zoteroResponse.status === 200) {
 		responseBody = await zoteroResponse.json();
 	}
 	response.send(JSON.stringify(responseBody));

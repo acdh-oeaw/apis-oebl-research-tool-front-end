@@ -17,9 +17,9 @@
 				contentClass: 'soft-shadow text-body-2 v-list--dense background lighten-1',
 			}"
 			:search-input.sync="searchText"
-			@change="onChange"
 			:value="selectedLabels"
 			:items="labels"
+			@change="onChange"
 		>
 			<template #selection="{ selected, select, item }">
 				<v-chip
@@ -167,7 +167,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import colors from "vuetify/lib/util/colors";
 
 import store from "@/store";

@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures";
+import { expect, test } from "../fixtures";
 
 test("add new lemmalist", async ({ page }) => {
 	// https://playwright.dev/docs/test-timeouts#set-timeout-for-a-single-test

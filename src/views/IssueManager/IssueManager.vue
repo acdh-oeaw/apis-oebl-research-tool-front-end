@@ -21,11 +21,11 @@
 			</div>
 			<v-spacer />
 			<v-autocomplete
+				v-model="searchItems"
 				single-line
 				style="max-width: 50%"
 				class="rounded-lg ml-5 mr-1 text-body-2"
 				background-color="background darken-2"
-				v-model="searchItems"
 				dense
 				multiple
 				clearable
@@ -73,6 +73,7 @@
 							<img
 								v-if="item.type === 'editor' && item.image !== undefined"
 								:key="item.type + '__' + item.id"
+								alt=""
 								:src="item.image"
 							/>
 							<v-icon v-if="item.type === 'author'">mdi-account-edit-outline</v-icon>

@@ -1,6 +1,5 @@
 import Vue from "vue";
 
-import { request } from "@/api/core/request";
 import { type LemmaFilterItem } from "@/types/lemma";
 
 import { OpenAPI } from "../api";
@@ -18,7 +17,7 @@ OpenAPI.WITH_CREDENTIALS = true;
 // FIXME: use tokens
 //OpenAPI.USERNAME = atob(localStorage.getItem('user') || '') || undefined
 //OpenAPI.PASSWORD = atob(localStorage.getItem('pass') || '') || undefined
-OpenAPI.TOKEN = localStorage.getItem("token") || "" || undefined;
+OpenAPI.TOKEN = localStorage.getItem("token") || undefined;
 
 export interface StoredLemmaFilter {
 	name: string;

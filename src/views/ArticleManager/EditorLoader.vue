@@ -57,7 +57,7 @@
 								</v-btn>
 							</span>
 							<v-list v-if="articleStore">
-								<v-list-item v-for="(version, index) in sortedVersionViews">
+								<v-list-item v-for="version in sortedVersionViews" :key="version.id">
 									<template #default>
 										<v-list-item-action>
 											<v-simple-checkbox

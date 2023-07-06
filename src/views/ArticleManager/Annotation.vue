@@ -160,13 +160,12 @@
 
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
-import _, { update } from "lodash";
+import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { EntityTranslations } from "@/util/labels";
 
 import * as apis_autocomplete from "../../service/apis_autocomplete";
-import * as lobid from "../../service/lobid";
 import LobidPreviewCard from "../LemmaManager/LobidPreviewCard.vue";
 import LoadingSpinner from "../lib/LoadingSpinner.vue";
 import TextField from "../lib/TextField.vue";

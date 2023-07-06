@@ -69,7 +69,7 @@
 import formatDate from "date-fns/esm/format";
 import de from "date-fns/esm/locale/de";
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type ServerResearchLemma } from "@/types/lemma";
 import { isValidHttpUrl, maybeParseDate } from "@/util";

@@ -3,8 +3,8 @@ import "tippy.js/animations/scale.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/dist/backdrop.css";
 
-import { type Editor, getMarkAttributes } from "@tiptap/core";
-import { Command, Mark, VueRenderer } from "@tiptap/vue-2";
+import { type Editor } from "@tiptap/core";
+import { Mark, VueRenderer } from "@tiptap/vue-2";
 import tippy, { hideAll, type Instance as TippyInstance, sticky } from "tippy.js";
 import Vue, { type VueConstructor } from "vue";
 
@@ -16,7 +16,7 @@ const vueComponents: { [name: string]: VueRenderer } = {};
 function updateComponent(name: string, id: string, attrs: any, tagName: string, editor: Editor) {
 	const el = document.querySelector(`${tagName}[data-id="${id}"]`);
 	if (el instanceof HTMLElement && vueComponents[name] !== undefined) {
-		vueComponents[name].updateProps({ ...attrs, editor });
+		vueComponents[name]?.updateProps({ ...attrs, editor });
 	}
 }
 
@@ -39,7 +39,7 @@ function showPopUp(
 		});
 		t.show();
 		if (vueComponents[name] !== undefined) {
-			vueComponents[name].updateProps({
+			vueComponents[name]?.updateProps({
 				...attributes,
 				editor,
 			});

@@ -69,7 +69,9 @@ class ZoteroStore {
 	}
 }
 
-export default new ZoteroStore();
+const zoteroStore = new ZoteroStore();
+
+export default zoteroStore;
 
 /**
  * Cache Zotero Items locally with IndexedDB
@@ -253,6 +255,7 @@ export class ZoteroLemmaManagmentController {
 		this._loading = true;
 		// Only load data, that has not already been loaded into memory
 		const alreadyLoadedKeys = this.zoteroItems.map((item) => item.key);
+		// eslint-disable-next-line no-param-reassign
 		zoteroItemKeys = zoteroItemKeys.filter((key) => !alreadyLoadedKeys.includes(key));
 		// If there is a cache, load data from there
 		let cachedItems: Array<ZoteroItem> = [];

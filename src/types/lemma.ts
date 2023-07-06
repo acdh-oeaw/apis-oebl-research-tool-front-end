@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { type Person as LdPerson } from "schema-dts";
 
 import { type GenderAe0Enum } from "@/api/models/GenderAe0Enum";

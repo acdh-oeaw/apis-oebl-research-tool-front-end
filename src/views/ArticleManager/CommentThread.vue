@@ -111,7 +111,6 @@
 import { type Editor } from "@tiptap/vue-2";
 import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
 import de from "date-fns/esm/locale/de";
-import { v4 as uuid } from "uuid";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { emoji } from "@/service/emoji";

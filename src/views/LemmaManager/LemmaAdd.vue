@@ -171,7 +171,6 @@ export default class LemmaAdd extends Vue {
 	possibleGnds: Array<string> = [];
 	viewLemmaDetail: LemmaRow | null = null;
 
-	/* eslint-disable @typescript-eslint/camelcase */
 	emptyPerson: LemmaRow = {
 		id: -1,
 		firstName: "",
