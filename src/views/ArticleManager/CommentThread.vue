@@ -89,9 +89,18 @@
 						v-for="(emoji, i) in subgroup.emojis"
 						:key="'em' + i"
 						class="emoji"
-						@click="insertEmoji(lastCaretPos, toEmoji(emoji[0]!))"
+						@click="
+							insertEmoji(
+								lastCaretPos,
+								toEmoji(
+									// @ts-expect-error
+									emoji[0],
+								),
+							)
+						"
 					>
-						{{ toEmoji(emoji[0]!) }}
+						<!-- @vue-expect-error -->
+						{{ toEmoji(emoji[0]) }}
 					</span>
 					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 				</span>

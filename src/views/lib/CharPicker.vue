@@ -23,9 +23,16 @@
 					text
 					small
 					class="special-char"
-					@click="$emit('returnSpecialChar', toSpecialChar(char[0]!))"
+					@click="
+						$emit(
+							'returnSpecialChar',
+							// @ts-expect-error
+							toSpecialChar(char[0]),
+						)
+					"
 				>
-					{{ toSpecialChar(char[0]!) }}
+					<!-- @vue-expect-error -->
+					{{ toSpecialChar(char[0]) }}
 				</v-btn>
 			</span>
 		</v-card>

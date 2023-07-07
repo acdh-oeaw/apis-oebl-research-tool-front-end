@@ -72,7 +72,8 @@
 						Lemmabibliothek
 					</h1>
 					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
-						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId)!.name }}
+						<!-- @vue-expect-error -->
+						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
 					</h1>
 					<h1
 						v-else-if="selectedList !== null"
@@ -89,7 +90,7 @@
 							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
 						"
 						@keyup.enter.prevent.stop="$event.target.blur()"
-						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId)!.name"
+						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
 					></h1>
 					<span class="caption text-no-wrap">
 						<v-btn
@@ -267,10 +268,17 @@
 				v-else
 				:value="selectedRows[0]"
 				@close="store.lemma.showSideBar = false"
-				@update="updateLemma(selectedRows[0]!, $event)"
+				@update="
+					updateLemma(
+						// @ts-expect-error
+						selectedRows[0],
+						$event,
+					)
+				"
 			/>
 		</resizable-drawer>
 		<v-main class="fill-width fill-height transition-none">
+			<!-- @vue-expect-error -->
 			<virtual-table
 				ref="vTable"
 				test-id="lemma-table"
@@ -293,7 +301,7 @@
 				@dblclick:cell="store.lemma.showSideBar = true"
 				@update:selection="selectedRows = $event"
 				@update:item="updateLemmaFromTable"
-				@update:filter="(f: any) => store.lemma.setFilter(f)"
+				@update:filter="(f) => store.lemma.setFilter(f)"
 				@update:columns="columns = $event"
 			>
 				<template #cell="{ item, column, value }">

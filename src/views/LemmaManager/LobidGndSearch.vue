@@ -1,20 +1,23 @@
 <template>
 	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 	<div tabindex="-1" @keyup.esc="$emit('cancel')">
+		<!-- @vue-expect-error -->
 		<text-field
 			v-model="localLemma.firstName"
-			:label="lemmaRowTranslations.firstName!.de"
+			:label="lemmaRowTranslations.firstName.de"
 			@input="debouncedSearchGnd"
 		></text-field>
+		<!-- @vue-expect-error -->
 		<text-field
 			v-model="localLemma.lastName"
-			:label="lemmaRowTranslations.lastName!.de"
+			:label="lemmaRowTranslations.lastName.de"
 			@input="debouncedSearchGnd"
 		></text-field>
+		<!-- @vue-expect-error -->
 		<text-field
 			:value="localValue.length > 0 ? localValue[0] : ''"
 			placeholder="manuell wählen…"
-			:label="lemmaRowTranslations.gnd!.de"
+			:label="lemmaRowTranslations.gnd.de"
 			:color="undefined"
 			@input="useCustomGnd($event)"
 		></text-field>
