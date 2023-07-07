@@ -2,18 +2,16 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
-import http from "http";
+import { createServer } from "http";
 import fetch, { Headers } from "node-fetch";
-import socketIo from "socket.io";
+import { Server, type Socket } from "socket.io";
 
 import { env } from "./env";
 import zotero from "./zotero";
 
 const app = express();
-
-const server = http.createServer(app);
-// @ts-expect-error FIXME:
-const io = socketIo(server, { cors: { origin: env.ALLOWED_ORIGIN } });
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: env.ALLOWED_ORIGIN } });
 
 const index = fs.readFileSync("./dist/index.html", { encoding: "utf-8" });
 app.enable("trust proxy");
@@ -134,10 +132,10 @@ app.get("/zotero/initial-data", async (req, res) => {
 
 app.use("*", (req, res) => res.send(index));
 
-io.on("connection", (socket: any) => {
+io.on("connection", (socket: Socket) => {
 	socket.send("message", "connected to socket server");
-	// when someone sends any message, send it to all others.
-	socket.onAny((name: string, ...m: any) => {
+	/** Broadcast all messages to all connected users. */
+	socket.onAny((name, ...m) => {
 		socket.broadcast.emit(name, ...m);
 	});
 });
