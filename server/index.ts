@@ -1,8 +1,12 @@
+/* eslint-disable import/no-named-as-default-member */
+
+import { readFileSync } from "node:fs";
+import { createServer } from "node:http";
+import { join } from "node:path";
+
 import compression from "compression";
 import cors from "cors";
 import express from "express";
-import fs from "fs";
-import { createServer } from "http";
 import fetch, { Headers } from "node-fetch";
 import { Server, type Socket } from "socket.io";
 
@@ -13,12 +17,13 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, { cors: { origin: env.ALLOWED_ORIGIN } });
 
-const index = fs.readFileSync("./dist/index.html", { encoding: "utf-8" });
+const staticAssetsFolder = join(process.cwd(), "dist");
+const indexHtml = readFileSync(join(staticAssetsFolder, "index.html"), { encoding: "utf-8" });
+
 app.enable("trust proxy");
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: "100mb" }));
-
 app.use(["/", "/css", "/img", "/js"], express.static("./dist"));
 
 app.post("/message/import-issue-lemmas", (req, res) => {
@@ -130,7 +135,7 @@ app.get("/zotero/initial-data", async (req, res) => {
 	);
 });
 
-app.use("*", (req, res) => res.send(index));
+app.use("*", (req, res) => res.send(indexHtml));
 
 io.on("connection", (socket: Socket) => {
 	socket.send("message", "connected to socket server");
