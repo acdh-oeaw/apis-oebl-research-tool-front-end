@@ -10,7 +10,6 @@ const fetchCache: { [url: string]: any } = {};
 
 async function fetch(url: string) {
 	if (fetchCache[url] === undefined) {
-		console.info("cached ", url);
 		fetchCache[url] = await (await realFetch(url)).json();
 	}
 	return { json: () => fetchCache[url] };

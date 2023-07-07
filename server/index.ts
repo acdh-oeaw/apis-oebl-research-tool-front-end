@@ -24,9 +24,7 @@ app.use(express.json({ limit: "100mb" }));
 app.use(["/", "/css", "/img", "/js"], express.static("./dist"));
 
 app.post("/message/import-issue-lemmas", (req, res) => {
-	console.log("triggered import issue lemma before secret check");
 	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
-		console.log("triggered importIssueLemmas", req.body);
 		io.sockets.emit("importIssueLemmas", req.body);
 		res.end();
 	} else {
@@ -37,7 +35,6 @@ app.post("/message/import-issue-lemmas", (req, res) => {
 
 app.post("/message/import-lemmas", (req, res) => {
 	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
-		console.log("triggered importLemmas", req.body);
 		io.sockets.emit("importLemmas", req.body);
 		res.end();
 	} else {
@@ -88,7 +85,6 @@ app.get("/zotero/item/:id", async (request, response) => {
 });
 
 app.patch("/zotero/item/:id", async (req, res) => {
-	console.log(req.body);
 	const x = await fetch(
 		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + req.params.id,
 		{
@@ -100,26 +96,17 @@ app.patch("/zotero/item/:id", async (req, res) => {
 		},
 	);
 	if (x.ok) {
-		console.log({
-			version: x.headers.get("Last-Modified-Version"),
-		});
 		res.send(
 			JSON.stringify({
 				version: x.headers.get("Last-Modified-Version"),
 			}),
 		);
 	} else {
-		console.log("ERROR");
-		console.log(await x.text());
-		console.log({
-			version: x.headers.get("Last-Modified-Version"),
-		});
 		res.sendStatus(500);
 	}
 });
 
 app.post("/zotero/item", async (req, res) => {
-	console.log(req.body);
 	const x = await fetch("https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/", {
 		method: "POST",
 		body: JSON.stringify(req.body),
@@ -130,7 +117,6 @@ app.post("/zotero/item", async (req, res) => {
 	if (x.ok) {
 		res.send(JSON.stringify(await x.json()));
 	} else {
-		console.log(await x.text());
 		res.sendStatus(500);
 	}
 });
@@ -149,15 +135,14 @@ app.get("/zotero/initial-data", async (req, res) => {
 app.use("*", (req, res) => res.send(index));
 
 io.on("connection", (socket: any) => {
-	console.log("a user connected", socket.id);
 	socket.send("message", "connected to socket server");
 	// when someone sends any message, send it to all others.
 	socket.onAny((name: string, ...m: any) => {
-		console.log(name, m);
 		socket.broadcast.emit(name, ...m);
 	});
 });
 
 server.listen(env.PORT, () => {
+	// eslint-disable-next-line no-console
 	console.info("🚀 ", `Server listening on port ${env.PORT}.`);
 });
