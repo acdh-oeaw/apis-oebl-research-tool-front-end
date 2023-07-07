@@ -66,8 +66,10 @@
 </template>
 
 <script lang="ts">
-import formatDate from "date-fns/esm/format";
-import de from "date-fns/esm/locale/de";
+// eslint-disable-next-line import/no-duplicates
+import { format } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
 import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -99,7 +101,7 @@ export default class LemmaScrapeResult extends Vue {
 	formatValue(key: number | string, value: any) {
 		const maybeDate = maybeParseDate(value);
 		if (maybeDate !== null) {
-			return formatDate(maybeDate, "do MMM. yyyy", { locale: de });
+			return format(maybeDate, "do MMM. yyyy", { locale: de });
 		} else {
 			return value;
 		}

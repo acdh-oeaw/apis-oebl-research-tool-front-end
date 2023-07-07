@@ -109,8 +109,10 @@
 
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
-import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
-import de from "date-fns/esm/locale/de";
+// eslint-disable-next-line import/no-duplicates
+import { formatDistanceToNow } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { emoji } from "@/service/emoji";

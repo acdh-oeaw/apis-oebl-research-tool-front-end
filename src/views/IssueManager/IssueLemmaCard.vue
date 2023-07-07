@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import format from "date-fns/esm/format";
+import { format } from "date-fns";
 import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 

@@ -58,7 +58,7 @@
 							)
 						}}
 					</div>
-					<!--  
+					<!--
             This is a reminder, how this used to look like. TODO: Remove this comment.
 
             :items="store.authors.authors"
@@ -155,9 +155,10 @@
 </template>
 
 <script lang="ts">
-import format from "date-fns/esm/format";
-import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
-import de from "date-fns/esm/locale/de";
+// eslint-disable-next-line import/no-duplicates
+import { format, formatDistanceToNow } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type Author, type Editor, type IssueLemma, type LemmaNote } from "@/api";
