@@ -23,9 +23,9 @@
 					text
 					small
 					class="special-char"
-					@click="$emit('returnSpecialChar', toSpecialChar(char[0]))"
+					@click="$emit('returnSpecialChar', toSpecialChar(char[0]!))"
 				>
-					{{ toSpecialChar(char[0]) }}
+					{{ toSpecialChar(char[0]!) }}
 				</v-btn>
 			</span>
 		</v-card>
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import { specialChar } from "@/service/specialchars";
 
@@ -45,7 +45,6 @@ export default class Annotation extends Vue {
 
 	toSpecialChar(s: number | string): string {
 		if (typeof s === "number") {
-			 
 			return String.fromCodePoint(s);
 		} else {
 			return "";

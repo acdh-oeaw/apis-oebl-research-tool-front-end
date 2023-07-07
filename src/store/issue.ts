@@ -1,4 +1,11 @@
-import { type Issue, type IssueLemma, type LemmaLabel, type LemmaNote,type LemmaStatus, WorkflowService } from "@/api";
+import {
+	type Issue,
+	type IssueLemma,
+	type LemmaLabel,
+	type LemmaNote,
+	type LemmaStatus,
+	WorkflowService,
+} from "@/api";
 import notifyService from "@/service/notify/notify";
 import { type WithId } from "@/types";
 import { type LemmaRow } from "@/types/lemma";
@@ -97,8 +104,9 @@ export default class IssueStore {
 		if (id === null) {
 			return [];
 		}
-		this._statuses = (await WorkflowService.workflowApiV1LemmaStatusList([id]))
-			.results as Array<WithId<LemmaStatus>>;
+		this._statuses = (await WorkflowService.workflowApiV1LemmaStatusList([id])).results as Array<
+			WithId<LemmaStatus>
+		>;
 	}
 
 	async loadLabels() {
@@ -125,8 +133,8 @@ export default class IssueStore {
 		const index = this.issueLemmas.findIndex((l) => l.id === id);
 		if (index > -1) {
 			const newIssueLemma = { ...this.issueLemmas[index], ...l };
-			if (this.selectedLemma !== null && this.issueLemmas[index].id === this.selectedLemma.id) {
-				this.selectedLemma = this.issueLemmas[index];
+			if (this.selectedLemma !== null && this.issueLemmas[index]!.id === this.selectedLemma.id) {
+				this.selectedLemma = this.issueLemmas[index]!;
 			}
 			this.updateIssueLemmasLocally([id], l);
 			await WorkflowService.workflowApiV1IssueLemmaPartialUpdate(id, {

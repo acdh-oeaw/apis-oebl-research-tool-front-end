@@ -117,25 +117,25 @@ export default class ZoteroManager extends Vue {
 
 <style scoped>
 .loading-zotero {
-  margin: 0 1em;
+	margin: 0 1em;
 }
 
 .zotero-results {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .zotero-results::before {
-  content: "(";
-  margin-left: 1em;
+	content: "(";
+	margin-left: 1em;
 }
 
 .zotero-results::after {
-  content: ")";
+	content: ")";
 }
 
 .zotero-list-title {
-  font-weight: 500;
-  font-size: 100%;
+	font-weight: 500;
+	font-size: 100%;
 }
 </style>

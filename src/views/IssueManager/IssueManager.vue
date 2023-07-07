@@ -21,11 +21,11 @@
 			</div>
 			<v-spacer />
 			<v-autocomplete
+				v-model="searchItems"
 				single-line
 				style="max-width: 50%"
 				class="rounded-lg ml-5 mr-1 text-body-2"
 				background-color="background darken-2"
-				v-model="searchItems"
 				dense
 				multiple
 				clearable
@@ -73,6 +73,7 @@
 							<img
 								v-if="item.type === 'editor' && item.image !== undefined"
 								:key="item.type + '__' + item.id"
+								alt=""
 								:src="item.image"
 							/>
 							<v-icon v-if="item.type === 'author'">mdi-account-edit-outline</v-icon>
@@ -272,7 +273,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import confirm from "@/store/confirm";
 
-import { type IssueLemma, type LemmaLabel,type LemmaStatus } from "../../api/index";
+import { type IssueLemma, type LemmaLabel, type LemmaStatus } from "../../api/index";
 import { type WithId } from "../../types";
 import { DateContainer } from "../../util/dates";
 import LoadingSpinner from "../lib/LoadingSpinner.vue";
@@ -383,7 +384,7 @@ export default class IssueManager extends Vue {
 		const index = this.issueLemmas.findIndex((i) => i.id === lemma.id);
 		if (index > -1) {
 			this.animateLemmas = true;
-			this.issueLemmas[index].status = statusId;
+			this.issueLemmas[index]!.status = statusId;
 			this.updateLemmaById(lemma.id, { status: statusId });
 			setTimeout(() => {
 				this.animateLemmas = false;
@@ -402,7 +403,7 @@ export default class IssueManager extends Vue {
 		lemmas.forEach((lemma, i) => {
 			const order =
 				(lemma.order || 0) <= (updatedColumn[i - 1]?.order || 0)
-					? (updatedColumn[i - 1].order || 0) + 1
+					? (updatedColumn[i - 1]!.order || 0) + 1
 					: lemma.order;
 			updatedColumn.push({
 				...lemma,
@@ -544,8 +545,6 @@ export default class IssueManager extends Vue {
 	}
 }
 </script>
-
-<style lang="stylus"></style>
 
 <style lang="stylus" scoped>
 .selected

@@ -8,6 +8,7 @@
 				class="file-icon flex-grow-1"
 			>
 				<img
+					alt=""
 					:src="`/img/file-icons/${file.name.toLowerCase().split('.').pop()}.svg`"
 					@error="replaceWithDefaultIcon"
 				/>
@@ -23,7 +24,7 @@
 
 <script lang="ts">
 import HRNumbers from "human-readable-numbers";
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class FileList extends Vue {
@@ -41,8 +42,7 @@ export default class FileList extends Vue {
 
 	get totalSize(): number {
 		return this.value.reduce((m, e) => {
-			m = m + e.size;
-			return m;
+			return m + e.size;
 		}, 0);
 	}
 }

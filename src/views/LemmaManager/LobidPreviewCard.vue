@@ -19,14 +19,14 @@
 			</div>
 			<div
 				v-if="fragment.html !== null"
-				style=" flex: 0 0 100px; overflow: hidden;height: 100px"
+				style="flex: 0 0 100px; overflow: hidden; height: 100px"
 				class="pt-1 pb-1 text-center"
 				cols="3"
 			>
-				<img v-if="fragment.data.picture" :src="fragment.data.picture" />
+				<img v-if="fragment.data.picture" alt="" :src="fragment.data.picture" />
 				<v-icon v-else class="mt-5 ml-5 pt-4 pl-2">mdi-image-broken-variant</v-icon>
 			</div>
-			<div style=" flex: 1;line-height: 1.2" class="pt-1 pl-2 caption">
+			<div style="flex: 1; line-height: 1.2" class="pt-1 pl-2 caption">
 				<div class="description">
 					<b>{{ fragment.data.name }}</b>
 					<br />
@@ -94,7 +94,7 @@ export default class LobidPreviewCard extends Vue {
 			return {
 				gnd: e,
 				html: "",
-				data: results[i],
+				data: results[i]!,
 				selected: false,
 			};
 		});

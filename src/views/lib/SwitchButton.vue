@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class SwitchButton extends Vue {
@@ -29,7 +29,7 @@ export default class SwitchButton extends Vue {
 	}
 
 	updateValue(i: number) {
-		this.$emit("input", this.items[i].value);
+		this.$emit("input", this.items[i]!.value);
 	}
 }
 </script>

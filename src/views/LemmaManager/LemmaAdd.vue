@@ -164,14 +164,13 @@ import LobidPreviewCard from "./LobidPreviewCard.vue";
 export default class LemmaAdd extends Vue {
 	@Prop({ default: undefined }) color!: string | undefined;
 
-	importToList: number = store.lemma.selectedLemmaListId || store.lemma.lemmaLists[0].id!;
+	importToList: number = store.lemma.selectedLemmaListId || store.lemma.lemmaLists[0]!.id!;
 	window = 0;
 	showDivider = false;
 	store = store;
 	possibleGnds: Array<string> = [];
 	viewLemmaDetail: LemmaRow | null = null;
 
-	/* eslint-disable @typescript-eslint/camelcase */
 	emptyPerson: LemmaRow = {
 		id: -1,
 		firstName: "",

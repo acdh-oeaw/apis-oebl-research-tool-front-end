@@ -13,8 +13,8 @@
 			<v-divider />
 			<v-card-text class="px-2 pt-5 pb-0">
 				<v-textarea
-					solo
 					v-model="promptStore.value"
+					solo
 					flat
 					test-id="prompt-field"
 					clearable
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import promptStore, { bus } from "../../store/prompt";
 

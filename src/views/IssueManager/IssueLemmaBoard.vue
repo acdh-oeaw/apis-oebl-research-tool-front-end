@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
 
 import { type IssueLemma, type LemmaStatus } from "../../api";
@@ -160,9 +160,8 @@ export default class LemmaBoard extends Vue {
 
 .flip-list-enter
 .flip-list-leave-to
-/* .list-complete-leave-active below version 2.1.8 */ 
+/* .list-complete-leave-active below version 2.1.8 */
   opacity 0%
-  // transform: translateY(30px);
 
 
 .flip-list-leave-active
@@ -192,5 +191,4 @@ export default class LemmaBoard extends Vue {
 
 .list-group-item i
   cursor pointer
-
 </style>

@@ -1,4 +1,6 @@
 <template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 	<div style="user-select: none" @click="$emit('select-lemma', value)">
 		<template v-if="value.lemma">
 			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
@@ -33,14 +35,15 @@
 			</v-col>
 		</v-row>
 	</div>
+	<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 </template>
 
 <script lang="ts">
-import format from "date-fns/esm/format";
+import { format } from "date-fns";
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { type IssueLemma,type LemmaLabel } from "@/api";
+import { type IssueLemma, type LemmaLabel } from "@/api";
 import store from "@/store";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
 
@@ -78,7 +81,7 @@ export default class IssueLemmaCard extends Vue {
 
 	get labels(): Array<LemmaLabel> {
 		if (this.value.labels !== undefined) {
-			return this.value.labels.map((id) => this.labelsById[id]);
+			return this.value.labels.map((id) => this.labelsById[id]!);
 		} else {
 			return [];
 		}
@@ -124,7 +127,7 @@ h5
   overflow hidden
   margin-bottom 1px
   margin-left 1px
-  color white !important
+  color #fff !important
   font-weight 600
   text-overflow ellipsis
   white-space nowrap

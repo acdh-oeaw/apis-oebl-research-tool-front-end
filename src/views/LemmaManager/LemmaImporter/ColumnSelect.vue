@@ -35,7 +35,7 @@ export default class ColumnSelect extends Vue {
 	label = "";
 
 	created() {
-		this.label = lemmaRowTranslations[this.lemmaKey].de;
+		this.label = lemmaRowTranslations[this.lemmaKey]!.de;
 	}
 
 	get extractedData(): Array<Partial<LemmaRow>> {
@@ -58,12 +58,7 @@ export default class ColumnSelect extends Vue {
 
 	@Watch("options", { immediate: true, deep: true })
 	emitExtraction() {
-		// I'm not able to stop vuetify from doing this.
-		if (this.options.sourceKey === undefined) {
-			this.options.sourceKey = null;
-		}
-
-		if (this.options.sourceKey === null) {
+		if (this.options.sourceKey == null) {
 			this.cancel();
 		} else {
 			this.submit();

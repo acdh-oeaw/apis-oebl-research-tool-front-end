@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import Dexie from "dexie";
 import _ from "lodash";
 
-import { type Editor, type GenderAe0Enum,type IssueLemma, type List as LemmaList, type List, ResearchService } from "@/api";
+import {
+	type Editor,
+	type GenderAe0Enum,
+	type IssueLemma,
+	type List as LemmaList,
+	type List,
+	ResearchService,
+} from "@/api";
 import notifyService from "@/service/notify/notify";
 import { type WithId } from "@/types";
 import {
@@ -10,7 +16,6 @@ import {
 	type ImportablePerson,
 	type LemmaColumn,
 	type LemmaFilterComparator,
-	LemmaFilterItem,
 	type LemmaRow,
 	type SecondaryCitation,
 	type SerializedLemmaRow,
@@ -30,6 +35,7 @@ interface LemmaFilter {
 
 function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
 	const copy: any = { ...lemmaRow };
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (lemmaRow.dateOfBirth) {
 		copy.dateOfBirth = new DateContainer(
 			lemmaRow.dateOfBirth.calendarYear,
@@ -37,6 +43,7 @@ function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
 			lemmaRow.dateOfBirth.calendarDate,
 		).generateISO_OnlyDate();
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (lemmaRow.dateOfDeath) {
 		copy.dateOfDeath = new DateContainer(
 			lemmaRow.dateOfDeath.calendarYear,
@@ -117,7 +124,7 @@ export default class LemmaStore {
 		},
 
 		get isImporting() {
-			return this.target !== 0 && !isNaN(this.progress) && this.progress !== 1;
+			return this.target !== 0 && !Number.isNaN(this.progress) && this.progress !== 1;
 		},
 	};
 
@@ -160,10 +167,9 @@ export default class LemmaStore {
 			name: "ist vorhanden",
 			value: "exists",
 			icon: ".",
-			predicate: (e: Array<number> | number | string | null, q: unknown) =>
+			predicate: (e: Array<number> | number | string | null, _q: unknown) =>
 				e !== "" &&
-				e !== null &&
-				e !== undefined &&
+				e != null &&
 				e !== "Not available" &&
 				e !== "None" &&
 				(Array.isArray(e) ? e : []).length > 0,
@@ -172,7 +178,7 @@ export default class LemmaStore {
 			name: "ist nicht vorhanden",
 			value: "exists-not",
 			icon: ".",
-			predicate: (e: Array<number> | number | string | null, q: unknown) => !e,
+			predicate: (e: Array<number> | number | string | null, _q: unknown) => !e,
 		},
 		{
 			name: "größer als",
@@ -202,7 +208,7 @@ export default class LemmaStore {
 
 	public defaultColumns: Array<LemmaColumn> = [
 		{
-			name: lemmaRowTranslations.selected.de,
+			name: lemmaRowTranslations.selected!.de,
 			value: "selected",
 			type: "boolean",
 			filterable: true,
@@ -212,7 +218,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.lastName.de,
+			name: lemmaRowTranslations.lastName!.de,
 			value: "lastName",
 			type: "text",
 			filterable: true,
@@ -221,7 +227,7 @@ export default class LemmaStore {
 			editable: true,
 		},
 		{
-			name: lemmaRowTranslations.firstName.de,
+			name: lemmaRowTranslations.firstName!.de,
 			value: "firstName",
 			type: "text",
 			filterable: true,
@@ -230,7 +236,7 @@ export default class LemmaStore {
 			editable: true,
 		},
 		{
-			name: lemmaRowTranslations.lastName.de,
+			name: lemmaRowTranslations.lastName!.de,
 			value: "gender",
 			type: "text",
 			filterable: true,
@@ -239,7 +245,7 @@ export default class LemmaStore {
 			editable: true,
 		},
 		{
-			name: lemmaRowTranslations.dateOfBirth.de,
+			name: lemmaRowTranslations.dateOfBirth!.de,
 			value: "dateOfBirth",
 			type: "text",
 			filterable: true,
@@ -248,7 +254,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.dateOfDeath.de,
+			name: lemmaRowTranslations.dateOfDeath!.de,
 			value: "dateOfDeath",
 			type: "text",
 			filterable: true,
@@ -257,7 +263,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.gnd.de,
+			name: lemmaRowTranslations.gnd!.de,
 			value: "gnd",
 			type: "array",
 			filterable: true,
@@ -266,7 +272,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.loc.de,
+			name: lemmaRowTranslations.loc!.de,
 			value: "loc",
 			type: "link",
 			filterable: true,
@@ -275,7 +281,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.viaf_id.de,
+			name: lemmaRowTranslations.viaf_id!.de,
 			value: "viaf_id",
 			type: "link",
 			filterable: true,
@@ -284,7 +290,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.wiki_edits.de,
+			name: lemmaRowTranslations.wiki_edits!.de,
 			value: "wiki_edits",
 			type: "number",
 			filterable: true,
@@ -293,7 +299,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.professionGroup.de,
+			name: lemmaRowTranslations.professionGroup!.de,
 			value: "professionGroup",
 			type: "text",
 			filterable: true,
@@ -302,7 +308,7 @@ export default class LemmaStore {
 			editable: false,
 		},
 		{
-			name: lemmaRowTranslations.professionDetail.de,
+			name: lemmaRowTranslations.professionDetail!.de,
 			value: "professionDetail",
 			type: "text",
 			filterable: true,
@@ -311,7 +317,7 @@ export default class LemmaStore {
 			editable: true,
 		},
 		{
-			name: lemmaRowTranslations.id.de,
+			name: lemmaRowTranslations.id!.de,
 			value: "id",
 			type: "number",
 			filterable: true,
@@ -330,11 +336,10 @@ export default class LemmaStore {
 	doesUpdateDescribeListChange(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
 			update.list !== undefined &&
-			update.list !== undefined &&
 			update.list.id !== undefined &&
 			ls.length > 0 &&
-			ls[0].list !== undefined &&
-			ls[0].list.id !== update.list.id
+			ls[0]!.list !== undefined &&
+			ls[0]!.list.id !== update.list.id
 		);
 	}
 
@@ -385,7 +390,7 @@ export default class LemmaStore {
 
 	listenForRemoteLemmaUpdates() {
 		notifyService.on("updateLemmas", (lemmas, updates, e) => {
-			const updatedLemmas = this.updateLemmas(lemmas, updates, false);
+			const _updatedLemmas = this.updateLemmas(lemmas, updates, false);
 			if (this.isMovementToUserList(lemmas, updates)) {
 				if (updates.list?.id !== undefined) {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));
@@ -549,13 +554,19 @@ export default class LemmaStore {
 		});
 	}
 
-	private rightMergeLemmas(oldLemmas: Array<LemmaRow>, newLemmas: Array<LemmaRow>): Array<LemmaRow> {
+	private rightMergeLemmas(
+		oldLemmas: Array<LemmaRow>,
+		newLemmas: Array<LemmaRow>,
+	): Array<LemmaRow> {
 		const newIds = newLemmas.map((lemma) => lemma.id);
 		const unchangingLemmas = oldLemmas.filter((lemma) => !newIds.includes(lemma.id));
 		return unchangingLemmas.concat(newLemmas);
 	}
 
-	private innerMergeLemmas(oldLemmas: Array<LemmaRow>, updateLemmas: Array<LemmaRow>): Array<LemmaRow> {
+	private innerMergeLemmas(
+		oldLemmas: Array<LemmaRow>,
+		updateLemmas: Array<LemmaRow>,
+	): Array<LemmaRow> {
 		const oldIds = oldLemmas.map((lemma) => lemma.id);
 		const updateIds = updateLemmas.map((lemma) => lemma.id);
 
@@ -664,7 +675,7 @@ export default class LemmaStore {
 	getSumSimilarity(l: LemmaRow, lc: LemmaRow): number {
 		return this.columns.reduce((m, e) => {
 			if (e.getSimilarityFactor !== undefined) {
-				m = m + e.getSimilarityFactor(l, lc);
+				return m + e.getSimilarityFactor(l, lc);
 			}
 			return m;
 		}, 0);
@@ -736,8 +747,11 @@ export default class LemmaStore {
 		return {
 			id: rs.id,
 			selected: rs.selected || false,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			loc: _.get(rs, "columns_scrape.wikidata.loc") ?? null,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			viaf_id: _.get(rs, "columns_scrape.wikidata.viaf") ?? null,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			wiki_edits: _.get(rs, "columns_scrape.wikipedia.edits_count") ?? null,
 			firstName: rs.firstName,
 			lastName: rs.lastName,
@@ -788,7 +802,9 @@ export default class LemmaStore {
 		// call progress handler if available
 		if (onProgress !== undefined) {
 			await onProgress(
-				((firstRes.results as Array<ServerResearchLemma>) || []).map(this.convertRemoteLemmaToLemmaRow),
+				((firstRes.results as Array<ServerResearchLemma> | undefined) || []).map(
+					this.convertRemoteLemmaToLemmaRow,
+				),
 			);
 		}
 		// if there’s more than on page: loop from second page until we have all items and return
@@ -804,7 +820,7 @@ export default class LemmaStore {
 							modifiedAfter,
 							i * chunkSize,
 						)
-					).results as Array<ServerResearchLemma>) || [];
+					).results as Array<ServerResearchLemma> | undefined) || [];
 				const converted = res.map(this.convertRemoteLemmaToLemmaRow);
 				if (onProgress !== undefined) {
 					await onProgress(converted);
@@ -814,7 +830,7 @@ export default class LemmaStore {
 			return lemmaAgg;
 			// if there’s only one page: return
 		} else {
-			return ((firstRes.results as Array<ServerResearchLemma>) || []).map(
+			return ((firstRes.results as Array<ServerResearchLemma> | undefined) || []).map(
 				this.convertRemoteLemmaToLemmaRow,
 			);
 		}
@@ -902,7 +918,7 @@ export default class LemmaStore {
 		// Using a for loop for early return
 		for (const [searchColumn, searchTerm] of Object.entries(this.currentFilters)) {
 			// Nothing to search -> next filter
-			if (searchTerm === undefined || searchTerm === null) {
+			if (searchTerm == null) {
 				continue;
 			}
 

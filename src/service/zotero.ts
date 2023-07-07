@@ -1,7 +1,7 @@
 import Dexie from "dexie";
 import fetch from "node-fetch";
 // If not imported, there is some type error, with auto-imported (?) stuff
-import { Headers,type Response } from "node-fetch";
+import { Headers, type Response } from "node-fetch";
 
 import {
 	type ZoteroItem,
@@ -69,7 +69,9 @@ class ZoteroStore {
 	}
 }
 
-export default new ZoteroStore();
+const zoteroStore = new ZoteroStore();
+
+export default zoteroStore;
 
 /**
  * Cache Zotero Items locally with IndexedDB
@@ -115,7 +117,7 @@ class ZoteroItemCache {
 	 * @param zoteroKeys
 	 * @returns I have no clue
 	 */
-	async delete(zoteroKeys: Array<string>): Promise<any> {
+	async delete(_zoteroKeys: Array<string>): Promise<any> {
 		return await this.database.zoteroItems.bulkDelete();
 	}
 }
@@ -253,6 +255,7 @@ export class ZoteroLemmaManagmentController {
 		this._loading = true;
 		// Only load data, that has not already been loaded into memory
 		const alreadyLoadedKeys = this.zoteroItems.map((item) => item.key);
+		// eslint-disable-next-line no-param-reassign
 		zoteroItemKeys = zoteroItemKeys.filter((key) => !alreadyLoadedKeys.includes(key));
 		// If there is a cache, load data from there
 		let cachedItems: Array<ZoteroItem> = [];

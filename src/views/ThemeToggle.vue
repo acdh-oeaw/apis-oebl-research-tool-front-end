@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import store from "../store";
 import SwitchButton from "./lib/SwitchButton.vue";

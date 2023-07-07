@@ -46,7 +46,7 @@ export interface ZoteroItem {
 		// numberOfVolumes: string
 		// place: string
 		// publisher: string
-		relations: {};
+		relations: object;
 		// rights: string
 		// series: string
 		// seriesNumber: string

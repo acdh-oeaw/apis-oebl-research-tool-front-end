@@ -7,7 +7,7 @@
 			:search-input.sync="searchTerm"
 			:error-messages="errorMessages"
 			cache-items
-			:label="lemmaRowTranslations.professionGroup.de"
+			:label="lemmaRowTranslations.professionGroup!.de"
 			no-data-text="Bitte geben Sie einen Suchbegriff ein"
 		></v-autocomplete>
 	</div>
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { toNumber } from "lodash";
-import { Component, Prop,Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type ProfessionGroup } from "@/api";
 import { OpenAPI } from "@/api/core/OpenAPI";

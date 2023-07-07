@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import store from "../store";
 import LoadingSpinner from "./lib/LoadingSpinner.vue";
@@ -103,5 +103,4 @@ input:-webkit-autofill
   animation-name autofill
   animation-delay 1s // Safari support - any positive time runs instantly
   animation-fill-mode both
-
 </style>

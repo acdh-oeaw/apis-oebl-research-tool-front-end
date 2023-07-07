@@ -6,11 +6,12 @@
 		"lib": ["es2021"],
 		"module": "commonjs",
 		"moduleResolution": "node",
+		"noUncheckedIndexedAccess": true,
 		"outDir": "dist",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": false,
+		"strict": true,
 		"target": "es2021"
 	},
 	"include": ["./**/*.ts"],

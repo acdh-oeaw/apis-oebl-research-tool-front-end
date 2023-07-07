@@ -57,7 +57,7 @@
 								</v-btn>
 							</span>
 							<v-list v-if="articleStore">
-								<v-list-item v-for="(version, index) in sortedVersionViews">
+								<v-list-item v-for="version in sortedVersionViews" :key="version.id">
 									<template #default>
 										<v-list-item-action>
 											<v-simple-checkbox
@@ -143,7 +143,7 @@
 <script lang="ts">
 import TipTapStarterKit from "@tiptap/starter-kit";
 import { type Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/vue-2";
-import { Component, Prop,Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type LemmaArticleVersion } from "@/api";
 import {
@@ -403,7 +403,7 @@ export default class EditorLoader extends Vue {
 
 .v-tab--active
   background-color var(--v-background-darken5)
-  color black !important
+  color #000 !important
   font-weight 700
 
 .theme--light.v-list

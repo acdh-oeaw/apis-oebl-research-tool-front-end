@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { type Editor,WorkflowService } from "@/api";
+import { type Editor, WorkflowService } from "@/api";
 
 export default class EditorStore {
 	private _editors: Array<Editor> = [];

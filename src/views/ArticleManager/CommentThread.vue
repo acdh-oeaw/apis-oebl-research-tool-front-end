@@ -10,7 +10,7 @@
 				Kommentar entfernen
 			</v-btn>
 			<v-btn
-				v-if="commentThread !== undefined"
+				v-if="commentThread != null"
 				block
 				outlined
 				class="mb-1 rounded-lg"
@@ -27,10 +27,7 @@
 				Abbrechen
 			</v-btn>
 		</v-overlay>
-		<div
-			v-if="showHeader && commentThread !== undefined"
-			class="d-flex flex-row align-self-stretch"
-		>
+		<div v-if="showHeader && commentThread != null" class="d-flex flex-row align-self-stretch">
 			<v-btn icon tile class="rounded-lg" disabled small></v-btn>
 			<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Kommentar</div>
 			<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
@@ -39,15 +36,11 @@
 			</v-btn>
 		</div>
 		<div
-			v-if="commentThread !== undefined"
+			v-if="commentThread != null"
 			ref="threadContainer"
 			:class="['thread-container', scrollable && 'scrollable']"
 		>
-			<div
-				v-for="(comment, i) in commentThread.comments"
-				:key="comment.commentId"
-				class="comment-container"
-			>
+			<div v-for="(comment, i) in commentThread.comments" :key="i" class="comment-container">
 				<div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
 					<span class="comment-user-name">{{ comment.user }}</span>
 					<v-spacer />
@@ -57,17 +50,14 @@
 					{{ comment.text }}
 				</div>
 				<v-divider
-					v-if="commentThread !== undefined && i !== commentThread.comments.length - 1"
+					v-if="commentThread != null && i !== commentThread.comments.length - 1"
 					class="mt-2"
 				/>
 			</div>
 		</div>
-		<v-divider
-			v-if="commentThread !== undefined && commentThread.comments.length > 0"
-			class="my-2"
-		/>
+		<v-divider v-if="commentThread != null && commentThread.comments.length > 0" class="my-2" />
 		<text-field
-			v-if="commentThread !== undefined"
+			v-if="commentThread != null"
 			v-model="newMessage"
 			class="py-0 pl-1 pr-1 mt-1 mb-0"
 			:style="{ background: 'rgba(0,0,0,.05) !important' }"
@@ -93,14 +83,17 @@
 					<span class="muted">{{ group.group }}</span>
 				</div>
 				<span v-for="(subgroup, i) in group.subgroups" :key="'sg' + i">
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 					<span
 						v-for="(emoji, i) in subgroup.emojis"
 						:key="'em' + i"
 						class="emoji"
-						@click="insertEmoji(lastCaretPos, toEmoji(emoji[0]))"
+						@click="insertEmoji(lastCaretPos, toEmoji(emoji[0]!))"
 					>
-						{{ toEmoji(emoji[0]) }}
+						{{ toEmoji(emoji[0]!) }}
 					</span>
+					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 				</span>
 			</span>
 		</div>
@@ -109,9 +102,10 @@
 
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
-import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
-import de from "date-fns/esm/locale/de";
-import { v4 as uuid } from "uuid";
+// eslint-disable-next-line import/no-duplicates
+import { formatDistanceToNow } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { emoji } from "@/service/emoji";
@@ -162,7 +156,7 @@ export default class CommentThread extends Vue {
 	}
 
 	toggleStatus() {
-		if (this.commentThread !== undefined && this.commentThread !== null) {
+		if (this.commentThread != null) {
 			if (this.commentThread.status === "open") {
 				this.commentThread.status = "private";
 			} else {
@@ -210,7 +204,7 @@ export default class CommentThread extends Vue {
 	toEmoji(s: number | string): string {
 		if (typeof s === "string") {
 			const nums = s.split("_").map((val) => parseInt(val, 16));
-			 
+
 			return String.fromCodePoint.apply(String, nums);
 		} else {
 			return "";

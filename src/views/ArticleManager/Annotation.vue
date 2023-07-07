@@ -81,10 +81,12 @@
 								</v-btn>
 							</template>
 						</v-list-item-avatar>
+						<!-- eslint-disable vue/no-v-html, vue/no-v-text-v-html-on-component -->
 						<v-list-item-content
 							class="cursor-pointer ac-result"
 							v-html="result.name"
 						></v-list-item-content>
+						<!-- eslint-enable vue/no-v-html, vue/no-v-text-v-html-on-component -->
 					</v-list-item>
 				</v-list>
 				<div
@@ -160,13 +162,12 @@
 
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
-import _, { update } from "lodash";
+import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { EntityTranslations } from "@/util/labels";
 
 import * as apis_autocomplete from "../../service/apis_autocomplete";
-import * as lobid from "../../service/lobid";
 import LobidPreviewCard from "../LemmaManager/LobidPreviewCard.vue";
 import LoadingSpinner from "../lib/LoadingSpinner.vue";
 import TextField from "../lib/TextField.vue";
@@ -202,11 +203,11 @@ export default class Annotation extends Vue {
 		entityId: null,
 	};
 	entityTypes = [
-		{ value: "person", text: EntityTranslations.person.de },
-		{ value: "place", text: EntityTranslations.place.de },
-		{ value: "institution", text: EntityTranslations.institution.de },
-		{ value: "work", text: EntityTranslations.work.de },
-		{ value: "event", text: EntityTranslations.event.de },
+		{ value: "person", text: EntityTranslations.person!.de },
+		{ value: "place", text: EntityTranslations.place!.de },
+		{ value: "institution", text: EntityTranslations.institution!.de },
+		{ value: "work", text: EntityTranslations.work!.de },
+		{ value: "event", text: EntityTranslations.event!.de },
 	];
 
 	//selectedEntityType: any = null;
@@ -220,7 +221,7 @@ export default class Annotation extends Vue {
 	get searchTerm(): string {
 		// if possible, use the cached search term
 		if (this.id !== null && this.searchQueries[this.id] !== undefined) {
-			return this.searchQueries[this.id];
+			return this.searchQueries[this.id]!;
 			// otherwise it’s empty
 		} else {
 			return "";
@@ -234,7 +235,7 @@ export default class Annotation extends Vue {
 
 	updateProps(p: Partial<AnnotationAttributes>) {
 		console.log(p);
-		const res = this.editor.commands.updateAttributes("annotation", {
+		const _res = this.editor.commands.updateAttributes("annotation", {
 			entityId: this.entityId,
 			entityType: this.entityType,
 			id: this.id,
@@ -330,7 +331,7 @@ export default class Annotation extends Vue {
 		if (this.selectedRelationType !== null) {
 			this.updateProps({ relationTypeId: this.selectedRelationType });
 			const SearchTextField = this.$refs.searchTerm as TextField;
-			if (SearchTextField.value != "") {
+			if (SearchTextField.value !== "") {
 				SearchTextField.$emit("input", SearchTextField.localValue);
 			}
 		}

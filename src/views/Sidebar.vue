@@ -92,7 +92,7 @@
 					:to="'/issue/' + issue.id"
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
-					@drop.prevent="addLemmaToIssue(issue.id, $event)"
+					@drop.prevent="addLemmaToIssue(issue.id!, $event)"
 					@click="loadIssue(issue.id || null)"
 				>
 					<v-list-item-avatar tile>
@@ -252,7 +252,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
@@ -488,7 +488,7 @@ export default class Sidebar extends Vue {
 .sidebar:focus .v-list-item--active
 .v-list-item--active:focus
   background var(--v-primary-base)
-  color white
+  color #fff
 
 .drag-over
   box-shadow inset 0 0 0 3px var(--v-primary-base) !important

@@ -17,9 +17,9 @@
 				contentClass: 'soft-shadow text-body-2 v-list--dense background lighten-1',
 			}"
 			:search-input.sync="searchText"
-			@change="onChange"
 			:value="selectedLabels"
 			:items="labels"
+			@change="onChange"
 		>
 			<template #selection="{ selected, select, item }">
 				<v-chip
@@ -150,7 +150,7 @@
 						</v-col>
 						<v-col cols="8" class="text-center">
 							<v-chip
-								style="color: white; font-weight: 500"
+								style="color: #fff; font-weight: 500"
 								class="label mx-auto"
 								:color="editingLabel.color"
 							>
@@ -167,7 +167,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import colors from "vuetify/lib/util/colors";
 
 import store from "@/store";
@@ -280,7 +280,7 @@ export default class LemmaLabels extends Vue {
 
 <style lang="stylus" scoped>
 .label
-  color white
+  color #fff
   font-weight 600
 
 .label-box /deep/ .v-input__slot

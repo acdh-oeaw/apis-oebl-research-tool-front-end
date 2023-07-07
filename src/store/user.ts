@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { MeService } from "../api";
 
 export interface UserProfile {

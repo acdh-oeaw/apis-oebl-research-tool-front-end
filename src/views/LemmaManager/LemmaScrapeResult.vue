@@ -7,7 +7,7 @@
 		:value="defaultExpand"
 	>
 		<template #activator>
-			<v-list-item-title style=" letter-spacing: 0.1em;text-transform: uppercase">
+			<v-list-item-title style="letter-spacing: 0.1em; text-transform: uppercase">
 				{{ title }}
 			</v-list-item-title>
 			<v-list-item-action-text class="ellipsis">
@@ -66,13 +66,15 @@
 </template>
 
 <script lang="ts">
-import formatDate from "date-fns/esm/format";
-import de from "date-fns/esm/locale/de";
+// eslint-disable-next-line import/no-duplicates
+import { format } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type ServerResearchLemma } from "@/types/lemma";
-import { isValidHttpUrl,maybeParseDate } from "@/util";
+import { isValidHttpUrl, maybeParseDate } from "@/util";
 
 type ScrapeValue =
 	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
@@ -99,7 +101,7 @@ export default class LemmaScrapeResult extends Vue {
 	formatValue(key: number | string, value: any) {
 		const maybeDate = maybeParseDate(value);
 		if (maybeDate !== null) {
-			return formatDate(maybeDate, "do MMM. yyyy", { locale: de });
+			return format(maybeDate, "do MMM. yyyy", { locale: de });
 		} else {
 			return value;
 		}

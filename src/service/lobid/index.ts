@@ -9,7 +9,7 @@ export async function getPreviews(gnds: Array<string | null>): Promise<Array<str
 	return Promise.all(
 		gnds.map(async (gnd) => {
 			if (gnd !== null && previewCache[gnd] !== undefined) {
-				return previewCache[gnd];
+				return previewCache[gnd]!;
 			} else if (gnd !== null) {
 				previewCache[gnd] = await fetch("https://lobid.org/gnd/" + gnd + ".preview")
 					.then((r) => {
@@ -20,7 +20,7 @@ export async function getPreviews(gnds: Array<string | null>): Promise<Array<str
 						}
 					})
 					.catch(() => null);
-				return previewCache[gnd];
+				return previewCache[gnd]!;
 			} else {
 				return null;
 			}

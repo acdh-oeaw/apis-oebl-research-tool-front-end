@@ -50,7 +50,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type NewLemmaRow, type UserColumn } from "@/types/lemma";
 import { type Data2D } from "@/util/lemmaimport/datacontainers";
-import { addUserColumns, createUserColumns } from "@/util/lemmaimport/dataconversion";
+import { addUserColumns } from "@/util/lemmaimport/dataconversion";
 import { type ColumnConversions, type UserColumnMapping } from "@/util/lemmaimport/options";
 
 /**
@@ -159,7 +159,6 @@ export default class UserColumnAdding extends Vue {
 
 	@Watch("newLemmas", { deep: true, immediate: true })
 	@Watch("localOptions", { immediate: true, deep: true })
-	updateUserColumns() {}
 
 	// https://vuetifyjs.com/en/api/v-data-table/#props-headers
 	get vuetifyUserColumnHeaders(): Array<{

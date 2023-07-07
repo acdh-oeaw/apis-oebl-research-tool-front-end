@@ -87,8 +87,8 @@ export default class ImportFileDialog extends Vue {
 			return [];
 		}
 		return this.localOptions.useFirstRowAsHeaders
-			? this.rawData[0]
-			: lodash.range(1, this.rawData[0].length + 1).map(String);
+			? this.rawData[0]!
+			: lodash.range(1, this.rawData[0]!.length + 1).map(String);
 	}
 
 	get tableBody(): Array<Array<string>> {

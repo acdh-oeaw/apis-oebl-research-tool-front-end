@@ -186,11 +186,9 @@ input
 
 .v-alert
   font-size 14px
-
 </style>
 
 <style lang="stylus">
 .modifier-menu
   width 62px
-
 </style>

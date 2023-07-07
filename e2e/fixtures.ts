@@ -1,6 +1,7 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { expect, test as baseTest } from "@playwright/test";
 import fs from "fs";
 import path from "path";
+
 import authUsers from "./.auth/authUsers.json";
 
 export * from "@playwright/test";

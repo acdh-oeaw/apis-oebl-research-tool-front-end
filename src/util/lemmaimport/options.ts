@@ -40,6 +40,7 @@ export type ColumnConversion = {
 export type ColumnConversions = {
 	[key in keyof Omit<
 		NewLemmaRow,
+		// eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
 		| "list" // Manual selection over the whole import
 		| "columns_user" // Have their own options
 		| "legacyGideonCitations" // not imported

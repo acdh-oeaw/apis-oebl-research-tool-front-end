@@ -32,7 +32,7 @@
 <script lang="ts">
 import lodash from "lodash";
 import neatCsv from "neat-csv";
-import { Component,Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type CsvOptions, defaultOptions } from "@/util/lemmaimport/options";
 

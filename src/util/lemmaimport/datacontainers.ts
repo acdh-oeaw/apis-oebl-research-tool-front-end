@@ -20,6 +20,10 @@ export class Data2D {
 		return this._data;
 	}
 
+	set data(data: Array<Array<string>>) {
+		data.forEach((row) => this.addRow(row));
+	}
+
 	addRow(row: Array<string>) {
 		if (row.length !== this.headers.length) {
 			throw new Error(
@@ -29,17 +33,14 @@ export class Data2D {
 		this._data.push(row);
 	}
 
-	set data(data: Array<Array<string>>) {
-		data.forEach((row) => this.addRow(row));
-	}
-
 	selectByHeaderName(headerName: string): Array<string> {
 		const numericalHeaderName = this.getNumericalHeaderName(headerName);
-		return this.data.map((row) => row[numericalHeaderName]);
+		return this.data.map((row) => row[numericalHeaderName]!);
 	}
 
 	getNumericalHeaderName(headerName: string): number {
 		const numericalHeaderName = this.headers.indexOf(headerName);
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (numericalHeaderName === undefined) {
 			const headers = JSON.stringify(this.headers);
 			throw new Error(`Did not find <${headerName}> in ${headers}`);

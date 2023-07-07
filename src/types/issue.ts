@@ -1,4 +1,8 @@
-import { type IssueLemma as ApiIssueLemma, type LemmaLabel, type LemmaStatus as ApiLemmaStatus } from "@/api";
+import {
+	type IssueLemma as ApiIssueLemma,
+	type LemmaLabel,
+	type LemmaStatus as ApiLemmaStatus,
+} from "@/api";
 
 import { type Modify } from "./index";
 

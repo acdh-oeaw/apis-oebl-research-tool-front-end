@@ -9,7 +9,11 @@ import {
 	type LemmaPrototypeRequiredFieldsType,
 	type LemmaPrototypeStringType,
 } from "./datacontainers";
-import { defautLemmaFormatterOptions, type GenderMappingOption, type UserColumnMapping } from "./options";
+import {
+	defautLemmaFormatterOptions,
+	type GenderMappingOption,
+	type UserColumnMapping,
+} from "./options";
 
 export function createEmptyLemmaPrototype(): LemmaPrototypeStringType {
 	return {
@@ -181,8 +185,8 @@ export function mergeBuildNewLemmaRows(
 	}
 
 	return lemmaPrototypes.map((lemmaPrototype, index) => {
-		const lemmaDates = lemmaDatesRows[index];
-		const lemmaGender = lemmaGenderRows[index];
+		const lemmaDates = lemmaDatesRows[index]!;
+		const lemmaGender = lemmaGenderRows[index]!;
 		return buildNewLemmaRowAfterFormatting(lemmaPrototype, lemmaDates, lemmaGender);
 	});
 }
@@ -201,13 +205,16 @@ export function createUserColumns(table: Data2D, options: UserColumnMapping): Ar
 	return table.data.map((row: Array<string>) => {
 		return Object.fromEntries(
 			mappings.map(([numericalSourceColumn, targetColumn]) => {
-				return [targetColumn, row[numericalSourceColumn]];
+				return [targetColumn, row[numericalSourceColumn]!];
 			}),
 		);
 	});
 }
 
-export function addUserColumns(lemmas: Array<NewLemmaRow>, columns: Array<UserColumn>): Array<NewLemmaRow> {
+export function addUserColumns(
+	lemmas: Array<NewLemmaRow>,
+	columns: Array<UserColumn>,
+): Array<NewLemmaRow> {
 	if (columns.length === 0) {
 		return lemmas;
 	}

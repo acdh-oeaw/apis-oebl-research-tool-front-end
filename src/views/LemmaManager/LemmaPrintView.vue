@@ -30,17 +30,17 @@
 						</v-row>
 						<v-row class="primary-name" justify="start">
 							<v-col class="field last-name" cols="3">
-								<span class="fieldname">{{ labels.lastName.de }}</span>
+								<span class="fieldname">{{ labels.lastName!.de }}</span>
 								<span class="fieldvalue">{{ lemma.lastName }}</span>
 							</v-col>
 							<v-col class="field first-name" cols="3">
-								<span class="fieldname">{{ labels.firstName.de }}</span>
+								<span class="fieldname">{{ labels.firstName!.de }}</span>
 								<span class="fieldvalue">{{ lemma.firstName }}</span>
 							</v-col>
 						</v-row>
 						<v-row class="alternative-names" justify="start">
 							<v-col cols="3">
-								<div class="fieldname">{{ labels.alternativeNames.de }}</div>
+								<div class="fieldname">{{ labels.alternativeNames!.de }}</div>
 							</v-col>
 							<v-col cols="9" class="alternative-names-wrapper-column">
 								<!-- keep right of fieldname, even when they have more than one line. Seems overly complicated, but I do not know, how to do it better -->
@@ -52,11 +52,11 @@
 											class="field alternative-name"
 										>
 											<v-col cols="1" class="field alternative-last-name">
-												<div class="fieldname">{{ labels.lastName.de }}</div>
+												<div class="fieldname">{{ labels.lastName!.de }}</div>
 												<div class="fieldvalue">{{ alternativeName.lastName }}</div>
 											</v-col>
 											<v-col cols="1" class="field alternative-first-name">
-												<div class="fieldname">{{ labels.firstName.de }}</div>
+												<div class="fieldname">{{ labels.firstName!.de }}</div>
 												<div class="fieldvalue">{{ alternativeName.firstName }}</div>
 											</v-col>
 										</div>
@@ -67,19 +67,19 @@
 						<v-row class="demographic-row-1" justify="start">
 							<v-col cols="3">
 								<div class="field gender">
-									<span class="fieldname">{{ labels.gender.de }}</span>
+									<span class="fieldname">{{ labels.gender!.de }}</span>
 									<span class="fieldvalue">{{ lemma.gender }}</span>
 								</div>
 							</v-col>
 							<v-col cols="4">
 								<div class="field dateOfBirth">
-									<span class="fieldname">{{ labels.dateOfBirth.de }}</span>
+									<span class="fieldname">{{ labels.dateOfBirth!.de }}</span>
 									<span class="fieldvalue">{{ lemma.dateOfBirth }}</span>
 								</div>
 							</v-col>
 							<v-col cols="4">
 								<div class="field dateOfDeath">
-									<span class="fieldname">{{ labels.dateOfDeath.de }}</span>
+									<span class="fieldname">{{ labels.dateOfDeath!.de }}</span>
 									<span class="fieldvalue">{{ lemma.dateOfDeath }}</span>
 								</div>
 							</v-col>
@@ -87,7 +87,7 @@
 						<v-row class="demographic-row-2" justify="start">
 							<v-col cols="3">
 								<div class="field professionGroup">
-									<span class="fieldname">{{ labels.professionGroup.de }}</span>
+									<span class="fieldname">{{ labels.professionGroup!.de }}</span>
 									<span class="fieldvalue">
 										{{ lemma.professionGroup ? lemma.professionGroup.name : "" }}
 									</span>
@@ -95,13 +95,13 @@
 							</v-col>
 							<v-col cols="4">
 								<div class="field professionDetail">
-									<span class="fieldname">{{ labels.professionDetail.de }}</span>
+									<span class="fieldname">{{ labels.professionDetail!.de }}</span>
 									<span class="fieldvalue">{{ lemma.professionDetail }}</span>
 								</div>
 							</v-col>
 							<v-col cols="4">
 								<div class="field religion">
-									<span class="fieldname">{{ labels.religion.de }}</span>
+									<span class="fieldname">{{ labels.religion!.de }}</span>
 									<span class="fieldvalue">{{ lemma.religion }}</span>
 								</div>
 							</v-col>
@@ -109,7 +109,7 @@
 						<v-row>
 							<v-col>
 								<div class="field kinship">
-									<div class="fieldname">{{ labels.kinship.de }}</div>
+									<div class="fieldname">{{ labels.kinship!.de }}</div>
 									<div class="fieldvalue">{{ lemma.kinship }}</div>
 								</div>
 							</v-col>
@@ -117,7 +117,7 @@
 						<v-row>
 							<v-col>
 								<div class="field bioNote">
-									<div class="fieldname">{{ labels.bioNote.de }}</div>
+									<div class="fieldname">{{ labels.bioNote!.de }}</div>
 									<div class="fieldvalue">{{ lemma.bioNote }}</div>
 								</div>
 							</v-col>
@@ -128,14 +128,14 @@
 			<section class="literature">
 				<v-row>
 					<v-col>
-						<h2>{{ labels.secondaryLiterature.de }}</h2>
+						<h2>{{ labels.secondaryLiterature!.de }}</h2>
 					</v-col>
 				</v-row>
 				<div class="field zoteroKeysBy">
 					<v-row>
 						<v-col>
 							<div class="fieldname">
-								"{{ labels.zoteroKeysBy.de }}" ({{ zoteroCitationsBy.length }})
+								"{{ labels.zoteroKeysBy!.de }}" ({{ zoteroCitationsBy.length }})
 							</div>
 						</v-col>
 					</v-row>
@@ -153,7 +153,7 @@
 					<v-row>
 						<v-col>
 							<div class="fieldname">
-								"{{ labels.zoteroKeysAbout.de }}" ({{ zoteroCitationsAbout.length }})
+								"{{ labels.zoteroKeysAbout!.de }}" ({{ zoteroCitationsAbout.length }})
 							</div>
 						</v-col>
 					</v-row>
@@ -200,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop,Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
@@ -267,64 +267,64 @@ export default class LemmaPrintView extends Vue {
 
 <style scoped>
 .first-name-title::before {
-  content: ", ";
+	content: ", ";
 }
 
 .left-align {
-  margin-left: 1em;
+	margin-left: 1em;
 }
 
 .fieldname {
-  margin-right: 1em;
-  font-weight: 600;
+	margin-right: 1em;
+	font-weight: 600;
 }
 
 .fieldname::after {
-  content: ":";
+	content: ":";
 }
 
 .alternative-names h3::after {
-  content: ":";
+	content: ":";
 }
 
 .alternative-names .field .fieldname {
-  display: none;
+	display: none;
 }
 
 .alternative-names .field,
 .alternative-names .fieldvalue {
-  display: inline;
+	display: inline;
 }
 
 .field.alternative-name .fieldvalue:empty::after {
-  content: "(N/A)";
-  font-style: italic;
+	content: "(N/A)";
+	font-style: italic;
 }
 
 .field.alternative-last-name::after {
-  content: ",";
+	content: ",";
 }
 
 .field.alternative-name::after {
-  content: ";";
+	content: ";";
 }
 
 .field.alternative-first-name {
-  padding-right: 0;
+	padding-right: 0;
 }
 
 .field.alternative-last-name {
-  padding-right: 0;
+	padding-right: 0;
 }
 
 .external-resources >>> a,
 .scrape-data >>> div[role="button"] {
-  color: black;
+	color: black;
 }
 
 @media print {
-  .print-button {
-    display: none;
-  }
+	.print-button {
+		display: none;
+	}
 }
 </style>

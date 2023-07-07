@@ -102,18 +102,18 @@ export const Comment = popupMark.extend({
 		console.warn("This whole module is not working. TODO");
 		return {
 			setComment:
-				(attributes) =>
+				(_attributes) =>
 				({ commands }) => {
 					console.log("new comment");
 					return commands.setMark(this.name, { id: uuid() });
 				},
 			toggleComment:
-				(attributes) =>
+				(_attributes) =>
 				({ commands }) => {
 					if (this.editor.isActive(this.name)) {
 						return commands.unsetMark(this.name);
 					} else {
-						const id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
+						const _id = null; // Removed for refactorization. Was `const id = store.article.createCommentThread()` TODO: rm comment
 						const command = commands.toggleMark(this.name, { id: uuid() });
 						return command;
 					}
@@ -126,6 +126,7 @@ export const Comment = popupMark.extend({
 		};
 	},
 
+	// @ts-expect-error Fix later.
 	addKeyboardShortcuts() {
 		return {
 			"Mod-k": () => this.editor.commands.toggleComment(),

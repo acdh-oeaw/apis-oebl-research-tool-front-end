@@ -12,7 +12,7 @@
 							<v-expansion-panel-header
 								:class="
 									'import-column-select-group-name' +
-									(groupHasMissingRequiredValue(groupName) ? ' warning' : '')
+									(groupHasMissingRequiredValue(String(groupName)) ? ' warning' : '')
 								"
 							>
 								{{ groupName }}

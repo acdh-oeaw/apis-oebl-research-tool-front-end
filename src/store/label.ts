@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { Author, Lemma, type LemmaLabel,WorkflowService } from "@/api";
+import { type LemmaLabel, WorkflowService } from "@/api";
 
 export default class LabelStore {
 	private _labels: Array<LemmaLabel> = [];

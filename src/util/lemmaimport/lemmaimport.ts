@@ -7,7 +7,7 @@ export async function importLemmas(lemmas: Array<NewLemmaRow>): Promise<void> {
 		throw new Error("Can only import lemmas belonging to one list at a time");
 	}
 
-	const list = lemmas[0].list;
+	const list = lemmas[0]!.list;
 
 	if (list === undefined) {
 		throw new Error("Can not import lemmas without a list");

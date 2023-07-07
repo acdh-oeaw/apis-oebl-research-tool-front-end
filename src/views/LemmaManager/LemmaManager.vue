@@ -1,4 +1,6 @@
 <template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
 	<div ref="container" tabindex="-1" class="fill-height" @keydown="onKeyDown">
 		<!-- LOBID HOVER PREVIEW -->
 		<v-menu
@@ -70,7 +72,7 @@
 						Lemmabibliothek
 					</h1>
 					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
-						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
+						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId)!.name }}
 					</h1>
 					<h1
 						v-else-if="selectedList !== null"
@@ -87,7 +89,7 @@
 							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
 						"
 						@keyup.enter.prevent.stop="$event.target.blur()"
-						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
+						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId)!.name"
 					></h1>
 					<span class="caption text-no-wrap">
 						<v-btn
@@ -190,7 +192,7 @@
 						<v-divider />
 						<div class="caption muted px-3 pt-2">Spalten anzeigen</div>
 						<v-list
-							style=" overflow: scroll;max-height: 50vh"
+							style="overflow: scroll; max-height: 50vh"
 							color="background"
 							class="elevation-0 rounded-lg text-body-2 mb-0 pb-0 x-dense"
 							dense
@@ -265,7 +267,7 @@
 				v-else
 				:value="selectedRows[0]"
 				@close="store.lemma.showSideBar = false"
-				@update="updateLemma(selectedRows[0], $event)"
+				@update="updateLemma(selectedRows[0]!, $event)"
 			/>
 		</resizable-drawer>
 		<v-main class="fill-width fill-height transition-none">
@@ -291,10 +293,10 @@
 				@dblclick:cell="store.lemma.showSideBar = true"
 				@update:selection="selectedRows = $event"
 				@update:item="updateLemmaFromTable"
-				@update:filter="(f) => store.lemma.setFilter(f)"
+				@update:filter="(f: any) => store.lemma.setFilter(f)"
 				@update:columns="columns = $event"
 			>
-				<template #cell="{ item, index, column, value }">
+				<template #cell="{ item, column, value }">
 					<template v-if="item[column.value] === 'Not available'"></template>
 					<!-- the star column -->
 					<template v-else-if="column.value === 'selected'">
@@ -304,6 +306,8 @@
 					<!-- the gnd column -->
 					<template v-else-if="column.value === 'gnd'">
 						<span v-if="item.gnd.length === 0" style="opacity: 50%">⊘</span>
+						<!-- FIXME: a11y -->
+						<!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
 						<span
 							v-else-if="item.gnd.length > 0"
 							style="white-space: nowrap"
@@ -312,6 +316,7 @@
 							<span v-if="item.gnd.length > 1" class="badge primary" v-text="item.gnd.length" />
 							{{ item.gnd[0] }}
 						</span>
+						<!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
 					</template>
 					<a
 						v-else-if="value && column.value === 'loc'"
@@ -329,6 +334,8 @@
 					>
 						{{ value }}
 					</a>
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 					<a
 						v-else-if="value && column.value === 'wiki_edits'"
 						class="table-external-link background lighten-2"
@@ -336,6 +343,7 @@
 					>
 						{{ value }}
 					</a>
+					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events -->
 					<!-- all others -->
 					<template v-else-if="value">
 						{{ item[column.value] }}
@@ -345,6 +353,7 @@
 			</virtual-table>
 		</v-main>
 	</div>
+	<!-- eslint-enable vuejs-accessibility/no-static-element-interactions -->
 </template>
 
 <script lang="ts">
@@ -355,7 +364,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
-import { type LemmaColumn,type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
+import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 
 import DataFilter from "../lib/DataFilter.vue";
 import ResizableDrawer from "../lib/ResizableDrawer.vue";
@@ -473,6 +482,7 @@ export default class LemmaManager extends Vue {
 
 	openWikipedia(item: LemmaRow) {
 		const link = _.get(item, "columns_scrape.wikidata.wiki_de");
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (link !== undefined) {
 			window.open(link);
 		}
@@ -508,7 +518,7 @@ export default class LemmaManager extends Vue {
 
 	async updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
 		// update selected lemma (cached)
-		if (this.selectedRows.length > 0 && this.selectedRows[0].id === l.id) {
+		if (this.selectedRows.length > 0 && this.selectedRows[0]!.id === l.id) {
 			this.selectedRows[0] = { ...l, ...u };
 		}
 		// update store, server and local storage
@@ -586,7 +596,7 @@ export default class LemmaManager extends Vue {
 		await this.store.lemma.updateLemmas(l, { list: null as any });
 	}
 
-	async removeLemmasFromIssue(l: Array<LemmaRow>) {
+	async removeLemmasFromIssue(_l: Array<LemmaRow>) {
 		// FIXME:
 		// backend method missing
 		// await this.store.issue.deleteLemma(l)
@@ -605,7 +615,7 @@ export default class LemmaManager extends Vue {
 				this.removeLemmasFromList(this.selectedRows);
 				// select the next row after the deleted ones
 				if (indexOfLastSelected > -1) {
-					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]];
+					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]!];
 				}
 			}
 			// An issue is selected
@@ -616,7 +626,7 @@ export default class LemmaManager extends Vue {
 				this.removeLemmasFromIssue(this.selectedRows);
 				// select the next row after the deleted ones
 				if (indexOfLastSelected > -1) {
-					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]];
+					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]!];
 				}
 			}
 		} else {
@@ -627,7 +637,7 @@ export default class LemmaManager extends Vue {
 				await this.store.lemma.deleteLemma(this.selectedRows.map((r) => r.id));
 				// select the next row after the deleted ones
 				if (indexOfLastSelected > -1) {
-					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]];
+					this.selectedRows = [this.sortedFilteredLemmas[indexOfLastSelected]!];
 				}
 			}
 		}
@@ -670,7 +680,7 @@ export default class LemmaManager extends Vue {
 		input.click();
 	}
 
-	onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, index: number) {
+	onClickCell(item: LemmaRow, e: MouseEvent, prop: keyof LemmaRow, _index: number) {
 		if (prop === "selected") {
 			this.updateLemma(item, { selected: !item.selected });
 		}
@@ -702,10 +712,10 @@ export default class LemmaManager extends Vue {
 		}
 		console.log("ev.dataTransfer", ev.dataTransfer, this.selectedRows);
 		if (ev.dataTransfer) {
-			dragImage = (this.$refs.dragGhost as Vue).$el as HTMLElement;
+			dragImage = (this.$refs.dragGhost as Vue).$el as HTMLElement | null;
 			ev.dataTransfer.effectAllowed = "move";
 			ev.dataTransfer.setData("text/plain", JSON.stringify(this.selectedRows));
-			if (dragImage !== null) {
+			if (dragImage != null) {
 				ev.dataTransfer.setDragImage(dragImage, 0, 0);
 			}
 		}
@@ -735,7 +745,7 @@ export default class LemmaManager extends Vue {
 
 :focus .table-row.selected
   background-color var(--v-primary-darken1) !important
-  color white
+  color #fff
 
 .theme--light .virtual-table .table-row.odd
   background var(--v-background-darken2)
