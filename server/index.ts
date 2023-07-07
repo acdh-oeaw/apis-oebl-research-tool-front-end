@@ -6,28 +6,14 @@ import http from "http";
 import fetch, { Headers } from "node-fetch";
 import socketIo from "socket.io";
 
+import { env } from "./env";
 import zotero from "./zotero";
 
-if (process.env.ZOTERO_API_KEY === undefined || process.env.ZOTERO_USER === undefined) {
-	const environment = JSON.stringify({
-		ZOTERO_USER: process.env.ZOTERO_USER,
-		ZOTERO_API_KEY: process.env.ZOTERO_API_KEY,
-	});
-	throw new Error(`Zotero is not correctly configered. See environment: ${environment}`);
-}
-
 const app = express();
-const port = process.env.NODE_PORT || process.env.PORT || 3333;
-
-const serviceSecret = process.env.SERVICE_SECRET;
 
 const server = http.createServer(app);
 // @ts-expect-error FIXME:
-const io = socketIo(server, {
-	cors: {
-		origin: JSON.parse(process.env.ALLOWED_ORIGIN),
-	},
-});
+const io = socketIo(server, { cors: { origin: env.ALLOWED_ORIGIN } });
 
 const index = fs.readFileSync("./dist/index.html", { encoding: "utf-8" });
 app.enable("trust proxy");
@@ -39,7 +25,7 @@ app.use(["/", "/css", "/img", "/js"], express.static("./dist"));
 
 app.post("/message/import-issue-lemmas", (req, res) => {
 	console.log("triggered import issue lemma before secret check");
-	if (req.headers["x-secret"] === serviceSecret) {
+	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
 		console.log("triggered importIssueLemmas", req.body);
 		io.sockets.emit("importIssueLemmas", req.body);
 		res.end();
@@ -50,7 +36,7 @@ app.post("/message/import-issue-lemmas", (req, res) => {
 });
 
 app.post("/message/import-lemmas", (req, res) => {
-	if (req.headers["x-secret"] === serviceSecret) {
+	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
 		console.log("triggered importLemmas", req.body);
 		io.sockets.emit("importLemmas", req.body);
 		res.end();
@@ -63,10 +49,10 @@ app.post("/message/import-lemmas", (req, res) => {
 app.get("/zotero/search/:query", async (req, res) => {
 	const x = await (
 		await fetch(
-			"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items?q=" + req.params.query,
+			"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items?q=" + req.params.query,
 			{
 				headers: {
-					"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+					"Zotero-API-Key": env.ZOTERO_API_KEY,
 				},
 			},
 		)
@@ -76,7 +62,7 @@ app.get("/zotero/search/:query", async (req, res) => {
 
 app.get("/zotero/item/:id", async (request, response) => {
 	const zoteroHeaders = new Headers();
-	zoteroHeaders.set("Zotero-API-Key", process.env.ZOTERO_API_KEY);
+	zoteroHeaders.set("Zotero-API-Key", env.ZOTERO_API_KEY);
 	zoteroHeaders.set("Zotero-Api-Version", "3");
 	zoteroHeaders.set("Content-Type", "application/json");
 
@@ -88,7 +74,7 @@ app.get("/zotero/item/:id", async (request, response) => {
 	}
 
 	const zoteroResponse = await fetch(
-		"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/" + request.params.id,
+		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + request.params.id,
 		{ headers: zoteroHeaders },
 	);
 	response.header["zoteroStatus"] = String(zoteroResponse.status);
@@ -104,12 +90,12 @@ app.get("/zotero/item/:id", async (request, response) => {
 app.patch("/zotero/item/:id", async (req, res) => {
 	console.log(req.body);
 	const x = await fetch(
-		"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/" + req.params.id,
+		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + req.params.id,
 		{
 			method: "PATCH",
 			body: JSON.stringify(req.body),
 			headers: {
-				"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+				"Zotero-API-Key": env.ZOTERO_API_KEY,
 			},
 		},
 	);
@@ -134,11 +120,11 @@ app.patch("/zotero/item/:id", async (req, res) => {
 
 app.post("/zotero/item", async (req, res) => {
 	console.log(req.body);
-	const x = await fetch("https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/", {
+	const x = await fetch("https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/", {
 		method: "POST",
 		body: JSON.stringify(req.body),
 		headers: {
-			"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+			"Zotero-API-Key": env.ZOTERO_API_KEY,
 		},
 	});
 	if (x.ok) {
@@ -172,6 +158,6 @@ io.on("connection", (socket: any) => {
 	});
 });
 
-server.listen(port, () => {
-	console.info("🚀 ", `Server listening on port ${port}.`);
+server.listen(env.PORT, () => {
+	console.info("🚀 ", `Server listening on port ${env.PORT}.`);
 });
