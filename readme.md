@@ -61,14 +61,14 @@ An Article (document) can currently contain several types of nodes / blocks:
 The application uses [Vue 2.x](https://vuejs.org/v2/guide/) with
 [Vuetify 2.x](https://vuetifyjs.com/en/introduction/why-vuetify/) as a UI component library, and
 uses custom UI Elements only if strictly necessary (see [`src/views/lib`](src/views/lib)). All
-components are written in Typescript with the Class Component Decorators for more idiomatic
-structure. Tests are run with Playwright. The color scheme of the application is defined in
+components are written in Typescript with Class Component Decorators. Tests are run with Playwright.
+The color scheme of the application is defined in
 [`src/plugins/vuetify.ts`](src/plugins/vuetify.ts).
 
 For practical development purposes, the following two pieces of software are wholeheartedly
 recommended:
 
-- [Vetur for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
+- [Volar for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=vue.volar)
 - [Vue.js Devtools for Google Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
 
 ### Hosting
