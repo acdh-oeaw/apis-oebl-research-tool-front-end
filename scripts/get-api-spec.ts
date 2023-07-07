@@ -1,33 +1,28 @@
-import { writeFile } from "fs/promises";
-import fetch from "node-fetch";
-import { join } from "path";
+import "../server/polyfill";
 
-console.assert(process.env.VUE_APP_API_HOST, "Missing environment variable.");
+import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
-const url = new URL("/apis/swagger/schema", process.env.VUE_APP_API_HOST);
+import { createUrl, log, request } from "@acdh-oeaw/lib";
+import { z } from "zod";
 
-const headers = {
-	accept: "application/json",
-};
+const schema = z.object({
+	VUE_APP_API_HOST: z.string().url(),
+});
+
+const env = schema.parse(process.env);
+
+const url = createUrl({ pathname: "/apis/swagger/schema", baseUrl: env.VUE_APP_API_HOST });
 
 const outputFilePath = join(process.cwd(), "api-spec.json");
 
-fetch(url, { headers })
-	.then((response) => {
-		if (!response.ok) {
-			throw new Error(response.statusText);
-		}
-		return response;
-	})
-	.then((response) => {
-		return response.text();
-	})
-	.then((text) => {
-		return writeFile(outputFilePath, text, { encoding: "utf-8" });
+request(url, { responseType: "json" })
+	.then((json) => {
+		return writeFile(outputFilePath, JSON.stringify(json), { encoding: "utf-8" });
 	})
 	.then(() => {
-		console.info("✅ ", "Successfully fetched API spec.");
+		log.info("Successfully fetched API spec.");
 	})
 	.catch(() => {
-		console.error("❌ ", "Failed to fetch API spec.");
+		log.error("Failed to fetch API spec.");
 	});

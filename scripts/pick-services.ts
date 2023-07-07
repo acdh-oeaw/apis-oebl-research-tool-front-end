@@ -1,11 +1,15 @@
-// this script removes unwanted imports from the auto generated open api file.
-// we need it because the APIs schema is huge, and seems to blow up Webpack 5 (OOM error).
+/**
+ * This script removes unwanted imports from the auto-generated API client.
+ * We need this because the API schema is huge, and it seems to blow up Webpack 5 (OOM error).
+ */
 
-import { readFileSync, writeFileSync } from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
+import { log } from "@acdh-oeaw/lib";
 
 const allowedServices = process.argv.slice(2);
-console.log("allowedServices:", allowedServices);
+log.info("Selected services from API client:", allowedServices);
 
 const inputFilePath = join(process.cwd(), "./src/api/index.ts");
 const serviceRegEx = /export \{ ((.)+Service) \} .+;/;
@@ -14,6 +18,7 @@ const lines = fileContent.split("\n");
 
 const newLines = lines.map((l) => {
 	const matches = serviceRegEx.exec(l);
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	if (matches !== null && !allowedServices.includes(matches[1]!.trim())) {
 		// remove/comment out line
 		return "// " + l;
