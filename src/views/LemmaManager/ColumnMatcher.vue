@@ -104,7 +104,12 @@
 					<v-btn :disabled="tablePage === 1" icon @click="tablePage = tablePage - 1">
 						<v-icon>mdi-chevron-left</v-icon>
 					</v-btn>
-					<select class="px-2" :value="tablePage" @change="tablePage = Number($event.target.value)">
+					<select
+						class="px-2"
+						aria-label="Seite auswählen"
+						:value="tablePage"
+						@change="tablePage = Number($event.target.value)"
+					>
 						<option v-for="p in Math.ceil(initialTable.length / 100)" :key="p" :value="p">
 							Seite {{ p }} von {{ Math.ceil(initialTable.length / 100) }}
 						</option>
@@ -200,18 +205,18 @@ export default class ColumnMatcher extends Vue {
 				if (e.matchWith !== null && !this.isIgnoredValue(String(r[e.value]))) {
 					if (
 						targetColumnsByValue[e.matchWith] !== undefined &&
-						targetColumnsByValue[e.matchWith].convert !== undefined &&
+						targetColumnsByValue[e.matchWith]!.convert !== undefined &&
 						r[e.value] !== undefined
 					) {
 						// console.log(targetColumnsByValue[e.matchWith], r[e.value])
 						m[e.matchWith] =
-							targetColumnsByValue[e.matchWith].convert!(r[e.value].toString()) || "";
+							targetColumnsByValue[e.matchWith]!.convert!(r[e.value]!.toString()) || "";
 					} else {
-						m[e.matchWith] = r[e.value];
+						m[e.matchWith] = r[e.value]!;
 					}
 					// if the column is ignored, and we should return the ignored columns with a prefix.
 				} else if (this.returnIgnoredColumns && e.matchWith === null) {
-					m[this.prefixIgnoredColumns + e.value] = r[e.value];
+					m[this.prefixIgnoredColumns + e.value] = r[e.value]!;
 				}
 				return m;
 			}, {} as Row);
@@ -260,7 +265,7 @@ export default class ColumnMatcher extends Vue {
 	}
 
 	matchHeaderWith(headerIndex: number, matchWith: string | null): void {
-		this.headers[headerIndex].matchWith = matchWith;
+		this.headers[headerIndex]!.matchWith = matchWith;
 	}
 
 	async parseExcelToJson(
@@ -269,7 +274,7 @@ export default class ColumnMatcher extends Vue {
 	): Promise<[Array<Header>, Table<Row>]> {
 		// const { default: XLSX } = await import('xlsx')
 		const doc = XLSX.read(b, { type: "buffer", WTF: false });
-		const sheets = doc.SheetNames.map((s) => XLSX.utils.sheet_to_json(doc.Sheets[s]));
+		const sheets = doc.SheetNames.map((s) => XLSX.utils.sheet_to_json(doc.Sheets[s]!));
 		const useSheetIndex = doc.SheetNames.findIndex((s) => s === useSheetName);
 		const rows = sheets[useSheetIndex === -1 ? 0 : useSheetIndex] as Array<Row>;
 		const headers: Array<Header> = _.map(rows[0], (v, k) => ({
@@ -280,7 +285,7 @@ export default class ColumnMatcher extends Vue {
 				this.targetColumns.find((c) => c.text.toLowerCase() === k.toLowerCase())?.value || null,
 		}));
 		this.sheetNames = doc.SheetNames;
-		this.sheetName = doc.SheetNames[useSheetIndex === -1 ? 0 : useSheetIndex];
+		this.sheetName = doc.SheetNames[useSheetIndex === -1 ? 0 : useSheetIndex]!;
 		return [headers, rows];
 	}
 
@@ -306,7 +311,7 @@ export default class ColumnMatcher extends Vue {
 
 
 .is-null-equivalent
-  opcaity 0.3
+  opacity 30%
 
 
 .target-selector
@@ -345,5 +350,5 @@ select
 
 
 .theme--dark select
-  color white
+  color #fff
 </style>

@@ -133,8 +133,8 @@ export default class IssueStore {
 		const index = this.issueLemmas.findIndex((l) => l.id === id);
 		if (index > -1) {
 			const newIssueLemma = { ...this.issueLemmas[index], ...l };
-			if (this.selectedLemma !== null && this.issueLemmas[index].id === this.selectedLemma.id) {
-				this.selectedLemma = this.issueLemmas[index];
+			if (this.selectedLemma !== null && this.issueLemmas[index]!.id === this.selectedLemma.id) {
+				this.selectedLemma = this.issueLemmas[index]!;
 			}
 			this.updateIssueLemmasLocally([id], l);
 			await WorkflowService.workflowApiV1IssueLemmaPartialUpdate(id, {

@@ -47,7 +47,7 @@ export default class LemmaPreviewer extends Vue {
 	get lemmaHeaders() {
 		return showThisColumns.map((columnName) => {
 			return {
-				text: lemmaRowTranslations[columnName].de,
+				text: lemmaRowTranslations[columnName]!.de,
 				value: columnName,
 				sortable: true,
 				filterable: true,
@@ -56,5 +56,3 @@ export default class LemmaPreviewer extends Vue {
 	}
 }
 </script>
-
-<style></style>

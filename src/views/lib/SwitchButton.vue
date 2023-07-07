@@ -29,7 +29,7 @@ export default class SwitchButton extends Vue {
 	}
 
 	updateValue(i: number) {
-		this.$emit("input", this.items[i].value);
+		this.$emit("input", this.items[i]!.value);
 	}
 }
 </script>

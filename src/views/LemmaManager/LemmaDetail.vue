@@ -97,13 +97,13 @@
 					<v-card-text>
 						<text-field
 							:required="true"
-							:label="lemmaRowTranslations.firstName.de"
+							:label="lemmaRowTranslations.firstName!.de"
 							:value="value.firstName"
 							@input="debouncedUpdateData({ firstName: $event })"
 						></text-field>
 						<text-field
 							:required="true"
-							:label="lemmaRowTranslations.lastName.de"
+							:label="lemmaRowTranslations.lastName!.de"
 							:value="value.lastName"
 							@input="debouncedUpdateData({ lastName: $event })"
 						></text-field>
@@ -114,7 +114,7 @@
 							@submit="updateUserColumns('alternativeNames', $event)"
 						></full-name-array-field>
 
-						<text-field :label="lemmaRowTranslations.gender.de">
+						<text-field :label="lemmaRowTranslations.gender!.de">
 							<template #input>
 								<v-btn-toggle
 									class="transparent mt-1 ml-1"
@@ -144,7 +144,7 @@
 						</text-field>
 						<text-field
 							tabindex="-1"
-							:label="lemmaRowTranslations.nobleTitle.de"
+							:label="lemmaRowTranslations.nobleTitle!.de"
 							placeholder="(kein)"
 							:value="value.columns_user.nobleTitle"
 							@input="updateUserColumns('nobleTitle', $event)"
@@ -168,41 +168,41 @@
 							</v-btn>
 						</text-field>
 						<text-field-alternatives
-							:label="lemmaRowTranslations.nobleTitle.de"
+							:label="lemmaRowTranslations.nobleTitle!.de"
 							:value="value.columns_user.alternativeNobleTitle"
 							@input="updateUserColumns('alternativeNobleTitle', $event)"
 						/>
 						<v-spacer class="my-5" />
 						<date-field
 							:key="'dateOfBirth_' + value.id"
-							:label="lemmaRowTranslations.dateOfBirth.de"
+							:label="lemmaRowTranslations.dateOfBirth!.de"
 							:date="value.dateOfBirth"
 							@submit="debouncedUpdateData({ dateOfBirth: $event })"
 						></date-field>
 						<date-field
 							:key="'dateOfDeath_' + value.id"
-							:label="lemmaRowTranslations.dateOfDeath.de"
+							:label="lemmaRowTranslations.dateOfDeath!.de"
 							:date="value.dateOfDeath"
 							@submit="debouncedUpdateData({ dateOfDeath: $event })"
 						></date-field>
 						<v-spacer class="my-5" />
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.kinship.de"
+							:label="lemmaRowTranslations.kinship!.de"
 							:allow-new-line="true"
 							:value="value.kinship"
 							@input="debouncedUpdateData({ kinship: $event })"
 						/>
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.bioNote.de"
+							:label="lemmaRowTranslations.bioNote!.de"
 							:allow-new-line="true"
 							:value="value.bioNote"
 							@input="debouncedUpdateData({ bioNote: $event })"
 						/>
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.religion.de"
+							:label="lemmaRowTranslations.religion!.de"
 							:allow-new-line="true"
 							:value="value.religion"
 							@input="debouncedUpdateData({ religion: $event })"
@@ -210,7 +210,7 @@
 						<v-spacer class="my-5" />
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.professionDetail.de"
+							:label="lemmaRowTranslations.professionDetail!.de"
 							:allow-new-line="true"
 							:value="value.professionDetail"
 							:maxlength="255"
@@ -224,7 +224,7 @@
 						<v-spacer class="my-5" />
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.notes.de"
+							:label="lemmaRowTranslations.notes!.de"
 							:allow-new-line="true"
 							:value="value.notes"
 							:maxlength="255"
@@ -240,7 +240,7 @@
 							background: '',
 						}"
 					>
-						{{ lemmaRowTranslations.columns_user.de }}
+						{{ lemmaRowTranslations.columns_user!.de }}
 					</h4>
 					<v-card-text class="pt-0">
 						<text-field
@@ -248,7 +248,7 @@
 							:key="userKey"
 							:value="userValue"
 							:label="userKey"
-							@input="debouncedUpdateUserColumns(userKey, $event)"
+							@input="debouncedUpdateUserColumns(String(userKey), $event)"
 						/>
 					</v-card-text>
 				</v-window-item>
@@ -472,7 +472,7 @@ export default class LemmaDetail extends Vue {
 			event.dataTransfer !== null &&
 			// during the "drag" phase, the "files" prop is still empty
 			// so we use the items prop instead to check _what_ is being dragged.
-			event.dataTransfer.items[0] !== null &&
+			event.dataTransfer.items[0] != null &&
 			event.dataTransfer.items[0].kind === "file"
 		) {
 			const target = event.currentTarget as HTMLElement;
@@ -529,6 +529,7 @@ export default class LemmaDetail extends Vue {
 		if (r === undefined) {
 			return 0;
 		} else {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
 		}
 	}

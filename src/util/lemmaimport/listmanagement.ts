@@ -39,17 +39,18 @@ export class ListManager {
 
 	public async getLemmaList(title: string): Promise<ChosenLemmaList> {
 		const lemmaLists = this.lemmaLists.filter(
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			(list) => list.title !== undefined && list.title === title,
 		);
 		if (lemmaLists.length === 1) {
-			return lemmaLists[0];
+			return lemmaLists[0]!;
 		}
 
 		if (lemmaLists.length > 1) {
 			console.warn(
 				`Found ${lemmaLists.length} lemma lists with title <${title}> – these should be unique, Dude! (I am pretty sure ;-)`,
 			);
-			return lemmaLists[0]; // I don't really care, they have IDs.
+			return lemmaLists[0]!; // I don't really care, they have IDs.
 		}
 
 		return await this.createNewLemmaList(title);

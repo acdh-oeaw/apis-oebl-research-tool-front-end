@@ -35,7 +35,7 @@ export default class ColumnSelect extends Vue {
 	label = "";
 
 	created() {
-		this.label = lemmaRowTranslations[this.lemmaKey].de;
+		this.label = lemmaRowTranslations[this.lemmaKey]!.de;
 	}
 
 	get extractedData(): Array<Partial<LemmaRow>> {

@@ -30,7 +30,7 @@
 				/>
 				<div class="flex-grow-1 pl-2">
 					<v-select
-						v-if="filter.column.type === 'boolean'"
+						v-if="filter.column?.type === 'boolean'"
 						v-model="filter.query"
 						:value="'true'"
 						:items="[
@@ -52,7 +52,7 @@
 					<v-text-field
 						v-else
 						v-model="filter.query"
-						:disabled="!isFilterWithInput(filter)"
+						:disabled="!isFilterWithInput(filter as any)"
 						autocomplete="off"
 						style="min-width: 60px"
 						placeholder="Abfrage…"
@@ -118,7 +118,7 @@ export default class DataFilter extends Vue {
 
 	defaultFilterItem = {
 		column: this.columns[1],
-		comparator: this.comparators[0].value,
+		comparator: this.comparators[0]?.value,
 		query: "",
 	};
 

@@ -126,6 +126,7 @@ export const Comment = popupMark.extend({
 		};
 	},
 
+	// @ts-expect-error Fix later.
 	addKeyboardShortcuts() {
 		return {
 			"Mod-k": () => this.editor.commands.toggleComment(),

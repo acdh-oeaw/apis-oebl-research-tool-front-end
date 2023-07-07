@@ -94,7 +94,7 @@ export default class LobidPreviewCard extends Vue {
 			return {
 				gnd: e,
 				html: "",
-				data: results[i],
+				data: results[i]!,
 				selected: false,
 			};
 		});

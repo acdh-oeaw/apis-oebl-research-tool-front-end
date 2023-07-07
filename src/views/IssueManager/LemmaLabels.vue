@@ -150,7 +150,7 @@
 						</v-col>
 						<v-col cols="8" class="text-center">
 							<v-chip
-								style="color: white; font-weight: 500"
+								style="color: #fff; font-weight: 500"
 								class="label mx-auto"
 								:color="editingLabel.color"
 							>
@@ -280,7 +280,7 @@ export default class LemmaLabels extends Vue {
 
 <style lang="stylus" scoped>
 .label
-  color white
+  color #fff
   font-weight 600
 
 .label-box /deep/ .v-input__slot

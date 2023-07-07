@@ -384,7 +384,7 @@ export default class IssueManager extends Vue {
 		const index = this.issueLemmas.findIndex((i) => i.id === lemma.id);
 		if (index > -1) {
 			this.animateLemmas = true;
-			this.issueLemmas[index].status = statusId;
+			this.issueLemmas[index]!.status = statusId;
 			this.updateLemmaById(lemma.id, { status: statusId });
 			setTimeout(() => {
 				this.animateLemmas = false;
@@ -403,7 +403,7 @@ export default class IssueManager extends Vue {
 		lemmas.forEach((lemma, i) => {
 			const order =
 				(lemma.order || 0) <= (updatedColumn[i - 1]?.order || 0)
-					? (updatedColumn[i - 1].order || 0) + 1
+					? (updatedColumn[i - 1]!.order || 0) + 1
 					: lemma.order;
 			updatedColumn.push({
 				...lemma,
@@ -545,8 +545,6 @@ export default class IssueManager extends Vue {
 	}
 }
 </script>
-
-<style lang="stylus"></style>
 
 <style lang="stylus" scoped>
 .selected

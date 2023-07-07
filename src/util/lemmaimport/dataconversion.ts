@@ -185,8 +185,8 @@ export function mergeBuildNewLemmaRows(
 	}
 
 	return lemmaPrototypes.map((lemmaPrototype, index) => {
-		const lemmaDates = lemmaDatesRows[index];
-		const lemmaGender = lemmaGenderRows[index];
+		const lemmaDates = lemmaDatesRows[index]!;
+		const lemmaGender = lemmaGenderRows[index]!;
 		return buildNewLemmaRowAfterFormatting(lemmaPrototype, lemmaDates, lemmaGender);
 	});
 }
@@ -205,7 +205,7 @@ export function createUserColumns(table: Data2D, options: UserColumnMapping): Ar
 	return table.data.map((row: Array<string>) => {
 		return Object.fromEntries(
 			mappings.map(([numericalSourceColumn, targetColumn]) => {
-				return [targetColumn, row[numericalSourceColumn]];
+				return [targetColumn, row[numericalSourceColumn]!];
 			}),
 		);
 	});

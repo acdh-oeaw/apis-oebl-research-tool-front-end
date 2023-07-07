@@ -53,7 +53,7 @@ function showPopUp(
 				parent,
 			});
 		}
-		t.setContent(vueComponents[name].element);
+		t.setContent(vueComponents[name]!.element);
 		if (shouldFocus) {
 			requestAnimationFrame(() => {
 				t!.popper.querySelector("textarea")?.focus();

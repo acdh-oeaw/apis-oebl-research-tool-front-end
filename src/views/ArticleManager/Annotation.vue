@@ -81,10 +81,12 @@
 								</v-btn>
 							</template>
 						</v-list-item-avatar>
+						<!-- eslint-disable vue/no-v-html, vue/no-v-text-v-html-on-component -->
 						<v-list-item-content
 							class="cursor-pointer ac-result"
 							v-html="result.name"
 						></v-list-item-content>
+						<!-- eslint-enable vue/no-v-html, vue/no-v-text-v-html-on-component -->
 					</v-list-item>
 				</v-list>
 				<div
@@ -201,11 +203,11 @@ export default class Annotation extends Vue {
 		entityId: null,
 	};
 	entityTypes = [
-		{ value: "person", text: EntityTranslations.person.de },
-		{ value: "place", text: EntityTranslations.place.de },
-		{ value: "institution", text: EntityTranslations.institution.de },
-		{ value: "work", text: EntityTranslations.work.de },
-		{ value: "event", text: EntityTranslations.event.de },
+		{ value: "person", text: EntityTranslations.person!.de },
+		{ value: "place", text: EntityTranslations.place!.de },
+		{ value: "institution", text: EntityTranslations.institution!.de },
+		{ value: "work", text: EntityTranslations.work!.de },
+		{ value: "event", text: EntityTranslations.event!.de },
 	];
 
 	//selectedEntityType: any = null;

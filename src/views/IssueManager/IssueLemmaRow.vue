@@ -70,8 +70,8 @@ export default class IssueLemmaRow extends Vue {
 
 	get labelsLimited(): Array<LemmaLabel> {
 		return this.maxLabels !== null
-			? _.take(this.value.labels, this.maxLabels).map((id) => this.labelsById[id])
-			: this.value.labels.map((id) => this.labelsById[id]);
+			? _.take(this.value.labels, this.maxLabels).map((id) => this.labelsById[id]!)
+			: this.value.labels.map((id) => this.labelsById[id]!);
 	}
 
 	get editor(): Editor | null {
@@ -95,5 +95,5 @@ export default class IssueLemmaRow extends Vue {
 <style lang="stylus" scoped>
 .label
   margin-left 1px
-  color white !important
+  color #fff !important
 </style>

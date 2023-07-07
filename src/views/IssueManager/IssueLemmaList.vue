@@ -117,7 +117,7 @@ tr:focus
 .label
   margin-right 1px
   padding 0 7px
-  color white !important
+  color #fff !important
   font-weight 600
   letter-spacing -0.05em
 </style>

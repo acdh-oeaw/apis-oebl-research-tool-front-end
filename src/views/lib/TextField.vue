@@ -2,12 +2,15 @@
 	<div :class="['rounded-lg mb-1 text-field-outer', color || 'background darken-2']">
 		<div class="d-flex flex-grow-1">
 			<slot name="prepend">
+				<!-- FIXME: a11y -->
+				<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 				<div
 					v-if="$attrs && $attrs.label"
 					class="caption pa-2 text-field-label"
 					@click="selectAll"
 					v-text="$attrs.label"
 				/>
+				<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 			</slot>
 			<div style="position: relative" class="fill-width">
 				<slot name="input">
@@ -15,6 +18,8 @@
 						class="text-body-2 pa-2 fill-height fill-width fake-textarea"
 						v-text="localValue || '&nbsp;'"
 					/>
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 					<textarea
 						ref="textarea"
 						class="fill-height fill-width pa-2 text-body-2"
@@ -26,6 +31,7 @@
 						@keydown="onKeyDown"
 						@input="onInput"
 					/>
+					<!-- eslint-enable vuejs-accessibility/form-control-has-label -->
 				</slot>
 			</div>
 			<div>

@@ -1,7 +1,7 @@
 <template>
 	<div class="full-name-array-wrapper">
 		<v-card class="transparent" elevation="0">
-			<h4 class="py-2">{{ lemmaRowTranslations.alternativeNames.de }}</h4>
+			<h4 class="py-2">{{ lemmaRowTranslations.alternativeNames!.de }}</h4>
 			<v-card-actions
 				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit === null }"
 			>
@@ -126,7 +126,7 @@ export default class FullNameArrayField extends Vue {
 	}
 
 	editItem(edit_index: number) {
-		this.selectedToEdit = this.localFullNames[edit_index];
+		this.selectedToEdit = this.localFullNames[edit_index]!;
 		this.localFullNames = this.localFullNames.filter(
 			(_, array_index) => array_index !== edit_index,
 		);

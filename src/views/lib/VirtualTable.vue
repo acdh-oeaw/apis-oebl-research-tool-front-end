@@ -1,4 +1,6 @@
 <template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 	<div class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
 		<v-menu
 			v-if="editPopUp !== null"
@@ -56,6 +58,8 @@
 					column.sort !== null && column.sort !== undefined && 'sort-active',
 				]"
 			>
+				<!-- FIXME: a11y -->
+				<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 				<div class="column-name" @click="$emit('click:header', column)">
 					<span v-if="column.sort === 'asc'" class="header-sort-arrow">
 						<v-icon x-small>mdi-chevron-up</v-icon>
@@ -99,6 +103,8 @@
 			@scroll.passive="onScroll"
 		>
 			<template #default="{ item, index }">
+				<!-- FIXME: a11y -->
+				<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 				<div
 					test-id="lemma-row"
 					:draggable="$listeners['drag:row']"
@@ -114,6 +120,8 @@
 					@dblclick="onDblClickRow($event, item, index)"
 					@keydown="handleKey"
 				>
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 					<div
 						v-for="column in visibleColumns"
 						:key="index + '__' + column.value"
@@ -292,7 +300,7 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	onDblClickCell(item: LemmaRow, e: MouseEvent, column: LemmaColumn) {
+	onDblClickCell(item: LemmaRow, e: MouseEvent, column: LemmaColumn, _index: number) {
 		if (column.editable === true && e.currentTarget instanceof HTMLElement) {
 			this.editPopUp = {
 				x: e.currentTarget.getBoundingClientRect().left,
@@ -305,7 +313,7 @@ export default class VirtualTable extends Vue {
 		}
 	}
 
-	onDblClickRow(e: MouseEvent, item: LemmaRow) {
+	onDblClickRow(e: MouseEvent, item: LemmaRow, _index: number) {
 		this.$emit("dblclick:row", item, e);
 	}
 

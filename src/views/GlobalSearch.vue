@@ -15,6 +15,7 @@
 					<input
 						ref="input"
 						v-model="searchText"
+						aria-label="Suche"
 						class="pl-2 py-4 rounded-lg global-search"
 						placeholder="Suchen…"
 						type="text"
@@ -60,9 +61,9 @@
 									<v-list-item-title>
 										{{ result.item.firstName }} {{ result.item.lastName }}
 									</v-list-item-title>
-									<!-- 
-                    Only check for borth date valid … 
-                    -> If only birth date valid: "01.01.2000 –", 
+									<!--
+                    Only check for borth date valid …
+                    -> If only birth date valid: "01.01.2000 –",
                       else "01.01.1900 - 01.01.1980" -->
 									<v-list-item-subtitle v-if="result.item.dateOfBirth.isValid()">
 										{{ [result.item.dateOfBirth, result.item.dateOfDeath].join(" – ") }}
@@ -190,7 +191,7 @@ export default class GlobalSearch extends Vue {
 	}
 
 	get results(): Array<SearchItem> {
-		if (this.searchText === null || this.searchText === "") {
+		if (this.searchText === "") {
 			return store.search.recentSearchItems;
 		}
 
@@ -275,5 +276,5 @@ export default class GlobalSearch extends Vue {
 
 <style lang="stylus">
 .theme--dark .global-search
-  color white
+  color #fff
 </style>

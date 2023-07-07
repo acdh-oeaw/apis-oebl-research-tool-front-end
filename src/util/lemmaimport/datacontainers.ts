@@ -35,11 +35,12 @@ export class Data2D {
 
 	selectByHeaderName(headerName: string): Array<string> {
 		const numericalHeaderName = this.getNumericalHeaderName(headerName);
-		return this.data.map((row) => row[numericalHeaderName]);
+		return this.data.map((row) => row[numericalHeaderName]!);
 	}
 
 	getNumericalHeaderName(headerName: string): number {
 		const numericalHeaderName = this.headers.indexOf(headerName);
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (numericalHeaderName === undefined) {
 			const headers = JSON.stringify(this.headers);
 			throw new Error(`Did not find <${headerName}> in ${headers}`);

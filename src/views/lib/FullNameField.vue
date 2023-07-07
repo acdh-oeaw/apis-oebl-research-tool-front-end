@@ -3,14 +3,14 @@
 		<text-field
 			v-model="fullName.firstName"
 			:required="false"
-			:label="lemmaRowTranslations.firstName.de"
+			:label="lemmaRowTranslations.firstName!.de"
 			:disabled="disabled"
 			@input="emitInput($event, 'firstName')"
 		></text-field>
 		<text-field
 			v-model="fullName.lastName"
 			:required="false"
-			:label="lemmaRowTranslations.lastName.de"
+			:label="lemmaRowTranslations.lastName!.de"
 			:disabled="disabled"
 			@input="emitInput($event, 'lastName')"
 		></text-field>

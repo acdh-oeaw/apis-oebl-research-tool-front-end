@@ -403,7 +403,7 @@ export default class EditorLoader extends Vue {
 
 .v-tab--active
   background-color var(--v-background-darken5)
-  color black !important
+  color #000 !important
   font-weight 700
 
 .theme--light.v-list

@@ -40,7 +40,7 @@ export default class DateFormatter extends Vue {
 	@Prop({ required: true }) preloadedDateFormatOption!: SupportedDateFormatType;
 
 	supportedDateFormats: Array<SupportedDateFormatType> = supportedDateFormats;
-	localDateFormat: SupportedDateFormatType = supportedDateFormats[0];
+	localDateFormat: SupportedDateFormatType = supportedDateFormats[0]!;
 
 	@Watch("preloadedDateFormatOption", { immediate: true, deep: true })
 	setDateFormat() {
@@ -71,8 +71,8 @@ export default class DateFormatter extends Vue {
 		let lemmaPrototype: LemmaPrototypeRequiredFieldsType;
 
 		for (let index = 0; index < this.lemmaPrototypes.length; index++) {
-			dateRow = this.dates[index];
-			lemmaPrototype = this.lemmaPrototypes[index];
+			dateRow = this.dates[index]!;
+			lemmaPrototype = this.lemmaPrototypes[index]!;
 
 			comparisionViews.push({
 				firstName: lemmaPrototype.firstName ?? "",
@@ -92,12 +92,12 @@ export default class DateFormatter extends Vue {
 	}
 
 	previewHeaders = [
-		{ text: lemmaRowTranslations.firstName.de, value: "firstName" },
-		{ text: lemmaRowTranslations.lastName.de, value: "lastName" },
-		{ text: `${lemmaRowTranslations.dateOfBirth.de} Quelle`, value: "dateOfBirthString" },
-		{ text: `${lemmaRowTranslations.dateOfBirth.de} geparst`, value: "dateOfBirthParsed" },
-		{ text: `${lemmaRowTranslations.dateOfDeath.de} Quelle`, value: "dateOfDeathString" },
-		{ text: `${lemmaRowTranslations.dateOfDeath.de} geparst`, value: "dateOfDeathParsed" },
+		{ text: lemmaRowTranslations.firstName!.de, value: "firstName" },
+		{ text: lemmaRowTranslations.lastName!.de, value: "lastName" },
+		{ text: `${lemmaRowTranslations.dateOfBirth!.de} Quelle`, value: "dateOfBirthString" },
+		{ text: `${lemmaRowTranslations.dateOfBirth!.de} geparst`, value: "dateOfBirthParsed" },
+		{ text: `${lemmaRowTranslations.dateOfDeath!.de} Quelle`, value: "dateOfDeathString" },
+		{ text: `${lemmaRowTranslations.dateOfDeath!.de} geparst`, value: "dateOfDeathParsed" },
 	];
 }
 </script>

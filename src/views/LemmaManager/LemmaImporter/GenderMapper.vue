@@ -114,9 +114,9 @@ export default class GenderMapper extends Vue {
 	// https://vuetifyjs.com/en/api/v-data-table/#props-headers
 	get genderPreviewHeaders() {
 		return [
-			{ text: lemmaRowTranslations.lastName.de, value: "lastName" },
-			{ text: `${lemmaRowTranslations.gender.de}-Quelle`, value: "genderSource" },
-			{ text: `${lemmaRowTranslations.gender.de}-Import`, value: "genderImport" },
+			{ text: lemmaRowTranslations.lastName!.de, value: "lastName" },
+			{ text: `${lemmaRowTranslations.gender!.de}-Quelle`, value: "genderSource" },
+			{ text: `${lemmaRowTranslations.gender!.de}-Import`, value: "genderImport" },
 		];
 	}
 
@@ -133,7 +133,7 @@ export default class GenderMapper extends Vue {
 		}
 
 		return parsedGenders.map((parsedGender, index) => {
-			const prototype = prototypes[index];
+			const prototype = prototypes[index]!;
 			return {
 				lastName: prototype.lastName,
 				genderSource: prototype.gender ?? "Kein Wert",
