@@ -12,7 +12,10 @@ import express from "express";
 import { Server, type Socket } from "socket.io";
 
 import { env } from "./env";
-import zotero from "./zotero";
+import { errorHandler } from "./middleware/error-handler";
+import { withAuthentication } from "./middleware/with-authentication";
+import { withValidation } from "./middleware/with-validation";
+import { api as zotero } from "./services/zotero.service";
 
 const app = express();
 const server = createServer(app);
@@ -25,118 +28,92 @@ app.enable("trust proxy");
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: "100mb" }));
-app.use(["/", "/css", "/img", "/js"], express.static("./dist"));
+app.use(["/", "/css", "/img", "/js"], express.static(staticAssetsFolder));
 
-app.post("/message/import-issue-lemmas", (req, res) => {
-	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
-		io.sockets.emit("importIssueLemmas", req.body);
-		res.end();
-	} else {
-		res.status(401);
-		res.end("out.");
+app.post("/message/import-issue-lemmas", withAuthentication, (request, response) => {
+	io.sockets.emit("importIssueLemmas", request.body);
+	return response.end();
+});
+
+app.post("/message/import-lemmas", withAuthentication, (request, response) => {
+	io.sockets.emit("importLemmas", request.body);
+	return response.end();
+});
+
+// FIXME: why is the query string a path segment?
+app.get("/zotero/search/:query", async (request, response, next) => {
+	try {
+		const data = await zotero.getItems(request.params.query);
+		return response.send(data);
+	} catch (error) {
+		return next(error);
 	}
 });
 
-app.post("/message/import-lemmas", (req, res) => {
-	if (req.headers["x-secret"] === env.SERVICE_SECRET) {
-		io.sockets.emit("importLemmas", req.body);
-		res.end();
-	} else {
-		res.status(401);
-		res.end("out.");
+app.get("/zotero/item/:id", async (request, response, next) => {
+	try {
+		const data = await zotero.getItemById(request.params.id);
+		return response.send(data);
+	} catch (error) {
+		return next(error);
 	}
 });
 
-app.get("/zotero/search/:query", async (req, res) => {
-	const x = await (
-		await fetch(
-			"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items?q=" + req.params.query,
-			{
-				headers: {
-					"Zotero-API-Key": env.ZOTERO_API_KEY,
-				},
-			},
-		)
-	).json();
-	res.send(JSON.stringify(x));
+app.patch("/zotero/item/:id", async (request, response, next) => {
+	try {
+		const data = await zotero.patchItemById(request.params.id, request.body);
+		return response.send(data);
+	} catch (error) {
+		return next(error);
+	}
 });
 
-app.get("/zotero/item/:id", async (request, response) => {
-	const zoteroHeaders = new Headers();
-	zoteroHeaders.set("Zotero-API-Key", env.ZOTERO_API_KEY);
-	zoteroHeaders.set("Zotero-Api-Version", "3");
-	zoteroHeaders.set("Content-Type", "application/json");
+app.post("/zotero/item", async (request, response, next) => {
+	try {
+		const data = await zotero.createItem(request.body);
+		return response.send(data);
+	} catch (error) {
+		return next(error);
+	}
+});
 
-	if ("if-Modified-Since-Version" in request.headers) {
-		zoteroHeaders.set(
-			"if-Modified-Since-Version",
-			String(request.headers["if-Modified-Since-Version"]),
+app.get("/zotero/initial-data", async (_request, response, next) => {
+	try {
+		const itemTypes = await zotero.getItemTypes();
+		const itemTypeFields = Object.fromEntries(
+			await Promise.all(
+				itemTypes.map(({ itemType }) => {
+					return zotero.getItemTypeFields(itemType).then((data) => {
+						return [itemType, data];
+					});
+				}),
+			),
 		);
-	}
-
-	const zoteroResponse = await fetch(
-		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + request.params.id,
-		{ headers: zoteroHeaders },
-	);
-	response.header["zoteroStatus"] = String(zoteroResponse.status);
-	response.header["zoteroStatusText"] = zoteroResponse.statusText;
-
-	let responseBody = null;
-	if (zoteroResponse.status === 200) {
-		responseBody = await zoteroResponse.json();
-	}
-	response.send(JSON.stringify(responseBody));
-});
-
-app.patch("/zotero/item/:id", async (req, res) => {
-	const x = await fetch(
-		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + req.params.id,
-		{
-			method: "PATCH",
-			body: JSON.stringify(req.body),
-			headers: {
-				"Zotero-API-Key": env.ZOTERO_API_KEY,
-			},
-		},
-	);
-	if (x.ok) {
-		res.send(
-			JSON.stringify({
-				version: x.headers.get("Last-Modified-Version"),
-			}),
+		const itemTypeCreators = Object.fromEntries(
+			await Promise.all(
+				itemTypes.map(({ itemType }) => {
+					return zotero.getItemTypeCreators(itemType).then((data) => {
+						return [itemType, data];
+					});
+				}),
+			),
 		);
-	} else {
-		res.sendStatus(500);
-	}
-});
-
-app.post("/zotero/item", async (req, res) => {
-	const x = await fetch("https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/", {
-		method: "POST",
-		body: JSON.stringify(req.body),
-		headers: {
-			"Zotero-API-Key": env.ZOTERO_API_KEY,
-		},
-	});
-	if (x.ok) {
-		res.send(JSON.stringify(await x.json()));
-	} else {
-		res.sendStatus(500);
-	}
-});
-
-app.get("/zotero/initial-data", async (req, res) => {
-	const itemTypes = await zotero.getItemTypes();
-	res.send(
-		JSON.stringify({
+		const data = {
 			itemTypes,
-			itemTypeFields: await zotero.getItemTypeFields(itemTypes),
-			itemTypeCreators: await zotero.getItemTypeCreators(itemTypes),
-		}),
-	);
+			itemTypeFields,
+			itemTypeCreators,
+		};
+		return response.send(data);
+	} catch (error) {
+		return next(error);
+	}
 });
 
-app.use("*", (req, res) => res.send(indexHtml));
+app.use("*", (_request, response) => {
+	return response.send(indexHtml);
+});
+
+app.use(errorHandler);
 
 io.on("connection", (socket: Socket) => {
 	socket.send("message", "connected to socket server");
