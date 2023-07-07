@@ -1,5 +1,3 @@
-import realFetch from "node-fetch";
-
 import {
 	type ZoteroItemCreatorType,
 	type ZoteroItemType,
@@ -8,9 +6,9 @@ import {
 
 const fetchCache: { [url: string]: any } = {};
 
-async function fetch(url: string) {
+async function fetchWithCache(url: string) {
 	if (fetchCache[url] === undefined) {
-		fetchCache[url] = await (await realFetch(url)).json();
+		fetchCache[url] = await (await fetch(url)).json();
 	}
 	return { json: () => fetchCache[url] };
 }
@@ -19,7 +17,9 @@ class Zotero {
 	lang = "de-DE";
 
 	async getItemTypes(): Promise<Array<{ itemType: string; localized: string }>> {
-		return await (await fetch("https://api.zotero.org/itemTypes?locale=" + this.lang)).json();
+		return await (
+			await fetchWithCache("https://api.zotero.org/itemTypes?locale=" + this.lang)
+		).json();
 	}
 
 	async getItemTypeFields(
@@ -30,7 +30,7 @@ class Zotero {
 				return {
 					itemType: it.itemType,
 					fields: await (
-						await fetch(
+						await fetchWithCache(
 							`https://api.zotero.org/itemTypeFields?itemType=${it.itemType}&locale=${this.lang}`,
 						)
 					).json(),
@@ -52,7 +52,7 @@ class Zotero {
 				return {
 					itemType: it.itemType,
 					creators: await (
-						await fetch(
+						await fetchWithCache(
 							`https://api.zotero.org/itemTypeCreatorTypes?itemType=${it.itemType}&locale=${this.lang}`,
 						)
 					).json(),
