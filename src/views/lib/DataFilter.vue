@@ -52,7 +52,12 @@
 					<v-text-field
 						v-else
 						v-model="filter.query"
-						:disabled="!isFilterWithInput(filter as any)"
+						:disabled="
+							!isFilterWithInput(
+								// @ts-expect-error
+								filter,
+							)
+						"
 						autocomplete="off"
 						style="min-width: 60px"
 						placeholder="Abfrage…"

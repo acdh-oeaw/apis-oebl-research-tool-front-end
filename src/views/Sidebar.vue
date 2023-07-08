@@ -92,7 +92,13 @@
 					:to="'/issue/' + issue.id"
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
-					@drop.prevent="addLemmaToIssue(issue.id!, $event)"
+					@drop.prevent="
+						addLemmaToIssue(
+							// @ts-expect-error
+							issue.id,
+							$event,
+						)
+					"
 					@click="loadIssue(issue.id || null)"
 				>
 					<v-list-item-avatar tile>

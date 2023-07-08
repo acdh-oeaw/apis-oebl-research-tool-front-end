@@ -95,15 +95,17 @@
 						/>
 					</h4>
 					<v-card-text>
+						<!-- @vue-expect-error -->
 						<text-field
 							:required="true"
-							:label="lemmaRowTranslations.firstName!.de"
+							:label="lemmaRowTranslations.firstName.de"
 							:value="value.firstName"
 							@input="debouncedUpdateData({ firstName: $event })"
 						></text-field>
+						<!-- @vue-expect-error -->
 						<text-field
 							:required="true"
-							:label="lemmaRowTranslations.lastName!.de"
+							:label="lemmaRowTranslations.lastName.de"
 							:value="value.lastName"
 							@input="debouncedUpdateData({ lastName: $event })"
 						></text-field>
@@ -113,8 +115,8 @@
 							:value="value.alternativeNames"
 							@submit="updateUserColumns('alternativeNames', $event)"
 						></full-name-array-field>
-
-						<text-field :label="lemmaRowTranslations.gender!.de">
+						<!-- @vue-expect-error -->
+						<text-field :label="lemmaRowTranslations.gender.de">
 							<template #input>
 								<v-btn-toggle
 									class="transparent mt-1 ml-1"
@@ -142,9 +144,10 @@
 								</v-btn>
 							</template>
 						</text-field>
+						<!-- @vue-expect-error -->
 						<text-field
 							tabindex="-1"
-							:label="lemmaRowTranslations.nobleTitle!.de"
+							:label="lemmaRowTranslations.nobleTitle.de"
 							placeholder="(kein)"
 							:value="value.columns_user.nobleTitle"
 							@input="updateUserColumns('nobleTitle', $event)"
@@ -167,50 +170,57 @@
 								<v-icon>mdi-plus-circle-outline</v-icon>
 							</v-btn>
 						</text-field>
+						<!-- @vue-expect-error -->
 						<text-field-alternatives
-							:label="lemmaRowTranslations.nobleTitle!.de"
+							:label="lemmaRowTranslations.nobleTitle.de"
 							:value="value.columns_user.alternativeNobleTitle"
 							@input="updateUserColumns('alternativeNobleTitle', $event)"
 						/>
 						<v-spacer class="my-5" />
+						<!-- @vue-expect-error -->
 						<date-field
 							:key="'dateOfBirth_' + value.id"
-							:label="lemmaRowTranslations.dateOfBirth!.de"
+							:label="lemmaRowTranslations.dateOfBirth.de"
 							:date="value.dateOfBirth"
 							@submit="debouncedUpdateData({ dateOfBirth: $event })"
 						></date-field>
+						<!-- @vue-expect-error -->
 						<date-field
 							:key="'dateOfDeath_' + value.id"
-							:label="lemmaRowTranslations.dateOfDeath!.de"
+							:label="lemmaRowTranslations.dateOfDeath.de"
 							:date="value.dateOfDeath"
 							@submit="debouncedUpdateData({ dateOfDeath: $event })"
 						></date-field>
 						<v-spacer class="my-5" />
+						<!-- @vue-expect-error -->
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.kinship!.de"
+							:label="lemmaRowTranslations.kinship.de"
 							:allow-new-line="true"
 							:value="value.kinship"
 							@input="debouncedUpdateData({ kinship: $event })"
 						/>
+						<!-- @vue-expect-error -->
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.bioNote!.de"
+							:label="lemmaRowTranslations.bioNote.de"
 							:allow-new-line="true"
 							:value="value.bioNote"
 							@input="debouncedUpdateData({ bioNote: $event })"
 						/>
+						<!-- @vue-expect-error -->
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.religion!.de"
+							:label="lemmaRowTranslations.religion.de"
 							:allow-new-line="true"
 							:value="value.religion"
 							@input="debouncedUpdateData({ religion: $event })"
 						/>
 						<v-spacer class="my-5" />
+						<!-- @vue-expect-error -->
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.professionDetail!.de"
+							:label="lemmaRowTranslations.professionDetail.de"
 							:allow-new-line="true"
 							:value="value.professionDetail"
 							:maxlength="255"
@@ -222,9 +232,10 @@
 							@input="debouncedUpdateData({ professionGroup: $event })"
 						/>
 						<v-spacer class="my-5" />
+						<!-- @vue-expect-error -->
 						<text-field
 							style="min-height: 60px"
-							:label="lemmaRowTranslations.notes!.de"
+							:label="lemmaRowTranslations.notes.de"
 							:allow-new-line="true"
 							:value="value.notes"
 							:maxlength="255"
@@ -240,7 +251,8 @@
 							background: '',
 						}"
 					>
-						{{ lemmaRowTranslations.columns_user!.de }}
+						<!-- @vue-expect-error -->
+						{{ lemmaRowTranslations.columns_user.de }}
 					</h4>
 					<v-card-text class="pt-0">
 						<text-field

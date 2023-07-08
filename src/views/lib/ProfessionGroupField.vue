@@ -1,5 +1,6 @@
 <template>
 	<div class="outer profession-group">
+		<!-- @vue-expect-error -->
 		<v-autocomplete
 			v-model="localSelected"
 			:loading="loading"
@@ -7,7 +8,7 @@
 			:search-input.sync="searchTerm"
 			:error-messages="errorMessages"
 			cache-items
-			:label="lemmaRowTranslations.professionGroup!.de"
+			:label="lemmaRowTranslations.professionGroup.de"
 			no-data-text="Bitte geben Sie einen Suchbegriff ein"
 		></v-autocomplete>
 	</div>
