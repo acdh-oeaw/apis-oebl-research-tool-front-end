@@ -3,10 +3,10 @@
 	"private": true,
 	"license": "MIT",
 	"engines": {
-		"node": "16.x",
-		"npm": "8.x"
+		"node": "18.x",
+		"npm": "9.x"
 	},
-	"packageManager": "npm@8.19.4",
+	"packageManager": "npm@9.5.1",
 	"scripts": {
 		"build": "run-s generate:api-client:prod build:client build:server",
 		"build:client": "vue-cli-service build",
@@ -219,8 +219,5 @@
 		"rules": {
 			"selector-class-pattern": null
 		}
-	},
-	"volta": {
-		"node": "16.20.1"
 	}
 }
