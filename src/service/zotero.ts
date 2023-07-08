@@ -1,7 +1,4 @@
 import Dexie from "dexie";
-import fetch from "node-fetch";
-// If not imported, there is some type error, with auto-imported (?) stuff
-import { Headers, type Response } from "node-fetch";
 
 import {
 	type ZoteroItem,

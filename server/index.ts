@@ -3,7 +3,6 @@ import cors from "cors";
 import express from "express";
 import fs from "fs";
 import http from "http";
-import fetch, { Headers } from "node-fetch";
 import socketIo from "socket.io";
 
 import zotero from "./zotero";
