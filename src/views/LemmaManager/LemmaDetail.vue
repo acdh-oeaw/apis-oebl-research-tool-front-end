@@ -399,20 +399,19 @@ import { GenderAe0Enum, type List } from "@/api";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
+import { lemmaRowTranslations } from "@/util/labels";
+import VueFileList from "@/views/LemmaManager/FileList.vue";
+import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
+import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
 import DateField from "@/views/lib/DateField.vue";
 import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
+import LemmaPrinter from "@/views/lib/LemmaPrinter.vue";
+import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
 import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
-
-import { lemmaRowTranslations } from "../../util/labels";
-import LemmaPrinter from "../lib/LemmaPrinter.vue";
-import ProfessionGroupField from "../lib/ProfessionGroupField.vue";
-import VueFileList from "./FileList.vue";
-import LemmaScrapeResult from "./LemmaScrapeResult.vue";
-import LobidGndSearch from "./LobidGndSearch.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
-import ZoteroManager from "./ZoteroManager.vue";
 
 const DRAG_CLASS = "drag-over";
 

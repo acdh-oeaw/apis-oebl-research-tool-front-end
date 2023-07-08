@@ -20,8 +20,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type ProfessionGroup } from "@/api";
 import { OpenAPI } from "@/api/core/OpenAPI";
-
-import { lemmaRowTranslations } from "../../util/labels";
+import { lemmaRowTranslations } from "@/util/labels";
 
 interface VAutoComplete {
 	id?: number;

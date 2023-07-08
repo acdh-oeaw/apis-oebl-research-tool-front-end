@@ -70,11 +70,10 @@ import {
 	defautLemmaFormatterOptions,
 	type LemmaFormatterOptions,
 } from "@/util/lemmaimport/options";
-
-import DateFormatter from "./DateFormatter.vue";
-import GenderMapper from "./GenderMapper.vue";
-import LemmaPreviewer from "./LemmaPreviewer.vue";
-import NullManager from "./NullManager.vue";
+import DateFormatter from "@/views/LemmaManager/LemmaImporter/DateFormatter.vue";
+import GenderMapper from "@/views/LemmaManager/LemmaImporter/GenderMapper.vue";
+import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
+import NullManager from "@/views/LemmaManager/LemmaImporter/NullManager.vue";
 
 /**
  * Takes LemmaPrototypes And Converts Them To LemmaRows

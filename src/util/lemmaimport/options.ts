@@ -1,7 +1,6 @@
 import { type GenderAe0Enum } from "@/api";
 import { type NewLemmaRow } from "@/types/lemma";
-
-import { type SupportedDateFormatType } from "../dates";
+import { type SupportedDateFormatType } from "@/util/dates";
 
 type FileOptions = {
 	fileType: "text/csv";

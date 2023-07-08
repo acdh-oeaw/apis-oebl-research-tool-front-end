@@ -44,7 +44,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import confirmStore, { bus } from "../../store/confirm";
+import confirmStore, { bus } from "@/store/confirm";
 
 @Component
 export default class Confirm extends Vue {

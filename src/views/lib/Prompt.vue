@@ -60,7 +60,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import promptStore, { bus } from "../../store/prompt";
+import promptStore, { bus } from "@/store/prompt";
 
 @Component
 export default class Prompt extends Vue {

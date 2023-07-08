@@ -69,9 +69,8 @@ import {
 	type ExtractColumnOptions,
 	getEmptyColumnConversion,
 } from "@/util/lemmaimport/options";
-
-import ColumnSelect from "./ColumnSelect.vue";
-import LemmaPreviewer from "./LemmaPreviewer.vue";
+import ColumnSelect from "@/views/LemmaManager/LemmaImporter/ColumnSelect.vue";
+import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 
 type ColumnGroups = {
 	[groupName: string]: Array<{ name: keyof ColumnConversions; required?: boolean }>;

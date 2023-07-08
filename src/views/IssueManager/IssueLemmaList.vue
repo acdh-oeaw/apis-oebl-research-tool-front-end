@@ -57,10 +57,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
 
+import store from "@/store";
 import { type IssueLemma, type LemmaStatus } from "@/types/issue";
-
-import store from "../../store";
-import IssueLemmaRow from "./IssueLemmaRow.vue";
+import IssueLemmaRow from "@/views/IssueManager/IssueLemmaRow.vue";
 
 interface Column extends LemmaStatus {
 	items: Array<IssueLemma>;

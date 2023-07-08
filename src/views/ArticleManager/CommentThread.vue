@@ -119,9 +119,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { emoji } from "@/service/emoji";
 import store from "@/store";
-
-import TextField from "../lib/TextField.vue";
-import { type CommentThreadAttributes } from "./extensionComment";
+import { type CommentThreadAttributes } from "@/views/ArticleManager/extensionComment";
+import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

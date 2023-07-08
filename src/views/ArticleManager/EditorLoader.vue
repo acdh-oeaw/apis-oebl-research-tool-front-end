@@ -152,11 +152,10 @@ import {
 	loadAssignments,
 	type UserArticleAssignmentStoreInterface,
 } from "@/store/article";
-
-import ResizableDrawer from "../lib/ResizableDrawer.vue";
-import Editor from "./Editor.vue";
-import { Annotation as AnnotationExtension } from "./extensionAnnotation";
-import { Comment as CommentExtension } from "./extensionComment";
+import Editor from "@/views/ArticleManager/Editor.vue";
+import { Annotation as AnnotationExtension } from "@/views/ArticleManager/extensionAnnotation";
+import { Comment as CommentExtension } from "@/views/ArticleManager/extensionComment";
+import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 
 /**
  * A container for loading and passing data to the editor and conditionaly rendering it.

@@ -17,6 +17,8 @@
 		app
 		@input="handleInput"
 	>
+		<!-- FIXME: a11y -->
+		<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 		<div
 			v-if="!mini"
 			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"

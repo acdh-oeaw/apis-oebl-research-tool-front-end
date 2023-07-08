@@ -373,15 +373,14 @@ import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
-
-import DataFilter from "../lib/DataFilter.vue";
-import ResizableDrawer from "../lib/ResizableDrawer.vue";
-import VirtualTable from "../lib/VirtualTable.vue";
-import ThemeToggle from "../ThemeToggle.vue";
-import DragImage from "./DragImage.vue";
-import LemmaAdd from "./LemmaAdd.vue";
-import LemmaDetail from "./LemmaDetail.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
+import DragImage from "@/views/LemmaManager/DragImage.vue";
+import LemmaAdd from "@/views/LemmaManager/LemmaAdd.vue";
+import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import DataFilter from "@/views/lib/DataFilter.vue";
+import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
+import VirtualTable from "@/views/lib/VirtualTable.vue";
+import ThemeToggle from "@/views/ThemeToggle.vue";
 
 @Component({
 	components: {

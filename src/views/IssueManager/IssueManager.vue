@@ -270,19 +270,18 @@
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { type IssueLemma, type LemmaLabel, type LemmaStatus } from "@/api/index";
 import store from "@/store";
 import confirm from "@/store/confirm";
-
-import { type IssueLemma, type LemmaLabel, type LemmaStatus } from "../../api/index";
-import { type WithId } from "../../types";
-import { DateContainer } from "../../util/dates";
-import LoadingSpinner from "../lib/LoadingSpinner.vue";
-import ResizableDrawer from "../lib/ResizableDrawer.vue";
-import SwitchButton from "../lib/SwitchButton.vue";
-import ThemeToggle from "../ThemeToggle.vue";
-import IssueLemmaBoard from "./IssueLemmaBoard.vue";
-import IssueLemmaDetail from "./IssueLemmaDetail.vue";
-import IssueLemmaList from "./IssueLemmaList.vue";
+import { type WithId } from "@/types";
+import { DateContainer } from "@/util/dates";
+import IssueLemmaBoard from "@/views/IssueManager/IssueLemmaBoard.vue";
+import IssueLemmaDetail from "@/views/IssueManager/IssueLemmaDetail.vue";
+import IssueLemmaList from "@/views/IssueManager/IssueLemmaList.vue";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
+import SwitchButton from "@/views/lib/SwitchButton.vue";
+import ThemeToggle from "@/views/ThemeToggle.vue";
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 	return value !== null && value !== undefined;

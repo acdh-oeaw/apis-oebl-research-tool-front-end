@@ -50,8 +50,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Data2D } from "@/util/lemmaimport/datacontainers";
 import { defaultOptions, type SupportedFilesOptions } from "@/util/lemmaimport/options";
-
-import CsvImporter from "./CsvImporter.vue";
+import CsvImporter from "@/views/LemmaManager/LemmaImporter/CsvImporter.vue";
 
 /**
  * Select A File, Choose Options, Have A Preview

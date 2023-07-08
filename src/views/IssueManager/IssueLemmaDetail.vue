@@ -162,13 +162,12 @@ import { de } from "date-fns/locale";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type Author, type Editor, type IssueLemma, type LemmaNote } from "@/api";
+import store from "@/store";
 import { type LemmaStatus } from "@/types/issue";
+import LemmaLabels from "@/views/IssueManager/LemmaLabels.vue";
+import FormRow from "@/views/lib/FormRow.vue";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
-
-import store from "../../store";
-import FormRow from "../lib/FormRow.vue";
-import LoadingSpinner from "../lib/LoadingSpinner.vue";
-import LemmaLabels from "./LemmaLabels.vue";
 
 @Component({
 	components: {

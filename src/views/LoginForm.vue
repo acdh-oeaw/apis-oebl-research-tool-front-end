@@ -57,8 +57,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import store from "../store";
-import LoadingSpinner from "./lib/LoadingSpinner.vue";
+import store from "@/store";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 
 @Component({
 	components: { LoadingSpinner },

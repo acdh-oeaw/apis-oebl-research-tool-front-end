@@ -23,9 +23,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type FullName as FullNameType } from "@/types/lemma";
+import { lemmaRowTranslations } from "@/util/labels";
 import TextField from "@/views/lib/TextField.vue";
-
-import { lemmaRowTranslations } from "../../util/labels";
 
 @Component({
 	components: {

@@ -113,14 +113,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { type NewLemmaRow } from "@/types/lemma";
 import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
 import { ImportOptions } from "@/util/lemmaimport/options";
-
-import ImportFileDialog from "./ImportFileDialog.vue";
-import ImportOptionsSaver from "./ImportOptionsSaver.vue";
-import LemmaBuilder from "./LemmaBuilder.vue";
-import LemmaFormatter from "./LemmaFormatter.vue";
-import LemmaImporter from "./LemmaImporter.vue";
-import ListSelector from "./ListSelector.vue";
-import UserColumnAdding from "./UserColumnAdding.vue";
+import ImportFileDialog from "@/views/LemmaManager/LemmaImporter/ImportFileDialog.vue";
+import ImportOptionsSaver from "@/views/LemmaManager/LemmaImporter/ImportOptionsSaver.vue";
+import LemmaBuilder from "@/views/LemmaManager/LemmaImporter/LemmaBuilder.vue";
+import LemmaFormatter from "@/views/LemmaManager/LemmaImporter/LemmaFormatter.vue";
+import LemmaImporter from "@/views/LemmaManager/LemmaImporter/LemmaImporter.vue";
+import ListSelector from "@/views/LemmaManager/LemmaImporter/ListSelector.vue";
+import UserColumnAdding from "@/views/LemmaManager/LemmaImporter/UserColumnAdding.vue";
 
 /**
  * Manage Import Steps

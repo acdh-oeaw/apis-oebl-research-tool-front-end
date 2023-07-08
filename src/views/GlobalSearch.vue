@@ -101,8 +101,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import { type SearchItem } from "@/store/search";
 import { type LemmaRow } from "@/types/lemma";
-
-import LemmaDetail from "./LemmaManager/LemmaDetail.vue";
+import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
 
 @Component({
 	components: {

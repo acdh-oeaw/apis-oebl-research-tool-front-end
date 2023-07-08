@@ -48,7 +48,7 @@
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import * as lobidService from "../../service/lobid";
+import * as lobidService from "@/service/lobid";
 
 type Fragment = {
 	html: string | null;

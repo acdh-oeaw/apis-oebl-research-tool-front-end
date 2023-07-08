@@ -252,9 +252,8 @@ import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
 import { type LemmaRow } from "@/types/lemma";
 import { type ZoteroView } from "@/types/zotero";
 import { lemmaRowTranslations } from "@/util/labels";
-
-import LemmaScrapeResult from "./LemmaScrapeResult.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
+import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 
 store.settings.showNavDrawer = false;
 const db = new LemmaDatabase();

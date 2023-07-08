@@ -1,6 +1,5 @@
 <template>
 	<v-app :style="{ background: 'var(--v-background-base)' }">
-		<!-- LOGIN FORM -->
 		<v-overlay
 			v-if="store.isLoggedIn === false"
 			:value="store.isLoggedIn === false"
@@ -10,12 +9,12 @@
 		>
 			<login-form />
 		</v-overlay>
-		<!-- GLOBAL SEARCH -->
+
 		<global-search v-model="store.showSearchDialog" />
-		<!-- CONFIRM AND PROMPT -->
+
 		<confirm />
 		<prompt />
-		<!-- LEFT NAVIGATION -->
+
 		<resizable-drawer
 			:card="false"
 			:right="false"
@@ -32,7 +31,7 @@
 		>
 			<sidebar v-if="showDrawer" class="px-3 pt-5" />
 		</resizable-drawer>
-		<!-- THE CONTENT -->
+
 		<keep-alive>
 			<router-view />
 		</keep-alive>
@@ -91,7 +90,6 @@ export default class App extends Vue {
 }
 </script>
 
-// GLOBAL STYLES
 <style lang="stylus">
 
 :focus-visible

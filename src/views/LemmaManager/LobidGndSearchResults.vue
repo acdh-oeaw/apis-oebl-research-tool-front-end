@@ -17,9 +17,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { findPerson } from "@/service/lobid";
 import { type ImportablePerson } from "@/types/lemma";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-
-import LobidPreviewCard from "./LobidPreviewCard.vue";
 
 @Component({
 	components: {
@@ -62,5 +61,3 @@ export default class LobidGndSearchResults extends Vue {
 	}
 }
 </script>
-
-<style lang="scss" scoped></style>

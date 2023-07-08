@@ -70,9 +70,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
 
-import { type IssueLemma, type LemmaStatus } from "../../api";
-import store from "../../store";
-import IssueLemmaCard from "./IssueLemmaCard.vue";
+import { type IssueLemma, type LemmaStatus } from "@/api";
+import store from "@/store";
+import IssueLemmaCard from "@/views/IssueManager/IssueLemmaCard.vue";
 
 interface Column extends LemmaStatus {
 	items: Array<IssueLemma>;

@@ -32,9 +32,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type Author, type Editor, type LemmaLabel } from "@/api";
 import store from "@/store";
+import { type IssueLemma } from "@/types/issue";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
-
-import { type IssueLemma } from "../../types/issue";
 
 @Component({
 	components: {

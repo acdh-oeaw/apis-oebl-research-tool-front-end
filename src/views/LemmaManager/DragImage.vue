@@ -25,8 +25,7 @@ import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type LemmaRow } from "@/types/lemma";
-
-import Badge from "../lib/Badge.vue";
+import Badge from "@/views/lib/Badge.vue";
 
 @Component({
 	components: {
@@ -42,5 +41,3 @@ export default class DragImage extends Vue {
 	}
 }
 </script>
-
-<style lang="scss" scoped></style>

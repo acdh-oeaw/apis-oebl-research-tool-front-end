@@ -6,7 +6,7 @@ import Vuetify from "vuetify/lib";
 import colors from "vuetify/lib/util/colors";
 import de from "vuetify/src/locale/de";
 
-import store from "../store";
+import store from "@/store";
 
 Vue.use(Vuetify);
 

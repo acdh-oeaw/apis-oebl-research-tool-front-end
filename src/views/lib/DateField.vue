@@ -60,8 +60,7 @@ import { debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { DateContainer } from "@/util/dates";
-
-import TextField from "./TextField.vue";
+import TextField from "@/views/lib/TextField.vue";
 
 const standaloneUpdateGlobalStateFunction = (instance: DateField) => {
 	if (

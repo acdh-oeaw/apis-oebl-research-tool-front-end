@@ -369,6 +369,7 @@ export const request = <T>(
 			// FIXME: this was added
 			if (error instanceof ApiError && error.status === 401) {
 				store.isLoggedIn = false;
+				// TODO: this added a callback which would run after login
 			}
 
 			// FIXME: this was added
