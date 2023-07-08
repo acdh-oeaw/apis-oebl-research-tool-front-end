@@ -125,7 +125,8 @@ export default class LobidPreviewCard extends Vue {
   font-weight 700
 
 .fragment .description
-  display box
+  // stylelint-disable-next-line value-no-vendor-prefix
+  display -webkit-box
   overflow hidden
   -webkit-line-clamp 5
   -webkit-box-orient vertical

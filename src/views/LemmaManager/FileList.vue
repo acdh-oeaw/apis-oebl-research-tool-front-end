@@ -61,7 +61,8 @@ export default class FileList extends Vue {
   text-align center
 
   .caption
-    display box
+    // stylelint-disable-next-line value-no-vendor-prefix
+    display -webkit-box
     overflow hidden
     max-height 40px
     text-overflow ellipsis
