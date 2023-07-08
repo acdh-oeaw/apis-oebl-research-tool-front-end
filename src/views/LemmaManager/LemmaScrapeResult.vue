@@ -1,3 +1,68 @@
+<script lang="ts">
+// eslint-disable-next-line import/no-duplicates
+import { format } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
+import _ from "lodash";
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+import { type ServerResearchLemma } from "@/types/lemma";
+import { isValidHttpUrl, maybeParseDate } from "@/util";
+
+type ScrapeValue =
+	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
+
+@Component
+export default class LemmaScrapeResult extends Vue {
+	@Prop({ required: true }) value!: ScrapeValue;
+	@Prop({ required: true }) title!: string;
+	/* Will expand all sublist as default*/
+	@Prop({ default: false }) defaultExpand!: boolean;
+
+	keyNamesReadable: { [key: string]: string } = {
+		txt: "",
+	};
+
+	formatKey(s: number | string) {
+		if (this.keyNamesReadable[String(s)] !== undefined) {
+			return "";
+		} else {
+			return _.startCase(String(s));
+		}
+	}
+
+	formatValue(key: number | string, value: any) {
+		const maybeDate = maybeParseDate(value);
+		if (maybeDate !== null) {
+			return format(maybeDate, "do MMM. yyyy", { locale: de });
+		} else {
+			return value;
+		}
+	}
+
+	arrayable(v: ScrapeValue) {
+		return _(v)
+			.omitBy((a) => !Array.isArray(a))
+			.value();
+		// return Object.values(v).filter(Array.isArray)
+	}
+
+	nonArrayable(v: ScrapeValue) {
+		return _(v).omitBy(Array.isArray).value();
+		// return Object.values(v).filter(a => !Array.isArray(a))
+	}
+
+	maybeLinkItem(key: number | string, value: any): string | undefined {
+		if (isValidHttpUrl(value)) {
+			return value;
+		}
+		// if (key === 'loc') {
+		//   return
+		// }
+	}
+}
+</script>
+
 <template>
 	<v-list-group
 		:class="[
@@ -64,71 +129,6 @@
 		</v-list-group>
 	</v-list-group>
 </template>
-
-<script lang="ts">
-// eslint-disable-next-line import/no-duplicates
-import { format } from "date-fns";
-// eslint-disable-next-line import/no-duplicates
-import { de } from "date-fns/locale";
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-import { type ServerResearchLemma } from "@/types/lemma";
-import { isValidHttpUrl, maybeParseDate } from "@/util";
-
-type ScrapeValue =
-	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
-
-@Component
-export default class LemmaScrapeResult extends Vue {
-	@Prop({ required: true }) value!: ScrapeValue;
-	@Prop({ required: true }) title!: string;
-	/* Will expand all sublist as default*/
-	@Prop({ default: false }) defaultExpand!: boolean;
-
-	keyNamesReadable: { [key: string]: string } = {
-		txt: "",
-	};
-
-	formatKey(s: number | string) {
-		if (this.keyNamesReadable[String(s)] !== undefined) {
-			return "";
-		} else {
-			return _.startCase(String(s));
-		}
-	}
-
-	formatValue(key: number | string, value: any) {
-		const maybeDate = maybeParseDate(value);
-		if (maybeDate !== null) {
-			return format(maybeDate, "do MMM. yyyy", { locale: de });
-		} else {
-			return value;
-		}
-	}
-
-	arrayable(v: ScrapeValue) {
-		return _(v)
-			.omitBy((a) => !Array.isArray(a))
-			.value();
-		// return Object.values(v).filter(Array.isArray)
-	}
-
-	nonArrayable(v: ScrapeValue) {
-		return _(v).omitBy(Array.isArray).value();
-		// return Object.values(v).filter(a => !Array.isArray(a))
-	}
-
-	maybeLinkItem(key: number | string, value: any): string | undefined {
-		if (isValidHttpUrl(value)) {
-			return value;
-		}
-		// if (key === 'loc') {
-		//   return
-		// }
-	}
-}
-</script>
 
 <style>
 .scrape-result .v-list-item--active {

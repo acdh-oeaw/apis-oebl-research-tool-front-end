@@ -1,271 +1,3 @@
-<template>
-	<div class="fill-height background darken-1">
-		<v-app-bar app color="background darken-1" class="elevation-0 pt-3 pr-3">
-			<v-btn
-				v-if="!store.settings.showNavDrawer"
-				style="margin-top: -7px"
-				tile
-				class="rounded-lg"
-				icon
-				@click="toggleDrawer"
-			>
-				<v-icon>mdi-dock-left</v-icon>
-			</v-btn>
-			<div>
-				<h1>{{ store.issue.activeIssue ? store.issue.activeIssue.name : "…" }}</h1>
-				<div class="caption mt-1 text-no-wrap">
-					<span style="opacity: 70%">
-						{{ issueLemmas.length }} Ergebnisse. {{ filteredIssues.length }} angezeigt
-					</span>
-				</div>
-			</div>
-			<v-spacer />
-			<v-autocomplete
-				v-model="searchItems"
-				single-line
-				style="max-width: 50%"
-				class="rounded-lg ml-5 mr-1 text-body-2"
-				background-color="background darken-2"
-				dense
-				multiple
-				clearable
-				hide-details
-				:menu-props="{
-					maxWidth: `calc(50% - ${
-						store.settings.drawerLeftWidth + store.settings.drawerRightWidth
-					}px)`,
-					rounded: 'lg',
-					contentClass: 'soft-shadow',
-				}"
-				return-object
-				:items="autocompleteItems"
-				placeholder="Filter…"
-				:search-input.sync="searchText"
-				prepend-inner-icon="mdi-magnify"
-				solo
-				flat
-				@keyup.esc="searchText = ''"
-				@change="searchText = ''"
-				@click:append-inner="searchItems = []"
-			>
-				<template #append>
-					<v-btn x-small elevation="0" rounded color="background" @click.stop.prevent="log">
-						{{
-							searchItems.length > 0
-								? filteredIssues.length + "/" + issueLemmas.length
-								: issueLemmas.length
-						}}
-					</v-btn>
-				</template>
-				<template #item="{ item, on, props }">
-					<v-list-item
-						v-bind="props"
-						:key="item.type + '__' + item.id"
-						v-ripple="false"
-						class="filter-autocomplete-item mx-2 mb-1"
-						:class="{
-							selected:
-								searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined,
-						}"
-						v-on="on"
-					>
-						<v-list-item-avatar>
-							<img
-								v-if="item.type === 'editor' && item.image !== undefined"
-								:key="item.type + '__' + item.id"
-								alt=""
-								:src="item.image"
-							/>
-							<v-icon v-if="item.type === 'author'">mdi-account-edit-outline</v-icon>
-							<v-icon v-if="item.type === 'label' && item.color !== undefined" :color="item.color">
-								mdi-checkbox-blank-circle
-							</v-icon>
-							<v-icon v-if="item.type === 'text'">mdi-card-text-outline</v-icon>
-						</v-list-item-avatar>
-						<v-list-item-content>
-							<v-list-item-title>
-								{{ item.text }}
-							</v-list-item-title>
-							<v-list-item-subtitle>
-								{{ item.description }}
-							</v-list-item-subtitle>
-						</v-list-item-content>
-						<v-list-item-action
-							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined"
-							width="20"
-						>
-							<v-icon small>mdi-check</v-icon>
-						</v-list-item-action>
-					</v-list-item>
-				</template>
-			</v-autocomplete>
-			<v-menu content-class="soft-shadow" offset-y left bottom :close-on-content-click="false">
-				<template #activator="{ on, attrs }">
-					<v-btn v-bind="attrs" tile class="rounded-lg" icon v-on="on">
-						<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
-					</v-btn>
-				</template>
-				<v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
-					<v-subheader>Layout</v-subheader>
-					<v-list-item class="pa-1 rounded-lg">
-						<switch-button
-							v-model="viewAs"
-							:items="[
-								{ icon: 'mdi-chart-box-outline', value: 'board' },
-								{ icon: 'mdi-format-list-bulleted', value: 'list' },
-							]"
-						/>
-					</v-list-item>
-					<v-list-item
-						@click="
-							store.settings = {
-								...store.settings,
-								issueViewOptions: {
-									...store.settings.issueViewOptions,
-									showAuthor: !store.settings.issueViewOptions.showAuthor,
-								},
-							}
-						"
-					>
-						<v-list-item-avatar size="15">
-							<v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
-						</v-list-item-avatar>
-						<v-list-item-content>Autor anzeigen</v-list-item-content>
-					</v-list-item>
-					<v-list-item
-						@click="
-							store.settings = {
-								...store.settings,
-								issueViewOptions: {
-									...store.settings.issueViewOptions,
-									showEditor: !store.settings.issueViewOptions.showEditor,
-								},
-							}
-						"
-					>
-						<v-list-item-avatar size="15">
-							<v-icon v-if="store.settings.issueViewOptions.showEditor">mdi-check</v-icon>
-						</v-list-item-avatar>
-						<v-list-item-content>Redakteur anzeigen</v-list-item-content>
-					</v-list-item>
-					<v-list-item
-						@click="
-							store.settings = {
-								...store.settings,
-								issueViewOptions: {
-									...store.settings.issueViewOptions,
-									showBirthAndDeath: !store.settings.issueViewOptions.showBirthAndDeath,
-								},
-							}
-						"
-					>
-						<v-list-item-avatar size="15">
-							<v-icon v-if="store.settings.issueViewOptions.showBirthAndDeath">mdi-check</v-icon>
-						</v-list-item-avatar>
-						<v-list-item-content>Geburtsdaten anzeigen</v-list-item-content>
-					</v-list-item>
-					<v-divider />
-					<v-subheader>Farbschema</v-subheader>
-					<v-list-item
-						:style="{ backgroundColor: 'var(--v-background-darken-2)' }"
-						class="pa-1 rounded-lg"
-					>
-						<theme-toggle />
-					</v-list-item>
-					<v-divider />
-					<v-list-item dense @click="() => store.logOut()">
-						<v-list-item-avatar size="15">
-							<v-icon small>mdi-power</v-icon>
-						</v-list-item-avatar>
-						<v-list-item-content>Ausloggen</v-list-item-content>
-					</v-list-item>
-				</v-list>
-			</v-menu>
-			<v-btn v-if="!showSideBar" tile class="rounded-lg" icon @click="showSideBar = !showSideBar">
-				<v-icon>mdi-dock-right</v-icon>
-			</v-btn>
-		</v-app-bar>
-		<resizable-drawer
-			:card="true"
-			:right="true"
-			color="background"
-			:min-width="300"
-			:width="store.settings.drawerRightWidth"
-			:value="showSideBar"
-			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
-			@close="showSideBar = false"
-		>
-			<v-btn
-				style="position: absolute; top: 5px; right: 0; z-index: 1"
-				width="48"
-				height="48"
-				tile
-				class="rounded-lg mr-2"
-				icon
-				@click="showSideBar = false"
-			>
-				<v-icon>mdi-dock-right</v-icon>
-			</v-btn>
-			<issue-lemma-detail
-				v-if="selectedLemma !== null"
-				:lemma="selectedLemma"
-				:value="selectedLemma !== null"
-				@update="updateLemmaById"
-				@update-status="updateLemmaStatus"
-				@delete-issue-lemma="deleteIssueLemma"
-				@close="showSideBar = false"
-			>
-				<v-row dense>
-					<v-col>
-						<v-btn
-							class="rounded-lg"
-							color="background darken-2"
-							elevation="0"
-							block
-							@click="deleteIssueLemma"
-						>
-							<v-icon style="opacity: 70%" left>mdi-bookshelf</v-icon>
-							löschen
-						</v-btn>
-					</v-col>
-					<v-col>
-						<v-btn class="rounded-lg" elevation="0" block color="primary">
-							<v-icon style="opacity: 70%" left>mdi-pen</v-icon>
-							Artikel anzeigen
-						</v-btn>
-					</v-col>
-				</v-row>
-			</issue-lemma-detail>
-		</resizable-drawer>
-		<v-main class="fill-height rounded-lg">
-			<issue-lemma-board
-				v-if="store.settings.issueLayout === 'board'"
-				class="fill-height"
-				:columns="columns"
-				:animate="animateLemmas"
-				:selected-lemma="selectedLemma"
-				:view-options="viewOptions"
-				@end-drag="onEndDrag"
-				@update-column="onUpdateColumn"
-				@select-lemma="openLemma"
-				@dblclick.native="showSideBar = !showSideBar"
-			/>
-			<issue-lemma-list
-				v-if="store.settings.issueLayout === 'list'"
-				class="fill-height"
-				:columns="columns"
-				:animate="animateLemmas"
-				:selected-lemma="selectedLemma"
-				:view-options="viewOptions"
-				@update-column="onUpdateColumn"
-				@select-lemma="openLemma"
-				@end-drag="onEndDrag"
-				@dblclick.native="showSideBar = !showSideBar"
-			/>
-		</v-main>
-	</div>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -544,6 +276,274 @@ export default class IssueManager extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="fill-height background darken-1">
+		<v-app-bar app color="background darken-1" class="elevation-0 pt-3 pr-3">
+			<v-btn
+				v-if="!store.settings.showNavDrawer"
+				style="margin-top: -7px"
+				tile
+				class="rounded-lg"
+				icon
+				@click="toggleDrawer"
+			>
+				<v-icon>mdi-dock-left</v-icon>
+			</v-btn>
+			<div>
+				<h1>{{ store.issue.activeIssue ? store.issue.activeIssue.name : "…" }}</h1>
+				<div class="caption mt-1 text-no-wrap">
+					<span style="opacity: 70%">
+						{{ issueLemmas.length }} Ergebnisse. {{ filteredIssues.length }} angezeigt
+					</span>
+				</div>
+			</div>
+			<v-spacer />
+			<v-autocomplete
+				v-model="searchItems"
+				single-line
+				style="max-width: 50%"
+				class="rounded-lg ml-5 mr-1 text-body-2"
+				background-color="background darken-2"
+				dense
+				multiple
+				clearable
+				hide-details
+				:menu-props="{
+					maxWidth: `calc(50% - ${
+						store.settings.drawerLeftWidth + store.settings.drawerRightWidth
+					}px)`,
+					rounded: 'lg',
+					contentClass: 'soft-shadow',
+				}"
+				return-object
+				:items="autocompleteItems"
+				placeholder="Filter…"
+				:search-input.sync="searchText"
+				prepend-inner-icon="mdi-magnify"
+				solo
+				flat
+				@keyup.esc="searchText = ''"
+				@change="searchText = ''"
+				@click:append-inner="searchItems = []"
+			>
+				<template #append>
+					<v-btn x-small elevation="0" rounded color="background" @click.stop.prevent="log">
+						{{
+							searchItems.length > 0
+								? filteredIssues.length + "/" + issueLemmas.length
+								: issueLemmas.length
+						}}
+					</v-btn>
+				</template>
+				<template #item="{ item, on, props }">
+					<v-list-item
+						v-bind="props"
+						:key="item.type + '__' + item.id"
+						v-ripple="false"
+						class="filter-autocomplete-item mx-2 mb-1"
+						:class="{
+							selected:
+								searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined,
+						}"
+						v-on="on"
+					>
+						<v-list-item-avatar>
+							<img
+								v-if="item.type === 'editor' && item.image !== undefined"
+								:key="item.type + '__' + item.id"
+								alt=""
+								:src="item.image"
+							/>
+							<v-icon v-if="item.type === 'author'">mdi-account-edit-outline</v-icon>
+							<v-icon v-if="item.type === 'label' && item.color !== undefined" :color="item.color">
+								mdi-checkbox-blank-circle
+							</v-icon>
+							<v-icon v-if="item.type === 'text'">mdi-card-text-outline</v-icon>
+						</v-list-item-avatar>
+						<v-list-item-content>
+							<v-list-item-title>
+								{{ item.text }}
+							</v-list-item-title>
+							<v-list-item-subtitle>
+								{{ item.description }}
+							</v-list-item-subtitle>
+						</v-list-item-content>
+						<v-list-item-action
+							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined"
+							width="20"
+						>
+							<v-icon small>mdi-check</v-icon>
+						</v-list-item-action>
+					</v-list-item>
+				</template>
+			</v-autocomplete>
+			<v-menu content-class="soft-shadow" offset-y left bottom :close-on-content-click="false">
+				<template #activator="{ on, attrs }">
+					<v-btn v-bind="attrs" tile class="rounded-lg" icon v-on="on">
+						<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
+					</v-btn>
+				</template>
+				<v-list color="background lighten-2" class="text-body-2 rounded-lg elevation-0s" dense nav>
+					<v-subheader>Layout</v-subheader>
+					<v-list-item class="pa-1 rounded-lg">
+						<switch-button
+							v-model="viewAs"
+							:items="[
+								{ icon: 'mdi-chart-box-outline', value: 'board' },
+								{ icon: 'mdi-format-list-bulleted', value: 'list' },
+							]"
+						/>
+					</v-list-item>
+					<v-list-item
+						@click="
+							store.settings = {
+								...store.settings,
+								issueViewOptions: {
+									...store.settings.issueViewOptions,
+									showAuthor: !store.settings.issueViewOptions.showAuthor,
+								},
+							}
+						"
+					>
+						<v-list-item-avatar size="15">
+							<v-icon v-if="store.settings.issueViewOptions.showAuthor">mdi-check</v-icon>
+						</v-list-item-avatar>
+						<v-list-item-content>Autor anzeigen</v-list-item-content>
+					</v-list-item>
+					<v-list-item
+						@click="
+							store.settings = {
+								...store.settings,
+								issueViewOptions: {
+									...store.settings.issueViewOptions,
+									showEditor: !store.settings.issueViewOptions.showEditor,
+								},
+							}
+						"
+					>
+						<v-list-item-avatar size="15">
+							<v-icon v-if="store.settings.issueViewOptions.showEditor">mdi-check</v-icon>
+						</v-list-item-avatar>
+						<v-list-item-content>Redakteur anzeigen</v-list-item-content>
+					</v-list-item>
+					<v-list-item
+						@click="
+							store.settings = {
+								...store.settings,
+								issueViewOptions: {
+									...store.settings.issueViewOptions,
+									showBirthAndDeath: !store.settings.issueViewOptions.showBirthAndDeath,
+								},
+							}
+						"
+					>
+						<v-list-item-avatar size="15">
+							<v-icon v-if="store.settings.issueViewOptions.showBirthAndDeath">mdi-check</v-icon>
+						</v-list-item-avatar>
+						<v-list-item-content>Geburtsdaten anzeigen</v-list-item-content>
+					</v-list-item>
+					<v-divider />
+					<v-subheader>Farbschema</v-subheader>
+					<v-list-item
+						:style="{ backgroundColor: 'var(--v-background-darken-2)' }"
+						class="pa-1 rounded-lg"
+					>
+						<theme-toggle />
+					</v-list-item>
+					<v-divider />
+					<v-list-item dense @click="() => store.logOut()">
+						<v-list-item-avatar size="15">
+							<v-icon small>mdi-power</v-icon>
+						</v-list-item-avatar>
+						<v-list-item-content>Ausloggen</v-list-item-content>
+					</v-list-item>
+				</v-list>
+			</v-menu>
+			<v-btn v-if="!showSideBar" tile class="rounded-lg" icon @click="showSideBar = !showSideBar">
+				<v-icon>mdi-dock-right</v-icon>
+			</v-btn>
+		</v-app-bar>
+		<resizable-drawer
+			:card="true"
+			:right="true"
+			color="background"
+			:min-width="300"
+			:width="store.settings.drawerRightWidth"
+			:value="showSideBar"
+			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
+			@close="showSideBar = false"
+		>
+			<v-btn
+				style="position: absolute; top: 5px; right: 0; z-index: 1"
+				width="48"
+				height="48"
+				tile
+				class="rounded-lg mr-2"
+				icon
+				@click="showSideBar = false"
+			>
+				<v-icon>mdi-dock-right</v-icon>
+			</v-btn>
+			<issue-lemma-detail
+				v-if="selectedLemma !== null"
+				:lemma="selectedLemma"
+				:value="selectedLemma !== null"
+				@update="updateLemmaById"
+				@update-status="updateLemmaStatus"
+				@delete-issue-lemma="deleteIssueLemma"
+				@close="showSideBar = false"
+			>
+				<v-row dense>
+					<v-col>
+						<v-btn
+							class="rounded-lg"
+							color="background darken-2"
+							elevation="0"
+							block
+							@click="deleteIssueLemma"
+						>
+							<v-icon style="opacity: 70%" left>mdi-bookshelf</v-icon>
+							löschen
+						</v-btn>
+					</v-col>
+					<v-col>
+						<v-btn class="rounded-lg" elevation="0" block color="primary">
+							<v-icon style="opacity: 70%" left>mdi-pen</v-icon>
+							Artikel anzeigen
+						</v-btn>
+					</v-col>
+				</v-row>
+			</issue-lemma-detail>
+		</resizable-drawer>
+		<v-main class="fill-height rounded-lg">
+			<issue-lemma-board
+				v-if="store.settings.issueLayout === 'board'"
+				class="fill-height"
+				:columns="columns"
+				:animate="animateLemmas"
+				:selected-lemma="selectedLemma"
+				:view-options="viewOptions"
+				@end-drag="onEndDrag"
+				@update-column="onUpdateColumn"
+				@select-lemma="openLemma"
+				@dblclick.native="showSideBar = !showSideBar"
+			/>
+			<issue-lemma-list
+				v-if="store.settings.issueLayout === 'list'"
+				class="fill-height"
+				:columns="columns"
+				:animate="animateLemmas"
+				:selected-lemma="selectedLemma"
+				:view-options="viewOptions"
+				@update-column="onUpdateColumn"
+				@select-lemma="openLemma"
+				@end-drag="onEndDrag"
+				@dblclick.native="showSideBar = !showSideBar"
+			/>
+		</v-main>
+	</div>
+</template>
 
 <style scoped>
 .selected {

@@ -1,11 +1,3 @@
-<template>
-	<div class="lemma-printer-container">
-		<v-btn icon @click="generatePrintWindow">
-			<v-icon>mdi-printer</v-icon>
-		</v-btn>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -39,3 +31,11 @@ export default class LemmaPrinter extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="lemma-printer-container">
+		<v-btn icon @click="generatePrintWindow">
+			<v-icon>mdi-printer</v-icon>
+		</v-btn>
+	</div>
+</template>

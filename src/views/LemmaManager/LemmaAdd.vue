@@ -1,3 +1,128 @@
+<script lang="ts">
+import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { findPerson } from "@/service/lobid";
+import store from "@/store";
+import { type LemmaRow } from "@/types/lemma";
+import { DateContainer } from "@/util/dates";
+import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import TextField from "@/views/lib/TextField.vue";
+
+@Component({
+	components: {
+		LobidPreviewCard,
+		TextField,
+		LemmaDetail,
+	},
+})
+export default class LemmaAdd extends Vue {
+	@Prop({ default: undefined }) color!: string | undefined;
+
+	importToList: number = store.lemma.selectedLemmaListId || store.lemma.lemmaLists[0]!.id!;
+	window = 0;
+	showDivider = false;
+	store = store;
+	possibleGnds: Array<string> = [];
+	viewLemmaDetail: LemmaRow | null = null;
+
+	emptyPerson: LemmaRow = {
+		id: -1,
+		firstName: "",
+		lastName: "",
+		alternativeNames: [],
+		gender: undefined,
+		columns_user: {},
+		columns_scrape: {},
+		loc: null,
+		selected: false,
+		viaf_id: null,
+		wiki_edits: null,
+		gnd: [],
+		legacyGideonCitations: null,
+		secondaryLiterature: [],
+		zoteroKeysBy: [],
+		zoteroKeysAbout: [],
+		professionDetail: "",
+		professionGroup: {},
+		dateOfBirth: new DateContainer(),
+		dateOfDeath: new DateContainer(),
+		bioNote: null,
+		kinship: null,
+		religion: null,
+		notes: null,
+	};
+
+	person = _.clone(this.emptyPerson);
+
+	onScroll(e: MouseEvent) {
+		if (e.target instanceof HTMLElement && e.target.scrollTop > 0) {
+			this.showDivider = true;
+		} else {
+			this.showDivider = false;
+		}
+	}
+
+	get lemmaLists() {
+		return this.store.lemma.lemmaLists.map((ll) => {
+			return {
+				text: ll.title,
+				value: ll.id,
+			};
+		});
+	}
+
+	get filteredList() {
+		return store.lemma.lemmas.filter((l) => {
+			let firstNameAlike = false;
+			let lastNameAlike = false;
+			const personFirstName = this.person.firstName ? this.person.firstName.toLowerCase() : "~";
+			const personLastName = this.person.lastName ? this.person.lastName.toLowerCase() : "~";
+
+			if (l.firstName) {
+				firstNameAlike = l.firstName.startsWith(personFirstName);
+			}
+
+			if (l.lastName) {
+				lastNameAlike = l.lastName.startsWith(personLastName);
+			}
+
+			return firstNameAlike || lastNameAlike;
+		});
+	}
+
+	async addLemma() {
+		this.$emit("confirm", this.person, this.importToList);
+	}
+
+	async onChangePerson() {
+		this.possibleGnds = (
+			await findPerson({
+				firstName: this.person.firstName,
+				lastName: this.person.lastName,
+				dateOfBirth:
+					this.person.dateOfBirth.calendarYear === undefined
+						? null
+						: String(this.person.dateOfBirth.calendarYear),
+				dateOfDeath:
+					this.person.dateOfDeath.calendarYear === undefined
+						? null
+						: String(this.person.dateOfDeath.calendarYear),
+				gnd: this.person.gnd,
+			})
+		).map((p) => (p as any).gndIdentifier);
+	}
+
+	searchPerson = _.debounce(this.onChangePerson, 500);
+
+	@Watch("person")
+	personWatcher() {
+		this.searchPerson();
+	}
+}
+</script>
+
 <template>
 	<v-card :color="color" rounded="lg" class="soft-shadow">
 		<v-card-title>
@@ -140,130 +265,3 @@
 		</v-card-text>
 	</v-card>
 </template>
-
-<script lang="ts">
-import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-
-import { findPerson } from "@/service/lobid";
-import store from "@/store";
-import { type LemmaRow } from "@/types/lemma";
-import { DateContainer } from "@/util/dates";
-import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-import TextField from "@/views/lib/TextField.vue";
-
-@Component({
-	components: {
-		LobidPreviewCard,
-		TextField,
-		LemmaDetail,
-	},
-})
-export default class LemmaAdd extends Vue {
-	@Prop({ default: undefined }) color!: string | undefined;
-
-	importToList: number = store.lemma.selectedLemmaListId || store.lemma.lemmaLists[0]!.id!;
-	window = 0;
-	showDivider = false;
-	store = store;
-	possibleGnds: Array<string> = [];
-	viewLemmaDetail: LemmaRow | null = null;
-
-	emptyPerson: LemmaRow = {
-		id: -1,
-		firstName: "",
-		lastName: "",
-		alternativeNames: [],
-		gender: undefined,
-		columns_user: {},
-		columns_scrape: {},
-		loc: null,
-		selected: false,
-		viaf_id: null,
-		wiki_edits: null,
-		gnd: [],
-		legacyGideonCitations: null,
-		secondaryLiterature: [],
-		zoteroKeysBy: [],
-		zoteroKeysAbout: [],
-		professionDetail: "",
-		professionGroup: {},
-		dateOfBirth: new DateContainer(),
-		dateOfDeath: new DateContainer(),
-		bioNote: null,
-		kinship: null,
-		religion: null,
-		notes: null,
-	};
-
-	person = _.clone(this.emptyPerson);
-
-	onScroll(e: MouseEvent) {
-		if (e.target instanceof HTMLElement && e.target.scrollTop > 0) {
-			this.showDivider = true;
-		} else {
-			this.showDivider = false;
-		}
-	}
-
-	get lemmaLists() {
-		return this.store.lemma.lemmaLists.map((ll) => {
-			return {
-				text: ll.title,
-				value: ll.id,
-			};
-		});
-	}
-
-	get filteredList() {
-		return store.lemma.lemmas.filter((l) => {
-			let firstNameAlike = false;
-			let lastNameAlike = false;
-			const personFirstName = this.person.firstName ? this.person.firstName.toLowerCase() : "~";
-			const personLastName = this.person.lastName ? this.person.lastName.toLowerCase() : "~";
-
-			if (l.firstName) {
-				firstNameAlike = l.firstName.startsWith(personFirstName);
-			}
-
-			if (l.lastName) {
-				lastNameAlike = l.lastName.startsWith(personLastName);
-			}
-
-			return firstNameAlike || lastNameAlike;
-		});
-	}
-
-	async addLemma() {
-		this.$emit("confirm", this.person, this.importToList);
-	}
-
-	async onChangePerson() {
-		this.possibleGnds = (
-			await findPerson({
-				firstName: this.person.firstName,
-				lastName: this.person.lastName,
-				dateOfBirth:
-					this.person.dateOfBirth.calendarYear === undefined
-						? null
-						: String(this.person.dateOfBirth.calendarYear),
-				dateOfDeath:
-					this.person.dateOfDeath.calendarYear === undefined
-						? null
-						: String(this.person.dateOfDeath.calendarYear),
-				gnd: this.person.gnd,
-			})
-		).map((p) => (p as any).gndIdentifier);
-	}
-
-	searchPerson = _.debounce(this.onChangePerson, 500);
-
-	@Watch("person")
-	personWatcher() {
-		this.searchPerson();
-	}
-}
-</script>
-
-<style lang="scss" scoped></style>

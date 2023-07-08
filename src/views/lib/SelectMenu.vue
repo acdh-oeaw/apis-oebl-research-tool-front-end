@@ -1,99 +1,3 @@
-<template>
-	<v-menu max-height="80vh" content-class="soft-shadow">
-		<template #activator="{ on, attrs }">
-			<v-btn
-				small
-				:width="width"
-				text
-				class="px-1 ellipsis select-button rounded-lg"
-				:class="[btnClass, value === null && 'muted']"
-				v-bind="attrs"
-				@click="onClickActivator"
-				v-on="on"
-			>
-				<v-icon v-if="prependIcon !== null" class="mr-1" small>{{ prependIcon }}</v-icon>
-				{{ label ? label + ": " : "" }}
-				{{ displayValue }}
-				<v-icon v-if="showChevron" small>mdi-unfold-more-horizontal</v-icon>
-			</v-btn>
-		</template>
-		<v-card
-			class="pa-0 fill-height d-flex flex-column rounded-lg"
-			color="background"
-			style="max-height: inherit"
-		>
-			<v-card-title v-if="!hideSearchbar" class="py-2 px-3 d-flex flex-row flex-nowrap">
-				<v-icon class="mr-2" small>mdi-magnify</v-icon>
-				<input
-					ref="input"
-					v-model.trim="searchText"
-					:placeholder="searchPlaceholder"
-					class="search-input text-body-2"
-					@keydown="onKeyDownSearch"
-					@click.prevent.stop=""
-				/>
-				<v-btn
-					v-if="searchText !== null && searchText !== ''"
-					color="primary"
-					icon
-					x-small
-					text
-					@click.prevent.stop="searchText = ''"
-				>
-					<v-icon small>mdi-close</v-icon>
-				</v-btn>
-			</v-card-title>
-			<v-divider class="ma-0" />
-			<v-list
-				v-if="filteredItems.length > 0"
-				color="transparent"
-				class="overflow-y-auto x-dense"
-				:two-line="keyDescription !== null"
-				nav
-			>
-				<v-list-item v-for="item in filteredItems" :key="item[keyValue]" @click="selectItem(item)">
-					<v-list-item-avatar>
-						<v-icon
-							v-if="
-								value === item[keyValue] || (value !== null && value[keyValue] === item[keyValue])
-							"
-							small
-						>
-							mdi-check
-						</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
-							{{ item[keyName] }}
-						</v-list-item-title>
-						<v-list-item-subtitle v-if="keyDescription !== null">
-							{{ get(item, keyDescription) }}
-						</v-list-item-subtitle>
-					</v-list-item-content>
-				</v-list-item>
-				<v-divider v-if="addNullOption" />
-				<v-list-item v-if="addNullOption" @click="returnNull">
-					<v-list-item-avatar>
-						<v-icon v-if="value === null || value[keyValue] === null" small>mdi-check</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
-							{{ addNullOption }}
-						</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
-			</v-list>
-			<v-list v-else color="transparent" class="overflow-y-auto x-dense" nav>
-				<v-list-item>
-					<v-list-item-content class="caption text-center muted">
-						<v-list-item-title>nichts gefunden</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
-			</v-list>
-		</v-card>
-	</v-menu>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -199,6 +103,102 @@ export default class SelectMenu extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-menu max-height="80vh" content-class="soft-shadow">
+		<template #activator="{ on, attrs }">
+			<v-btn
+				small
+				:width="width"
+				text
+				class="px-1 ellipsis select-button rounded-lg"
+				:class="[btnClass, value === null && 'muted']"
+				v-bind="attrs"
+				@click="onClickActivator"
+				v-on="on"
+			>
+				<v-icon v-if="prependIcon !== null" class="mr-1" small>{{ prependIcon }}</v-icon>
+				{{ label ? label + ": " : "" }}
+				{{ displayValue }}
+				<v-icon v-if="showChevron" small>mdi-unfold-more-horizontal</v-icon>
+			</v-btn>
+		</template>
+		<v-card
+			class="pa-0 fill-height d-flex flex-column rounded-lg"
+			color="background"
+			style="max-height: inherit"
+		>
+			<v-card-title v-if="!hideSearchbar" class="py-2 px-3 d-flex flex-row flex-nowrap">
+				<v-icon class="mr-2" small>mdi-magnify</v-icon>
+				<input
+					ref="input"
+					v-model.trim="searchText"
+					:placeholder="searchPlaceholder"
+					class="search-input text-body-2"
+					@keydown="onKeyDownSearch"
+					@click.prevent.stop=""
+				/>
+				<v-btn
+					v-if="searchText !== null && searchText !== ''"
+					color="primary"
+					icon
+					x-small
+					text
+					@click.prevent.stop="searchText = ''"
+				>
+					<v-icon small>mdi-close</v-icon>
+				</v-btn>
+			</v-card-title>
+			<v-divider class="ma-0" />
+			<v-list
+				v-if="filteredItems.length > 0"
+				color="transparent"
+				class="overflow-y-auto x-dense"
+				:two-line="keyDescription !== null"
+				nav
+			>
+				<v-list-item v-for="item in filteredItems" :key="item[keyValue]" @click="selectItem(item)">
+					<v-list-item-avatar>
+						<v-icon
+							v-if="
+								value === item[keyValue] || (value !== null && value[keyValue] === item[keyValue])
+							"
+							small
+						>
+							mdi-check
+						</v-icon>
+					</v-list-item-avatar>
+					<v-list-item-content>
+						<v-list-item-title>
+							{{ item[keyName] }}
+						</v-list-item-title>
+						<v-list-item-subtitle v-if="keyDescription !== null">
+							{{ get(item, keyDescription) }}
+						</v-list-item-subtitle>
+					</v-list-item-content>
+				</v-list-item>
+				<v-divider v-if="addNullOption" />
+				<v-list-item v-if="addNullOption" @click="returnNull">
+					<v-list-item-avatar>
+						<v-icon v-if="value === null || value[keyValue] === null" small>mdi-check</v-icon>
+					</v-list-item-avatar>
+					<v-list-item-content>
+						<v-list-item-title>
+							{{ addNullOption }}
+						</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list>
+			<v-list v-else color="transparent" class="overflow-y-auto x-dense" nav>
+				<v-list-item>
+					<v-list-item-content class="caption text-center muted">
+						<v-list-item-title>nichts gefunden</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list>
+		</v-card>
+	</v-menu>
+</template>
 
 <style>
 .theme--dark .search-input {

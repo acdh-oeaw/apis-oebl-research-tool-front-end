@@ -1,20 +1,3 @@
-<template>
-	<switch-button
-		:items="[
-			{
-				icon: 'mdi-brightness-5',
-				value: true,
-			},
-			{
-				icon: 'mdi-brightness-7',
-				value: false,
-			},
-		]"
-		:value="theme"
-		@input="updateTheme"
-	/>
-</template>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
@@ -37,3 +20,20 @@ export default class ThemeToggle extends Vue {
 	}
 }
 </script>
+
+<template>
+	<switch-button
+		:items="[
+			{
+				icon: 'mdi-brightness-5',
+				value: true,
+			},
+			{
+				icon: 'mdi-brightness-7',
+				value: false,
+			},
+		]"
+		:value="theme"
+		@input="updateTheme"
+	/>
+</template>

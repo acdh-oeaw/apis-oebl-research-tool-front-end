@@ -1,153 +1,3 @@
-<template>
-	<!-- FIXME: a11y -->
-	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
-	<div class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
-		<v-menu
-			v-if="editPopUp !== null"
-			:close-on-content-click="false"
-			min-width="130"
-			max-width="400"
-			content-class="transition-left"
-			class="soft-shadow"
-			:value="editPopUp !== null"
-			:position-x="editPopUp.x - 3"
-			:position-y="editPopUp.y - 10"
-			@input="(e) => e === false && (editPopUp = null)"
-		>
-			<v-card elevation="0" color="background lighten-2" rounded="lg">
-				<text-field
-					v-model="editPopUp.value"
-					class="mx-2"
-					style="min-height: 1em"
-					color="background lighten-2"
-					:selected="true"
-					:placeholder="editPopUp.column.name"
-					@keydown.native.tab.exact.prevent="editNextField(1)"
-					@keydown.native.tab.shift.exact.prevent="editNextField(-1)"
-					@keydown.native.enter="onEditItem"
-				/>
-				<v-divider />
-				<v-card-actions>
-					<v-btn text rounded x-small @click="editPopUp = null">Abbrechen</v-btn>
-					<v-spacer />
-					<v-btn elevation="0" rounded x-small @click="onEditItem">Speichern</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-menu>
-		<draggable
-			:disabled="sortableColumns === false"
-			:value="visibleColumns"
-			tag="div"
-			:class="['header-row', 'rounded-lg', headerColor]"
-			animation="200"
-			:style="{ transform: `translateX(-${scrollLeft}px)` }"
-			drag-class="header-row-drag"
-			ghost-class="header-row-ghost"
-			direction="horizontal"
-			@start.stop.prevent.capture=""
-			@end.stop.prevent.capture=""
-			@input="updateColumnOrder"
-		>
-			<div
-				v-for="column in visibleColumns"
-				:key="column.value"
-				:style="{ width: column.width ? column.width + 'px' : defaultWidth, height: rowHeight }"
-				:class="[
-					'header-cell',
-					$listeners['click:header'] && 'clickable',
-					column.sort !== null && column.sort !== undefined && 'sort-active',
-				]"
-			>
-				<!-- FIXME: a11y -->
-				<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-				<div class="column-name" @click="$emit('click:header', column)">
-					<span v-if="column.sort === 'asc'" class="header-sort-arrow">
-						<v-icon x-small>mdi-chevron-up</v-icon>
-					</span>
-					<span v-if="column.sort === 'desc'" class="header-sort-arrow">
-						<v-icon x-small>mdi-chevron-down</v-icon>
-					</span>
-					{{ column.name }}
-				</div>
-				<text-field
-					v-if="showFilter && column.type !== 'boolean'"
-					placeholder="Suchen…"
-					class="mb-0"
-					color="background darken-3 mx-0"
-					@input="emitFilterEvent(column, $event)"
-					@keydown.esc="emitFilterEvent(column, '')"
-				/>
-				<select-menu
-					v-else-if="showFilter && column.type === 'boolean'"
-					:hide-searchbar="true"
-					:items="[
-						{ name: 'egal', value: null },
-						{ name: 'ja', value: true },
-						{ name: 'nein', value: false },
-					]"
-					@input="emitFilterEvent(column, $event.value)"
-				/>
-				<!-- <input @keyup.stop="" v-show="showFilter" type="text" placeholder="☉ Suchen…" /> -->
-			</div>
-		</draggable>
-		<v-virtual-scroll
-			ref="scroller"
-			style="contain: content"
-			:bench="10"
-			tabindex="-1"
-			class="virtual-scroller"
-			:items="data"
-			:height="height - rowHeight"
-			:item-height="rowHeight"
-			@keyup="$emit('keyup', $event)"
-			@scroll.passive="onScroll"
-		>
-			<template #default="{ item, index }">
-				<!-- FIXME: a11y -->
-				<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
-				<div
-					test-id="lemma-row"
-					:draggable="$listeners['drag:row']"
-					:style="{ height: rowHeight + 'px' }"
-					:class="[
-						'table-row',
-						index % 2 === 0 ? 'even' : 'odd',
-						selected[item.id] && 'selected',
-						scrollToRow === index && 'scroll-to-row',
-					]"
-					@dragstart="$emit('drag:row', item, $event)"
-					@click="selectItem(item, $event)"
-					@dblclick="onDblClickRow($event, item, index)"
-					@keydown="handleKey"
-				>
-					<!-- FIXME: a11y -->
-					<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-					<div
-						v-for="column in visibleColumns"
-						:key="index + '__' + column.value"
-						:style="{
-							width: column.width ? column.width + 'px' : defaultWidth,
-							maxHeight: rowHeight - 5 + 'px',
-						}"
-						:class="['table-cell', column.editable && 'editable']"
-						@click="$emit('click:cell', item, $event, column.value, index)"
-						@dblclick="onDblClickCell(item, $event, column, index)"
-					>
-						<slot
-							name="cell"
-							draggable
-							:item="{ [column.value]: getStringFromLemmaRowByColumn(item, column) }"
-							:index="index"
-							:column="{ value: column.value }"
-							:value="getStringFromLemmaRowByColumn(item, column)"
-						/>
-					</div>
-				</div>
-			</template>
-		</v-virtual-scroll>
-	</div>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -442,6 +292,156 @@ export default class VirtualTable extends Vue {
 	}
 }
 </script>
+
+<template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+	<div class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
+		<v-menu
+			v-if="editPopUp !== null"
+			:close-on-content-click="false"
+			min-width="130"
+			max-width="400"
+			content-class="transition-left"
+			class="soft-shadow"
+			:value="editPopUp !== null"
+			:position-x="editPopUp.x - 3"
+			:position-y="editPopUp.y - 10"
+			@input="(e) => e === false && (editPopUp = null)"
+		>
+			<v-card elevation="0" color="background lighten-2" rounded="lg">
+				<text-field
+					v-model="editPopUp.value"
+					class="mx-2"
+					style="min-height: 1em"
+					color="background lighten-2"
+					:selected="true"
+					:placeholder="editPopUp.column.name"
+					@keydown.native.tab.exact.prevent="editNextField(1)"
+					@keydown.native.tab.shift.exact.prevent="editNextField(-1)"
+					@keydown.native.enter="onEditItem"
+				/>
+				<v-divider />
+				<v-card-actions>
+					<v-btn text rounded x-small @click="editPopUp = null">Abbrechen</v-btn>
+					<v-spacer />
+					<v-btn elevation="0" rounded x-small @click="onEditItem">Speichern</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-menu>
+		<draggable
+			:disabled="sortableColumns === false"
+			:value="visibleColumns"
+			tag="div"
+			:class="['header-row', 'rounded-lg', headerColor]"
+			animation="200"
+			:style="{ transform: `translateX(-${scrollLeft}px)` }"
+			drag-class="header-row-drag"
+			ghost-class="header-row-ghost"
+			direction="horizontal"
+			@start.stop.prevent.capture=""
+			@end.stop.prevent.capture=""
+			@input="updateColumnOrder"
+		>
+			<div
+				v-for="column in visibleColumns"
+				:key="column.value"
+				:style="{ width: column.width ? column.width + 'px' : defaultWidth, height: rowHeight }"
+				:class="[
+					'header-cell',
+					$listeners['click:header'] && 'clickable',
+					column.sort !== null && column.sort !== undefined && 'sort-active',
+				]"
+			>
+				<!-- FIXME: a11y -->
+				<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+				<div class="column-name" @click="$emit('click:header', column)">
+					<span v-if="column.sort === 'asc'" class="header-sort-arrow">
+						<v-icon x-small>mdi-chevron-up</v-icon>
+					</span>
+					<span v-if="column.sort === 'desc'" class="header-sort-arrow">
+						<v-icon x-small>mdi-chevron-down</v-icon>
+					</span>
+					{{ column.name }}
+				</div>
+				<text-field
+					v-if="showFilter && column.type !== 'boolean'"
+					placeholder="Suchen…"
+					class="mb-0"
+					color="background darken-3 mx-0"
+					@input="emitFilterEvent(column, $event)"
+					@keydown.esc="emitFilterEvent(column, '')"
+				/>
+				<select-menu
+					v-else-if="showFilter && column.type === 'boolean'"
+					:hide-searchbar="true"
+					:items="[
+						{ name: 'egal', value: null },
+						{ name: 'ja', value: true },
+						{ name: 'nein', value: false },
+					]"
+					@input="emitFilterEvent(column, $event.value)"
+				/>
+				<!-- <input @keyup.stop="" v-show="showFilter" type="text" placeholder="☉ Suchen…" /> -->
+			</div>
+		</draggable>
+		<v-virtual-scroll
+			ref="scroller"
+			style="contain: content"
+			:bench="10"
+			tabindex="-1"
+			class="virtual-scroller"
+			:items="data"
+			:height="height - rowHeight"
+			:item-height="rowHeight"
+			@keyup="$emit('keyup', $event)"
+			@scroll.passive="onScroll"
+		>
+			<template #default="{ item, index }">
+				<!-- FIXME: a11y -->
+				<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+				<div
+					test-id="lemma-row"
+					:draggable="$listeners['drag:row']"
+					:style="{ height: rowHeight + 'px' }"
+					:class="[
+						'table-row',
+						index % 2 === 0 ? 'even' : 'odd',
+						selected[item.id] && 'selected',
+						scrollToRow === index && 'scroll-to-row',
+					]"
+					@dragstart="$emit('drag:row', item, $event)"
+					@click="selectItem(item, $event)"
+					@dblclick="onDblClickRow($event, item, index)"
+					@keydown="handleKey"
+				>
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+					<div
+						v-for="column in visibleColumns"
+						:key="index + '__' + column.value"
+						:style="{
+							width: column.width ? column.width + 'px' : defaultWidth,
+							maxHeight: rowHeight - 5 + 'px',
+						}"
+						:class="['table-cell', column.editable && 'editable']"
+						@click="$emit('click:cell', item, $event, column.value, index)"
+						@dblclick="onDblClickCell(item, $event, column, index)"
+					>
+						<slot
+							name="cell"
+							draggable
+							:item="{ [column.value]: getStringFromLemmaRowByColumn(item, column) }"
+							:index="index"
+							:column="{ value: column.value }"
+							:value="getStringFromLemmaRowByColumn(item, column)"
+						/>
+					</div>
+				</div>
+			</template>
+		</v-virtual-scroll>
+	</div>
+</template>
 
 <style scoped>
 .transition-left {

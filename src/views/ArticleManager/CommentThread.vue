@@ -1,114 +1,3 @@
-<template>
-	<div style="width: 300px">
-		<v-overlay
-			v-if="showOverlay"
-			opacity=".9"
-			style="border-radius: 11px"
-			color="background darken-1"
-		>
-			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeComment">
-				Kommentar entfernen
-			</v-btn>
-			<v-btn
-				v-if="commentThread != null"
-				block
-				outlined
-				class="mb-1 rounded-lg"
-				color="grey"
-				@click="
-					toggleStatus();
-					showOverlay = false;
-				"
-			>
-				<v-icon v-if="commentThread.status === 'private'" left>mdi-check</v-icon>
-				Als “Privat” markieren
-			</v-btn>
-			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
-				Abbrechen
-			</v-btn>
-		</v-overlay>
-		<div v-if="showHeader && commentThread != null" class="d-flex flex-row align-self-stretch">
-			<v-btn icon tile class="rounded-lg" disabled small></v-btn>
-			<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Kommentar</div>
-			<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
-				<v-icon v-if="commentThread.status === 'open'">mdi-dots-horizontal</v-icon>
-				<v-icon v-else-if="commentThread.status === 'private'" small>mdi-lock</v-icon>
-			</v-btn>
-		</div>
-		<div
-			v-if="commentThread != null"
-			ref="threadContainer"
-			:class="['thread-container', scrollable && 'scrollable']"
-		>
-			<div v-for="(comment, i) in commentThread.comments" :key="i" class="comment-container">
-				<div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
-					<span class="comment-user-name">{{ comment.user }}</span>
-					<v-spacer />
-					{{ formatTimeDistance(comment.date.toString()) }}
-				</div>
-				<div class="px-2">
-					{{ comment.text }}
-				</div>
-				<v-divider
-					v-if="commentThread != null && i !== commentThread.comments.length - 1"
-					class="mt-2"
-				/>
-			</div>
-		</div>
-		<v-divider v-if="commentThread != null && commentThread.comments.length > 0" class="my-2" />
-		<text-field
-			v-if="commentThread != null"
-			v-model="newMessage"
-			class="py-0 pl-1 pr-1 mt-1 mb-0"
-			:style="{ background: 'rgba(0,0,0,.05) !important' }"
-			placeholder="Kommentar hinzufügen …"
-			@keydown.enter.native="appendComment"
-			@keyup.native="storeLastCaretPos"
-			@mouseup.native="storeLastCaretPos"
-		>
-			<template #prepend>
-				<v-btn small class="rounded-lg mt-1 mr-0" icon tile text @click="toggleEmojiPicker">
-					<v-icon :color="shouldShowEmojiPicker ? 'primary' : ''" small>
-						mdi-emoticon-outline
-					</v-icon>
-				</v-btn>
-			</template>
-			<v-btn class="rounded-lg" icon tile text @click="appendComment">
-				<v-icon small>mdi-send</v-icon>
-			</v-btn>
-		</text-field>
-		<div v-if="shouldShowEmojiPicker" class="emoji-picker scrollable">
-			<span v-for="(group, i) in groups" :key="i">
-				<div class="emoji-group caption pl-2">
-					<span class="muted">{{ group.group }}</span>
-				</div>
-				<span v-for="(subgroup, i) in group.subgroups" :key="'sg' + i">
-					<!-- FIXME: a11y -->
-					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-					<span
-						v-for="(emoji, i) in subgroup.emojis"
-						:key="'em' + i"
-						class="emoji"
-						@click="
-							insertEmoji(
-								lastCaretPos,
-								toEmoji(
-									// @ts-expect-error
-									emoji[0],
-								),
-							)
-						"
-					>
-						<!-- @vue-expect-error -->
-						{{ toEmoji(emoji[0]) }}
-					</span>
-					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-				</span>
-			</span>
-		</div>
-	</div>
-</template>
-
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
 // eslint-disable-next-line import/no-duplicates
@@ -263,6 +152,117 @@ export default class CommentThread extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div style="width: 300px">
+		<v-overlay
+			v-if="showOverlay"
+			opacity=".9"
+			style="border-radius: 11px"
+			color="background darken-1"
+		>
+			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeComment">
+				Kommentar entfernen
+			</v-btn>
+			<v-btn
+				v-if="commentThread != null"
+				block
+				outlined
+				class="mb-1 rounded-lg"
+				color="grey"
+				@click="
+					toggleStatus();
+					showOverlay = false;
+				"
+			>
+				<v-icon v-if="commentThread.status === 'private'" left>mdi-check</v-icon>
+				Als “Privat” markieren
+			</v-btn>
+			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
+				Abbrechen
+			</v-btn>
+		</v-overlay>
+		<div v-if="showHeader && commentThread != null" class="d-flex flex-row align-self-stretch">
+			<v-btn icon tile class="rounded-lg" disabled small></v-btn>
+			<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Kommentar</div>
+			<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
+				<v-icon v-if="commentThread.status === 'open'">mdi-dots-horizontal</v-icon>
+				<v-icon v-else-if="commentThread.status === 'private'" small>mdi-lock</v-icon>
+			</v-btn>
+		</div>
+		<div
+			v-if="commentThread != null"
+			ref="threadContainer"
+			:class="['thread-container', scrollable && 'scrollable']"
+		>
+			<div v-for="(comment, i) in commentThread.comments" :key="i" class="comment-container">
+				<div class="comment-header caption d-flex row no-gutters muted px-2 mt-1">
+					<span class="comment-user-name">{{ comment.user }}</span>
+					<v-spacer />
+					{{ formatTimeDistance(comment.date.toString()) }}
+				</div>
+				<div class="px-2">
+					{{ comment.text }}
+				</div>
+				<v-divider
+					v-if="commentThread != null && i !== commentThread.comments.length - 1"
+					class="mt-2"
+				/>
+			</div>
+		</div>
+		<v-divider v-if="commentThread != null && commentThread.comments.length > 0" class="my-2" />
+		<text-field
+			v-if="commentThread != null"
+			v-model="newMessage"
+			class="py-0 pl-1 pr-1 mt-1 mb-0"
+			:style="{ background: 'rgba(0,0,0,.05) !important' }"
+			placeholder="Kommentar hinzufügen …"
+			@keydown.enter.native="appendComment"
+			@keyup.native="storeLastCaretPos"
+			@mouseup.native="storeLastCaretPos"
+		>
+			<template #prepend>
+				<v-btn small class="rounded-lg mt-1 mr-0" icon tile text @click="toggleEmojiPicker">
+					<v-icon :color="shouldShowEmojiPicker ? 'primary' : ''" small>
+						mdi-emoticon-outline
+					</v-icon>
+				</v-btn>
+			</template>
+			<v-btn class="rounded-lg" icon tile text @click="appendComment">
+				<v-icon small>mdi-send</v-icon>
+			</v-btn>
+		</text-field>
+		<div v-if="shouldShowEmojiPicker" class="emoji-picker scrollable">
+			<span v-for="(group, i) in groups" :key="i">
+				<div class="emoji-group caption pl-2">
+					<span class="muted">{{ group.group }}</span>
+				</div>
+				<span v-for="(subgroup, i) in group.subgroups" :key="'sg' + i">
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+					<span
+						v-for="(emoji, i) in subgroup.emojis"
+						:key="'em' + i"
+						class="emoji"
+						@click="
+							insertEmoji(
+								lastCaretPos,
+								toEmoji(
+									// @ts-expect-error
+									emoji[0],
+								),
+							)
+						"
+					>
+						<!-- @vue-expect-error -->
+						{{ toEmoji(emoji[0]) }}
+					</span>
+					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+				</span>
+			</span>
+		</div>
+	</div>
+</template>
 
 <style scoped>
 .scrollable {

@@ -1,3 +1,21 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import store from "@/store";
+
+@Component
+export default class LemmaNavigation extends Vue {
+	searchQuery = "";
+	highlighted: number | null = null;
+	store = store;
+	log = console.log;
+
+	createList() {
+		console.log("yo");
+	}
+}
+</script>
+
 <template>
 	<div class="d-flex fill-height flex-column overflow-y-hidden">
 		<div class="background darken-2" :style="{ zIndex: 1 }">
@@ -47,24 +65,6 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import store from "@/store";
-
-@Component
-export default class LemmaNavigation extends Vue {
-	searchQuery = "";
-	highlighted: number | null = null;
-	store = store;
-	log = console.log;
-
-	createList() {
-		console.log("yo");
-	}
-}
-</script>
 
 <style scoped>
 .search-field :deep(.v-icon.v-icon) {

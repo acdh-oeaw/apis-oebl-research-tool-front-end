@@ -1,17 +1,3 @@
-<template>
-	<div class="results">
-		<v-overlay v-if="loading" absolute>
-			<loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
-		</v-overlay>
-		<lobid-preview-card
-			v-if="resultGnds.length !== 0"
-			:gnd="resultGnds"
-			@input="$emit('input', $event)"
-		/>
-		<div v-else style="opacity: 70%" class="caption text-center">(Nichts gefunden)</div>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -61,3 +47,17 @@ export default class LobidGndSearchResults extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="results">
+		<v-overlay v-if="loading" absolute>
+			<loading-spinner :color="$vuetify.theme.dark ? 'white' : undefined" />
+		</v-overlay>
+		<lobid-preview-card
+			v-if="resultGnds.length !== 0"
+			:gnd="resultGnds"
+			@input="$emit('input', $event)"
+		/>
+		<div v-else style="opacity: 70%" class="caption text-center">(Nichts gefunden)</div>
+	</div>
+</template>

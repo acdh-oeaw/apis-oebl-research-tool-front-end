@@ -1,3 +1,39 @@
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Draggable from "vuedraggable";
+
+import store from "@/store";
+import { type IssueLemma, type LemmaStatus } from "@/types/issue";
+import IssueLemmaRow from "@/views/IssueManager/IssueLemmaRow.vue";
+
+interface Column extends LemmaStatus {
+	items: Array<IssueLemma>;
+}
+
+@Component({
+	components: {
+		Draggable,
+		IssueLemmaRow,
+	},
+})
+export default class IssueLemmaList extends Vue {
+	@Prop({ default: [] }) columns!: Array<Column>;
+	@Prop({ default: false }) animate!: boolean;
+	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
+
+	store = store;
+	maxLabels = 3;
+
+	onDragStart(...args: any) {
+		console.log(args);
+	}
+
+	selectedStyle = {
+		boxShadow: `inset 0px 0px 0px 3px ${this.$vuetify.theme.currentTheme.primary} !important`,
+	};
+}
+</script>
+
 <template>
 	<div>
 		<v-row v-for="(column, columnIndex) in columns" :key="column.id" class="ml-5 mr-1">
@@ -52,42 +88,6 @@
 		</v-row>
 	</div>
 </template>
-
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Draggable from "vuedraggable";
-
-import store from "@/store";
-import { type IssueLemma, type LemmaStatus } from "@/types/issue";
-import IssueLemmaRow from "@/views/IssueManager/IssueLemmaRow.vue";
-
-interface Column extends LemmaStatus {
-	items: Array<IssueLemma>;
-}
-
-@Component({
-	components: {
-		Draggable,
-		IssueLemmaRow,
-	},
-})
-export default class IssueLemmaList extends Vue {
-	@Prop({ default: [] }) columns!: Array<Column>;
-	@Prop({ default: false }) animate!: boolean;
-	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
-
-	store = store;
-	maxLabels = 3;
-
-	onDragStart(...args: any) {
-		console.log(args);
-	}
-
-	selectedStyle = {
-		boxShadow: `inset 0px 0px 0px 3px ${this.$vuetify.theme.currentTheme.primary} !important`,
-	};
-}
-</script>
 
 <style scoped>
 .sticky-header {

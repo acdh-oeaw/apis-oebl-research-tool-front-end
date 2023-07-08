@@ -1,132 +1,3 @@
-<template>
-	<v-data-table
-		locale="de-AT"
-		fixed-header
-		dense
-		disable-sort
-		:page="tablePage"
-		height="500"
-		hide-default-footer
-		:headers="headers"
-		:items="initialTable"
-		:items-per-page="100"
-	>
-		<template v-for="(h, i) in headers" #[`header.${h.value}`]="{}">
-			<div :key="h.value" class="py-1 custom-header">
-				<span class="initial-header">
-					{{ h.text }}
-				</span>
-				<v-select
-					hide-details
-					solo
-					flat
-					:value="h.matchWith"
-					background-color="background darken-1"
-					:class="['col-select', h.matchWith === null ? 'not-selected' : '', 'rounded-lg']"
-					dense
-					:items="getTargetColumnsOptions(h)"
-					@input="matchHeaderWith(i, $event)"
-				/>
-			</div>
-		</template>
-		<template #item="{ item }">
-			<tr>
-				<td
-					v-for="(h, i) in headers"
-					:key="i"
-					:class="[
-						isIgnoredValue(item[h.value]) && 'is-null-equivalent',
-						h.matchWith === null && 'do-not-import',
-					]"
-				>
-					{{ item[h.value] }}
-				</td>
-			</tr>
-		</template>
-		<template #footer="{}">
-			<v-divider />
-			<v-row no-gutters class="pa-4 ma-0">
-				<v-col cols="3">
-					<v-select
-						v-if="fileType === mimeTypeCsv"
-						dense
-						hide-details
-						flat
-						background-color="background darken-1"
-						class="rounded-lg"
-						solo
-						:value="separator"
-						:items="allSeparators"
-						@change="updateSeparator"
-					>
-						<template #prepend-inner>
-							<span class="caption">Trennzeichen</span>
-						</template>
-					</v-select>
-					<v-select
-						v-if="fileType === mimeTypeXls || fileType === mimeTypeXlsx"
-						dense
-						hide-details
-						label="Tabellenblatt"
-						solo
-						background-color="background darken-1"
-						class="rounded-lg"
-						flat
-						:value="sheetName"
-						:items="sheetNames"
-						@change="updateSheetName"
-					>
-						<template #prepend-inner>
-							<span class="caption">Tabellenblatt</span>
-						</template>
-					</v-select>
-				</v-col>
-				<v-col cols="4" class="pl-4">
-					<v-combobox
-						v-model="nullValues"
-						hide-details
-						chips
-						deletable-chips
-						small-chips
-						dense
-						solo
-						flat
-						class="rounded-lg"
-						background-color="background darken-1"
-						multiple
-					>
-						<template #prepend-inner>
-							<span class="caption text-no-wrap">Zellen Ignorieren</span>
-						</template>
-					</v-combobox>
-				</v-col>
-				<v-col class="text-right">
-					<v-btn :disabled="tablePage === 1" icon @click="tablePage = tablePage - 1">
-						<v-icon>mdi-chevron-left</v-icon>
-					</v-btn>
-					<select
-						class="px-2"
-						aria-label="Seite auswählen"
-						:value="tablePage"
-						@change="tablePage = Number($event.target.value)"
-					>
-						<option v-for="p in Math.ceil(initialTable.length / 100)" :key="p" :value="p">
-							Seite {{ p }} von {{ Math.ceil(initialTable.length / 100) }}
-						</option>
-					</select>
-					<v-btn
-						:disabled="tablePage === Math.ceil(initialTable.length / 100)"
-						icon
-						@click="tablePage = tablePage + 1"
-					>
-						<v-icon>mdi-chevron-right</v-icon>
-					</v-btn>
-				</v-col>
-			</v-row>
-		</template>
-	</v-data-table>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import neatCsv from "neat-csv";
@@ -298,6 +169,135 @@ export default class ColumnMatcher extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-data-table
+		locale="de-AT"
+		fixed-header
+		dense
+		disable-sort
+		:page="tablePage"
+		height="500"
+		hide-default-footer
+		:headers="headers"
+		:items="initialTable"
+		:items-per-page="100"
+	>
+		<template v-for="(h, i) in headers" #[`header.${h.value}`]="{}">
+			<div :key="h.value" class="py-1 custom-header">
+				<span class="initial-header">
+					{{ h.text }}
+				</span>
+				<v-select
+					hide-details
+					solo
+					flat
+					:value="h.matchWith"
+					background-color="background darken-1"
+					:class="['col-select', h.matchWith === null ? 'not-selected' : '', 'rounded-lg']"
+					dense
+					:items="getTargetColumnsOptions(h)"
+					@input="matchHeaderWith(i, $event)"
+				/>
+			</div>
+		</template>
+		<template #item="{ item }">
+			<tr>
+				<td
+					v-for="(h, i) in headers"
+					:key="i"
+					:class="[
+						isIgnoredValue(item[h.value]) && 'is-null-equivalent',
+						h.matchWith === null && 'do-not-import',
+					]"
+				>
+					{{ item[h.value] }}
+				</td>
+			</tr>
+		</template>
+		<template #footer="{}">
+			<v-divider />
+			<v-row no-gutters class="pa-4 ma-0">
+				<v-col cols="3">
+					<v-select
+						v-if="fileType === mimeTypeCsv"
+						dense
+						hide-details
+						flat
+						background-color="background darken-1"
+						class="rounded-lg"
+						solo
+						:value="separator"
+						:items="allSeparators"
+						@change="updateSeparator"
+					>
+						<template #prepend-inner>
+							<span class="caption">Trennzeichen</span>
+						</template>
+					</v-select>
+					<v-select
+						v-if="fileType === mimeTypeXls || fileType === mimeTypeXlsx"
+						dense
+						hide-details
+						label="Tabellenblatt"
+						solo
+						background-color="background darken-1"
+						class="rounded-lg"
+						flat
+						:value="sheetName"
+						:items="sheetNames"
+						@change="updateSheetName"
+					>
+						<template #prepend-inner>
+							<span class="caption">Tabellenblatt</span>
+						</template>
+					</v-select>
+				</v-col>
+				<v-col cols="4" class="pl-4">
+					<v-combobox
+						v-model="nullValues"
+						hide-details
+						chips
+						deletable-chips
+						small-chips
+						dense
+						solo
+						flat
+						class="rounded-lg"
+						background-color="background darken-1"
+						multiple
+					>
+						<template #prepend-inner>
+							<span class="caption text-no-wrap">Zellen Ignorieren</span>
+						</template>
+					</v-combobox>
+				</v-col>
+				<v-col class="text-right">
+					<v-btn :disabled="tablePage === 1" icon @click="tablePage = tablePage - 1">
+						<v-icon>mdi-chevron-left</v-icon>
+					</v-btn>
+					<select
+						class="px-2"
+						aria-label="Seite auswählen"
+						:value="tablePage"
+						@change="tablePage = Number($event.target.value)"
+					>
+						<option v-for="p in Math.ceil(initialTable.length / 100)" :key="p" :value="p">
+							Seite {{ p }} von {{ Math.ceil(initialTable.length / 100) }}
+						</option>
+					</select>
+					<v-btn
+						:disabled="tablePage === Math.ceil(initialTable.length / 100)"
+						icon
+						@click="tablePage = tablePage + 1"
+					>
+						<v-icon>mdi-chevron-right</v-icon>
+					</v-btn>
+				</v-col>
+			</v-row>
+		</template>
+	</v-data-table>
+</template>
 
 <style scoped>
 .do-not-import {

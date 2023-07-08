@@ -1,33 +1,3 @@
-<template>
-	<v-card class="transparent" flat>
-		<v-card-title class="zotero-list-title pb-0">
-			{{ listName }} Lemma
-
-			<span v-if="loading" class="loading-zotero">…</span>
-			<span v-else class="zotero-results">{{ zoteroItems.length }}</span>
-			<div class="add-more-zotero-items">
-				<zotero-search :exclude="zoteroItems" @submit="addNewZoteroItem($event)"></zotero-search>
-			</div>
-		</v-card-title>
-		<div v-if="detailedView" class="detailed-zotero-view">
-			<v-card-text class="pt-0 pl-2">
-				<v-list class="zotero-citation-list pt-0" dense>
-					<v-list-item v-for="(zoteroView, key) in zoteroItemsView" :key="key">
-						{{ zoteroView.citation }}
-						<v-btn :href="zoteroView.url" target="_blank" icon x-small class="pl-1">
-							<v-icon x-small>mdi-open-in-new</v-icon>
-						</v-btn>
-						<v-spacer></v-spacer>
-						<v-btn icon x-small class="rounded-lg" @click="removeZoteroItem(zoteroView.key)">
-							<v-icon class="pl-6">mdi-minus-circle-outline</v-icon>
-						</v-btn>
-					</v-list-item>
-				</v-list>
-			</v-card-text>
-		</div>
-	</v-card>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -114,6 +84,36 @@ export default class ZoteroManager extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-card class="transparent" flat>
+		<v-card-title class="zotero-list-title pb-0">
+			{{ listName }} Lemma
+
+			<span v-if="loading" class="loading-zotero">…</span>
+			<span v-else class="zotero-results">{{ zoteroItems.length }}</span>
+			<div class="add-more-zotero-items">
+				<zotero-search :exclude="zoteroItems" @submit="addNewZoteroItem($event)"></zotero-search>
+			</div>
+		</v-card-title>
+		<div v-if="detailedView" class="detailed-zotero-view">
+			<v-card-text class="pt-0 pl-2">
+				<v-list class="zotero-citation-list pt-0" dense>
+					<v-list-item v-for="(zoteroView, key) in zoteroItemsView" :key="key">
+						{{ zoteroView.citation }}
+						<v-btn :href="zoteroView.url" target="_blank" icon x-small class="pl-1">
+							<v-icon x-small>mdi-open-in-new</v-icon>
+						</v-btn>
+						<v-spacer></v-spacer>
+						<v-btn icon x-small class="rounded-lg" @click="removeZoteroItem(zoteroView.key)">
+							<v-icon class="pl-6">mdi-minus-circle-outline</v-icon>
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-card-text>
+		</div>
+	</v-card>
+</template>
 
 <style scoped>
 .loading-zotero {

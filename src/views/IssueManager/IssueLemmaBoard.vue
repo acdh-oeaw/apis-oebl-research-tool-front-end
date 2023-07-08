@@ -1,3 +1,59 @@
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Draggable from "vuedraggable";
+
+import { type IssueLemma, type LemmaStatus } from "@/api";
+import store from "@/store";
+import IssueLemmaCard from "@/views/IssueManager/IssueLemmaCard.vue";
+
+interface Column extends LemmaStatus {
+	items: Array<IssueLemma>;
+	order: number;
+}
+
+@Component({
+	components: {
+		Draggable,
+		IssueLemmaCard,
+	},
+})
+export default class LemmaBoard extends Vue {
+	@Prop({ default: [] }) columns!: Array<Column>;
+	@Prop({ default: false }) animate!: boolean;
+	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
+
+	store = store;
+	log = console.log;
+	selectedStyle = {
+		boxShadow: `inset 0px 0px 0px 3px ${this.$vuetify.theme.currentTheme.primary} !important`,
+	};
+
+	// onUpdate(
+	//   status: LemmaStatus,
+	//   update: {
+	//     moved?: { element: IIssueLemma, newIndex: number, oldIndex: number },
+	//     added?: { element: IIssueLemma, newIndex: number }
+	//   }
+	// ) {
+	//   if (update.moved) {
+	//     const lemma: IIssueLemma = { ...update.moved.element, order: update.moved.newIndex }
+	//     this.$emit('update-lemma', lemma, update.moved.newIndex, update.moved.oldIndex)
+	//   } else if (update.added) {
+	//     const lemma: IIssueLemma = { ...update.added.element, order: update.added.newIndex, status }
+	//     this.$emit('update-lemma', lemma, update.added.newIndex)
+	//   }
+	//   // if (update.added !== undefined && update.added.element !== undefined) {
+	//   //   this.$emit('update-lemma', status, update.added.element, update.added.newIndex)
+	//   // }
+	//   // if (update.moved && update.moved.newIndex !== undefined) {
+	//   //   update.moved.element.order = update.moved.newIndex
+	//   //   console.log('old', update.moved.element.order)
+	//   //   console.log('new', update.moved.newIndex)
+	//   // }
+	// }
+}
+</script>
+
 <template>
 	<v-row class="status-columns-outer ml-1 px-5">
 		<v-col
@@ -65,62 +121,6 @@
 		</v-col>
 	</v-row>
 </template>
-
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Draggable from "vuedraggable";
-
-import { type IssueLemma, type LemmaStatus } from "@/api";
-import store from "@/store";
-import IssueLemmaCard from "@/views/IssueManager/IssueLemmaCard.vue";
-
-interface Column extends LemmaStatus {
-	items: Array<IssueLemma>;
-	order: number;
-}
-
-@Component({
-	components: {
-		Draggable,
-		IssueLemmaCard,
-	},
-})
-export default class LemmaBoard extends Vue {
-	@Prop({ default: [] }) columns!: Array<Column>;
-	@Prop({ default: false }) animate!: boolean;
-	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
-
-	store = store;
-	log = console.log;
-	selectedStyle = {
-		boxShadow: `inset 0px 0px 0px 3px ${this.$vuetify.theme.currentTheme.primary} !important`,
-	};
-
-	// onUpdate(
-	//   status: LemmaStatus,
-	//   update: {
-	//     moved?: { element: IIssueLemma, newIndex: number, oldIndex: number },
-	//     added?: { element: IIssueLemma, newIndex: number }
-	//   }
-	// ) {
-	//   if (update.moved) {
-	//     const lemma: IIssueLemma = { ...update.moved.element, order: update.moved.newIndex }
-	//     this.$emit('update-lemma', lemma, update.moved.newIndex, update.moved.oldIndex)
-	//   } else if (update.added) {
-	//     const lemma: IIssueLemma = { ...update.added.element, order: update.added.newIndex, status }
-	//     this.$emit('update-lemma', lemma, update.added.newIndex)
-	//   }
-	//   // if (update.added !== undefined && update.added.element !== undefined) {
-	//   //   this.$emit('update-lemma', status, update.added.element, update.added.newIndex)
-	//   // }
-	//   // if (update.moved && update.moved.newIndex !== undefined) {
-	//   //   update.moved.element.order = update.moved.newIndex
-	//   //   console.log('old', update.moved.element.order)
-	//   //   console.log('new', update.moved.newIndex)
-	//   // }
-	// }
-}
-</script>
 
 <style scoped>
 .status-columns-outer {

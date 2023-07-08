@@ -1,3 +1,39 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import store from "@/store";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+
+@Component({
+	components: { LoadingSpinner },
+})
+export default class LoginForm extends Vue {
+	user = "";
+	password = "";
+	message = "";
+	loading = false;
+	showPassword = false;
+
+	async login() {
+		if (this.user && this.password) {
+			this.message = "";
+			this.loading = true;
+			const success = await store.logIn(this.user, this.password);
+			this.loading = false;
+			if (!success) {
+				this.message = "Falsches Passwort oder falscher Nutzername.";
+				const pwdEl = this.$el.querySelector("[type=password]");
+				if (pwdEl instanceof HTMLInputElement) {
+					pwdEl.select();
+				}
+			} else {
+				this.message = "";
+			}
+		}
+	}
+}
+</script>
+
 <template>
 	<v-card
 		style="position: relative"
@@ -53,42 +89,6 @@
 		</v-card-text>
 	</v-card>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import store from "@/store";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-
-@Component({
-	components: { LoadingSpinner },
-})
-export default class LoginForm extends Vue {
-	user = "";
-	password = "";
-	message = "";
-	loading = false;
-	showPassword = false;
-
-	async login() {
-		if (this.user && this.password) {
-			this.message = "";
-			this.loading = true;
-			const success = await store.logIn(this.user, this.password);
-			this.loading = false;
-			if (!success) {
-				this.message = "Falsches Passwort oder falscher Nutzername.";
-				const pwdEl = this.$el.querySelector("[type=password]");
-				if (pwdEl instanceof HTMLInputElement) {
-					pwdEl.select();
-				}
-			} else {
-				this.message = "";
-			}
-		}
-	}
-}
-</script>
 
 <style>
 @keyframes autofill {

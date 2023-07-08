@@ -1,60 +1,3 @@
-<template>
-	<v-input
-		:error-messages="errorMessages"
-		class="background darken-2 rounded-lg mb-1 pl-2 date-field"
-		dense
-		:hide-details="!hasErrors"
-	>
-		<div class="caption label">{{ label }}</div>
-		<v-spacer></v-spacer>
-		<input
-			ref="date"
-			v-model.number="localDate.calendarDate"
-			min="1"
-			:max="localDate.getMaxDate()"
-			maxlength="2"
-			class="pa-1 text--primary"
-			style="width: 40px"
-			placeholder="TT"
-		/>
-		<input
-			ref="month"
-			v-model.number="localDate.calendarMonth"
-			maxlength="2"
-			min="1"
-			max="12"
-			class="pa-1 text--primary"
-			style="width: 40px"
-			placeholder="MM"
-		/>
-		<input
-			ref="year"
-			v-model.number="localDate.calendarYear"
-			minlength="4"
-			maxlength="4"
-			class="pa-1 text--primary"
-			style="width: 50px"
-			placeholder="JJJJ"
-		/>
-		<v-spacer></v-spacer>
-		<v-menu v-model="datePickerIsOpen" class="date-picker">
-			<template #activator="{ on, attrs }">
-				<v-btn v-bind="attrs" icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
-			</template>
-			<v-date-picker
-				no-title
-				scrollable
-				:value="defaultISOValue"
-				:first-day-of-week="1"
-				@change="updateFromDatePicker"
-			></v-date-picker>
-		</v-menu>
-		<v-btn icon @click="localDate.reset()">
-			<v-icon>mdi-close-circle-outline</v-icon>
-		</v-btn>
-	</v-input>
-</template>
-
 <script lang="ts">
 import { debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -169,6 +112,63 @@ export default class DateField extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-input
+		:error-messages="errorMessages"
+		class="background darken-2 rounded-lg mb-1 pl-2 date-field"
+		dense
+		:hide-details="!hasErrors"
+	>
+		<div class="caption label">{{ label }}</div>
+		<v-spacer></v-spacer>
+		<input
+			ref="date"
+			v-model.number="localDate.calendarDate"
+			min="1"
+			:max="localDate.getMaxDate()"
+			maxlength="2"
+			class="pa-1 text--primary"
+			style="width: 40px"
+			placeholder="TT"
+		/>
+		<input
+			ref="month"
+			v-model.number="localDate.calendarMonth"
+			maxlength="2"
+			min="1"
+			max="12"
+			class="pa-1 text--primary"
+			style="width: 40px"
+			placeholder="MM"
+		/>
+		<input
+			ref="year"
+			v-model.number="localDate.calendarYear"
+			minlength="4"
+			maxlength="4"
+			class="pa-1 text--primary"
+			style="width: 50px"
+			placeholder="JJJJ"
+		/>
+		<v-spacer></v-spacer>
+		<v-menu v-model="datePickerIsOpen" class="date-picker">
+			<template #activator="{ on, attrs }">
+				<v-btn v-bind="attrs" icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
+			</template>
+			<v-date-picker
+				no-title
+				scrollable
+				:value="defaultISOValue"
+				:first-day-of-week="1"
+				@change="updateFromDatePicker"
+			></v-date-picker>
+		</v-menu>
+		<v-btn icon @click="localDate.reset()">
+			<v-icon>mdi-close-circle-outline</v-icon>
+		</v-btn>
+	</v-input>
+</template>
 
 <style>
 .modifier-menu {

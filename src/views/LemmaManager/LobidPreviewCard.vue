@@ -1,49 +1,3 @@
-<template>
-	<div>
-		<v-row
-			v-for="(fragment, i) in fragments"
-			:key="i"
-			style="overflow: hidden"
-			:class="['fragment', $listeners['input'] !== undefined && 'clickable', 'rounded-lg', 'mt-1']"
-			no-gutters
-			@click="selectOrDeselectFragment(fragment.gnd)"
-		>
-			<slot />
-			<div
-				v-if="$listeners['input'] !== undefined"
-				style="flex: 0 0 40px"
-				class="align-self-center text-center"
-			>
-				<v-icon v-if="value.includes(fragment.gnd)" color="primary">mdi-check-decagram</v-icon>
-				<v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
-			</div>
-			<div
-				v-if="fragment.html !== null"
-				style="flex: 0 0 100px; overflow: hidden; height: 100px"
-				class="pt-1 pb-1 text-center"
-				cols="3"
-			>
-				<img v-if="fragment.data.picture" alt="" :src="fragment.data.picture" />
-				<v-icon v-else class="mt-5 ml-5 pt-4 pl-2">mdi-image-broken-variant</v-icon>
-			</div>
-			<div style="flex: 1; line-height: 1.2" class="pt-1 pl-2 caption">
-				<div class="description">
-					<b>{{ fragment.data.name }}</b>
-					<br />
-					{{ fragment.data.description || fragment.data.type }}
-				</div>
-				<a
-					class="mt-2 d-inline-block text-decoration-none"
-					target="_blank"
-					:href="'https://lobid.org/gnd/' + fragment.gnd"
-				>
-					&rarr; {{ showFullLink ? `https://lobid.org/gnd/${fragment.gnd}` : fragment.gnd }}
-				</a>
-			</div>
-		</v-row>
-	</div>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -106,6 +60,52 @@ export default class LobidPreviewCard extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div>
+		<v-row
+			v-for="(fragment, i) in fragments"
+			:key="i"
+			style="overflow: hidden"
+			:class="['fragment', $listeners['input'] !== undefined && 'clickable', 'rounded-lg', 'mt-1']"
+			no-gutters
+			@click="selectOrDeselectFragment(fragment.gnd)"
+		>
+			<slot />
+			<div
+				v-if="$listeners['input'] !== undefined"
+				style="flex: 0 0 40px"
+				class="align-self-center text-center"
+			>
+				<v-icon v-if="value.includes(fragment.gnd)" color="primary">mdi-check-decagram</v-icon>
+				<v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+			</div>
+			<div
+				v-if="fragment.html !== null"
+				style="flex: 0 0 100px; overflow: hidden; height: 100px"
+				class="pt-1 pb-1 text-center"
+				cols="3"
+			>
+				<img v-if="fragment.data.picture" alt="" :src="fragment.data.picture" />
+				<v-icon v-else class="mt-5 ml-5 pt-4 pl-2">mdi-image-broken-variant</v-icon>
+			</div>
+			<div style="flex: 1; line-height: 1.2" class="pt-1 pl-2 caption">
+				<div class="description">
+					<b>{{ fragment.data.name }}</b>
+					<br />
+					{{ fragment.data.description || fragment.data.type }}
+				</div>
+				<a
+					class="mt-2 d-inline-block text-decoration-none"
+					target="_blank"
+					:href="'https://lobid.org/gnd/' + fragment.gnd"
+				>
+					&rarr; {{ showFullLink ? `https://lobid.org/gnd/${fragment.gnd}` : fragment.gnd }}
+				</a>
+			</div>
+		</v-row>
+	</div>
+</template>
 
 <style scoped>
 .fragment {

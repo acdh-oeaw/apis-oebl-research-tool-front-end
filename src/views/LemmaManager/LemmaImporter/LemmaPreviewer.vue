@@ -1,20 +1,3 @@
-<template>
-	<div class="import-lemma-preview-container">
-		<v-container>
-			<v-row>
-				<v-col>
-					{{ label }}
-				</v-col>
-			</v-row>
-			<v-row>
-				<v-col>
-					<v-data-table :headers="lemmaHeaders" :items="lemmas"></v-data-table>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -56,3 +39,20 @@ export default class LemmaPreviewer extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="import-lemma-preview-container">
+		<v-container>
+			<v-row>
+				<v-col>
+					{{ label }}
+				</v-col>
+			</v-row>
+			<v-row>
+				<v-col>
+					<v-data-table :headers="lemmaHeaders" :items="lemmas"></v-data-table>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

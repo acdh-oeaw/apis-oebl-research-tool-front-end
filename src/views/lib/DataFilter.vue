@@ -1,3 +1,63 @@
+<script lang="ts">
+import { clone, debounce } from "lodash";
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
+
+@Component({
+	components: {
+		SelectMenu,
+	},
+})
+export default class DataFilter extends Vue {
+	@Prop({ default: () => [] }) columns!: Array<LemmaColumn>;
+	@Prop({ default: () => [] }) value!: Array<LemmaFilterItem>;
+	@Prop({ default: () => [] }) comparators!: Array<LemmaFilterComparator>;
+
+	defaultFilterItem = {
+		column: this.columns[1],
+		comparator: this.comparators[0]?.value,
+		query: "",
+	};
+
+	debouncedEmitInput = debounce(this.emitInput);
+
+	emitInput() {
+		this.$emit("input", this.localFilterItems);
+	}
+
+	isFilterWithInput(f: LemmaFilterItem): boolean {
+		return f.comparator !== "exists" && f.comparator !== "exists-not";
+	}
+
+	get localFilterItems() {
+		if (this.value.length === 0) {
+			return [clone(this.defaultFilterItem)];
+		} else {
+			return this.value;
+		}
+	}
+
+	addFilterItem() {
+		this.$emit("input", this.localFilterItems.concat(clone(this.defaultFilterItem)));
+	}
+
+	removeFilterItem(i: number) {
+		if (this.value.length === 1) {
+			// reset first query value
+			this.$emit("input", [{ ...this.value[0], query: "" }]);
+		} else {
+			// remove filter item
+			this.$emit(
+				"input",
+				this.value.filter((f, fi) => i !== fi),
+			);
+		}
+	}
+}
+</script>
+
 <template>
 	<div>
 		<div v-for="(filter, i) in localFilterItems" :key="i">
@@ -102,65 +162,3 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import { clone, debounce } from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
-
-@Component({
-	components: {
-		SelectMenu,
-	},
-})
-export default class DataFilter extends Vue {
-	@Prop({ default: () => [] }) columns!: Array<LemmaColumn>;
-	@Prop({ default: () => [] }) value!: Array<LemmaFilterItem>;
-	@Prop({ default: () => [] }) comparators!: Array<LemmaFilterComparator>;
-
-	defaultFilterItem = {
-		column: this.columns[1],
-		comparator: this.comparators[0]?.value,
-		query: "",
-	};
-
-	debouncedEmitInput = debounce(this.emitInput);
-
-	emitInput() {
-		this.$emit("input", this.localFilterItems);
-	}
-
-	isFilterWithInput(f: LemmaFilterItem): boolean {
-		return f.comparator !== "exists" && f.comparator !== "exists-not";
-	}
-
-	get localFilterItems() {
-		if (this.value.length === 0) {
-			return [clone(this.defaultFilterItem)];
-		} else {
-			return this.value;
-		}
-	}
-
-	addFilterItem() {
-		this.$emit("input", this.localFilterItems.concat(clone(this.defaultFilterItem)));
-	}
-
-	removeFilterItem(i: number) {
-		if (this.value.length === 1) {
-			// reset first query value
-			this.$emit("input", [{ ...this.value[0], query: "" }]);
-		} else {
-			// remove filter item
-			this.$emit(
-				"input",
-				this.value.filter((f, fi) => i !== fi),
-			);
-		}
-	}
-}
-</script>
-
-<style lang="scss" scoped></style>

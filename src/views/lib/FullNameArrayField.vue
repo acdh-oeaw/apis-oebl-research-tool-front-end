@@ -1,62 +1,3 @@
-<template>
-	<div class="full-name-array-wrapper">
-		<v-card class="transparent" elevation="0">
-			<h4 class="py-2">
-				<!-- @vue-expect-error -->
-				{{ lemmaRowTranslations.alternativeNames.de }}
-			</h4>
-			<v-card-actions
-				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit === null }"
-			>
-				<div v-if="selectedToEdit === null" class="add-new-full-name-btn">
-					<v-btn class="rounded-lg" icon @click.stop="createEmptyItem()">
-						Weiteren Namen hinzufügen
-						<v-icon class="pl-6">mdi-plus-circle-outline</v-icon>
-					</v-btn>
-				</div>
-				<div v-else class="edit-full-name-input">
-					<full-name-field :full-name="selectedToEdit" :disabled="false"></full-name-field>
-					<v-btn-toggle class="transparent mt-1 ml-1 justify-center" borderless>
-						<v-btn text class="rounded-lg" @click="saveSelectedItem()">Speichern</v-btn>
-						<v-btn text class="rounded-lg ml-3" @click="deleteSelectedItem()">
-							{{ disregardText }}
-						</v-btn>
-					</v-btn-toggle>
-				</div>
-			</v-card-actions>
-			<v-card-text class="full-name-array py-0">
-				<v-container class="py-0 px-0">
-					<div
-						v-for="(fullName, index) in localFullNames"
-						:key="index"
-						class="full-name-array-item"
-					>
-						<v-row>
-							<v-col cols="11">
-								<full-name-field :full-name="fullName" :disabled="true"></full-name-field>
-							</v-col>
-							<v-col cols="1">
-								<v-container fill-height class="px-0 justify">
-									<v-btn
-										class="rounded-lg"
-										icon
-										small
-										:disabled="isLocked"
-										@click.stop="editItem(index)"
-									>
-										<v-icon>mdi-pencil-circle-outline</v-icon>
-									</v-btn>
-								</v-container>
-							</v-col>
-						</v-row>
-					</div>
-				</v-container>
-			</v-card-text>
-		</v-card>
-		<v-divider class="pb-6"></v-divider>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -135,6 +76,65 @@ export default class FullNameArrayField extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="full-name-array-wrapper">
+		<v-card class="transparent" elevation="0">
+			<h4 class="py-2">
+				<!-- @vue-expect-error -->
+				{{ lemmaRowTranslations.alternativeNames.de }}
+			</h4>
+			<v-card-actions
+				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit === null }"
+			>
+				<div v-if="selectedToEdit === null" class="add-new-full-name-btn">
+					<v-btn class="rounded-lg" icon @click.stop="createEmptyItem()">
+						Weiteren Namen hinzufügen
+						<v-icon class="pl-6">mdi-plus-circle-outline</v-icon>
+					</v-btn>
+				</div>
+				<div v-else class="edit-full-name-input">
+					<full-name-field :full-name="selectedToEdit" :disabled="false"></full-name-field>
+					<v-btn-toggle class="transparent mt-1 ml-1 justify-center" borderless>
+						<v-btn text class="rounded-lg" @click="saveSelectedItem()">Speichern</v-btn>
+						<v-btn text class="rounded-lg ml-3" @click="deleteSelectedItem()">
+							{{ disregardText }}
+						</v-btn>
+					</v-btn-toggle>
+				</div>
+			</v-card-actions>
+			<v-card-text class="full-name-array py-0">
+				<v-container class="py-0 px-0">
+					<div
+						v-for="(fullName, index) in localFullNames"
+						:key="index"
+						class="full-name-array-item"
+					>
+						<v-row>
+							<v-col cols="11">
+								<full-name-field :full-name="fullName" :disabled="true"></full-name-field>
+							</v-col>
+							<v-col cols="1">
+								<v-container fill-height class="px-0 justify">
+									<v-btn
+										class="rounded-lg"
+										icon
+										small
+										:disabled="isLocked"
+										@click.stop="editItem(index)"
+									>
+										<v-icon>mdi-pencil-circle-outline</v-icon>
+									</v-btn>
+								</v-container>
+							</v-col>
+						</v-row>
+					</div>
+				</v-container>
+			</v-card-text>
+		</v-card>
+		<v-divider class="pb-6"></v-divider>
+	</div>
+</template>
 
 <style lang="css" scoped>
 .full-name-array {

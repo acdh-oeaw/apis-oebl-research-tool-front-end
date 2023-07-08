@@ -1,165 +1,3 @@
-<template>
-	<div class="pb-1" style="width: 320px; min-height: 250px">
-		<v-overlay
-			v-if="showOverlay"
-			opacity=".9"
-			style="border-radius: 11px"
-			color="background darken-1"
-		>
-			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeAnnotation">
-				Annotation entfernen
-			</v-btn>
-			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
-				Abbrechen
-			</v-btn>
-		</v-overlay>
-		<v-window v-model="page" reverse>
-			<v-window-item>
-				<div class="d-flex flex-row align-self-stretch">
-					<v-btn icon tile class="rounded-lg" small></v-btn>
-					<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Annotation</div>
-					<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
-						<v-icon>mdi-dots-horizontal</v-icon>
-					</v-btn>
-				</div>
-				<div
-					v-if="entityTypes"
-					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
-				>
-					<v-select
-						v-model="entityType"
-						class="pt-0 custom-v-select"
-						hide-details
-						:items="entityTypes"
-						attach
-						placeholder="Entität"
-					></v-select>
-				</div>
-				<div
-					v-if="entityTypes"
-					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
-				>
-					<v-select
-						v-model="selectedRelationType"
-						class="pt-0 custom-v-select"
-						hide-details
-						:items="availableRelations"
-						attach
-						placeholder="Relation"
-						item-value="id"
-					></v-select>
-				</div>
-				{{ searchTerm }}
-				<text-field
-					ref="searchTerm"
-					v-model="searchTerm"
-					class="flex-grow-1"
-					:clearable="true"
-					placeholder="Enität suchen …"
-					@input="debouncedSearchEntity"
-				>
-					<template #prepend>
-						<div v-if="loading === true" class="mt-1 ml-2">
-							<loading-spinner :size="25" />
-						</div>
-						<v-icon v-else size="16" class="ml-3">mdi-magnify</v-icon>
-					</template>
-				</text-field>
-				<v-list v-if="results.length > 0" dense nav color="transparent" class="pa-0 result-list">
-					<v-list-item v-for="result in results" :key="result.id">
-						<v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
-							<template>
-								<v-btn
-									tile
-									icon
-									class="rounded-lg"
-									elevation="0"
-									@click.stop.prevent.capture="selectEntity(result.id)"
-								>
-									<v-icon v-if="result.id === entityId" color="primary">mdi-check-circle</v-icon>
-									<v-icon v-else>mdi-circle-outline</v-icon>
-								</v-btn>
-							</template>
-						</v-list-item-avatar>
-						<!-- eslint-disable vue/no-v-html, vue/no-v-text-v-html-on-component -->
-						<v-list-item-content
-							class="cursor-pointer ac-result"
-							v-html="result.name"
-						></v-list-item-content>
-						<!-- eslint-enable vue/no-v-html, vue/no-v-text-v-html-on-component -->
-					</v-list-item>
-				</v-list>
-				<div
-					v-else-if="results.length === 0 && searchTerm.trim() !== '' && loading === true"
-					class="pa-5 my-5 text-center caption muted"
-				>
-					Suche …
-				</div>
-				<div
-					v-else-if="results.length === 0 && searchTerm.trim() === ''"
-					class="pa-5 my-5 text-center caption muted"
-				>
-					Suchen Sie nach einer Entität
-				</div>
-				<div
-					v-else-if="results.length === 0 && searchTerm.trim() !== ''"
-					class="pa-5 my-5 text-center caption muted"
-				>
-					Nichts gefunden.
-				</div>
-			</v-window-item>
-			<v-window-item>
-				<div>
-					<v-btn elevation="0" color="primary" text class="rounded-lg mb-2" small @click="page = 0">
-						<v-icon left>mdi-chevron-left</v-icon>
-						Zurück
-					</v-btn>
-				</div>
-				<lobid-preview-card class="mb-3" :gnd="[showDetailsForGnd]" />
-			</v-window-item>
-		</v-window>
-		<div class="d-flex flex-row mt-1">
-			<text-field
-				v-model="relationStartTime"
-				placeholder="YYYY"
-				class="mr-1"
-				style="width: 49.5%"
-				label="von"
-				@input="updateProps({ relationStartTime: $event })"
-			/>
-			<text-field
-				v-model="relationEndTime"
-				placeholder="YYYY"
-				label="bis"
-				style="width: 49.5%"
-				@input="updateProps({ relationEndTime: $event })"
-			/>
-		</div>
-		<div v-if="isConfirmedAnnotation === false">
-			<v-divider class="mb-2 mt-1" />
-			<v-btn
-				elevation="0"
-				block
-				class="rounded-lg white--text"
-				color="green lighten-1"
-				@click="updateProps({ isConfirmed: 'true' })"
-			>
-				Vorschlag annehmen
-			</v-btn>
-			<v-btn
-				v-if="isConfirmedAnnotation === false"
-				elevation="0"
-				block
-				class="rounded-lg mt-1"
-				color="background darken-2"
-				@click="removeAnnotation"
-			>
-				Vorschlag ablehen
-			</v-btn>
-		</div>
-	</div>
-</template>
-
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
 import _ from "lodash";
@@ -337,6 +175,168 @@ export default class Annotation extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="pb-1" style="width: 320px; min-height: 250px">
+		<v-overlay
+			v-if="showOverlay"
+			opacity=".9"
+			style="border-radius: 11px"
+			color="background darken-1"
+		>
+			<v-btn elevation="0" class="mb-1 rounded-lg" block color="red" @click="removeAnnotation">
+				Annotation entfernen
+			</v-btn>
+			<v-btn block outlined class="rounded-lg" color="grey" @click="showOverlay = false">
+				Abbrechen
+			</v-btn>
+		</v-overlay>
+		<v-window v-model="page" reverse>
+			<v-window-item>
+				<div class="d-flex flex-row align-self-stretch">
+					<v-btn icon tile class="rounded-lg" small></v-btn>
+					<div class="text-center muted caption mb-1 flex-grow-1 align-self-end">Annotation</div>
+					<v-btn icon tile class="rounded-lg" small @click="showOverlay = true">
+						<v-icon>mdi-dots-horizontal</v-icon>
+					</v-btn>
+				</div>
+				<div
+					v-if="entityTypes"
+					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
+				>
+					<v-select
+						v-model="entityType"
+						class="pt-0 custom-v-select"
+						hide-details
+						:items="entityTypes"
+						attach
+						placeholder="Entität"
+					></v-select>
+				</div>
+				<div
+					v-if="entityTypes"
+					class="d-flex flex-row rounded-lg background darken-2 px-2 mt-1 mb-1"
+				>
+					<v-select
+						v-model="selectedRelationType"
+						class="pt-0 custom-v-select"
+						hide-details
+						:items="availableRelations"
+						attach
+						placeholder="Relation"
+						item-value="id"
+					></v-select>
+				</div>
+				{{ searchTerm }}
+				<text-field
+					ref="searchTerm"
+					v-model="searchTerm"
+					class="flex-grow-1"
+					:clearable="true"
+					placeholder="Enität suchen …"
+					@input="debouncedSearchEntity"
+				>
+					<template #prepend>
+						<div v-if="loading === true" class="mt-1 ml-2">
+							<loading-spinner :size="25" />
+						</div>
+						<v-icon v-else size="16" class="ml-3">mdi-magnify</v-icon>
+					</template>
+				</text-field>
+				<v-list v-if="results.length > 0" dense nav color="transparent" class="pa-0 result-list">
+					<v-list-item v-for="result in results" :key="result.id">
+						<v-list-item-avatar class="pr-0 mr-2" min-width="30" max-width="30" width="30">
+							<template>
+								<v-btn
+									tile
+									icon
+									class="rounded-lg"
+									elevation="0"
+									@click.stop.prevent.capture="selectEntity(result.id)"
+								>
+									<v-icon v-if="result.id === entityId" color="primary">mdi-check-circle</v-icon>
+									<v-icon v-else>mdi-circle-outline</v-icon>
+								</v-btn>
+							</template>
+						</v-list-item-avatar>
+						<!-- eslint-disable vue/no-v-html, vue/no-v-text-v-html-on-component -->
+						<v-list-item-content
+							class="cursor-pointer ac-result"
+							v-html="result.name"
+						></v-list-item-content>
+						<!-- eslint-enable vue/no-v-html, vue/no-v-text-v-html-on-component -->
+					</v-list-item>
+				</v-list>
+				<div
+					v-else-if="results.length === 0 && searchTerm.trim() !== '' && loading === true"
+					class="pa-5 my-5 text-center caption muted"
+				>
+					Suche …
+				</div>
+				<div
+					v-else-if="results.length === 0 && searchTerm.trim() === ''"
+					class="pa-5 my-5 text-center caption muted"
+				>
+					Suchen Sie nach einer Entität
+				</div>
+				<div
+					v-else-if="results.length === 0 && searchTerm.trim() !== ''"
+					class="pa-5 my-5 text-center caption muted"
+				>
+					Nichts gefunden.
+				</div>
+			</v-window-item>
+			<v-window-item>
+				<div>
+					<v-btn elevation="0" color="primary" text class="rounded-lg mb-2" small @click="page = 0">
+						<v-icon left>mdi-chevron-left</v-icon>
+						Zurück
+					</v-btn>
+				</div>
+				<lobid-preview-card class="mb-3" :gnd="[showDetailsForGnd]" />
+			</v-window-item>
+		</v-window>
+		<div class="d-flex flex-row mt-1">
+			<text-field
+				v-model="relationStartTime"
+				placeholder="YYYY"
+				class="mr-1"
+				style="width: 49.5%"
+				label="von"
+				@input="updateProps({ relationStartTime: $event })"
+			/>
+			<text-field
+				v-model="relationEndTime"
+				placeholder="YYYY"
+				label="bis"
+				style="width: 49.5%"
+				@input="updateProps({ relationEndTime: $event })"
+			/>
+		</div>
+		<div v-if="isConfirmedAnnotation === false">
+			<v-divider class="mb-2 mt-1" />
+			<v-btn
+				elevation="0"
+				block
+				class="rounded-lg white--text"
+				color="green lighten-1"
+				@click="updateProps({ isConfirmed: 'true' })"
+			>
+				Vorschlag annehmen
+			</v-btn>
+			<v-btn
+				v-if="isConfirmedAnnotation === false"
+				elevation="0"
+				block
+				class="rounded-lg mt-1"
+				color="background darken-2"
+				@click="removeAnnotation"
+			>
+				Vorschlag ablehen
+			</v-btn>
+		</div>
+	</div>
+</template>
 
 <style scoped>
 .result-list {

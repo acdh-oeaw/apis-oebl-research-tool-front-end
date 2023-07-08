@@ -1,48 +1,3 @@
-<template>
-	<div class="import-options-saver-container">
-		<v-container>
-			<v-row>
-				<v-col class="import-options-saver">
-					<v-btn
-						:disabled="
-							!changedByUserInteraction || currentlySaving || !optionsReady || disabled || !';-)'
-						"
-						@click="currentlySaving = true"
-					>
-						Importeinstellungen speichern
-					</v-btn>
-				</v-col>
-				<v-col>
-					<div v-if="currentlySaving" class="saving-options-dialog">
-						<v-combobox
-							v-model="newOptionsName"
-							label="Speichern unter"
-							:items="optionsNames"
-							@input="saveOption"
-						/>
-					</div>
-					<div v-else-if="optionsNames.length > 0" class="load-options-dialog">
-						<v-select
-							v-model="newOptionsName"
-							label="Einstellungen laden"
-							:items="optionsNames"
-							:disabled="disabled"
-						/>
-						<v-btn v-if="newOptionsName" icon @click="loadOption">
-							<v-icon>mdi-check</v-icon>
-						</v-btn>
-					</div>
-				</v-col>
-				<v-col>
-					<div v-if="selectedOptionsName" class="currently-loaded-import-options-name">
-						"{{ selectedOptionsName }}" geladen
-					</div>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -133,3 +88,48 @@ export default class ImportOptionsSaver extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="import-options-saver-container">
+		<v-container>
+			<v-row>
+				<v-col class="import-options-saver">
+					<v-btn
+						:disabled="
+							!changedByUserInteraction || currentlySaving || !optionsReady || disabled || !';-)'
+						"
+						@click="currentlySaving = true"
+					>
+						Importeinstellungen speichern
+					</v-btn>
+				</v-col>
+				<v-col>
+					<div v-if="currentlySaving" class="saving-options-dialog">
+						<v-combobox
+							v-model="newOptionsName"
+							label="Speichern unter"
+							:items="optionsNames"
+							@input="saveOption"
+						/>
+					</div>
+					<div v-else-if="optionsNames.length > 0" class="load-options-dialog">
+						<v-select
+							v-model="newOptionsName"
+							label="Einstellungen laden"
+							:items="optionsNames"
+							:disabled="disabled"
+						/>
+						<v-btn v-if="newOptionsName" icon @click="loadOption">
+							<v-icon>mdi-check</v-icon>
+						</v-btn>
+					</div>
+				</v-col>
+				<v-col>
+					<div v-if="selectedOptionsName" class="currently-loaded-import-options-name">
+						"{{ selectedOptionsName }}" geladen
+					</div>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

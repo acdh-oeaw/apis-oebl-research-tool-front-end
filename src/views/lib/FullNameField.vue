@@ -1,24 +1,3 @@
-<template>
-	<div class="full-name-input-wrapper">
-		<!-- @vue-expect-error -->
-		<text-field
-			v-model="fullName.firstName"
-			:required="false"
-			:label="lemmaRowTranslations.firstName.de"
-			:disabled="disabled"
-			@input="emitInput($event, 'firstName')"
-		></text-field>
-		<!-- @vue-expect-error -->
-		<text-field
-			v-model="fullName.lastName"
-			:required="false"
-			:label="lemmaRowTranslations.lastName.de"
-			:disabled="disabled"
-			@input="emitInput($event, 'lastName')"
-		></text-field>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -54,3 +33,24 @@ export default class FullNameField extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="full-name-input-wrapper">
+		<!-- @vue-expect-error -->
+		<text-field
+			v-model="fullName.firstName"
+			:required="false"
+			:label="lemmaRowTranslations.firstName.de"
+			:disabled="disabled"
+			@input="emitInput($event, 'firstName')"
+		></text-field>
+		<!-- @vue-expect-error -->
+		<text-field
+			v-model="fullName.lastName"
+			:required="false"
+			:label="lemmaRowTranslations.lastName.de"
+			:disabled="disabled"
+			@input="emitInput($event, 'lastName')"
+		></text-field>
+	</div>
+</template>

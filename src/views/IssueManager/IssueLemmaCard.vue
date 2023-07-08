@@ -1,43 +1,3 @@
-<template>
-	<!-- FIXME: a11y -->
-	<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-	<div style="user-select: none" @click="$emit('select-lemma', value)">
-		<template v-if="value.lemma">
-			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
-			<h5 v-if="showBirthAndDeath" class="pa-0 ma-0">
-				{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}
-			</h5>
-		</template>
-		<span v-else class="caption">Lemma nicht gefunden.</span>
-		<v-row class="mt-2" no-gutters>
-			<v-col class="align-self-end">
-				<user-avatar v-if="showEditor" :value="editor" />
-				<user-avatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
-			</v-col>
-			<v-col class="text-right">
-				<v-chip
-					v-for="label in labelsLimited"
-					:key="label.id"
-					small
-					class="label px-2"
-					:color="label.color"
-				>
-					{{ label.name }}
-				</v-chip>
-				<v-chip
-					v-if="maxLabels && labels.length > maxLabels"
-					small
-					color="background"
-					class="label px-2 text--secondary font-weight-medium"
-				>
-					+{{ labels.length - maxLabels }}
-				</v-chip>
-			</v-col>
-		</v-row>
-	</div>
-	<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-</template>
-
 <script lang="ts">
 import { format } from "date-fns";
 import _ from "lodash";
@@ -109,6 +69,46 @@ export default class IssueLemmaCard extends Vue {
 	}
 }
 </script>
+
+<template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+	<div style="user-select: none" @click="$emit('select-lemma', value)">
+		<template v-if="value.lemma">
+			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
+			<h5 v-if="showBirthAndDeath" class="pa-0 ma-0">
+				{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}
+			</h5>
+		</template>
+		<span v-else class="caption">Lemma nicht gefunden.</span>
+		<v-row class="mt-2" no-gutters>
+			<v-col class="align-self-end">
+				<user-avatar v-if="showEditor" :value="editor" />
+				<user-avatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
+			</v-col>
+			<v-col class="text-right">
+				<v-chip
+					v-for="label in labelsLimited"
+					:key="label.id"
+					small
+					class="label px-2"
+					:color="label.color"
+				>
+					{{ label.name }}
+				</v-chip>
+				<v-chip
+					v-if="maxLabels && labels.length > maxLabels"
+					small
+					color="background"
+					class="label px-2 text--secondary font-weight-medium"
+				>
+					+{{ labels.length - maxLabels }}
+				</v-chip>
+			</v-col>
+		</v-row>
+	</div>
+	<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+</template>
 
 <style scoped>
 h2 {

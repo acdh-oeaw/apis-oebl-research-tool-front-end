@@ -1,12 +1,3 @@
-<template>
-	<div
-		:style="{ paddingTop: size / 2 + 'px', width: size + 'px', height: size + 'px', ...cssProps }"
-		class="lds-spinner"
-	>
-		<div v-for="i in 12" :key="i"></div>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -26,6 +17,15 @@ export default class LoadingSpinner extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div
+		:style="{ paddingTop: size / 2 + 'px', width: size + 'px', height: size + 'px', ...cssProps }"
+		class="lds-spinner"
+	>
+		<div v-for="i in 12" :key="i"></div>
+	</div>
+</template>
 
 <style scoped>
 .lds-spinner {

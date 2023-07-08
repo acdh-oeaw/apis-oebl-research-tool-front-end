@@ -1,50 +1,3 @@
-<template>
-	<div class="user-columns-adding-container">
-		<v-container>
-			<v-row class="user-columns-adding-chosen">
-				<v-col>
-					<v-chip
-						v-for="(targetColumn, sourceColumn) in localOptions"
-						:key="`${targetColumn}`"
-						close
-						class="chosen-user-column"
-						@click:close="deleteMapping(targetColumn)"
-					>
-						{{ sourceColumn }}: {{ targetColumn }}
-					</v-chip>
-				</v-col>
-			</v-row>
-			<v-row class="user-columns-adding-select">
-				<v-col class="user-columns-adding-select-source">
-					<v-select
-						v-model="chosenSourceColumn"
-						label="Quellspalte"
-						:items="vuetifySourceColumns"
-						clearable
-					/>
-				</v-col>
-				<v-col class="user-columns-adding-select-target">
-					<v-text-field
-						v-model="chosenTargetColumn"
-						label="Zielspalte"
-						clearable
-						:rules="[targetColumnChosenMessage]"
-					/>
-				</v-col>
-				<v-col class="user-columns-adding-select-submit">
-					<v-btn :disabled="!columnFiledsAreSet()" @click="addUserColumn">Hinzufügen</v-btn>
-				</v-col>
-			</v-row>
-			<v-row class="user-columns-adding-submit">
-				<v-btn @click="submit">Weiter</v-btn>
-			</v-row>
-			<v-row class="user-columns-adding-preview">
-				<v-data-table label="Vorschau" :headers="vuetifyUserColumnHeaders" :items="userColumns" />
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -182,3 +135,50 @@ export default class UserColumnAdding extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="user-columns-adding-container">
+		<v-container>
+			<v-row class="user-columns-adding-chosen">
+				<v-col>
+					<v-chip
+						v-for="(targetColumn, sourceColumn) in localOptions"
+						:key="`${targetColumn}`"
+						close
+						class="chosen-user-column"
+						@click:close="deleteMapping(targetColumn)"
+					>
+						{{ sourceColumn }}: {{ targetColumn }}
+					</v-chip>
+				</v-col>
+			</v-row>
+			<v-row class="user-columns-adding-select">
+				<v-col class="user-columns-adding-select-source">
+					<v-select
+						v-model="chosenSourceColumn"
+						label="Quellspalte"
+						:items="vuetifySourceColumns"
+						clearable
+					/>
+				</v-col>
+				<v-col class="user-columns-adding-select-target">
+					<v-text-field
+						v-model="chosenTargetColumn"
+						label="Zielspalte"
+						clearable
+						:rules="[targetColumnChosenMessage]"
+					/>
+				</v-col>
+				<v-col class="user-columns-adding-select-submit">
+					<v-btn :disabled="!columnFiledsAreSet()" @click="addUserColumn">Hinzufügen</v-btn>
+				</v-col>
+			</v-row>
+			<v-row class="user-columns-adding-submit">
+				<v-btn @click="submit">Weiter</v-btn>
+			</v-row>
+			<v-row class="user-columns-adding-preview">
+				<v-data-table label="Vorschau" :headers="vuetifyUserColumnHeaders" :items="userColumns" />
+			</v-row>
+		</v-container>
+	</div>
+</template>

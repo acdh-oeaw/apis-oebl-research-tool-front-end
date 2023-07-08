@@ -1,27 +1,3 @@
-<template>
-	<div class="lemma-importer-container">
-		<v-container>
-			<v-row class="lemma-importer-dialog">
-				<v-col class="lemma-importer-submit">
-					<v-btn @click="importLemmas">{{ lemmasToImport.length }} Lemmas importieren</v-btn>
-				</v-col>
-				<v-col class="lemma-importer-feedback">
-					<v-progress-circular v-if="doingImport" :value="percentDone" />
-					<v-alert v-else-if="percentDone === 100" type="success">
-						{{ lemmasToImport.length }} Lemmas importiert
-					</v-alert>
-					<v-alert v-else-if="errorMessage !== null" type="error">{{ errorMessage }}</v-alert>
-				</v-col>
-			</v-row>
-			<v-row class="lemma-importer-preview">
-				<v-col>
-					<lemma-previewer label="Dieses Lemmas werden importiert" :lemmas="lemmasToImport" />
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -62,3 +38,27 @@ export default class LemmaImporter extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="lemma-importer-container">
+		<v-container>
+			<v-row class="lemma-importer-dialog">
+				<v-col class="lemma-importer-submit">
+					<v-btn @click="importLemmas">{{ lemmasToImport.length }} Lemmas importieren</v-btn>
+				</v-col>
+				<v-col class="lemma-importer-feedback">
+					<v-progress-circular v-if="doingImport" :value="percentDone" />
+					<v-alert v-else-if="percentDone === 100" type="success">
+						{{ lemmasToImport.length }} Lemmas importiert
+					</v-alert>
+					<v-alert v-else-if="errorMessage !== null" type="error">{{ errorMessage }}</v-alert>
+				</v-col>
+			</v-row>
+			<v-row class="lemma-importer-preview">
+				<v-col>
+					<lemma-previewer label="Dieses Lemmas werden importiert" :lemmas="lemmasToImport" />
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

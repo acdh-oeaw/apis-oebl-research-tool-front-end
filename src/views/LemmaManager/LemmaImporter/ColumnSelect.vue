@@ -1,22 +1,3 @@
-<template>
-	<div class="column-select">
-		<v-container>
-			<v-row>
-				<v-col>{{ label }}</v-col>
-				<v-col>
-					<v-select
-						label="Quellspalte"
-						:value="options.sourceKey"
-						:items="vuetifySelectItems"
-						clearable
-						@change="options.sourceKey = $event"
-					/>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -86,3 +67,22 @@ export default class ColumnSelect extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="column-select">
+		<v-container>
+			<v-row>
+				<v-col>{{ label }}</v-col>
+				<v-col>
+					<v-select
+						label="Quellspalte"
+						:value="options.sourceKey"
+						:items="vuetifySelectItems"
+						clearable
+						@change="options.sourceKey = $event"
+					/>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

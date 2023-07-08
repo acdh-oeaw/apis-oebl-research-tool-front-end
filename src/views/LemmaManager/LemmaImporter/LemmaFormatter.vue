@@ -1,60 +1,3 @@
-<template>
-	<div class="lemma-formatter-container">
-		<v-container>
-			<v-row class="lemma-formatting-options">
-				<v-col>
-					<v-expansion-panels multiple>
-						<v-expansion-panel class="null-managment-row">
-							<v-expansion-panel-header>Null-Werte</v-expansion-panel-header>
-							<v-expansion-panel-content eager>
-								<null-manager
-									:lemma-prototypes="lemmaPrototypes"
-									:preloaded-null-values="localOptions.nullValues"
-									@options="localOptions.nullValues = $event"
-									@data="lemmasPrototypesWithNullsAndRequiredFields = $event"
-									@missingRowsIndexes="missingRowsIndexes = $event"
-								/>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-						<v-expansion-panel>
-							<v-expansion-panel-header>Datumsformattierung</v-expansion-panel-header>
-							<v-expansion-panel-content eager>
-								<date-formatter
-									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
-									:preloaded-date-format-option="localOptions.dateFormat"
-									@data="dates = $event"
-									@options="localOptions.dateFormat = $event"
-								/>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-						<v-expansion-panel>
-							<v-expansion-panel-header>Gender</v-expansion-panel-header>
-							<v-expansion-panel-content eager>
-								<gender-mapper
-									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
-									:preloaded-options="localOptions.genderMapping"
-									@data="genders = $event"
-									@options="localOptions.genderMapping = $event"
-								/>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-					</v-expansion-panels>
-				</v-col>
-			</v-row>
-			<v-row class="submit-lemma-formatting-row">
-				<v-col>
-					<v-btn @click="submit">Weiter</v-btn>
-				</v-col>
-			</v-row>
-			<v-row class="lemma-formatting-preview-row">
-				<v-col>
-					<lemma-previewer :lemmas="newLemmas" />
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -137,3 +80,60 @@ export default class LemmaFormatter extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="lemma-formatter-container">
+		<v-container>
+			<v-row class="lemma-formatting-options">
+				<v-col>
+					<v-expansion-panels multiple>
+						<v-expansion-panel class="null-managment-row">
+							<v-expansion-panel-header>Null-Werte</v-expansion-panel-header>
+							<v-expansion-panel-content eager>
+								<null-manager
+									:lemma-prototypes="lemmaPrototypes"
+									:preloaded-null-values="localOptions.nullValues"
+									@options="localOptions.nullValues = $event"
+									@data="lemmasPrototypesWithNullsAndRequiredFields = $event"
+									@missingRowsIndexes="missingRowsIndexes = $event"
+								/>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
+						<v-expansion-panel>
+							<v-expansion-panel-header>Datumsformattierung</v-expansion-panel-header>
+							<v-expansion-panel-content eager>
+								<date-formatter
+									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
+									:preloaded-date-format-option="localOptions.dateFormat"
+									@data="dates = $event"
+									@options="localOptions.dateFormat = $event"
+								/>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
+						<v-expansion-panel>
+							<v-expansion-panel-header>Gender</v-expansion-panel-header>
+							<v-expansion-panel-content eager>
+								<gender-mapper
+									:lemma-prototypes="lemmasPrototypesWithNullsAndRequiredFields"
+									:preloaded-options="localOptions.genderMapping"
+									@data="genders = $event"
+									@options="localOptions.genderMapping = $event"
+								/>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
+					</v-expansion-panels>
+				</v-col>
+			</v-row>
+			<v-row class="submit-lemma-formatting-row">
+				<v-col>
+					<v-btn @click="submit">Weiter</v-btn>
+				</v-col>
+			</v-row>
+			<v-row class="lemma-formatting-preview-row">
+				<v-col>
+					<lemma-previewer :lemmas="newLemmas" />
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

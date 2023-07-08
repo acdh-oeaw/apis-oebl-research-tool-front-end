@@ -1,43 +1,3 @@
-<template>
-	<v-app :style="{ background: 'var(--v-background-base)' }">
-		<v-overlay
-			v-if="store.isLoggedIn === false"
-			:value="store.isLoggedIn === false"
-			opacity="1"
-			z-index="99"
-			absolute
-		>
-			<login-form />
-		</v-overlay>
-
-		<global-search v-model="store.showSearchDialog" />
-
-		<confirm />
-		<prompt />
-
-		<resizable-drawer
-			:card="false"
-			:right="false"
-			:floating="true"
-			color="background darken-2"
-			stateless
-			app
-			:value="showDrawer"
-			left
-			mini-variant-width="73"
-			class="pa-0"
-			:width="store.settings.drawerLeftWidth"
-			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
-		>
-			<sidebar v-if="showDrawer" class="px-3 pt-5" />
-		</resizable-drawer>
-
-		<keep-alive>
-			<router-view />
-		</keep-alive>
-	</v-app>
-</template>
-
 <script lang="ts">
 // eslint-disable-next-line simple-import-sort/imports
 import { Component, Vue } from "vue-property-decorator";
@@ -89,6 +49,46 @@ export default class App extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-app :style="{ background: 'var(--v-background-base)' }">
+		<v-overlay
+			v-if="store.isLoggedIn === false"
+			:value="store.isLoggedIn === false"
+			opacity="1"
+			z-index="99"
+			absolute
+		>
+			<login-form />
+		</v-overlay>
+
+		<global-search v-model="store.showSearchDialog" />
+
+		<confirm />
+		<prompt />
+
+		<resizable-drawer
+			:card="false"
+			:right="false"
+			:floating="true"
+			color="background darken-2"
+			stateless
+			app
+			:value="showDrawer"
+			left
+			mini-variant-width="73"
+			class="pa-0"
+			:width="store.settings.drawerLeftWidth"
+			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
+		>
+			<sidebar v-if="showDrawer" class="px-3 pt-5" />
+		</resizable-drawer>
+
+		<keep-alive>
+			<router-view />
+		</keep-alive>
+	</v-app>
+</template>
 
 <style>
 :focus-visible {

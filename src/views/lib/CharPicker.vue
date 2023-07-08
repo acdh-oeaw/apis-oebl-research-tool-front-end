@@ -1,3 +1,24 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import { specialChar } from "@/service/specialchars";
+
+@Component
+export default class Annotation extends Vue {
+	shouldShowSpecialCharPicker = false;
+
+	specialCharGroups = specialChar.groups;
+
+	toSpecialChar(s: number | string): string {
+		if (typeof s === "number") {
+			return String.fromCodePoint(s);
+		} else {
+			return "";
+		}
+	}
+}
+</script>
+
 <template>
 	<v-menu
 		v-model="shouldShowSpecialCharPicker"
@@ -38,27 +59,6 @@
 		</v-card>
 	</v-menu>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import { specialChar } from "@/service/specialchars";
-
-@Component
-export default class Annotation extends Vue {
-	shouldShowSpecialCharPicker = false;
-
-	specialCharGroups = specialChar.groups;
-
-	toSpecialChar(s: number | string): string {
-		if (typeof s === "number") {
-			return String.fromCodePoint(s);
-		} else {
-			return "";
-		}
-	}
-}
-</script>
 
 <style scoped>
 .special-char {

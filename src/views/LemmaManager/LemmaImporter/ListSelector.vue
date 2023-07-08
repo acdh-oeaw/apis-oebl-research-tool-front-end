@@ -1,36 +1,3 @@
-<template>
-	<div class="import-list-selector-container">
-		<v-container>
-			<v-row class="import-list-selection">
-				<v-col class="select-import-list">
-					<v-combobox
-						v-model="selectedListTitle"
-						label="Eine Liste auswählen"
-						:items="vuetifyItems"
-						:return-object="false"
-						clearable
-					/>
-				</v-col>
-				<v-col class="selected-import-list">
-					<div v-if="selectedList">"{{ selectedList.title }}" geladen</div>
-					<div v-if="loadingList">
-						<v-progress-circular />
-					</div>
-					<div v-if="listCreationFailedMessage">
-						<v-alert type="error">{{ listCreationFailedMessage }}</v-alert>
-					</div>
-				</v-col>
-			</v-row>
-
-			<v-row class="select-import-submit">
-				<v-col>
-					<v-btn @click="$emit('submit')">Weiter</v-btn>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -146,3 +113,36 @@ export default class ListSelector extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="import-list-selector-container">
+		<v-container>
+			<v-row class="import-list-selection">
+				<v-col class="select-import-list">
+					<v-combobox
+						v-model="selectedListTitle"
+						label="Eine Liste auswählen"
+						:items="vuetifyItems"
+						:return-object="false"
+						clearable
+					/>
+				</v-col>
+				<v-col class="selected-import-list">
+					<div v-if="selectedList">"{{ selectedList.title }}" geladen</div>
+					<div v-if="loadingList">
+						<v-progress-circular />
+					</div>
+					<div v-if="listCreationFailedMessage">
+						<v-alert type="error">{{ listCreationFailedMessage }}</v-alert>
+					</div>
+				</v-col>
+			</v-row>
+
+			<v-row class="select-import-submit">
+				<v-col>
+					<v-btn @click="$emit('submit')">Weiter</v-btn>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

@@ -1,30 +1,3 @@
-<template>
-	<tr class="background lighten-2 rounded-lg" @click="$emit('select-lemma', value)">
-		<td class="pr-0 text-no-wrap" style="width: 80px">
-			<user-avatar :value="editor" />
-			<user-avatar :value="author" style="margin-left: -5px" />
-		</td>
-		<td style="width: 20%; font-weight: 500" class="pr-1">
-			<template v-if="value.lemma">{{ lemma.lastName }} {{ lemma.firstName }}</template>
-			<span v-else>Lemma nicht gefunden.</span>
-		</td>
-		<td>{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}</td>
-		<td>
-			<div class="float-right fill-height d-flex">
-				<v-chip
-					v-for="label in labelsLimited"
-					:key="label.id"
-					small
-					class="label align-self-center"
-					:color="label.color"
-				>
-					{{ label.name }}
-				</v-chip>
-			</div>
-		</td>
-	</tr>
-</template>
-
 <script lang="ts">
 import { format } from "date-fns";
 import _ from "lodash";
@@ -90,6 +63,33 @@ export default class IssueLemmaRow extends Vue {
 	}
 }
 </script>
+
+<template>
+	<tr class="background lighten-2 rounded-lg" @click="$emit('select-lemma', value)">
+		<td class="pr-0 text-no-wrap" style="width: 80px">
+			<user-avatar :value="editor" />
+			<user-avatar :value="author" style="margin-left: -5px" />
+		</td>
+		<td style="width: 20%; font-weight: 500" class="pr-1">
+			<template v-if="value.lemma">{{ lemma.lastName }} {{ lemma.firstName }}</template>
+			<span v-else>Lemma nicht gefunden.</span>
+		</td>
+		<td>{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}</td>
+		<td>
+			<div class="float-right fill-height d-flex">
+				<v-chip
+					v-for="label in labelsLimited"
+					:key="label.id"
+					small
+					class="label align-self-center"
+					:color="label.color"
+				>
+					{{ label.name }}
+				</v-chip>
+			</div>
+		</td>
+	</tr>
+</template>
 
 <style scoped>
 .label {

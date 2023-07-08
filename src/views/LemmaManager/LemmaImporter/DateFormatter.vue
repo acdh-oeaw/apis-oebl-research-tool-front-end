@@ -1,20 +1,3 @@
-<template>
-	<div class="date-formating-container">
-		<v-container>
-			<v-row>
-				<v-col>
-					<v-select v-model="localDateFormat" label="Datumsformat" :items="supportedDateFormats" />
-				</v-col>
-			</v-row>
-			<v-row class="date-parse-preview">
-				<v-col>
-					<v-data-table :headers="previewHeaders" :items="dateViews" />
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -101,3 +84,20 @@ export default class DateFormatter extends Vue {
 	];
 }
 </script>
+
+<template>
+	<div class="date-formating-container">
+		<v-container>
+			<v-row>
+				<v-col>
+					<v-select v-model="localDateFormat" label="Datumsformat" :items="supportedDateFormats" />
+				</v-col>
+			</v-row>
+			<v-row class="date-parse-preview">
+				<v-col>
+					<v-data-table :headers="previewHeaders" :items="dateViews" />
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

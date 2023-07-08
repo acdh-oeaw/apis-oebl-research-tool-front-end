@@ -1,3 +1,143 @@
+<script lang="ts">
+// eslint-disable-next-line import/no-duplicates
+import { format, formatDistanceToNow } from "date-fns";
+// eslint-disable-next-line import/no-duplicates
+import { de } from "date-fns/locale";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { type Author, type Editor, type IssueLemma, type LemmaNote } from "@/api";
+import store from "@/store";
+import { type LemmaStatus } from "@/types/issue";
+import LemmaLabels from "@/views/IssueManager/LemmaLabels.vue";
+import FormRow from "@/views/lib/FormRow.vue";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
+
+@Component({
+	components: {
+		FormRow,
+		LemmaLabels,
+		LoadingSpinner,
+		SelectMenu,
+	},
+})
+export default class IssueLemmaDetail extends Vue {
+	// TODO: Remove me!
+	temporary_warn_method = window.console.warn;
+
+	@Prop({ required: true }) lemma!: IssueLemma;
+
+	notes: Array<LemmaNote> = [];
+	newNote = "";
+	store = store;
+
+	isAddingNote = false;
+	isLoadingNotes = false;
+
+	dateToYear(d: string | null | undefined): string | null {
+		if (d !== null && d !== undefined) {
+			try {
+				return format(new Date(d), "yyyy");
+			} catch (e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	get lemmaStatuses(): Array<LemmaStatus> {
+		return store.issue.statuses;
+	}
+
+	get lemmaStatus(): LemmaStatus | null {
+		return store.issue.statuses.find((s) => s.id === this.lemma.status) || null;
+	}
+
+	get lemmaEditor(): Editor | null {
+		if (this.lemma.editor) {
+			return store.editors.getById(this.lemma.editor) || null;
+		} else {
+			return null;
+		}
+	}
+
+	get lemmaAuthor(): Author | null {
+		console.warn("This author feature is currently not implemented. This is a TODO!");
+		return null;
+		// This is is a reminder, how this used to look like. TODO. Remove this comment.
+		// if (this.lemma.author) {
+		//   return store.authors.getById(this.lemma.author) || null
+		// } else {
+		//   return null
+		// }
+	}
+
+	get researchLemma() {
+		return this.lemma.lemma || null;
+	}
+
+	formatTimeDistance(d: string | undefined): string {
+		if (d !== undefined) {
+			return `${formatDistanceToNow(new Date(d), { locale: de, addSuffix: true })}`;
+		} else {
+			return "";
+		}
+	}
+
+	getUserName(id: number): string {
+		const u = store.editors.getById(id);
+		if (u !== undefined) {
+			return u.name || "";
+		} else {
+			return "";
+		}
+	}
+
+	@Watch("lemma", { immediate: true })
+	async onSwitchLemma() {
+		this.loadNotes();
+	}
+
+	async loadNotes() {
+		if (this.lemma.id && this.lemma.notes !== undefined && this.lemma.notes.length > 0) {
+			this.isLoadingNotes = true;
+			this.notes = (await store.issue.loadNotes(this.lemma.id)).reverse();
+			this.isLoadingNotes = false;
+		}
+	}
+
+	deleteIssueLemma() {
+		this.$emit("delete-issue-lemma", this.lemma.id);
+	}
+
+	updateLemma(l: Partial<IssueLemma>) {
+		this.$emit("update", this.lemma.id, l);
+	}
+
+	updateLabels(labels: Array<number>) {
+		this.updateLemma({ labels });
+	}
+
+	async addNote() {
+		if (this.newNote.trim() !== "") {
+			this.isAddingNote = true;
+			// this.lemma.notes.unshift({ user: { name: 'arni', userId: '1', email: 'yoyoyo.test', role: { id: '1', name: 'yo' } }, date: 'gerade eben', text: this.newNote, id: 'test' })
+			if (this.lemma.id) {
+				await store.issue.addNote(this.lemma.id, this.newNote.trim());
+				this.loadNotes();
+				this.newNote = "";
+				this.isAddingNote = false;
+			}
+		}
+	}
+
+	get labels() {
+		return store.labels.labels;
+	}
+}
+</script>
+
 <template>
 	<v-card v-if="lemma" class="transparent flex-column d-flex fill-height" flat>
 		<v-card-title v-if="researchLemma !== null">
@@ -153,146 +293,6 @@
 		</v-card-actions>
 	</v-card>
 </template>
-
-<script lang="ts">
-// eslint-disable-next-line import/no-duplicates
-import { format, formatDistanceToNow } from "date-fns";
-// eslint-disable-next-line import/no-duplicates
-import { de } from "date-fns/locale";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-
-import { type Author, type Editor, type IssueLemma, type LemmaNote } from "@/api";
-import store from "@/store";
-import { type LemmaStatus } from "@/types/issue";
-import LemmaLabels from "@/views/IssueManager/LemmaLabels.vue";
-import FormRow from "@/views/lib/FormRow.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
-
-@Component({
-	components: {
-		FormRow,
-		LemmaLabels,
-		LoadingSpinner,
-		SelectMenu,
-	},
-})
-export default class IssueLemmaDetail extends Vue {
-	// TODO: Remove me!
-	temporary_warn_method = window.console.warn;
-
-	@Prop({ required: true }) lemma!: IssueLemma;
-
-	notes: Array<LemmaNote> = [];
-	newNote = "";
-	store = store;
-
-	isAddingNote = false;
-	isLoadingNotes = false;
-
-	dateToYear(d: string | null | undefined): string | null {
-		if (d !== null && d !== undefined) {
-			try {
-				return format(new Date(d), "yyyy");
-			} catch (e) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	get lemmaStatuses(): Array<LemmaStatus> {
-		return store.issue.statuses;
-	}
-
-	get lemmaStatus(): LemmaStatus | null {
-		return store.issue.statuses.find((s) => s.id === this.lemma.status) || null;
-	}
-
-	get lemmaEditor(): Editor | null {
-		if (this.lemma.editor) {
-			return store.editors.getById(this.lemma.editor) || null;
-		} else {
-			return null;
-		}
-	}
-
-	get lemmaAuthor(): Author | null {
-		console.warn("This author feature is currently not implemented. This is a TODO!");
-		return null;
-		// This is is a reminder, how this used to look like. TODO. Remove this comment.
-		// if (this.lemma.author) {
-		//   return store.authors.getById(this.lemma.author) || null
-		// } else {
-		//   return null
-		// }
-	}
-
-	get researchLemma() {
-		return this.lemma.lemma || null;
-	}
-
-	formatTimeDistance(d: string | undefined): string {
-		if (d !== undefined) {
-			return `${formatDistanceToNow(new Date(d), { locale: de, addSuffix: true })}`;
-		} else {
-			return "";
-		}
-	}
-
-	getUserName(id: number): string {
-		const u = store.editors.getById(id);
-		if (u !== undefined) {
-			return u.name || "";
-		} else {
-			return "";
-		}
-	}
-
-	@Watch("lemma", { immediate: true })
-	async onSwitchLemma() {
-		this.loadNotes();
-	}
-
-	async loadNotes() {
-		if (this.lemma.id && this.lemma.notes !== undefined && this.lemma.notes.length > 0) {
-			this.isLoadingNotes = true;
-			this.notes = (await store.issue.loadNotes(this.lemma.id)).reverse();
-			this.isLoadingNotes = false;
-		}
-	}
-
-	deleteIssueLemma() {
-		this.$emit("delete-issue-lemma", this.lemma.id);
-	}
-
-	updateLemma(l: Partial<IssueLemma>) {
-		this.$emit("update", this.lemma.id, l);
-	}
-
-	updateLabels(labels: Array<number>) {
-		this.updateLemma({ labels });
-	}
-
-	async addNote() {
-		if (this.newNote.trim() !== "") {
-			this.isAddingNote = true;
-			// this.lemma.notes.unshift({ user: { name: 'arni', userId: '1', email: 'yoyoyo.test', role: { id: '1', name: 'yo' } }, date: 'gerade eben', text: this.newNote, id: 'test' })
-			if (this.lemma.id) {
-				await store.issue.addNote(this.lemma.id, this.newNote.trim());
-				this.loadNotes();
-				this.newNote = "";
-				this.isAddingNote = false;
-			}
-		}
-	}
-
-	get labels() {
-		return store.labels.labels;
-	}
-}
-</script>
 
 <style scoped>
 .note {

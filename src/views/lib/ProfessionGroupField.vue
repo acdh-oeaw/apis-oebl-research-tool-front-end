@@ -1,19 +1,3 @@
-<template>
-	<div class="outer profession-group">
-		<!-- @vue-expect-error -->
-		<v-autocomplete
-			v-model="localSelected"
-			:loading="loading"
-			:items="searchResults"
-			:search-input.sync="searchTerm"
-			:error-messages="errorMessages"
-			cache-items
-			:label="lemmaRowTranslations.professionGroup.de"
-			no-data-text="Bitte geben Sie einen Suchbegriff ein"
-		></v-autocomplete>
-	</div>
-</template>
-
 <script lang="ts">
 import { toNumber } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -137,3 +121,19 @@ export default class ProfessionGroupField extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="outer profession-group">
+		<!-- @vue-expect-error -->
+		<v-autocomplete
+			v-model="localSelected"
+			:loading="loading"
+			:items="searchResults"
+			:search-input.sync="searchTerm"
+			:error-messages="errorMessages"
+			cache-items
+			:label="lemmaRowTranslations.professionGroup.de"
+			no-data-text="Bitte geben Sie einen Suchbegriff ein"
+		></v-autocomplete>
+	</div>
+</template>

@@ -1,3 +1,229 @@
+<script lang="ts">
+import _ from "lodash";
+import { Component, Vue, Watch } from "vue-property-decorator";
+
+import { requestState } from "@/api/core/request";
+import { type List as LemmaList, type List } from "@/api/models/List";
+import store from "@/store";
+import confirm from "@/store/confirm";
+import prompt from "@/store/prompt";
+import { type WithId } from "@/types";
+import { type LemmaRow } from "@/types/lemma";
+import Badge from "@/views/lib/Badge.vue";
+import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
+import TextField from "@/views/lib/TextField.vue";
+
+@Component({
+	components: {
+		LoadingSpinner,
+		Badge,
+		TextField,
+	},
+})
+export default class Sidebar extends Vue {
+	searchQuery: string | null = null;
+	editingNameKey: string | null = null;
+	store = store;
+	log = console.log;
+	requestState = requestState;
+
+	showLoader = false;
+
+	showIssues = true;
+	showMyLists = true;
+	showTeamLists = true;
+	showQueries = true;
+
+	@Watch("requestState.isLoading")
+	onChangeIsLoading(v: boolean, oldV: boolean) {
+		if (v !== oldV) {
+			setTimeout(() => {
+				// if the loading value is still the same after
+				// a set time, actually update the value.
+				if (requestState.isLoading === v) {
+					this.showLoader = v;
+				}
+			}, 300);
+		}
+	}
+
+	onDragEnter(e: DragEvent, clickAfterLingering = false) {
+		console.log("Dragenter!!");
+		if (e.currentTarget instanceof HTMLElement) {
+			const target = e.currentTarget;
+			const timer = setTimeout(() => {
+				if (clickAfterLingering) {
+					target.click();
+				}
+			}, 1000);
+			target.classList.add("drag-over");
+			const onLeaveOrDrop = () => {
+				clearTimeout(timer);
+				target.classList.remove("drag-over");
+				target.removeEventListener("dragleave", onLeaveOrDrop);
+				target.removeEventListener("drop", onLeaveOrDrop);
+			};
+			target.addEventListener("dragleave", onLeaveOrDrop);
+			target.addEventListener("drop", onLeaveOrDrop);
+		}
+	}
+
+	selectLemmaFilter(i: string) {
+		store.lemma.selectedLemmaFilterId = i;
+	}
+
+	onEscSearch(e: KeyboardEvent) {
+		if (this.searchQuery !== "" && this.searchQuery !== null) {
+			this.searchQuery = null;
+		} else {
+			if (e.target instanceof HTMLInputElement) {
+				e.target.blur();
+			}
+		}
+	}
+
+	async loadIssue(issueId: number | null) {
+		if (issueId !== null) {
+			store.lemma.selectedLemmaIssueId = issueId;
+			store.issue.loadIssue(issueId);
+		}
+	}
+
+	async loadIssueLemmas(issueId: number | null) {
+		if (issueId !== null) {
+			store.lemma.selectedLemmaIssueId = issueId;
+			const ls = await store.issue.getIssueLemmas(issueId);
+			store.lemma.selectedIssueLemmas = ls;
+		}
+	}
+
+	async deleteList(list: LemmaList) {
+		if (list.id !== undefined) {
+			if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
+				store.lemma.deleteLemmaList(list.id);
+			}
+		}
+	}
+
+	async copyLemmasToList(list: WithId<List>, e: DragEvent) {
+		console.log("copy lemma to list", e);
+		console.log("data transfer!", e.dataTransfer?.getData("text/plain"));
+		const lemmas = JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
+		const listItems = store.lemma.getLemmasByList(list.id);
+		const newLemmaList = _.uniq([...lemmas.map((l) => l.id), ...listItems]);
+		const diff = newLemmaList.length - listItems.length;
+		if (
+			diff !== 0 &&
+			(await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`))
+		) {
+			store.lemma.addLemmasToList(
+				{
+					id: list.id,
+					title: list.title,
+					editor: store.user.userProfile.userId,
+				},
+				lemmas,
+			);
+		}
+	}
+
+	async addLemmaToIssue(issueId: number, e: DragEvent) {
+		const lemmas =
+			e instanceof DragEvent
+				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
+				: [];
+		store.issue.addLemmaToIssue(issueId, lemmas);
+	}
+
+	async createLemmaList(e: DragEvent | MouseEvent) {
+		const lemmas =
+			e instanceof DragEvent
+				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
+				: [];
+		const lemmaNameRules = [
+			(n: string | null) =>
+				n === null || (typeof n === "string" && n.trim() === "")
+					? "Geben Sie einen Namen ein."
+					: true,
+			(n: string | null) => {
+				if (n === null) {
+					return "Geben Sie einen Namen ein";
+				} else if (
+					this.filteredLemmaLists.findIndex(
+						(ll) => ll.title.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
+					) > -1
+				) {
+					return "Name bereits vergeben.";
+				} else {
+					return true;
+				}
+			},
+		];
+		const message =
+			lemmas.length > 0
+				? `Neue Liste mit ${lemmas.length} Einträgen erstellen`
+				: "Neue Liste anlegen";
+		const name = await prompt.prompt(message, {
+			placeholder: "Listenname…",
+			rules: lemmaNameRules,
+		});
+		if (name !== null) {
+			const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
+			if (lemmas.length) {
+				await store.lemma.addLemmasToList(
+					{
+						id: l.id,
+						title: l.title,
+						editor: store.user.userProfile.userId,
+					},
+					lemmas,
+				);
+			}
+			store.lemma.selectedLemmaListId = l.id || null;
+		}
+	}
+
+	get filteredStoredLemmaFilters() {
+		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
+			return store.lemma.storedLemmaFilters.filter((l) =>
+				l.name.toLocaleLowerCase().includes(this.searchQuery || ""),
+			);
+		} else {
+			return store.lemma.storedLemmaFilters;
+		}
+	}
+
+	get filteredLemmaLists() {
+		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
+			return store.lemma.lemmaLists.filter((l) =>
+				l.title.toLocaleLowerCase().includes(this.searchQuery || ""),
+			);
+		} else {
+			return store.lemma.lemmaLists;
+		}
+	}
+
+	get filteredLemmaListsCurrentUser() {
+		return this.filteredLemmaLists.filter(
+			(l) => l.editor !== undefined && l.editor.userId === store.user.userProfile.userId,
+		);
+	}
+
+	get filteredLemmaListsOtherUsers() {
+		return this.filteredLemmaLists.filter(
+			(l) => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId,
+		);
+	}
+
+	toggleDrawer() {
+		this.store.settings = {
+			...this.store.settings,
+			showNavDrawer: !this.store.settings.showNavDrawer,
+		};
+	}
+}
+</script>
+
 <template>
 	<div
 		test-id="sidebar"
@@ -255,232 +481,6 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import _ from "lodash";
-import { Component, Vue, Watch } from "vue-property-decorator";
-
-import { requestState } from "@/api/core/request";
-import { type List as LemmaList, type List } from "@/api/models/List";
-import store from "@/store";
-import confirm from "@/store/confirm";
-import prompt from "@/store/prompt";
-import { type WithId } from "@/types";
-import { type LemmaRow } from "@/types/lemma";
-import Badge from "@/views/lib/Badge.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-import TextField from "@/views/lib/TextField.vue";
-
-@Component({
-	components: {
-		LoadingSpinner,
-		Badge,
-		TextField,
-	},
-})
-export default class Sidebar extends Vue {
-	searchQuery: string | null = null;
-	editingNameKey: string | null = null;
-	store = store;
-	log = console.log;
-	requestState = requestState;
-
-	showLoader = false;
-
-	showIssues = true;
-	showMyLists = true;
-	showTeamLists = true;
-	showQueries = true;
-
-	@Watch("requestState.isLoading")
-	onChangeIsLoading(v: boolean, oldV: boolean) {
-		if (v !== oldV) {
-			setTimeout(() => {
-				// if the loading value is still the same after
-				// a set time, actually update the value.
-				if (requestState.isLoading === v) {
-					this.showLoader = v;
-				}
-			}, 300);
-		}
-	}
-
-	onDragEnter(e: DragEvent, clickAfterLingering = false) {
-		console.log("Dragenter!!");
-		if (e.currentTarget instanceof HTMLElement) {
-			const target = e.currentTarget;
-			const timer = setTimeout(() => {
-				if (clickAfterLingering) {
-					target.click();
-				}
-			}, 1000);
-			target.classList.add("drag-over");
-			const onLeaveOrDrop = () => {
-				clearTimeout(timer);
-				target.classList.remove("drag-over");
-				target.removeEventListener("dragleave", onLeaveOrDrop);
-				target.removeEventListener("drop", onLeaveOrDrop);
-			};
-			target.addEventListener("dragleave", onLeaveOrDrop);
-			target.addEventListener("drop", onLeaveOrDrop);
-		}
-	}
-
-	selectLemmaFilter(i: string) {
-		store.lemma.selectedLemmaFilterId = i;
-	}
-
-	onEscSearch(e: KeyboardEvent) {
-		if (this.searchQuery !== "" && this.searchQuery !== null) {
-			this.searchQuery = null;
-		} else {
-			if (e.target instanceof HTMLInputElement) {
-				e.target.blur();
-			}
-		}
-	}
-
-	async loadIssue(issueId: number | null) {
-		if (issueId !== null) {
-			store.lemma.selectedLemmaIssueId = issueId;
-			store.issue.loadIssue(issueId);
-		}
-	}
-
-	async loadIssueLemmas(issueId: number | null) {
-		if (issueId !== null) {
-			store.lemma.selectedLemmaIssueId = issueId;
-			const ls = await store.issue.getIssueLemmas(issueId);
-			store.lemma.selectedIssueLemmas = ls;
-		}
-	}
-
-	async deleteList(list: LemmaList) {
-		if (list.id !== undefined) {
-			if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
-				store.lemma.deleteLemmaList(list.id);
-			}
-		}
-	}
-
-	async copyLemmasToList(list: WithId<List>, e: DragEvent) {
-		console.log("copy lemma to list", e);
-		console.log("data transfer!", e.dataTransfer?.getData("text/plain"));
-		const lemmas = JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
-		const listItems = store.lemma.getLemmasByList(list.id);
-		const newLemmaList = _.uniq([...lemmas.map((l) => l.id), ...listItems]);
-		const diff = newLemmaList.length - listItems.length;
-		if (
-			diff !== 0 &&
-			(await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`))
-		) {
-			store.lemma.addLemmasToList(
-				{
-					id: list.id,
-					title: list.title,
-					editor: store.user.userProfile.userId,
-				},
-				lemmas,
-			);
-		}
-	}
-
-	async addLemmaToIssue(issueId: number, e: DragEvent) {
-		const lemmas =
-			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
-				: [];
-		store.issue.addLemmaToIssue(issueId, lemmas);
-	}
-
-	async createLemmaList(e: DragEvent | MouseEvent) {
-		const lemmas =
-			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
-				: [];
-		const lemmaNameRules = [
-			(n: string | null) =>
-				n === null || (typeof n === "string" && n.trim() === "")
-					? "Geben Sie einen Namen ein."
-					: true,
-			(n: string | null) => {
-				if (n === null) {
-					return "Geben Sie einen Namen ein";
-				} else if (
-					this.filteredLemmaLists.findIndex(
-						(ll) => ll.title.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
-					) > -1
-				) {
-					return "Name bereits vergeben.";
-				} else {
-					return true;
-				}
-			},
-		];
-		const message =
-			lemmas.length > 0
-				? `Neue Liste mit ${lemmas.length} Einträgen erstellen`
-				: "Neue Liste anlegen";
-		const name = await prompt.prompt(message, {
-			placeholder: "Listenname…",
-			rules: lemmaNameRules,
-		});
-		if (name !== null) {
-			const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
-			if (lemmas.length) {
-				await store.lemma.addLemmasToList(
-					{
-						id: l.id,
-						title: l.title,
-						editor: store.user.userProfile.userId,
-					},
-					lemmas,
-				);
-			}
-			store.lemma.selectedLemmaListId = l.id || null;
-		}
-	}
-
-	get filteredStoredLemmaFilters() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
-			return store.lemma.storedLemmaFilters.filter((l) =>
-				l.name.toLocaleLowerCase().includes(this.searchQuery || ""),
-			);
-		} else {
-			return store.lemma.storedLemmaFilters;
-		}
-	}
-
-	get filteredLemmaLists() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
-			return store.lemma.lemmaLists.filter((l) =>
-				l.title.toLocaleLowerCase().includes(this.searchQuery || ""),
-			);
-		} else {
-			return store.lemma.lemmaLists;
-		}
-	}
-
-	get filteredLemmaListsCurrentUser() {
-		return this.filteredLemmaLists.filter(
-			(l) => l.editor !== undefined && l.editor.userId === store.user.userProfile.userId,
-		);
-	}
-
-	get filteredLemmaListsOtherUsers() {
-		return this.filteredLemmaLists.filter(
-			(l) => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId,
-		);
-	}
-
-	toggleDrawer() {
-		this.store.settings = {
-			...this.store.settings,
-			showNavDrawer: !this.store.settings.showNavDrawer,
-		};
-	}
-}
-</script>
 
 <style>
 .droppable * {

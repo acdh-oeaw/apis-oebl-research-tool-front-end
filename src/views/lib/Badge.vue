@@ -1,9 +1,3 @@
-<template>
-	<div class="badge" :class="[color, $vuetify.theme.dark ? 'theme--dark' : '']">
-		{{ readable }}
-	</div>
-</template>
-
 <script lang="ts">
 import HRNumbers from "human-readable-numbers";
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -22,6 +16,12 @@ export default class Badge extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="badge" :class="[color, $vuetify.theme.dark ? 'theme--dark' : '']">
+		{{ readable }}
+	</div>
+</template>
 
 <style scoped>
 .badge {

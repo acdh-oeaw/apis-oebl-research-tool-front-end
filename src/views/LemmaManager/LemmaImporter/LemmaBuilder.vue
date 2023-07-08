@@ -1,62 +1,3 @@
-<template>
-	<div class="lemma-builder-container">
-		<v-container>
-			<v-row class="lemma-builder-ux">
-				<v-col>
-					<v-expansion-panels multiple>
-						<v-expansion-panel
-							v-for="(columns, groupName) in columnGroups"
-							:key="groupName"
-							class="import-column-select-group"
-						>
-							<v-expansion-panel-header
-								:class="
-									'import-column-select-group-name' +
-									(groupHasMissingRequiredValue(String(groupName)) ? ' warning' : '')
-								"
-							>
-								{{ groupName }}
-							</v-expansion-panel-header>
-							<v-expansion-panel-content eager>
-								<v-container>
-									<v-row v-for="(column, index) in columns" :key="`${column}-${index}`">
-										<v-col>
-											<column-select
-												:lemma-key="column.name"
-												:source-data="incommingData"
-												:preloaded-options="getOptionsByName(column.name)"
-												@options="setOptionsByName(column.name, $event)"
-												@cancel="removeData(column.name)"
-												@data="updateData($event)"
-											/>
-										</v-col>
-										<v-col>
-											<div
-												v-if="column.required && getOptionsByName(column.name).sourceKey === null"
-												class="missing-required-field-column-select"
-											>
-												<v-alert type="warning">Dieses Feld muss ausgefüllt werden</v-alert>
-											</div>
-										</v-col>
-									</v-row>
-								</v-container>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-					</v-expansion-panels>
-				</v-col>
-			</v-row>
-			<v-row class="submit-column-selects">
-				<v-col>
-					<v-btn :disabled="!allRequiredFieldsSet" @click="submit">Weiter</v-btn>
-				</v-col>
-			</v-row>
-			<v-row class="data-comparision-area">
-				<lemma-previewer :lemmas="partialLemmaPrototypes" />
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -226,3 +167,62 @@ export default class LemmaBuilder extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="lemma-builder-container">
+		<v-container>
+			<v-row class="lemma-builder-ux">
+				<v-col>
+					<v-expansion-panels multiple>
+						<v-expansion-panel
+							v-for="(columns, groupName) in columnGroups"
+							:key="groupName"
+							class="import-column-select-group"
+						>
+							<v-expansion-panel-header
+								:class="
+									'import-column-select-group-name' +
+									(groupHasMissingRequiredValue(String(groupName)) ? ' warning' : '')
+								"
+							>
+								{{ groupName }}
+							</v-expansion-panel-header>
+							<v-expansion-panel-content eager>
+								<v-container>
+									<v-row v-for="(column, index) in columns" :key="`${column}-${index}`">
+										<v-col>
+											<column-select
+												:lemma-key="column.name"
+												:source-data="incommingData"
+												:preloaded-options="getOptionsByName(column.name)"
+												@options="setOptionsByName(column.name, $event)"
+												@cancel="removeData(column.name)"
+												@data="updateData($event)"
+											/>
+										</v-col>
+										<v-col>
+											<div
+												v-if="column.required && getOptionsByName(column.name).sourceKey === null"
+												class="missing-required-field-column-select"
+											>
+												<v-alert type="warning">Dieses Feld muss ausgefüllt werden</v-alert>
+											</div>
+										</v-col>
+									</v-row>
+								</v-container>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
+					</v-expansion-panels>
+				</v-col>
+			</v-row>
+			<v-row class="submit-column-selects">
+				<v-col>
+					<v-btn :disabled="!allRequiredFieldsSet" @click="submit">Weiter</v-btn>
+				</v-col>
+			</v-row>
+			<v-row class="data-comparision-area">
+				<lemma-previewer :lemmas="partialLemmaPrototypes" />
+			</v-row>
+		</v-container>
+	</div>
+</template>

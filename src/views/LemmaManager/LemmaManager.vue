@@ -1,369 +1,3 @@
-<template>
-	<!-- FIXME: a11y -->
-	<!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
-	<div ref="container" tabindex="-1" class="fill-height" @keydown="onKeyDown">
-		<!-- LOBID HOVER PREVIEW -->
-		<v-menu
-			v-if="lobidPreviewGnds.length > 0"
-			:value="lobidPreviewGnds.length > 0"
-			:position-x="previewPopupCoords[0]"
-			:position-y="previewPopupCoords[1]"
-			:close-on-content-click="false"
-			absolute
-			offset-y
-			offset-x
-			content-class="soft-shadow"
-			@input="lobidPreviewGnds = []"
-		>
-			<v-card color="background lighten-1" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
-				<v-card-text class="pb-3 pl-0 pt-4 pr-0">
-					<lobid-preview-card :limit="3" :gnd="lobidPreviewGnds" />
-				</v-card-text>
-			</v-card>
-		</v-menu>
-		<!-- GHOST IMAGE WHEN DRAGGING -->
-		<drag-image ref="dragGhost" :max-items="5" :rows="selectedRows" />
-		<!-- ADD LEMMA -->
-		<v-dialog
-			:value="showAddLemmaDialog === true"
-			scrollable
-			content-class="align-self-start"
-			max-width="1000px"
-			@input="showAddLemmaDialog = $event"
-		>
-			<lemma-add
-				v-if="showAddLemmaDialog"
-				color="background"
-				@confirm="addLemma"
-				@cancel="showAddLemmaDialog = false"
-			/>
-		</v-dialog>
-		<!-- IMPORT LEMMAS -->
-		<v-dialog v-model="importerOpened" hide-overlay fullscreen>
-			<lemma-import-manager />
-		</v-dialog>
-		<v-app-bar
-			data-deskgap-drag="true"
-			app
-			height="79"
-			:style="{ transition: 'none', padding: `${toolbarPaddingY}px 0` }"
-			color="background darken-1"
-			flat
-		>
-			<div class="d-flex fill-width flex-row align-stretch align-self-start">
-				<v-btn
-					v-if="!store.settings.showNavDrawer"
-					style="margin-top: -7px"
-					tile
-					class="rounded-lg"
-					icon
-					@click="toggleDrawer"
-				>
-					<v-icon>mdi-dock-left</v-icon>
-				</v-btn>
-				<v-flex shrink align-self-start class="mr-5 lemma-view-title">
-					<h1
-						v-if="
-							store.lemma.selectedLemmaFilterId === null &&
-							store.lemma.selectedLemmaIssueId === null &&
-							lemmaListId === null
-						"
-					>
-						Lemmabibliothek
-					</h1>
-					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
-						<!-- @vue-expect-error -->
-						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
-					</h1>
-					<h1
-						v-else-if="selectedList !== null"
-						contenteditable="true"
-						@blur="updateListName"
-						@keyup.enter.prevent.stop="$event.target.blur()"
-						@keyup.esc.prevent.stop="cancelUpdateListName"
-						v-text="selectedList.title"
-					></h1>
-					<h1
-						v-else-if="store.lemma.selectedLemmaFilterId !== null"
-						contenteditable="true"
-						@blur="
-							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
-						"
-						@keyup.enter.prevent.stop="$event.target.blur()"
-						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
-					></h1>
-					<span class="caption text-no-wrap">
-						<v-btn
-							v-if="newLemmas.length > 0"
-							style="margin-top: -2px; letter-spacing: 0.1em"
-							rounded
-							elevation="0"
-							color="primary"
-							class="mr-1 font-weight-bold"
-							x-small
-						>
-							{{ newLemmas.length }} NEU
-						</v-btn>
-						<span style="opacity: 70%">
-							{{ filteredLemmas.length }} Ergebnisse. {{ selectedRows.length }} ausgewählt
-						</span>
-					</span>
-				</v-flex>
-				<v-spacer />
-				<v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
-					<v-btn tile class="rounded-lg" icon @click="store.showSearchDialog = true">
-						<v-icon>mdi-magnify</v-icon>
-					</v-btn>
-				</v-flex>
-				<v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
-					<v-btn
-						tile
-						:color="store.settings.showLemmaFilter ? 'primary' : undefined"
-						class="rounded-lg"
-						icon
-						@click="
-							store.settings = {
-								...store.settings,
-								showLemmaFilter: !store.settings.showLemmaFilter,
-							}
-						"
-					>
-						<v-icon>mdi-filter-variant</v-icon>
-					</v-btn>
-				</v-flex>
-				<v-flex shrink align-self-start class="pr-0" style="margin-top: -5px">
-					<v-menu
-						min-width="150"
-						offset-y
-						left
-						content-class="soft-shadow scrollable background rounded-lg"
-					>
-						<template #activator="{ on, props }">
-							<v-btn v-bind="props" tile test-id="lemma-menu-btn" class="rounded-lg" icon v-on="on">
-								<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
-							</v-btn>
-						</template>
-						<v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
-							<v-list-item dense @click="showAddLemmaDialog = true">
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-shape-square-plus</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Lemma hinzufügen…</v-list-item-content>
-							</v-list-item>
-							<v-list-item dense @click="importerOpened = true">
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-database-import-outline</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Excel oder CSV importieren…</v-list-item-content>
-							</v-list-item>
-							<v-list-item
-								v-if="lemmaListId !== null"
-								test-id="lemma-list-delete-btn"
-								@click="deleteList(lemmaListId)"
-							>
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-delete-outline</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Liste löschen</v-list-item-content>
-							</v-list-item>
-							<v-list-item
-								v-if="
-									store.lemma.selectedLemmaFilterId === null &&
-									Object.keys(store.lemma.currentFilters).length > 0
-								"
-								dense
-								@click="saveFilter"
-							>
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-card-search-outline</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Abfrage sichern…</v-list-item-content>
-							</v-list-item>
-							<v-list-item
-								v-else-if="store.lemma.selectedLemmaFilterId !== null"
-								dense
-								@click="deleteFilter(store.lemma.selectedLemmaFilterId)"
-							>
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-delete-outline</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Diese Abfrage löschen</v-list-item-content>
-							</v-list-item>
-						</v-list>
-						<v-divider />
-						<div class="caption muted px-3 pt-2">Spalten anzeigen</div>
-						<v-list
-							style="overflow: scroll; max-height: 50vh"
-							color="background"
-							class="elevation-0 rounded-lg text-body-2 mb-0 pb-0 x-dense"
-							dense
-							nav
-						>
-							<v-list-item
-								v-for="column in columns"
-								:key="column.value"
-								dense
-								@click.prevent.stop="updateColumn(column, { show: !column.show })"
-							>
-								<v-list-item-avatar size="15">
-									<v-icon v-if="column.show" small>mdi-check</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>
-									{{ column.name }}
-								</v-list-item-content>
-							</v-list-item>
-						</v-list>
-						<v-divider class="mt-0 pt-0" />
-						<div class="caption muted px-3 pt-2">Farbschema</div>
-						<theme-toggle class="mx-2 mb-2" />
-						<v-divider />
-						<v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
-							<v-list-item dense @click="() => store.logOut()">
-								<v-list-item-avatar size="15">
-									<v-icon small>mdi-power</v-icon>
-								</v-list-item-avatar>
-								<v-list-item-content>Ausloggen</v-list-item-content>
-							</v-list-item>
-						</v-list>
-					</v-menu>
-				</v-flex>
-				<v-flex
-					v-if="!store.lemma.showSideBar"
-					shrink
-					align-self-start
-					class="pl-0 ml-0 pr-3"
-					style="margin-top: -5px"
-				>
-					<v-btn
-						v-if="!store.lemma.showSideBar"
-						tile
-						class="rounded-lg"
-						icon
-						@click="store.lemma.showSideBar = !store.lemma.showSideBar"
-					>
-						<v-icon>mdi-dock-right</v-icon>
-					</v-btn>
-				</v-flex>
-			</div>
-		</v-app-bar>
-		<resizable-drawer
-			color="background darken-1"
-			:card="false"
-			:right="true"
-			:min-width="300"
-			:width="store.settings.drawerRightWidth"
-			:value="store.lemma.showSideBar"
-			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
-		>
-			<div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">
-				Kein Lemma ausgewählt
-			</div>
-			<div
-				v-else-if="selectedRows.length > 1"
-				class="fill-height justify-center d-flex align-center"
-			>
-				{{ selectedRows.length }} Lemmata ausgewählt
-			</div>
-			<lemma-detail
-				v-else
-				:value="selectedRows[0]"
-				@close="store.lemma.showSideBar = false"
-				@update="
-					updateLemma(
-						// @ts-expect-error
-						selectedRows[0],
-						$event,
-					)
-				"
-			/>
-		</resizable-drawer>
-		<v-main class="fill-width fill-height transition-none">
-			<!-- @vue-expect-error -->
-			<virtual-table
-				ref="vTable"
-				test-id="lemma-table"
-				class="virtual-table text-body-3"
-				:show-filter="store.settings.showLemmaFilter"
-				:columns="columns"
-				:sortable-columns="true"
-				:row-height="38"
-				:scroll-to-row="scrollToRow"
-				:editable="true"
-				:height="tableHeight"
-				:data="sortedFilteredLemmas"
-				:selected-rows="selectedRows"
-				header-color="background darken-2"
-				@keyup.delete="deleteSelectedLemmas"
-				@drag:row="dragListener"
-				@click:cell="onClickCell"
-				@click:header="sortLemmas"
-				@dblclick:row="store.lemma.showSideBar = true"
-				@dblclick:cell="store.lemma.showSideBar = true"
-				@update:selection="selectedRows = $event"
-				@update:item="updateLemmaFromTable"
-				@update:filter="(f) => store.lemma.setFilter(f)"
-				@update:columns="columns = $event"
-			>
-				<template #cell="{ item, column, value }">
-					<template v-if="item[column.value] === 'Not available'"></template>
-					<!-- the star column -->
-					<template v-else-if="column.value === 'selected'">
-						<span v-if="value === true" style="color: var(--v-primary-base)">★</span>
-						<span v-if="value === false" style="opacity: 70%">☆</span>
-					</template>
-					<!-- the gnd column -->
-					<template v-else-if="column.value === 'gnd'">
-						<span v-if="item.gnd.length === 0" style="opacity: 50%">⊘</span>
-						<!-- FIXME: a11y -->
-						<!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
-						<span
-							v-else-if="item.gnd.length > 0"
-							style="white-space: nowrap"
-							@mouseover="onHoverGndCell($event, item.gnd)"
-						>
-							<span v-if="item.gnd.length > 1" class="badge primary" v-text="item.gnd.length" />
-							{{ item.gnd[0] }}
-						</span>
-						<!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
-					</template>
-					<a
-						v-else-if="value && column.value === 'loc'"
-						target="_blank"
-						:href="'https://id.loc.gov/authorities/names/' + value"
-						class="table-external-link background lighten-2"
-					>
-						{{ value }}
-					</a>
-					<a
-						v-else-if="value && column.value === 'viaf_id'"
-						target="_blank"
-						:href="'https://viaf.org/viaf/' + value"
-						class="table-external-link background lighten-2"
-					>
-						{{ value }}
-					</a>
-					<!-- FIXME: a11y -->
-					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
-					<a
-						v-else-if="value && column.value === 'wiki_edits'"
-						class="table-external-link background lighten-2"
-						@click.prevent="openWikipedia(item)"
-					>
-						{{ value }}
-					</a>
-					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events -->
-					<!-- all others -->
-					<template v-else-if="value">
-						{{ item[column.value] }}
-					</template>
-					<span v-else-if="!value || value.trim() === '?'" class="muted">⊘</span>
-				</template>
-			</virtual-table>
-		</v-main>
-	</div>
-	<!-- eslint-enable vuejs-accessibility/no-static-element-interactions -->
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { v4 as uuid } from "uuid";
@@ -729,6 +363,372 @@ export default class LemmaManager extends Vue {
 	}
 }
 </script>
+
+<template>
+	<!-- FIXME: a11y -->
+	<!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
+	<div ref="container" tabindex="-1" class="fill-height" @keydown="onKeyDown">
+		<!-- LOBID HOVER PREVIEW -->
+		<v-menu
+			v-if="lobidPreviewGnds.length > 0"
+			:value="lobidPreviewGnds.length > 0"
+			:position-x="previewPopupCoords[0]"
+			:position-y="previewPopupCoords[1]"
+			:close-on-content-click="false"
+			absolute
+			offset-y
+			offset-x
+			content-class="soft-shadow"
+			@input="lobidPreviewGnds = []"
+		>
+			<v-card color="background lighten-1" class="rounded-lg pr-2 pb-2 pl-2 pt-0">
+				<v-card-text class="pb-3 pl-0 pt-4 pr-0">
+					<lobid-preview-card :limit="3" :gnd="lobidPreviewGnds" />
+				</v-card-text>
+			</v-card>
+		</v-menu>
+		<!-- GHOST IMAGE WHEN DRAGGING -->
+		<drag-image ref="dragGhost" :max-items="5" :rows="selectedRows" />
+		<!-- ADD LEMMA -->
+		<v-dialog
+			:value="showAddLemmaDialog === true"
+			scrollable
+			content-class="align-self-start"
+			max-width="1000px"
+			@input="showAddLemmaDialog = $event"
+		>
+			<lemma-add
+				v-if="showAddLemmaDialog"
+				color="background"
+				@confirm="addLemma"
+				@cancel="showAddLemmaDialog = false"
+			/>
+		</v-dialog>
+		<!-- IMPORT LEMMAS -->
+		<v-dialog v-model="importerOpened" hide-overlay fullscreen>
+			<lemma-import-manager />
+		</v-dialog>
+		<v-app-bar
+			data-deskgap-drag="true"
+			app
+			height="79"
+			:style="{ transition: 'none', padding: `${toolbarPaddingY}px 0` }"
+			color="background darken-1"
+			flat
+		>
+			<div class="d-flex fill-width flex-row align-stretch align-self-start">
+				<v-btn
+					v-if="!store.settings.showNavDrawer"
+					style="margin-top: -7px"
+					tile
+					class="rounded-lg"
+					icon
+					@click="toggleDrawer"
+				>
+					<v-icon>mdi-dock-left</v-icon>
+				</v-btn>
+				<v-flex shrink align-self-start class="mr-5 lemma-view-title">
+					<h1
+						v-if="
+							store.lemma.selectedLemmaFilterId === null &&
+							store.lemma.selectedLemmaIssueId === null &&
+							lemmaListId === null
+						"
+					>
+						Lemmabibliothek
+					</h1>
+					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
+						<!-- @vue-expect-error -->
+						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
+					</h1>
+					<h1
+						v-else-if="selectedList !== null"
+						contenteditable="true"
+						@blur="updateListName"
+						@keyup.enter.prevent.stop="$event.target.blur()"
+						@keyup.esc.prevent.stop="cancelUpdateListName"
+						v-text="selectedList.title"
+					></h1>
+					<h1
+						v-else-if="store.lemma.selectedLemmaFilterId !== null"
+						contenteditable="true"
+						@blur="
+							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
+						"
+						@keyup.enter.prevent.stop="$event.target.blur()"
+						v-text="store.lemma.getStoredLemmaFilterById(store.lemma.selectedLemmaFilterId).name"
+					></h1>
+					<span class="caption text-no-wrap">
+						<v-btn
+							v-if="newLemmas.length > 0"
+							style="margin-top: -2px; letter-spacing: 0.1em"
+							rounded
+							elevation="0"
+							color="primary"
+							class="mr-1 font-weight-bold"
+							x-small
+						>
+							{{ newLemmas.length }} NEU
+						</v-btn>
+						<span style="opacity: 70%">
+							{{ filteredLemmas.length }} Ergebnisse. {{ selectedRows.length }} ausgewählt
+						</span>
+					</span>
+				</v-flex>
+				<v-spacer />
+				<v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
+					<v-btn tile class="rounded-lg" icon @click="store.showSearchDialog = true">
+						<v-icon>mdi-magnify</v-icon>
+					</v-btn>
+				</v-flex>
+				<v-flex shrink align-self-start class="pl-0 ml-0 pr-0" style="margin-top: -5px">
+					<v-btn
+						tile
+						:color="store.settings.showLemmaFilter ? 'primary' : undefined"
+						class="rounded-lg"
+						icon
+						@click="
+							store.settings = {
+								...store.settings,
+								showLemmaFilter: !store.settings.showLemmaFilter,
+							}
+						"
+					>
+						<v-icon>mdi-filter-variant</v-icon>
+					</v-btn>
+				</v-flex>
+				<v-flex shrink align-self-start class="pr-0" style="margin-top: -5px">
+					<v-menu
+						min-width="150"
+						offset-y
+						left
+						content-class="soft-shadow scrollable background rounded-lg"
+					>
+						<template #activator="{ on, props }">
+							<v-btn v-bind="props" tile test-id="lemma-menu-btn" class="rounded-lg" icon v-on="on">
+								<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
+							</v-btn>
+						</template>
+						<v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
+							<v-list-item dense @click="showAddLemmaDialog = true">
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-shape-square-plus</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Lemma hinzufügen…</v-list-item-content>
+							</v-list-item>
+							<v-list-item dense @click="importerOpened = true">
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-database-import-outline</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Excel oder CSV importieren…</v-list-item-content>
+							</v-list-item>
+							<v-list-item
+								v-if="lemmaListId !== null"
+								test-id="lemma-list-delete-btn"
+								@click="deleteList(lemmaListId)"
+							>
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-delete-outline</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Liste löschen</v-list-item-content>
+							</v-list-item>
+							<v-list-item
+								v-if="
+									store.lemma.selectedLemmaFilterId === null &&
+									Object.keys(store.lemma.currentFilters).length > 0
+								"
+								dense
+								@click="saveFilter"
+							>
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-card-search-outline</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Abfrage sichern…</v-list-item-content>
+							</v-list-item>
+							<v-list-item
+								v-else-if="store.lemma.selectedLemmaFilterId !== null"
+								dense
+								@click="deleteFilter(store.lemma.selectedLemmaFilterId)"
+							>
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-delete-outline</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Diese Abfrage löschen</v-list-item-content>
+							</v-list-item>
+						</v-list>
+						<v-divider />
+						<div class="caption muted px-3 pt-2">Spalten anzeigen</div>
+						<v-list
+							style="overflow: scroll; max-height: 50vh"
+							color="background"
+							class="elevation-0 rounded-lg text-body-2 mb-0 pb-0 x-dense"
+							dense
+							nav
+						>
+							<v-list-item
+								v-for="column in columns"
+								:key="column.value"
+								dense
+								@click.prevent.stop="updateColumn(column, { show: !column.show })"
+							>
+								<v-list-item-avatar size="15">
+									<v-icon v-if="column.show" small>mdi-check</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>
+									{{ column.name }}
+								</v-list-item-content>
+							</v-list-item>
+						</v-list>
+						<v-divider class="mt-0 pt-0" />
+						<div class="caption muted px-3 pt-2">Farbschema</div>
+						<theme-toggle class="mx-2 mb-2" />
+						<v-divider />
+						<v-list color="background" class="elevation-0 rounded-lg text-body-2 x-dense" dense nav>
+							<v-list-item dense @click="() => store.logOut()">
+								<v-list-item-avatar size="15">
+									<v-icon small>mdi-power</v-icon>
+								</v-list-item-avatar>
+								<v-list-item-content>Ausloggen</v-list-item-content>
+							</v-list-item>
+						</v-list>
+					</v-menu>
+				</v-flex>
+				<v-flex
+					v-if="!store.lemma.showSideBar"
+					shrink
+					align-self-start
+					class="pl-0 ml-0 pr-3"
+					style="margin-top: -5px"
+				>
+					<v-btn
+						v-if="!store.lemma.showSideBar"
+						tile
+						class="rounded-lg"
+						icon
+						@click="store.lemma.showSideBar = !store.lemma.showSideBar"
+					>
+						<v-icon>mdi-dock-right</v-icon>
+					</v-btn>
+				</v-flex>
+			</div>
+		</v-app-bar>
+		<resizable-drawer
+			color="background darken-1"
+			:card="false"
+			:right="true"
+			:min-width="300"
+			:width="store.settings.drawerRightWidth"
+			:value="store.lemma.showSideBar"
+			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
+		>
+			<div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">
+				Kein Lemma ausgewählt
+			</div>
+			<div
+				v-else-if="selectedRows.length > 1"
+				class="fill-height justify-center d-flex align-center"
+			>
+				{{ selectedRows.length }} Lemmata ausgewählt
+			</div>
+			<lemma-detail
+				v-else
+				:value="selectedRows[0]"
+				@close="store.lemma.showSideBar = false"
+				@update="
+					updateLemma(
+						// @ts-expect-error
+						selectedRows[0],
+						$event,
+					)
+				"
+			/>
+		</resizable-drawer>
+		<v-main class="fill-width fill-height transition-none">
+			<!-- @vue-expect-error -->
+			<virtual-table
+				ref="vTable"
+				test-id="lemma-table"
+				class="virtual-table text-body-3"
+				:show-filter="store.settings.showLemmaFilter"
+				:columns="columns"
+				:sortable-columns="true"
+				:row-height="38"
+				:scroll-to-row="scrollToRow"
+				:editable="true"
+				:height="tableHeight"
+				:data="sortedFilteredLemmas"
+				:selected-rows="selectedRows"
+				header-color="background darken-2"
+				@keyup.delete="deleteSelectedLemmas"
+				@drag:row="dragListener"
+				@click:cell="onClickCell"
+				@click:header="sortLemmas"
+				@dblclick:row="store.lemma.showSideBar = true"
+				@dblclick:cell="store.lemma.showSideBar = true"
+				@update:selection="selectedRows = $event"
+				@update:item="updateLemmaFromTable"
+				@update:filter="(f) => store.lemma.setFilter(f)"
+				@update:columns="columns = $event"
+			>
+				<template #cell="{ item, column, value }">
+					<template v-if="item[column.value] === 'Not available'"></template>
+					<!-- the star column -->
+					<template v-else-if="column.value === 'selected'">
+						<span v-if="value === true" style="color: var(--v-primary-base)">★</span>
+						<span v-if="value === false" style="opacity: 70%">☆</span>
+					</template>
+					<!-- the gnd column -->
+					<template v-else-if="column.value === 'gnd'">
+						<span v-if="item.gnd.length === 0" style="opacity: 50%">⊘</span>
+						<!-- FIXME: a11y -->
+						<!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
+						<span
+							v-else-if="item.gnd.length > 0"
+							style="white-space: nowrap"
+							@mouseover="onHoverGndCell($event, item.gnd)"
+						>
+							<span v-if="item.gnd.length > 1" class="badge primary" v-text="item.gnd.length" />
+							{{ item.gnd[0] }}
+						</span>
+						<!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
+					</template>
+					<a
+						v-else-if="value && column.value === 'loc'"
+						target="_blank"
+						:href="'https://id.loc.gov/authorities/names/' + value"
+						class="table-external-link background lighten-2"
+					>
+						{{ value }}
+					</a>
+					<a
+						v-else-if="value && column.value === 'viaf_id'"
+						target="_blank"
+						:href="'https://viaf.org/viaf/' + value"
+						class="table-external-link background lighten-2"
+					>
+						{{ value }}
+					</a>
+					<!-- FIXME: a11y -->
+					<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
+					<a
+						v-else-if="value && column.value === 'wiki_edits'"
+						class="table-external-link background lighten-2"
+						@click.prevent="openWikipedia(item)"
+					>
+						{{ value }}
+					</a>
+					<!-- eslint-enable vuejs-accessibility/click-events-have-key-events -->
+					<!-- all others -->
+					<template v-else-if="value">
+						{{ item[column.value] }}
+					</template>
+					<span v-else-if="!value || value.trim() === '?'" class="muted">⊘</span>
+				</template>
+			</virtual-table>
+		</v-main>
+	</div>
+	<!-- eslint-enable vuejs-accessibility/no-static-element-interactions -->
+</template>
 
 <style>
 .input-no-stroke .v-text-field > .v-input__control > .v-input__slot::after,

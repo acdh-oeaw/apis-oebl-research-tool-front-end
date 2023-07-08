@@ -1,3 +1,100 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import { type NewLemmaRow } from "@/types/lemma";
+import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
+import { ImportOptions } from "@/util/lemmaimport/options";
+import ImportFileDialog from "@/views/LemmaManager/LemmaImporter/ImportFileDialog.vue";
+import ImportOptionsSaver from "@/views/LemmaManager/LemmaImporter/ImportOptionsSaver.vue";
+import LemmaBuilder from "@/views/LemmaManager/LemmaImporter/LemmaBuilder.vue";
+import LemmaFormatter from "@/views/LemmaManager/LemmaImporter/LemmaFormatter.vue";
+import LemmaImporter from "@/views/LemmaManager/LemmaImporter/LemmaImporter.vue";
+import ListSelector from "@/views/LemmaManager/LemmaImporter/ListSelector.vue";
+import UserColumnAdding from "@/views/LemmaManager/LemmaImporter/UserColumnAdding.vue";
+
+/**
+ * Manage Import Steps
+ *
+ * 1. Pass data between child importer components and organize order:
+ *  1. Import file
+ *  2. Asign source/target (LemmaRow) columns
+ *  3. Format data to match target's (LemmaRow) requirements
+ *  4. Select or create a list to import: Start import.
+ * 2. Some kind of options management to save and load: (This is not well defined yet)
+ *  - Get them from child importer components,
+ *  - pass them to some save component,
+ *  - load them from save component,
+ *  - pass them to child importer components …
+ */
+@Component({
+	components: {
+		ImportFileDialog,
+		LemmaBuilder,
+		LemmaFormatter,
+		UserColumnAdding,
+		ListSelector,
+		ImportOptionsSaver,
+		LemmaImporter,
+	},
+})
+export default class LemmaImportManager extends Vue {
+	/**
+	 * Which step is currently displayed. We start with step 1.
+	 */
+	stepToDisplay = 1;
+	/**
+	 * Which is the greatest "done" step. We start with nothing is done.
+	 */
+	greatestCompleteStep = 0;
+
+	markStepDone(step: number) {
+		const lastStep = 6;
+		if (step > lastStep) {
+			throw new Error("NotImplemented Error");
+		}
+
+		// Save guard for logic errors
+		if (step - this.greatestCompleteStep > 1) {
+			throw new Error(
+				`Can not adavance more than one step. greatestCompleteStep = ${this.greatestCompleteStep}, required step = ${step}`,
+			);
+		}
+
+		// No reset of progress
+		if (step > this.greatestCompleteStep) {
+			this.greatestCompleteStep = step;
+			// Jump to next possible step
+		}
+
+		this.stepToDisplay =
+			this.greatestCompleteStep === lastStep ? lastStep : this.greatestCompleteStep + 1;
+	}
+
+	importOptions: ImportOptions = new ImportOptions();
+
+	rawImportData: Data2D = new Data2D([], []);
+
+	// Some rows, will not be imported. These are their indexes.
+	missingRowsIndexes: Array<number> = [];
+
+	lemmaPrototypes: Array<LemmaPrototypeStringType> = [];
+
+	newLemmas: Array<NewLemmaRow> = [];
+	newLemmasWithUserColumns: Array<NewLemmaRow> = [];
+	newLemmasWithList: Array<NewLemmaRow> = [];
+
+	get filteredRawImportData(): Data2D {
+		return this.rawImportData.selectRows(this.missingRowsIndexes, true);
+	}
+
+	setOptionsAndAdvanceToEnd(options: ImportOptions) {
+		this.importOptions = options;
+		this.greatestCompleteStep = 6;
+		this.stepToDisplay = 6;
+	}
+}
+</script>
+
 <template>
 	<div class="lemma-importer-container">
 		<v-container>
@@ -106,103 +203,6 @@
 		</v-container>
 	</div>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import { type NewLemmaRow } from "@/types/lemma";
-import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
-import { ImportOptions } from "@/util/lemmaimport/options";
-import ImportFileDialog from "@/views/LemmaManager/LemmaImporter/ImportFileDialog.vue";
-import ImportOptionsSaver from "@/views/LemmaManager/LemmaImporter/ImportOptionsSaver.vue";
-import LemmaBuilder from "@/views/LemmaManager/LemmaImporter/LemmaBuilder.vue";
-import LemmaFormatter from "@/views/LemmaManager/LemmaImporter/LemmaFormatter.vue";
-import LemmaImporter from "@/views/LemmaManager/LemmaImporter/LemmaImporter.vue";
-import ListSelector from "@/views/LemmaManager/LemmaImporter/ListSelector.vue";
-import UserColumnAdding from "@/views/LemmaManager/LemmaImporter/UserColumnAdding.vue";
-
-/**
- * Manage Import Steps
- *
- * 1. Pass data between child importer components and organize order:
- *  1. Import file
- *  2. Asign source/target (LemmaRow) columns
- *  3. Format data to match target's (LemmaRow) requirements
- *  4. Select or create a list to import: Start import.
- * 2. Some kind of options management to save and load: (This is not well defined yet)
- *  - Get them from child importer components,
- *  - pass them to some save component,
- *  - load them from save component,
- *  - pass them to child importer components …
- */
-@Component({
-	components: {
-		ImportFileDialog,
-		LemmaBuilder,
-		LemmaFormatter,
-		UserColumnAdding,
-		ListSelector,
-		ImportOptionsSaver,
-		LemmaImporter,
-	},
-})
-export default class LemmaImportManager extends Vue {
-	/**
-	 * Which step is currently displayed. We start with step 1.
-	 */
-	stepToDisplay = 1;
-	/**
-	 * Which is the greatest "done" step. We start with nothing is done.
-	 */
-	greatestCompleteStep = 0;
-
-	markStepDone(step: number) {
-		const lastStep = 6;
-		if (step > lastStep) {
-			throw new Error("NotImplemented Error");
-		}
-
-		// Save guard for logic errors
-		if (step - this.greatestCompleteStep > 1) {
-			throw new Error(
-				`Can not adavance more than one step. greatestCompleteStep = ${this.greatestCompleteStep}, required step = ${step}`,
-			);
-		}
-
-		// No reset of progress
-		if (step > this.greatestCompleteStep) {
-			this.greatestCompleteStep = step;
-			// Jump to next possible step
-		}
-
-		this.stepToDisplay =
-			this.greatestCompleteStep === lastStep ? lastStep : this.greatestCompleteStep + 1;
-	}
-
-	importOptions: ImportOptions = new ImportOptions();
-
-	rawImportData: Data2D = new Data2D([], []);
-
-	// Some rows, will not be imported. These are their indexes.
-	missingRowsIndexes: Array<number> = [];
-
-	lemmaPrototypes: Array<LemmaPrototypeStringType> = [];
-
-	newLemmas: Array<NewLemmaRow> = [];
-	newLemmasWithUserColumns: Array<NewLemmaRow> = [];
-	newLemmasWithList: Array<NewLemmaRow> = [];
-
-	get filteredRawImportData(): Data2D {
-		return this.rawImportData.selectRows(this.missingRowsIndexes, true);
-	}
-
-	setOptionsAndAdvanceToEnd(options: ImportOptions) {
-		this.importOptions = options;
-		this.greatestCompleteStep = 6;
-		this.stepToDisplay = 6;
-	}
-}
-</script>
 
 <style scoped>
 /* Show background blurred */

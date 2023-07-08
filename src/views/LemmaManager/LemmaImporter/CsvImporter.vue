@@ -1,34 +1,3 @@
-<template>
-	<div class="csv-importer-container">
-		<v-container>
-			<v-row justify="start">
-				<v-col cols="4" class="separator-field">
-					<v-autocomplete
-						v-model="localOptions.separator"
-						label="Trennzeichen"
-						:items="separatorSuggestions"
-					/>
-				</v-col>
-				<v-col cols="4" class="text-delimiter-field">
-					<v-autocomplete
-						v-model="localOptions.textDelimiter"
-						label="Texttrenner"
-						:items="textDelimiterSuggestions"
-					/>
-				</v-col>
-				<v-col cols="4" class="text-delimiter-field">
-					<v-autocomplete
-						label="Zeilentrenner"
-						:value="JSON.stringify(localOptions.newLine)"
-						:items="newLineSuggestions.map((value) => JSON.stringify(value))"
-						@change="localOptions.newLine = JSON.parse($event)"
-					/>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import lodash from "lodash";
 import neatCsv from "neat-csv";
@@ -92,3 +61,34 @@ export default class CsvImporter extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="csv-importer-container">
+		<v-container>
+			<v-row justify="start">
+				<v-col cols="4" class="separator-field">
+					<v-autocomplete
+						v-model="localOptions.separator"
+						label="Trennzeichen"
+						:items="separatorSuggestions"
+					/>
+				</v-col>
+				<v-col cols="4" class="text-delimiter-field">
+					<v-autocomplete
+						v-model="localOptions.textDelimiter"
+						label="Texttrenner"
+						:items="textDelimiterSuggestions"
+					/>
+				</v-col>
+				<v-col cols="4" class="text-delimiter-field">
+					<v-autocomplete
+						label="Zeilentrenner"
+						:value="JSON.stringify(localOptions.newLine)"
+						:items="newLineSuggestions.map((value) => JSON.stringify(value))"
+						@change="localOptions.newLine = JSON.parse($event)"
+					/>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

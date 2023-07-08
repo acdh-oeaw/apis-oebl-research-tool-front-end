@@ -1,40 +1,3 @@
-<template>
-	<div class="gender-mapper-container">
-		<v-container>
-			<div v-if="!chosenGendersAreUnique" class="not-unique-gender-warning">
-				<v-row>
-					<v-col>
-						<v-alert type="warning">Es kann jedes Geschlecht nur einmal ausgefüllt werden.</v-alert>
-					</v-col>
-				</v-row>
-			</div>
-			<div v-for="(entry, key) in genderEntries" :key="`${key}-${entry[0]}`">
-				<v-row>
-					<v-col>
-						<v-combobox
-							v-model="localOptions[entry[1]]"
-							:label="entry[1]"
-							small-chips
-							deletable-chips
-							:items="availableGenders"
-							multiple
-						/>
-					</v-col>
-				</v-row>
-			</div>
-			<v-row class="gender-import-preview">
-				<v-col>
-					<v-data-table
-						label="Vorschau"
-						:headers="genderPreviewHeaders"
-						:items="genderPreviewRows"
-					/>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -143,3 +106,40 @@ export default class GenderMapper extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="gender-mapper-container">
+		<v-container>
+			<div v-if="!chosenGendersAreUnique" class="not-unique-gender-warning">
+				<v-row>
+					<v-col>
+						<v-alert type="warning">Es kann jedes Geschlecht nur einmal ausgefüllt werden.</v-alert>
+					</v-col>
+				</v-row>
+			</div>
+			<div v-for="(entry, key) in genderEntries" :key="`${key}-${entry[0]}`">
+				<v-row>
+					<v-col>
+						<v-combobox
+							v-model="localOptions[entry[1]]"
+							:label="entry[1]"
+							small-chips
+							deletable-chips
+							:items="availableGenders"
+							multiple
+						/>
+					</v-col>
+				</v-row>
+			</div>
+			<v-row class="gender-import-preview">
+				<v-col>
+					<v-data-table
+						label="Vorschau"
+						:headers="genderPreviewHeaders"
+						:items="genderPreviewRows"
+					/>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

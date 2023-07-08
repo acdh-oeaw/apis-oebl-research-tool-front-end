@@ -1,18 +1,3 @@
-<template>
-	<div class="zotero-search-container">
-		<v-autocomplete
-			:error-messages="zoteroErrorMessages"
-			:items="filteredAndFormattedZoteroResults"
-			:search-input.sync="searchTerm"
-			label="Aus Zotero hinzufügen"
-			:loading="loading"
-			no-data-text="Bitte geben Sie einen Suchbegriff ein"
-			@upddate:search-input="searchTerm = $event"
-			@input="submitItem($event)"
-		></v-autocomplete>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -85,3 +70,18 @@ export default class ZoteroSearch extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="zotero-search-container">
+		<v-autocomplete
+			:error-messages="zoteroErrorMessages"
+			:items="filteredAndFormattedZoteroResults"
+			:search-input.sync="searchTerm"
+			label="Aus Zotero hinzufügen"
+			:loading="loading"
+			no-data-text="Bitte geben Sie einen Suchbegriff ein"
+			@upddate:search-input="searchTerm = $event"
+			@input="submitItem($event)"
+		></v-autocomplete>
+	</div>
+</template>

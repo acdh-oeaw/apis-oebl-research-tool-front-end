@@ -1,3 +1,21 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import confirmStore, { bus } from "@/store/confirm";
+
+@Component
+export default class Confirm extends Vue {
+	confirmStore = confirmStore;
+	bus = bus;
+
+	modelClose(b: boolean) {
+		if (b === false) {
+			bus.$emit("abort");
+		}
+	}
+}
+</script>
+
 <template>
 	<v-dialog
 		test-id="confirm-dialog"
@@ -40,21 +58,3 @@
 		</v-card>
 	</v-dialog>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import confirmStore, { bus } from "@/store/confirm";
-
-@Component
-export default class Confirm extends Vue {
-	confirmStore = confirmStore;
-	bus = bus;
-
-	modelClose(b: boolean) {
-		if (b === false) {
-			bus.$emit("abort");
-		}
-	}
-}
-</script>

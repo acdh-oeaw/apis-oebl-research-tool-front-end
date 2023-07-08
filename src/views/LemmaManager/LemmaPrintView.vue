@@ -1,3 +1,68 @@
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
+import store from "@/store";
+import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
+import { type LemmaRow } from "@/types/lemma";
+import { type ZoteroView } from "@/types/zotero";
+import { lemmaRowTranslations } from "@/util/labels";
+import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+
+store.settings.showNavDrawer = false;
+const db = new LemmaDatabase();
+const zoteroBy: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
+const zoteroAbout: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
+
+@Component({
+	components: {
+		LobidPreviewCard,
+		LemmaScrapeResult,
+	},
+})
+export default class LemmaPrintView extends Vue {
+	@Prop() lemmaId!: number;
+	lemma: LemmaRow | null = null;
+	labels = lemmaRowTranslations;
+
+	zoteroCitationsBy: Array<ZoteroView> = [];
+	zoteroCitationsAbout: Array<ZoteroView> = [];
+
+	print() {
+		window.print();
+	}
+
+	// load data
+	beforeCreate() {
+		db.lemmas
+			.get(Number(this.$route.params["lemmaId"]))
+			.then((serializedLemmaRow) => {
+				if (serializedLemmaRow === undefined) {
+					window.alert(`Das Lemma mit der id <${this.lemmaId}> konnte nicht gefunden werden`);
+					throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
+				}
+				this.lemma = unserializeLemmaRow(serializedLemmaRow);
+				zoteroBy
+					.load(this.lemma.zoteroKeysBy)
+					.then((z) => (this.zoteroCitationsBy = z.zoteroItems.map(convertZoteroItemToView)));
+				zoteroAbout
+					.load(this.lemma.zoteroKeysAbout)
+					.then((z) => (this.zoteroCitationsAbout = z.zoteroItems.map(convertZoteroItemToView)));
+			})
+			.catch((error) => {
+				window.alert("Die Datenbank konnt nicht geladen werden.");
+				window.console.error({
+					message: "Could not select from db",
+					lemmaId: this.lemmaId,
+					error,
+				});
+				throw new Error();
+			});
+	}
+}
+</script>
+
 <template>
 	<v-container class="lemma-print-view-container">
 		<section v-if="lemma !== null" class="lemma-print-view">
@@ -242,71 +307,6 @@
 		</section>
 	</v-container>
 </template>
-
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
-import store from "@/store";
-import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
-import { type LemmaRow } from "@/types/lemma";
-import { type ZoteroView } from "@/types/zotero";
-import { lemmaRowTranslations } from "@/util/labels";
-import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-
-store.settings.showNavDrawer = false;
-const db = new LemmaDatabase();
-const zoteroBy: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
-const zoteroAbout: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
-
-@Component({
-	components: {
-		LobidPreviewCard,
-		LemmaScrapeResult,
-	},
-})
-export default class LemmaPrintView extends Vue {
-	@Prop() lemmaId!: number;
-	lemma: LemmaRow | null = null;
-	labels = lemmaRowTranslations;
-
-	zoteroCitationsBy: Array<ZoteroView> = [];
-	zoteroCitationsAbout: Array<ZoteroView> = [];
-
-	print() {
-		window.print();
-	}
-
-	// load data
-	beforeCreate() {
-		db.lemmas
-			.get(Number(this.$route.params["lemmaId"]))
-			.then((serializedLemmaRow) => {
-				if (serializedLemmaRow === undefined) {
-					window.alert(`Das Lemma mit der id <${this.lemmaId}> konnte nicht gefunden werden`);
-					throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
-				}
-				this.lemma = unserializeLemmaRow(serializedLemmaRow);
-				zoteroBy
-					.load(this.lemma.zoteroKeysBy)
-					.then((z) => (this.zoteroCitationsBy = z.zoteroItems.map(convertZoteroItemToView)));
-				zoteroAbout
-					.load(this.lemma.zoteroKeysAbout)
-					.then((z) => (this.zoteroCitationsAbout = z.zoteroItems.map(convertZoteroItemToView)));
-			})
-			.catch((error) => {
-				window.alert("Die Datenbank konnt nicht geladen werden.");
-				window.console.error({
-					message: "Could not select from db",
-					lemmaId: this.lemmaId,
-					error,
-				});
-				throw new Error();
-			});
-	}
-}
-</script>
 
 <style scoped>
 .first-name-title::before {

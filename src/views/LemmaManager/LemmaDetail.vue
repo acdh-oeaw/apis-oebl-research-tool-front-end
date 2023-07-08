@@ -1,3 +1,193 @@
+<script lang="ts">
+import fileDialog from "file-dialog";
+import _ from "lodash";
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+import { GenderAe0Enum, type List } from "@/api";
+import store from "@/store";
+import confirm from "@/store/confirm";
+import { type LemmaRow } from "@/types/lemma";
+import { lemmaRowTranslations } from "@/util/labels";
+import VueFileList from "@/views/LemmaManager/FileList.vue";
+import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
+import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
+import DateField from "@/views/lib/DateField.vue";
+import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
+import LemmaPrinter from "@/views/lib/LemmaPrinter.vue";
+import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
+import TextField from "@/views/lib/TextField.vue";
+import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
+
+const DRAG_CLASS = "drag-over";
+
+interface ZoteroSection {
+	lemmaName: string;
+	listName: string;
+	zoteroKeys: Array<string>;
+	column: string;
+}
+
+@Component({
+	components: {
+		LemmaScrapeResult,
+		LobidPreviewCard,
+		LobidGndSearch,
+		TextField,
+		SelectMenu,
+		TextFieldAlternatives,
+		DateField,
+		VueFileList,
+		ZoteroManager,
+		FullNameArrayField,
+		ProfessionGroupField,
+		LemmaPrinter,
+	},
+})
+export default class LemmaDetail extends Vue {
+	@Prop({ required: true }) value!: LemmaRow;
+	@Prop({ default: true }) showHeader!: boolean;
+	@Prop({ default: true }) showTooggleSideBarButton!: boolean;
+	log = console.log;
+	store = store;
+	showGndSearch = false;
+	detailPage = 0;
+	dragEventDepth = 0;
+	files: Array<File> = [];
+	genderOptions: Array<string> = Object.values(GenderAe0Enum);
+	lemmaRowTranslations = lemmaRowTranslations;
+
+	get yearOfBirth(): number | undefined {
+		return this.value.dateOfBirth.calendarYear;
+	}
+
+	get yearOfDeath(): number | undefined {
+		return this.value.dateOfDeath.calendarYear;
+	}
+
+	get zoteroSections(): Array<ZoteroSection> {
+		const name = `${this.value.lastName}, ${this.value.firstName}`;
+		return [
+			{
+				listName: "Literatur von",
+				lemmaName: name,
+				zoteroKeys: this.value.zoteroKeysBy,
+				column: "zoteroKeysBy",
+			},
+			{
+				listName: "Literatur über",
+				lemmaName: name,
+				zoteroKeys: this.value.zoteroKeysAbout,
+				column: "zoteroKeysAbout",
+			},
+		];
+	}
+
+	onDragEnter(event: DragEvent) {
+		if (
+			event.currentTarget !== null &&
+			event.dataTransfer !== null &&
+			// during the "drag" phase, the "files" prop is still empty
+			// so we use the items prop instead to check _what_ is being dragged.
+			event.dataTransfer.items[0] != null &&
+			event.dataTransfer.items[0].kind === "file"
+		) {
+			const target = event.currentTarget as HTMLElement;
+			this.dragEventDepth = this.dragEventDepth + 1;
+			target.classList.add(DRAG_CLASS);
+			this.detailPage = 1;
+		}
+	}
+
+	onDragLeave(event: DragEvent) {
+		this.dragEventDepth = this.dragEventDepth - 1;
+		if (this.dragEventDepth === 0 && event.currentTarget) {
+			const target = event.currentTarget as HTMLElement;
+			target.classList.remove(DRAG_CLASS);
+		}
+	}
+
+	onDrop(event: DragEvent) {
+		if (
+			event.currentTarget !== null &&
+			event.dataTransfer !== null &&
+			event.dataTransfer.files.length > 0
+		) {
+			const target = event.currentTarget as HTMLElement;
+			target.classList.remove(DRAG_CLASS);
+			this.uploadFiles(event.dataTransfer.files);
+		}
+	}
+
+	async pickFile() {
+		const files = await fileDialog({ multiple: true });
+		this.files = this.files.concat(Array.from(files));
+	}
+
+	isValidFile(f: File): boolean {
+		return f.type !== "";
+	}
+
+	uploadFiles(fs: FileList) {
+		const [validFiles, inValidFiles] = _.partition([...fs], (f) => this.isValidFile(f));
+		if (inValidFiles.length > 0) {
+			confirm.confirm(
+				`${
+					inValidFiles.length
+				} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${inValidFiles
+					.map((f) => f.name)
+					.join(", ")}).`,
+			);
+		}
+		this.files = this.files.concat(validFiles);
+	}
+
+	countScrapedResources(r: LemmaRow["columns_scrape"]) {
+		if (r === undefined) {
+			return 0;
+		} else {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
+		}
+	}
+
+	selectGnd(gnd: Array<string>) {
+		this.showGndSearch = false;
+		this.$emit("update", { gnd });
+	}
+
+	updateUserColumns(userKey: string, $event: Array<string> | number | string) {
+		this.$emit("update", {
+			columns_user: {
+				...this.value.columns_user,
+				[userKey]: $event,
+			},
+			[userKey]: $event,
+		});
+	}
+
+	debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300);
+
+	updateList(l: List) {
+		this.updateData({
+			list: {
+				id: l.id!,
+				title: l.title,
+				editor: l.editor?.userId,
+			},
+		});
+	}
+
+	updateData(u: Partial<LemmaRow>) {
+		this.$emit("update", u);
+	}
+
+	debouncedUpdateData = _.debounce(this.updateData, 300);
+}
+</script>
+
 <template>
 	<v-card
 		v-if="value !== undefined && value !== null"
@@ -389,196 +579,6 @@
 		</div>
 	</v-card>
 </template>
-
-<script lang="ts">
-import fileDialog from "file-dialog";
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-import { GenderAe0Enum, type List } from "@/api";
-import store from "@/store";
-import confirm from "@/store/confirm";
-import { type LemmaRow } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
-import VueFileList from "@/views/LemmaManager/FileList.vue";
-import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
-import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
-import DateField from "@/views/lib/DateField.vue";
-import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
-import LemmaPrinter from "@/views/lib/LemmaPrinter.vue";
-import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
-import TextField from "@/views/lib/TextField.vue";
-import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
-
-const DRAG_CLASS = "drag-over";
-
-interface ZoteroSection {
-	lemmaName: string;
-	listName: string;
-	zoteroKeys: Array<string>;
-	column: string;
-}
-
-@Component({
-	components: {
-		LemmaScrapeResult,
-		LobidPreviewCard,
-		LobidGndSearch,
-		TextField,
-		SelectMenu,
-		TextFieldAlternatives,
-		DateField,
-		VueFileList,
-		ZoteroManager,
-		FullNameArrayField,
-		ProfessionGroupField,
-		LemmaPrinter,
-	},
-})
-export default class LemmaDetail extends Vue {
-	@Prop({ required: true }) value!: LemmaRow;
-	@Prop({ default: true }) showHeader!: boolean;
-	@Prop({ default: true }) showTooggleSideBarButton!: boolean;
-	log = console.log;
-	store = store;
-	showGndSearch = false;
-	detailPage = 0;
-	dragEventDepth = 0;
-	files: Array<File> = [];
-	genderOptions: Array<string> = Object.values(GenderAe0Enum);
-	lemmaRowTranslations = lemmaRowTranslations;
-
-	get yearOfBirth(): number | undefined {
-		return this.value.dateOfBirth.calendarYear;
-	}
-
-	get yearOfDeath(): number | undefined {
-		return this.value.dateOfDeath.calendarYear;
-	}
-
-	get zoteroSections(): Array<ZoteroSection> {
-		const name = `${this.value.lastName}, ${this.value.firstName}`;
-		return [
-			{
-				listName: "Literatur von",
-				lemmaName: name,
-				zoteroKeys: this.value.zoteroKeysBy,
-				column: "zoteroKeysBy",
-			},
-			{
-				listName: "Literatur über",
-				lemmaName: name,
-				zoteroKeys: this.value.zoteroKeysAbout,
-				column: "zoteroKeysAbout",
-			},
-		];
-	}
-
-	onDragEnter(event: DragEvent) {
-		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
-			// during the "drag" phase, the "files" prop is still empty
-			// so we use the items prop instead to check _what_ is being dragged.
-			event.dataTransfer.items[0] != null &&
-			event.dataTransfer.items[0].kind === "file"
-		) {
-			const target = event.currentTarget as HTMLElement;
-			this.dragEventDepth = this.dragEventDepth + 1;
-			target.classList.add(DRAG_CLASS);
-			this.detailPage = 1;
-		}
-	}
-
-	onDragLeave(event: DragEvent) {
-		this.dragEventDepth = this.dragEventDepth - 1;
-		if (this.dragEventDepth === 0 && event.currentTarget) {
-			const target = event.currentTarget as HTMLElement;
-			target.classList.remove(DRAG_CLASS);
-		}
-	}
-
-	onDrop(event: DragEvent) {
-		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
-			event.dataTransfer.files.length > 0
-		) {
-			const target = event.currentTarget as HTMLElement;
-			target.classList.remove(DRAG_CLASS);
-			this.uploadFiles(event.dataTransfer.files);
-		}
-	}
-
-	async pickFile() {
-		const files = await fileDialog({ multiple: true });
-		this.files = this.files.concat(Array.from(files));
-	}
-
-	isValidFile(f: File): boolean {
-		return f.type !== "";
-	}
-
-	uploadFiles(fs: FileList) {
-		const [validFiles, inValidFiles] = _.partition([...fs], (f) => this.isValidFile(f));
-		if (inValidFiles.length > 0) {
-			confirm.confirm(
-				`${
-					inValidFiles.length
-				} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${inValidFiles
-					.map((f) => f.name)
-					.join(", ")}).`,
-			);
-		}
-		this.files = this.files.concat(validFiles);
-	}
-
-	countScrapedResources(r: LemmaRow["columns_scrape"]) {
-		if (r === undefined) {
-			return 0;
-		} else {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
-		}
-	}
-
-	selectGnd(gnd: Array<string>) {
-		this.showGndSearch = false;
-		this.$emit("update", { gnd });
-	}
-
-	updateUserColumns(userKey: string, $event: Array<string> | number | string) {
-		this.$emit("update", {
-			columns_user: {
-				...this.value.columns_user,
-				[userKey]: $event,
-			},
-			[userKey]: $event,
-		});
-	}
-
-	debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300);
-
-	updateList(l: List) {
-		this.updateData({
-			list: {
-				id: l.id!,
-				title: l.title,
-				editor: l.editor?.userId,
-			},
-		});
-	}
-
-	updateData(u: Partial<LemmaRow>) {
-		this.$emit("update", u);
-	}
-
-	debouncedUpdateData = _.debounce(this.updateData, 300);
-}
-</script>
 
 <style scoped>
 .lemma-detail {

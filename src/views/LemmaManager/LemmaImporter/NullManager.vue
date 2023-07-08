@@ -1,38 +1,3 @@
-<template>
-	<div class="null-manager-container">
-		<v-container>
-			<v-row class="null-managment-options">
-				<v-col>
-					<v-combobox
-						v-model="localNullValues"
-						multiple
-						:items="vuetifyNullSelect"
-						label="Nullwerte"
-						deletable-chips
-						small-chips
-					/>
-				</v-col>
-			</v-row>
-			<v-row v-if="nullPrototypes.length" class="fields-missing">
-				<v-col>
-					<lemma-previewer
-						:lemmas="nullPrototypes"
-						label="Lemmas ohne Nachname können nicht importiert werden."
-					/>
-				</v-col>
-			</v-row>
-			<v-row class="nulled-result">
-				<v-col>
-					<lemma-previewer
-						:lemmas="lemmaPrototypesWithRequiredFields"
-						label="Diese Lemmas werden importiert."
-					/>
-				</v-col>
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -102,3 +67,38 @@ export default class NullManager extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="null-manager-container">
+		<v-container>
+			<v-row class="null-managment-options">
+				<v-col>
+					<v-combobox
+						v-model="localNullValues"
+						multiple
+						:items="vuetifyNullSelect"
+						label="Nullwerte"
+						deletable-chips
+						small-chips
+					/>
+				</v-col>
+			</v-row>
+			<v-row v-if="nullPrototypes.length" class="fields-missing">
+				<v-col>
+					<lemma-previewer
+						:lemmas="nullPrototypes"
+						label="Lemmas ohne Nachname können nicht importiert werden."
+					/>
+				</v-col>
+			</v-row>
+			<v-row class="nulled-result">
+				<v-col>
+					<lemma-previewer
+						:lemmas="lemmaPrototypesWithRequiredFields"
+						label="Diese Lemmas werden importiert."
+					/>
+				</v-col>
+			</v-row>
+		</v-container>
+	</div>
+</template>

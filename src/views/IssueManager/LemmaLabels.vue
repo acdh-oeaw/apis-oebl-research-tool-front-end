@@ -1,3 +1,116 @@
+<script lang="ts">
+import _ from "lodash";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import colors from "vuetify/lib/util/colors";
+
+import store from "@/store";
+import confirm from "@/store/confirm";
+import { type Label } from "@/types/issue";
+
+@Component
+export default class LemmaLabels extends Vue {
+	@Prop({ default: [] }) value!: Array<number>;
+
+	searchText: string | null = null;
+	editingLabel: Label | null = null;
+	defaultLabelColor = colors.blueGrey.base;
+
+	labelNameRules = [
+		(n: string) =>
+			(n === null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
+		(n: string) =>
+			this.labels.findIndex(
+				(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
+			) > -1 && "Dieses Label exisitiert bereits.",
+	];
+
+	get colors() {
+		return _.mapKeys(colors, (v, k) => _.startCase(k));
+	}
+
+	get selectedLabels() {
+		return this.value
+			.map((id) => this.labels.find((l) => l.id === id))
+			.filter((v) => v !== undefined);
+	}
+
+	get labels() {
+		return store.issue.labels;
+	}
+
+	isNewLabel(l: Label | string): l is string {
+		return typeof l === "string";
+	}
+
+	addLabel(name: string) {
+		this.editingLabel = {
+			name: name,
+			color: this.defaultLabelColor,
+			id: -1,
+		};
+	}
+
+	onChange(ls: Array<Label | string>) {
+		this.searchText = "";
+		const newLabel = ls.find(this.isNewLabel);
+		if (newLabel !== undefined) {
+			this.addLabel(newLabel);
+		}
+		this.$emit(
+			"update",
+			ls.filter((l): l is Label => !this.isNewLabel(l)).map((l) => l.id),
+		);
+	}
+
+	async deleteEditingLabel() {
+		const i = this.editingLabel;
+		if (i !== null && i.id !== undefined && i.id > -1) {
+			if (
+				await confirm.confirm(
+					"Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.",
+					{ icon: "mdi-delete-outline" },
+				)
+			) {
+				store.issue.deleteLabel(i.id);
+				this.editingLabel = null;
+			}
+		}
+	}
+
+	async editLabel(item: Label) {
+		this.editingLabel = item;
+	}
+
+	async saveLabel() {
+		if (this.editingLabel !== null) {
+			if (this.editingLabel.id === -1) {
+				const { id } = await store.issue.createLabel(
+					this.editingLabel.name,
+					this.editingLabel.color || this.defaultLabelColor,
+				);
+				if (id !== undefined) {
+					this.$emit("update", this.value.concat(id));
+				}
+			} else {
+				await store.issue.updateLabel(
+					this.editingLabel.id!,
+					this.editingLabel.color || this.defaultLabelColor,
+					this.editingLabel.name,
+				);
+			}
+			this.editingLabel = null;
+		}
+	}
+
+	onRemove(label: Label) {
+		this.$emit(
+			"update",
+			this.value.filter((id) => id !== label.id),
+		);
+	}
+}
+</script>
+
 <template>
 	<div>
 		<v-combobox
@@ -164,119 +277,6 @@
 		</v-dialog>
 	</div>
 </template>
-
-<script lang="ts">
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import colors from "vuetify/lib/util/colors";
-
-import store from "@/store";
-import confirm from "@/store/confirm";
-import { type Label } from "@/types/issue";
-
-@Component
-export default class LemmaLabels extends Vue {
-	@Prop({ default: [] }) value!: Array<number>;
-
-	searchText: string | null = null;
-	editingLabel: Label | null = null;
-	defaultLabelColor = colors.blueGrey.base;
-
-	labelNameRules = [
-		(n: string) =>
-			(n === null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
-		(n: string) =>
-			this.labels.findIndex(
-				(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
-			) > -1 && "Dieses Label exisitiert bereits.",
-	];
-
-	get colors() {
-		return _.mapKeys(colors, (v, k) => _.startCase(k));
-	}
-
-	get selectedLabels() {
-		return this.value
-			.map((id) => this.labels.find((l) => l.id === id))
-			.filter((v) => v !== undefined);
-	}
-
-	get labels() {
-		return store.issue.labels;
-	}
-
-	isNewLabel(l: Label | string): l is string {
-		return typeof l === "string";
-	}
-
-	addLabel(name: string) {
-		this.editingLabel = {
-			name: name,
-			color: this.defaultLabelColor,
-			id: -1,
-		};
-	}
-
-	onChange(ls: Array<Label | string>) {
-		this.searchText = "";
-		const newLabel = ls.find(this.isNewLabel);
-		if (newLabel !== undefined) {
-			this.addLabel(newLabel);
-		}
-		this.$emit(
-			"update",
-			ls.filter((l): l is Label => !this.isNewLabel(l)).map((l) => l.id),
-		);
-	}
-
-	async deleteEditingLabel() {
-		const i = this.editingLabel;
-		if (i !== null && i.id !== undefined && i.id > -1) {
-			if (
-				await confirm.confirm(
-					"Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.",
-					{ icon: "mdi-delete-outline" },
-				)
-			) {
-				store.issue.deleteLabel(i.id);
-				this.editingLabel = null;
-			}
-		}
-	}
-
-	async editLabel(item: Label) {
-		this.editingLabel = item;
-	}
-
-	async saveLabel() {
-		if (this.editingLabel !== null) {
-			if (this.editingLabel.id === -1) {
-				const { id } = await store.issue.createLabel(
-					this.editingLabel.name,
-					this.editingLabel.color || this.defaultLabelColor,
-				);
-				if (id !== undefined) {
-					this.$emit("update", this.value.concat(id));
-				}
-			} else {
-				await store.issue.updateLabel(
-					this.editingLabel.id!,
-					this.editingLabel.color || this.defaultLabelColor,
-					this.editingLabel.name,
-				);
-			}
-			this.editingLabel = null;
-		}
-	}
-
-	onRemove(label: Label) {
-		this.$emit(
-			"update",
-			this.value.filter((id) => id !== label.id),
-		);
-	}
-}
-</script>
 
 <style scoped>
 .label {

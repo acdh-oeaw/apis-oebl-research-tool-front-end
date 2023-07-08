@@ -1,39 +1,3 @@
-<template>
-	<v-navigation-drawer
-		v-bind="{ ...$props, ...$attrs }"
-		ref="drawer"
-		:color="color"
-		:right="right"
-		stateless
-		:clipped="clipped"
-		:width="localWidth"
-		:class="{
-			'display-card': card,
-			'nav-drawer': true,
-			right: right,
-		}"
-		:floating="floating"
-		:value="value"
-		app
-		@input="handleInput"
-	>
-		<!-- FIXME: a11y -->
-		<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
-		<div
-			v-if="!mini"
-			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"
-			@dblclick="expandOrShrink"
-			@mousedown="startDrag"
-		>
-			<div
-				class="resize-handle"
-				:style="{ backgroundColor: $vuetify.theme.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)' }"
-			/>
-		</div>
-		<slot />
-	</v-navigation-drawer>
-</template>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
@@ -152,6 +116,42 @@ export default class ResizableDrawer extends Vue {
 	}
 }
 </script>
+
+<template>
+	<v-navigation-drawer
+		v-bind="{ ...$props, ...$attrs }"
+		ref="drawer"
+		:color="color"
+		:right="right"
+		stateless
+		:clipped="clipped"
+		:width="localWidth"
+		:class="{
+			'display-card': card,
+			'nav-drawer': true,
+			right: right,
+		}"
+		:floating="floating"
+		:value="value"
+		app
+		@input="handleInput"
+	>
+		<!-- FIXME: a11y -->
+		<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+		<div
+			v-if="!mini"
+			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"
+			@dblclick="expandOrShrink"
+			@mousedown="startDrag"
+		>
+			<div
+				class="resize-handle"
+				:style="{ backgroundColor: $vuetify.theme.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)' }"
+			/>
+		</div>
+		<slot />
+	</v-navigation-drawer>
+</template>
 
 <style>
 .nav-drawer .v-navigation-drawer__content {

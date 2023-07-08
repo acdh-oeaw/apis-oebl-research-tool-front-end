@@ -1,145 +1,3 @@
-<template>
-	<div class="editor-loader-container">
-		<v-app-bar app flat>
-			<v-spacer></v-spacer>
-			<div v-if="articleStore">
-				<v-btn
-					v-if="!articleStore.showSidebar"
-					tile
-					class="rounded-lg"
-					icon
-					@click="toggleSidebar()"
-				>
-					<v-icon>mdi-dock-right</v-icon>
-				</v-btn>
-			</div>
-		</v-app-bar>
-		<resizable-drawer
-			v-if="articleStore"
-			color="background darken-1"
-			:card="false"
-			:right="true"
-			:min-width="300"
-			:width="articleStore.sideBarWidth"
-			:value="articleStore.showSidebar"
-			@update:width="articleStore.sideBarWidth = $event"
-		>
-			<v-card
-				class="transparent flex-column d-flex fill-height lemma-detail"
-				elevation="0"
-				@dragover.prevent=""
-			>
-				<v-card-title class="flex-column pb-2">
-					<div class="d-flex flex-row align-self-stretch">
-						<v-btn
-							style="margin-top: -8px; margin-right: -10px"
-							width="48"
-							height="48"
-							tile
-							class="rounded-lg"
-							icon
-							@click="toggleSidebar()"
-						>
-							<v-icon>mdi-dock-right</v-icon>
-						</v-btn>
-					</div>
-				</v-card-title>
-				<v-tabs v-model="tab" background-color="transparent">
-					<v-tab>Versionen ({{ sortedVersionViews.length }})</v-tab>
-					<v-tab>Annotationen</v-tab>
-					<v-tab>Kommentare</v-tab>
-					<v-tabs-slider color="transparent"></v-tabs-slider>
-					<v-tabs-items v-model="tab">
-						<v-tab-item>
-							<span v-if="userCanEditInAnyWay" class="pl-3">
-								<v-btn class="rounded-lg" elevation="0" color="primary" @click="createNewVersion()">
-									Neue Version erstellen
-								</v-btn>
-							</span>
-							<v-list v-if="articleStore">
-								<v-list-item v-for="version in sortedVersionViews" :key="version.id">
-									<template #default>
-										<v-list-item-action>
-											<v-simple-checkbox
-												:disabled="version.isShownInEditor"
-												:value="version.isShownInEditor"
-												@click="selectVersion(version.id)"
-											/>
-										</v-list-item-action>
-										<v-list-item-content>
-											<v-list-item-title>Version Nr. {{ version.ordinalNumber }}</v-list-item-title>
-											<v-list-item-subtitle>
-												erstellt am {{ version.dateCreatedDELocale }}
-											</v-list-item-subtitle>
-											<v-list-item-subtitle
-												v-if="version.dateCreatedDELocale !== version.dateModifiedDELocale"
-											>
-												(bearbeitet: {{ version.dateModifiedDELocale }})
-											</v-list-item-subtitle>
-										</v-list-item-content>
-									</template>
-								</v-list-item>
-							</v-list>
-						</v-tab-item>
-						<v-tab-item>
-							<v-card flat>
-								<v-card-text>Annotationen</v-card-text>
-							</v-card>
-						</v-tab-item>
-						<v-tab-item>
-							<v-card flat>
-								<v-card-text>Kommentare</v-card-text>
-							</v-card>
-						</v-tab-item>
-					</v-tabs-items>
-				</v-tabs>
-				<v-divider />
-			</v-card>
-			<!--<article-detail :articleStore="articleStore">
-      </article-detail>-->
-		</resizable-drawer>
-		<v-main>
-			<v-container>
-				<v-row class="editor-row">
-					<v-col class="editor-col">
-						<!-- We have three basic states: Loading, loaded and error -->
-						<div v-if="loadingState === 'LOADING'">
-							<div class="loading">
-								<v-progress-circular indeterminate />
-							</div>
-						</div>
-						<div v-else-if="loadingState === 'LOADED' && userCanView">
-							<div class="loaded-editor">
-								<editor
-									:article-store="articleStore"
-									:version="versionToEdit"
-									:tip-tap-editor="tipTapEditor"
-									:user-can-annotate="userCanAnnotate"
-									:user-can-comment="userCanComment"
-								/>
-							</div>
-						</div>
-						<div v-else-if="loadingState === 'ERROR'">
-							<div class="loading-error">
-								<v-alert type="error">{{ errorMessage }}</v-alert>
-							</div>
-						</div>
-						<div v-else>
-							<div class="state-error">
-								<!-- There was an error. Please contact the technical support-team -->
-								<v-alert type="error">
-									Es gab leider einen internen Fehler. Bitte kontaktieren Sie das technische
-									Support-Team.
-								</v-alert>
-							</div>
-						</div>
-					</v-col>
-				</v-row>
-			</v-container>
-		</v-main>
-	</div>
-</template>
-
 <script lang="ts">
 import TipTapStarterKit from "@tiptap/starter-kit";
 import { type Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/vue-2";
@@ -391,6 +249,148 @@ export default class EditorLoader extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="editor-loader-container">
+		<v-app-bar app flat>
+			<v-spacer></v-spacer>
+			<div v-if="articleStore">
+				<v-btn
+					v-if="!articleStore.showSidebar"
+					tile
+					class="rounded-lg"
+					icon
+					@click="toggleSidebar()"
+				>
+					<v-icon>mdi-dock-right</v-icon>
+				</v-btn>
+			</div>
+		</v-app-bar>
+		<resizable-drawer
+			v-if="articleStore"
+			color="background darken-1"
+			:card="false"
+			:right="true"
+			:min-width="300"
+			:width="articleStore.sideBarWidth"
+			:value="articleStore.showSidebar"
+			@update:width="articleStore.sideBarWidth = $event"
+		>
+			<v-card
+				class="transparent flex-column d-flex fill-height lemma-detail"
+				elevation="0"
+				@dragover.prevent=""
+			>
+				<v-card-title class="flex-column pb-2">
+					<div class="d-flex flex-row align-self-stretch">
+						<v-btn
+							style="margin-top: -8px; margin-right: -10px"
+							width="48"
+							height="48"
+							tile
+							class="rounded-lg"
+							icon
+							@click="toggleSidebar()"
+						>
+							<v-icon>mdi-dock-right</v-icon>
+						</v-btn>
+					</div>
+				</v-card-title>
+				<v-tabs v-model="tab" background-color="transparent">
+					<v-tab>Versionen ({{ sortedVersionViews.length }})</v-tab>
+					<v-tab>Annotationen</v-tab>
+					<v-tab>Kommentare</v-tab>
+					<v-tabs-slider color="transparent"></v-tabs-slider>
+					<v-tabs-items v-model="tab">
+						<v-tab-item>
+							<span v-if="userCanEditInAnyWay" class="pl-3">
+								<v-btn class="rounded-lg" elevation="0" color="primary" @click="createNewVersion()">
+									Neue Version erstellen
+								</v-btn>
+							</span>
+							<v-list v-if="articleStore">
+								<v-list-item v-for="version in sortedVersionViews" :key="version.id">
+									<template #default>
+										<v-list-item-action>
+											<v-simple-checkbox
+												:disabled="version.isShownInEditor"
+												:value="version.isShownInEditor"
+												@click="selectVersion(version.id)"
+											/>
+										</v-list-item-action>
+										<v-list-item-content>
+											<v-list-item-title>Version Nr. {{ version.ordinalNumber }}</v-list-item-title>
+											<v-list-item-subtitle>
+												erstellt am {{ version.dateCreatedDELocale }}
+											</v-list-item-subtitle>
+											<v-list-item-subtitle
+												v-if="version.dateCreatedDELocale !== version.dateModifiedDELocale"
+											>
+												(bearbeitet: {{ version.dateModifiedDELocale }})
+											</v-list-item-subtitle>
+										</v-list-item-content>
+									</template>
+								</v-list-item>
+							</v-list>
+						</v-tab-item>
+						<v-tab-item>
+							<v-card flat>
+								<v-card-text>Annotationen</v-card-text>
+							</v-card>
+						</v-tab-item>
+						<v-tab-item>
+							<v-card flat>
+								<v-card-text>Kommentare</v-card-text>
+							</v-card>
+						</v-tab-item>
+					</v-tabs-items>
+				</v-tabs>
+				<v-divider />
+			</v-card>
+			<!--<article-detail :articleStore="articleStore">
+      </article-detail>-->
+		</resizable-drawer>
+		<v-main>
+			<v-container>
+				<v-row class="editor-row">
+					<v-col class="editor-col">
+						<!-- We have three basic states: Loading, loaded and error -->
+						<div v-if="loadingState === 'LOADING'">
+							<div class="loading">
+								<v-progress-circular indeterminate />
+							</div>
+						</div>
+						<div v-else-if="loadingState === 'LOADED' && userCanView">
+							<div class="loaded-editor">
+								<editor
+									:article-store="articleStore"
+									:version="versionToEdit"
+									:tip-tap-editor="tipTapEditor"
+									:user-can-annotate="userCanAnnotate"
+									:user-can-comment="userCanComment"
+								/>
+							</div>
+						</div>
+						<div v-else-if="loadingState === 'ERROR'">
+							<div class="loading-error">
+								<v-alert type="error">{{ errorMessage }}</v-alert>
+							</div>
+						</div>
+						<div v-else>
+							<div class="state-error">
+								<!-- There was an error. Please contact the technical support-team -->
+								<v-alert type="error">
+									Es gab leider einen internen Fehler. Bitte kontaktieren Sie das technische
+									Support-Team.
+								</v-alert>
+							</div>
+						</div>
+					</v-col>
+				</v-row>
+			</v-container>
+		</v-main>
+	</div>
+</template>
 
 <style scoped>
 .v-tab {

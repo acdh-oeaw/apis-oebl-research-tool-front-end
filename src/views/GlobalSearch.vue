@@ -1,99 +1,3 @@
-<template>
-	<div>
-		<v-dialog
-			overlay-color="black"
-			:overlay-opacity="$vuetify.theme.dark ? '.8' : '.5'"
-			transition="fade-transition"
-			max-width="1000"
-			content-class="elevation-0"
-			:value="value"
-			@input="$emit('input', $event)"
-		>
-			<v-card v-if="value" class="pa-0 rounded-lg" color="transparent" flat>
-				<v-card-title class="pa-0 background rounded-tl-lg rounded-tr-lg d-flex flex-nowrap">
-					<v-icon style="opacity: 50%" class="ml-3" large>mdi-magnify</v-icon>
-					<input
-						ref="input"
-						v-model="searchText"
-						aria-label="Suche"
-						class="pl-2 py-4 rounded-lg global-search"
-						placeholder="Suchen…"
-						type="text"
-						@keydown.down.prevent="selectResult(1)"
-						@keydown.up.prevent="selectResult(-1)"
-						@keydown.esc.capture.prevent.stop="onEsc"
-						@keydown.enter.prevent="openSelectedResult"
-						@input="onInput"
-					/>
-				</v-card-title>
-				<v-card-text
-					class="overflow-hidden pa-0"
-					style="position: relative; height: 450px; background: transparent"
-				>
-					<v-divider />
-					<div class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
-						<v-list
-							ref="list"
-							style="width: 60%"
-							class="overflow-y-auto fill-height pa-0"
-							color="background darken-2"
-							dense
-						>
-							<v-subheader
-								class="sticky px-2 ma-0"
-								style="z-index: 1; background: var(--v-background-darken2)"
-							>
-								{{ searchText === "" ? "Zuletzt gesucht" : "Lemmata" }}
-							</v-subheader>
-							<v-list-item
-								v-for="(result, i) in results"
-								:key="i"
-								:input-value="i === selectedResult"
-								@click="selectedResult = i"
-							>
-								<v-list-item-avatar width="15">
-									<span v-if="result.item.selected === true" style="color: var(--v-primary-base)">
-										★
-									</span>
-									<span v-if="result.item.selected === false" style="opacity: 50%">☆</span>
-								</v-list-item-avatar>
-								<v-list-item-content>
-									<v-list-item-title>
-										{{ result.item.firstName }} {{ result.item.lastName }}
-									</v-list-item-title>
-									<!--
-                    Only check for borth date valid …
-                    -> If only birth date valid: "01.01.2000 –",
-                      else "01.01.1900 - 01.01.1980" -->
-									<v-list-item-subtitle v-if="result.item.dateOfBirth.isValid()">
-										{{ [result.item.dateOfBirth, result.item.dateOfDeath].join(" – ") }}
-									</v-list-item-subtitle>
-								</v-list-item-content>
-								<v-list-item-action-text
-									style="overflow: hidden; max-width: 50%; white-space: nowrap"
-								>
-									<div v-if="result.item.list" class="text-right font-weight-bold">
-										<v-icon x-small>mdi-format-list-bulleted</v-icon>
-										{{ result.item.list.title }}
-									</div>
-								</v-list-item-action-text>
-							</v-list-item>
-						</v-list>
-						<div style="width: 40%" class="preview-panel background">
-							<lemma-detail
-								v-if="selectedLemma !== null"
-								:value="selectedLemma.item"
-								:show-tooggle-side-bar-button="false"
-								@update="updateLemma"
-							/>
-						</div>
-					</div>
-				</v-card-text>
-			</v-card>
-		</v-dialog>
-	</div>
-</template>
-
 <script lang="ts">
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -265,6 +169,102 @@ export default class GlobalSearch extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div>
+		<v-dialog
+			overlay-color="black"
+			:overlay-opacity="$vuetify.theme.dark ? '.8' : '.5'"
+			transition="fade-transition"
+			max-width="1000"
+			content-class="elevation-0"
+			:value="value"
+			@input="$emit('input', $event)"
+		>
+			<v-card v-if="value" class="pa-0 rounded-lg" color="transparent" flat>
+				<v-card-title class="pa-0 background rounded-tl-lg rounded-tr-lg d-flex flex-nowrap">
+					<v-icon style="opacity: 50%" class="ml-3" large>mdi-magnify</v-icon>
+					<input
+						ref="input"
+						v-model="searchText"
+						aria-label="Suche"
+						class="pl-2 py-4 rounded-lg global-search"
+						placeholder="Suchen…"
+						type="text"
+						@keydown.down.prevent="selectResult(1)"
+						@keydown.up.prevent="selectResult(-1)"
+						@keydown.esc.capture.prevent.stop="onEsc"
+						@keydown.enter.prevent="openSelectedResult"
+						@input="onInput"
+					/>
+				</v-card-title>
+				<v-card-text
+					class="overflow-hidden pa-0"
+					style="position: relative; height: 450px; background: transparent"
+				>
+					<v-divider />
+					<div class="d-flex flex-row rounded-bl-lg rounded-br-lg background darken-2 fill-height">
+						<v-list
+							ref="list"
+							style="width: 60%"
+							class="overflow-y-auto fill-height pa-0"
+							color="background darken-2"
+							dense
+						>
+							<v-subheader
+								class="sticky px-2 ma-0"
+								style="z-index: 1; background: var(--v-background-darken2)"
+							>
+								{{ searchText === "" ? "Zuletzt gesucht" : "Lemmata" }}
+							</v-subheader>
+							<v-list-item
+								v-for="(result, i) in results"
+								:key="i"
+								:input-value="i === selectedResult"
+								@click="selectedResult = i"
+							>
+								<v-list-item-avatar width="15">
+									<span v-if="result.item.selected === true" style="color: var(--v-primary-base)">
+										★
+									</span>
+									<span v-if="result.item.selected === false" style="opacity: 50%">☆</span>
+								</v-list-item-avatar>
+								<v-list-item-content>
+									<v-list-item-title>
+										{{ result.item.firstName }} {{ result.item.lastName }}
+									</v-list-item-title>
+									<!--
+                    Only check for borth date valid …
+                    -> If only birth date valid: "01.01.2000 –",
+                      else "01.01.1900 - 01.01.1980" -->
+									<v-list-item-subtitle v-if="result.item.dateOfBirth.isValid()">
+										{{ [result.item.dateOfBirth, result.item.dateOfDeath].join(" – ") }}
+									</v-list-item-subtitle>
+								</v-list-item-content>
+								<v-list-item-action-text
+									style="overflow: hidden; max-width: 50%; white-space: nowrap"
+								>
+									<div v-if="result.item.list" class="text-right font-weight-bold">
+										<v-icon x-small>mdi-format-list-bulleted</v-icon>
+										{{ result.item.list.title }}
+									</div>
+								</v-list-item-action-text>
+							</v-list-item>
+						</v-list>
+						<div style="width: 40%" class="preview-panel background">
+							<lemma-detail
+								v-if="selectedLemma !== null"
+								:value="selectedLemma.item"
+								:show-tooggle-side-bar-button="false"
+								@update="updateLemma"
+							/>
+						</div>
+					</div>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
+	</div>
+</template>
 
 <style>
 .theme--dark .global-search {

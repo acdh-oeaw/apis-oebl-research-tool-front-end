@@ -1,49 +1,3 @@
-<template>
-	<div class="file-options-container">
-		<v-container>
-			<v-row class="select-file">
-				<v-file-input
-					:accept="fileType"
-					label="Bitte eine Datei auswählen"
-					@change="file = $event === undefined ? null : $event"
-				></v-file-input>
-				<v-spacer />
-				<v-select
-					v-model="fileType"
-					label="Dateityp"
-					:items="[{ text: 'csv', value: 'text/csv' }]"
-				/>
-			</v-row>
-			<v-row class="file-type-options">
-				<csv-importer
-					v-if="file !== null && file.type === 'text/csv'"
-					:file="file"
-					:preloaded-options="preloadedFileOptions"
-					@options="localOptions = $event"
-					@data="rawData = $event"
-				/>
-			</v-row>
-			<v-row class="general-file-options">
-				<v-col>
-					<v-checkbox
-						v-if="localOptions"
-						v-model="localOptions.useFirstRowAsHeaders"
-						label="Enthält Spaltenüberschriften"
-					/>
-				</v-col>
-			</v-row>
-			<v-row class="submit">
-				<v-col>
-					<v-btn :disabled="rawData === null" @click="submit()">Weiter</v-btn>
-				</v-col>
-			</v-row>
-			<v-row class="data-preview">
-				<v-data-table dense :headers="vuetifyDataTableHeaders" :items="vuetifyDataTableItems" />
-			</v-row>
-		</v-container>
-	</div>
-</template>
-
 <script lang="ts">
 import lodash, { truncate } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -162,3 +116,49 @@ export default class ImportFileDialog extends Vue {
 	}
 }
 </script>
+
+<template>
+	<div class="file-options-container">
+		<v-container>
+			<v-row class="select-file">
+				<v-file-input
+					:accept="fileType"
+					label="Bitte eine Datei auswählen"
+					@change="file = $event === undefined ? null : $event"
+				></v-file-input>
+				<v-spacer />
+				<v-select
+					v-model="fileType"
+					label="Dateityp"
+					:items="[{ text: 'csv', value: 'text/csv' }]"
+				/>
+			</v-row>
+			<v-row class="file-type-options">
+				<csv-importer
+					v-if="file !== null && file.type === 'text/csv'"
+					:file="file"
+					:preloaded-options="preloadedFileOptions"
+					@options="localOptions = $event"
+					@data="rawData = $event"
+				/>
+			</v-row>
+			<v-row class="general-file-options">
+				<v-col>
+					<v-checkbox
+						v-if="localOptions"
+						v-model="localOptions.useFirstRowAsHeaders"
+						label="Enthält Spaltenüberschriften"
+					/>
+				</v-col>
+			</v-row>
+			<v-row class="submit">
+				<v-col>
+					<v-btn :disabled="rawData === null" @click="submit()">Weiter</v-btn>
+				</v-col>
+			</v-row>
+			<v-row class="data-preview">
+				<v-data-table dense :headers="vuetifyDataTableHeaders" :items="vuetifyDataTableItems" />
+			</v-row>
+		</v-container>
+	</div>
+</template>

@@ -1,3 +1,21 @@
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import promptStore, { bus } from "@/store/prompt";
+
+@Component
+export default class Prompt extends Vue {
+	promptStore = promptStore;
+	bus = bus;
+
+	modelClose(b: boolean) {
+		if (b === false) {
+			bus.$emit("abort");
+		}
+	}
+}
+</script>
+
 <template>
 	<v-dialog
 		v-if="promptStore.show"
@@ -56,21 +74,3 @@
 		</v-card>
 	</v-dialog>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import promptStore, { bus } from "@/store/prompt";
-
-@Component
-export default class Prompt extends Vue {
-	promptStore = promptStore;
-	bus = bus;
-
-	modelClose(b: boolean) {
-		if (b === false) {
-			bus.$emit("abort");
-		}
-	}
-}
-</script>
