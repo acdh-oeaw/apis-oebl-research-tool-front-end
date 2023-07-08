@@ -32,7 +32,7 @@
 		"test:e2e": "playwright test",
 		"test:e2e:codegen": "playwright codegen",
 		"test:e2e:debug": "playwright test --debug",
-		"test:e2e:prod": "E2E_TEST_BUILD=\"production\" run-s build test:e2e",
+		"test:e2e:prod": "dotenv -v E2E_TEST_BUILD=\"production\" -- run-s build test:e2e",
 		"test:e2e:ui": "playwright test --ui",
 		"types:check": "vue-tsc --noEmit",
 		"validate": "run-p format:check lint:check types:check test test:e2e"
