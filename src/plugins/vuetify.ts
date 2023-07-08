@@ -17,7 +17,7 @@ Vue.mixin({
 	},
 });
 
-const plugin = new Vuetify({
+export const vuetify = new Vuetify({
 	icons: {
 		iconfont: "mdi",
 	},
@@ -76,5 +76,3 @@ const plugin = new Vuetify({
 		},
 	},
 });
-
-export default plugin;
