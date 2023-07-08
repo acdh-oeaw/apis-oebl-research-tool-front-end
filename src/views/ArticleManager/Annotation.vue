@@ -338,24 +338,30 @@ export default class Annotation extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.result-list
-  overflow-y auto
-  height 300px
+<style scoped>
+.result-list {
+	overflow-y: auto;
+	height: 300px;
+}
 
-.custom-v-select >>> .v-input__slot::after
-  border-style none
+.custom-v-select :deep(.v-input__slot::after) {
+	border-style: none;
+}
 
-.custom-v-select >>> .v-input__slot
-  font-size 0.8rem
+.custom-v-select :deep(.v-input__slot) {
+	font-size: 0.8rem;
+}
 
-.ac-result  >>> *
-  display flex
-  flex-direction column
+.ac-result :deep(*) {
+	display: flex;
+	flex-direction: column;
+}
 
-.ac-result > span small:first-child
-  order 2
+.ac-result > span small:first-child {
+	order: 2;
+}
 
-.ac-result > span b
-  order 1
+.ac-result > span b {
+	order: 1;
+}
 </style>

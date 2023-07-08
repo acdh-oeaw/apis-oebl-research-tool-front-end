@@ -66,14 +66,16 @@ export default class LemmaNavigation extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+.search-field :deep(.v-icon.v-icon) {
+	font-size: 130%;
+}
 
-.search-field /deep/ .v-icon.v-icon
-  font-size 130%
+.v-list-item__action {
+	margin: 10px 0;
+}
 
-.v-list-item__action
-  margin 10px 0
-
-.drag-over
-  box-shadow inset 0 0 0 3px var(--v-primary-base)
+.drag-over {
+	box-shadow: inset 0 0 0 3px var(--v-primary-base);
+}
 </style>

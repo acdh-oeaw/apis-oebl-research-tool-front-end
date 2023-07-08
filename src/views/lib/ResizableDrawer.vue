@@ -153,59 +153,71 @@ export default class ResizableDrawer extends Vue {
 }
 </script>
 
-<style lang="stylus">
-.nav-drawer .v-navigation-drawer__content
-  position relative
-  background var(--bg-color)
+<style>
+.nav-drawer .v-navigation-drawer__content {
+	position: relative;
+	background: var(--bg-color);
+}
 </style>
 
-<style lang="stylus" scoped>
-.nav-drawer:not(.v-navigation-drawer--custom-mini-variant)
-  overflow visible
-  min-width 100px
-  will-change width
+<style scoped>
+.nav-drawer:not(.v-navigation-drawer--custom-mini-variant) {
+	overflow: visible;
+	min-width: 100px;
+	will-change: width;
+}
 
-  & /deep/ .v-navigation-drawer__content
-    background-color var(--v-color)
+.nav-drawer:not(.v-navigation-drawer--custom-mini-variant) :deep(.v-navigation-drawer__content) {
+	background-color: var(--v-color);
+}
 
-.nav-drawer
-  paddding-left 100px
+.nav-drawer {
+	paddding-left: 100px;
+}
 
-.nav-drawer.display-card /deep/ .v-navigation-drawer__content
-  border-radius 13px
-  box-shadow 10px 10px 100px rgb(0 0 50 / 15%)
+.nav-drawer.display-card :deep(.v-navigation-drawer__content) {
+	border-radius: 13px;
+	box-shadow: 10px 10px 100px hsl(240deg 100% 2%);
+}
 
-.nav-drawer.display-card /deep/ .v-navigation-drawer__content
-  margin 10px 0 10px 10px
+.nav-drawer.display-card :deep(.v-navigation-drawer__content) {
+	margin: 10px 0 10px 10px;
+}
 
-.nav-drawer.right.display-card /deep/ .v-navigation-drawer__content
-  margin 10px 10px 10px 0
+.nav-drawer.right.display-card :deep(.v-navigation-drawer__content) {
+	margin: 10px 10px 10px 0;
+}
 
-.resize-handle-outer
-  position absolute
-  right -6px
-  z-index 6
-  width 12px
-  height 100%
-  cursor ew-resize
+.resize-handle-outer {
+	position: absolute;
+	right: -6px;
+	z-index: 6;
+	width: 12px;
+	height: 100%;
+	cursor: ew-resize;
+}
 
-  &.right
-    right auto
-    left -6px
+.resize-handle-outer.right {
+	right: auto;
+	left: -6px;
+}
 
-  &:hover .resize-handle
-  &.dragging .resize-handle
-    opacity 100%
+.resize-handle-outer:hover .resize-handle,
+.resize-handle-outer.dragging .resize-handle {
+	opacity: 100%;
+}
 
-.resize-handle
-  position absolute
-  top 0
-  bottom 0
-  left 6px
-  width 1px
-  opacity 0%
-  transition 0.2s
+.resize-handle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 6px;
+	width: 1px;
+	opacity: 0%;
+	transition: 0.2s;
+}
 
-.theme--light
-  color rgb(0 0 0 / 70%)
+.theme--light {
+	color: hsl(0deg 0% 0%);
+}
 </style>

@@ -148,40 +148,48 @@ export default class TextField extends Vue {
 }
 </script>
 
-<style lang="stylus">
-.theme--dark .text-field-outer textarea
-  color white
+<style>
+.theme--dark .text-field-outer textarea {
+	color: hsl(0deg 0% 100%);
+}
 </style>
 
-<style lang="stylus" scoped>
-textarea
-  outline 0
-  resize none
+<style scoped>
+textarea {
+	outline: 0;
+	resize: none;
+}
 
-:placeholder
-  overflow hidden
-  text-overflow ellipsis
-  white-space nowrap
+:placeholder {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
-.fake-textarea
-  min-height 1.6em
-  word-break break-word
-  visibility hidden
-  will-change contents, height
+.fake-textarea {
+	min-height: 1.6em;
+	word-break: break-word;
+	visibility: hidden;
+	will-change: contents, height;
+}
 
-.text-field-label
-  flex 0 0 100px
-  hyphens auto
-  opacity 70%
+.text-field-label {
+	flex: 0 0 100px;
+	hyphens: auto;
+	opacity: 70%;
+}
 
-.text-field-outer
-  display flex
-  overflow hidden
-  transition 0.2s box-shadow
+.text-field-outer {
+	display: flex;
+	overflow: hidden;
+	transition: 0.2s box-shadow;
+}
 
-.text-field-outer:focus-within
-  box-shadow 0 0 0 1px var(--v-primary-base), inset 0 0 0 2px var(--v-primary-base)
+.text-field-outer:focus-within {
+	box-shadow: 0 0 0 1px var(--v-primary-base), inset 0 0 0 2px var(--v-primary-base);
+}
 
-.hint
-  background rgb(255 255 255 / 10%)
+.hint {
+	background: hsl(60deg 100% 63%);
+}
 </style>

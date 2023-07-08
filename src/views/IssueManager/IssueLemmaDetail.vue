@@ -294,24 +294,28 @@ export default class IssueLemmaDetail extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-// allow whitespace in notes
-.note
-  white-space break-spaces
+<style scoped>
+.note {
+	white-space: break-spaces;
+}
 
-.roll-enter-active
-.roll-leave-active
-  position relative
-  transition all 0.3s ease
+.roll-enter-active,
+.roll-leave-active {
+	position: relative;
+	transition: all 0.3s ease;
+}
 
-.roll-enter
-.roll-leave-to
-  position absolute
-  opacity 0%
+.roll-enter,
+.roll-leave-to {
+	position: absolute;
+	opacity: 0%;
+}
 
-.roll-enter
-  transform translateY(20px)
+.roll-enter {
+	transform: translateY(20px);
+}
 
-.roll-leave-to
-  transform translateY(-20px)
+.roll-leave-to {
+	transform: translateY(-20px);
+}
 </style>

@@ -137,7 +137,8 @@ export default class LobidGndSearch extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.results
-  position relative
+<style scoped>
+.results {
+	position: relative;
+}
 </style>

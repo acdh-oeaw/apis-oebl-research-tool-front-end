@@ -730,52 +730,60 @@ export default class LemmaManager extends Vue {
 }
 </script>
 
-<style lang="stylus">
+<style>
+.input-no-stroke .v-text-field > .v-input__control > .v-input__slot::after,
+.v-text-field > .v-input__control > .v-input__slot::before {
+	display: none;
+}
 
-.input-no-stroke .v-text-field>.v-input__control>.v-input__slot::after
-.v-text-field>.v-input__control>.v-input__slot::before
-  display none
+.virtual-table {
+	padding-right: 0.75em;
+	padding-left: 0.75em;
+	border: 0 !important;
+	background: var(--v-background-darken1);
+	outline: 0 !important;
+}
 
-.virtual-table
-  padding-right 0.75em
-  padding-left 0.75em
-  border 0 !important
-  background var(--v-background-darken1)
-  outline 0 !important
-  // .v-virtual-scroll
+.virtual-table .table-row {
+	border-radius: 5px;
+}
 
-.virtual-table .table-row
-  border-radius 5px
+.virtual-table .table-row.selected {
+	background-color: hsl(0deg 0% 0%) !important;
+}
 
-  &.selected
-    background-color rgb(0 0 0 / 15%) !important
+:focus .table-row.selected {
+	background-color: var(--v-primary-darken1) !important;
+	color: hsl(0deg 0% 100%);
+}
 
-:focus .table-row.selected
-  background-color var(--v-primary-darken1) !important
-  color #fff
+.theme--light .virtual-table .table-row.odd {
+	background: var(--v-background-darken2);
+}
 
-.theme--light .virtual-table .table-row.odd
-  background var(--v-background-darken2)
-
-.virtual-table .table-cell
-.virtual-table .header-cell
-  padding 0 5px
+.virtual-table .table-cell,
+.virtual-table .header-cell {
+	padding: 0 5px;
+}
 </style>
 
-<style lang="stylus" scoped>
-.table-external-link
-  display inline-block
-  padding 3px 5px
-  border-radius 5px
-  color var(--v-textcolor-base) !important
-  font-size 90%
-  text-decoration none
+<style scoped>
+.table-external-link {
+	display: inline-block;
+	padding: 3px 5px;
+	border-radius: 5px;
+	color: var(--v-textcolor-base) !important;
+	font-size: 90%;
+	text-decoration: none;
+}
 
-.lemma-view-title
-  min-width 150px
-  max-width 250px
+.lemma-view-title {
+	min-width: 150px;
+	max-width: 250px;
+}
 
-[contenteditable="true"]:hover
-  border-radius 3px
-  box-shadow inset 0 0 0 1px var(--v-secondary-lighten5)
+[contenteditable="true"]:hover {
+	border-radius: 3px;
+	box-shadow: inset 0 0 0 1px var(--v-secondary-lighten5);
+}
 </style>

@@ -208,15 +208,15 @@ export default class LemmaImportManager extends Vue {
 /* Show background blurred */
 div.lemma-importer-container {
 	height: 100%;
-	background-color: #f5f6f8ee;
+	background-color: hsl(220deg 18% 97% / 93.3%);
 }
 
 /**
-* For some reasons v-stepper-header has a height of 72px.
+ * For some reasons v-stepper-header has a height of 72px.
  * This leads to some steps being outside of the contantainer, with medium screen sizes.
  * This is an easy solution.
-*/
-/deep/ .v-stepper__header {
+ */
+:deep(.v-stepper__header) {
 	height: inherit;
 }
 </style>

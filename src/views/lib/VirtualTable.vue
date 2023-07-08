@@ -443,95 +443,106 @@ export default class VirtualTable extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+.transition-left {
+	transition: left 0.1s;
+}
 
-.transition-left
-  transition left 0.1s
+:deep(.v-virtual-scroll__container) {
+	will-change: contents, scroll-position;
+}
 
-// tell browser NOT to cache the millions
-// of rows/DOM elements we’re gonna put here.
-/deep/ .v-virtual-scroll__container
-  will-change contents, scroll-position
+.header-row-drag {
+	border-radius: 10px;
+	background: var(--v-background-darken2);
+}
 
-// header when sorting
-.header-row-drag
-  border-radius 10px
-  background var(--v-background-darken2)
+.header-row-ghost {
+	opacity: 0% !important;
+}
 
-.header-row-ghost
-  opacity 0% !important
+.header-row,
+.table-row {
+	display: flex;
+	line-height: 1.2;
+}
 
-// general layout
+.header-row {
+	position: relative;
+	z-index: 5;
+	padding-right: 8px;
+	background: var(--v-background-darken3);
+}
 
-.header-row
-.table-row
-  display flex
-  line-height 1.2
+.header-cell:first-child,
+.table-cell:first-child {
+	text-align: right;
+}
 
-.header-row
-  position relative
-  z-index 5
-  // the scrollbar width
-  padding-right 8px
-  background var(--v-background-darken3)
+.header-cell {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	padding: 4px;
+	border-right: 1px solid transparent;
+	opacity: 70%;
+	user-select: none;
+}
 
-.header-cell:first-child
-.table-cell:first-child
-  text-align right
+.header-cell .column-name {
+	overflow: hidden;
+	width: 100%;
+	padding: 2px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
-.header-cell
-  display flex
-  flex-direction column
-  overflow hidden
-  padding 4px
-  border-right 1px solid transparent
-  opacity 70%
-  user-select none
+.header-cell:focus-within {
+	opacity: 100%;
+}
 
-  .column-name
-    overflow hidden
-    width 100%
-    padding 2px
-    text-overflow ellipsis
-    white-space nowrap
+.header-cell:hover {
+	opacity: 100%;
+}
 
-  &:focus-within
-    opacity 100%
+.header-cell.sort-active {
+	background: var(--v-background-darken3);
+	font-weight: 500;
+	opacity: 100%;
+}
 
-  &:hover
-    opacity 100%
+.header-cell input {
+	width: 100%;
+	height: 20px;
+	margin: 0 -3px 1px;
+	margin-bottom: 1px;
+	padding: 0 3px;
+	background: var(--v-primary-base);
+}
 
-  &.sort-active
-    background var(--v-background-darken3)
-    font-weight 500
-    opacity 100%
+.header-cell input:empty {
+	background: transparent;
+}
 
-  input
-    width 100%
-    height 20px
-    margin 0 -3px 1px
-    margin-bottom 1px
-    padding 0 3px
-    background var(--v-primary-base)
+.header-sort-arrow {
+	float: left;
+	margin-top: 2px;
+	margin-right: 2px;
+	font-size: 70%;
+}
 
-    &:empty
-      background transparent
+.table-row {
+	align-items: center;
+}
 
-.header-sort-arrow
-  float left
-  margin-top 2px
-  margin-right 2px
-  font-size 70%
+.header-cell,
+.table-cell {
+	overflow: hidden;
+	min-width: 60px;
+	text-overflow: ellipsis;
+}
 
-.table-row
-  align-items center
-
-.header-cell
-.table-cell
-  overflow hidden
-  min-width 60px
-  text-overflow ellipsis
-
-.clickable
-  cursor default
+.clickable {
+	cursor: default;
+}
 </style>

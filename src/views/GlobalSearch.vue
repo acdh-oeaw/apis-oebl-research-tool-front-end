@@ -266,14 +266,16 @@ export default class GlobalSearch extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.global-search
-  width 100%
-  outline 0
-  font-size 1.7em
+<style>
+.theme--dark .global-search {
+	color: hsl(0deg 0% 100%);
+}
 </style>
 
-<style lang="stylus">
-.theme--dark .global-search
-  color #fff
+<style scoped>
+.global-search {
+	width: 100%;
+	outline: 0;
+	font-size: 1.7em;
+}
 </style>

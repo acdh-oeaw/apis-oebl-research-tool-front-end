@@ -89,34 +89,39 @@ export default class IssueLemmaList extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.sticky-header
-  position sticky
-  // TODO: dynamic based on app-bar height
-  top 64px
-  z-index 1
-  width 100%
-  font-weight 600
-  letter-spacing 0.1em
-  text-transform uppercase
+<style scoped>
+.sticky-header {
+	position: sticky;
+	top: 64px;
+	z-index: 1;
+	width: 100%;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
 
-.ghost
-  background #c8ebfb
-  opacity 0%
+.ghost {
+	background: hsl(199deg 86% 88%);
+	opacity: 0%;
+}
 
-.cursor-grab
-  cursor default
+.cursor-grab {
+	cursor: default;
+}
 
-tr:focus
-  outline none
+tr:focus {
+	outline: none;
+}
 
-.author
-  margin-left -10px
+.author {
+	margin-left: -10px;
+}
 
-.label
-  margin-right 1px
-  padding 0 7px
-  color #fff !important
-  font-weight 600
-  letter-spacing -0.05em
+.label {
+	margin-right: 1px;
+	padding: 0 7px;
+	color: hsl(0deg 0% 100%) !important;
+	font-weight: 600;
+	letter-spacing: -0.05em;
+}
 </style>

@@ -90,17 +90,18 @@ export default class LoginForm extends Vue {
 }
 </script>
 
-<style lang="stylus">
-@keyframes autofill
-  0%
-  100%
-    background transparent
-    color #666
+<style>
+@keyframes autofill {
+	0%,
+	100% {
+		background: transparent;
+		color: hsl(0deg 0% 40%);
+	}
+}
 
-
-
-input:-webkit-autofill
-  animation-name autofill
-  animation-delay 1s // Safari support - any positive time runs instantly
-  animation-fill-mode both
+input:-webkit-autofill {
+	animation-name: autofill;
+	animation-delay: 1s;
+	animation-fill-mode: both;
+}
 </style>

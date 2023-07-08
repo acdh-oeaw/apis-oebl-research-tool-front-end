@@ -392,32 +392,38 @@ export default class EditorLoader extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+.v-tab {
+	height: 36px;
+	border-radius: 4px;
+	letter-spacing: normal;
+	text-transform: capitalize;
+}
 
-.v-tab
-  height 36px
-  border-radius 4px
-  letter-spacing normal
-  text-transform capitalize
+.v-tab--active {
+	background-color: var(--v-background-darken5);
+	color: hsl(0deg 0% 0%) !important;
+	font-weight: 700;
+}
 
-.v-tab--active
-  background-color var(--v-background-darken5)
-  color #000 !important
-  font-weight 700
+.theme--light.v-list,
+.theme--light.v-tabs-items {
+	background: transparent;
+}
 
-.theme--light.v-list
-.theme--light.v-tabs-items
-  background transparent
+.v-list-item__action:first-child {
+	margin-right: 18px !important;
+}
 
-.v-list-item__action:first-child
-  margin-right 18px !important
+.v-list-item__title {
+	font-size: 0.9rem;
+}
 
-.v-list-item__title
-  font-size 0.9rem
+.v-list-item__subtitle {
+	font-size: 0.8rem;
+}
 
-.v-list-item__subtitle
-  font-size 0.8rem
-
-.v-list-item__action  .v-icon.v-icon
-  font-size 18px
+.v-list-item__action .v-icon.v-icon {
+	font-size: 18px;
+}
 </style>

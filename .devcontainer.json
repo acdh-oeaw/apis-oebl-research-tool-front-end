@@ -12,7 +12,6 @@
 				"mikestead.dotenv",
 				"ms-playwright.playwright",
 				"stylelint.vscode-stylelint",
-				"sysoev.language-stylus",
 				"vue.volar",
 				"vue.vscode-typescript-vue-plugin"
 			],

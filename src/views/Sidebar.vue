@@ -482,78 +482,93 @@ export default class Sidebar extends Vue {
 }
 </script>
 
-<style lang="stylus">
-
-.droppable *
-  pointer-events none !important
+<style>
+.droppable * {
+	pointer-events: none !important;
+}
 </style>
 
-<style lang="stylus" scoped>
+<style scoped>
+.sidebar:focus .v-list-item--active,
+.v-list-item--active:focus {
+	background: var(--v-primary-base);
+	color: hsl(0deg 0% 100%);
+}
 
-.sidebar:focus .v-list-item--active
-.v-list-item--active:focus
-  background var(--v-primary-base)
-  color #fff
+.drag-over {
+	box-shadow: inset 0 0 0 3px var(--v-primary-base) !important;
+}
 
-.drag-over
-  box-shadow inset 0 0 0 3px var(--v-primary-base) !important
+.v-subheader {
+	height: 24px;
+	margin-top: 16px;
+	margin-bottom: 3px;
+	font-weight: 500;
+	font-size: 0.75rem;
+	opacity: 80%;
+	cursor: default;
+	user-select: none;
+}
 
-.v-subheader
-  height 24px
-  margin-top 16px
-  margin-bottom 3px
-  font-weight 500
-  font-size 0.75rem
-  opacity 80%
-  cursor default
-  user-select none
+.v-subheader .v-icon {
+	width: 10px;
+	transform: rotate(-90deg);
+}
 
-.v-subheader .v-icon
-  width 10px
-  transform rotate(-90deg)
+.v-subheader.active .v-icon {
+	transform: rotate(0deg);
+}
 
-.v-subheader.active .v-icon
-  transform rotate(0deg)
+.search-field :deep(.v-icon.v-icon) {
+	font-size: 130%;
+}
 
-.search-field /deep/ .v-icon.v-icon
-  font-size 130%
+.v-list-item {
+	min-height: 32px !important;
+}
 
-.v-list-item
-  min-height 32px !important
+.v-list-item .v-list-item__content {
+	opacity: 80%;
+}
 
-.v-list-item .v-list-item__content
-  opacity 80%
+.v-list-item__action {
+	margin: 0;
+}
 
-.v-list-item__action
-  margin 0
+.lemma-nav-list :deep(.v-list-group__header::before) {
+	opacity: 0% !important;
+}
 
-.lemma-nav-list /deep/ .v-list-group__header
-  &::before
-    opacity 0% !important
+.lemma-nav-list :deep(.v-list-group__header .v-icon) {
+	opacity: 0%;
+}
 
-  .v-icon
-    opacity 0%
+.lemma-nav-list :deep(.v-list-group__header:hover .v-icon) {
+	opacity: 100%;
+}
 
-  &:hover .v-icon
-    opacity 100%
+.lemma-nav-list,
+.lemma-nav-list :deep(*) {
+	cursor: default !important;
+}
 
-.lemma-nav-list
-.lemma-nav-list /deep/ *
-  cursor default !important
+.roll-enter-active,
+.roll-leave-active {
+	position: relative;
+	transition: all 0.3s ease;
+}
 
-.roll-enter-active
-.roll-leave-active
-  position relative
-  transition all 0.3s ease
+.roll-enter,
+.roll-leave-to {
+	position: absolute;
+	opacity: 0%;
+}
 
-.roll-enter
-.roll-leave-to
-  position absolute
-  opacity 0%
+.roll-enter {
+	transform: translateY(20px);
+}
 
-.roll-enter
-  transform translateY(20px)
-
-.roll-leave-to
-  transform translateY(-20px)
+.roll-leave-to {
+	transform: translateY(-20px);
+}
 </style>

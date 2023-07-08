@@ -299,50 +299,45 @@ export default class ColumnMatcher extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.do-not-import
-  opacity 50%
+<style scoped>
+.do-not-import {
+	opacity: 50%;
+}
 
+.is-null-equivalent {
+	opacity: 30%;
+}
 
-.is-null-equivalent
-  opacity 30%
+.target-selector {
+	width: 100%;
+}
 
+:deep(.v-data-table th:first-child),
+:deep(.v-data-table td:first-child) {
+	padding-left: 2em !important;
+}
 
-.target-selector
-  width 100%
+.custom-header .initial-header {
+	display: block;
+	padding-bottom: 0.3em;
+	padding-left: 0;
+}
 
+.custom-header .col-select {
+	font-weight: 400;
+	font-size: 13px;
+}
 
-/deep/ .v-data-table-header
-/deep/ .v-data-table-header tr
-/deep/ .v-data-table-header th
-  // background: #f0f0f0 !important;
+.custom-header .col-select.not-selected {
+	opacity: 60%;
+}
 
+select {
+	user-select: none;
+	appearance: none;
+}
 
-/deep/ .v-data-table th:first-child
-/deep/ .v-data-table td:first-child
-  padding-left 2em !important
-
-
-.custom-header .initial-header
-  display block
-  padding-bottom 0.3em
-  padding-left 0
-
-
-.custom-header .col-select
-  font-weight 400
-  font-size 13px
-
-
-.custom-header .col-select.not-selected
-  opacity 60%
-
-
-select
-  user-select none
-  appearance none
-
-
-.theme--dark select
-  color #fff
+.theme--dark select {
+	color: hsl(0deg 0% 100%);
+}
 </style>

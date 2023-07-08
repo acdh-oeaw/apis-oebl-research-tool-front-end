@@ -545,16 +545,20 @@ export default class IssueManager extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.selected
-  background rgb(0 0 0 / 10%)
+<style scoped>
+.selected {
+	background: hsl(0deg 0% 0%);
+}
 
-.filter-autocomplete-item
-  border-radius 7px
+.filter-autocomplete-item {
+	border-radius: 7px;
+}
 
-  &::before
-    border-radius 7px
+.filter-autocomplete-item::before {
+	border-radius: 7px;
+}
 
-.issue-selector
-  height 70vh
+.issue-selector {
+	height: 70vh;
+}
 </style>

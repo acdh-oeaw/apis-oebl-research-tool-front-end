@@ -580,23 +580,27 @@ export default class LemmaDetail extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-// tell the browser not to cache this.
-.lemma-detail
-  will-change contents
+<style scoped>
+.lemma-detail {
+	will-change: contents;
+}
 
-.drag-over
-  box-shadow inset 0 0 0 3px var(--v-primary-base) !important
+.drag-over {
+	box-shadow: inset 0 0 0 3px var(--v-primary-base) !important;
+}
 
-h4
-  position sticky
-  top 0
-  z-index 1
-  background transparent
+h4 {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: transparent;
+}
 
-.gideon-legacy-literature > li
-  display inline
+.gideon-legacy-literature > li {
+	display: inline;
+}
 
-.gideon-legacy-literature > li:not(:last-child)::after
-  content ', '
+.gideon-legacy-literature > li:not(:last-child)::after {
+	content: ", ";
+}
 </style>

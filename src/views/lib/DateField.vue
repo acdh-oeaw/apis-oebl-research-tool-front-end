@@ -170,24 +170,26 @@ export default class DateField extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.date-field
-  font-size 0.85rem
-
-
-.label
-  opacity 70%
-
-
-input
-  text-align center
-
-
-.v-alert
-  font-size 14px
+<style>
+.modifier-menu {
+	width: 62px;
+}
 </style>
 
-<style lang="stylus">
-.modifier-menu
-  width 62px
+<style scoped>
+.date-field {
+	font-size: 0.85rem;
+}
+
+.label {
+	opacity: 70%;
+}
+
+input {
+	text-align: center;
+}
+
+.v-alert {
+	font-size: 14px;
+}
 </style>

@@ -360,9 +360,9 @@ export default class LemmaPrintView extends Vue {
 	padding-right: 0;
 }
 
-.external-resources >>> a,
-.scrape-data >>> div[role="button"] {
-	color: black;
+.external-resources :deep(a),
+.scrape-data :deep(div[role="button"]) {
+	color: hsl(0deg 0% 0%);
 }
 
 @media print {

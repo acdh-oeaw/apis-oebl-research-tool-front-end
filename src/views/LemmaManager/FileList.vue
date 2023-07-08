@@ -48,27 +48,29 @@ export default class FileList extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.outer
-  width 100%
+<style scoped>
+.outer {
+	width: 100%;
+}
 
-.file-icon
-  display inline-block
-  vertical-align top
-  width 120px
-  height 180px
-  padding 3px 7px
-  text-align center
+.file-icon {
+	display: inline-block;
+	vertical-align: top;
+	width: 120px;
+	height: 180px;
+	padding: 3px 7px;
+	text-align: center;
+}
 
-  .caption
-    // stylelint-disable-next-line value-no-vendor-prefix
-    display -webkit-box
-    overflow hidden
-    max-height 40px
-    text-overflow ellipsis
-    word-break break-all
-    -webkit-line-clamp 2
-    -webkit-box-align center
-    -webkit-box-pack center
-    -webkit-box-orient vertical
+.file-icon .caption {
+	display: box;
+	overflow: hidden;
+	max-height: 40px;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	-webkit-line-clamp: 2;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	-webkit-box-orient: vertical;
+}
 </style>

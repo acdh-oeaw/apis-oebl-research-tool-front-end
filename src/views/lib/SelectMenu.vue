@@ -200,19 +200,22 @@ export default class SelectMenu extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.search-input
-  width 100%
-  outline 0
+<style>
+.theme--dark .search-input {
+	color: hsl(0deg 0% 100%);
+}
+
+.select-button .v-btn__content {
+	display: block;
+	overflow: hidden;
+	max-width: 100%;
+	text-overflow: ellipsis;
+}
 </style>
 
-<style lang="stylus">
-.theme--dark .search-input
-  color white
-
-.select-button .v-btn__content
-  display block
-  overflow hidden
-  max-width 100%
-  text-overflow ellipsis
+<style scoped>
+.search-input {
+	width: 100%;
+	outline: 0;
+}
 </style>

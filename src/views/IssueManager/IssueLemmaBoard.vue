@@ -122,73 +122,75 @@ export default class LemmaBoard extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.status-columns-outer
-  flex none
-  flex-wrap nowrap
-  overflow-x scroll
-  height 100%
-  white-space nowrap
+<style scoped>
+.status-columns-outer {
+	flex: none;
+	flex-wrap: nowrap;
+	overflow-x: scroll;
+	height: 100%;
+	white-space: nowrap;
+}
 
-.status-column
-  display inline-block
-  min-width 300px
-  height 100%
+.status-column {
+	display: inline-block;
+	min-width: 300px;
+	height: 100%;
+}
 
-.column-name
-  padding-left 0
-  font-weight 700
-  letter-spacing 0.1em
-  text-transform uppercase
+.column-name {
+	padding-left: 0;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
 
-.drop-target
-  overflow-x hidden
-  overflow-y scroll
-  height 80vh
+.drop-target {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 80vh;
+}
 
-.issue-lemma-card
-  box-shadow 0 2px 4px rgb(0 0 0 / 10%) !important
-  cursor default
-  // cursor -webkit-grab
-  // cursor -moz-grab
-  // cursor grab
+.issue-lemma-card {
+	box-shadow: 0 2px 4px hsl(0deg 0% 0%) !important;
+	cursor: default;
+}
 
-.flip-list-item
-  display inline-block
-  transition all 1s
+.flip-list-item {
+	display: inline-block;
+	transition: all 1s;
+}
 
+.flip-list-enter,
+.flip-list-leave-to {
+	opacity: 0%;
+}
 
-.flip-list-enter
-.flip-list-leave-to
-/* .list-complete-leave-active below version 2.1.8 */
-  opacity 0%
+.flip-list-leave-active {
+	position: absolute;
+}
 
+.flip-list-move {
+	transition: transform 0.5s, opacity 0.5s;
+}
 
-.flip-list-leave-active
-  position absolute
+.no-move {
+	transition: transform 0s;
+}
 
+.ghost {
+	background: hsl(199deg 86% 88%);
+	opacity: 0%;
+}
 
-.flip-list-move
-  transition transform 0.5s, opacity 0.5s
+.list-group {
+	min-height: 20px;
+}
 
+.list-group-item {
+	cursor: move;
+}
 
-.no-move
-  transition transform 0s
-
-
-.ghost
-  background #c8ebfb
-  opacity 0%
-
-
-.list-group
-  min-height 20px
-
-
-.list-group-item
-  cursor move
-
-
-.list-group-item i
-  cursor pointer
+.list-group-item i {
+	cursor: pointer;
+}
 </style>

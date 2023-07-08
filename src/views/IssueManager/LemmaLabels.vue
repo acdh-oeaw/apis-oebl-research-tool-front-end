@@ -278,17 +278,21 @@ export default class LemmaLabels extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.label
-  color #fff
-  font-weight 600
+<style scoped>
+.label {
+	color: hsl(0deg 0% 100%);
+	font-weight: 600;
+}
 
-.label-box /deep/ .v-input__slot
-  padding 3px !important
+.label-box :deep(.v-input__slot) {
+	padding: 3px !important;
+}
 
-.label-list-item .action
-  opacity 0%
+.label-list-item .action {
+	opacity: 0%;
+}
 
-.label-list-item:hover .action
-  opacity 100%
+.label-list-item:hover .action {
+	opacity: 100%;
+}
 </style>

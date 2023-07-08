@@ -91,8 +91,9 @@ export default class IssueLemmaRow extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.label
-  margin-left 1px
-  color #fff !important
+<style scoped>
+.label {
+	margin-left: 1px;
+	color: hsl(0deg 0% 100%) !important;
+}
 </style>

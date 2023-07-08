@@ -90,181 +90,207 @@ export default class App extends Vue {
 }
 </script>
 
-<style lang="stylus">
+<style>
+:focus-visible {
+	outline: var(--v-primary-base) auto 1px;
+}
 
-:focus-visible
-  outline var(--v-primary-base) auto 1px
+.v-icon {
+	transition: none;
+}
 
-// ::selection
-//   background var(--v-primary-lighten2) !important
-//   color rgba(0,0,0,.7)
+body .v-application .text-body-3,
+body .v-application .text-body-2 {
+	font-size: 0.8rem !important;
+}
 
-.v-icon
-  transition none
+body,
+.v-application {
+	font-family: "Roboto Flex", ui-sans-serif, system-ui, sans-serif;
+}
 
-// .v-navigation-drawer
-//   max-height none !important
-//   height 100% !important
+.rotate-180 {
+	transform: rotate(180deg);
+}
 
-body .v-application .text-body-3
-body .v-application .text-body-2
-  font-size 0.8rem !important
+.theme--light .soft-shadow {
+	box-shadow: 0 5px 55px hsl(240deg 100% 1%) !important;
+}
 
-body
-.v-application
-  font-family "Roboto Flex", ui-sans-serif, system-ui, sans-serif
+.theme--dark .soft-shadow {
+	box-shadow: 0 0 55px hsl(0deg 0% 0%) !important;
+}
 
-.rotate-180
-  transform rotate(180deg)
+.v-application .v-btn {
+	letter-spacing: normal;
+	text-transform: none;
+}
 
-.theme--light .soft-shadow
-  box-shadow 0 5px 55px rgb(0 0 50 / 20%) !important
+::-webkit-scrollbar-track,
+::-moz-scrol {
+	padding: 3px;
+	background: transparent;
+}
 
-.theme--dark .soft-shadow
-  box-shadow 0 0 55px rgb(0 0 0 / 30%) !important
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	background: transparent;
+}
 
-.v-application .v-btn
-  letter-spacing normal
-  text-transform none
+::-webkit-scrollbar-thumb {
+	border-radius: 20px;
+}
 
-::-webkit-scrollbar
-  background transparent
+.theme--dark ::-webkit-scrollbar-thumb {
+	background-color: hsl(60deg 100% 53%);
+}
 
-::-webkit-scrollbar-track
-::-moz-scrol
-  padding 3px
-  background transparent /* color of the tracking area */
+.theme--light ::-webkit-scrollbar-thumb {
+	background-color: hsl(240deg 100% 1%);
+}
 
-::-webkit-scrollbar
-  width 8px
-  height 8px
+.sticky {
+	position: sticky;
+	top: 0;
+}
 
-::-webkit-scrollbar-thumb
-  border-radius 20px
+.badge {
+	display: inline-block;
+	margin-left: 3px;
+	padding: 0 5px;
+	border-radius: 10px;
+	color: hsl(0deg 0% 100%);
+	font-size: 12px;
+	text-decoration: none;
+}
 
-.theme--dark ::-webkit-scrollbar-thumb
-  background-color rgb(255 255 255 / 50%)
+header h1 {
+	overflow: hidden;
+	font-weight: 900;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: normal;
+	text-transform: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	opacity: 85%;
+}
 
-.theme--light ::-webkit-scrollbar-thumb
-  background-color rgb(0 0 25 / 25.3%)
+header h1:focus {
+	text-overflow: clip;
+}
 
-.sticky
-  position sticky
-  top 0
+.muted {
+	opacity: 70%;
+}
 
-.badge
-  display inline-block
-  margin-left 3px
-  padding 0 5px
-  border-radius 10px
-  color white
-  font-size 12px
-  text-decoration none
+.fill-width {
+	width: 100%;
+}
 
-header h1
-  overflow hidden
-  font-weight 900
-  font-size 1.5em
-  line-height 1em
-  letter-spacing normal
-  text-transform none
-  text-overflow ellipsis
-  white-space nowrap
-  opacity 85%
+.v-toolbar__extension {
+	z-index: -1 !important;
+}
 
-  &:focus
-    text-overflow clip
+.scrollable {
+	overflow: auto;
+	max-height: 90vh;
+}
 
-.muted
-  opacity 70%
+[tabindex="-1"] {
+	outline: none;
+}
 
-.fill-width
-  width 100%
+.transition-none {
+	transition: none !important;
+}
 
-// this is usually "0", i.e. the same as the __content.
-// this prevents an edge case, where it overlaps the content.
-.v-toolbar__extension
-  z-index -1 !important
+.ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
-.scrollable
-  overflow auto
-  max-height 90vh
+.tippy-content {
+	padding: 9px !important;
+}
 
-[tabindex="-1"]
-  outline none
+.tippy-box {
+	border-radius: 13px !important;
+	background: var(--v-background-base) !important;
+	box-shadow: 0 5px 55px hsl(240deg 100% 1%) !important;
+}
 
-.transition-none
-  transition none !important
+.tippy-box[data-placement^="top"] > .tippy-arrow::before {
+	border-top-color: var(--v-background-base) !important;
+}
 
-.ellipsis
-  overflow hidden
-  text-overflow ellipsis
-  white-space nowrap
+.tippy-box[data-placement^="bottom"] > .tippy-arrow::before {
+	border-bottom-color: var(--v-background-base) !important;
+}
 
-// tippy.js theme
-.tippy-content
-  padding 9px !important
+.tippy-box[data-placement^="left"] > .tippy-arrow::before {
+	border-left-color: var(--v-background-base) !important;
+}
 
-.tippy-box
-  border-radius 13px !important
-  background var(--v-background-base) !important
-  box-shadow 0 5px 55px rgb(0 0 50 / 20%) !important
+.tippy-box[data-placement^="right"] > .tippy-arrow::before {
+	border-right-color: var(--v-background-base) !important;
+}
 
-.tippy-box[data-placement^='top'] > .tippy-arrow::before
-  border-top-color var(--v-background-base) !important
+.v-list.x-dense .v-list-item,
+.v-list-item.x-dense {
+	min-height: auto;
+	max-height: 32px;
+	margin-bottom: 1px !important;
+}
 
-.tippy-box[data-placement^='bottom'] > .tippy-arrow::before
-  border-bottom-color var(--v-background-base) !important
+.v-list.x-dense .v-list-item .v-list-item__action,
+.v-list-item.x-dense .v-list-item__action {
+	margin: 0;
+}
 
-.tippy-box[data-placement^='left'] > .tippy-arrow::before
-  border-left-color var(--v-background-base) !important
+.v-list.x-dense .v-list-item .v-list-item__title,
+.v-list-item.x-dense .v-list-item__title,
+.v-list.x-dense .v-list-item .v-list-item__subtitle,
+.v-list-item.x-dense .v-list-item__subtitle {
+	margin-bottom: 0 !important;
+	font-size: 13px;
+}
 
-.tippy-box[data-placement^='right'] > .tippy-arrow::before
-  border-right-color var(--v-background-base) !important
+.v-list.x-dense .v-list-item .v-list-item__avatar,
+.v-list-item.x-dense .v-list-item__avatar {
+	width: 15px !important;
+	min-width: 15px !important;
+	margin-right: 8px;
+}
 
-.v-list.x-dense .v-list-item
-.v-list-item.x-dense
-  min-height auto
-  max-height 32px
-  margin-bottom 1px !important
+.v-list.x-dense.v-list--two-line .v-list-item,
+.v-list-item.x-dense.v-list-item--two-line {
+	max-height: 42px;
+}
 
-  .v-list-item__action
-    margin 0
+.cursor-pointer {
+	cursor: pointer;
+}
 
-  .v-list-item__title
-  .v-list-item__subtitle
-    margin-bottom 0 !important
-    font-size 13px
+select {
+	width: 100%;
+	margin: 0;
+	padding: 0 1em 0 0;
+	border: none;
+	background-color: transparent;
+	outline: none;
+	font-size: inherit;
+	font-family: inherit;
+	line-height: inherit;
+	cursor: inherit;
+	appearance: none;
+}
 
-  .v-list-item__avatar
-    width 15px !important
-    min-width 15px !important
-    margin-right 8px
-
-.v-list.x-dense.v-list--two-line .v-list-item
-.v-list-item.x-dense.v-list-item--two-line
-  max-height 42px
-
-.cursor-pointer
-  cursor pointer
-
-select
-  width 100%
-  margin 0
-  padding 0 1em 0 0
-  border none
-  // Additional resets for further consistency
-  background-color transparent
-  outline none
-  font-size inherit
-  font-family inherit
-  line-height inherit
-  cursor inherit
-  // A reset of styles, including removing the default dropdown arrow
-  appearance none
-
-select::after
-  content "\F0140"
-  display block
-  font 400 normal normal 24px/1 "Material Design Icons"
+select::after {
+	content: "\F0140";
+	display: block;
+	font: 400 normal normal 24px/1 "Material Design Icons";
+}
 </style>
