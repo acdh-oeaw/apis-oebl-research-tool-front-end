@@ -1,5 +1,6 @@
 import Dexie from "dexie";
 
+import { env } from "@/config/env";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
@@ -26,12 +27,12 @@ class ZoteroStore {
 	}
 
 	async getInitialData() {
-		return (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/initial-data")).json();
+		return (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/initial-data")).json();
 	}
 
 	async createItem(i: ZoteroItem["data"]) {
 		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item", {
+			await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item", {
 				method: "POST",
 				body: JSON.stringify([i]),
 				headers: {
@@ -42,16 +43,16 @@ class ZoteroStore {
 	}
 
 	async searchItem(q: string): Promise<Array<ZoteroItem>> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
+		return await (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
 	}
 
 	async getItem(key: string): Promise<ZoteroItem> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key)).json();
+		return await (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key)).json();
 	}
 
 	async updateTitle(key: string, t: ZoteroPatchData): Promise<{ version: number }> {
 		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key, {
+			await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key, {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
@@ -129,10 +130,9 @@ async function getZoteroResponse(
 		requestHeaders.set("if-Modified-Since-Version", String(version));
 	}
 
-	const djangoResponse = await fetch(
-		`${process.env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`,
-		{ headers: requestHeaders },
-	);
+	const djangoResponse = await fetch(`${env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`, {
+		headers: requestHeaders,
+	});
 
 	if (!djangoResponse.ok) {
 		throw new Error(`Error in server ${djangoResponse.status} ${djangoResponse.statusText}`);
