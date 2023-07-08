@@ -18,8 +18,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import store from "../store";
-import SwitchButton from "./lib/SwitchButton.vue";
+import store from "@/store";
+import SwitchButton from "@/views/lib/SwitchButton.vue";
 
 @Component({
 	components: {

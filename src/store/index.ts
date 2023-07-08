@@ -1,23 +1,20 @@
+import { createUrl, request } from "@acdh-oeaw/lib";
 import Vue from "vue";
 
+import { OpenAPI } from "@/api/core/OpenAPI";
+import { env } from "@/config/env";
+import AuthorStore from "@/store/author";
+import EditorStore from "@/store/editor";
+import IssueStore from "@/store/issue";
+import LabelStore from "@/store/label";
+import LemmaStore from "@/store/lemma";
+import SearchStore from "@/store/search";
+import UserStore from "@/store/user";
 import { type LemmaFilterItem } from "@/types/lemma";
 
-import { OpenAPI } from "../api";
-import AuthorStore from "./author";
-import EditorStore from "./editor";
-import IssueStore from "./issue";
-import LabelStore from "./label";
-import LemmaStore from "./lemma";
-import SearchStore from "./search";
-import UserStore from "./user";
-
-OpenAPI.BASE = process.env.VUE_APP_API_HOST || "";
+OpenAPI.BASE = env.VUE_APP_API_HOST;
 OpenAPI.WITH_CREDENTIALS = true;
-
-// FIXME: use tokens
-//OpenAPI.USERNAME = atob(localStorage.getItem('user') || '') || undefined
-//OpenAPI.PASSWORD = atob(localStorage.getItem('pass') || '') || undefined
-OpenAPI.TOKEN = localStorage.getItem("token") || undefined;
+OpenAPI.TOKEN = localStorage.getItem("token") ?? undefined;
 
 export interface StoredLemmaFilter {
 	name: string;
@@ -42,18 +39,11 @@ interface Settings {
 	};
 }
 
-/**
- * In all stores, state variables that can only be
- * mutated by a class member but read by the public,
- * are prefix with an underscore and use a getter
- * (but no setter) for public read access.
- * */
-
 class Store {
-	public isLoggedIn = OpenAPI.TOKEN !== undefined;
+	public isLoggedIn = OpenAPI.TOKEN != null;
 
 	/** This is where we put functions that we want to run after the login. */
-	private loginCallbacks: Array<() => any> = [];
+	private loginCallbacks: Array<() => unknown> = [];
 	private _selectedIssueId: number | null = null;
 	private _selectedBiographyId = 1;
 	public showSearchDialog = false;
@@ -61,12 +51,12 @@ class Store {
 	private _settings: Settings = {
 		darkTheme: false,
 		issueLayout: "board",
-		articleZoomFactor: 1,
 		issueLemmaSearchItems: [],
 		drawerRightWidth: 370,
 		drawerLeftWidth: 370,
-		showLemmaFilter: false,
 		showNavDrawer: true,
+		articleZoomFactor: 1,
+		showLemmaFilter: false,
 		issueViewOptions: {
 			showBirthAndDeath: true,
 			showEditor: true,
@@ -75,70 +65,44 @@ class Store {
 		},
 	};
 
-	public onLoginSuccess(cb: () => any) {
+	public onLoginSuccess(cb: () => unknown): void {
 		this.loginCallbacks.push(cb);
 	}
 
-	private async runCallbacks(cbs: Array<() => unknown>) {
+	private async runCallbacks(cbs: Array<() => unknown>): Promise<void> {
 		for (const cb of cbs) {
 			await cb();
 		}
 	}
 
 	async logIn(user: string, pwd: string): Promise<boolean> {
-		// FIXME: use token
 		try {
-			// this is the only time we don’t use the auto generated API client to communicate with the back end.
-			const me = await fetch(process.env.VUE_APP_API_HOST + "/auth/token/login", {
-				method: "POST",
-				body: JSON.stringify({
-					username: user,
-					password: pwd,
-				}),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}).then(async (res) => {
-				let result;
-				const data = await res.json();
-				if (res.status === 200) {
-					console.log(res.status);
-					localStorage.setItem("token", data.auth_token);
-					OpenAPI.TOKEN = data.auth_token;
-					result = true;
-				} else {
-					result = false;
-				}
-				return result;
-			});
-			if (me) {
-				console.log("me.ok", me);
-				console.log(this.loginCallbacks);
-				await this.runCallbacks(this.loginCallbacks);
-				this.loginCallbacks = [];
-				this.isLoggedIn = true;
-				return true;
-			} else {
-				return false;
-			}
+			const url = createUrl({ baseUrl: OpenAPI.BASE, pathname: "/auth/token/login" });
+
+			const data = (await request(url, {
+				method: "post",
+				body: { username: user, password: pwd },
+				responseType: "json",
+			})) as { auth_token: string };
+
+			await this.runCallbacks(this.loginCallbacks);
+			this.loginCallbacks = [];
+
+			OpenAPI.TOKEN = data.auth_token;
+			localStorage.setItem("token", data.auth_token);
+			this.isLoggedIn = true;
+
+			return true;
 		} catch (e) {
-			OpenAPI.TOKEN = undefined;
-			OpenAPI.USERNAME = undefined;
-			OpenAPI.PASSWORD = undefined;
-			localStorage.removeItem("token");
-			localStorage.removeItem("user");
-			localStorage.removeItem("pass");
+			this.logOut();
+
 			return false;
 		}
 	}
 
-	async logOut() {
-		localStorage.removeItem("user");
-		localStorage.removeItem("pass");
-		localStorage.removeItem("token");
-		OpenAPI.USERNAME = undefined;
-		OpenAPI.PASSWORD = undefined;
+	logOut(): void {
 		OpenAPI.TOKEN = undefined;
+		localStorage.removeItem("token");
 		this.isLoggedIn = false;
 	}
 
@@ -147,16 +111,15 @@ class Store {
 	}
 
 	set settings(s: Settings) {
-		console.log("update settings");
 		this._settings = s;
 		localStorage.setItem("settings", JSON.stringify(s));
 	}
 
-	get selectedIssue() {
+	get selectedIssue(): number | null {
 		return this._selectedIssueId;
 	}
 
-	get selectedBiography() {
+	get selectedBiography(): number {
 		return this._selectedBiographyId;
 	}
 

@@ -108,8 +108,7 @@ import { clone, debounce } from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
-
-import SelectMenu from "./SelectMenu.vue";
+import SelectMenu from "@/views/lib/SelectMenu.vue";
 
 @Component({
 	components: {

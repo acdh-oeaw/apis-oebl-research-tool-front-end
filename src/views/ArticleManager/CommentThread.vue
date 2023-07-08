@@ -119,9 +119,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { emoji } from "@/service/emoji";
 import store from "@/store";
-
-import TextField from "../lib/TextField.vue";
-import { type CommentThreadAttributes } from "./extensionComment";
+import { type CommentThreadAttributes } from "@/views/ArticleManager/extensionComment";
+import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {
@@ -265,28 +264,33 @@ export default class CommentThread extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.scrollable
-  overflow auto
-  max-height 300px
+<style scoped>
+.scrollable {
+	overflow: auto;
+	max-height: 300px;
+}
 
-.emoji-picker
-  max-height 200px
+.emoji-picker {
+	max-height: 200px;
+}
 
-.emoji-picker .emoji
-  display inline-block
-  width 39px
-  font-size 1.6em
-  text-align center
-  cursor pointer
+.emoji-picker .emoji {
+	display: inline-block;
+	width: 39px;
+	font-size: 1.6em;
+	text-align: center;
+	cursor: pointer;
+}
 
-.emoji-group
-  position sticky
-  top 0
-  left 0
-  z-index 1
-  background var(--v-background-base)
+.emoji-group {
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	background: var(--v-background-base);
+}
 
-.comment-user-name
-  font-weight 700
+.comment-user-name {
+	font-weight: 700;
+}
 </style>

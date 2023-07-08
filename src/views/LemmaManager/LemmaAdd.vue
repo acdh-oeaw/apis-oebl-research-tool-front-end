@@ -149,10 +149,9 @@ import { findPerson } from "@/service/lobid";
 import store from "@/store";
 import { type LemmaRow } from "@/types/lemma";
 import { DateContainer } from "@/util/dates";
-
-import TextField from "../lib/TextField.vue";
-import LemmaDetail from "./LemmaDetail.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
+import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

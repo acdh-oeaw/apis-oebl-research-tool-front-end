@@ -399,20 +399,19 @@ import { GenderAe0Enum, type List } from "@/api";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
+import { lemmaRowTranslations } from "@/util/labels";
+import VueFileList from "@/views/LemmaManager/FileList.vue";
+import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
+import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
+import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
+import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
 import DateField from "@/views/lib/DateField.vue";
 import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
+import LemmaPrinter from "@/views/lib/LemmaPrinter.vue";
+import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
 import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
-
-import { lemmaRowTranslations } from "../../util/labels";
-import LemmaPrinter from "../lib/LemmaPrinter.vue";
-import ProfessionGroupField from "../lib/ProfessionGroupField.vue";
-import VueFileList from "./FileList.vue";
-import LemmaScrapeResult from "./LemmaScrapeResult.vue";
-import LobidGndSearch from "./LobidGndSearch.vue";
-import LobidPreviewCard from "./LobidPreviewCard.vue";
-import ZoteroManager from "./ZoteroManager.vue";
 
 const DRAG_CLASS = "drag-over";
 
@@ -581,23 +580,27 @@ export default class LemmaDetail extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-// tell the browser not to cache this.
-.lemma-detail
-  will-change contents
+<style scoped>
+.lemma-detail {
+	will-change: contents;
+}
 
-.drag-over
-  box-shadow inset 0 0 0 3px var(--v-primary-base) !important
+.drag-over {
+	box-shadow: inset 0 0 0 3px var(--v-primary-base) !important;
+}
 
-h4
-  position sticky
-  top 0
-  z-index 1
-  background transparent
+h4 {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: transparent;
+}
 
-.gideon-legacy-literature > li
-  display inline
+.gideon-legacy-literature > li {
+	display: inline;
+}
 
-.gideon-legacy-literature > li:not(:last-child)::after
-  content ', '
+.gideon-legacy-literature > li:not(:last-child)::after {
+	content: ", ";
+}
 </style>

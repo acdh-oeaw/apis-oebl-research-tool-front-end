@@ -61,9 +61,8 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type FullName as FullNameType } from "@/types/lemma";
+import { lemmaRowTranslations } from "@/util/labels";
 import FullNameField from "@/views/lib/FullNameField.vue";
-
-import { lemmaRowTranslations } from "../../util/labels";
 
 @Component({
 	components: {

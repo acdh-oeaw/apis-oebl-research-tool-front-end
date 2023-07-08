@@ -3,8 +3,7 @@ import {
 	type LemmaLabel,
 	type LemmaStatus as ApiLemmaStatus,
 } from "@/api";
-
-import { type Modify } from "./index";
+import { type Modify } from "@/types/index";
 
 export interface Requests {
 	/** GET /issues */

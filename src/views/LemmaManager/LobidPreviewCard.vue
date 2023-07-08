@@ -48,7 +48,7 @@
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import * as lobidService from "../../service/lobid";
+import * as lobidService from "@/service/lobid";
 
 type Fragment = {
 	html: string | null;
@@ -107,27 +107,31 @@ export default class LobidPreviewCard extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.fragment
-  position relative
-  border-radius 6px
+<style scoped>
+.fragment {
+	position: relative;
+	border-radius: 6px;
+}
 
-  &.clickable:hover
-    background var(--v-background-lighten1)
+.fragment.clickable:hover {
+	background: var(--v-background-lighten1);
+}
 
-.fragment img
-  max-width 80px
-  max-height 100%
-  border-radius 7px
-  background var(--v-background-lighten2)
+.fragment img {
+	max-width: 80px;
+	max-height: 100%;
+	border-radius: 7px;
+	background: var(--v-background-lighten2);
+}
 
-.fragment a
-  font-weight 700
+.fragment a {
+	font-weight: 700;
+}
 
-.fragment .description
-  // stylelint-disable-next-line value-no-vendor-prefix
-  display -webkit-box
-  overflow hidden
-  -webkit-line-clamp 5
-  -webkit-box-orient vertical
+.fragment .description {
+	display: box;
+	overflow: hidden;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;
+}
 </style>

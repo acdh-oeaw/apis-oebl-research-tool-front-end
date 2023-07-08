@@ -60,11 +60,12 @@ export default class Annotation extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.special-char
-  display inline-block
-  width 39px
-  font-size 1.1em
-  text-align center
-  cursor pointer
+<style scoped>
+.special-char {
+	display: inline-block;
+	width: 39px;
+	font-size: 1.1em;
+	text-align: center;
+	cursor: pointer;
+}
 </style>
