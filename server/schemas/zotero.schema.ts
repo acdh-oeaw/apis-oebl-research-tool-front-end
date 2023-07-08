@@ -93,3 +93,7 @@ export const zoteroItem = z.object({
 });
 
 export type ZoteroItem = z.infer<typeof zoteroItem>;
+
+export const zoteroItemPatchData = zoteroItem.shape.data.partial().merge(zoteroItem.shape.data.pick({'version': true}).required())
+
+export type ZoteroItemPatchData = z.infer<typeof zoteroItemPatchData>

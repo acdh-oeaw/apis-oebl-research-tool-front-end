@@ -31,13 +31,6 @@
 		"./scripts/**/*.ts"
 	],
 	"exclude": ["dist", "node_modules"],
-	"ts-node": {
-		"compilerOptions": {
-			"module": "commonjs",
-			"verbatimModuleSyntax": false
-		},
-		"transpileOnly": true
-	},
 	"vueCompilerOptions": {
 		"target": 2.7,
 		"experimentalModelPropName": {

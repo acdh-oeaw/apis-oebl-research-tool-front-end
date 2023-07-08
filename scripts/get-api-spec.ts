@@ -1,5 +1,3 @@
-import "../server/polyfill";
-
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 

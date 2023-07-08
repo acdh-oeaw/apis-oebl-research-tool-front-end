@@ -1,14 +1,13 @@
 import { createHeaders, createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
 
-import { env } from "../env";
+import { env } from "../config/env";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
+	type ZoteroItemPatchData,
 	type ZoteroItemType,
 	type ZoteroItemTypeField,
 } from "../schemas/zotero.schema";
-
-type ZoteroPatchData = Partial<ZoteroItem["data"]> & Required<Pick<ZoteroItem["data"], "version">>;
 
 const baseUrl = "https://api.zotero.org/";
 
@@ -59,7 +58,7 @@ export const api = {
 	},
 	// FIXME: check if this includes the version - original code returned
 	// `{ version: response.headers.get("Last-Modified-Version") }`
-	patchItemById(id: string, body: ZoteroPatchData): Promise<ZoteroItem> {
+	patchItemById(id: string, body: ZoteroItemPatchData): Promise<ZoteroItem> {
 		const url = createUrl({
 			baseUrl: userUrl,
 			pathname: `items/${id}`,

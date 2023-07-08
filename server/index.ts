@@ -1,7 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
 
-import "./polyfill";
-
 import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { join } from "node:path";
@@ -11,7 +9,7 @@ import cors from "cors";
 import express from "express";
 import { Server, type Socket } from "socket.io";
 
-import { env } from "./env";
+import { env } from "./config/env";
 import { errorHandler } from "./middleware/error-handler";
 import { withAuthentication } from "./middleware/with-authentication";
 import { withValidation } from "./middleware/with-validation";

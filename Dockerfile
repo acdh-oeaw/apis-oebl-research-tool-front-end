@@ -41,4 +41,4 @@ RUN npm run build
 
 EXPOSE 3333
 
-CMD ["node", "./server/dist/server/index.js"]
+CMD ["node", "./dist/server/index.mjs"]
