@@ -40,10 +40,16 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line simple-import-sort/imports
 import { Component, Vue } from "vue-property-decorator";
 
-import { requestState } from "@/api/core/request";
+/**
+ * `store` *must* be imported before `requestState` to avoid error caused by circular dependency.
+ *
+ * @see https://github.com/acdh-oeaw/apis-oebl-research-tool-front-end/issues/159
+ */
 import store from "@/store";
+import { requestState } from "@/api/core/request";
 import GlobalSearch from "@/views/GlobalSearch.vue";
 import Confirm from "@/views/lib/Confirm.vue";
 import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
