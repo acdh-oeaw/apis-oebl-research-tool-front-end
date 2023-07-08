@@ -2,15 +2,17 @@
 
 import { defineConfig, devices } from "@playwright/test";
 
-const port = process.env.ci ? process.env.PORT || 3333 : 8080;
+const isGithubAction = Boolean(process.env.CI);
+const isProductionBuild = isGithubAction || process.env.E2E_TEST_BUILD === "production";
+const port = isProductionBuild ? process.env.PORT || 3333 : 8080;
 const baseUrl = `http://localhost:${port}`;
 
 export default defineConfig({
 	testDir: "./e2e",
 	fullyParallel: true,
-	forbidOnly: Boolean(process.env.CI),
-	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
+	forbidOnly: isGithubAction,
+	retries: isGithubAction ? 2 : 0,
+	workers: isGithubAction ? 1 : undefined,
 	reporter: "html",
 	use: {
 		baseURL: baseUrl,
@@ -49,8 +51,8 @@ export default defineConfig({
 		// },
 	],
 	webServer: {
-		command: process.env.CI ? "npm run start" : "npm run dev",
+		command: isProductionBuild ? "npm run start" : "npm run dev",
 		url: baseUrl,
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: !isGithubAction,
 	},
 });
