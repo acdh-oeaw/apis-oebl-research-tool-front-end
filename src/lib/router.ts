@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter, { type RouteConfig } from "vue-router";
 
+import IssueByIdPage from "@/pages/issues/[id].vue";
 import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
-import IssueManager from "@/views/IssueManager/IssueManager.vue";
 import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
 import LemmaPrintView from "@/views/LemmaManager/LemmaPrintView.vue";
 
@@ -14,13 +14,8 @@ const routes: Array<RouteConfig> = [
 		redirect: "/lemmas",
 	},
 	{
-		path: "/issue/:issueId",
-		component: IssueManager,
-		props(route) {
-			return {
-				issueId: Number(route.params.issueId) || null,
-			};
-		},
+		path: "/issue/:id",
+		component: IssueByIdPage,
 	},
 	{
 		path: "/lemmas",
