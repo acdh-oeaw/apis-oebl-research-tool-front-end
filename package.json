@@ -16,7 +16,7 @@
 		"dev:server": "dotenv -c development -- tsup-node --clean --format esm --target es2021 --out-dir ./dist/server/ --sourcemap --tsconfig ./server/tsconfig.json --watch ./server/index.ts",
 		"format:check": "prettier . --cache --check --ignore-path ./.gitignore",
 		"format:fix": "npm run format:check -- --write",
-		"generate:api-client": "tsx ./scripts/get-api-spec.ts && openapi --input api-spec.json --ouput ./src/api --request ./src/service/request.ts",
+		"generate:api-client": "tsx ./scripts/get-api-spec.ts && openapi --input api-spec.json --output ./src/api --request ./src/service/request.ts",
 		"generate:api-client:dev": "dotenv -c development -- npm run generate:api-client",
 		"generate:api-client:prod": "dotenv -c production -- npm run generate:api-client",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
