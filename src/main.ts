@@ -1,8 +1,8 @@
 import Vue from "vue";
 
-import App from "@/App.vue";
-import { vuetify } from "@/plugins/vuetify";
-import { router } from "@/router";
+import App from "@/app.vue";
+import { router } from "@/lib/router";
+import { vuetify } from "@/lib/vuetify";
 
 Vue.config.productionTip = false;
 Vue.config.performance = true;
@@ -10,5 +10,7 @@ Vue.config.performance = true;
 new Vue({
 	router,
 	vuetify,
-	render: (h) => h(App),
+	render(h) {
+		return h(App);
+	},
 }).$mount("#app");

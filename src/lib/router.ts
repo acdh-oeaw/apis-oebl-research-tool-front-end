@@ -15,9 +15,8 @@ const routes: Array<RouteConfig> = [
 	},
 	{
 		path: "/issue/:issueId",
-		name: "Issue",
 		component: IssueManager,
-		props: (route) => {
+		props(route) {
 			return {
 				issueId: Number(route.params.issueId) || null,
 			};
@@ -25,9 +24,8 @@ const routes: Array<RouteConfig> = [
 	},
 	{
 		path: "/lemmas",
-		name: "Lemmas",
 		component: LemmaManager,
-		props: (route) => {
+		props(route) {
 			return {
 				highlightId: Number(route.query.focus) || null,
 			};
@@ -36,7 +34,7 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/lemmas/list/:lemmaListId",
 		component: LemmaManager,
-		props: (route) => {
+		props(route) {
 			return {
 				lemmaListId: Number(route.params.lemmaListId) || null,
 				highlightId: Number(route.query.focus) || null,
@@ -50,7 +48,7 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/article/:issueLemmaId",
 		component: EditorLoader,
-		props: (route) => {
+		props(route) {
 			return {
 				issueLemmaId: Number(route.params.issueLemmaId) || null,
 			};
@@ -59,12 +57,16 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/lemmas/print/:lemmaId",
 		component: LemmaPrintView,
-		props: (route) => {
+		props(route) {
 			return {
 				lemmaId: Number(route.params.lemmaId),
 			};
 		},
 	},
+	// {
+	// 	path: "*",
+	// 	component: PageNotFound,
+	// },
 ];
 
 export const router = new VueRouter({
