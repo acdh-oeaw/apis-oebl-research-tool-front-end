@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts">
+import { type ZoteroItem } from "@server/zotero/zotero.schema";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import zoteroStore from "@/service/zotero";
-import { type ZoteroItem } from "@/types/zotero";
 
 /**
  * Search And Select Citations From Zotero
@@ -48,7 +48,7 @@ export default class ZoteroSearch extends Vue {
 		}
 		this.loading = true;
 		zoteroStore
-			.searchItem(this.searchTerm)
+			.getItems(this.searchTerm)
 			.then((zoteroItems: Array<ZoteroItem>) => {
 				this.zoteroResults = zoteroItems;
 				this.zoteroErrorMessages = [];

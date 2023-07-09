@@ -19,7 +19,7 @@ export interface ZoteroItemTypeField {
 	localized: string;
 }
 
-export interface ZoteroPatchData extends Partial<ZoteroItem["data"]> {
+export interface ZoteroItemPatchInput extends Partial<ZoteroItem["data"]> {
 	version: number;
 }
 

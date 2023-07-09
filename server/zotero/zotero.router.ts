@@ -9,49 +9,67 @@ export function createRouter() {
 	const router = Router();
 
 	// FIXME: why is the query string a path segment?
-	router.get("/search/:query", async (request, response, next) => {
+	router.get("/items", async (request, response, next) => {
 		try {
-			const data = await zotero.getItems(request.params.query);
+			const data = await zotero.getItems({ query: request.query.query });
 			return response.send(data);
 		} catch (error) {
 			return next(error);
 		}
 	});
 
-	router.get("/item/:id", async (request, response, next) => {
+	router.get("/items/:id", async (request, response, next) => {
 		try {
-			const data = await zotero.getItemById(request.params.id);
+			const data = await zotero.getItemById({ id: request.params.id });
 			return response.send(data);
 		} catch (error) {
 			return next(error);
 		}
 	});
 
-	router.patch("/item/:id", async (request, response, next) => {
+	router.get("/item-template/:itemType", async (request, response, next) => {
 		try {
-			const data = await zotero.patchItemById(request.params.id, request.body);
+			const data = await zotero.getItemTemplate({ itemType: request.params.itemType });
 			return response.send(data);
 		} catch (error) {
 			return next(error);
 		}
 	});
 
-	router.post("/item", async (request, response, next) => {
+	router.post("/items", async (request, response, next) => {
 		try {
-			const data = await zotero.createItem(request.body);
+			const data = await zotero.createItem({ data: request.body });
 			return response.send(data);
 		} catch (error) {
 			return next(error);
 		}
 	});
 
-	router.get("/initial-data", async (_request, response, next) => {
+	router.put("/items/:id", async (request, response, next) => {
+		try {
+			const data = await zotero.updateItemById({ id: request.params.id, data: request.body });
+			return response.send(data);
+		} catch (error) {
+			return next(error);
+		}
+	});
+
+	router.patch("/items/:id", async (request, response, next) => {
+		try {
+			const data = await zotero.patchItemById({ id: request.params.id, data: request.body });
+			return response.send(data);
+		} catch (error) {
+			return next(error);
+		}
+	});
+
+	router.get("/item-types", async (_request, response, next) => {
 		try {
 			const itemTypes = await zotero.getItemTypes();
 			const itemTypeFields = Object.fromEntries(
 				await Promise.all(
 					itemTypes.map(({ itemType }) => {
-						return zotero.getItemTypeFields(itemType).then((data) => {
+						return zotero.getItemTypeFields({ itemType }).then((data) => {
 							return [itemType, data];
 						});
 					}),
@@ -60,7 +78,7 @@ export function createRouter() {
 			const itemTypeCreators = Object.fromEntries(
 				await Promise.all(
 					itemTypes.map(({ itemType }) => {
-						return zotero.getItemTypeCreators(itemType).then((data) => {
+						return zotero.getItemTypeCreators({ itemType }).then((data) => {
 							return [itemType, data];
 						});
 					}),
