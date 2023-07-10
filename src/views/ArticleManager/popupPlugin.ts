@@ -8,7 +8,7 @@ import { Mark, VueRenderer } from "@tiptap/vue-2";
 import tippy, { hideAll, type Instance as TippyInstance, sticky } from "tippy.js";
 import Vue, { type VueConstructor } from "vue";
 
-import vuetify from "@/plugins/vuetify";
+import { vuetify } from "@/lib/vuetify";
 
 let t: TippyInstance | null = null;
 const vueComponents: { [name: string]: VueRenderer } = {};
