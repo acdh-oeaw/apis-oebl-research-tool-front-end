@@ -63,7 +63,8 @@ export default class FileList extends Vue {
 }
 
 .file-icon .caption {
-	display: box;
+	/* stylelint-disable-next-line value-no-vendor-prefix */
+	display: -webkit-box;
 	overflow: hidden;
 	max-height: 40px;
 	text-overflow: ellipsis;
