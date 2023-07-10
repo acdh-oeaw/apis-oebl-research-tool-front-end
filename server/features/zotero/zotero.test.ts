@@ -3,12 +3,12 @@ import { describe, it } from "node:test";
 
 import request from "supertest";
 
-import { server } from "../../server";
 import {
 	type ZoteroItemPatchInput,
 	type ZoteroItemPostInput,
 	type ZoteroItemPutInput,
-} from "./zotero.schema";
+} from "@server/features/zotero/zotero.schema";
+import { server } from "@server/server";
 
 describe("GET /zotero/items", () => {
 	it("should respond with zotero items", () => {

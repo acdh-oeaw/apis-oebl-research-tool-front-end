@@ -1,7 +1,7 @@
 import { HttpError } from "@acdh-oeaw/lib";
 import { type ErrorRequestHandler } from "express";
 
-import { ServerError } from "../errors/server-error";
+import { ServerError } from "@server/errors/server-error";
 
 export const errorHandler: ErrorRequestHandler = function errorHandler(
 	error,

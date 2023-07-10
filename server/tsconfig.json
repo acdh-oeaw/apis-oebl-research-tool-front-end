@@ -10,7 +10,7 @@
 		"noUncheckedIndexedAccess": true,
 		"outDir": "dist",
 		"paths": {
-			"@server/*": ["./server/*"]
+			"@server/*": ["./*"]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,

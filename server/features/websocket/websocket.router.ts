@@ -3,9 +3,9 @@ import { type Server as HttpServer } from "node:http";
 import { Router } from "express";
 import { Server, type Socket } from "socket.io";
 
-import { env } from "../../config/env";
-import { withAuthentication } from "../../middlewares/with-authentication";
-import { withValidation } from "../../middlewares/with-validation";
+import { env } from "@server/config/env";
+import { withAuthentication } from "@server/middlewares/with-authentication";
+import { withValidation } from "@server/middlewares/with-validation";
 
 export function createRouter(server: HttpServer) {
 	const io = new Server(server, { cors: { origin: env.ALLOWED_ORIGIN } });

@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts">
-import { type ZoteroItem } from "@server/zotero/zotero.schema";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import zoteroStore from "@/service/zotero";
+import { type ZoteroItem } from "@server/features/zotero/zotero.schema";
 
 /**
  * Search And Select Citations From Zotero

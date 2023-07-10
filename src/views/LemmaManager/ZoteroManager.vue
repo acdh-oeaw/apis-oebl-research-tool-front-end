@@ -29,12 +29,12 @@
 </template>
 
 <script lang="ts">
-import { type ZoteroItem } from "@server/zotero/zotero.schema";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import { type ZoteroView } from "@/types/zotero";
 import ZoteroSearch from "@/views/lib/ZoteroSearch.vue";
+import { type ZoteroItem } from "@server/features/zotero/zotero.schema";
 
 /**
  * Manage Zotero Items from and about a lemma (https://gitlab.com/acdh-oeaw/oebl/oebl-research-tool-front-end/-/issues/17):

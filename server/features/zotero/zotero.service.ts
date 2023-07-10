@@ -1,6 +1,6 @@
 import { createHeaders, createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
 
-import { env } from "../../config/env";
+import { env } from "@server/config/env";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
@@ -11,7 +11,7 @@ import {
 	type ZoteroItemPutInput,
 	type ZoteroItemType,
 	type ZoteroItemTypeField,
-} from "./zotero.schema";
+} from "@server/features/zotero/zotero.schema";
 
 export const baseUrl = createUrl({
 	baseUrl: "https://api.zotero.org/",

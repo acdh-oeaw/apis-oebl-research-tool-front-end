@@ -145,6 +145,30 @@
 				}
 			}
 		},
+		"rules": {
+			"simple-import-sort/imports": [
+				"error",
+				{
+					"groups": [
+						[
+							"^\\u0000"
+						],
+						[
+							"^node:"
+						],
+						[
+							"^@?\\w"
+						],
+						[
+							"^(@server)?"
+						],
+						[
+							"^\\."
+						]
+					]
+				}
+			]
+		},
 		"overrides": [
 			{
 				"files": [

@@ -5,17 +5,17 @@ import {
 	isNonNullable,
 	request,
 } from "@acdh-oeaw/lib";
+import Dexie from "dexie";
+
+import { env } from "@/config/env";
+import { type ZoteroView } from "@/types/zotero";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
 	type ZoteroItemPatchInput,
 	type ZoteroItemType,
 	type ZoteroItemTypeField,
-} from "@server/zotero/zotero.schema";
-import Dexie from "dexie";
-
-import { env } from "@/config/env";
-import { type ZoteroView } from "@/types/zotero";
+} from "@server/features/zotero/zotero.schema";
 
 const baseUrl = createUrl({ baseUrl: env.VUE_APP_EVENTBUS_HOST });
 
@@ -384,7 +384,7 @@ export function convertZoteroItemToView(zoteroItem: ZoteroItem): ZoteroView {
 	const year = zoteroItem.data.date ? zoteroItem.data.date : "o. J.";
 	return {
 		citation: `${authors}: ${title}, ${year}`,
-		url: zoteroItem.links?.alternate.href,
+		url: zoteroItem.links.alternate.href,
 		key: zoteroItem.key,
 	};
 }

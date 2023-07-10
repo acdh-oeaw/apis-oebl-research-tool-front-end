@@ -8,9 +8,9 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 
-import { errorHandler } from "./middlewares/error-handler";
-import { createRouter as createWebsocketRouter } from "./features/websocket/websocket.router";
-import { createRouter as createZoteroRouter } from "./features/zotero/zotero.router";
+import { createRouter as createWebsocketRouter } from "@server/features/websocket/websocket.router";
+import { createRouter as createZoteroRouter } from "@server/features/zotero/zotero.router";
+import { errorHandler } from "@server/middlewares/error-handler";
 
 const app = express();
 const server = createServer(app);

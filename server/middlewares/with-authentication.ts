@@ -1,7 +1,7 @@
 import { type RequestHandler } from "express";
 
-import { env } from "../config/env";
-import { ServerError } from "../errors/server-error";
+import { env } from "@server/config/env";
+import { ServerError } from "@server/errors/server-error";
 
 export const withAuthentication: RequestHandler = function withAuthentication(
 	request,
