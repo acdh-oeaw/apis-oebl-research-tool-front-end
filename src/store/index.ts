@@ -13,8 +13,8 @@ import UserStore from "@/store/user";
 import { type LemmaFilterItem } from "@/types/lemma";
 
 OpenAPI.BASE = env.VUE_APP_API_HOST;
-OpenAPI.WITH_CREDENTIALS = true;
 OpenAPI.TOKEN = localStorage.getItem("token") ?? undefined;
+// OpenAPI.WITH_CREDENTIALS = true;
 
 export interface StoredLemmaFilter {
 	name: string;

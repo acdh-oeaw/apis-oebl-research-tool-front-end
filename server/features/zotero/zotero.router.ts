@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { withValidation } from "../middlewares/with-validation";
+import { withValidation } from "../../middlewares/with-validation";
 import { createService as createZoteroService } from "./zotero.service";
 
 export function createRouter() {

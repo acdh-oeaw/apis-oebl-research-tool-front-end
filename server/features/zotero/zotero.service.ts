@@ -1,6 +1,6 @@
 import { createHeaders, createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
 
-import { env } from "../config/env";
+import { env } from "../../config/env";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,

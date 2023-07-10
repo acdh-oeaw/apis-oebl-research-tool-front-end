@@ -9,8 +9,8 @@ import cors from "cors";
 import express from "express";
 
 import { errorHandler } from "./middlewares/error-handler";
-import { createRouter as createWebsocketRouter } from "./websocket/websocket.router";
-import { createRouter as createZoteroRouter } from "./zotero/zotero.router";
+import { createRouter as createWebsocketRouter } from "./features/websocket/websocket.router";
+import { createRouter as createZoteroRouter } from "./features/zotero/zotero.router";
 
 const app = express();
 const server = createServer(app);
