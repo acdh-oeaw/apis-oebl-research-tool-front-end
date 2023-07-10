@@ -1,73 +1,56 @@
-<script lang="ts">
-import { format } from "date-fns";
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { keyBy } from "@acdh-oeaw/lib";
+import { computed } from "vue";
 
-import { type IssueLemma, type LemmaLabel } from "@/api";
+import { type IssueLemma } from "@/api";
+import UserAvatar from "@/features/issues/user-avatar.vue";
+import { getYear } from "@/lib/get-year";
 import store from "@/store";
-import UserAvatar from "@/views/lib/UserAvatar.vue";
 
-@Component({
-	components: {
-		UserAvatar,
-	},
-})
-export default class IssueLemmaCard extends Vue {
-	@Prop({ required: true }) value!: IssueLemma;
-	@Prop({ default: null }) maxLabels!: number | null;
-	@Prop({ default: true }) showEditor!: boolean;
-	@Prop({ default: true }) showAuthor!: boolean;
-	@Prop({ default: true }) showBirthAndDeath!: boolean;
+const props = defineProps<{
+	value: IssueLemma;
+	maxLabels: number | null;
+	showEditor: boolean;
+	showAuthor: boolean;
+	showBirthAndDeath: boolean;
+}>();
 
-	get labelsById() {
-		return _.keyBy(store.issue.labels, "id");
+const lemma = computed(() => props.value.lemma);
+
+const labelsById = computed(() => keyBy(store.issue.labels, (label) => label.id));
+
+const labels = computed(() => {
+	if (props.value.labels != null) {
+		return props.value.labels.map((id) => labelsById.value[id]!);
+	} else {
+		return [];
+	}
+});
+
+const labelsLimited = computed(() => {
+	if (props.maxLabels != null) {
+		return labels.value.slice(0, props.maxLabels);
 	}
 
-	get lemma() {
-		return this.value.lemma;
+	return labels.value;
+});
+
+const editor = computed(() => {
+	if (props.value.editor) {
+		return store.editors.getById(props.value.editor) || null;
 	}
 
-	dateToYear(d: string | null | undefined): string | null {
-		if (d !== null && d !== undefined) {
-			try {
-				return format(new Date(d), "yyyy");
-			} catch (e) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+	return null;
+});
 
-	get labels(): Array<LemmaLabel> {
-		if (this.value.labels !== undefined) {
-			return this.value.labels.map((id) => this.labelsById[id]!);
-		} else {
-			return [];
-		}
-	}
+const author = "TODO:";
+// const author = computed(() => {
+// 	if (props.value.editor) {
+// 		return store.authors.getById(props.value.author) || null;
+// 	}
 
-	get labelsLimited(): Array<LemmaLabel> {
-		if (this.maxLabels !== null) {
-			return _.take(this.labels, this.maxLabels);
-		} else {
-			return this.labels;
-		}
-	}
-
-	get editor() {
-		if (this.value.editor) {
-			return store.editors.getById(this.value.editor) || null;
-		} else {
-			return null;
-		}
-	}
-
-	get author() {
-		console.warn("get author is currently not implemented. This is a TODO!");
-		return null;
-	}
-}
+// 	return null;
+// });
 </script>
 
 <template>
@@ -77,7 +60,7 @@ export default class IssueLemmaCard extends Vue {
 		<template v-if="value.lemma">
 			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
 			<h5 v-if="showBirthAndDeath" class="pa-0 ma-0">
-				{{ dateToYear(lemma.dateOfBirth) }} - {{ dateToYear(lemma.dateOfDeath) }}
+				{{ getYear(lemma.dateOfBirth) }} - {{ getYear(lemma.dateOfDeath) }}
 			</h5>
 		</template>
 		<span v-else class="caption">Lemma nicht gefunden.</span>

@@ -1,285 +1,290 @@
-<script lang="ts">
-import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { groupBy, isNonNullable, unique } from "@acdh-oeaw/lib";
+import { chain } from "lodash";
+import { computed, onMounted, ref, watch } from "vue";
 
-import { type IssueLemma, type LemmaLabel, type LemmaStatus } from "@/api/index";
+import { type IssueLemma, type LemmaStatus } from "@/api";
+import IssueDetail from "@/features/issues/issue-details.vue";
+import IssuesBoard from "@/features/issues/issues-board.vue";
+import IssuesList from "@/features/issues/issues-list.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type WithId } from "@/types";
 import { DateContainer } from "@/util/dates";
-import IssueLemmaBoard from "@/views/IssueManager/IssueLemmaBoard.vue";
-import IssueLemmaDetail from "@/views/IssueManager/IssueLemmaDetail.vue";
-import IssueLemmaList from "@/views/IssueManager/IssueLemmaList.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 import SwitchButton from "@/views/lib/SwitchButton.vue";
 import ThemeToggle from "@/views/ThemeToggle.vue";
 
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-	return value !== null && value !== undefined;
+const props = defineProps<{
+	id: number | null;
+}>();
+
+const isSideBarVisible = ref(false);
+
+function onToggleSideBar() {
+	isSideBarVisible.value = !isSideBarVisible.value;
 }
 
-@Component({
-	components: {
-		IssueLemmaDetail,
-		IssueLemmaBoard,
-		IssueLemmaList,
-		ResizableDrawer,
-		LoadingSpinner,
-		ThemeToggle,
-		SwitchButton,
+//
+
+const issueStatus = computed(() => {
+	return store.issue.statuses;
+});
+
+function convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
+	if (issueStatus.value.find((s) => s.id === l.status) === undefined) {
+		return { ...l, status: issueStatus.value[0]?.id };
+	} else {
+		return l;
+	}
+}
+
+const issueLemmas = computed({
+	get() {
+		return store.issue.issueLemmas.map(convertUnknownStatus);
 	},
-})
-export default class IssueManager extends Vue {
-	@Prop({ default: "-1" }) issueId!: string;
+	set(issueLemmas) {
+		store.issue.issueLemmas = issueLemmas;
+	},
+});
 
-	searchText: string | null = null;
-	searchItems: Array<any> = store.settings.issueLemmaSearchItems;
-	animateLemmas = false;
-	store = store;
-	showSideBar = false;
-
-	log = console.log;
-
-	get selectedLemma() {
+const selectedLemma = computed({
+	get() {
 		return store.issue.selectedLemma;
-	}
+	},
+	set(lemma) {
+		store.issue.selectedLemma = lemma;
+	},
+});
 
-	set selectedLemma(l) {
-		store.issue.selectedLemma = l;
-	}
+function onSelectLemma(lemma: WithId<IssueLemma>) {
+	selectedLemma.value = lemma;
+}
 
-	get viewAs(): "board" | "list" {
-		return store.settings.issueLayout;
-	}
+//
 
-	set viewAs(t: "board" | "list") {
-		store.settings = { ...store.settings, issueLayout: t };
-	}
+const lemmaEditors = computed(() => {
+	return chain(issueLemmas.value)
+		.map((l) => l.editor)
+		.filter(isNonNullable)
+		.uniqBy("userId")
+		.map((id) => store.editors.getById(id))
+		.filter(isNonNullable)
+		.value();
+});
 
-	toggleDrawer() {
-		this.store.settings = {
-			...this.store.settings,
-			showNavDrawer: !this.store.settings.showNavDrawer,
-		};
-	}
+// FIXME: apparently this used to be implemented, but then changed to just return an empty array?
+const lemmaAuthors = computed(() => {
+	return chain(issueLemmas.value)
+		.map((l) => l.author)
+		.filter(isNonNullable)
+		.uniqBy("author")
+		.map((id) => store.authors.getById(id))
+		.filter(isNonNullable)
+		.value();
+});
 
-	viewOptions = {
-		showAuthor: true,
-		showEditor: true,
-		showDescription: true,
-		showLabels: Infinity,
+const lemmaLabels = computed(() => {
+	return chain(issueLemmas.value)
+		.flatMap((l) => l.labels)
+		.uniq()
+		.map((id) => store.issue.getLabelById(id || -1))
+		.filter(isNonNullable)
+		.value();
+});
+
+const lemmaText = computed(() => {
+	return issueLemmas.value.map((l) => ({
+		text:
+			l.lemma.lastName +
+			", " +
+			l.lemma.firstName +
+			" " +
+			(DateContainer.fromISO_OnlyDate(l.lemma.dateOfBirth).calendarYear || "") +
+			"-" +
+			(DateContainer.fromISO_OnlyDate(l.lemma.dateOfDeath).calendarYear || ""),
+		info: l.lemma.info,
+		issueLemmaId: l.id,
+	}));
+});
+
+//
+
+const searchText = ref("");
+
+const searchItems = computed(() => {
+	return store.settings.issueLemmaSearchItems;
+});
+
+// FIXME: why not computed property with setter?
+watch(searchItems, (searchItems) => {
+	store.settings = {
+		...store.settings,
+		issueLemmaSearchItems: searchItems,
 	};
+});
 
-	@Watch("searchItems")
-	onChangeSearchItems() {
-		store.settings = {
-			...store.settings,
-			issueLemmaSearchItems: this.searchItems,
-		};
-	}
+// FIXME: missing autocomplete for authors
+const autocompleteItems = computed(() => {
+	return [
+		...lemmaEditors.value.map((e) => ({
+			type: "editor",
+			text: e.name,
+			id: e.userId,
+			value: "editor:" + e.userId,
+			image: "", // e.profilePicture,
+			description: "Redakteur",
+		})),
+		...lemmaAuthors.value.map((e) => ({
+			type: "author",
+			text: e.name,
+			id: e.userId,
+			value: "author:" + e.userId,
+			description: "Autor",
+		})),
+		...lemmaLabels.value.map((e) => ({
+			type: "label",
+			text: e.name,
+			id: e.id,
+			value: "label:" + e.id,
+			color: e.color || "orange",
+			description: "Label",
+		})),
+		...lemmaText.value.map((e) => ({
+			type: "text",
+			text: e.text,
+			id: e.issueLemmaId,
+			value: "lemma:" + e.issueLemmaId,
+			info: e.info,
+		})),
+	];
+});
 
-	mounted() {
-		store.issue.loadIssue(Number(this.issueId));
-	}
+const filteredIssues = computed(() => {
+	return issueLemmas.value.filter((issue) => {
+		return (
+			searchItems.value.length === 0 ||
+			searchItems.value.find((si) => si.type === "editor" && si.id === issue.editor) !==
+				undefined ||
+			searchItems.value.find(
+				(si) =>
+					si.type === "label" &&
+					issue.labels !== undefined &&
+					issue.labels.find((l) => l === si.id) !== undefined,
+			) !== undefined ||
+			searchItems.value.find((si) => si.type === "text" && si.id === issue.id) !== undefined
+			// searchItems.value.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
+		);
+	});
+});
 
-	convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
-		if (this.issueStatus.find((s) => s.id === l.status) === undefined) {
-			return { ...l, status: this.issueStatus[0]?.id };
-		} else {
-			return l;
-		}
-	}
+//
 
-	get issueLemmas(): Array<WithId<IssueLemma>> {
-		return store.issue.issueLemmas.map(this.convertUnknownStatus);
-	}
+const animateLemmas = ref(false);
 
-	set issueLemmas(ls: Array<WithId<IssueLemma>>) {
-		store.issue.issueLemmas = ls;
-	}
+function updateLemmaById(id: number, u: Partial<IssueLemma>) {
+	store.issue.updateLemma(id, u);
+}
 
-	get issueStatus() {
-		return store.issue.statuses;
-	}
-
-	onEndDrag(e: any) {
-		if (e.to instanceof HTMLElement && e.item instanceof HTMLElement) {
-			const issueLemmaId = Number(e.item.dataset.issueLemmaId);
-			const statusId = Number(e.to.dataset.statusId);
-			store.issue.updateLemma(issueLemmaId, { status: statusId });
-		}
-	}
-
-	updateLemmaStatus(statusId: LemmaStatus["id"], lemma: WithId<IssueLemma>) {
-		const index = this.issueLemmas.findIndex((i) => i.id === lemma.id);
-		if (index > -1) {
-			this.animateLemmas = true;
-			this.issueLemmas[index]!.status = statusId;
-			this.updateLemmaById(lemma.id, { status: statusId });
-			setTimeout(() => {
-				this.animateLemmas = false;
-			}, 300);
-		}
-	}
-
-	updateLemmaById(id: number, u: Partial<IssueLemma>) {
-		store.issue.updateLemma(id, u);
-	}
-
-	onUpdateColumn(status: LemmaStatus, lemmas: Array<WithId<IssueLemma>>) {
-		const lemmaIds = lemmas.map((l) => l.id);
-		const withoutColumn = this.issueLemmas.filter((l) => !lemmaIds.includes(l.id));
-		const updatedColumn: Array<WithId<IssueLemma>> = [];
-		lemmas.forEach((lemma, i) => {
-			const order =
-				(lemma.order || 0) <= (updatedColumn[i - 1]?.order || 0)
-					? (updatedColumn[i - 1]!.order || 0) + 1
-					: lemma.order;
-			updatedColumn.push({
-				...lemma,
-				order,
-				status: status.id,
-			});
-		});
-		this.issueLemmas = [...withoutColumn, ...updatedColumn];
-	}
-
-	get columns(): Array<{ name: string; id: number; items: Array<WithId<IssueLemma>> }> {
-		return this.store.issue.statuses.map((s) => {
-			return {
-				...s,
-				items: _(this.filteredIssues)
-					.filter((i) => i.status === s.id)
-					.orderBy("order")
-					.value(),
-			};
-		});
-	}
-
-	get lemmaEditors() {
-		return _(this.issueLemmas)
-			.map((l) => l.editor)
-			.filter(notEmpty)
-			.uniqBy("userId")
-			.map((id) => store.editors.getById(id))
-			.filter(notEmpty)
-			.value();
-	}
-
-	get lemmaAuthors() {
-		console.warn("Get lemma authors is currently not implemented. This is a TODO!");
-		return [];
-		// A reminder, how this woorked. TODO: remove comment
-		// return _(this.issueLemmas)
-		//   .map(l => l.author)
-		//   .filter(notEmpty)
-		//   .uniqBy('author')
-		//   .map(id => store.authors.getById(id))
-		//   .filter(notEmpty)
-		//   .value()
-		// ;
-	}
-
-	get lemmaLabels(): Array<LemmaLabel> {
-		return _(this.issueLemmas)
-			.flatMap((l) => l.labels)
-			.uniq()
-			.map((id) => store.issue.getLabelById(id || -1))
-			.filter(notEmpty)
-			.value();
-	}
-
-	get lemmaText(): Array<{ text: string; info: string | null | undefined; issueLemmaId: number }> {
-		return this.issueLemmas.map((l) => ({
-			text:
-				l.lemma.lastName +
-				", " +
-				l.lemma.firstName +
-				" " +
-				(DateContainer.fromISO_OnlyDate(l.lemma.dateOfBirth).calendarYear || "") +
-				"-" +
-				(DateContainer.fromISO_OnlyDate(l.lemma.dateOfDeath).calendarYear || ""),
-			info: l.lemma.info,
-			issueLemmaId: l.id,
-		}));
-	}
-
-	get autocompleteItems() {
-		console.warn("Auto complete for authors is currently not implemented. This is a TODO!");
-		return [
-			...this.lemmaEditors.map((e) => ({
-				type: "editor",
-				text: e.name,
-				id: e.userId,
-				value: "editor:" + e.userId,
-				image: "", // e.profilePicture,
-				description: "Redakteur",
-			})),
-			// This is a reminder, how this used to look like. TODO: Remove that comment.
-			// ...this.lemmaAuthors.map(e => ({
-			//   type: 'author',
-			//   text: e.name,
-			//   id: e.userId,
-			//   value: 'author:' + e.userId,
-			//   description: 'Autor'
-			// })),
-			...this.lemmaLabels.map((e) => ({
-				type: "label",
-				text: e.name,
-				id: e.id,
-				value: "label:" + e.id,
-				color: (e as any).color || "orange",
-				description: "Label",
-			})),
-			...this.lemmaText.map((e) => ({
-				type: "text",
-				text: e.text,
-				id: e.issueLemmaId,
-				value: "lemma:" + e.issueLemmaId,
-				info: e.info,
-			})),
-		];
-	}
-
-	async deleteIssueLemma(id: number) {
-		if (
-			await confirm.confirm("Wollen Sie dieses Lemma aus der Abgabe entfernen?", {
-				icon: "mdi-delete-outline",
-			})
-		) {
-			store.issue.deleteIssueLemma(id);
-		}
-	}
-
-	get filteredIssues(): Array<WithId<IssueLemma>> {
-		console.warn("Filtereing by author is currentl not impemented. this is a TODO!");
-		return this.issueLemmas.filter((issue) => {
-			return (
-				this.searchItems.length === 0 ||
-				this.searchItems.find((si) => si.type === "editor" && si.id === issue.editor) !==
-					undefined ||
-				this.searchItems.find(
-					(si) =>
-						si.type === "label" &&
-						issue.labels !== undefined &&
-						issue.labels.find((l) => l === si.id) !== undefined,
-				) !== undefined ||
-				this.searchItems.find((si) => si.type === "text" && si.id === issue.id) !== undefined
-				// this.searchItems.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
-			);
-		});
-	}
-
-	openLemma(l: WithId<IssueLemma>) {
-		this.selectedLemma = l;
+function onEndDrag(e: any) {
+	if (e.to instanceof HTMLElement && e.item instanceof HTMLElement) {
+		const issueLemmaId = Number(e.item.dataset.issueLemmaId);
+		const statusId = Number(e.to.dataset.statusId);
+		store.issue.updateLemma(issueLemmaId, { status: statusId });
 	}
 }
+
+function updateLemmaStatus(statusId: LemmaStatus["id"], lemma: WithId<IssueLemma>) {
+	const index = issueLemmas.value.findIndex((i) => i.id === lemma.id);
+
+	if (index > -1) {
+		animateLemmas.value = true;
+		issueLemmas.value[index]!.status = statusId;
+		updateLemmaById(lemma.id, { status: statusId });
+		setTimeout(() => {
+			animateLemmas.value = false;
+		}, 300);
+	}
+}
+
+//
+
+async function deleteIssueLemma(id: number) {
+	if (
+		await confirm.confirm("Wollen Sie dieses Lemma aus der Abgabe entfernen?", {
+			icon: "mdi-delete-outline",
+		})
+	) {
+		store.issue.deleteIssueLemma(id);
+	}
+}
+
+//
+
+function onUpdateColumn(status: LemmaStatus, lemmas: Array<WithId<IssueLemma>>) {
+	const lemmaIds = lemmas.map((l) => l.id);
+	const withoutColumn = issueLemmas.value.filter((l) => !lemmaIds.includes(l.id));
+	const updatedColumn: Array<WithId<IssueLemma>> = [];
+	lemmas.forEach((lemma, i) => {
+		const order =
+			(lemma.order || 0) <= (updatedColumn[i - 1]?.order || 0)
+				? (updatedColumn[i - 1]!.order || 0) + 1
+				: lemma.order;
+		updatedColumn.push({
+			...lemma,
+			order,
+			status: status.id,
+		});
+	});
+	issueLemmas.value = [...withoutColumn, ...updatedColumn];
+}
+
+const columns = computed(() => {
+	return store.issue.statuses.map((s) => {
+		return {
+			...s,
+			items: chain(filteredIssues.value)
+				.filter((i) => i.status === s.id)
+				.orderBy("order")
+				.value(),
+		};
+	});
+});
+
+//
+
+const viewAs = computed({
+	get() {
+		return store.settings.issueLayout;
+	},
+	set(layout) {
+		store.settings = { ...store.settings, issueLayout: layout };
+	},
+});
+
+function toggleDrawer() {
+	store.settings = {
+		...store.settings,
+		showNavDrawer: !store.settings.showNavDrawer,
+	};
+}
+
+const viewOptions = {
+	showAuthor: true,
+	showEditor: true,
+	showDescription: true,
+	showLabels: Infinity,
+};
+
+onMounted(() => {
+	// FIXME: what happens when id is null?
+	store.issue.loadIssue(props.id);
+});
 </script>
 
 <template>
 	<div class="fill-height background darken-1">
-		<v-app-bar app color="background darken-1" class="elevation-0 pt-3 pr-3">
+		<VAppBar app color="background darken-1" class="elevation-0 pt-3 pr-3">
 			<v-btn
 				v-if="!store.settings.showNavDrawer"
 				style="margin-top: -7px"
@@ -460,19 +465,26 @@ export default class IssueManager extends Vue {
 					</v-list-item>
 				</v-list>
 			</v-menu>
-			<v-btn v-if="!showSideBar" tile class="rounded-lg" icon @click="showSideBar = !showSideBar">
+			<v-btn
+				v-if="!isSideBarVisible"
+				tile
+				class="rounded-lg"
+				icon
+				@click="isSideBarVisible = !isSideBarVisible"
+			>
 				<v-icon>mdi-dock-right</v-icon>
 			</v-btn>
-		</v-app-bar>
-		<resizable-drawer
+		</VAppBar>
+
+		<ResizableDrawer
 			:card="true"
 			:right="true"
 			color="background"
 			:min-width="300"
 			:width="store.settings.drawerRightWidth"
-			:value="showSideBar"
+			:value="isSideBarVisible"
 			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
-			@close="showSideBar = false"
+			@close="isSideBarVisible = false"
 		>
 			<v-btn
 				style="position: absolute; top: 5px; right: 0; z-index: 1"
@@ -481,18 +493,18 @@ export default class IssueManager extends Vue {
 				tile
 				class="rounded-lg mr-2"
 				icon
-				@click="showSideBar = false"
+				@click="isSideBarVisible = false"
 			>
 				<v-icon>mdi-dock-right</v-icon>
 			</v-btn>
-			<issue-lemma-detail
+			<issue-detail
 				v-if="selectedLemma !== null"
 				:lemma="selectedLemma"
 				:value="selectedLemma !== null"
 				@update="updateLemmaById"
 				@update-status="updateLemmaStatus"
 				@delete-issue-lemma="deleteIssueLemma"
-				@close="showSideBar = false"
+				@close="isSideBarVisible = false"
 			>
 				<v-row dense>
 					<v-col>
@@ -514,34 +526,36 @@ export default class IssueManager extends Vue {
 						</v-btn>
 					</v-col>
 				</v-row>
-			</issue-lemma-detail>
-		</resizable-drawer>
-		<v-main class="fill-height rounded-lg">
-			<issue-lemma-board
+			</issue-detail>
+		</ResizableDrawer>
+
+		<VMain class="fill-height rounded-lg">
+			<IssuesBoard
 				v-if="store.settings.issueLayout === 'board'"
+				:animate="animateLemmas"
 				class="fill-height"
 				:columns="columns"
-				:animate="animateLemmas"
 				:selected-lemma="selectedLemma"
 				:view-options="viewOptions"
+				@dblclick.native="onToggleSideBar"
 				@end-drag="onEndDrag"
+				@select-lemma="onSelectLemma"
 				@update-column="onUpdateColumn"
-				@select-lemma="openLemma"
-				@dblclick.native="showSideBar = !showSideBar"
 			/>
-			<issue-lemma-list
+
+			<IssuesList
 				v-if="store.settings.issueLayout === 'list'"
+				:animate="animateLemmas"
 				class="fill-height"
 				:columns="columns"
-				:animate="animateLemmas"
 				:selected-lemma="selectedLemma"
 				:view-options="viewOptions"
-				@update-column="onUpdateColumn"
-				@select-lemma="openLemma"
+				@dblclick.native="onToggleSideBar"
 				@end-drag="onEndDrag"
-				@dblclick.native="showSideBar = !showSideBar"
+				@select-lemma="onSelectLemma"
+				@update-column="onUpdateColumn"
 			/>
-		</v-main>
+		</VMain>
 	</div>
 </template>
 

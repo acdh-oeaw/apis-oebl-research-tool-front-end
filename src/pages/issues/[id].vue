@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router/composables";
 
-import IssueManager from "@/views/IssueManager/IssueManager.vue";
+import IssuesManager from "@/features/issues/issues-manager.vue";
 
 interface Params {
 	id: number | null;
@@ -18,5 +18,5 @@ const params = computed<Params>(() => {
 </script>
 
 <template>
-	<IssueManager :issue-id="params.id" />
+	<IssuesManager :id="params.id" />
 </template>

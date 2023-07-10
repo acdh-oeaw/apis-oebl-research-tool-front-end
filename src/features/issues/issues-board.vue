@@ -1,57 +1,27 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
 import Draggable from "vuedraggable";
 
 import { type IssueLemma, type LemmaStatus } from "@/api";
+import IssuesBoardCard from "@/features/issues/issues-board-card.vue";
+import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
-import IssueLemmaCard from "@/views/IssueManager/IssueLemmaCard.vue";
 
 interface Column extends LemmaStatus {
 	items: Array<IssueLemma>;
 	order: number;
 }
 
-@Component({
-	components: {
-		Draggable,
-		IssueLemmaCard,
-	},
-})
-export default class LemmaBoard extends Vue {
-	@Prop({ default: [] }) columns!: Array<Column>;
-	@Prop({ default: false }) animate!: boolean;
-	@Prop({ default: null }) selectedLemma!: IssueLemma | null;
+const props = defineProps<{
+	animate: boolean;
+	columns: Array<Column>;
+	selectedLemma: IssueLemma;
+}>();
 
-	store = store;
-	log = console.log;
-	selectedStyle = {
-		boxShadow: `inset 0px 0px 0px 3px ${this.$vuetify.theme.currentTheme.primary} !important`,
-	};
+const vuetify = useVuetify();
 
-	// onUpdate(
-	//   status: LemmaStatus,
-	//   update: {
-	//     moved?: { element: IIssueLemma, newIndex: number, oldIndex: number },
-	//     added?: { element: IIssueLemma, newIndex: number }
-	//   }
-	// ) {
-	//   if (update.moved) {
-	//     const lemma: IIssueLemma = { ...update.moved.element, order: update.moved.newIndex }
-	//     this.$emit('update-lemma', lemma, update.moved.newIndex, update.moved.oldIndex)
-	//   } else if (update.added) {
-	//     const lemma: IIssueLemma = { ...update.added.element, order: update.added.newIndex, status }
-	//     this.$emit('update-lemma', lemma, update.added.newIndex)
-	//   }
-	//   // if (update.added !== undefined && update.added.element !== undefined) {
-	//   //   this.$emit('update-lemma', status, update.added.element, update.added.newIndex)
-	//   // }
-	//   // if (update.moved && update.moved.newIndex !== undefined) {
-	//   //   update.moved.element.order = update.moved.newIndex
-	//   //   console.log('old', update.moved.element.order)
-	//   //   console.log('new', update.moved.newIndex)
-	//   // }
-	// }
-}
+const selectedStyle = {
+	boxShadow: `inset 0px 0px 0px 3px ${vuetify.theme.currentTheme.primary} !important`,
+};
 </script>
 
 <template>
@@ -106,7 +76,7 @@ export default class LemmaBoard extends Vue {
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"
 							@mousedown="$emit('select-lemma', item)"
 						>
-							<issue-lemma-card
+							<issues-board-card
 								:max-labels="store.settings.issueViewOptions.showLabels"
 								:show-editor="store.settings.issueViewOptions.showEditor"
 								:show-author="store.settings.issueViewOptions.showAuthor"
