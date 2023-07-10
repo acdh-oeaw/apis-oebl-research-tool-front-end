@@ -3,7 +3,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
-import { LemmaDatabase, unserializeLemmaRow } from "@/store/lemma";
+import { LemmaDatabase } from "@/store/lemma";
 import { type LemmaRow } from "@/types/lemma";
 import { type ZoteroView } from "@/types/zotero";
 import { lemmaRowTranslations } from "@/util/labels";
@@ -37,12 +37,12 @@ export default class LemmaPrintView extends Vue {
 	beforeCreate() {
 		db.lemmas
 			.get(Number(this.$route.params["lemmaId"]))
-			.then((serializedLemmaRow) => {
-				if (serializedLemmaRow === undefined) {
+			.then((lemmaRow) => {
+				if (lemmaRow === undefined) {
 					window.alert(`Das Lemma mit der id <${this.lemmaId}> konnte nicht gefunden werden`);
 					throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
 				}
-				this.lemma = unserializeLemmaRow(serializedLemmaRow);
+				this.lemma = lemmaRow;
 				zoteroBy
 					.load(this.lemma.zoteroKeysBy)
 					.then((z) => (this.zoteroCitationsBy = z.zoteroItems.map(convertZoteroItemToView)));

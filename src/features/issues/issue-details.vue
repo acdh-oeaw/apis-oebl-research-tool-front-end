@@ -44,9 +44,7 @@ const lemmaAuthor = "TODO:";
 const researchLemma = computed(() => props.lemma.lemma);
 
 function formatTimeDistance(date: string | undefined): string {
-	if (date == null) return "";
-
-	return getRelativeTime(date);
+	return getRelativeTime(date) || "";
 }
 
 function getUserName(id: number): string {

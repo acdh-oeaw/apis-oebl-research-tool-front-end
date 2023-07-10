@@ -1,14 +1,15 @@
 <script lang="ts">
+import { isValid } from "date-fns";
 import { debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { DateContainer } from "@/util/dates";
+import { getDaysInMonth } from "@/lib/get-days-in-month";
 import TextField from "@/views/lib/TextField.vue";
 
 const standaloneUpdateGlobalStateFunction = (instance: DateField) => {
 	if (
-		!instance.localDate.isEmpty() && // Only check for validity, if not empty: Allow to emit empty dates
-		!instance.localDate.isValid() // Do not emit unvalid dates
+		instance.localDate != null && // Only check for validity, if not empty: Allow to emit empty dates
+		!isValid(instance.localDate) // Do not emit unvalid dates
 	) {
 		return;
 	}
@@ -24,23 +25,45 @@ const debouncedUpdateGlobalDateFunction = debounce(standaloneUpdateGlobalStateFu
 })
 export default class DateField extends Vue {
 	@Prop({ default: null }) label!: string | null;
-	@Prop() date!: DateContainer;
+	@Prop() date!: string | null;
 
-	localDate: DateContainer = new DateContainer();
+	localDate: string | null = null;
+
+	day: number | null = null;
+	month: number | null = null;
+	year: number | null = null;
 
 	// if v-datepicker is visible
 	datePickerIsOpen = false;
 
 	@Watch("date", { immediate: true, deep: true })
 	updateLocalDate() {
-		if (!this.localDate.equals(this.date)) {
-			this.localDate = this.date;
+		this.localDate = this.date;
+	}
+
+	@Watch("localDate", { immediate: false })
+	watchLocalDate() {
+		debouncedUpdateGlobalDateFunction(this);
+
+		if (this.localDate != null) {
+			const _date = new Date(this.localDate);
+			this.day = _date.getUTCDate();
+			this.month = _date.getUTCMonth() + 1;
+			this.year = _date.getUTCFullYear();
 		}
 	}
 
-	@Watch("localDate", { immediate: false, deep: true })
-	watchLocalDate() {
-		debouncedUpdateGlobalDateFunction(this);
+	@Watch("day")
+	@Watch("month")
+	@Watch("year")
+	watchDay() {
+		try {
+			if (this.year != null && this.month != null && this.day != null) {
+				this.localDate = new Date(Date.UTC(this.year, this.month - 1, this.day)).toISOString();
+			}
+		} catch {
+			/** noop */
+		}
 	}
 
 	get hasErrors(): boolean {
@@ -48,31 +71,33 @@ export default class DateField extends Vue {
 	}
 
 	get errorMessages(): Array<string> {
-		if (
-			this.localDate.calendarYear === undefined ||
-			this.localDate.calendarMonth === undefined ||
-			this.localDate.calendarDate === undefined
-		) {
+		if (this.localDate == null) {
 			return [];
 		}
 
 		const errors = [];
 
+		const _date = new Date(this.localDate);
+
+		const _year = _date.getUTCFullYear();
+
 		// https://en.wikipedia.org/wiki/Year_zero differs from Javascript's implementation
 		// https://gitlab.com/acdh-oeaw/oebl/oebl-irs-devops/-/issues/41
-		if (this.localDate.calendarYear < 1) {
+		if (_year < 1) {
 			errors.push("Es können nur Jahre ab dem Jahr 1 gespeichert werden");
 		}
 
-		if (this.localDate.calendarMonth < 1 || this.localDate.calendarMonth > 12) {
+		const _month = _date.getUTCMonth();
+
+		if (_month < 0 || _month > 11) {
 			errors.push("Bitte einen Monat zwischen 1 und 12 auswählen.");
 		}
 
-		if (
-			this.localDate.calendarDate < 1 ||
-			this.localDate.calendarDate > this.localDate.getMaxDate()
-		) {
-			errors.push(`Bitte einen Tag zwischen 1 und ${this.localDate.getMaxDate()} auswählen.`);
+		const _day = _date.getUTCDate();
+		const _daysInMonth = getDaysInMonth(_year, _month + 1);
+
+		if (_day < 1 || _day > _daysInMonth) {
+			errors.push(`Bitte einen Tag zwischen 1 und ${_daysInMonth} auswählen.`);
 		}
 
 		// If found errors return them
@@ -81,7 +106,7 @@ export default class DateField extends Vue {
 		}
 
 		// Else if not valid return default error message
-		if (!this.localDate.isValid()) {
+		if (!isValid(this.localDate)) {
 			console.error({ message: "Logic in error, check object", object: this });
 			return ["Bitte ein existierendes Datum auswählen"];
 		}
@@ -91,24 +116,17 @@ export default class DateField extends Vue {
 	}
 
 	updateFromDatePicker(isoDate: string) {
-		this.localDate = DateContainer.fromISO_OnlyDate(isoDate);
+		this.localDate = isoDate;
 	}
 
 	get defaultISOValue(): string | null {
-		if (this.localDate.isEmpty()) {
-			return null;
-		}
+		return this.localDate;
+	}
 
-		if (this.localDate.isValid()) {
-			return this.localDate.generateISO_OnlyDate();
-		}
-
-		// Fallback to keep as muc information as possible
-		const year = this.localDate.calendarYear ?? 1970;
-		const month = this.localDate.calendarMonth ?? 1;
-		const date = this.localDate.calendarDate ?? 1;
-
-		return new DateContainer(year, month, date).generateISO_OnlyDate();
+	get daysInMonth() {
+		if (this.year == null) return 31;
+		if (this.month == null) return 31;
+		return getDaysInMonth(this.year, this.month);
 	}
 }
 </script>
@@ -124,9 +142,9 @@ export default class DateField extends Vue {
 		<v-spacer></v-spacer>
 		<input
 			ref="date"
-			v-model.number="localDate.calendarDate"
+			v-model.number="day"
 			min="1"
-			:max="localDate.getMaxDate()"
+			:max="daysInMonth"
 			maxlength="2"
 			class="pa-1 text--primary"
 			style="width: 40px"
@@ -134,7 +152,7 @@ export default class DateField extends Vue {
 		/>
 		<input
 			ref="month"
-			v-model.number="localDate.calendarMonth"
+			v-model.number="month"
 			maxlength="2"
 			min="1"
 			max="12"
@@ -144,7 +162,7 @@ export default class DateField extends Vue {
 		/>
 		<input
 			ref="year"
-			v-model.number="localDate.calendarYear"
+			v-model.number="year"
 			minlength="4"
 			maxlength="4"
 			class="pa-1 text--primary"
@@ -164,7 +182,7 @@ export default class DateField extends Vue {
 				@change="updateFromDatePicker"
 			></v-date-picker>
 		</v-menu>
-		<v-btn icon @click="localDate.reset()">
+		<v-btn icon @click="localDate = null">
 			<v-icon>mdi-close-circle-outline</v-icon>
 		</v-btn>
 	</v-input>

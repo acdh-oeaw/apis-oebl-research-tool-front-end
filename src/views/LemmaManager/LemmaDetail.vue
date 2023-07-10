@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { GenderAe0Enum, type List } from "@/api";
+import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
@@ -59,12 +60,12 @@ export default class LemmaDetail extends Vue {
 	genderOptions: Array<string> = Object.values(GenderAe0Enum);
 	lemmaRowTranslations = lemmaRowTranslations;
 
-	get yearOfBirth(): number | undefined {
-		return this.value.dateOfBirth.calendarYear;
+	get yearOfBirth(): number | null {
+		return getYear(this.value.dateOfBirth);
 	}
 
-	get yearOfDeath(): number | undefined {
-		return this.value.dateOfDeath.calendarYear;
+	get yearOfDeath(): number | null {
+		return getYear(this.value.dateOfDeath);
 	}
 
 	get zoteroSections(): Array<ZoteroSection> {

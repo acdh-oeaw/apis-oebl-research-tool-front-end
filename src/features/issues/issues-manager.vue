@@ -7,10 +7,10 @@ import { type IssueLemma, type LemmaStatus } from "@/api";
 import IssueDetail from "@/features/issues/issue-details.vue";
 import IssuesBoard from "@/features/issues/issues-board.vue";
 import IssuesList from "@/features/issues/issues-list.vue";
+import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type WithId } from "@/types";
-import { DateContainer } from "@/util/dates";
 import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 import SwitchButton from "@/views/lib/SwitchButton.vue";
 import ThemeToggle from "@/views/ThemeToggle.vue";
@@ -100,9 +100,9 @@ const lemmaText = computed(() => {
 			", " +
 			l.lemma.firstName +
 			" " +
-			(DateContainer.fromISO_OnlyDate(l.lemma.dateOfBirth).calendarYear || "") +
+			(getYear(l.lemma.dateOfBirth) || "") +
 			"-" +
-			(DateContainer.fromISO_OnlyDate(l.lemma.dateOfDeath).calendarYear || ""),
+			(getYear(l.lemma.dateOfDeath) || ""),
 		info: l.lemma.info,
 		issueLemmaId: l.id,
 	}));

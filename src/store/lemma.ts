@@ -20,45 +20,14 @@ import {
 	type LemmaFilterComparator,
 	type LemmaRow,
 	type SecondaryCitation,
-	type SerializedLemmaRow,
 	type ServerResearchLemma,
 } from "@/types/lemma";
-import { DateContainer } from "@/util/dates";
 import { lemmaRowTranslations } from "@/util/labels";
 
 interface LemmaFilter {
 	id: string;
 	name: string;
 	filterItems: { [key: string]: boolean | string | null };
-}
-
-function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
-	const copy: any = { ...lemmaRow };
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (lemmaRow.dateOfBirth) {
-		copy.dateOfBirth = new DateContainer(
-			lemmaRow.dateOfBirth.calendarYear,
-			lemmaRow.dateOfBirth.calendarMonth,
-			lemmaRow.dateOfBirth.calendarDate,
-		).generateISO_OnlyDate();
-	}
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (lemmaRow.dateOfDeath) {
-		copy.dateOfDeath = new DateContainer(
-			lemmaRow.dateOfDeath.calendarYear,
-			lemmaRow.dateOfDeath.calendarMonth,
-			lemmaRow.dateOfDeath.calendarDate,
-		).generateISO_OnlyDate();
-	}
-	return copy;
-}
-
-export function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
-	return {
-		...serializedLemmaRow,
-		dateOfBirth: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfBirth),
-		dateOfDeath: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfDeath),
-	};
 }
 
 export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn) {
@@ -72,7 +41,7 @@ export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn)
 const currentDbVersion = "2.0";
 
 export class LemmaDatabase extends Dexie {
-	public lemmas: Dexie.Table<SerializedLemmaRow, number>;
+	public lemmas: Dexie.Table<LemmaRow, number>;
 	public constructor() {
 		super("LemmaDb", { allowEmptyDB: true });
 		this.version(8).stores({
@@ -458,17 +427,16 @@ export default class LemmaStore {
 
 	get selectedLemmas() {
 		const localSelectedLemmasJSON = localStorage.getItem("selectedLemmas");
-		const localSelectedLemmasObjects: Array<SerializedLemmaRow> = localSelectedLemmasJSON
+		const localSelectedLemmasObjects: Array<LemmaRow> = localSelectedLemmasJSON
 			? JSON.parse(localSelectedLemmasJSON)
 			: [];
-		const unserializedSelectedLemmas = localSelectedLemmasObjects.map(unserializeLemmaRow);
-		this._selectedLemmas = unserializedSelectedLemmas;
+		this._selectedLemmas = localSelectedLemmasObjects;
 		return this._selectedLemmas;
 	}
 
 	set selectedLemmas(lemmas: Array<LemmaRow>) {
 		this._selectedLemmas = lemmas;
-		localStorage.setItem("selectedLemmas", JSON.stringify(lemmas.map(serializeLemmaRow)));
+		localStorage.setItem("selectedLemmas", JSON.stringify(lemmas));
 	}
 
 	get selectedLemmaIssueId() {
@@ -524,7 +492,7 @@ export default class LemmaStore {
 	}
 
 	private async updateLemmasInIndexedDB(newLemmas: Array<LemmaRow>): Promise<void> {
-		const serializedLemmas = newLemmas.map(serializeLemmaRow);
+		const serializedLemmas = newLemmas;
 		try {
 			await this.localDb.lemmas.bulkPut(serializedLemmas);
 		} catch (error) {
@@ -533,12 +501,14 @@ export default class LemmaStore {
 	}
 
 	private async updateLemmasOnServer(newLemmas: Array<LemmaRow>) {
-		const serializedLemmas = newLemmas.map(serializeLemmaRow);
+		const serializedLemmas = newLemmas;
 		await Promise.all(
 			serializedLemmas.map(async (lemma) => {
 				await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, {
 					...lemma,
-					firstName: lemma.firstName === null ? undefined : lemma.firstName,
+					firstName: lemma.firstName == null ? undefined : lemma.firstName,
+					dateOfBirth: lemma.dateOfBirth == null ? undefined : lemma.dateOfBirth,
+					dateOfDeath: lemma.dateOfDeath == null ? undefined : lemma.dateOfDeath,
 				});
 			}),
 		);
@@ -626,8 +596,8 @@ export default class LemmaStore {
 			lemmas: [
 				{
 					...lemmaRow,
-					dateOfBirth: lemmaRow.dateOfBirth.generateISO_OnlyDate(),
-					dateOfDeath: lemmaRow.dateOfDeath.generateISO_OnlyDate(),
+					dateOfBirth: lemmaRow.dateOfBirth,
+					dateOfDeath: lemmaRow.dateOfDeath,
 					firstName: lemmaRow.firstName || undefined,
 					lastName: lemmaRow.lastName || undefined,
 					selected: false,
@@ -694,14 +664,14 @@ export default class LemmaStore {
 	}
 
 	async getLocalLemmaCache(): Promise<Array<LemmaRow>> {
-		let lemmas: Array<SerializedLemmaRow> = [];
+		let lemmas: Array<LemmaRow> = [];
 		try {
 			lemmas = await this.localDb.lemmas.toArray();
 		} catch (error) {
 			console.error({ catchedError: error });
 			lemmas = [];
 		}
-		return lemmas.map(unserializeLemmaRow);
+		return lemmas;
 	}
 
 	private async deleteLemmasLocally(ids: Array<number>) {
@@ -756,8 +726,8 @@ export default class LemmaStore {
 			lastName: rs.lastName,
 			alternativeNames: rs.alternativeNames as Array<FullName>,
 			gender: rs.gender as GenderAe0Enum,
-			dateOfBirth: DateContainer.fromISO_OnlyDate(rs.dateOfBirth),
-			dateOfDeath: DateContainer.fromISO_OnlyDate(rs.dateOfDeath),
+			dateOfBirth: rs.dateOfBirth ?? null,
+			dateOfDeath: rs.dateOfDeath ?? null,
 			updated: rs.last_updated,
 			gnd: rs.gnd !== undefined ? rs.gnd.filter((g) => g !== "None") : [],
 			columns_user: rs.columns_user,

@@ -121,6 +121,7 @@ const selectedStyle = {
 }
 
 .issue-lemma-card {
+	/* FIXME: this looks like crap */
 	box-shadow: 0 2px 4px hsl(0deg 0% 0%) !important;
 	cursor: default;
 }

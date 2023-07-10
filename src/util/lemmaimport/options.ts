@@ -1,6 +1,5 @@
 import { type GenderAe0Enum } from "@/api";
 import { type NewLemmaRow } from "@/types/lemma";
-import { type SupportedDateFormatType } from "@/util/dates";
 
 type FileOptions = {
 	fileType: "text/csv";
@@ -82,10 +81,13 @@ export type GenderMappingOption = Record<
 	Array<string>
 >;
 
+export const supportedDateFormats = ["DD.MM.YYYY", "YYYY-MM-DD"] as const;
+export type SupportedDateFormats = (typeof supportedDateFormats)[number];
+
 export type LemmaFormatterOptions = {
 	// Values, that should be converted into null
 	nullValues: Array<string>;
-	dateFormat: SupportedDateFormatType;
+	dateFormat: SupportedDateFormats;
 	genderMapping: GenderMappingOption;
 };
 

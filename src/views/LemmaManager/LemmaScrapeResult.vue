@@ -1,8 +1,4 @@
 <script lang="ts">
-// eslint-disable-next-line import/no-duplicates
-import { format } from "date-fns";
-// eslint-disable-next-line import/no-duplicates
-import { de } from "date-fns/locale";
 import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -33,8 +29,9 @@ export default class LemmaScrapeResult extends Vue {
 
 	formatValue(key: number | string, value: any) {
 		const maybeDate = maybeParseDate(value);
-		if (maybeDate !== null) {
-			return format(maybeDate, "do MMM. yyyy", { locale: de });
+		if (maybeDate != null) {
+			const formatter = Intl.DateTimeFormat("de", { dateStyle: "long" });
+			return formatter.format(new Date(maybeDate));
 		} else {
 			return value;
 		}
@@ -100,12 +97,17 @@ export default class LemmaScrapeResult extends Vue {
 			v-for="(scrapeDataValue, key) in arrayable(value)"
 			:key="key"
 			sub-group
-			:class="[scrapeDataValue.length === 0 && 'list-disabled']"
+			:class="[
+				// @ts-expect-error
+				scrapeDataValue.length === 0 && 'list-disabled',
+			]"
 			:value="defaultExpand"
 		>
 			<template #activator>
 				<v-list-item-title>{{ formatKey(key) }}</v-list-item-title>
-				<v-list-item-action-text>{{ scrapeDataValue.length }}</v-list-item-action-text>
+				<v-list-item-action-text>
+					{{ Array.isArray(scrapeDataValue) ? scrapeDataValue.length : 0 }}
+				</v-list-item-action-text>
 			</template>
 			<v-list-item
 				v-for="(subValue, key) in scrapeDataValue"
@@ -120,6 +122,7 @@ export default class LemmaScrapeResult extends Vue {
 				<v-list-item-action-text
 					:class="[
 						'list-item-value',
+						// @ts-expect-error
 						typeof subValue === 'string' && subValue.length > 300 && 'longform-text',
 					]"
 				>

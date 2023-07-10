@@ -1,11 +1,8 @@
 <script lang="ts">
 import { type Editor } from "@tiptap/vue-2";
-// eslint-disable-next-line import/no-duplicates
-import { formatDistanceToNow } from "date-fns";
-// eslint-disable-next-line import/no-duplicates
-import { de } from "date-fns/locale";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { getRelativeTime } from "@/lib/get-relative-time";
 import { emoji } from "@/service/emoji";
 import store from "@/store";
 import { type CommentThreadAttributes } from "@/views/ArticleManager/extensionComment";
@@ -145,7 +142,7 @@ export default class CommentThread extends Vue {
 
 	formatTimeDistance(d: string | undefined): string {
 		if (d !== undefined) {
-			return `${formatDistanceToNow(new Date(d), { locale: de, addSuffix: true })}`;
+			return `${getRelativeTime(d)}`;
 		} else {
 			return "";
 		}

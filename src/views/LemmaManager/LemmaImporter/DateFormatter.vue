@@ -1,12 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { factoryMethods, supportedDateFormats, type SupportedDateFormatType } from "@/util/dates";
 import { lemmaRowTranslations } from "@/util/labels";
 import {
 	type LemmaDates,
 	type LemmaPrototypeRequiredFieldsType,
 } from "@/util/lemmaimport/datacontainers";
+import {
+	type SupportedDateFormats as SupportedDateFormatType,
+	supportedDateFormats,
+} from "@/util/lemmaimport/options";
 
 type DateComparisionView = {
 	firstName: string;
@@ -22,7 +25,7 @@ export default class DateFormatter extends Vue {
 	@Prop({ default: Array }) lemmaPrototypes!: Array<LemmaPrototypeRequiredFieldsType>;
 	@Prop({ required: true }) preloadedDateFormatOption!: SupportedDateFormatType;
 
-	supportedDateFormats: Array<SupportedDateFormatType> = supportedDateFormats;
+	supportedDateFormats: Array<SupportedDateFormatType> = supportedDateFormats as any;
 	localDateFormat: SupportedDateFormatType = supportedDateFormats[0]!;
 
 	@Watch("preloadedDateFormatOption", { immediate: true, deep: true })
@@ -31,11 +34,10 @@ export default class DateFormatter extends Vue {
 	}
 
 	get dates(): Array<LemmaDates> {
-		const factoryMethod = factoryMethods[this.localDateFormat];
 		return this.lemmaPrototypes.map((lemmaPrototype) => {
 			return {
-				dateOfBirth: factoryMethod(lemmaPrototype.dateOfBirth),
-				dateOfDeath: factoryMethod(lemmaPrototype.dateOfDeath),
+				dateOfBirth: this.format(lemmaPrototype.dateOfBirth),
+				dateOfDeath: this.format(lemmaPrototype.dateOfDeath),
 			};
 		});
 	}
@@ -45,6 +47,25 @@ export default class DateFormatter extends Vue {
 	submit() {
 		this.$emit("options", this.localDateFormat);
 		this.$emit("data", this.dates);
+	}
+
+	format(date: string | null) {
+		if (date == null) return null;
+
+		const formatter = Intl.DateTimeFormat(
+			this.localDateFormat === "DD.MM.YYYY" ? "de-AT" : "en-GB",
+			{ dateStyle: "short" },
+		);
+
+		try {
+			return formatter.format(new Date(date));
+		} catch {
+			return null;
+		}
+	}
+
+	formatDate(date: string | null) {
+		return this.format(date) || "Datum unerkannt";
 	}
 
 	get dateViews(): Array<DateComparisionView> {
@@ -61,13 +82,9 @@ export default class DateFormatter extends Vue {
 				firstName: lemmaPrototype.firstName ?? "",
 				lastName: lemmaPrototype.lastName,
 				dateOfBirthString: lemmaPrototype.dateOfBirth ?? "",
-				dateOfBirthParsed: dateRow.dateOfBirth.isValid()
-					? dateRow.dateOfBirth.toString()
-					: "Datum unerkannt",
+				dateOfBirthParsed: this.formatDate(dateRow.dateOfBirth),
 				dateOfDeathString: lemmaPrototype.dateOfDeath ?? "",
-				dateOfDeathParsed: dateRow.dateOfDeath.isValid()
-					? dateRow.dateOfDeath.toString()
-					: "Datum unerkannt",
+				dateOfDeathParsed: this.formatDate(dateRow.dateOfDeath),
 			});
 		}
 

@@ -5,7 +5,6 @@ import Draggable from "vuedraggable";
 
 import { getValueFromLemmaRowByColumn } from "@/store/lemma";
 import { type LemmaColumn, type LemmaRow } from "@/types/lemma";
-import { DateContainer } from "@/util/dates";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
 
@@ -101,10 +100,6 @@ export default class VirtualTable extends Vue {
 		}
 		if (typeof value === "string") {
 			return value;
-		}
-
-		if (value instanceof DateContainer) {
-			return value.toString();
 		}
 
 		if (column.value === "gnd") {

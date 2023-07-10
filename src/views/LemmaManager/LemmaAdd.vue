@@ -2,10 +2,10 @@
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { getYear } from "@/lib/get-year";
 import { findPerson } from "@/service/lobid";
 import store from "@/store";
 import { type LemmaRow } from "@/types/lemma";
-import { DateContainer } from "@/util/dates";
 import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import TextField from "@/views/lib/TextField.vue";
@@ -46,8 +46,8 @@ export default class LemmaAdd extends Vue {
 		zoteroKeysAbout: [],
 		professionDetail: "",
 		professionGroup: {},
-		dateOfBirth: new DateContainer(),
-		dateOfDeath: new DateContainer(),
+		dateOfBirth: null,
+		dateOfDeath: null,
 		bioNote: null,
 		kinship: null,
 		religion: null,
@@ -97,18 +97,15 @@ export default class LemmaAdd extends Vue {
 	}
 
 	async onChangePerson() {
+		const dateOfBirth = getYear(this.person.dateOfBirth);
+		const dateOfDeath = getYear(this.person.dateOfDeath);
+
 		this.possibleGnds = (
 			await findPerson({
 				firstName: this.person.firstName,
 				lastName: this.person.lastName,
-				dateOfBirth:
-					this.person.dateOfBirth.calendarYear === undefined
-						? null
-						: String(this.person.dateOfBirth.calendarYear),
-				dateOfDeath:
-					this.person.dateOfDeath.calendarYear === undefined
-						? null
-						: String(this.person.dateOfDeath.calendarYear),
+				dateOfBirth: dateOfBirth ? String(dateOfBirth) : null,
+				dateOfDeath: dateOfDeath ? String(dateOfDeath) : null,
 				gnd: this.person.gnd,
 			})
 		).map((p) => (p as any).gndIdentifier);

@@ -2,7 +2,6 @@ import { type Person as LdPerson } from "schema-dts";
 
 import { type GenderAe0Enum } from "@/api/models/GenderAe0Enum";
 import { type ListEntry } from "@/api/models/ListEntry";
-import { type DateContainer } from "@/util/dates";
 
 export interface UserColumn {
 	[key: string]: Array<string> | number | string;
@@ -51,8 +50,8 @@ export interface NewLemmaRow {
 	firstName?: string | null;
 	lastName: string;
 	alternativeNames: Array<FullName>;
-	dateOfBirth: DateContainer;
-	dateOfDeath: DateContainer;
+	dateOfBirth: string | null;
+	dateOfDeath: string | null;
 	gender?: GenderAe0Enum;
 	gnd: Array<string>;
 	loc: number | null;
@@ -79,14 +78,6 @@ export interface LemmaRow extends NewLemmaRow {
 	wiki_edits: number | null;
 	updated?: string | null;
 }
-
-/**
- * A serialized instance of LemmaRow for IndexedDb and LocalStorage
- */
-export type SerializedLemmaRow = LemmaRow & {
-	dateOfBirth?: string; // ISO
-	dateOfDeath?: string; // ISO
-};
 
 export interface LemmaColumn {
 	name: string;
