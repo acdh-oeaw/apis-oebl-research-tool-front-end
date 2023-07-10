@@ -112,6 +112,7 @@
 		"tsup": "^7.1.0",
 		"tsx": "^3.12.7",
 		"typescript": "~5.1.6",
+		"undici": "^5.22.1",
 		"vue-cli-plugin-vuetify": "~2.5.8",
 		"vue-tsc": "^1.8.4",
 		"vuetify-loader": "^1.9.2",
