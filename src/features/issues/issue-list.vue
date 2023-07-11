@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Draggable from "vuedraggable";
 
-import IssuesListRow from "@/features/issues/issues-list-row.vue";
+import IssueListRow from "@/features/issues/issue-list-row.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 import { type IssueLemma, type LemmaStatus } from "@/types/issue";
@@ -62,7 +62,7 @@ function onDragStart() {
 					@start="onDragStart"
 				>
 					<!-- <transition-group type="transition" :name="animate ? 'flip-list' : null"> -->
-					<issues-list-row
+					<issue-list-row
 						v-for="(item, itemIndex) in column.items"
 						:key="item.id"
 						v-ripple="false"

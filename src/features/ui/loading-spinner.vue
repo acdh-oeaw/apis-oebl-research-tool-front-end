@@ -1,45 +1,48 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-@Component
-export default class LoadingSpinner extends Vue {
-	@Prop({ default: "#333" }) color!: string;
-	@Prop({ default: 30 }) size!: number;
+const props = withDefaults(
+	defineProps<{
+		color?: string;
+		size?: number;
+	}>(),
+	{ color: "#333", size: 30 },
+);
 
-	get cssProps() {
-		return {
-			"--loading-spinner-color": this.color,
-			"--loading-spinner-left": this.size / 2 - 1 + "px",
-			"--loading-spinner-top": this.size / 6 + "px",
-			"--loading-spinner-height": this.size / 5 + "px",
-			"--loading-spinner-width": this.size / 15 + "px",
-		};
-	}
-}
+const style = computed(() => {
+	return {
+		"--loading-spinner-color": props.color,
+		"--loading-spinner-size": props.size + "px",
+		"--loading-spinner-left": props.size / 2 - 1 + "px",
+		"--loading-spinner-top": props.size / 6 + "px",
+		"--loading-spinner-height": props.size / 5 + "px",
+		"--loading-spinner-width": props.size / 15 + "px",
+	};
+});
 </script>
 
 <template>
-	<div
-		:style="{ paddingTop: size / 2 + 'px', width: size + 'px', height: size + 'px', ...cssProps }"
-		class="lds-spinner"
-	>
+	<div class="loading-spinner" :style="style">
 		<div v-for="i in 12" :key="i"></div>
 	</div>
 </template>
 
 <style scoped>
-.lds-spinner {
+.loading-spinner {
 	position: relative;
 	display: inline-block;
-	color: black;
+	width: var(--loading-spinner-size);
+	height: var(--loading-spinner-size);
+	padding-top: calc(var(--loading-spinner-size) / 2);
+	color: hsl(0deg 0% 0%);
 }
 
-.lds-spinner div {
+.loading-spinner div {
 	transform-origin: 50% 50%;
-	animation: lds-spinner 1.2s linear infinite;
+	animation: loading-spinner 1.2s linear infinite;
 }
 
-.lds-spinner div::after {
+.loading-spinner div::after {
 	content: " ";
 	position: absolute;
 	top: var(--loading-spinner-top);
@@ -51,67 +54,67 @@ export default class LoadingSpinner extends Vue {
 	background: var(--loading-spinner-color);
 }
 
-.lds-spinner div:nth-child(1) {
+.loading-spinner div:nth-child(1) {
 	transform: rotate(0deg);
 	animation-delay: -1.1s;
 }
 
-.lds-spinner div:nth-child(2) {
+.loading-spinner div:nth-child(2) {
 	transform: rotate(30deg);
 	animation-delay: -1s;
 }
 
-.lds-spinner div:nth-child(3) {
+.loading-spinner div:nth-child(3) {
 	transform: rotate(60deg);
 	animation-delay: -0.9s;
 }
 
-.lds-spinner div:nth-child(4) {
+.loading-spinner div:nth-child(4) {
 	transform: rotate(90deg);
 	animation-delay: -0.8s;
 }
 
-.lds-spinner div:nth-child(5) {
+.loading-spinner div:nth-child(5) {
 	transform: rotate(120deg);
 	animation-delay: -0.7s;
 }
 
-.lds-spinner div:nth-child(6) {
+.loading-spinner div:nth-child(6) {
 	transform: rotate(150deg);
 	animation-delay: -0.6s;
 }
 
-.lds-spinner div:nth-child(7) {
+.loading-spinner div:nth-child(7) {
 	transform: rotate(180deg);
 	animation-delay: -0.5s;
 }
 
-.lds-spinner div:nth-child(8) {
+.loading-spinner div:nth-child(8) {
 	transform: rotate(210deg);
 	animation-delay: -0.4s;
 }
 
-.lds-spinner div:nth-child(9) {
+.loading-spinner div:nth-child(9) {
 	transform: rotate(240deg);
 	animation-delay: -0.3s;
 }
 
-.lds-spinner div:nth-child(10) {
+.loading-spinner div:nth-child(10) {
 	transform: rotate(270deg);
 	animation-delay: -0.2s;
 }
 
-.lds-spinner div:nth-child(11) {
+.loading-spinner div:nth-child(11) {
 	transform: rotate(300deg);
 	animation-delay: -0.1s;
 }
 
-.lds-spinner div:nth-child(12) {
+.loading-spinner div:nth-child(12) {
 	transform: rotate(330deg);
 	animation-delay: 0s;
 }
 
-@keyframes lds-spinner {
+@keyframes loading-spinner {
 	0% {
 		opacity: 100%;
 	}

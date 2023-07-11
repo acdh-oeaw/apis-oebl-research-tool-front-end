@@ -4,9 +4,9 @@ import { chain } from "lodash";
 import { computed, onMounted, ref, watch } from "vue";
 
 import { type IssueLemma, type LemmaStatus } from "@/api";
+import IssueBoard from "@/features/issues/issue-board.vue";
 import IssueDetail from "@/features/issues/issue-details.vue";
-import IssuesBoard from "@/features/issues/issues-board.vue";
-import IssuesList from "@/features/issues/issues-list.vue";
+import IssueList from "@/features/issues/issue-list.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
@@ -530,7 +530,7 @@ onMounted(() => {
 		</ResizableDrawer>
 
 		<VMain class="fill-height rounded-lg">
-			<IssuesBoard
+			<IssueBoard
 				v-if="store.settings.issueLayout === 'board'"
 				:animate="animateLemmas"
 				class="fill-height"
@@ -543,7 +543,7 @@ onMounted(() => {
 				@update-column="onUpdateColumn"
 			/>
 
-			<IssuesList
+			<IssueList
 				v-if="store.settings.issueLayout === 'list'"
 				:animate="animateLemmas"
 				class="fill-height"

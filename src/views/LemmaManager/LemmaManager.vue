@@ -614,11 +614,10 @@ export default class LemmaManager extends Vue {
 		</v-app-bar>
 		<resizable-drawer
 			color="background darken-1"
-			:card="false"
-			:right="true"
 			:min-width="300"
-			:width="store.settings.drawerRightWidth"
+			:right="true"
 			:value="store.lemma.showSideBar"
+			:width="store.settings.drawerRightWidth"
 			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
 		>
 			<div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">

@@ -2,7 +2,7 @@
 import Draggable from "vuedraggable";
 
 import { type IssueLemma, type LemmaStatus } from "@/api";
-import IssuesBoardCard from "@/features/issues/issues-board-card.vue";
+import IssueBoardCard from "@/features/issues/issue-board-card.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 
@@ -78,7 +78,7 @@ const selectedStyle = {
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"
 							@mousedown="emit('select-lemma', item)"
 						>
-							<issues-board-card
+							<issue-board-card
 								:max-labels="store.settings.issueViewOptions.showLabels"
 								:show-editor="store.settings.issueViewOptions.showEditor"
 								:show-author="store.settings.issueViewOptions.showAuthor"

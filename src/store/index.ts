@@ -75,22 +75,22 @@ class Store {
 		}
 	}
 
-	async logIn(user: string, pwd: string): Promise<boolean> {
+	async logIn(username: string, password: string): Promise<boolean> {
 		try {
 			const url = createUrl({ baseUrl: OpenAPI.BASE, pathname: "/auth/token/login" });
 
 			const data = (await request(url, {
 				method: "post",
-				body: { username: user, password: pwd },
+				body: { username, password },
 				responseType: "json",
 			})) as { auth_token: string };
-
-			await this.runCallbacks(this.loginCallbacks);
-			this.loginCallbacks = [];
 
 			OpenAPI.TOKEN = data.auth_token;
 			localStorage.setItem("token", data.auth_token);
 			this.isLoggedIn = true;
+
+			await this.runCallbacks(this.loginCallbacks);
+			this.loginCallbacks = [];
 
 			return true;
 		} catch (e) {

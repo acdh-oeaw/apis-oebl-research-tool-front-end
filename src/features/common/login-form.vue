@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { isNonEmptyString } from "@acdh-oeaw/lib";
 import { ref } from "vue";
 
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
@@ -6,8 +7,9 @@ import store from "@/store";
 
 const user = ref("");
 const password = ref("");
-const errorMessage = ref("");
+
 const isLoading = ref(false);
+const errorMessage = ref("");
 const isPasswordVisible = ref(false);
 const passwordInputElement = ref<HTMLInputElement | null>(null);
 
@@ -22,55 +24,59 @@ async function onSubmit() {
 
 	if (!success) {
 		errorMessage.value = "Falsches Passwort oder falscher Nutzername.";
-
-		if (passwordInputElement.value != null) {
-			passwordInputElement.value.select();
-		}
+		// @ts-expect-error FIXME: figure out what vuetify does with the ref
+		passwordInputElement.value?.$el.querySelector("input")?.select();
 	}
 }
+
+const validation = [
+	function required(value: string): boolean | string {
+		if (isNonEmptyString(value)) return true;
+		return "Bitte füllen Sie dieses Feld aus.";
+	},
+];
 </script>
 
 <template>
 	<VCard color="transparent" class="rounded-lg relative" :elevation="0" :width="300">
-		<VOverlay v-if="isLoading" absolute>
+		<VOverlay absolute :value="isLoading">
 			<LoadingSpinner color="white" :size="40" />
 		</VOverlay>
 
 		<VCardText>
-			<VForm @submit.prevent="onSubmit">
+			<VForm class="grid gap-2" @submit.prevent="onSubmit">
 				<VTextField
 					v-model="user"
+					aria-label="User name"
 					:autocomplete="false"
 					autofocus
-					class="input-no-stroke"
+					class="pt-0"
 					dark
 					flat
 					hide-details
 					name="username"
 					placeholder="User name"
-					required
+					:rules="validation"
 				/>
-
-				<VDivider />
 
 				<VTextField
 					ref="passwordInputElement"
 					v-model="password"
 					:append-icon="isPasswordVisible ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+					aria-label="Password"
 					:autocomplete="false"
-					class="input-no-stroke mt-1 pt-0"
+					class="pt-0"
 					dark
 					flat
 					hide-details
 					name="password"
 					placeholder="Password"
-					required
-					style="box-shadow: inset 0 0 20px 20px hsl(0deg 0% 15%)"
+					:rules="validation"
 					:type="isPasswordVisible ? 'text' : 'password'"
 					@click:append="isPasswordVisible = !isPasswordVisible"
 				/>
 
-				<VBtn type="submit" block class="rounded-lg mt-3" :elevation="0">Login</VBtn>
+				<VBtn type="submit" block class="rounded-lg mt-2" :elevation="0">Login</VBtn>
 
 				<VAlert
 					class="mt-2"

@@ -1,118 +1,132 @@
-<script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed, ref, watch } from "vue";
 
-@Component
-export default class ResizableDrawer extends Vue {
-	@Prop({ default: false }) value!: boolean;
-	@Prop({ default: false }) right!: boolean;
-	@Prop({ default: false }) card!: boolean;
-	@Prop({ default: false }) mini!: boolean;
-	@Prop({ default: false }) clipped!: boolean;
-	@Prop({ default: 250 }) minWidth!: number;
-	@Prop({ default: 300 }) width!: number;
-	@Prop({ default: true }) floating!: boolean;
-	@Prop() color!: string;
+const props = withDefaults(
+	defineProps<{
+		color?: string;
+		minWidth?: number;
+		right?: boolean;
+		value?: boolean;
+		width?: number;
+	}>(),
+	{
+		minWidth: 250,
+		right: false,
+		value: false,
+		width: 300,
+	},
+);
 
-	localWidth = this.width || 300;
-	transitionValues: { [selector: string]: string } = {};
-	maxWidth = 750;
-	isDragging = false;
+const emit = defineEmits<{
+	(event: "update:width", width: number): void;
+	(event: "close"): void;
+}>();
 
-	@Watch("width")
-	onChangeWidthProp(w: number) {
-		this.localWidth = w;
+// TODO:
+
+const localWidth = ref(props.width);
+const maxWidth = 750;
+const transitionValues = ref<{ [selector: string]: string }>({});
+const isDragging = ref(false);
+
+const cssVars = computed(() => ({ "--bg-color": props.color }));
+
+watch(
+	() => props.width,
+	(width) => {
+		localWidth.value = width;
+	},
+);
+
+function expandOrShrink() {
+	if (props.width === props.minWidth) {
+		localWidth.value = maxWidth;
+	} else if (props.width === maxWidth) {
+		localWidth.value = props.minWidth;
+	} else {
+		localWidth.value = maxWidth;
 	}
 
-	cssVars() {
-		return { "--bg-color": this.color };
-	}
+	emit("update:width", localWidth.value);
+}
 
-	expandOrShrink() {
-		if (this.width === this.minWidth) {
-			this.localWidth = this.maxWidth;
-		} else if (this.width === this.maxWidth) {
-			this.localWidth = this.minWidth;
-		} else {
-			this.localWidth = this.maxWidth;
-		}
-		this.$emit("update:width", this.localWidth);
-	}
+function disableUserSelect() {
+	document.body.style.pointerEvents = "none";
+	document.body.style.userSelect = "none";
+	document.body.style.webkitUserSelect = "none";
+}
 
-	disableUserSelect() {
-		document.body.style.pointerEvents = "none";
-		document.body.style.userSelect = "none";
-		document.body.style.webkitUserSelect = "none";
-	}
+function enableUserSelect() {
+	document.body.style.pointerEvents = "initial";
+	document.body.style.userSelect = "initial";
+}
 
-	enableUserSelect() {
-		document.body.style.pointerEvents = "initial";
-		document.body.style.userSelect = "initial";
-		document.body.style.webkitUserSelect = "initial";
-	}
-
-	disableTransitions(...selectors: Array<string>) {
-		selectors.forEach((s) => {
-			document.querySelectorAll(s).forEach((e) => {
-				if (e instanceof HTMLElement) {
-					// cache ’em
-					this.transitionValues[s] = e.style.transition;
-					// unset em
-					e.style.transition = "none";
-				}
-			});
+function disableTransitions(...selectors: Array<string>) {
+	selectors.forEach((s) => {
+		document.querySelectorAll(s).forEach((e) => {
+			if (e instanceof HTMLElement) {
+				// cache 'em
+				transitionValues.value[s] = e.style.transition;
+				// unset em
+				e.style.transition = "none";
+			}
 		});
-	}
+	});
+}
 
-	enableAllTransitions() {
-		Object.entries(this.transitionValues).forEach((e) => {
-			document.querySelectorAll(e[0]).forEach((el) => {
-				if (el instanceof HTMLElement) {
-					// give them their old value
-					el.style.transition = e[1];
-				}
-			});
+function enableAllTransitions() {
+	Object.entries(transitionValues.value).forEach((e) => {
+		document.querySelectorAll(e[0]).forEach((el) => {
+			if (el instanceof HTMLElement) {
+				// give them their old value
+				el.style.transition = e[1];
+			}
 		});
+	});
+}
+
+function startDrag() {
+	disableUserSelect();
+	disableTransitions(".nav-drawer", ".v-main", ".v-toolbar");
+	isDragging.value = true;
+	document.addEventListener("mousemove", drag);
+	document.addEventListener("mouseup", endDrag);
+}
+
+function endDrag() {
+	isDragging.value = false;
+
+	enableUserSelect();
+	enableAllTransitions();
+
+	document.removeEventListener("mousemove", drag);
+	document.removeEventListener("mouseup", endDrag);
+
+	// if it's too big or too small, bounce back.
+	if (localWidth.value > maxWidth) {
+		localWidth.value = maxWidth;
+	} else if (localWidth.value < props.minWidth) {
+		localWidth.value = props.minWidth;
 	}
 
-	startDrag() {
-		this.disableUserSelect();
-		this.disableTransitions(".nav-drawer", ".v-main", ".v-toolbar");
-		this.isDragging = true;
-		document.addEventListener("mousemove", this.drag);
-		document.addEventListener("mouseup", this.endDrag);
-	}
+	emit("update:width", localWidth.value);
+}
 
-	endDrag() {
-		this.isDragging = false;
-		this.enableUserSelect();
-		this.enableAllTransitions();
-		document.removeEventListener("mousemove", this.drag);
-		document.removeEventListener("mouseup", this.endDrag);
-		console.log(this.width, this.localWidth, this.minWidth);
-		// if it’s too big or too small, bounce back.
-		if (this.localWidth > this.maxWidth) {
-			this.localWidth = this.maxWidth;
-		} else if (this.localWidth < this.minWidth) {
-			this.localWidth = this.minWidth;
-		}
-		this.$emit("update:width", this.localWidth);
-	}
+function drag(e: MouseEvent) {
+	const intendedWidth = props.right ? document.body.clientWidth - e.pageX : e.pageX;
 
-	drag(e: MouseEvent) {
-		const intendedWidth = this.right ? document.body.clientWidth - e.pageX : e.pageX;
-		if (intendedWidth < this.minWidth) {
-			this.localWidth = intendedWidth - (intendedWidth - this.minWidth) / 2;
-		} else if (intendedWidth > this.maxWidth) {
-			this.localWidth = intendedWidth - (intendedWidth - this.maxWidth) / 2;
-		} else {
-			this.localWidth = intendedWidth;
-		}
+	if (intendedWidth < props.minWidth) {
+		localWidth.value = intendedWidth - (intendedWidth - props.minWidth) / 2;
+	} else if (intendedWidth > maxWidth) {
+		localWidth.value = intendedWidth - (intendedWidth - maxWidth) / 2;
+	} else {
+		localWidth.value = intendedWidth;
 	}
+}
 
-	handleInput(v: boolean) {
-		if (v === false) {
-			this.$emit("close");
-		}
+function onChange(value: boolean) {
+	if (value === false) {
+		emit("close");
 	}
 }
 </script>
@@ -121,34 +135,17 @@ export default class ResizableDrawer extends Vue {
 	<v-navigation-drawer
 		v-bind="{ ...$props, ...$attrs }"
 		ref="drawer"
+		app
+		:class="{ 'nav-drawer': true, right }"
+		:clipped="false"
 		:color="color"
+		:floating="true"
 		:right="right"
 		stateless
-		:clipped="clipped"
-		:width="localWidth"
-		:class="{
-			'display-card': card,
-			'nav-drawer': true,
-			right: right,
-		}"
-		:floating="floating"
 		:value="value"
-		app
-		@input="handleInput"
+		:width="localWidth"
+		@input="onChange"
 	>
-		<!-- FIXME: a11y -->
-		<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
-		<div
-			v-if="!mini"
-			:class="['resize-handle-outer', isDragging && 'dragging', right && 'right']"
-			@dblclick="expandOrShrink"
-			@mousedown="startDrag"
-		>
-			<div
-				class="resize-handle"
-				:style="{ backgroundColor: $vuetify.theme.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)' }"
-			/>
-		</div>
 		<slot />
 	</v-navigation-drawer>
 </template>

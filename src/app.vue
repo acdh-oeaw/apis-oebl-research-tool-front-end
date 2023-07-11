@@ -13,13 +13,11 @@ import store from "@/store";
 
 const isLoggedIn = computed(() => store.isLoggedIn === true);
 
-// TODO: if (route.query.minimal) return false
 const isDrawerVisible = computed(() => store.settings.showNavDrawer === true);
 
 const drawerWidth = computed(() => store.settings.drawerLeftWidth);
 
 function onUpdateDrawerWidth(width: number) {
-	// TODO: can we mutate?
 	store.settings = { ...store.settings, drawerLeftWidth: width };
 }
 </script>
@@ -27,7 +25,7 @@ function onUpdateDrawerWidth(width: number) {
 <template>
 	<VApp>
 		<template v-if="!isLoggedIn">
-			<VOverlay absolute :opacity="1" :value="!isLoggedIn" :z-index="100">
+			<VOverlay :opacity="1" :value="!isLoggedIn">
 				<LoginForm />
 			</VOverlay>
 		</template>
@@ -39,15 +37,8 @@ function onUpdateDrawerWidth(width: number) {
 			<Prompt />
 
 			<ResizableDrawer
-				app
-				:card="false"
 				class="pa-0"
 				color="background darken-2"
-				:floating="true"
-				left
-				:right="false"
-				mini-variant-width="73"
-				stateless
 				:value="isDrawerVisible"
 				:width="drawerWidth"
 				@update:width="onUpdateDrawerWidth"

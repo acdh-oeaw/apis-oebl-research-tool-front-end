@@ -13,6 +13,7 @@ body .v-application .text-body-2 {
 
 body,
 .v-application {
+	background-color: var(--v-background-base) !important;
 	font-family: "Roboto Flex", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -202,6 +203,30 @@ select::after {
 }
 
 /** utilities */
+
+.grid {
+	display: grid;
+}
+
+.gap-1 {
+	gap: 4px;
+}
+
+.gap-2 {
+	gap: 8px;
+}
+
+.gap-4 {
+	gap: 16px;
+}
+
+.gap-6 {
+	gap: 24px;
+}
+
+.gap-8 {
+	gap: 32px;
+}
 
 .relative {
 	position: relative;
