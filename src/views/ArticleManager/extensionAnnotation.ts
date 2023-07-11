@@ -40,10 +40,12 @@ declare module "@tiptap/core" {
 export const Annotation = popupMark.extend({
 	name: "annotation",
 
-	defaultOptions: {
-		HTMLAttributes: {},
-		component: AnnotationComponent,
-		tagName: "mark",
+	addOptions() {
+		return {
+			HTMLAttributes: {},
+			component: AnnotationComponent,
+			tagName: "mark",
+		};
 	},
 
 	addAttributes() {

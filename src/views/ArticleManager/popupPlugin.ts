@@ -70,10 +70,13 @@ function showPopUp(
 }
 
 const ex = Mark.create({
-	defaultOptions: {
-		component: Vue,
-		tagName: "",
+	addOptions() {
+		return {
+			component: Vue,
+			tagName: "",
+		};
 	},
+
 	onCreate() {
 		const e = document.querySelector("#app") as Element;
 		t = tippy(e, {

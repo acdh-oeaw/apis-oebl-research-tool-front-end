@@ -45,10 +45,12 @@ declare module "@tiptap/core" {
 export const Comment = popupMark.extend({
 	name: "comment",
 
-	defaultOptions: {
-		HTMLAttributes: {},
-		component: CommentThread,
-		tagName: "comment",
+	addOptions() {
+		return {
+			HTMLAttributes: {},
+			component: CommentThread,
+			tagName: "comment",
+		};
 	},
 
 	addAttributes() {
