@@ -110,31 +110,36 @@ export default class IssueLemmaCard extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-h2
-  font-weight 500
-  font-size 115%
-  opacity 80%
+<style scoped>
+h2 {
+	font-weight: 500;
+	font-size: 115%;
+	opacity: 80%;
+}
 
-h5
-  overflow hidden
-  font-weight 400
-  text-overflow ellipsis
-  white-space nowrap
-  opacity 80%
+h5 {
+	overflow: hidden;
+	font-weight: 400;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	opacity: 80%;
+}
 
-.label
-  overflow hidden
-  margin-bottom 1px
-  margin-left 1px
-  color #fff !important
-  font-weight 600
-  text-overflow ellipsis
-  white-space nowrap
+.label {
+	overflow: hidden;
+	margin-bottom: 1px;
+	margin-left: 1px;
+	color: hsl(0deg 0% 100%) !important;
+	font-weight: 600;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
-.id-img
-  font-size 0.8em
+.id-img {
+	font-size: 0.8em;
+}
 
-  &.author
-    margin-left -3px
+.id-img.author {
+	margin-left: -3px;
+}
 </style>

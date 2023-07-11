@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter, { type RouteConfig } from "vue-router";
 
-import EditorLoader from "../views/ArticleManager/EditorLoader.vue";
-import IssueManager from "../views/IssueManager/IssueManager.vue";
-import LemmaManager from "../views/LemmaManager/LemmaManager.vue";
-import LemmaPrintView from "../views/LemmaManager/LemmaPrintView.vue";
+import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
+import IssueManager from "@/views/IssueManager/IssueManager.vue";
+import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
+import LemmaPrintView from "@/views/LemmaManager/LemmaPrintView.vue";
 
 Vue.use(VueRouter);
 

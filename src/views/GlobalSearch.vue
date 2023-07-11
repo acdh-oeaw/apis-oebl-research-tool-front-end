@@ -101,8 +101,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
 import { type SearchItem } from "@/store/search";
 import { type LemmaRow } from "@/types/lemma";
-
-import LemmaDetail from "./LemmaManager/LemmaDetail.vue";
+import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
 
 @Component({
 	components: {
@@ -267,14 +266,16 @@ export default class GlobalSearch extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.global-search
-  width 100%
-  outline 0
-  font-size 1.7em
+<style>
+.theme--dark .global-search {
+	color: hsl(0deg 0% 100%);
+}
 </style>
 
-<style lang="stylus">
-.theme--dark .global-search
-  color #fff
+<style scoped>
+.global-search {
+	width: 100%;
+	outline: 0;
+	font-size: 1.7em;
+}
 </style>

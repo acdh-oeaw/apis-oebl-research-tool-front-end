@@ -47,8 +47,7 @@ import {
 	replaceNullStrings,
 	showMissingRequiredFields,
 } from "@/util/lemmaimport/dataconversion";
-
-import LemmaPreviewer from "./LemmaPreviewer.vue";
+import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 
 @Component({
 	components: {

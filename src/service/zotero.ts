@@ -1,16 +1,23 @@
+import {
+	createHeaders,
+	createUrl,
+	createUrlSearchParams,
+	isNonNullable,
+	request,
+} from "@acdh-oeaw/lib";
 import Dexie from "dexie";
-import fetch from "node-fetch";
-// If not imported, there is some type error, with auto-imported (?) stuff
-import { Headers, type Response } from "node-fetch";
 
+import { env } from "@/config/env";
+import { type ZoteroView } from "@/types/zotero";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
+	type ZoteroItemPatchInput,
 	type ZoteroItemType,
 	type ZoteroItemTypeField,
-	type ZoteroPatchData,
-	type ZoteroView,
-} from "@/types/zotero";
+} from "@server/features/zotero/zotero.schema";
+
+const baseUrl = createUrl({ baseUrl: env.VUE_APP_EVENTBUS_HOST });
 
 class ZoteroStore {
 	constructor() {
@@ -28,44 +35,59 @@ class ZoteroStore {
 		this.itemTypeCreators = initialData.itemTypeCreators;
 	}
 
-	async getInitialData() {
-		return (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/initial-data")).json();
+	getInitialData() {
+		const url = createUrl({
+			baseUrl,
+			pathname: "/zotero/item-types",
+		});
+
+		return request(url, { responseType: "json" }) as any;
 	}
 
-	async createItem(i: ZoteroItem["data"]) {
-		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item", {
-				method: "POST",
-				body: JSON.stringify([i]),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-		).json();
+	getItems(query: string) {
+		const url = createUrl({
+			baseUrl,
+			pathname: "/zotero/items",
+			searchParams: createUrlSearchParams({ query }),
+		});
+
+		return request(url, { responseType: "json" }) as any;
 	}
 
-	async searchItem(q: string): Promise<Array<ZoteroItem>> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
+	getItem(id: string) {
+		const url = createUrl({
+			baseUrl,
+			pathname: `/zotero/items/${id}`,
+		});
+
+		return request(url, { responseType: "json" }) as any;
 	}
 
-	async getItem(key: string): Promise<ZoteroItem> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key)).json();
+	getItemTemplate(itemType: string) {
+		const url = createUrl({
+			baseUrl,
+			pathname: `/zotero/item-template/${itemType}`,
+		});
+
+		return request(url, { responseType: "json" }) as any;
 	}
 
-	async updateTitle(key: string, t: ZoteroPatchData): Promise<{ version: number }> {
-		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(t),
-			})
-		).json();
+	createItem(item: ZoteroItem["data"]) {
+		const url = createUrl({
+			baseUrl,
+			pathname: "/zotero/items",
+		});
+
+		return request(url, { method: "post", body: item, responseType: "json" }) as any;
 	}
 
-	async getItemTemplate(itemType: string): Promise<ZoteroItem["data"]> {
-		return await (await fetch(`https://api.zotero.org/items/new?itemType=${itemType}`)).json();
+	updateItemTitle(id: string, data: ZoteroItemPatchInput) {
+		const url = createUrl({
+			baseUrl,
+			pathname: `/zotero/items/${id}`,
+		});
+
+		return request(url, { method: "patch", body: data, responseType: "json" }) as any;
 	}
 }
 
@@ -74,82 +96,56 @@ const zoteroStore = new ZoteroStore();
 export default zoteroStore;
 
 /**
- * Cache Zotero Items locally with IndexedDB
- *
+ * Cache zotero items locally with indexeddb.
  */
 class ZoteroItemCache {
 	private database: any | undefined;
 
 	constructor() {
 		this.database = new Dexie("ZoteroCache", { allowEmptyDB: true });
-		this.database.version(2).stores({
-			zoteroItems: "key",
-		});
+		this.database.version(2).stores({ zoteroItems: "key" });
 	}
 
 	async select(zoteroKeys: Array<string>): Promise<Array<ZoteroItem>> {
 		const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
-		return allResults.filter(
-			(row: ZoteroItem | null | undefined) => row !== undefined && row !== null,
-		);
+		return allResults.filter(isNonNullable);
 	}
 
-	/**
-	 *
-	 * @param zoteroItems
-	 * @returns The key of the last insert
-	 */
 	async insert(zoteroItems: Array<ZoteroItem>): Promise<string> {
 		return await this.database.zoteroItems.bulkAdd(zoteroItems);
 	}
 
-	/**
-	 *
-	 * @param zoteroItems
-	 * @returns The key of the last update
-	 */
 	async update(zoteroItems: Array<ZoteroItem>): Promise<string> {
 		return await this.database.zoteroItems.bulkPut(zoteroItems);
 	}
 
-	/**
-	 *
-	 * @param zoteroKeys
-	 * @returns I have no clue
-	 */
-	async delete(_zoteroKeys: Array<string>): Promise<any> {
+	async delete(): Promise<void> {
 		return await this.database.zoteroItems.bulkDelete();
 	}
 }
 
-async function getZoteroResponse(
-	zoteroKey: string,
-	version: number | null = null,
-): Promise<Response> {
-	const requestHeaders = new Headers();
-	requestHeaders.set("Content-Type", "application/json");
-	if (version !== null) {
-		requestHeaders.set("if-Modified-Since-Version", String(version));
-	}
+// FIXME: providing a "If-Modified-Since-Version" header does not work for by-id requests
+// according to the zotero api docs (checked and indeed it does not work), so this whole
+// caching dance seems a but pointless.
+// see https://www.zotero.org/support/dev/web_api/v3/basics#caching
+// "Single-object conditional requests are not currently supported, but will be supported in the future."
+function getZoteroResponse(id: string, version: number | null = null): Promise<Response> {
+	const url = createUrl({
+		baseUrl,
+		pathname: `/zotero/items/${id}`,
+	});
 
-	const djangoResponse = await fetch(
-		`${process.env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`,
-		{ headers: requestHeaders },
-	);
-
-	if (!djangoResponse.ok) {
-		throw new Error(`Error in server ${djangoResponse.status} ${djangoResponse.statusText}`);
-	}
-
-	return djangoResponse;
+	return request(url, {
+		responseType: "raw",
+		headers: createHeaders({
+			"If-Modified-Since-Version": version,
+		}),
+	}) as Promise<Response>;
 }
 
-async function getZoteroItem(
-	zoteroKey: string,
-	version: number | null = null,
-): Promise<ZoteroItem> {
-	const djangoResponse = await getZoteroResponse(zoteroKey, version);
-	return await djangoResponse.json();
+async function getZoteroItem(id: string, version: number | null = null): Promise<ZoteroItem> {
+	const response = await getZoteroResponse(id, version);
+	return response.json();
 }
 
 interface ZoteroItemUpdate {
@@ -158,17 +154,16 @@ interface ZoteroItemUpdate {
 }
 
 async function syncZoteroItemWithZoteroAPI(zoteroItem: ZoteroItem): Promise<ZoteroItemUpdate> {
-	const djangoResponse = await getZoteroResponse(zoteroItem.key, Number(zoteroItem.data.version));
-	const zoteroStatus = parseInt(djangoResponse.headers.get("zoteroStatus")!);
-	if (zoteroStatus === 304) {
+	const response = await getZoteroResponse(zoteroItem.key, Number(zoteroItem.data.version));
+
+	const zoteroStatus = response.headers.get("zoteroStatus");
+	if (zoteroStatus === "304") {
 		return { zoteroItem: zoteroItem, changed: false };
 	}
-	return { zoteroItem: await djangoResponse.json(), changed: true };
+
+	return { zoteroItem: await response.json(), changed: true };
 }
 
-/**
- * This is to have a local cache in memory and not syncing the the same item multiple times from different components
- */
 class ZoteroSyncManager {
 	/**
 	 *  Multiton instances
@@ -308,7 +303,7 @@ export class ZoteroLemmaManagmentController {
 			this._cachedItemsToCheckForUpdate.map(
 				this._syncManager.getCachedSyncZoteroItemWithZoteroAPICallback(),
 			),
-		); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
+		);
 		// If changed, update cache
 		const changedRevisions = zoteroSyncStati.filter((status) => status.changed);
 		if (this._cache !== null) {
@@ -389,7 +384,7 @@ export function convertZoteroItemToView(zoteroItem: ZoteroItem): ZoteroView {
 	const year = zoteroItem.data.date ? zoteroItem.data.date : "o. J.";
 	return {
 		citation: `${authors}: ${title}, ${year}`,
-		url: zoteroItem.links?.alternate.href,
+		url: zoteroItem.links.alternate.href,
 		key: zoteroItem.key,
 	};
 }

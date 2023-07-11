@@ -60,8 +60,7 @@ import { debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { DateContainer } from "@/util/dates";
-
-import TextField from "./TextField.vue";
+import TextField from "@/views/lib/TextField.vue";
 
 const standaloneUpdateGlobalStateFunction = (instance: DateField) => {
 	if (
@@ -171,24 +170,26 @@ export default class DateField extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.date-field
-  font-size 0.85rem
-
-
-.label
-  opacity 70%
-
-
-input
-  text-align center
-
-
-.v-alert
-  font-size 14px
+<style>
+.modifier-menu {
+	width: 62px;
+}
 </style>
 
-<style lang="stylus">
-.modifier-menu
-  width 62px
+<style scoped>
+.date-field {
+	font-size: 0.85rem;
+}
+
+.label {
+	opacity: 70%;
+}
+
+input {
+	text-align: center;
+}
+
+.v-alert {
+	font-size: 14px;
+}
 </style>

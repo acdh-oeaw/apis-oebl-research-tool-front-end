@@ -34,15 +34,18 @@ export default class SwitchButton extends Vue {
 }
 </script>
 
-<style lang="stylus">
-.v-tabs-slider-wrapper
-  z-index -1
+<style>
+.v-tabs-slider-wrapper {
+	z-index: -1;
+}
 
-.v-tabs .v-tab:hover::before
-  border-radius 7px
+.v-tabs .v-tab:hover::before {
+	border-radius: 7px;
+}
 </style>
 
-<style lang="stylus" scoped>
-.custom-tab-slider
-  background-color rgb(0 0 0 / 15%) !important
+<style scoped>
+.custom-tab-slider {
+	background-color: hsl(0deg 0% 0%) !important;
+}
 </style>

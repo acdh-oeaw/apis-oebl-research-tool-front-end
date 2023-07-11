@@ -1,4 +1,4 @@
-import { MeService } from "../api";
+import { MeService } from "@/api";
 
 export interface UserProfile {
 	email: string;

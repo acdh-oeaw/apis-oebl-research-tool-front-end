@@ -32,9 +32,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type Author, type Editor, type LemmaLabel } from "@/api";
 import store from "@/store";
+import { type IssueLemma } from "@/types/issue";
 import UserAvatar from "@/views/lib/UserAvatar.vue";
-
-import { type IssueLemma } from "../../types/issue";
 
 @Component({
 	components: {
@@ -92,8 +91,9 @@ export default class IssueLemmaRow extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.label
-  margin-left 1px
-  color #fff !important
+<style scoped>
+.label {
+	margin-left: 1px;
+	color: hsl(0deg 0% 100%) !important;
+}
 </style>

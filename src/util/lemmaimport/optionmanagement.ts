@@ -1,4 +1,4 @@
-import { ImportOptions } from "./options";
+import { ImportOptions } from "@/util/lemmaimport/options";
 
 type ImportOptionsCollections = {
 	[name: string]: ImportOptions;

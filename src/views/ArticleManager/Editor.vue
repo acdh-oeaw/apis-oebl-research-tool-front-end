@@ -186,22 +186,28 @@ export default class Editor extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.editor-container >>> comment
-  background var(--v-comment-base)
+<style scoped>
+.editor-container :deep(comment) {
+	background: var(--v-comment-base);
+}
 
-.editor-container >>> mark[data-entitytype-type='person']
-  background var(--v-annotation_person-base)
+.editor-container :deep(mark[data-entitytype-type="person"]) {
+	background: var(--v-annotation_person-base);
+}
 
-.editor-container >>> mark[data-entitytype-type='place']
-  background var(--v-annotation_place-base)
+.editor-container :deep(mark[data-entitytype-type="place"]) {
+	background: var(--v-annotation_place-base);
+}
 
-.editor-container >>> mark[data-entitytype-type='institution']
-  background var(--v-annotation_institution-base)
+.editor-container :deep(mark[data-entitytype-type="institution"]) {
+	background: var(--v-annotation_institution-base);
+}
 
-.editor-container >>> mark[data-entitytype-type='event']
-  background var(--v-annotation_event-base)
+.editor-container :deep(mark[data-entitytype-type="event"]) {
+	background: var(--v-annotation_event-base);
+}
 
-.editor-container >>> mark[data-entitytype-type='work']
-  background var(--v-annotation_work-base)
+.editor-container :deep(mark[data-entitytype-type="work"]) {
+	background: var(--v-annotation_work-base);
+}
 </style>

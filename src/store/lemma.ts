@@ -10,6 +10,8 @@ import {
 	ResearchService,
 } from "@/api";
 import notifyService from "@/service/notify/notify";
+import store from "@/store";
+import { type UserProfile } from "@/store/user";
 import { type WithId } from "@/types";
 import {
 	type FullName,
@@ -22,10 +24,7 @@ import {
 	type ServerResearchLemma,
 } from "@/types/lemma";
 import { DateContainer } from "@/util/dates";
-
-import { lemmaRowTranslations } from "../util/labels";
-import store from ".";
-import { type UserProfile } from "./user";
+import { lemmaRowTranslations } from "@/util/labels";
 
 interface LemmaFilter {
 	id: string;

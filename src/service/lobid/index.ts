@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { type Person as LdPerson } from "schema-dts";
 
-import { type ImportablePerson } from "../../types/lemma";
+import { type ImportablePerson } from "@/types/lemma";
 
 const previewCache: { [gnd: string]: string | null } = {};
 

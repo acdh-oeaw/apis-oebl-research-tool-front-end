@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import TextField from "./TextField.vue";
+import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

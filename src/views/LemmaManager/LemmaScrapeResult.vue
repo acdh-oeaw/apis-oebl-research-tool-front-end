@@ -130,29 +130,34 @@ export default class LemmaScrapeResult extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-.list-disabled
-  opacity 50%
-  pointer-events none
-
-.list-item-label
-  overflow visible
-  margin-right 3px
-  white-space nowrap
-
-.longform-text
-  font-size 15px !important
-
-.ellipsis
-  overflow hidden
-  text-overflow ellipsis
-  white-space nowrap
+<style>
+.scrape-result .v-list-item--active {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: var(--v-background-base);
+}
 </style>
 
-<style lang="stylus">
-.scrape-result .v-list-item--active
-  position sticky
-  top 0
-  z-index 1
-  background var(--v-background-base)
+<style scoped>
+.list-disabled {
+	opacity: 50%;
+	pointer-events: none;
+}
+
+.list-item-label {
+	overflow: visible;
+	margin-right: 3px;
+	white-space: nowrap;
+}
+
+.longform-text {
+	font-size: 15px !important;
+}
+
+.ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 </style>
