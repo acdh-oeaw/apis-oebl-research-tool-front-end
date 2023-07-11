@@ -3,11 +3,11 @@ import { type Editor } from "@tiptap/vue-2";
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import * as apis_autocomplete from "@/service/apis_autocomplete";
 import { EntityTranslations } from "@/util/labels";
 import { type AnnotationAttributes } from "@/views/ArticleManager/extensionAnnotation";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 @Component({

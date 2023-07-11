@@ -1,92 +1,63 @@
-<script lang="ts">
+<script lang="ts" setup>
 import "@/styles/index.css";
 
-import { Component, Vue } from "vue-property-decorator";
+import { computed } from "vue";
 
-import { requestState } from "@/api/core/request";
-/**
- * `store` *must* be imported before `requestState` to avoid error caused by circular dependency.
- *
- * @see https://github.com/acdh-oeaw/apis-oebl-research-tool-front-end/issues/159
- */
+import Confirm from "@/features/common/confirm.vue";
+import GlobalSearch from "@/features/common/global-search.vue";
+import LoginForm from "@/features/common/login-form.vue";
+import Prompt from "@/features/common/prompt.vue";
+import SideBar from "@/features/common/side-bar.vue";
+import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import store from "@/store";
-import GlobalSearch from "@/views/GlobalSearch.vue";
-import Confirm from "@/views/lib/Confirm.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
-import Prompt from "@/views/lib/Prompt.vue";
-import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
-import LoginForm from "@/views/LoginForm.vue";
-import Sidebar from "@/views/Sidebar.vue";
 
-@Component({
-	components: {
-		ResizableDrawer,
-		GlobalSearch,
-		LoadingSpinner,
-		LoginForm,
-		Confirm,
-		Prompt,
-		Sidebar,
-	},
-})
-export default class App extends Vue {
-	store = store;
-	requestState = requestState;
+const isLoggedIn = computed(() => store.isLoggedIn === true);
 
-	onKeyDown(e: KeyboardEvent) {
-		if (e.key === "f" && (e.ctrlKey || e.metaKey)) {
-			e.preventDefault();
-			e.stopPropagation();
-			store.showSearchDialog = !store.showSearchDialog;
-		}
-	}
+// TODO: if (route.query.minimal) return false
+const isDrawerVisible = computed(() => store.settings.showNavDrawer === true);
 
-	mounted() {
-		window.addEventListener("keydown", this.onKeyDown);
-	}
+const drawerWidth = computed(() => store.settings.drawerLeftWidth);
 
-	get showDrawer(): boolean {
-		return this.$route.query["minimal"] ? false : this.store.settings.showNavDrawer;
-	}
+function onUpdateDrawerWidth(width: number) {
+	// TODO: can we mutate?
+	store.settings = { ...store.settings, drawerLeftWidth: width };
 }
 </script>
 
 <template>
-	<v-app :style="{ background: 'var(--v-background-base)' }">
-		<v-overlay
-			v-if="store.isLoggedIn === false"
-			:value="store.isLoggedIn === false"
-			opacity="1"
-			z-index="99"
-			absolute
-		>
-			<login-form />
-		</v-overlay>
+	<VApp>
+		<template v-if="!isLoggedIn">
+			<VOverlay absolute :opacity="1" :value="!isLoggedIn" :z-index="100">
+				<LoginForm />
+			</VOverlay>
+		</template>
 
-		<global-search v-model="store.showSearchDialog" />
+		<template v-else>
+			<GlobalSearch />
 
-		<confirm />
-		<prompt />
+			<Confirm />
+			<Prompt />
 
-		<resizable-drawer
-			:card="false"
-			:right="false"
-			:floating="true"
-			color="background darken-2"
-			stateless
-			app
-			:value="showDrawer"
-			left
-			mini-variant-width="73"
-			class="pa-0"
-			:width="store.settings.drawerLeftWidth"
-			@update:width="store.settings = { ...store.settings, drawerLeftWidth: $event }"
-		>
-			<sidebar v-if="showDrawer" class="px-3 pt-5" />
-		</resizable-drawer>
+			<ResizableDrawer
+				app
+				:card="false"
+				class="pa-0"
+				color="background darken-2"
+				:floating="true"
+				left
+				:right="false"
+				mini-variant-width="73"
+				stateless
+				:value="isDrawerVisible"
+				:width="drawerWidth"
+				@update:width="onUpdateDrawerWidth"
+			>
+				<SideBar v-if="isDrawerVisible" class="px-3 pt-5" />
+			</ResizableDrawer>
 
-		<keep-alive>
-			<router-view />
-		</keep-alive>
-	</v-app>
+			<KeepAlive>
+				<RouterView />
+			</KeepAlive>
+		</template>
+	</VApp>
 </template>

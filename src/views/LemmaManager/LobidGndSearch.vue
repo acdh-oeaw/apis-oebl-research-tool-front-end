@@ -2,11 +2,11 @@
 import { clone, debounce } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import { findPerson } from "@/service/lobid";
 import { type LemmaRow } from "@/types/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 @Component({

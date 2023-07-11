@@ -4,6 +4,7 @@ import { type Content as TipTapContent, Editor as TipTapEditor } from "@tiptap/v
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { type LemmaArticleVersion } from "@/api";
+import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import {
 	type ArticleStore,
 	loadArticle,
@@ -13,7 +14,6 @@ import {
 import Editor from "@/views/ArticleManager/Editor.vue";
 import { Annotation as AnnotationExtension } from "@/views/ArticleManager/extensionAnnotation";
 import { Comment as CommentExtension } from "@/views/ArticleManager/extensionComment";
-import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 
 /**
  * A container for loading and passing data to the editor and conditionaly rendering it.

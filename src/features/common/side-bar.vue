@@ -4,13 +4,13 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
+import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type WithId } from "@/types";
 import { type LemmaRow } from "@/types/lemma";
 import Badge from "@/views/lib/Badge.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 @Component({

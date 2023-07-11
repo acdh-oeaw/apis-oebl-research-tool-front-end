@@ -17,6 +17,18 @@ export default class GlobalSearch extends Vue {
 	selectedResult = 0;
 	searchText = "";
 
+	onKeyDown(e: KeyboardEvent) {
+		if (e.key === "f" && (e.ctrlKey || e.metaKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			store.showSearchDialog = !store.showSearchDialog;
+		}
+	}
+
+	mounted() {
+		window.addEventListener("keydown", this.onKeyDown);
+	}
+
 	get selectedLemma() {
 		return this.results[this.selectedResult] || null;
 	}

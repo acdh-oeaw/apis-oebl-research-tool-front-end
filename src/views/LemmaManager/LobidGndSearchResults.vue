@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import { findPerson } from "@/service/lobid";
 import { type ImportablePerson } from "@/types/lemma";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
-import LoadingSpinner from "@/views/lib/LoadingSpinner.vue";
 
 @Component({
 	components: {

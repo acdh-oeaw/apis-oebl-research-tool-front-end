@@ -3,6 +3,7 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
@@ -12,7 +13,6 @@ import LemmaAdd from "@/views/LemmaManager/LemmaAdd.vue";
 import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import DataFilter from "@/views/lib/DataFilter.vue";
-import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 import VirtualTable from "@/views/lib/VirtualTable.vue";
 import ThemeToggle from "@/views/ThemeToggle.vue";
 

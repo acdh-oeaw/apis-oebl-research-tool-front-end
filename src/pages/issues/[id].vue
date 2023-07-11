@@ -1,22 +1,23 @@
 <script lang="ts" setup>
+import { assert } from "@acdh-oeaw/lib";
 import { computed } from "vue";
 import { useRoute } from "vue-router/composables";
 
-import IssuesManager from "@/features/issues/issues-manager.vue";
+import IssueManager from "@/features/issues/issue-manager.vue";
 
 interface Params {
-	id: number | null;
+	id: number;
 }
 
 const route = useRoute();
 
 const params = computed<Params>(() => {
-	return {
-		id: Number(route.params.id) || null,
-	};
+	const id = Number(route.params.id);
+	assert(Number.isSafeInteger(id) && id > 0);
+	return { id };
 });
 </script>
 
 <template>
-	<IssuesManager :id="params.id" />
+	<IssueManager :id="params.id" />
 </template>

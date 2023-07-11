@@ -7,11 +7,11 @@ import { type IssueLemma, type LemmaStatus } from "@/api";
 import IssueDetail from "@/features/issues/issue-details.vue";
 import IssuesBoard from "@/features/issues/issues-board.vue";
 import IssuesList from "@/features/issues/issues-list.vue";
+import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type WithId } from "@/types";
-import ResizableDrawer from "@/views/lib/ResizableDrawer.vue";
 import SwitchButton from "@/views/lib/SwitchButton.vue";
 import ThemeToggle from "@/views/ThemeToggle.vue";
 
