@@ -16,11 +16,21 @@ const props = defineProps<{
 	selectedLemma: IssueLemma;
 }>();
 
+const emit = defineEmits<{
+	(event: "end-drag", e: Event): void;
+	(event: "update-column", column: Pick<Column, "id" | "name">, e: Event): void;
+	(event: "select-lemma", lemma: IssueLemma): void;
+}>();
+
 const vuetify = useVuetify();
 
 const selectedStyle = {
 	boxShadow: `inset 0px 0px 0px 3px ${vuetify.theme.currentTheme.primary} !important`,
 };
+
+function onDragStart() {
+	// FIXME: ?
+}
 </script>
 
 <template>
@@ -47,14 +57,8 @@ const selectedStyle = {
 					class="drop-target rounded-lg"
 					ghost-class="ghost"
 					group="people"
-					@input="
-						$emit(
-							'update-column',
-							{ id: column.id, name: column.name, order: column.order },
-							$event,
-						)
-					"
-					@end="$emit('end-drag', $event)"
+					@input="emit('update-column', { id: column.id, name: column.name }, $event)"
+					@end="emit('end-drag', $event)"
 					@start="onDragStart"
 				>
 					<!-- <transition-group type="transition" :name="animate ? 'flip-list' : null"> -->
@@ -68,7 +72,7 @@ const selectedStyle = {
 						:tabindex="(columnIndex + 1) * 100 + itemIndex"
 						:lemma="store.lemma.getLemmaById(item.lemma)"
 						:value="item"
-						@select-lemma="$emit('select-lemma', item)"
+						@select-lemma="emit('select-lemma', item)"
 						@dragstart="onDragStart($event, item)"
 					/>
 					<!-- </transition-group> -->

@@ -15,6 +15,10 @@ const props = defineProps<{
 	showBirthAndDeath: boolean;
 }>();
 
+const emit = defineEmits<{
+	(event: "select-lemma", value: IssueLemma): void;
+}>();
+
 const lemma = computed(() => props.value.lemma);
 
 const labelsById = computed(() => keyBy(store.issue.labels, (label) => label.id));
@@ -56,7 +60,7 @@ const author = "TODO:";
 <template>
 	<!-- FIXME: a11y -->
 	<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-	<div style="user-select: none" @click="$emit('select-lemma', value)">
+	<div style="user-select: none" @click="emit('select-lemma', value)">
 		<template v-if="value.lemma">
 			<h2 class="ma-0">{{ lemma.firstName }} {{ lemma.lastName }}</h2>
 			<h5 v-if="showBirthAndDeath" class="pa-0 ma-0">

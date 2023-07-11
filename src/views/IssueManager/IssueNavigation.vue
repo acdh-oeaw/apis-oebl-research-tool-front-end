@@ -3,6 +3,8 @@ import { Component, Vue } from "vue-property-decorator";
 
 import store from "@/store";
 
+// FIXME: where is this used?
+
 @Component
 export default class LemmaNavigation extends Vue {
 	searchQuery = "";

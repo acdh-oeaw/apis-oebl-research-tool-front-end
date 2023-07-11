@@ -121,7 +121,7 @@ export default class IssueStore {
 		return WorkflowService.workflowApiV1LemmaNoteCreate({
 			lemma: lemmaId,
 			text: text,
-			user: 4,
+			user: 4, // FIXME: who is user 4?
 		});
 	}
 

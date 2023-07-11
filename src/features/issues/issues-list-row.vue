@@ -18,6 +18,10 @@ const props = defineProps<{
 	showBirthAndDeath: boolean;
 }>();
 
+const emit = defineEmits<{
+	(event: "select-lemma", value: IssueLemma): void;
+}>();
+
 // TODO: lift this up to ancestor? these are exactly the same as in issues-board-card
 
 const lemma = computed(() => props.value.lemma);
@@ -59,7 +63,7 @@ const author = "TODO:";
 </script>
 
 <template>
-	<tr class="background lighten-2 rounded-lg" @click="$emit('select-lemma', value)">
+	<tr class="background lighten-2 rounded-lg" @click="emit('select-lemma', value)">
 		<td class="pr-0 text-no-wrap" style="width: 80px">
 			<user-avatar :value="editor" />
 			<user-avatar :value="author" style="margin-left: -5px" />

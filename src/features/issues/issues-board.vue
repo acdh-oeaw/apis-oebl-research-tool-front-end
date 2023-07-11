@@ -17,6 +17,12 @@ const props = defineProps<{
 	selectedLemma: IssueLemma;
 }>();
 
+const emit = defineEmits<{
+	(event: "end-drag", e: Event): void;
+	(event: "update-column", column: Pick<Column, "id" | "name" | "order">, e: Event): void;
+	(event: "select-lemma", lemma: IssueLemma): void;
+}>();
+
 const vuetify = useVuetify();
 
 const selectedStyle = {
@@ -50,13 +56,9 @@ const selectedStyle = {
 					class="drop-target rounded-lg"
 					ghost-class="ghost"
 					group="people"
-					@end="$emit('end-drag', $event)"
+					@end="emit('end-drag', $event)"
 					@input="
-						$emit(
-							'update-column',
-							{ id: column.id, name: column.name, order: column.order },
-							$event,
-						)
+						emit('update-column', { id: column.id, name: column.name, order: column.order }, $event)
 					"
 				>
 					<transition-group
@@ -74,7 +76,7 @@ const selectedStyle = {
 							class="issue-lemma-card rounded-lg pa-3 mb-3"
 							:data-issue-lemma-id="item.id"
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"
-							@mousedown="$emit('select-lemma', item)"
+							@mousedown="emit('select-lemma', item)"
 						>
 							<issues-board-card
 								:max-labels="store.settings.issueViewOptions.showLabels"
