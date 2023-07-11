@@ -151,3 +151,62 @@ export const zoteroItemPatchInput = zoteroItemData.partial().merge(
 );
 
 export type ZoteroItemPatchInput = z.infer<typeof zoteroItemPatchInput>;
+
+export const getZoteroItemsSearchParams = z.object({
+	direction: z.enum(["asc", "desc"]).optional(),
+	/** A comma-separated list of item ids. Up to 50 can be specified in a single request. */
+	itemKey: z.string().optional(),
+	itemType: zoteroItemType.shape.itemType.optional(),
+	/** @default 25 */
+	limit: z.number().optional(),
+	/** @default 0 */
+	offset: z.number().optional(),
+	query: z.string().optional(),
+	/** @default 'dateModified' */
+	sort: z
+		.enum([
+			"accessDate",
+			"addedBy",
+			"callNumber",
+			"creator",
+			"date",
+			"dateAdded",
+			"dateModified",
+			"itemType",
+			"journalAbbreviation",
+			"language",
+			"libraryCatalog",
+			"numItems",
+			"publicationTitle",
+			"publisher",
+			"rights",
+			"title",
+		])
+		.optional(),
+});
+
+export type GetZoteroItemsSearchParams = z.infer<typeof getZoteroItemsSearchParams>;
+
+export const getZoteroItemByIdParams = z.object({ id: z.string() });
+
+export type GetZoteroItemByIdParams = z.infer<typeof getZoteroItemByIdParams>;
+
+export const patchZoteroItemByIdParams = z.object({ id: z.string() });
+
+export type PatchZoteroItemByIdParams = z.infer<typeof patchZoteroItemByIdParams>;
+
+export const putZoteroItemByIdParams = z.object({ id: z.string() });
+
+export type PutZoteroItemByIdParams = z.infer<typeof putZoteroItemByIdParams>;
+
+export const getZoteroItemTemplateParams = z.object({ itemType: zoteroItemType.shape.itemType });
+
+export type GetZoteroItemTemplateParams = z.infer<typeof getZoteroItemTemplateParams>;
+
+export const getItemTypeFieldsParams = z.object({ itemType: zoteroItemType.shape.itemType });
+
+export type GetItemTypeFieldsParams = z.infer<typeof getItemTypeFieldsParams>;
+
+export const getItemTypeCreatorsParams = z.object({ itemType: zoteroItemType.shape.itemType });
+
+export type GetItemTypeCreatorsParams = z.infer<typeof getItemTypeCreatorsParams>;

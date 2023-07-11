@@ -1,5 +1,15 @@
 import { Router } from "express";
 
+import {
+	getZoteroItemByIdParams,
+	getZoteroItemsSearchParams,
+	getZoteroItemTemplateParams,
+	patchZoteroItemByIdParams,
+	putZoteroItemByIdParams,
+	zoteroItemPatchInput,
+	zoteroItemPostInput,
+	zoteroItemPutInput,
+} from "@server/features/zotero/zotero.schema";
 import { createService as createZoteroService } from "@server/features/zotero/zotero.service";
 import { withValidation } from "@server/middlewares/with-validation";
 
@@ -8,60 +18,86 @@ export function createRouter() {
 
 	const router = Router();
 
-	// FIXME: why is the query string a path segment?
-	router.get("/items", async (request, response, next) => {
-		try {
-			const data = await zotero.getItems({ query: request.query.query });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	// FIXME: i guess we want to secure these endpoints? at least cors?
+	// router.use(withAuthentication);
 
-	router.get("/items/:id", async (request, response, next) => {
-		try {
-			const data = await zotero.getItemById({ id: request.params.id });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	router.get(
+		"/items",
+		withValidation({ searchParams: getZoteroItemsSearchParams }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.getItems(request.query);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
 
-	router.get("/item-template/:itemType", async (request, response, next) => {
-		try {
-			const data = await zotero.getItemTemplate({ itemType: request.params.itemType });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	router.get(
+		"/items/:id",
+		withValidation({ params: getZoteroItemByIdParams }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.getItemById(request.params);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
 
-	router.post("/items", async (request, response, next) => {
-		try {
-			const data = await zotero.createItem({ data: request.body });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	router.get(
+		"/item-template/:itemType",
+		withValidation({ params: getZoteroItemTemplateParams }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.getItemTemplate(request.params);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
 
-	router.put("/items/:id", async (request, response, next) => {
-		try {
-			const data = await zotero.updateItemById({ id: request.params.id, data: request.body });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	router.post(
+		"/items",
+		withValidation({ body: zoteroItemPostInput }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.createItem(request.body);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
 
-	router.patch("/items/:id", async (request, response, next) => {
-		try {
-			const data = await zotero.patchItemById({ id: request.params.id, data: request.body });
-			return response.send(data);
-		} catch (error) {
-			return next(error);
-		}
-	});
+	router.put(
+		"/items/:id",
+		withValidation({ params: putZoteroItemByIdParams, body: zoteroItemPutInput }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.updateItemById(request.params, request.body);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
+
+	router.patch(
+		"/items/:id",
+		withValidation({ params: patchZoteroItemByIdParams, body: zoteroItemPatchInput }),
+		async (request, response, next) => {
+			try {
+				const data = await zotero.patchItemById(request.params, request.body);
+				return response.send(data);
+			} catch (error) {
+				return next(error);
+			}
+		},
+	);
 
 	router.get("/item-types", async (_request, response, next) => {
 		try {

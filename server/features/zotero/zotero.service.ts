@@ -2,6 +2,13 @@ import { createHeaders, createUrl, createUrlSearchParams, request } from "@acdh-
 
 import { env } from "@server/config/env";
 import {
+	type GetItemTypeCreatorsParams,
+	type GetItemTypeFieldsParams,
+	type GetZoteroItemByIdParams,
+	type GetZoteroItemsSearchParams,
+	type GetZoteroItemTemplateParams,
+	type PatchZoteroItemByIdParams,
+	type PutZoteroItemByIdParams,
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
 	type ZoteroItemData,
@@ -61,35 +68,7 @@ export function createService() {
 		direction,
 		limit,
 		offset,
-	}: {
-		/** A comma-separated list of item ids. Up to 50 can be specified in a single request. */
-		itemKey?: string;
-		itemType?: ZoteroItemType["itemType"];
-		query?: string;
-		/** @default 'dateModified' */
-		sort?:
-			| "accessDate"
-			| "addedBy"
-			| "callNumber"
-			| "creator"
-			| "date"
-			| "dateAdded"
-			| "dateModified"
-			| "itemType"
-			| "journalAbbreviation"
-			| "language"
-			| "libraryCatalog"
-			| "numItems"
-			| "publicationTitle"
-			| "publisher"
-			| "rights"
-			| "title";
-		direction?: "asc" | "desc";
-		/** @default 25 */
-		limit?: number;
-		/** @default 0 */
-		offset?: number;
-	}): Promise<Array<ZoteroItem>> {
+	}: GetZoteroItemsSearchParams): Promise<Array<ZoteroItem>> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: "items",
@@ -107,7 +86,7 @@ export function createService() {
 		return request(url, { headers, responseType: "json" }) as any;
 	}
 
-	function getItemById({ id }: { id: string }): Promise<ZoteroItem> {
+	function getItemById({ id }: GetZoteroItemByIdParams): Promise<ZoteroItem> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: `items/${id}`,
@@ -128,11 +107,7 @@ export function createService() {
 		return request(url, { headers, responseType: "json" }) as any;
 	}
 
-	function getItemTemplate({
-		itemType,
-	}: {
-		itemType: ZoteroItemType["itemType"];
-	}): Promise<ZoteroItemData> {
+	function getItemTemplate({ itemType }: GetZoteroItemTemplateParams): Promise<ZoteroItemData> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: "items/new",
@@ -152,13 +127,10 @@ export function createService() {
 	 * which can be sent back to the zotero server as an `If-Unmodified-Since-Version`
 	 * header (alternatively to providing a `version` field in the request body).
 	 */
-	function patchItemById({
-		id,
-		data,
-	}: {
-		id: string;
-		data: ZoteroItemPatchInput;
-	}): Promise<{ version: number }> {
+	function patchItemById(
+		{ id }: PatchZoteroItemByIdParams,
+		data: ZoteroItemPatchInput,
+	): Promise<{ version: number }> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: `items/${id}`,
@@ -181,13 +153,10 @@ export function createService() {
 	 * which can be sent back to the zotero server as an `If-Unmodified-Since-Version`
 	 * header (alternatively to providing a `version` field in the request body).
 	 */
-	function updateItemById({
-		id,
-		data,
-	}: {
-		id: string;
-		data: ZoteroItemPutInput;
-	}): Promise<{ version: number }> {
+	function updateItemById(
+		{ id }: PutZoteroItemByIdParams,
+		data: ZoteroItemPutInput,
+	): Promise<{ version: number }> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: `items/${id}`,
@@ -212,7 +181,7 @@ export function createService() {
 	 * GET /items/new?itemType=book
 	 * @see https://www.zotero.org/support/dev/web_api/v3/types_and_fields#getting_a_template_for_a_new_item
 	 */
-	function createItem({ data }: { data: ZoteroItemPostInput }): Promise<ZoteroItem> {
+	function createItem(data: ZoteroItemPostInput): Promise<ZoteroItem> {
 		const url = createUrl({
 			baseUrl: userBaseUrl,
 			pathname: "items",
@@ -241,9 +210,7 @@ export function createService() {
 
 	function getItemTypeFields({
 		itemType,
-	}: {
-		itemType: ZoteroItemType["itemType"];
-	}): Promise<Array<ZoteroItemTypeField>> {
+	}: GetItemTypeFieldsParams): Promise<Array<ZoteroItemTypeField>> {
 		const url = createUrl({
 			baseUrl,
 			pathname: "itemTypeFields",
@@ -255,9 +222,7 @@ export function createService() {
 
 	function getItemTypeCreators({
 		itemType,
-	}: {
-		itemType: ZoteroItemType["itemType"];
-	}): Promise<Array<ZoteroItemCreatorType>> {
+	}: GetItemTypeCreatorsParams): Promise<Array<ZoteroItemCreatorType>> {
 		const url = createUrl({
 			baseUrl,
 			pathname: "itemTypeCreatorTypes",
