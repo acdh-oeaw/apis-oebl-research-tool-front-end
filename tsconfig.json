@@ -12,7 +12,7 @@
 		"noEmit": true,
 		"noUncheckedIndexedAccess": true,
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": ["./src/*"]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
