@@ -24,12 +24,18 @@ export function createRouter(server: HttpServer) {
 
 	router.use(withAuthentication);
 
+	/**
+	 * This endpoint is used by the django backend to push updates to connected clients.
+	 */
 	router.post("/import-lemmas", withValidation({ body: lemmas }), (request, response) => {
 		io.sockets.emit("importLemmas", request.body);
 
 		return response.end();
 	});
 
+	/**
+	 * This endpoint is used by the django backend to push updates to connected clients.
+	 */
 	router.post(
 		"/import-issue-lemmas",
 		withValidation({ body: issueLemmas }),
