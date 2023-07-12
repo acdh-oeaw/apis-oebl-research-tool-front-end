@@ -1,6 +1,6 @@
-<script lang="ts">
-import _ from "lodash";
-import { Component, Vue, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { unique } from "@acdh-oeaw/lib";
+import { computed, ref, watch } from "vue";
 
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
@@ -13,214 +13,203 @@ import { type LemmaRow } from "@/types/lemma";
 import Badge from "@/views/lib/Badge.vue";
 import TextField from "@/views/lib/TextField.vue";
 
-@Component({
-	components: {
-		LoadingSpinner,
-		Badge,
-		TextField,
+const searchQuery = ref("");
+const showLoader = ref(false);
+const showIssues = ref(true);
+const showMyLists = ref(true);
+const showTeamLists = ref(true);
+const showQueries = ref(true);
+
+watch(
+	() => requestState.isLoading,
+	(isLoading) => {
+		setTimeout(() => {
+			if (requestState.isLoading === isLoading) {
+				showLoader.value = isLoading;
+			}
+		}, 300);
 	},
-})
-export default class Sidebar extends Vue {
-	searchQuery: string | null = null;
-	editingNameKey: string | null = null;
-	store = store;
-	log = console.log;
-	requestState = requestState;
+);
 
-	showLoader = false;
-
-	showIssues = true;
-	showMyLists = true;
-	showTeamLists = true;
-	showQueries = true;
-
-	@Watch("requestState.isLoading")
-	onChangeIsLoading(v: boolean, oldV: boolean) {
-		if (v !== oldV) {
-			setTimeout(() => {
-				// if the loading value is still the same after
-				// a set time, actually update the value.
-				if (requestState.isLoading === v) {
-					this.showLoader = v;
-				}
-			}, 300);
-		}
+const filteredStoredLemmaFilters = computed(() => {
+	if (searchQuery.value.trim() !== "") {
+		return store.lemma.storedLemmaFilters.filter((l) =>
+			l.name.toLocaleLowerCase().includes(searchQuery.value || ""),
+		);
+	} else {
+		return store.lemma.storedLemmaFilters;
 	}
+});
 
-	onDragEnter(e: DragEvent, clickAfterLingering = false) {
-		console.log("Dragenter!!");
-		if (e.currentTarget instanceof HTMLElement) {
-			const target = e.currentTarget;
-			const timer = setTimeout(() => {
-				if (clickAfterLingering) {
-					target.click();
-				}
-			}, 1000);
-			target.classList.add("drag-over");
-			const onLeaveOrDrop = () => {
-				clearTimeout(timer);
-				target.classList.remove("drag-over");
-				target.removeEventListener("dragleave", onLeaveOrDrop);
-				target.removeEventListener("drop", onLeaveOrDrop);
-			};
-			target.addEventListener("dragleave", onLeaveOrDrop);
-			target.addEventListener("drop", onLeaveOrDrop);
-		}
+const filteredLemmaLists = computed(() => {
+	if (searchQuery.value.trim() !== "") {
+		return store.lemma.lemmaLists.filter((l) =>
+			l.title.toLocaleLowerCase().includes(searchQuery.value || ""),
+		);
+	} else {
+		return store.lemma.lemmaLists;
 	}
+});
 
-	selectLemmaFilter(i: string) {
-		store.lemma.selectedLemmaFilterId = i;
-	}
+const filteredLemmaListsCurrentUser = computed(() => {
+	return filteredLemmaLists.value.filter(
+		(l) => l.editor != null && l.editor.userId === store.user.userProfile.userId,
+	);
+});
 
-	onEscSearch(e: KeyboardEvent) {
-		if (this.searchQuery !== "" && this.searchQuery !== null) {
-			this.searchQuery = null;
-		} else {
-			if (e.target instanceof HTMLInputElement) {
-				e.target.blur();
+const filteredLemmaListsOtherUsers = computed(() => {
+	return filteredLemmaLists.value.filter(
+		(l) => l.editor == null || l.editor.userId !== store.user.userProfile.userId,
+	);
+});
+
+function onDragEnter(event: DragEvent, clickAfterLingering = false) {
+	if (event.currentTarget instanceof HTMLElement) {
+		const target = event.currentTarget;
+
+		const timer = setTimeout(() => {
+			if (clickAfterLingering) {
+				target.click();
 			}
+		}, 1000);
+
+		target.classList.add("drag-over");
+
+		const onLeaveOrDrop = () => {
+			clearTimeout(timer);
+
+			target.classList.remove("drag-over");
+
+			target.removeEventListener("dragleave", onLeaveOrDrop);
+			target.removeEventListener("drop", onLeaveOrDrop);
+		};
+
+		target.addEventListener("dragleave", onLeaveOrDrop);
+		target.addEventListener("drop", onLeaveOrDrop);
+	}
+}
+
+function selectLemmaFilter(id: string) {
+	store.lemma.selectedLemmaFilterId = id;
+}
+
+function onEscapeSearch(event: KeyboardEvent) {
+	if (searchQuery.value !== "") {
+		searchQuery.value = "";
+	} else {
+		if (event.target instanceof HTMLInputElement) {
+			event.target.blur();
 		}
 	}
+}
 
-	async loadIssue(issueId: number | null) {
-		if (issueId !== null) {
-			store.lemma.selectedLemmaIssueId = issueId;
-			store.issue.loadIssue(issueId);
+function loadIssue(issueId: number | null) {
+	if (issueId != null) {
+		store.lemma.selectedLemmaIssueId = issueId;
+		store.issue.loadIssue(issueId);
+	}
+}
+
+async function loadIssueLemmas(issueId: number | null) {
+	if (issueId != null) {
+		store.lemma.selectedLemmaIssueId = issueId;
+		const lemmas = await store.issue.getIssueLemmas(issueId);
+		store.lemma.selectedIssueLemmas = lemmas;
+	}
+}
+
+async function deleteList(list: LemmaList) {
+	if (list.id != null) {
+		if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
+			store.lemma.deleteLemmaList(list.id);
 		}
 	}
+}
 
-	async loadIssueLemmas(issueId: number | null) {
-		if (issueId !== null) {
-			store.lemma.selectedLemmaIssueId = issueId;
-			const ls = await store.issue.getIssueLemmas(issueId);
-			store.lemma.selectedIssueLemmas = ls;
-		}
+async function copyLemmasToList(list: WithId<List>, event: DragEvent) {
+	const lemmas = JSON.parse(event.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
+	const listItems = store.lemma.getLemmasByList(list.id);
+	const newLemmaList = unique([...lemmas.map((l) => l.id), ...listItems]);
+	const diff = newLemmaList.length - listItems.length;
+	if (
+		diff !== 0 &&
+		(await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`))
+	) {
+		store.lemma.addLemmasToList(
+			{
+				id: list.id,
+				title: list.title,
+				editor: store.user.userProfile.userId,
+			},
+			lemmas,
+		);
 	}
+}
 
-	async deleteList(list: LemmaList) {
-		if (list.id !== undefined) {
-			if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
-				store.lemma.deleteLemmaList(list.id);
+function addLemmaToIssue(issueId: number, e: DragEvent) {
+	const lemmas =
+		e instanceof DragEvent
+			? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
+			: [];
+	store.issue.addLemmaToIssue(issueId, lemmas);
+}
+
+async function createLemmaList(event: DragEvent | MouseEvent) {
+	const lemmas =
+		event instanceof DragEvent
+			? (JSON.parse(event.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
+			: [];
+
+	const lemmaNameRules = [
+		(n: string | null) =>
+			n === null || (typeof n === "string" && n.trim() === "")
+				? "Geben Sie einen Namen ein."
+				: true,
+		(n: string | null) => {
+			if (n === null) {
+				return "Geben Sie einen Namen ein";
+			} else if (
+				filteredLemmaLists.value.findIndex(
+					(ll) => ll.title.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
+				) > -1
+			) {
+				return "Name bereits vergeben.";
+			} else {
+				return true;
 			}
-		}
-	}
+		},
+	];
 
-	async copyLemmasToList(list: WithId<List>, e: DragEvent) {
-		console.log("copy lemma to list", e);
-		console.log("data transfer!", e.dataTransfer?.getData("text/plain"));
-		const lemmas = JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
-		const listItems = store.lemma.getLemmasByList(list.id);
-		const newLemmaList = _.uniq([...lemmas.map((l) => l.id), ...listItems]);
-		const diff = newLemmaList.length - listItems.length;
-		if (
-			diff !== 0 &&
-			(await confirm.confirm(`${lemmas.length} Lemma(ta) zu ”${list.title}” hinzufügen?`))
-		) {
-			store.lemma.addLemmasToList(
+	const message =
+		lemmas.length > 0
+			? `Neue Liste mit ${lemmas.length} Einträgen erstellen`
+			: "Neue Liste anlegen";
+
+	const name = await prompt.prompt(message, {
+		placeholder: "Listenname…",
+		rules: lemmaNameRules,
+	});
+
+	if (name !== null) {
+		const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
+
+		if (lemmas.length) {
+			await store.lemma.addLemmasToList(
 				{
-					id: list.id,
-					title: list.title,
+					id: l.id,
+					title: l.title,
 					editor: store.user.userProfile.userId,
 				},
 				lemmas,
 			);
 		}
-	}
 
-	async addLemmaToIssue(issueId: number, e: DragEvent) {
-		const lemmas =
-			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
-				: [];
-		store.issue.addLemmaToIssue(issueId, lemmas);
+		store.lemma.selectedLemmaListId = l.id || null;
 	}
+}
 
-	async createLemmaList(e: DragEvent | MouseEvent) {
-		const lemmas =
-			e instanceof DragEvent
-				? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
-				: [];
-		const lemmaNameRules = [
-			(n: string | null) =>
-				n === null || (typeof n === "string" && n.trim() === "")
-					? "Geben Sie einen Namen ein."
-					: true,
-			(n: string | null) => {
-				if (n === null) {
-					return "Geben Sie einen Namen ein";
-				} else if (
-					this.filteredLemmaLists.findIndex(
-						(ll) => ll.title.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
-					) > -1
-				) {
-					return "Name bereits vergeben.";
-				} else {
-					return true;
-				}
-			},
-		];
-		const message =
-			lemmas.length > 0
-				? `Neue Liste mit ${lemmas.length} Einträgen erstellen`
-				: "Neue Liste anlegen";
-		const name = await prompt.prompt(message, {
-			placeholder: "Listenname…",
-			rules: lemmaNameRules,
-		});
-		if (name !== null) {
-			const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
-			if (lemmas.length) {
-				await store.lemma.addLemmasToList(
-					{
-						id: l.id,
-						title: l.title,
-						editor: store.user.userProfile.userId,
-					},
-					lemmas,
-				);
-			}
-			store.lemma.selectedLemmaListId = l.id || null;
-		}
-	}
-
-	get filteredStoredLemmaFilters() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
-			return store.lemma.storedLemmaFilters.filter((l) =>
-				l.name.toLocaleLowerCase().includes(this.searchQuery || ""),
-			);
-		} else {
-			return store.lemma.storedLemmaFilters;
-		}
-	}
-
-	get filteredLemmaLists() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
-			return store.lemma.lemmaLists.filter((l) =>
-				l.title.toLocaleLowerCase().includes(this.searchQuery || ""),
-			);
-		} else {
-			return store.lemma.lemmaLists;
-		}
-	}
-
-	get filteredLemmaListsCurrentUser() {
-		return this.filteredLemmaLists.filter(
-			(l) => l.editor !== undefined && l.editor.userId === store.user.userProfile.userId,
-		);
-	}
-
-	get filteredLemmaListsOtherUsers() {
-		return this.filteredLemmaLists.filter(
-			(l) => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId,
-		);
-	}
-
-	toggleDrawer() {
-		this.store.settings = {
-			...this.store.settings,
-			showNavDrawer: !this.store.settings.showNavDrawer,
-		};
-	}
+function toggleDrawer() {
+	store.settings = { ...store.settings, showNavDrawer: !store.settings.showNavDrawer };
 }
 </script>
 
@@ -232,84 +221,57 @@ export default class Sidebar extends Vue {
 	>
 		<div :style="{ zIndex: 1 }">
 			<div class="d-flex pb-2">
-				<v-btn tile depressed class="rounded-lg mr-1" icon @click="toggleDrawer">
-					<v-icon>mdi-dock-left</v-icon>
-				</v-btn>
-				<text-field
+				<VBtn tile depressed class="rounded-lg mr-1" icon @click="toggleDrawer">
+					<VIcon>mdi-dock-left</VIcon>
+				</VBtn>
+				<TextField
 					v-model="searchQuery"
 					class="flex-grow-1 mr-2"
 					:clearable="true"
 					color="background darken-3"
 					:placeholder="showLoader === true ? 'Lade…' : 'Listen filtern…'"
-					@keydown.esc.native="onEscSearch"
+					@keydown.esc.native="onEscapeSearch"
 				>
 					<template #prepend>
 						<div v-if="showLoader === true" class="ml-2 mt-1">
-							<loading-spinner
-								:size="25"
-								:color="$vuetify.theme.dark === true ? 'white' : 'grey'"
-							/>
+							<LoadingSpinner :size="25" :color="$vuetify.theme.dark === true ? 'white' : 'grey'" />
 						</div>
-						<v-icon v-else size="16" class="ml-2 mr-0">mdi-magnify</v-icon>
+						<VIcon v-else size="16" class="ml-2 mr-0">mdi-magnify</VIcon>
 					</template>
-				</text-field>
-				<!-- <v-text-field
-          style="position: relative"
-          :placeholder="showLoader ? 'Lade…' : 'Listen filtern…'"
-          solo
-          autofocus
-          background-color="background darken-2"
-          class="text-body-2 rounded-lg search-field"
-          dense
-          autocomplete="off"
-          @keydown.esc="onEscSearch"
-          v-model="searchQuery"
-          hide-details
-          clearable
-          flat>
-          <template v-slot:prepend-inner>
-            <div v-if="showLoader === true">
-              <loading-spinner
-                :size="25"
-                :color="$vuetify.theme.dark ? 'white' : 'grey'"
-                class="" />
-            </div>
-            <v-icon v-else>
-              mdi-magnify
-            </v-icon>
-          </template>
-        </v-text-field> -->
+				</TextField>
 			</div>
-			<!-- <v-divider class="mt-3" /> -->
 		</div>
+
 		<div style="flex: 1" class="overflow-y-auto pr-2">
 			<!-- Lemma Lib -->
-			<v-list class="ma-0 mt-4 pa-0 lemma-nav-list x-dense" color="transparent" nav>
-				<v-list-item
+			<VList class="ma-0 mt-4 pa-0 lemma-nav-list x-dense" color="transparent" nav>
+				<VListItem
 					:ripple="false"
 					to="/lemmas"
 					test-id="lemma-library-link"
 					exact
 					@click="store.lemma.selectedLemmaListId = null"
 				>
-					<v-list-item-avatar tile>
-						<v-icon color="primary darken-1" small>mdi-bookshelf</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>Lemmabibliothek</v-list-item-title>
-					</v-list-item-content>
-					<v-list-item-action>
-						<badge :content="store.lemma.lemmaCount" />
-					</v-list-item-action>
-				</v-list-item>
-			</v-list>
+					<VListItemAvatar tile>
+						<VIcon color="primary darken-1" small>mdi-bookshelf</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>
+						<VListItemTitle>Lemmabibliothek</VListItemTitle>
+					</VListItemContent>
+					<VListItemAction>
+						<Badge :content="store.lemma.lemmaCount" />
+					</VListItemAction>
+				</VListItem>
+			</VList>
+
 			<!-- Abgaben -->
-			<v-subheader :class="['pl-1', showIssues && 'active']" @click="showIssues = !showIssues">
-				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
+			<VSubheader :class="['pl-1', showIssues && 'active']" @click="showIssues = !showIssues">
+				<VIcon class="mr-1" small>mdi-chevron-down</VIcon>
 				Abgaben
-			</v-subheader>
-			<v-list v-show="showIssues" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
-				<v-list-item
+			</VSubheader>
+
+			<VList v-show="showIssues" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
+				<VListItem
 					v-for="issue in store.issue.issues"
 					:key="'issue-' + issue.id"
 					:ripple="false"
@@ -327,27 +289,28 @@ export default class Sidebar extends Vue {
 					"
 					@click="loadIssue(issue.id || null)"
 				>
-					<v-list-item-avatar tile>
-						<v-icon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
+					<VListItemAvatar tile>
+						<VIcon color="primary darken-1" small class="rotate-180">mdi-chart-box-outline</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>
+						<VListItemTitle>
 							{{ issue.name }}
-						</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
-			</v-list>
-			<v-subheader
+						</VListItemTitle>
+					</VListItemContent>
+				</VListItem>
+			</VList>
+
+			<VSubheader
 				:class="['pl-1', 'pr-0', showMyLists && 'active']"
 				@click="showMyLists = !showMyLists"
 				@dragenter.prevent="onDragEnter($event)"
 				@dragover.prevent=""
 				@drop.prevent="createLemmaList($event)"
 			>
-				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
+				<VIcon class="mr-1" small>mdi-chevron-down</VIcon>
 				Meine Listen
-				<v-spacer />
-				<v-btn
+				<VSpacer />
+				<VBVtn
 					class="droppable rounded-lg"
 					style="margin-right: -2px"
 					elevation="0"
@@ -359,11 +322,12 @@ export default class Sidebar extends Vue {
 					@dragenter.prevent="onDragEnter($event)"
 				>
 					Liste anlegen
-					<v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
-				</v-btn>
-			</v-subheader>
-			<v-list v-show="showMyLists" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
-				<v-list-item
+					<VIcon class="ml-2" small>mdi-plus-circle-outline</VIcon>
+				</VBVtn>
+			</VSubheader>
+
+			<VList v-show="showMyLists" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
+				<VListItem
 					v-for="list in filteredLemmaListsCurrentUser"
 					:key="list.id"
 					:ripple="false"
@@ -374,39 +338,41 @@ export default class Sidebar extends Vue {
 					@dragover.prevent=""
 					@drop.prevent="copyLemmasToList(list, $event)"
 				>
-					<v-list-item-avatar tile>
-						<v-icon color="primary darken-1" small>mdi-folder-text</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
+					<VListItemAvatar tile>
+						<VIcon color="primary darken-1" small>mdi-folder-text</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>
+						<VListItemTitle>
 							{{ list.title }}
-						</v-list-item-title>
-					</v-list-item-content>
-					<v-list-item-action>
+						</VListItemTitle>
+					</VListItemContent>
+					<VListItemAction>
 						<transition name="roll">
-							<badge :key="list.count" test-id="lemma-list-count" :content="list.count" />
+							<Badge :key="list.count" test-id="lemma-list-count" :content="list.count" />
 						</transition>
-					</v-list-item-action>
-					<v-list-item-action v-if="list.countNew !== 0" class="ml-0">
-						<badge :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
-					</v-list-item-action>
-				</v-list-item>
-			</v-list>
-			<v-subheader
+					</VListItemAction>
+					<VListItemAction v-if="list.countNew !== 0" class="ml-0">
+						<Badge :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
+					</VListItemAction>
+				</VListItem>
+			</VList>
+
+			<VSubheader
 				:class="['pl-1', showTeamLists && 'active']"
 				@click="showTeamLists = !showTeamLists"
 			>
-				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
+				<VIcon class="mr-1" small>mdi-chevron-down</VIcon>
 				Team-Listen
-			</v-subheader>
-			<v-list
+			</VSubheader>
+
+			<VList
 				v-show="showTeamLists"
 				two-line
 				class="pa-0 ma-0 lemma-nav-list x-dense"
 				color="transparent"
 				nav
 			>
-				<v-list-item
+				<VListItem
 					v-for="list in filteredLemmaListsOtherUsers"
 					:key="list.id"
 					two-line
@@ -419,35 +385,37 @@ export default class Sidebar extends Vue {
 					@dragover.prevent=""
 					@drop.prevent="copyLemmasToList(list, $event)"
 				>
-					<v-list-item-avatar tile>
-						<v-icon color="primary darken-1" small>mdi-folder-text-outline</v-icon>
+					<VListItemAvatar tile>
+						<VIcon color="primary darken-1" small>mdi-folder-text-outline</VIcon>
 						<!-- <v-icon color="primary darken-1" small>mdi-rhombus-split</v-icon> -->
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
+					</VListItemAvatar>
+					<VListItemContent>
+						<VListItemTitle>
 							{{ list.title }}
-						</v-list-item-title>
-						<v-list-item-subtitle>
+						</VListItemTitle>
+						<VListItemSubtitle>
 							{{ list.editor ? list.editor.name : "" }}
-						</v-list-item-subtitle>
-					</v-list-item-content>
-					<v-list-item-action>
+						</VListItemSubtitle>
+					</VListItemContent>
+					<VListItemAction>
 						<transition name="roll">
-							<badge :key="list.count" :content="list.count" />
+							<Badge :key="list.count" :content="list.count" />
 						</transition>
-					</v-list-item-action>
-				</v-list-item>
-			</v-list>
-			<v-subheader
+					</VListItemAction>
+				</VListItem>
+			</VList>
+
+			<VSubheader
 				:class="['px-0', showQueries && 'active']"
 				class="pl-1"
 				@click="showQueries = !showQueries"
 			>
-				<v-icon class="mr-1" small>mdi-chevron-down</v-icon>
+				<VIcon class="mr-1" small>mdi-chevron-down</VIcon>
 				Meine Abfragen
-			</v-subheader>
-			<v-list v-show="showQueries" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
-				<v-list-item
+			</VSubheader>
+
+			<VList v-show="showQueries" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
+				<VListItem
 					v-for="(filter, i) in filteredStoredLemmaFilters"
 					:key="'l' + i"
 					:ripple="false"
@@ -455,28 +423,29 @@ export default class Sidebar extends Vue {
 					:input-value="filter.id === store.lemma.selectedLemmaFilterId"
 					@click="selectLemmaFilter(filter.id)"
 				>
-					<v-list-item-avatar tile>
-						<v-icon color="primary darken-1" small>mdi-filter-variant</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>
+					<VListItemAvatar tile>
+						<VIcon color="primary darken-1" small>mdi-filter-variant</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>
+						<VListItemTitle>
 							{{ filter.name }}
-						</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
-			</v-list>
+						</VListItemTitle>
+					</VListItemContent>
+				</VListItem>
+			</VList>
 		</div>
+
 		<div v-if="store.lemma.importStatus.isImporting">
-			<v-divider />
+			<VDivider />
 			<div class="px-4 pb-5">
-				<v-subheader class="pl-1">
-					<div>Importiere …</div>
-					<v-spacer />
+				<VSubheader class="pl-1">
+					<div>Importiere...</div>
+					<VSpacer />
 					<div>
 						({{ store.lemma.importStatus.status }} von {{ store.lemma.importStatus.target }})
 					</div>
-				</v-subheader>
-				<v-progress-linear class="mt-0 rounded" :value="store.lemma.importStatus.progress * 100" />
+				</VSubheader>
+				<VProgressLinear class="mt-0 rounded" :value="store.lemma.importStatus.progress * 100" />
 			</div>
 		</div>
 	</div>

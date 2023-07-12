@@ -269,10 +269,10 @@ export default class EditorLoader extends Vue {
 		<resizable-drawer
 			v-if="articleStore"
 			color="background darken-1"
+			:initial-width="articleStore.sideBarWidth"
 			:min-width="300"
 			:right="true"
-			:value="articleStore.showSidebar"
-			:width="articleStore.sideBarWidth"
+			:visible="articleStore.showSidebar"
 			@update:width="articleStore.sideBarWidth = $event"
 		>
 			<v-card

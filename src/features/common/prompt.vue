@@ -1,76 +1,71 @@
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
+<script lang="ts" setup>
 import promptStore, { bus } from "@/store/prompt";
 
-@Component
-export default class Prompt extends Vue {
-	promptStore = promptStore;
-	bus = bus;
+function onConfirm() {
+	bus.$emit("confirm");
+}
 
-	modelClose(b: boolean) {
-		if (b === false) {
-			bus.$emit("abort");
-		}
+function onAbort() {
+	bus.$emit("abort");
+}
+
+function onChangeVisibility(value: boolean) {
+	if (value === false) {
+		onAbort();
 	}
 }
 </script>
 
 <template>
-	<v-dialog
+	<VDialog
 		v-if="promptStore.show"
+		:max-width="500"
 		overlay-color="#000"
-		max-width="500px"
 		:value="promptStore.show"
-		@input="modelClose"
+		@input="onChangeVisibility"
 	>
-		<v-card color="background" class="rounded-lg">
-			<v-card-title class="pt-4 text-center pb-3 text-body-2 d-block">
+		<VCard color="background" class="rounded-lg">
+			<VCardTitle class="pt-4 text-center pb-3 text-body-2 d-block">
 				{{ promptStore.message }}
-			</v-card-title>
-			<v-divider />
-			<v-card-text class="px-2 pt-5 pb-0">
-				<v-textarea
+			</VCardTitle>
+
+			<VDivider />
+
+			<VCardText class="px-2 pt-5 pb-0">
+				<VTextarea
 					v-model="promptStore.value"
-					solo
-					flat
-					test-id="prompt-field"
-					clearable
-					background-color="background darken-2"
-					class="rounded-lg"
 					auto-grow
 					autofocus
-					rows="1"
+					background-color="background darken-2"
+					class="rounded-lg"
+					clearable
+					flat
 					:placeholder="promptStore.placeholder"
+					rows="1"
 					:rules="promptStore.rules"
+					solo
 				/>
-			</v-card-text>
-			<v-divider />
-			<v-card-actions class="pb-0">
-				<v-btn
-					test-id="prompt-submit-btn"
-					:disabled="!promptStore.isValid(promptStore.value)"
+			</VCardText>
+
+			<VDivider />
+
+			<VCardActions class="pb-0">
+				<VBtn
 					block
 					class="rounded-lg"
 					color="primary"
-					elevation="0"
-					@click="bus.$emit('confirm')"
+					:disabled="!promptStore.isValid(promptStore.value)"
+					:elevation="0"
+					@click="onConfirm"
 				>
 					{{ promptStore.confirmText }}
-				</v-btn>
-			</v-card-actions>
-			<v-card-actions>
-				<v-btn
-					block
-					test-id="prompt-abort-btn"
-					class="rounded-lg"
-					color="background darken-2"
-					elevation="0"
-					@click="bus.$emit('abort')"
-				>
+				</VBtn>
+			</VCardActions>
+			<VCardActions>
+				<VBtn block class="rounded-lg" color="background darken-2" :elevation="0" @click="onAbort">
 					{{ promptStore.abortText }}
-				</v-btn>
-			</v-card-actions>
-		</v-card>
-	</v-dialog>
+				</VBtn>
+			</VCardActions>
+		</VCard>
+	</VDialog>
 </template>

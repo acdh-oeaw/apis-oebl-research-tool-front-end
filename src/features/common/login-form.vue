@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { isNonEmptyString } from "@acdh-oeaw/lib";
+import type Vue from "vue";
 import { ref } from "vue";
 
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
@@ -11,7 +12,7 @@ const password = ref("");
 const isLoading = ref(false);
 const errorMessage = ref("");
 const isPasswordVisible = ref(false);
-const passwordInputElement = ref<HTMLInputElement | null>(null);
+const passwordInputElement = ref<Vue | null>(null);
 
 async function onSubmit() {
 	if (!user.value || !password.value) return;
@@ -24,7 +25,6 @@ async function onSubmit() {
 
 	if (!success) {
 		errorMessage.value = "Falsches Passwort oder falscher Nutzername.";
-		// @ts-expect-error FIXME: figure out what vuetify does with the ref
 		passwordInputElement.value?.$el.querySelector("input")?.select();
 	}
 }

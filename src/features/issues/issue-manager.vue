@@ -477,12 +477,12 @@ onMounted(() => {
 		</VAppBar>
 
 		<ResizableDrawer
-			:card="true"
-			:right="true"
 			color="background"
+			:initial-width="store.settings.drawerRightWidth"
 			:min-width="300"
-			:width="store.settings.drawerRightWidth"
-			:value="isSideBarVisible"
+			:right="true"
+			variant="card"
+			:visible="isSideBarVisible"
 			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
 			@close="isSideBarVisible = false"
 		>

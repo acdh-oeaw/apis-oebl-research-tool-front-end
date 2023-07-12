@@ -1,60 +1,46 @@
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
+<script lang="ts" setup>
 import confirmStore, { bus } from "@/store/confirm";
 
-@Component
-export default class Confirm extends Vue {
-	confirmStore = confirmStore;
-	bus = bus;
+function onConfirm() {
+	bus.$emit("confirm");
+}
 
-	modelClose(b: boolean) {
-		if (b === false) {
-			bus.$emit("abort");
-		}
+function onAbort() {
+	bus.$emit("abort");
+}
+
+function onChangeVisibility(value: boolean) {
+	if (value === false) {
+		onAbort();
 	}
 }
 </script>
 
 <template>
-	<v-dialog
-		test-id="confirm-dialog"
+	<VDialog
+		:max-width="400"
 		overlay-color="#000"
-		max-width="400px"
 		:value="confirmStore.show"
-		@input="modelClose"
+		@input="onChangeVisibility"
 	>
-		<v-card color="background" class="rounded-lg pa-3">
-			<v-card-text class="text-center pb-4 pt-2">
-				<div v-if="confirmStore.icon !== undefined" class="my-2">
-					<v-icon large>{{ confirmStore.icon }}</v-icon>
+		<VCard color="background" class="rounded-lg pa-3">
+			<VCardText class="text-center pb-4 pt-2">
+				<div v-if="confirmStore.icon != null" class="my-2">
+					<VIcon large>{{ confirmStore.icon }}</VIcon>
 				</div>
 				{{ confirmStore.message }}
-			</v-card-text>
-			<v-card-actions class="pa-0">
-				<v-btn
-					test-id="confirm-submit-btn"
-					block
-					class="rounded-lg"
-					color="primary"
-					elevation="0"
-					@click="bus.$emit('confirm')"
-				>
+			</VCardText>
+
+			<VCardActions class="pa-0">
+				<VBtn block class="rounded-lg" color="primary" :elevation="0" @click="onConfirm">
 					{{ confirmStore.confirmText }}
-				</v-btn>
-			</v-card-actions>
-			<v-card-actions v-if="confirmStore.showCancel" class="pa-0 pt-2">
-				<v-btn
-					test-id="confirm-abort-btn"
-					block
-					class="rounded-lg"
-					color="background darken-2"
-					elevation="0"
-					@click="bus.$emit('abort')"
-				>
+				</VBtn>
+			</VCardActions>
+			<VCardActions v-if="confirmStore.showCancel" class="pa-0 pt-2">
+				<VBtn block class="rounded-lg" color="background darken-2" :elevation="0" @click="onAbort">
 					{{ confirmStore.abortText }}
-				</v-btn>
-			</v-card-actions>
-		</v-card>
-	</v-dialog>
+				</VBtn>
+			</VCardActions>
+		</VCard>
+	</VDialog>
 </template>

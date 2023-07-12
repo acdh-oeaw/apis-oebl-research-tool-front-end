@@ -3,6 +3,7 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import LemmaDetails from "@/features/common/lemma-details.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
@@ -10,7 +11,6 @@ import prompt from "@/store/prompt";
 import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 import DragImage from "@/views/LemmaManager/DragImage.vue";
 import LemmaAdd from "@/views/LemmaManager/LemmaAdd.vue";
-import LemmaDetail from "@/views/LemmaManager/LemmaDetail.vue";
 import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import DataFilter from "@/views/lib/DataFilter.vue";
 import VirtualTable from "@/views/lib/VirtualTable.vue";
@@ -22,7 +22,7 @@ import ThemeToggle from "@/views/ThemeToggle.vue";
 		ThemeToggle,
 		DragImage,
 		LemmaAdd,
-		LemmaDetail,
+		LemmaDetails,
 		LobidPreviewCard,
 		VirtualTable,
 		DataFilter,
@@ -614,10 +614,10 @@ export default class LemmaManager extends Vue {
 		</v-app-bar>
 		<resizable-drawer
 			color="background darken-1"
+			:initial-width="store.settings.drawerRightWidth"
 			:min-width="300"
 			:right="true"
-			:value="store.lemma.showSideBar"
-			:width="store.settings.drawerRightWidth"
+			:visible="store.lemma.showSideBar"
 			@update:width="store.settings = { ...store.settings, drawerRightWidth: $event }"
 		>
 			<div v-if="selectedRows.length === 0" class="fill-height justify-center d-flex align-center">

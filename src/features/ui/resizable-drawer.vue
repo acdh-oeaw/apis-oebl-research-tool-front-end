@@ -1,59 +1,44 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
+import { clamp } from "@acdh-oeaw/lib";
+import { ref } from "vue";
+
+import { useVuetify } from "@/lib/use-vuetify";
 
 const props = withDefaults(
 	defineProps<{
 		color?: string;
+		initialWidth?: number;
+		maxWidth?: number;
 		minWidth?: number;
 		right?: boolean;
-		value?: boolean;
-		width?: number;
+		variant?: "card" | "default";
+		visible?: boolean;
 	}>(),
 	{
+		initialWidth: 300,
+		maxWidth: 750,
 		minWidth: 250,
 		right: false,
-		value: false,
-		width: 300,
+		variant: "default",
+		visible: false,
 	},
 );
 
 const emit = defineEmits<{
-	(event: "update:width", width: number): void;
 	(event: "close"): void;
+	(event: "update:width", width: number): void;
 }>();
 
-// TODO:
+const vuetify = useVuetify();
 
-const localWidth = ref(props.width);
-const maxWidth = 750;
-const transitionValues = ref<{ [selector: string]: string }>({});
+const width = ref(props.initialWidth);
+
 const isDragging = ref(false);
-
-const cssVars = computed(() => ({ "--bg-color": props.color }));
-
-watch(
-	() => props.width,
-	(width) => {
-		localWidth.value = width;
-	},
-);
-
-function expandOrShrink() {
-	if (props.width === props.minWidth) {
-		localWidth.value = maxWidth;
-	} else if (props.width === maxWidth) {
-		localWidth.value = props.minWidth;
-	} else {
-		localWidth.value = maxWidth;
-	}
-
-	emit("update:width", localWidth.value);
-}
+const transitionValues: Record<string, string> = {};
 
 function disableUserSelect() {
 	document.body.style.pointerEvents = "none";
 	document.body.style.userSelect = "none";
-	document.body.style.webkitUserSelect = "none";
 }
 
 function enableUserSelect() {
@@ -62,69 +47,73 @@ function enableUserSelect() {
 }
 
 function disableTransitions(...selectors: Array<string>) {
-	selectors.forEach((s) => {
-		document.querySelectorAll(s).forEach((e) => {
-			if (e instanceof HTMLElement) {
-				// cache 'em
-				transitionValues.value[s] = e.style.transition;
-				// unset em
-				e.style.transition = "none";
+	selectors.forEach((selector) => {
+		document.querySelectorAll(selector).forEach((element) => {
+			if (element instanceof HTMLElement) {
+				transitionValues[selector] = element.style.transition;
+				element.style.transition = "none";
 			}
 		});
 	});
 }
 
 function enableAllTransitions() {
-	Object.entries(transitionValues.value).forEach((e) => {
-		document.querySelectorAll(e[0]).forEach((el) => {
-			if (el instanceof HTMLElement) {
-				// give them their old value
-				el.style.transition = e[1];
+	Object.entries(transitionValues).forEach(([selector, value]) => {
+		document.querySelectorAll(selector).forEach((element) => {
+			if (element instanceof HTMLElement) {
+				element.style.transition = value;
 			}
 		});
 	});
 }
 
-function startDrag() {
+function onStartDrag() {
+	isDragging.value = true;
+
 	disableUserSelect();
 	disableTransitions(".nav-drawer", ".v-main", ".v-toolbar");
-	isDragging.value = true;
-	document.addEventListener("mousemove", drag);
-	document.addEventListener("mouseup", endDrag);
+
+	document.addEventListener("mousemove", onDrag);
+	document.addEventListener("mouseup", onEndDrag);
 }
 
-function endDrag() {
+function onDrag(event: MouseEvent) {
+	const intendedWidth = props.right ? document.body.clientWidth - event.pageX : event.pageX;
+
+	if (intendedWidth < props.minWidth) {
+		width.value = intendedWidth - (intendedWidth - props.minWidth) / 2;
+	} else if (intendedWidth > props.maxWidth) {
+		width.value = intendedWidth - (intendedWidth - props.maxWidth) / 2;
+	} else {
+		width.value = intendedWidth;
+	}
+}
+
+function onEndDrag() {
 	isDragging.value = false;
 
 	enableUserSelect();
 	enableAllTransitions();
 
-	document.removeEventListener("mousemove", drag);
-	document.removeEventListener("mouseup", endDrag);
+	document.removeEventListener("mousemove", onDrag);
+	document.removeEventListener("mouseup", onEndDrag);
 
-	// if it's too big or too small, bounce back.
-	if (localWidth.value > maxWidth) {
-		localWidth.value = maxWidth;
-	} else if (localWidth.value < props.minWidth) {
-		localWidth.value = props.minWidth;
-	}
+	width.value = clamp(props.minWidth, width.value, props.maxWidth);
 
-	emit("update:width", localWidth.value);
+	emit("update:width", width.value);
 }
 
-function drag(e: MouseEvent) {
-	const intendedWidth = props.right ? document.body.clientWidth - e.pageX : e.pageX;
-
-	if (intendedWidth < props.minWidth) {
-		localWidth.value = intendedWidth - (intendedWidth - props.minWidth) / 2;
-	} else if (intendedWidth > maxWidth) {
-		localWidth.value = intendedWidth - (intendedWidth - maxWidth) / 2;
+function onDoubleClick() {
+	if (width.value === props.maxWidth) {
+		width.value = props.minWidth;
 	} else {
-		localWidth.value = intendedWidth;
+		width.value = props.maxWidth;
 	}
+
+	emit("update:width", width.value);
 }
 
-function onChange(value: boolean) {
+function onVisibilityChange(value: boolean) {
 	if (value === false) {
 		emit("close");
 	}
@@ -132,22 +121,31 @@ function onChange(value: boolean) {
 </script>
 
 <template>
-	<v-navigation-drawer
-		v-bind="{ ...$props, ...$attrs }"
-		ref="drawer"
+	<VNavigationDrawer
 		app
-		:class="{ 'nav-drawer': true, right }"
-		:clipped="false"
-		:color="color"
+		:class="{ 'display-card': props.variant === 'card', 'nav-drawer': true, right: props.right }"
+		:color="props.color"
 		:floating="true"
-		:right="right"
+		:right="props.right"
 		stateless
-		:value="value"
-		:width="localWidth"
-		@input="onChange"
+		:value="props.visible"
+		:width="width"
+		@input="onVisibilityChange"
 	>
+		<!-- FIXME: a11y -->
+		<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+		<div
+			:class="{ 'resize-handle-outer': true, dragging: isDragging, right: props.right }"
+			@dblclick="onDoubleClick"
+			@mousedown="onStartDrag"
+		>
+			<div
+				class="resize-handle"
+				:style="{ backgroundColor: vuetify.theme.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)' }"
+			/>
+		</div>
 		<slot />
-	</v-navigation-drawer>
+	</VNavigationDrawer>
 </template>
 
 <style>

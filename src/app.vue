@@ -1,7 +1,15 @@
 <script lang="ts" setup>
+// eslint-disable-next-line simple-import-sort/imports
 import "@/styles/index.css";
 
 import { computed } from "vue";
+
+/**
+ * FIXME: Currently, this breaks when `store` is not imported first because of cyclical dependencies.
+ *
+ * @see https://github.com/acdh-oeaw/apis-oebl-research-tool-front-end/issues/159
+ */
+import store from "@/store";
 
 import Confirm from "@/features/common/confirm.vue";
 import GlobalSearch from "@/features/common/global-search.vue";
@@ -9,13 +17,12 @@ import LoginForm from "@/features/common/login-form.vue";
 import Prompt from "@/features/common/prompt.vue";
 import SideBar from "@/features/common/side-bar.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
-import store from "@/store";
 
 const isLoggedIn = computed(() => store.isLoggedIn === true);
 
 const isDrawerVisible = computed(() => store.settings.showNavDrawer === true);
 
-const drawerWidth = computed(() => store.settings.drawerLeftWidth);
+const initialDrawerWidth = store.settings.drawerLeftWidth;
 
 function onUpdateDrawerWidth(width: number) {
 	store.settings = { ...store.settings, drawerLeftWidth: width };
@@ -39,8 +46,8 @@ function onUpdateDrawerWidth(width: number) {
 			<ResizableDrawer
 				class="pa-0"
 				color="background darken-2"
-				:value="isDrawerVisible"
-				:width="drawerWidth"
+				:initial-width="initialDrawerWidth"
+				:visible="isDrawerVisible"
 				@update:width="onUpdateDrawerWidth"
 			>
 				<SideBar v-if="isDrawerVisible" class="px-3 pt-5" />

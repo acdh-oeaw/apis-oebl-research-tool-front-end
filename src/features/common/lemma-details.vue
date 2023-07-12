@@ -1,7 +1,8 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { groupBy, isNonEmptyArray } from "@acdh-oeaw/lib";
 import fileDialog from "file-dialog";
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { debounce } from "lodash";
+import { ref } from "vue";
 
 import { GenderAe0Enum, type List } from "@/api";
 import { getYear } from "@/lib/get-year";
@@ -22,175 +23,159 @@ import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
 import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
 
-const DRAG_CLASS = "drag-over";
+const dragClassName = "drag-over";
 
-interface ZoteroSection {
-	lemmaName: string;
-	listName: string;
-	zoteroKeys: Array<string>;
-	column: string;
-}
-
-@Component({
-	components: {
-		LemmaScrapeResult,
-		LobidPreviewCard,
-		LobidGndSearch,
-		TextField,
-		SelectMenu,
-		TextFieldAlternatives,
-		DateField,
-		VueFileList,
-		ZoteroManager,
-		FullNameArrayField,
-		ProfessionGroupField,
-		LemmaPrinter,
+const props = withDefaults(
+	defineProps<{
+		showHeader?: boolean;
+		showToggleSideBarButton?: boolean;
+		value: LemmaRow;
+	}>(),
+	{
+		showHeader: true,
+		showToggleSideBarButton: true,
 	},
-})
-export default class LemmaDetail extends Vue {
-	@Prop({ required: true }) value!: LemmaRow;
-	@Prop({ default: true }) showHeader!: boolean;
-	@Prop({ default: true }) showTooggleSideBarButton!: boolean;
-	log = console.log;
-	store = store;
-	showGndSearch = false;
-	detailPage = 0;
-	dragEventDepth = 0;
-	files: Array<File> = [];
-	genderOptions: Array<string> = Object.values(GenderAe0Enum);
-	lemmaRowTranslations = lemmaRowTranslations;
+);
 
-	get yearOfBirth(): number | null {
-		return getYear(this.value.dateOfBirth);
+const emit = defineEmits<{
+	(event: "update", lemma: Partial<LemmaRow>): void;
+}>();
+
+const showGndSearch = ref(false);
+const detailPage = ref(0);
+const genderOptions = Object.values(GenderAe0Enum);
+
+const zoteroSections = [
+	{
+		listName: "Literatur von",
+		lemmaName: `${props.value.lastName}, ${props.value.firstName}`,
+		zoteroKeys: props.value.zoteroKeysBy,
+		column: "zoteroKeysBy",
+	},
+	{
+		listName: "Literatur über",
+		lemmaName: `${props.value.lastName}, ${props.value.firstName}`,
+		zoteroKeys: props.value.zoteroKeysAbout,
+		column: "zoteroKeysAbout",
+	},
+];
+
+//
+
+let dragEventDepth = 0;
+
+function onDragEnter(event: DragEvent) {
+	if (
+		event.currentTarget !== null &&
+		event.dataTransfer !== null &&
+		// during the "drag" phase, the "files" prop is still empty
+		// so we use the items prop instead to check _what_ is being dragged.
+		event.dataTransfer.items[0] != null &&
+		event.dataTransfer.items[0].kind === "file"
+	) {
+		const target = event.currentTarget as HTMLElement;
+		dragEventDepth++;
+		target.classList.add(dragClassName);
+		detailPage.value = 1;
 	}
-
-	get yearOfDeath(): number | null {
-		return getYear(this.value.dateOfDeath);
-	}
-
-	get zoteroSections(): Array<ZoteroSection> {
-		const name = `${this.value.lastName}, ${this.value.firstName}`;
-		return [
-			{
-				listName: "Literatur von",
-				lemmaName: name,
-				zoteroKeys: this.value.zoteroKeysBy,
-				column: "zoteroKeysBy",
-			},
-			{
-				listName: "Literatur über",
-				lemmaName: name,
-				zoteroKeys: this.value.zoteroKeysAbout,
-				column: "zoteroKeysAbout",
-			},
-		];
-	}
-
-	onDragEnter(event: DragEvent) {
-		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
-			// during the "drag" phase, the "files" prop is still empty
-			// so we use the items prop instead to check _what_ is being dragged.
-			event.dataTransfer.items[0] != null &&
-			event.dataTransfer.items[0].kind === "file"
-		) {
-			const target = event.currentTarget as HTMLElement;
-			this.dragEventDepth = this.dragEventDepth + 1;
-			target.classList.add(DRAG_CLASS);
-			this.detailPage = 1;
-		}
-	}
-
-	onDragLeave(event: DragEvent) {
-		this.dragEventDepth = this.dragEventDepth - 1;
-		if (this.dragEventDepth === 0 && event.currentTarget) {
-			const target = event.currentTarget as HTMLElement;
-			target.classList.remove(DRAG_CLASS);
-		}
-	}
-
-	onDrop(event: DragEvent) {
-		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
-			event.dataTransfer.files.length > 0
-		) {
-			const target = event.currentTarget as HTMLElement;
-			target.classList.remove(DRAG_CLASS);
-			this.uploadFiles(event.dataTransfer.files);
-		}
-	}
-
-	async pickFile() {
-		const files = await fileDialog({ multiple: true });
-		this.files = this.files.concat(Array.from(files));
-	}
-
-	isValidFile(f: File): boolean {
-		return f.type !== "";
-	}
-
-	uploadFiles(fs: FileList) {
-		const [validFiles, inValidFiles] = _.partition([...fs], (f) => this.isValidFile(f));
-		if (inValidFiles.length > 0) {
-			confirm.confirm(
-				`${
-					inValidFiles.length
-				} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${inValidFiles
-					.map((f) => f.name)
-					.join(", ")}).`,
-			);
-		}
-		this.files = this.files.concat(validFiles);
-	}
-
-	countScrapedResources(r: LemmaRow["columns_scrape"]) {
-		if (r === undefined) {
-			return 0;
-		} else {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
-		}
-	}
-
-	selectGnd(gnd: Array<string>) {
-		this.showGndSearch = false;
-		this.$emit("update", { gnd });
-	}
-
-	updateUserColumns(userKey: string, $event: Array<string> | number | string) {
-		this.$emit("update", {
-			columns_user: {
-				...this.value.columns_user,
-				[userKey]: $event,
-			},
-			[userKey]: $event,
-		});
-	}
-
-	debouncedUpdateUserColumns = _.debounce(this.updateUserColumns, 300);
-
-	updateList(l: List) {
-		this.updateData({
-			list: {
-				id: l.id!,
-				title: l.title,
-				editor: l.editor?.userId,
-			},
-		});
-	}
-
-	updateData(u: Partial<LemmaRow>) {
-		this.$emit("update", u);
-	}
-
-	debouncedUpdateData = _.debounce(this.updateData, 300);
 }
+
+function onDragLeave(event: DragEvent) {
+	dragEventDepth = dragEventDepth - 1;
+	if (dragEventDepth === 0 && event.currentTarget) {
+		const target = event.currentTarget as HTMLElement;
+		target.classList.remove(dragClassName);
+	}
+}
+
+function onDrop(event: DragEvent) {
+	if (
+		event.currentTarget !== null &&
+		event.dataTransfer !== null &&
+		event.dataTransfer.files.length > 0
+	) {
+		const target = event.currentTarget as HTMLElement;
+		target.classList.remove(dragClassName);
+		uploadFiles(event.dataTransfer.files);
+	}
+}
+
+//
+
+const files = ref<Array<File>>([]);
+
+async function pickFile() {
+	const fileList = await fileDialog({ multiple: true });
+	files.value = files.value.concat(Array.from(fileList));
+}
+
+function isValidFile(file: File) {
+	return file.type !== "";
+}
+
+function uploadFiles(fileList: FileList) {
+	const { valid, invalid } = groupBy([...fileList], (file) =>
+		isValidFile(file) ? "valid" : "invalid",
+	);
+
+	if (isNonEmptyArray(invalid)) {
+		confirm.confirm(
+			`${invalid.length} Datei(en) können nicht hochgeladen werden, weil sie zu groß sind (${invalid
+				.map((f) => f.name)
+				.join(", ")}).`,
+		);
+	}
+
+	if (isNonEmptyArray(valid)) {
+		files.value = files.value.concat(valid);
+	}
+}
+
+function countScrapedResources(r: LemmaRow["columns_scrape"]) {
+	if (r === undefined) {
+		return 0;
+	} else {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
+	}
+}
+
+function selectGnd(gnd: Array<string>) {
+	showGndSearch.value = false;
+	emit("update", { gnd });
+}
+
+function updateUserColumns(userKey: string, $event: Array<string> | number | string) {
+	emit("update", {
+		columns_user: {
+			...props.value.columns_user,
+			[userKey]: $event,
+		},
+		[userKey]: $event,
+	});
+}
+
+const debouncedUpdateUserColumns = debounce(updateUserColumns, 300);
+
+function updateList(l: List) {
+	updateData({
+		list: {
+			id: l.id!,
+			title: l.title,
+			editor: l.editor?.userId,
+		},
+	});
+}
+
+function updateData(u: Partial<LemmaRow>) {
+	emit("update", u);
+}
+
+const debouncedUpdateData = debounce(updateData, 300);
 </script>
 
 <template>
-	<v-card
+	<VCard
 		v-if="value !== undefined && value !== null"
 		class="transparent flex-column d-flex fill-height lemma-detail"
 		elevation="0"
@@ -199,28 +184,28 @@ export default class LemmaDetail extends Vue {
 		@dragleave.prevent.capture.stop="onDragLeave"
 		@drop.prevent.capture.stop="onDrop"
 	>
-		<v-card-title class="flex-column pb-2">
+		<VCardTitle class="flex-column pb-2">
 			<div v-if="showHeader" class="d-flex flex-row align-self-stretch">
-				<v-btn
-					style="margin-top: -8px; margin-left: -10px"
-					width="48"
-					height="48"
-					tile
+				<VBtn
 					class="rounded-lg"
+					height="48"
 					icon
-					@click="$emit('update', { selected: !value.selected })"
+					style="margin-top: -8px; margin-left: -10px"
+					tile
+					width="48"
+					@click="emit('update', { selected: !value.selected })"
 				>
 					<span v-if="value.selected" style="color: var(--v-primary-base)">★</span>
 					<span v-else style="opacity: 50%">☆</span>
-				</v-btn>
+				</VBtn>
 				<div :key="value.id" class="text-center flex-grow-1">
 					{{ value.lastName }}, {{ value.firstName }}
 				</div>
 				<div class="printer">
-					<lemma-printer :lemma-row="value"></lemma-printer>
+					<LemmaPrinter :lemma-row="value"></LemmaPrinter>
 				</div>
-				<v-btn
-					v-if="showTooggleSideBarButton"
+				<VBtn
+					v-if="showToggleSideBarButton"
 					style="margin-top: -8px; margin-right: -10px"
 					width="48"
 					height="48"
@@ -229,37 +214,41 @@ export default class LemmaDetail extends Vue {
 					icon
 					@click="store.lemma.showSideBar = false"
 				>
-					<v-icon>mdi-dock-right</v-icon>
-				</v-btn>
+					<VIcon>mdi-dock-right</VIcon>
+				</VBtn>
 			</div>
+
 			<div v-if="showHeader" style="margin-top: -5px" class="text-caption text-center">
-				{{ yearOfBirth || "?" }} - {{ yearOfDeath || "?" }}
+				{{ getYear(props.value.dateOfBirth) || "?" }} -
+				{{ getYear(props.value.dateOfDeath) || "?" }}
 			</div>
-			<v-btn-toggle
+
+			<VBtnToggle
 				v-model="detailPage"
-				max
-				class="transparent mx-auto mt-1 mb-0"
 				active-class="background darken-3"
-				mandatory
 				borderless
+				class="transparent mx-auto mt-1 mb-0"
+				mandatory
 			>
-				<v-btn text class="rounded-lg mx-1" small>Details</v-btn>
-				<v-btn text class="rounded-lg mx-1" small>
+				<VBtn text class="rounded-lg mx-1" small>Details</VBtn>
+				<VBtn text class="rounded-lg mx-1" small>
 					Dateien {{ files.length > 0 ? `(${files.length})` : "" }}
-				</v-btn>
-				<v-btn text class="rounded-lg mx-1" small>Literatur</v-btn>
-				<v-btn text class="rounded-lg mx-1" small>
+				</VBtn>
+				<VBtn text class="rounded-lg mx-1" small>Literatur</VBtn>
+				<VBtn text class="rounded-lg mx-1" small>
 					Externe Ressourcen
 					<template v-if="countScrapedResources(value.columns_scrape) > 0">
 						({{ countScrapedResources(value.columns_scrape) }})
 					</template>
-				</v-btn>
-			</v-btn-toggle>
-		</v-card-title>
-		<v-divider />
+				</VBtn>
+			</VBtnToggle>
+		</VCardTitle>
+
+		<VDivider />
+
 		<div class="overflow-y-auto flex-grow-1">
-			<v-window :value="detailPage">
-				<v-window-item>
+			<VWindow :value="detailPage">
+				<VWindowItem>
 					<h4
 						class="py-2 px-5 background darken-1 d-flex"
 						:style="{
@@ -270,8 +259,8 @@ export default class LemmaDetail extends Vue {
 						}"
 					>
 						Basisdaten
-						<v-spacer />
-						<select-menu
+						<VSpacer />
+						<SelectMenu
 							btn-class="px-2 background darken-2"
 							prepend-icon="mdi-format-list-bulleted"
 							search-placeholder="Liste suchen …"
@@ -285,31 +274,32 @@ export default class LemmaDetail extends Vue {
 							@input="updateList"
 						/>
 					</h4>
-					<v-card-text>
+
+					<VCardText>
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							:required="true"
 							:label="lemmaRowTranslations.firstName.de"
 							:value="value.firstName"
 							@input="debouncedUpdateData({ firstName: $event })"
-						></text-field>
+						/>
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							:required="true"
 							:label="lemmaRowTranslations.lastName.de"
 							:value="value.lastName"
 							@input="debouncedUpdateData({ lastName: $event })"
-						></text-field>
-						<full-name-array-field
+						/>
+						<FullNameArrayField
 							:key="value.id"
 							:full-names="value.alternativeNames"
 							:value="value.alternativeNames"
 							@submit="updateUserColumns('alternativeNames', $event)"
-						></full-name-array-field>
+						/>
 						<!-- @vue-expect-error -->
-						<text-field :label="lemmaRowTranslations.gender.de">
+						<TextField :label="lemmaRowTranslations.gender.de">
 							<template #input>
-								<v-btn-toggle
+								<VBtnToggle
 									class="transparent mt-1 ml-1"
 									active-class="background darken-3"
 									:value="value.gender"
@@ -318,12 +308,12 @@ export default class LemmaDetail extends Vue {
 									@change="debouncedUpdateData({ gender: $event })"
 								>
 									<div v-for="genderOption in genderOptions" :key="genderOption">
-										<v-btn :value="genderOption" text class="rounded-lg" small>
+										<VBtn :value="genderOption" text class="rounded-lg" small>
 											{{ genderOption }}
-										</v-btn>
+										</VBtn>
 									</div>
-								</v-btn-toggle>
-								<v-btn
+								</VBtnToggle>
+								<VBtn
 									v-if="value.gender"
 									text
 									small
@@ -331,19 +321,19 @@ export default class LemmaDetail extends Vue {
 									icon
 									@click="value.gender = undefined"
 								>
-									<v-icon>mdi-close-circle-outline</v-icon>
-								</v-btn>
+									<VIcon>mdi-close-circle-outline</VIcon>
+								</VBtn>
 							</template>
-						</text-field>
+						</TextField>
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							tabindex="-1"
 							:label="lemmaRowTranslations.nobleTitle.de"
 							placeholder="(kein)"
 							:value="value.columns_user.nobleTitle"
 							@input="updateUserColumns('nobleTitle', $event)"
 						>
-							<v-btn
+							<VBtn
 								tile
 								tabindex="-1"
 								class="rounded-lg mt-1 mr-1"
@@ -359,32 +349,32 @@ export default class LemmaDetail extends Vue {
 								"
 							>
 								<v-icon>mdi-plus-circle-outline</v-icon>
-							</v-btn>
-						</text-field>
+							</VBtn>
+						</TextField>
 						<!-- @vue-expect-error -->
-						<text-field-alternatives
+						<TextFieldAlternatives
 							:label="lemmaRowTranslations.nobleTitle.de"
 							:value="value.columns_user.alternativeNobleTitle"
 							@input="updateUserColumns('alternativeNobleTitle', $event)"
 						/>
-						<v-spacer class="my-5" />
+						<VSpacer class="my-5" />
 						<!-- @vue-expect-error -->
-						<date-field
+						<DateField
 							:key="'dateOfBirth_' + value.id"
 							:label="lemmaRowTranslations.dateOfBirth.de"
 							:date="value.dateOfBirth"
 							@submit="debouncedUpdateData({ dateOfBirth: $event })"
-						></date-field>
+						/>
 						<!-- @vue-expect-error -->
-						<date-field
+						<DateField
 							:key="'dateOfDeath_' + value.id"
 							:label="lemmaRowTranslations.dateOfDeath.de"
 							:date="value.dateOfDeath"
 							@submit="debouncedUpdateData({ dateOfDeath: $event })"
-						></date-field>
-						<v-spacer class="my-5" />
+						/>
+						<VSpacer class="my-5" />
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.kinship.de"
 							:allow-new-line="true"
@@ -392,7 +382,7 @@ export default class LemmaDetail extends Vue {
 							@input="debouncedUpdateData({ kinship: $event })"
 						/>
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.bioNote.de"
 							:allow-new-line="true"
@@ -400,16 +390,16 @@ export default class LemmaDetail extends Vue {
 							@input="debouncedUpdateData({ bioNote: $event })"
 						/>
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.religion.de"
 							:allow-new-line="true"
 							:value="value.religion"
 							@input="debouncedUpdateData({ religion: $event })"
 						/>
-						<v-spacer class="my-5" />
+						<VSpacer class="my-5" />
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.professionDetail.de"
 							:allow-new-line="true"
@@ -417,14 +407,14 @@ export default class LemmaDetail extends Vue {
 							:maxlength="255"
 							@input="debouncedUpdateData({ professionDetail: $event })"
 						/>
-						<profession-group-field
+						<ProfessionGroupField
 							:key="value.id + '_professionGroupField'"
 							:selected="value.professionGroup"
 							@input="debouncedUpdateData({ professionGroup: $event })"
 						/>
-						<v-spacer class="my-5" />
+						<VSpacer class="my-5" />
 						<!-- @vue-expect-error -->
-						<text-field
+						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.notes.de"
 							:allow-new-line="true"
@@ -432,7 +422,7 @@ export default class LemmaDetail extends Vue {
 							:maxlength="255"
 							@input="debouncedUpdateData({ notes: $event })"
 						/>
-					</v-card-text>
+					</VCardText>
 					<h4
 						class="py-2 px-5 background"
 						:style="{
@@ -445,21 +435,21 @@ export default class LemmaDetail extends Vue {
 						<!-- @vue-expect-error -->
 						{{ lemmaRowTranslations.columns_user.de }}
 					</h4>
-					<v-card-text class="pt-0">
-						<text-field
+					<VCardText class="pt-0">
+						<TextField
 							v-for="(userValue, userKey) in value.columns_user"
 							:key="userKey"
 							:value="userValue"
 							:label="userKey"
 							@input="debouncedUpdateUserColumns(String(userKey), $event)"
 						/>
-					</v-card-text>
-				</v-window-item>
-				<v-window-item>
+					</VCardText>
+				</VWindowItem>
+				<VWindowItem>
 					<h4 class="py-2 px-5 background d-flex">
 						Dateien
-						<v-spacer />
-						<v-btn
+						<VSpacer />
+						<VBtn
 							class="droppable rounded-lg mr-2"
 							elevation="0"
 							text
@@ -468,63 +458,62 @@ export default class LemmaDetail extends Vue {
 							@click.capture.prevent.stop="pickFile"
 						>
 							Datei hinzufügen
-							<v-icon class="ml-2" small>mdi-plus-circle-outline</v-icon>
-						</v-btn>
+							<VIcon class="ml-2" small>mdi-plus-circle-outline</VIcon>
+						</VBtn>
 					</h4>
-					<v-card-text class="flex-grow-1">
+					<VCardText class="flex-grow-1">
 						<vue-file-list :value="files" @input="files = $event" />
-					</v-card-text>
-				</v-window-item>
-				<v-window-item>
-					<v-expansion-panels accordion flat>
-						<zotero-manager
+					</VCardText>
+				</VWindowItem>
+				<VWindowItem>
+					<VExpansionPanels accordion flat>
+						<ZoteroManager
 							v-for="(zoteroSection, key) in zoteroSections"
 							:key="`${value.id}_${key}`"
 							:lemma-name="zoteroSection.lemmaName"
 							:list-name="zoteroSection.listName"
 							:zotero-keys-from-server="zoteroSection.zoteroKeys"
 							@submit="debouncedUpdateData({ [zoteroSection.column]: $event })"
-						></zotero-manager>
-					</v-expansion-panels>
-					<v-card flat class="rounded-lg" color="transparent">
-						<v-card-title class="pt-0 background">Legacy (Gideon)</v-card-title>
-						<v-card-text class="pt-0 background">
+						/>
+					</VExpansionPanels>
+					<VCard flat class="rounded-lg" color="transparent">
+						<VCardTitle class="pt-0 background">Legacy (Gideon)</VCardTitle>
+						<VCardText class="pt-0 background">
 							<div v-if="value.legacyGideonCitations" class="gideon-legacy-result">
-								<v-list dense class="gideon-legacy-literature pt-0">
-									<v-list-item
+								<VList dense class="gideon-legacy-literature pt-0">
+									<VListItem
 										v-for="(legacyCitation, index) in value.legacyGideonCitations"
 										:key="index"
 									>
 										{{ legacyCitation.value }}
-									</v-list-item>
-								</v-list>
+									</VListItem>
+								</VList>
 							</div>
 							<div v-else>Keine Gideon-Literatur gefunden</div>
-						</v-card-text>
-					</v-card>
-				</v-window-item>
-				<v-window-item>
+						</VCardText>
+					</VCard>
+				</VWindowItem>
+				<VWindowItem>
 					<h4 class="py-2 px-5 background d-flex">
 						GND: {{ value.gnd[0] }}
-						<v-spacer />
-						<v-badge
+						<VSpacer />
+						<VBadge
 							v-if="value.gnd.length > 1"
 							color="primary"
 							:content="value.gnd.length.toString()"
 							inline
 						/>
 					</h4>
-					<v-card-text class="pt-1">
-						<v-window reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
-							<v-window-item>
-								<lobid-preview-card
+					<VCardText class="pt-1">
+						<VWindow reverse style="overflow: visible !important" :value="showGndSearch ? 1 : 0">
+							<VWindowItem>
+								<LobidPreviewCard
 									v-if="value.gnd.length > 0"
 									class="mb-2"
 									:limit="1"
 									:gnd="value.gnd"
-									@update="log"
 								/>
-								<v-btn
+								<VBtn
 									v-if="value.gnd.length === 0"
 									small
 									color="background darken-3"
@@ -534,8 +523,8 @@ export default class LemmaDetail extends Vue {
 									@click="showGndSearch = true"
 								>
 									GND hinzufügen…
-								</v-btn>
-								<v-btn
+								</VBtn>
+								<VBtn
 									v-if="value.gnd.length > 0"
 									small
 									class="rounded-lg"
@@ -545,40 +534,43 @@ export default class LemmaDetail extends Vue {
 									@click="showGndSearch = true"
 								>
 									GND ändern…
-								</v-btn>
-							</v-window-item>
-							<v-window-item>
-								<lobid-gnd-search
+								</VBtn>
+							</VWindowItem>
+							<VWindowItem>
+								<LobidGndSearch
 									:value="value.gnd"
 									:lemma="value"
 									:gnd="value.gnd"
 									@cancel="showGndSearch = false"
 									@input="selectGnd"
 								/>
-							</v-window-item>
-						</v-window>
-					</v-card-text>
-					<v-divider />
+							</VWindowItem>
+						</VWindow>
+					</VCardText>
+
+					<VDivider />
+
 					<h4 class="py-2 px-5 background d-flex">
 						Externe Ressourcen
-						<v-spacer />
+						<VSpacer />
 					</h4>
-					<v-card-text class="pt-0">
-						<v-list color="transparent" dense nav class="text-body-2 pa-0">
+
+					<VCardText class="pt-0">
+						<VList color="transparent" dense nav class="text-body-2 pa-0">
 							<template v-if="value.columns_scrape">
-								<lemma-scrape-result
+								<LemmaScrapeResult
 									v-for="(source, sourceName) in value.columns_scrape"
 									:key="sourceName"
 									:value="source"
 									:title="sourceName"
 								/>
 							</template>
-						</v-list>
-					</v-card-text>
-				</v-window-item>
-			</v-window>
+						</VList>
+					</VCardText>
+				</VWindowItem>
+			</VWindow>
 		</div>
-	</v-card>
+	</VCard>
 </template>
 
 <style scoped>
