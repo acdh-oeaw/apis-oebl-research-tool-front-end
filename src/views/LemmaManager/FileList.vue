@@ -1,5 +1,4 @@
 <script lang="ts">
-import HRNumbers from "human-readable-numbers";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
@@ -13,7 +12,8 @@ export default class FileList extends Vue {
 	}
 
 	formatNumber(n: number) {
-		return HRNumbers.toHumanString(n);
+		const formatter = new Intl.NumberFormat('en', { notation: 'compact', compactDisplay:'short'})
+		return formatter.format(n);
 	}
 
 	get totalSize(): number {

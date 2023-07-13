@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import HRNumbers from "human-readable-numbers";
 import { computed } from "vue";
 
 import { useVuetify } from "@/lib/use-vuetify";
@@ -13,7 +12,8 @@ const vuetify = useVuetify();
 
 const readable = computed(() => {
 	if (typeof props.content === "number" && props.content >= 1000) {
-		return HRNumbers.toHumanString(props.content);
+		const formatter = new Intl.NumberFormat('en', { notation: 'compact', compactDisplay:'short'})
+		return formatter.format(props.content);
 	} else {
 		return props.content ?? "";
 	}

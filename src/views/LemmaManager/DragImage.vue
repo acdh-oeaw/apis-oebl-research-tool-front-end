@@ -2,8 +2,8 @@
 import _ from "lodash";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import Badge from "@/features/ui/badge.vue";
 import { type LemmaRow } from "@/types/lemma";
-import Badge from "@/views/lib/Badge.vue";
 
 @Component({
 	components: {

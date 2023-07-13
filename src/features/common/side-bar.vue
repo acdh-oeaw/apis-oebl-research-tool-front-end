@@ -4,6 +4,7 @@ import { computed, ref, watch } from "vue";
 
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
+import Badge from "@/features/ui/badge.vue";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
@@ -11,7 +12,6 @@ import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type WithId } from "@/types";
 import { type LemmaRow } from "@/types/lemma";
-import Badge from "@/views/lib/Badge.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 const vuetify = useVuetify();
