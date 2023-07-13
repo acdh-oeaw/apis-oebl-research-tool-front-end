@@ -1,23 +1,26 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-@Component
-export default class SwitchButton extends Vue {
-	@Prop({ default: [] }) items!: Array<{ icon: string; value: string }>;
-	@Prop({ default: null }) value!: string;
+const props = defineProps<{
+	items: Array<{ icon: string; value: string }>;
+	value: string;
+}>();
 
-	get valueIndex(): number {
-		return this.items.findIndex((i) => i.value === this.value);
-	}
+const emit = defineEmits<{
+	(event: "input", value: string): void;
+}>();
 
-	updateValue(i: number) {
-		this.$emit("input", this.items[i]!.value);
-	}
+const valueIndex = computed(() => {
+	return props.items.findIndex((i) => i.value === props.value);
+});
+
+function updateValue(i: number) {
+	emit("input", props.items[i]!.value);
 }
 </script>
 
 <template>
-	<v-tabs
+	<VTabs
 		grow
 		slider-size="40"
 		class="rounded-lg"
@@ -27,11 +30,11 @@ export default class SwitchButton extends Vue {
 		@click.native.prevent.stop=""
 		@change="updateValue"
 	>
-		<v-tab v-for="item in items" :key="item.value" v-ripple="false" class="rounded-lg">
-			<v-icon class="rotate-180">{{ item.icon }}</v-icon>
-		</v-tab>
-		<v-tabs-slider class="custom-tab-slider rounded-lg" />
-	</v-tabs>
+		<VTab v-for="item in items" :key="item.value" v-ripple="false" class="rounded-lg">
+			<VIcon class="rotate-180">{{ item.icon }}</VIcon>
+		</VTab>
+		<VTabsSlider class="custom-tab-slider rounded-lg" />
+	</VTabs>
 </template>
 
 <style>

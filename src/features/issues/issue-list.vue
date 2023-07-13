@@ -35,9 +35,9 @@ function onDragStart() {
 
 <template>
 	<div>
-		<v-row v-for="(column, columnIndex) in columns" :key="column.id" class="ml-5 mr-1">
-			<v-subheader class="sticky-header background mt-3">
-				<v-badge
+		<VRow v-for="(column, columnIndex) in columns" :key="column.id" class="ml-5 mr-1">
+			<VSubheader class="sticky-header background mt-3">
+				<VBadge
 					:content="column.items.length.toString()"
 					inline
 					:style="{ opacity: column.items.length === 0 ? '.5' : 1 }"
@@ -45,9 +45,9 @@ function onDragStart() {
 					color="blue-grey"
 				/>
 				{{ column.name }}
-			</v-subheader>
-			<v-simple-table class="rounded-lg overflow-hidden" style="width: 100%">
-				<draggable
+			</VSubheader>
+			<VSimpleTable class="rounded-lg overflow-hidden" style="width: 100%">
+				<Draggable
 					:disabled="false"
 					:value="column.items"
 					tag="tbody"
@@ -61,8 +61,8 @@ function onDragStart() {
 					@end="emit('end-drag', $event)"
 					@start="onDragStart"
 				>
-					<!-- <transition-group type="transition" :name="animate ? 'flip-list' : null"> -->
-					<issue-list-row
+					<!-- <TransitionGroup type="transition" :name="animate ? 'flip-list' : null"> -->
+					<IssueListRow
 						v-for="(item, itemIndex) in column.items"
 						:key="item.id"
 						v-ripple="false"
@@ -76,9 +76,9 @@ function onDragStart() {
 						@dragstart="onDragStart($event, item)"
 					/>
 					<!-- </transition-group> -->
-				</draggable>
-			</v-simple-table>
-		</v-row>
+				</Draggable>
+			</VSimpleTable>
+		</VRow>
 	</div>
 </template>
 

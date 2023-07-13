@@ -20,7 +20,7 @@ const initials = computed(() => {
 </script>
 
 <template>
-	<v-avatar
+	<VAvatar
 		:class="['text-body-2', value === null ? 'text--secondary font-weight-light' : 'text-primary']"
 		:color="value !== null ? 'background darken-1' : 'transparent'"
 		min-width="30"
@@ -28,5 +28,5 @@ const initials = computed(() => {
 		width="30"
 	>
 		{{ initials }}
-	</v-avatar>
+	</VAvatar>
 </template>

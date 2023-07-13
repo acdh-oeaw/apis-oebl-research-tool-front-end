@@ -1,28 +1,24 @@
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
 
+import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 import SwitchButton from "@/views/lib/SwitchButton.vue";
 
-@Component({
-	components: {
-		SwitchButton,
-	},
-})
-export default class ThemeToggle extends Vue {
-	get theme() {
-		return store.settings.darkTheme;
-	}
+const vuetify = useVuetify();
 
-	updateTheme(dark: boolean) {
-		store.settings = { ...store.settings, darkTheme: dark };
-		this.$vuetify.theme.dark = store.settings.darkTheme;
-	}
+const theme = computed(() => {
+	return store.settings.darkTheme;
+});
+
+function updateTheme(dark: boolean) {
+	store.settings = { ...store.settings, darkTheme: dark };
+	vuetify.theme.dark = store.settings.darkTheme;
 }
 </script>
 
 <template>
-	<switch-button
+	<SwitchButton
 		:items="[
 			{
 				icon: 'mdi-brightness-5',

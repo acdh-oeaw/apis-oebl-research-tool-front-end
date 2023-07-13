@@ -7,59 +7,59 @@ import { isValidHttpUrl, maybeParseDate } from "@/util";
 type ScrapeValue =
 	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
 
-	const props = defineProps<{
-		value: ScrapeValue
-		title: string
-		/* Will expand all sublist as default*/
-		defaultExpand: boolean
-	}>()
+const props = defineProps<{
+	value: ScrapeValue;
+	title: string;
+	/* Will expand all sublist as default*/
+	defaultExpand: boolean;
+}>();
 
-	const keyNamesReadable: { [key: string]: string } = {
-		txt: "",
-	};
+const keyNamesReadable: { [key: string]: string } = {
+	txt: "",
+};
 
-	function formatKey(s: number | string) {
-		if (keyNamesReadable[String(s)] !== undefined) {
-			return "";
-		} else {
-			return _.startCase(String(s));
-		}
+function formatKey(s: number | string) {
+	if (keyNamesReadable[String(s)] !== undefined) {
+		return "";
+	} else {
+		return _.startCase(String(s));
 	}
+}
 
-	function formatValue(key: number | string, value: any) {
-		const maybeDate = maybeParseDate(value);
-		if (maybeDate != null) {
-			const formatter = Intl.DateTimeFormat("de", { dateStyle: "long" });
-			return formatter.format(new Date(maybeDate));
-		} else {
-			return value;
-		}
+function formatValue(key: number | string, value: any) {
+	const maybeDate = maybeParseDate(value);
+	if (maybeDate != null) {
+		const formatter = Intl.DateTimeFormat("de", { dateStyle: "long" });
+		return formatter.format(new Date(maybeDate));
+	} else {
+		return value;
 	}
+}
 
-	function arrayable(v: ScrapeValue) {
-		return _(v)
-			.omitBy((a) => !Array.isArray(a))
-			.value();
-		// return Object.values(v).filter(Array.isArray)
-	}
+function arrayable(v: ScrapeValue) {
+	return _(v)
+		.omitBy((a) => !Array.isArray(a))
+		.value();
+	// return Object.values(v).filter(Array.isArray)
+}
 
-	function nonArrayable(v: ScrapeValue) {
-		return _(v).omitBy(Array.isArray).value();
-		// return Object.values(v).filter(a => !Array.isArray(a))
-	}
+function nonArrayable(v: ScrapeValue) {
+	return _(v).omitBy(Array.isArray).value();
+	// return Object.values(v).filter(a => !Array.isArray(a))
+}
 
-	function maybeLinkItem(key: number | string, value: any): string | undefined {
-		if (isValidHttpUrl(value)) {
-			return value;
-		}
-		// if (key === 'loc') {
-		//   return
-		// }
+function maybeLinkItem(key: number | string, value: any): string | undefined {
+	if (isValidHttpUrl(value)) {
+		return value;
 	}
+	// if (key === 'loc') {
+	//   return
+	// }
+}
 </script>
 
 <template>
-	<v-list-group
+	<VListGroup
 		:class="[
 			((Array.isArray(value) && value.length === 0) || value === undefined) && 'list-disabled',
 			'scrape-result',
@@ -67,31 +67,31 @@ type ScrapeValue =
 		:value="defaultExpand"
 	>
 		<template #activator>
-			<v-list-item-title style="letter-spacing: 0.1em; text-transform: uppercase">
+			<VListItemTitle style="letter-spacing: 0.1em; text-transform: uppercase">
 				{{ title }}
-			</v-list-item-title>
-			<v-list-item-action-text class="ellipsis">
+			</VListItemTitle>
+			<VListItemActionText class="ellipsis">
 				<span v-for="(subValue, key) in value" :key="key">{{ formatKey(key) }},</span>
-			</v-list-item-action-text>
+			</VListItemActionText>
 		</template>
-		<v-list-item
+		<VListItem
 			v-for="(scrapeDataValue, key) in nonArrayable(value)"
 			:key="key"
 			dense
 			:href="maybeLinkItem(key, scrapeDataValue)"
 			target="_blank"
 		>
-			<v-list-item-content class="list-item-label">{{ formatKey(key) }}</v-list-item-content>
-			<v-list-item-action-text
+			<VListItemContent class="list-item-label">{{ formatKey(key) }}</VListItemContent>
+			<VListItemActionText
 				:class="[
 					'list-item-value',
 					typeof scrapeDataValue === 'string' && scrapeDataValue.length > 300 && 'longform-text',
 				]"
 			>
 				{{ formatValue(key, scrapeDataValue) }}
-			</v-list-item-action-text>
-		</v-list-item>
-		<v-list-group
+			</VListItemActionText>
+		</VListItem>
+		<VListGroup
 			v-for="(scrapeDataValue, key) in arrayable(value)"
 			:key="key"
 			sub-group
@@ -102,22 +102,22 @@ type ScrapeValue =
 			:value="defaultExpand"
 		>
 			<template #activator>
-				<v-list-item-title>{{ formatKey(key) }}</v-list-item-title>
-				<v-list-item-action-text>
+				<VListItemTitle>{{ formatKey(key) }}</VListItemTitle>
+				<VListItemActionText>
 					{{ Array.isArray(scrapeDataValue) ? scrapeDataValue.length : 0 }}
-				</v-list-item-action-text>
+				</VListItemActionText>
 			</template>
-			<v-list-item
+			<VListItem
 				v-for="(subValue, key) in scrapeDataValue"
 				:key="key"
 				dense
 				:href="maybeLinkItem(key, subValue)"
 				target="_blank"
 			>
-				<v-list-item-content v-if="typeof key !== 'number'" class="list-item-label">
+				<VListItemAontent v-if="typeof key !== 'number'" class="list-item-label">
 					{{ key }}
-				</v-list-item-content>
-				<v-list-item-action-text
+				</VListItemAontent>
+				<VListItemActionText
 					:class="[
 						'list-item-value',
 						// @ts-expect-error
@@ -125,10 +125,10 @@ type ScrapeValue =
 					]"
 				>
 					{{ formatValue(key, subValue) }}
-				</v-list-item-action-text>
-			</v-list-item>
-		</v-list-group>
-	</v-list-group>
+				</VListItemActionText>
+			</VListItem>
+		</VListGroup>
+	</VListGroup>
 </template>
 
 <style>

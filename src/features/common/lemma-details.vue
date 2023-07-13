@@ -42,7 +42,7 @@ const emit = defineEmits<{
 }>();
 
 const showGndSearch = ref(false);
-const detailPage = ref(0);
+const detailPage = ref(0); /** "Dateien" tab. */
 const genderOptions = Object.values(GenderAe0Enum);
 
 const zoteroSections = [
@@ -76,7 +76,7 @@ function onDragEnter(event: DragEvent) {
 		const target = event.currentTarget as HTMLElement;
 		dragEventDepth++;
 		target.classList.add(dragClassName);
-		detailPage.value = 1;
+		detailPage.value = 1; /** "Dateien" tab. */
 	}
 }
 
@@ -114,6 +114,7 @@ function isValidFile(file: File) {
 	return file.type !== "";
 }
 
+// FIXME: how are these actually uploaded?
 function uploadFiles(fileList: FileList) {
 	const { valid, invalid } = groupBy([...fileList], (file) =>
 		isValidFile(file) ? "valid" : "invalid",
@@ -247,47 +248,46 @@ const debouncedUpdateData = debounce(updateData, 300);
 
 		<VDivider />
 
+		<!-- FIXME: why button-toggle+window instead of tabs? -->
 		<div class="overflow-y-auto flex-grow-1">
 			<VWindow :value="detailPage">
 				<VWindowItem>
 					<h4
 						class="py-2 px-5 background darken-1 d-flex"
 						:style="{
-							zIndex: 1,
+							background: '',
 							position: 'sticky',
 							top: 0,
-							background: '',
+							zIndex: 1,
 						}"
 					>
 						Basisdaten
 						<VSpacer />
 						<SelectMenu
 							btn-class="px-2 background darken-2"
+							:items="store.lemma.lemmaLists"
+							key-description="editor.name"
+							key-name="title"
+							key-value="id"
+							no-selection-text="keine Liste"
 							prepend-icon="mdi-format-list-bulleted"
 							search-placeholder="Liste suchen …"
-							no-selection-text="keine Liste"
 							:show-chevron="true"
 							:value="value.list || null"
-							:items="store.lemma.lemmaLists"
-							key-name="title"
-							key-description="editor.name"
-							key-value="id"
 							@input="updateList"
 						/>
 					</h4>
 
 					<VCardText>
-						<!-- @vue-expect-error -->
 						<TextField
-							:required="true"
 							:label="lemmaRowTranslations.firstName.de"
+							:required="true"
 							:value="value.firstName"
 							@input="debouncedUpdateData({ firstName: $event })"
 						/>
-						<!-- @vue-expect-error -->
 						<TextField
-							:required="true"
 							:label="lemmaRowTranslations.lastName.de"
+							:required="true"
 							:value="value.lastName"
 							@input="debouncedUpdateData({ lastName: $event })"
 						/>
@@ -297,15 +297,14 @@ const debouncedUpdateData = debounce(updateData, 300);
 							:value="value.alternativeNames"
 							@submit="updateUserColumns('alternativeNames', $event)"
 						/>
-						<!-- @vue-expect-error -->
 						<TextField :label="lemmaRowTranslations.gender.de">
 							<template #input>
 								<VBtnToggle
-									class="transparent mt-1 ml-1"
 									active-class="background darken-3"
-									:value="value.gender"
 									borderless
+									class="transparent mt-1 ml-1"
 									max="1"
+									:value="value.gender"
 									@change="debouncedUpdateData({ gender: $event })"
 								>
 									<div v-for="genderOption in genderOptions" :key="genderOption">
@@ -320,7 +319,7 @@ const debouncedUpdateData = debounce(updateData, 300);
 									small
 									class="rounded-lg ml-5"
 									icon
-									@click="value.gender = undefined"
+									@click="debouncedUpdateData({ gender: undefined })"
 								>
 									<VIcon>mdi-close-circle-outline</VIcon>
 								</VBtn>
@@ -359,22 +358,19 @@ const debouncedUpdateData = debounce(updateData, 300);
 							@input="updateUserColumns('alternativeNobleTitle', $event)"
 						/>
 						<VSpacer class="my-5" />
-						<!-- @vue-expect-error -->
 						<DateField
 							:key="'dateOfBirth_' + value.id"
-							:label="lemmaRowTranslations.dateOfBirth.de"
 							:date="value.dateOfBirth"
+							:label="lemmaRowTranslations.dateOfBirth.de"
 							@submit="debouncedUpdateData({ dateOfBirth: $event })"
 						/>
-						<!-- @vue-expect-error -->
 						<DateField
 							:key="'dateOfDeath_' + value.id"
-							:label="lemmaRowTranslations.dateOfDeath.de"
 							:date="value.dateOfDeath"
+							:label="lemmaRowTranslations.dateOfDeath.de"
 							@submit="debouncedUpdateData({ dateOfDeath: $event })"
 						/>
 						<VSpacer class="my-5" />
-						<!-- @vue-expect-error -->
 						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.kinship.de"
@@ -382,7 +378,6 @@ const debouncedUpdateData = debounce(updateData, 300);
 							:value="value.kinship"
 							@input="debouncedUpdateData({ kinship: $event })"
 						/>
-						<!-- @vue-expect-error -->
 						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.bioNote.de"
@@ -390,7 +385,6 @@ const debouncedUpdateData = debounce(updateData, 300);
 							:value="value.bioNote"
 							@input="debouncedUpdateData({ bioNote: $event })"
 						/>
-						<!-- @vue-expect-error -->
 						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.religion.de"
@@ -399,7 +393,6 @@ const debouncedUpdateData = debounce(updateData, 300);
 							@input="debouncedUpdateData({ religion: $event })"
 						/>
 						<VSpacer class="my-5" />
-						<!-- @vue-expect-error -->
 						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.professionDetail.de"
@@ -414,7 +407,6 @@ const debouncedUpdateData = debounce(updateData, 300);
 							@input="debouncedUpdateData({ professionGroup: $event })"
 						/>
 						<VSpacer class="my-5" />
-						<!-- @vue-expect-error -->
 						<TextField
 							style="min-height: 60px"
 							:label="lemmaRowTranslations.notes.de"
@@ -433,7 +425,6 @@ const debouncedUpdateData = debounce(updateData, 300);
 							background: '',
 						}"
 					>
-						<!-- @vue-expect-error -->
 						{{ lemmaRowTranslations.columns_user.de }}
 					</h4>
 					<VCardText class="pt-0">
@@ -446,6 +437,7 @@ const debouncedUpdateData = debounce(updateData, 300);
 						/>
 					</VCardText>
 				</VWindowItem>
+
 				<VWindowItem>
 					<h4 class="py-2 px-5 background d-flex">
 						Dateien
@@ -463,9 +455,10 @@ const debouncedUpdateData = debounce(updateData, 300);
 						</VBtn>
 					</h4>
 					<VCardText class="flex-grow-1">
-						<vue-file-list :value="files" @input="files = $event" />
+						<VueFileList :value="files" @input="files = $event" />
 					</VCardText>
 				</VWindowItem>
+
 				<VWindowItem>
 					<VExpansionPanels accordion flat>
 						<ZoteroManager
@@ -477,6 +470,7 @@ const debouncedUpdateData = debounce(updateData, 300);
 							@submit="debouncedUpdateData({ [zoteroSection.column]: $event })"
 						/>
 					</VExpansionPanels>
+
 					<VCard flat class="rounded-lg" color="transparent">
 						<VCardTitle class="pt-0 background">Legacy (Gideon)</VCardTitle>
 						<VCardText class="pt-0 background">
@@ -494,6 +488,7 @@ const debouncedUpdateData = debounce(updateData, 300);
 						</VCardText>
 					</VCard>
 				</VWindowItem>
+
 				<VWindowItem>
 					<h4 class="py-2 px-5 background d-flex">
 						GND: {{ value.gnd[0] }}

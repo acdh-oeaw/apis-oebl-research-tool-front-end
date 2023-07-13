@@ -1,40 +1,37 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
+<script lang="ts" setup>
 import TextField from "@/views/lib/TextField.vue";
 
-@Component({
-	components: {
-		TextField,
-	},
-})
-export default class TextFieldAlternatives extends Vue {
-	@Prop({ default: () => [] }) value!: Array<string>;
-	@Prop({ default: "" }) label!: string;
+const props = defineProps<{
+	value: Array<string>;
+	label: string;
+}>();
 
-	updateItem(i: number, v: string) {
-		this.$emit(
-			"input",
-			this.value.map((v2, i2) => (i === i2 ? v : v2)),
-		);
-	}
+const emit = defineEmits<{
+	(event: "input", value: Array<string>): void;
+}>();
 
-	removeItem(i: number) {
-		this.$emit(
-			"input",
-			this.value.filter((v, i2) => i2 !== i),
-		);
-	}
+function updateItem(i: number, v: string) {
+	emit(
+		"input",
+		props.value.map((v2, i2) => (i === i2 ? v : v2)),
+	);
+}
 
-	insertItemAt(i: number) {
-		this.$emit("input", [...this.value.slice(0, i + 1), "", ...this.value.slice(i + 1)]);
-	}
+function removeItem(i: number) {
+	emit(
+		"input",
+		props.value.filter((v, i2) => i2 !== i),
+	);
+}
+
+function insertItemAt(i: number) {
+	emit("input", [...props.value.slice(0, i + 1), "", ...props.value.slice(i + 1)]);
 }
 </script>
 
 <template>
 	<div>
-		<text-field
+		<TextField
 			v-for="(name, i) in value"
 			:key="i"
 			:required="true"
@@ -43,13 +40,13 @@ export default class TextFieldAlternatives extends Vue {
 			@input="updateItem(i, $event)"
 		>
 			<div class="text-no-wrap align-self-center">
-				<v-btn tabindex="-1" tile class="rounded-lg mt-1" icon small @click="removeItem(i)">
-					<v-icon>mdi-minus-circle-outline</v-icon>
-				</v-btn>
-				<v-btn tabindex="-1" tile class="rounded-lg mt-1 mr-1" icon small @click="insertItemAt(i)">
-					<v-icon>mdi-plus-circle-outline</v-icon>
-				</v-btn>
+				<VBtn tabindex="-1" tile class="rounded-lg mt-1" icon small @click="removeItem(i)">
+					<VIcon>mdi-minus-circle-outline</VIcon>
+				</VBtn>
+				<VBtn tabindex="-1" tile class="rounded-lg mt-1 mr-1" icon small @click="insertItemAt(i)">
+					<VIcon>mdi-plus-circle-outline</VIcon>
+				</VBtn>
 			</div>
-		</text-field>
+		</TextField>
 	</div>
 </template>

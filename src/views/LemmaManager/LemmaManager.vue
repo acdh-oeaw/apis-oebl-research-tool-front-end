@@ -505,7 +505,7 @@ export default class LemmaManager extends Vue {
 						content-class="soft-shadow scrollable background rounded-lg"
 					>
 						<template #activator="{ on, props }">
-							<v-btn v-bind="props" tile test-id="lemma-menu-btn" class="rounded-lg" icon v-on="on">
+							<v-btn v-bind="props" tile class="rounded-lg" icon v-on="on">
 								<v-icon>mdi-dots-horizontal-circle-outline</v-icon>
 							</v-btn>
 						</template>
@@ -522,11 +522,7 @@ export default class LemmaManager extends Vue {
 								</v-list-item-avatar>
 								<v-list-item-content>Excel oder CSV importieren…</v-list-item-content>
 							</v-list-item>
-							<v-list-item
-								v-if="lemmaListId !== null"
-								test-id="lemma-list-delete-btn"
-								@click="deleteList(lemmaListId)"
-							>
+							<v-list-item v-if="lemmaListId !== null" @click="deleteList(lemmaListId)">
 								<v-list-item-avatar size="15">
 									<v-icon small>mdi-delete-outline</v-icon>
 								</v-list-item-avatar>
@@ -646,7 +642,6 @@ export default class LemmaManager extends Vue {
 			<!-- @vue-expect-error -->
 			<virtual-table
 				ref="vTable"
-				test-id="lemma-table"
 				class="virtual-table text-body-3"
 				:show-filter="store.settings.showLemmaFilter"
 				:columns="columns"

@@ -5,6 +5,7 @@ import { computed, ref, watch } from "vue";
 import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
+import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
@@ -13,8 +14,10 @@ import { type LemmaRow } from "@/types/lemma";
 import Badge from "@/views/lib/Badge.vue";
 import TextField from "@/views/lib/TextField.vue";
 
+const vuetify = useVuetify();
+
+const isLoaderVisible = ref(false);
 const searchQuery = ref("");
-const showLoader = ref(false);
 const showIssues = ref(true);
 const showMyLists = ref(true);
 const showTeamLists = ref(true);
@@ -25,30 +28,32 @@ watch(
 	(isLoading) => {
 		setTimeout(() => {
 			if (requestState.isLoading === isLoading) {
-				showLoader.value = isLoading;
+				isLoaderVisible.value = isLoading;
 			}
 		}, 300);
 	},
 );
 
 const filteredStoredLemmaFilters = computed(() => {
-	if (searchQuery.value.trim() !== "") {
+	const searchTerm = searchQuery.value.trim().toLocaleLowerCase();
+
+	if (searchTerm.length > 0) {
 		return store.lemma.storedLemmaFilters.filter((l) =>
-			l.name.toLocaleLowerCase().includes(searchQuery.value || ""),
+			l.name.toLocaleLowerCase().includes(searchTerm),
 		);
-	} else {
-		return store.lemma.storedLemmaFilters;
 	}
+
+	return store.lemma.storedLemmaFilters;
 });
 
 const filteredLemmaLists = computed(() => {
-	if (searchQuery.value.trim() !== "") {
-		return store.lemma.lemmaLists.filter((l) =>
-			l.title.toLocaleLowerCase().includes(searchQuery.value || ""),
-		);
-	} else {
-		return store.lemma.lemmaLists;
+	const searchTerm = searchQuery.value.trim().toLocaleLowerCase();
+
+	if (searchTerm.length > 0) {
+		return store.lemma.lemmaLists.filter((l) => l.title.toLocaleLowerCase().includes(searchTerm));
 	}
+
+	return store.lemma.lemmaLists;
 });
 
 const filteredLemmaListsCurrentUser = computed(() => {
@@ -110,21 +115,21 @@ function loadIssue(issueId: number | null) {
 	}
 }
 
-async function loadIssueLemmas(issueId: number | null) {
-	if (issueId != null) {
-		store.lemma.selectedLemmaIssueId = issueId;
-		const lemmas = await store.issue.getIssueLemmas(issueId);
-		store.lemma.selectedIssueLemmas = lemmas;
-	}
-}
+// async function loadIssueLemmas(issueId: number | null) {
+// 	if (issueId != null) {
+// 		store.lemma.selectedLemmaIssueId = issueId;
+// 		const lemmas = await store.issue.getIssueLemmas(issueId);
+// 		store.lemma.selectedIssueLemmas = lemmas;
+// 	}
+// }
 
-async function deleteList(list: LemmaList) {
-	if (list.id != null) {
-		if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
-			store.lemma.deleteLemmaList(list.id);
-		}
-	}
-}
+// async function deleteList(list: LemmaList) {
+// 	if (list.id != null) {
+// 		if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
+// 			store.lemma.deleteLemmaList(list.id);
+// 		}
+// 	}
+// }
 
 async function copyLemmasToList(list: WithId<List>, event: DragEvent) {
 	const lemmas = JSON.parse(event.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>;
@@ -146,10 +151,10 @@ async function copyLemmasToList(list: WithId<List>, event: DragEvent) {
 	}
 }
 
-function addLemmaToIssue(issueId: number, e: DragEvent) {
+function addLemmaToIssue(issueId: number, event: DragEvent) {
 	const lemmas =
-		e instanceof DragEvent
-			? (JSON.parse(e.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
+		event instanceof DragEvent
+			? (JSON.parse(event.dataTransfer?.getData("text/plain") || "[]") as Array<LemmaRow>)
 			: [];
 	store.issue.addLemmaToIssue(issueId, lemmas);
 }
@@ -186,11 +191,11 @@ async function createLemmaList(event: DragEvent | MouseEvent) {
 			: "Neue Liste anlegen";
 
 	const name = await prompt.prompt(message, {
-		placeholder: "Listenname…",
+		placeholder: "Listenname...",
 		rules: lemmaNameRules,
 	});
 
-	if (name !== null) {
+	if (name != null) {
 		const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
 
 		if (lemmas.length) {
@@ -208,20 +213,16 @@ async function createLemmaList(event: DragEvent | MouseEvent) {
 	}
 }
 
-function toggleDrawer() {
+function onToggleDrawer() {
 	store.settings = { ...store.settings, showNavDrawer: !store.settings.showNavDrawer };
 }
 </script>
 
 <template>
-	<div
-		test-id="sidebar"
-		tabindex="-1"
-		class="d-flex fill-height flex-column overflow-y-hidden sidebar"
-	>
+	<div class="d-flex fill-height flex-column overflow-y-hidden sidebar" :tabindex="-1">
 		<div :style="{ zIndex: 1 }">
 			<div class="d-flex pb-2">
-				<VBtn tile depressed class="rounded-lg mr-1" icon @click="toggleDrawer">
+				<VBtn class="rounded-lg mr-1" depressed icon tile @click="onToggleDrawer">
 					<VIcon>mdi-dock-left</VIcon>
 				</VBtn>
 				<TextField
@@ -229,14 +230,14 @@ function toggleDrawer() {
 					class="flex-grow-1 mr-2"
 					:clearable="true"
 					color="background darken-3"
-					:placeholder="showLoader === true ? 'Lade…' : 'Listen filtern…'"
+					:placeholder="isLoaderVisible === true ? 'Lade...' : 'Listen filtern...'"
 					@keydown.esc.native="onEscapeSearch"
 				>
 					<template #prepend>
-						<div v-if="showLoader === true" class="ml-2 mt-1">
-							<LoadingSpinner :size="25" :color="$vuetify.theme.dark === true ? 'white' : 'grey'" />
+						<div v-if="isLoaderVisible === true" class="ml-2 mt-1">
+							<LoadingSpinner :color="vuetify.theme.dark === true ? 'white' : 'grey'" :size="25" />
 						</div>
-						<VIcon v-else size="16" class="ml-2 mr-0">mdi-magnify</VIcon>
+						<VIcon v-else class="ml-2 mr-0" :size="16">mdi-magnify</VIcon>
 					</template>
 				</TextField>
 			</div>
@@ -246,10 +247,9 @@ function toggleDrawer() {
 			<!-- Lemma Lib -->
 			<VList class="ma-0 mt-4 pa-0 lemma-nav-list x-dense" color="transparent" nav>
 				<VListItem
-					:ripple="false"
-					to="/lemmas"
-					test-id="lemma-library-link"
 					exact
+					:ripple="false"
+					to="/lemmata"
 					@click="store.lemma.selectedLemmaListId = null"
 				>
 					<VListItemAvatar tile>
@@ -274,9 +274,9 @@ function toggleDrawer() {
 				<VListItem
 					v-for="issue in store.issue.issues"
 					:key="'issue-' + issue.id"
-					:ripple="false"
-					:input-value="store.lemma.selectedLemmaIssueId === issue.id"
 					class="droppable mb-0"
+					:input-value="store.lemma.selectedLemmaIssueId === issue.id"
+					:ripple="false"
 					:to="'/issues/' + issue.id"
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
@@ -315,7 +315,6 @@ function toggleDrawer() {
 					style="margin-right: -2px"
 					elevation="0"
 					text
-					test-id="create-list-btn"
 					small
 					color="primary darken-1"
 					@click.capture.prevent.stop="createLemmaList"
@@ -330,13 +329,19 @@ function toggleDrawer() {
 				<VListItem
 					v-for="list in filteredLemmaListsCurrentUser"
 					:key="list.id"
-					:ripple="false"
-					:input-value="store.lemma.selectedLemmaListId === list.id"
-					:to="'/lemmas/list/' + list.id"
 					class="mb-0 droppable"
+					:input-value="store.lemma.selectedLemmaListId === list.id"
+					:ripple="false"
+					:to="'/lemmata/list/' + list.id"
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
-					@drop.prevent="copyLemmasToList(list, $event)"
+					@drop.prevent="
+						copyLemmasToList(
+							// @ts-expect-error
+							list,
+							$event,
+						)
+					"
 				>
 					<VListItemAvatar tile>
 						<VIcon color="primary darken-1" small>mdi-folder-text</VIcon>
@@ -347,9 +352,9 @@ function toggleDrawer() {
 						</VListItemTitle>
 					</VListItemContent>
 					<VListItemAction>
-						<transition name="roll">
-							<Badge :key="list.count" test-id="lemma-list-count" :content="list.count" />
-						</transition>
+						<Transition name="roll">
+							<Badge :key="list.count" :content="list.count" />
+						</Transition>
 					</VListItemAction>
 					<VListItemAction v-if="list.countNew !== 0" class="ml-0">
 						<Badge :content="list.countNew ? '+' + list.countNew.toString() : '0'" />
@@ -367,23 +372,29 @@ function toggleDrawer() {
 
 			<VList
 				v-show="showTeamLists"
-				two-line
 				class="pa-0 ma-0 lemma-nav-list x-dense"
 				color="transparent"
 				nav
+				two-line
 			>
 				<VListItem
 					v-for="list in filteredLemmaListsOtherUsers"
 					:key="list.id"
-					two-line
-					:ripple="false"
-					tabindex="-1"
-					:input-value="store.lemma.selectedLemmaListId === list.id"
-					:to="`/lemmas/list/${list.id}`"
 					class="droppable mb-0"
+					:input-value="store.lemma.selectedLemmaListId === list.id"
+					:ripple="false"
+					:tabindex="-1"
+					:to="`/lemmata/list/${list.id}`"
+					two-line
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
-					@drop.prevent="copyLemmasToList(list, $event)"
+					@drop.prevent="
+						copyLemmasToList(
+							// @ts-expect-error
+							list,
+							$event,
+						)
+					"
 				>
 					<VListItemAvatar tile>
 						<VIcon color="primary darken-1" small>mdi-folder-text-outline</VIcon>
@@ -398,9 +409,9 @@ function toggleDrawer() {
 						</VListItemSubtitle>
 					</VListItemContent>
 					<VListItemAction>
-						<transition name="roll">
+						<Transition name="roll">
 							<Badge :key="list.count" :content="list.count" />
-						</transition>
+						</Transition>
 					</VListItemAction>
 				</VListItem>
 			</VList>
@@ -418,9 +429,9 @@ function toggleDrawer() {
 				<VListItem
 					v-for="(filter, i) in filteredStoredLemmaFilters"
 					:key="'l' + i"
-					:ripple="false"
 					class="mb-0"
 					:input-value="filter.id === store.lemma.selectedLemmaFilterId"
+					:ripple="false"
 					@click="selectLemmaFilter(filter.id)"
 				>
 					<VListItemAvatar tile>

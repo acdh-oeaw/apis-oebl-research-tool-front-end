@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import _ from "lodash";
-import { computed, ref,watch } from 'vue'
+import { computed, ref, watch } from "vue";
 
 import * as lobidService from "@/service/lobid";
 
@@ -17,19 +17,22 @@ type Fragment = {
 	};
 };
 
-const props = withDefaults( defineProps<{
-	gnd: Array<string>;
-	limit: number;
-	value: Array<string>;
-	showFullLink: boolean;
-}>(), {
-	limit: Infinity,
-	showFullLink: false
-})
+const props = withDefaults(
+	defineProps<{
+		gnd: Array<string>;
+		limit: number;
+		value: Array<string>;
+		showFullLink: boolean;
+	}>(),
+	{
+		limit: Infinity,
+		showFullLink: false,
+	},
+);
 
 const emit = defineEmits<{
-	(event: 'input', gnds: Array<string>): void
-}>()
+	(event: "input", gnds: Array<string>): void;
+}>();
 
 const allFragments = ref<Array<Fragment>>([]);
 
@@ -46,8 +49,8 @@ function selectOrDeselectFragment(gnd: string) {
 }
 
 const fragments = computed(() => {
-	return allFragments.value.slice(0, props.limit )
-})
+	return allFragments.value.slice(0, props.limit);
+});
 
 async function loadPreviews(gnd: Array<string>) {
 	const results = await Promise.all(gnd.map((id) => lobidService.get(id)));
@@ -62,14 +65,18 @@ async function loadPreviews(gnd: Array<string>) {
 	});
 }
 
-watch(() => props.gnd, async (gnd) => {
-	allFragments.value = await loadPreviews(gnd.slice(0, props.limit));
-}, { immediate: true})
+watch(
+	() => props.gnd,
+	async (gnd) => {
+		allFragments.value = await loadPreviews(gnd.slice(0, props.limit));
+	},
+	{ immediate: true },
+);
 </script>
 
 <template>
 	<div>
-		<v-row
+		<VRow
 			v-for="(fragment, i) in fragments"
 			:key="i"
 			style="overflow: hidden"
@@ -83,8 +90,8 @@ watch(() => props.gnd, async (gnd) => {
 				style="flex: 0 0 40px"
 				class="align-self-center text-center"
 			>
-				<v-icon v-if="value.includes(fragment.gnd)" color="primary">mdi-check-decagram</v-icon>
-				<v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+				<VIcon v-if="value.includes(fragment.gnd)" color="primary">mdi-check-decagram</VIcon>
+				<VIcon v-else>mdi-checkbox-blank-circle-outline</VIcon>
 			</div>
 			<div
 				v-if="fragment.html !== null"
@@ -93,7 +100,7 @@ watch(() => props.gnd, async (gnd) => {
 				cols="3"
 			>
 				<img v-if="fragment.data.picture" alt="" :src="fragment.data.picture" />
-				<v-icon v-else class="mt-5 ml-5 pt-4 pl-2">mdi-image-broken-variant</v-icon>
+				<VIcon v-else class="mt-5 ml-5 pt-4 pl-2">mdi-image-broken-variant</VIcon>
 			</div>
 			<div style="flex: 1; line-height: 1.2" class="pt-1 pl-2 caption">
 				<div class="description">
@@ -109,7 +116,7 @@ watch(() => props.gnd, async (gnd) => {
 					&rarr; {{ showFullLink ? `https://lobid.org/gnd/${fragment.gnd}` : fragment.gnd }}
 				</a>
 			</div>
-		</v-row>
+		</VRow>
 	</div>
 </template>
 

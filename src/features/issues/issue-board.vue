@@ -31,23 +31,23 @@ const selectedStyle = {
 </script>
 
 <template>
-	<v-row class="status-columns-outer ml-1 px-5">
-		<v-col
+	<VRow class="status-columns-outer ml-1 px-5">
+		<VCol
 			v-for="(column, columnIndex) in columns"
 			:key="column.id"
 			class="status-column flex-column flex px-1"
 		>
-			<v-subheader class="column-name flex flex-shrink-1">
+			<VSubheader class="column-name flex flex-shrink-1">
 				{{ column.name }}
-				<v-badge
+				<VBadge
 					:content="column.items.length.toString()"
 					inline
 					:style="{ opacity: column.items.length === 0 ? '.5' : 1 }"
 					color="rgba(0,0,0,.4)"
 				/>
-			</v-subheader>
-			<v-flex class="flex-grow-1 overflow-y-auto">
-				<draggable
+			</VSubheader>
+			<VFlex class="flex-grow-1 overflow-y-auto">
+				<Draggable
 					:disabled="false"
 					:value="column.items"
 					:force-fallback="true"
@@ -61,14 +61,14 @@ const selectedStyle = {
 						emit('update-column', { id: column.id, name: column.name, order: column.order }, $event)
 					"
 				>
-					<transition-group
+					<TransitionGroup
 						:data-status-id="column.id"
 						tag="div"
 						class="fill-height"
 						type="transition"
 						:name="animate ? 'flip-list' : null"
 					>
-						<v-card
+						<VCard
 							v-for="(item, itemIndex) in column.items"
 							:key="item.id"
 							color="background lighten-2"
@@ -78,7 +78,7 @@ const selectedStyle = {
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"
 							@mousedown="emit('select-lemma', item)"
 						>
-							<issue-board-card
+							<IssueBoardCard
 								:max-labels="store.settings.issueViewOptions.showLabels"
 								:show-editor="store.settings.issueViewOptions.showEditor"
 								:show-author="store.settings.issueViewOptions.showAuthor"
@@ -86,12 +86,12 @@ const selectedStyle = {
 								:lemma="store.lemma.getLemmaById(item.lemma)"
 								:value="item"
 							/>
-						</v-card>
-					</transition-group>
-				</draggable>
-			</v-flex>
-		</v-col>
-	</v-row>
+						</VCard>
+					</TransitionGroup>
+				</Draggable>
+			</VFlex>
+		</VCol>
+	</VRow>
 </template>
 
 <style scoped>

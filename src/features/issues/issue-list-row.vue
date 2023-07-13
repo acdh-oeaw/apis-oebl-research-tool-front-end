@@ -65,8 +65,8 @@ const author = "TODO:";
 <template>
 	<tr class="background lighten-2 rounded-lg" @click="emit('select-lemma', value)">
 		<td class="pr-0 text-no-wrap" style="width: 80px">
-			<user-avatar :value="editor" />
-			<user-avatar :value="author" style="margin-left: -5px" />
+			<UserAvatar :value="editor" />
+			<UserAvatar :value="author" style="margin-left: -5px" />
 		</td>
 		<td style="width: 20%; font-weight: 500" class="pr-1">
 			<template v-if="value.lemma">{{ lemma.lastName }} {{ lemma.firstName }}</template>
@@ -75,7 +75,7 @@ const author = "TODO:";
 		<td>{{ getYear(lemma.dateOfBirth) }} - {{ getYear(lemma.dateOfDeath) }}</td>
 		<td>
 			<div class="float-right fill-height d-flex">
-				<v-chip
+				<VChip
 					v-for="label in labelsLimited"
 					:key="label.id"
 					small
@@ -83,7 +83,7 @@ const author = "TODO:";
 					:color="label.color"
 				>
 					{{ label.name }}
-				</v-chip>
+				</VChip>
 			</div>
 		</td>
 	</tr>

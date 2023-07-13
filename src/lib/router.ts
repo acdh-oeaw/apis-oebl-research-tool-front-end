@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { type RouteConfig } from "vue-router";
 
+import { isPositiveInteger } from "@/lib/is-positive-integer";
 import IssueByIdPage from "@/pages/issues/[id]/index.vue";
 // import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
 // import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
@@ -16,14 +17,15 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/issues/:id(\\d+)",
 		component: IssueByIdPage,
-		props(route) {
-			return {
-				id: Number(route.params.id)
+		beforeEnter(to) {
+			const id = Number(to.params.id);
+			if (!isPositiveInteger(id)) {
+				return { path: "/not-found", replace: true };
 			}
-		}
+		},
 	},
 	// {
-	// 	path: "/lemmas",
+	// 	path: "/lemmata",
 	// 	component: LemmaManager,
 	// 	props(route) {
 	// 		return {
@@ -32,7 +34,7 @@ const routes: Array<RouteConfig> = [
 	// 	},
 	// },
 	// {
-	// 	path: "/lemmas/list/:lemmaListId",
+	// 	path: "/lemmata/list/:lemmaListId",
 	// 	component: LemmaManager,
 	// 	props(route) {
 	// 		return {
@@ -42,7 +44,7 @@ const routes: Array<RouteConfig> = [
 	// 	},
 	// },
 	// {
-	// 	path: "/lemmas/filter/:lemmaFilterId",
+	// 	path: "/lemmata/filter/:lemmaFilterId",
 	// 	component: LemmaManager,
 	// },
 	// {
@@ -55,12 +57,13 @@ const routes: Array<RouteConfig> = [
 	// 	},
 	// },
 	{
-		path: "/lemmas/:id(\\d+)/print",
+		path: "/lemmata/:id(\\d+)/print",
 		component: LemmaByIdPrintPage,
-		props(route) {
-			return {
-				id: Number(route.params.id),
-			};
+		beforeEnter(to) {
+			const id = Number(to.params.id);
+			if (!isPositiveInteger(id)) {
+				return { path: "/not-found", replace: true };
+			}
 		},
 	},
 	// {

@@ -133,9 +133,9 @@ function onOpenSelectedResult() {
 	store.search.addRecentSearchItem(selectedLemma.value);
 
 	if (item.list != null) {
-		router.push({ path: `/lemmas/list/${item.list.id}`, query: { focus: String(item.id) } });
+		router.push({ path: `/lemmata/list/${item.list.id}`, query: { focus: String(item.id) } });
 	} else {
-		router.push({ path: "/lemmas", query: { focus: String(item.id) } });
+		router.push({ path: "/lemmata", query: { focus: String(item.id) } });
 	}
 }
 

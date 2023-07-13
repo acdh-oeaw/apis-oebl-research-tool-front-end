@@ -34,7 +34,7 @@ export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn)
 	if (column.isUserColumn) {
 		return row.columns_user[column.value];
 	}
-	return row[column.value as keyof LemmaRow]; // Yeaaah :-(
+	return row[column.value as keyof LemmaRow];
 }
 
 // if incremented, the local DBs will be wiped and repopulated from the server.

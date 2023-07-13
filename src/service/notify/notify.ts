@@ -26,7 +26,7 @@ interface NotifyClient extends Socket {
 	emit<U extends keyof NotifyEvents>(event: U, ...args: Parameters<NotifyEvents[U]>): this;
 }
 
-const client = io(env.VUE_APP_EVENTBUS_HOST || "http://localhost:3333") as NotifyClient;
+const client = io(env.VUE_APP_EVENTBUS_HOST) as NotifyClient;
 
 client.onAny((...args: any) => {
 	console.log("message from server:", args);

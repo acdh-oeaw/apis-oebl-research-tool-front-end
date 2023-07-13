@@ -68,13 +68,13 @@ const author = "TODO:";
 			</h5>
 		</template>
 		<span v-else class="caption">Lemma nicht gefunden.</span>
-		<v-row class="mt-2" no-gutters>
-			<v-col class="align-self-end">
-				<user-avatar v-if="showEditor" :value="editor" />
-				<user-avatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
-			</v-col>
-			<v-col class="text-right">
-				<v-chip
+		<VRow class="mt-2" no-gutters>
+			<VCol class="align-self-end">
+				<UserAvatar v-if="showEditor" :value="editor" />
+				<UserAvatar v-if="showAuthor" :value="author" style="margin-left: -5px" />
+			</VCol>
+			<VCol class="text-right">
+				<VChip
 					v-for="label in labelsLimited"
 					:key="label.id"
 					small
@@ -82,17 +82,17 @@ const author = "TODO:";
 					:color="label.color"
 				>
 					{{ label.name }}
-				</v-chip>
-				<v-chip
+				</VChip>
+				<VChip
 					v-if="maxLabels && labels.length > maxLabels"
 					small
 					color="background"
 					class="label px-2 text--secondary font-weight-medium"
 				>
 					+{{ labels.length - maxLabels }}
-				</v-chip>
-			</v-col>
-		</v-row>
+				</VChip>
+			</VCol>
+		</VRow>
 	</div>
 	<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 </template>

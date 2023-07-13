@@ -1,24 +1,27 @@
-<script lang="ts">
+<script lang="ts" setup>
 import HRNumbers from "human-readable-numbers";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed } from "vue";
 
-@Component
-export default class Badge extends Vue {
-	@Prop({ default: "" }) content!: number | string;
-	@Prop({ default: "" }) color!: string;
+import { useVuetify } from "@/lib/use-vuetify";
 
-	get readable() {
-		if (typeof this.content === "number" && this.content >= 1000) {
-			return HRNumbers.toHumanString(this.content);
-		} else {
-			return this.content;
-		}
+const props = defineProps<{
+	content?: number | string;
+	color?: string;
+}>();
+
+const vuetify = useVuetify();
+
+const readable = computed(() => {
+	if (typeof props.content === "number" && props.content >= 1000) {
+		return HRNumbers.toHumanString(props.content);
+	} else {
+		return props.content ?? "";
 	}
-}
+});
 </script>
 
 <template>
-	<div class="badge" :class="[color, $vuetify.theme.dark ? 'theme--dark' : '']">
+	<div class="badge" :class="[props.color, vuetify.theme.dark ? 'theme--dark' : '']">
 		{{ readable }}
 	</div>
 </template>

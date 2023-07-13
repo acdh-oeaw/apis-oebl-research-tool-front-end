@@ -396,7 +396,6 @@ export default class VirtualTable extends Vue {
 				<!-- FIXME: a11y -->
 				<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 				<div
-					test-id="lemma-row"
 					:draggable="$listeners['drag:row']"
 					:style="{ height: rowHeight + 'px' }"
 					:class="[
