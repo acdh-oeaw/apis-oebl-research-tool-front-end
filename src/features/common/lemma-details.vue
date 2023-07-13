@@ -5,19 +5,19 @@ import { debounce } from "lodash";
 import { ref } from "vue";
 
 import { GenderAe0Enum, type List } from "@/api";
+import LemmaPrintPreviewButton from "@/features/common/lemma-print-preview-button.vue";
+import LemmaScrapeResult from "@/features/lemmata/lemma-scrape-result.vue";
+import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
 import VueFileList from "@/views/LemmaManager/FileList.vue";
-import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
 import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
 import DateField from "@/views/lib/DateField.vue";
 import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
-import LemmaPrinter from "@/views/lib/LemmaPrinter.vue";
 import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
 import SelectMenu from "@/views/lib/SelectMenu.vue";
 import TextField from "@/views/lib/TextField.vue";
@@ -66,8 +66,8 @@ let dragEventDepth = 0;
 
 function onDragEnter(event: DragEvent) {
 	if (
-		event.currentTarget !== null &&
-		event.dataTransfer !== null &&
+		event.currentTarget != null &&
+		event.dataTransfer != null &&
 		// during the "drag" phase, the "files" prop is still empty
 		// so we use the items prop instead to check _what_ is being dragged.
 		event.dataTransfer.items[0] != null &&
@@ -81,7 +81,8 @@ function onDragEnter(event: DragEvent) {
 }
 
 function onDragLeave(event: DragEvent) {
-	dragEventDepth = dragEventDepth - 1;
+	dragEventDepth--;
+
 	if (dragEventDepth === 0 && event.currentTarget) {
 		const target = event.currentTarget as HTMLElement;
 		target.classList.remove(dragClassName);
@@ -90,8 +91,8 @@ function onDragLeave(event: DragEvent) {
 
 function onDrop(event: DragEvent) {
 	if (
-		event.currentTarget !== null &&
-		event.dataTransfer !== null &&
+		event.currentTarget != null &&
+		event.dataTransfer != null &&
 		event.dataTransfer.files.length > 0
 	) {
 		const target = event.currentTarget as HTMLElement;
@@ -132,11 +133,11 @@ function uploadFiles(fileList: FileList) {
 }
 
 function countScrapedResources(r: LemmaRow["columns_scrape"]) {
-	if (r === undefined) {
+	if (r == null) {
 		return 0;
 	} else {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
+		return Object.values(r).filter((r) => r != null && !Array.isArray(r)).length;
 	}
 }
 
@@ -145,24 +146,24 @@ function selectGnd(gnd: Array<string>) {
 	emit("update", { gnd });
 }
 
-function updateUserColumns(userKey: string, $event: Array<string> | number | string) {
+function updateUserColumns(userKey: string, value: Array<string> | number | string) {
 	emit("update", {
 		columns_user: {
 			...props.value.columns_user,
-			[userKey]: $event,
+			[userKey]: value,
 		},
-		[userKey]: $event,
+		[userKey]: value,
 	});
 }
 
 const debouncedUpdateUserColumns = debounce(updateUserColumns, 300);
 
-function updateList(l: List) {
+function updateList(list: List) {
 	updateData({
 		list: {
-			id: l.id!,
-			title: l.title,
-			editor: l.editor?.userId,
+			id: list.id!,
+			title: list.title,
+			editor: list.editor?.userId,
 		},
 	});
 }
@@ -176,9 +177,9 @@ const debouncedUpdateData = debounce(updateData, 300);
 
 <template>
 	<VCard
-		v-if="value !== undefined && value !== null"
+		v-if="value != null"
 		class="transparent flex-column d-flex fill-height lemma-detail"
-		elevation="0"
+		:elevation="0"
 		@dragover.prevent=""
 		@dragenter.prevent.capture.stop="onDragEnter"
 		@dragleave.prevent.capture.stop="onDragLeave"
@@ -188,11 +189,11 @@ const debouncedUpdateData = debounce(updateData, 300);
 			<div v-if="showHeader" class="d-flex flex-row align-self-stretch">
 				<VBtn
 					class="rounded-lg"
-					height="48"
+					:height="48"
 					icon
 					style="margin-top: -8px; margin-left: -10px"
 					tile
-					width="48"
+					:width="48"
 					@click="emit('update', { selected: !value.selected })"
 				>
 					<span v-if="value.selected" style="color: var(--v-primary-base)">★</span>
@@ -202,7 +203,7 @@ const debouncedUpdateData = debounce(updateData, 300);
 					{{ value.lastName }}, {{ value.firstName }}
 				</div>
 				<div class="printer">
-					<LemmaPrinter :lemma-row="value"></LemmaPrinter>
+					<LemmaPrintPreviewButton :lemma-row="value" />
 				</div>
 				<VBtn
 					v-if="showToggleSideBarButton"

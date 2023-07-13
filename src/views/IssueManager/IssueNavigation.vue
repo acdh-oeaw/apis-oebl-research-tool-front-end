@@ -52,7 +52,7 @@ export default class LemmaNavigation extends Vue {
 					:key="i.id"
 					dense
 					class="rounded-lg mb-0"
-					:to="'/issue/' + i.id"
+					:to="'/issues/' + i.id"
 				>
 					<v-list-item-avatar size="15" tile>
 						<v-icon small class="rotate-180">mdi-chart-box-outline</v-icon>

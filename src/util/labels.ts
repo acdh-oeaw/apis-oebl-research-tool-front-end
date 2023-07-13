@@ -1,12 +1,10 @@
-type translation = {
+import  { type LemmaRow } from "@/types/lemma";
+
+interface Translation {
 	de: string;
 };
 
-type translations = {
-	[property: string]: translation;
-};
-
-export const lemmaRowTranslations: translations = {
+export const lemmaRowTranslations: Record<keyof LemmaRow, Translation> = {
 	id: { de: "ID" },
 	columns_user: { de: "Erweiterte Daten" },
 	selected: { de: "Markiert" },
@@ -32,7 +30,7 @@ export const lemmaRowTranslations: translations = {
 	notes: { de: "Notizen" },
 };
 
-export const EntityTranslations: translations = {
+export const entityTranslations: Record<string, Translation> = {
 	person: { de: "Person" },
 	place: { de: "Ort" },
 	institution: { de: "Institution" },

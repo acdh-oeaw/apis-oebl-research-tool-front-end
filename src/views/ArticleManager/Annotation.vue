@@ -3,11 +3,11 @@ import { type Editor } from "@tiptap/vue-2";
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import * as apis_autocomplete from "@/service/apis_autocomplete";
-import { EntityTranslations } from "@/util/labels";
+import { entityTranslations } from "@/util/labels";
 import { type AnnotationAttributes } from "@/views/ArticleManager/extensionAnnotation";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 @Component({
@@ -40,11 +40,11 @@ export default class Annotation extends Vue {
 		entityId: null,
 	};
 	entityTypes = [
-		{ value: "person", text: EntityTranslations.person!.de },
-		{ value: "place", text: EntityTranslations.place!.de },
-		{ value: "institution", text: EntityTranslations.institution!.de },
-		{ value: "work", text: EntityTranslations.work!.de },
-		{ value: "event", text: EntityTranslations.event!.de },
+		{ value: "person", text: entityTranslations.person!.de },
+		{ value: "place", text: entityTranslations.place!.de },
+		{ value: "institution", text: entityTranslations.institution!.de },
+		{ value: "work", text: entityTranslations.work!.de },
+		{ value: "event", text: entityTranslations.event!.de },
 	];
 
 	//selectedEntityType: any = null;

@@ -1,6 +1,6 @@
-<script lang="ts">
+<script lang="ts" setup>
 import _ from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { computed, ref,watch } from 'vue'
 
 import * as lobidService from "@/service/lobid";
 
@@ -17,48 +17,54 @@ type Fragment = {
 	};
 };
 
-@Component
-export default class LobidPreviewCard extends Vue {
-	@Prop({ default: Array }) gnd!: Array<string>;
-	@Prop({ default: Infinity }) limit!: number;
-	@Prop({ default: Array }) value!: Array<string>;
-	@Prop({ default: false }) showFullLink!: boolean;
+const props = withDefaults( defineProps<{
+	gnd: Array<string>;
+	limit: number;
+	value: Array<string>;
+	showFullLink: boolean;
+}>(), {
+	limit: Infinity,
+	showFullLink: false
+})
 
-	allFragments: Array<Fragment> = [];
-	loading = false;
+const emit = defineEmits<{
+	(event: 'input', gnds: Array<string>): void
+}>()
 
-	selectOrDeselectFragment(gnd: string) {
-		const gnds = new Set(this.value);
-		if (gnds.has(gnd)) {
-			gnds.delete(gnd);
-		} else {
-			gnds.add(gnd);
-		}
-		this.$emit("input", Array.from(gnds));
+const allFragments = ref<Array<Fragment>>([]);
+
+function selectOrDeselectFragment(gnd: string) {
+	const gnds = new Set(props.value);
+
+	if (gnds.has(gnd)) {
+		gnds.delete(gnd);
+	} else {
+		gnds.add(gnd);
 	}
 
-	get fragments() {
-		return _.take(this.allFragments, this.limit);
-	}
-
-	async loadPreviews(gnd: Array<string>) {
-		// const results = await lobidService.getPreviews(gnd)
-		const results = await Promise.all(gnd.map((g) => lobidService.get(g)));
-		return gnd.map((e, i) => {
-			return {
-				gnd: e,
-				html: "",
-				data: results[i]!,
-				selected: false,
-			};
-		});
-	}
-
-	@Watch("gnd", { immediate: true })
-	async onChangeGnd(gnd: Array<string>) {
-		this.allFragments = await this.loadPreviews(_.take(gnd, this.limit));
-	}
+	emit("input", Array.from(gnds));
 }
+
+const fragments = computed(() => {
+	return allFragments.value.slice(0, props.limit )
+})
+
+async function loadPreviews(gnd: Array<string>) {
+	const results = await Promise.all(gnd.map((id) => lobidService.get(id)));
+
+	return gnd.map((id, index) => {
+		return {
+			gnd: id,
+			html: "",
+			data: results[index]!,
+			selected: false,
+		};
+	});
+}
+
+watch(() => props.gnd, async (gnd) => {
+	allFragments.value = await loadPreviews(gnd.slice(0, props.limit));
+}, { immediate: true})
 </script>
 
 <template>

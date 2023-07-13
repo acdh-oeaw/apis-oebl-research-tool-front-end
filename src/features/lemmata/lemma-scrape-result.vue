@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
 import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type ServerResearchLemma } from "@/types/lemma";
 import { isValidHttpUrl, maybeParseDate } from "@/util";
@@ -8,26 +7,26 @@ import { isValidHttpUrl, maybeParseDate } from "@/util";
 type ScrapeValue =
 	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
 
-@Component
-export default class LemmaScrapeResult extends Vue {
-	@Prop({ required: true }) value!: ScrapeValue;
-	@Prop({ required: true }) title!: string;
-	/* Will expand all sublist as default*/
-	@Prop({ default: false }) defaultExpand!: boolean;
+	const props = defineProps<{
+		value: ScrapeValue
+		title: string
+		/* Will expand all sublist as default*/
+		defaultExpand: boolean
+	}>()
 
-	keyNamesReadable: { [key: string]: string } = {
+	const keyNamesReadable: { [key: string]: string } = {
 		txt: "",
 	};
 
-	formatKey(s: number | string) {
-		if (this.keyNamesReadable[String(s)] !== undefined) {
+	function formatKey(s: number | string) {
+		if (keyNamesReadable[String(s)] !== undefined) {
 			return "";
 		} else {
 			return _.startCase(String(s));
 		}
 	}
 
-	formatValue(key: number | string, value: any) {
+	function formatValue(key: number | string, value: any) {
 		const maybeDate = maybeParseDate(value);
 		if (maybeDate != null) {
 			const formatter = Intl.DateTimeFormat("de", { dateStyle: "long" });
@@ -37,19 +36,19 @@ export default class LemmaScrapeResult extends Vue {
 		}
 	}
 
-	arrayable(v: ScrapeValue) {
+	function arrayable(v: ScrapeValue) {
 		return _(v)
 			.omitBy((a) => !Array.isArray(a))
 			.value();
 		// return Object.values(v).filter(Array.isArray)
 	}
 
-	nonArrayable(v: ScrapeValue) {
+	function nonArrayable(v: ScrapeValue) {
 		return _(v).omitBy(Array.isArray).value();
 		// return Object.values(v).filter(a => !Array.isArray(a))
 	}
 
-	maybeLinkItem(key: number | string, value: any): string | undefined {
+	function maybeLinkItem(key: number | string, value: any): string | undefined {
 		if (isValidHttpUrl(value)) {
 			return value;
 		}
@@ -57,7 +56,6 @@ export default class LemmaScrapeResult extends Vue {
 		//   return
 		// }
 	}
-}
 </script>
 
 <template>

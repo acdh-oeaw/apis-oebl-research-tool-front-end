@@ -3,11 +3,11 @@ import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import LemmaDetails from "@/features/common/lemma-details.vue";
+import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import { getYear } from "@/lib/get-year";
 import { findPerson } from "@/service/lobid";
 import store from "@/store";
 import { type LemmaRow } from "@/types/lemma";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import TextField from "@/views/lib/TextField.vue";
 
 @Component({

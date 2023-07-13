@@ -1,60 +1,65 @@
 import Vue from "vue";
 import VueRouter, { type RouteConfig } from "vue-router";
 
-import IssueByIdPage from "@/pages/issues/[id].vue";
-import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
-import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
-import LemmaPrintView from "@/views/LemmaManager/LemmaPrintView.vue";
+import IssueByIdPage from "@/pages/issues/[id]/index.vue";
+// import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
+// import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
+import LemmaByIdPrintPage from "@/pages/lemmas/[id]/print.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+	// {
+	// 	path: "/",
+	// 	redirect: "/lemmas",
+	// },
 	{
-		path: "/",
-		redirect: "/lemmas",
-	},
-	{
-		path: "/issue/:id",
+		path: "/issues/:id(\\d+)",
 		component: IssueByIdPage,
-	},
-	{
-		path: "/lemmas",
-		component: LemmaManager,
 		props(route) {
 			return {
-				highlightId: Number(route.query.focus) || null,
-			};
-		},
+				id: Number(route.params.id)
+			}
+		}
 	},
+	// {
+	// 	path: "/lemmas",
+	// 	component: LemmaManager,
+	// 	props(route) {
+	// 		return {
+	// 			highlightId: Number(route.query.focus) || null,
+	// 		};
+	// 	},
+	// },
+	// {
+	// 	path: "/lemmas/list/:lemmaListId",
+	// 	component: LemmaManager,
+	// 	props(route) {
+	// 		return {
+	// 			lemmaListId: Number(route.params.lemmaListId) || null,
+	// 			highlightId: Number(route.query.focus) || null,
+	// 		};
+	// 	},
+	// },
+	// {
+	// 	path: "/lemmas/filter/:lemmaFilterId",
+	// 	component: LemmaManager,
+	// },
+	// {
+	// 	path: "/article/:issueLemmaId",
+	// 	component: EditorLoader,
+	// 	props(route) {
+	// 		return {
+	// 			issueLemmaId: Number(route.params.issueLemmaId) || null,
+	// 		};
+	// 	},
+	// },
 	{
-		path: "/lemmas/list/:lemmaListId",
-		component: LemmaManager,
+		path: "/lemmas/:id(\\d+)/print",
+		component: LemmaByIdPrintPage,
 		props(route) {
 			return {
-				lemmaListId: Number(route.params.lemmaListId) || null,
-				highlightId: Number(route.query.focus) || null,
-			};
-		},
-	},
-	{
-		path: "/lemmas/filter/:lemmaFilterId",
-		component: LemmaManager,
-	},
-	{
-		path: "/article/:issueLemmaId",
-		component: EditorLoader,
-		props(route) {
-			return {
-				issueLemmaId: Number(route.params.issueLemmaId) || null,
-			};
-		},
-	},
-	{
-		path: "/lemmas/print/:lemmaId",
-		component: LemmaPrintView,
-		props(route) {
-			return {
-				lemmaId: Number(route.params.lemmaId),
+				id: Number(route.params.id),
 			};
 		},
 	},

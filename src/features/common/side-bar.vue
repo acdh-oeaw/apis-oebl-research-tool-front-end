@@ -277,7 +277,7 @@ function toggleDrawer() {
 					:ripple="false"
 					:input-value="store.lemma.selectedLemmaIssueId === issue.id"
 					class="droppable mb-0"
-					:to="'/issue/' + issue.id"
+					:to="'/issues/' + issue.id"
 					@dragenter.prevent="onDragEnter($event, true)"
 					@dragover.prevent=""
 					@drop.prevent="

@@ -1,301 +1,292 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { ref } from "vue";
 
+import LemmaScrapeResult from "@/features/lemmata/lemma-scrape-result.vue";
+import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
 import { LemmaDatabase } from "@/store/lemma";
 import { type LemmaRow } from "@/types/lemma";
 import { type ZoteroView } from "@/types/zotero";
 import { lemmaRowTranslations } from "@/util/labels";
-import LemmaScrapeResult from "@/views/LemmaManager/LemmaScrapeResult.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 
+// FIXME: why is this needed when we have ?minimal search param?
 store.settings.showNavDrawer = false;
 const db = new LemmaDatabase();
-const zoteroBy: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
-const zoteroAbout: ZoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
+const zoteroBy = new ZoteroLemmaManagmentController();
+const zoteroAbout = new ZoteroLemmaManagmentController();
 
-@Component({
-	components: {
-		LobidPreviewCard,
-		LemmaScrapeResult,
-	},
-})
-export default class LemmaPrintView extends Vue {
-	@Prop() lemmaId!: number;
-	lemma: LemmaRow | null = null;
-	labels = lemmaRowTranslations;
+const props = defineProps<{
+	id: number
+}>()
 
-	zoteroCitationsBy: Array<ZoteroView> = [];
-	zoteroCitationsAbout: Array<ZoteroView> = [];
+const lemma = ref<LemmaRow | null>(null);
+const labels = lemmaRowTranslations;
 
-	print() {
-		window.print();
-	}
+const zoteroCitationsBy = ref<Array<ZoteroView>>([]);
+const zoteroCitationsAbout = ref<Array<ZoteroView>>([]);
 
-	// load data
-	beforeCreate() {
-		db.lemmas
-			.get(Number(this.$route.params["lemmaId"]))
-			.then((lemmaRow) => {
-				if (lemmaRow === undefined) {
-					window.alert(`Das Lemma mit der id <${this.lemmaId}> konnte nicht gefunden werden`);
-					throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
-				}
-				this.lemma = lemmaRow;
-				zoteroBy
-					.load(this.lemma.zoteroKeysBy)
-					.then((z) => (this.zoteroCitationsBy = z.zoteroItems.map(convertZoteroItemToView)));
-				zoteroAbout
-					.load(this.lemma.zoteroKeysAbout)
-					.then((z) => (this.zoteroCitationsAbout = z.zoteroItems.map(convertZoteroItemToView)));
-			})
-			.catch((error) => {
-				window.alert("Die Datenbank konnt nicht geladen werden.");
-				window.console.error({
-					message: "Could not select from db",
-					lemmaId: this.lemmaId,
-					error,
-				});
-				throw new Error();
-			});
-	}
+function print() {
+	window.print();
 }
+
+db.lemmas
+	.get(props.id)
+	.then((lemmaRow) => {
+		if (lemmaRow == null) {
+			window.alert(`Das Lemma mit der id <${props.id}> konnte nicht gefunden werden`);
+
+			throw new Error(`Could not find Lemma with id <${props.id}>`);
+		}
+
+		lemma.value = lemmaRow;
+
+		zoteroBy
+			.load(lemmaRow.zoteroKeysBy)
+			.then((z) => {
+				zoteroCitationsBy.value = z.zoteroItems.map(convertZoteroItemToView)
+			});
+
+			zoteroAbout
+			.load(lemmaRow.zoteroKeysAbout)
+			.then((z) => {
+				zoteroCitationsAbout.value = z.zoteroItems.map(convertZoteroItemToView)
+			});
+	})
+	.catch((error) => {
+		window.alert("Die Datenbank konnt nicht geladen werden.");
+
+		console.error({
+			message: "Could not select from db",
+			lemmaId: props.id,
+			error,
+		});
+
+		throw new Error("Could not select from db");
+	});
 </script>
 
+
 <template>
-	<v-container class="lemma-print-view-container">
+	<VContainer class="lemma-print-view-container">
 		<section v-if="lemma !== null" class="lemma-print-view">
-			<v-row>
-				<v-col cols="11">
+			<VRow>
+				<VCol cols="11">
 					<h1>
 						<span class="last-name-title">{{ lemma.lastName }}</span>
 						<span v-if="lemma.firstName" class="first-name-title">{{ lemma.firstName }}</span>
 					</h1>
-				</v-col>
+				</VCol>
 				<v-spacer></v-spacer>
-				<v-col class="print-button" cols="1">
-					<v-btn icon @click="print">
-						<v-icon>mdi-printer</v-icon>
-					</v-btn>
-				</v-col>
-			</v-row>
+				<VCol class="print-button" cols="1">
+					<VBtn icon @click="print">
+						<VIcon>mdi-printer</VIcon>
+					</VBtn>
+				</VCol>
+			</VRow>
+
 			<section class="main-data">
-				<v-row>
-					<v-col>
+				<VRow>
+					<VCol>
 						<h2>Basisinformationen</h2>
-					</v-col>
-				</v-row>
+					</VCol>
+				</VRow>
 				<div class="main-data">
 					<div class="name">
-						<v-row>
-							<v-col>
+						<VRow>
+							<VCol>
 								<h3>Name</h3>
-							</v-col>
-						</v-row>
-						<v-row class="primary-name" justify="start">
-							<v-col class="field last-name" cols="3">
+							</VCol>
+						</VRow>
+						<VRow class="primary-name" justify="start">
+							<VCol class="field last-name" cols="3">
 								<span class="fieldname">
-									<!-- @vue-expect-error -->
 									{{ labels.lastName.de }}
 								</span>
 								<span class="fieldvalue">{{ lemma.lastName }}</span>
-							</v-col>
-							<v-col class="field first-name" cols="3">
+							</VCol>
+							<VCol class="field first-name" cols="3">
 								<span class="fieldname">
-									<!-- @vue-expect-error -->
 									{{ labels.firstName.de }}
 								</span>
 								<span class="fieldvalue">{{ lemma.firstName }}</span>
-							</v-col>
-						</v-row>
-						<v-row class="alternative-names" justify="start">
-							<v-col cols="3">
+							</VCol>
+						</VRow>
+						<VRow class="alternative-names" justify="start">
+							<VCol cols="3">
 								<div class="fieldname">
-									<!-- @vue-expect-error -->
 									{{ labels.alternativeNames.de }}
 								</div>
-							</v-col>
-							<v-col cols="9" class="alternative-names-wrapper-column">
+							</VCol>
+							<VCol cols="9" class="alternative-names-wrapper-column">
 								<!-- keep right of fieldname, even when they have more than one line. Seems overly complicated, but I do not know, how to do it better -->
-								<v-container class="alternative-names-wrapper-container">
-									<v-row class="alternative-names-wrapper-row">
+								<VContainer class="alternative-names-wrapper-container">
+									<VRow class="alternative-names-wrapper-row">
 										<div
 											v-for="(alternativeName, index) in lemma.alternativeNames"
 											:key="`alternativeNameNo_${index}`"
 											class="field alternative-name"
 										>
-											<v-col cols="1" class="field alternative-last-name">
+											<VCol cols="1" class="field alternative-last-name">
 												<div class="fieldname">
-													<!-- @vue-expect-error -->
 													{{ labels.lastName.de }}
 												</div>
 												<div class="fieldvalue">{{ alternativeName.lastName }}</div>
-											</v-col>
-											<v-col cols="1" class="field alternative-first-name">
+											</VCol>
+											<VCol cols="1" class="field alternative-first-name">
 												<div class="fieldname">
-													<!-- @vue-expect-error -->
 													{{ labels.firstName.de }}
 												</div>
 												<div class="fieldvalue">{{ alternativeName.firstName }}</div>
-											</v-col>
+											</VCol>
 										</div>
-									</v-row>
-								</v-container>
-							</v-col>
-						</v-row>
-						<v-row class="demographic-row-1" justify="start">
-							<v-col cols="3">
+									</VRow>
+								</VContainer>
+							</VCol>
+						</VRow>
+						<VRow class="demographic-row-1" justify="start">
+							<VCol cols="3">
 								<div class="field gender">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.gender.de }}
 									</span>
 									<span class="fieldvalue">{{ lemma.gender }}</span>
 								</div>
-							</v-col>
-							<v-col cols="4">
+							</VCol>
+							<VCol cols="4">
 								<div class="field dateOfBirth">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.dateOfBirth.de }}
 									</span>
 									<span class="fieldvalue">{{ lemma.dateOfBirth }}</span>
 								</div>
-							</v-col>
-							<v-col cols="4">
+							</VCol>
+							<VCol cols="4">
 								<div class="field dateOfDeath">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.dateOfDeath.de }}
 									</span>
 									<span class="fieldvalue">{{ lemma.dateOfDeath }}</span>
 								</div>
-							</v-col>
-						</v-row>
-						<v-row class="demographic-row-2" justify="start">
-							<v-col cols="3">
+							</VCol>
+						</VRow>
+						<VRow class="demographic-row-2" justify="start">
+							<VCol cols="3">
 								<div class="field professionGroup">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.professionGroup.de }}
 									</span>
 									<span class="fieldvalue">
 										{{ lemma.professionGroup ? lemma.professionGroup.name : "" }}
 									</span>
 								</div>
-							</v-col>
-							<v-col cols="4">
+							</VCol>
+							<VCol cols="4">
 								<div class="field professionDetail">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.professionDetail.de }}
 									</span>
 									<span class="fieldvalue">{{ lemma.professionDetail }}</span>
 								</div>
-							</v-col>
-							<v-col cols="4">
+							</VCol>
+							<VCol cols="4">
 								<div class="field religion">
 									<span class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.religion.de }}
 									</span>
 									<span class="fieldvalue">{{ lemma.religion }}</span>
 								</div>
-							</v-col>
-						</v-row>
-						<v-row>
-							<v-col>
+							</VCol>
+						</VRow>
+						<VRow>
+							<VCol>
 								<div class="field kinship">
 									<div class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.kinship.de }}
 									</div>
 									<div class="fieldvalue">{{ lemma.kinship }}</div>
 								</div>
-							</v-col>
-						</v-row>
-						<v-row>
-							<v-col>
+							</VCol>
+						</VRow>
+						<VRow>
+							<VCol>
 								<div class="field bioNote">
 									<div class="fieldname">
-										<!-- @vue-expect-error -->
 										{{ labels.bioNote.de }}
 									</div>
 									<div class="fieldvalue">{{ lemma.bioNote }}</div>
 								</div>
-							</v-col>
-						</v-row>
+							</VCol>
+						</VRow>
 					</div>
 				</div>
 			</section>
+
 			<section class="literature">
-				<v-row>
-					<v-col>
+				<VRow>
+					<VCol>
 						<h2>
-							<!-- @vue-expect-error -->
 							{{ labels.secondaryLiterature.de }}
 						</h2>
-					</v-col>
-				</v-row>
+					</VCol>
+				</VRow>
 				<div class="field zoteroKeysBy">
-					<v-row>
-						<v-col>
+					<VRow>
+						<VCol>
 							<div class="fieldname">
-								<!-- @vue-expect-error -->
 								"{{ labels.zoteroKeysBy.de }}" ({{ zoteroCitationsBy.length }})
 							</div>
-						</v-col>
-					</v-row>
+						</VCol>
+					</VRow>
 					<div class="fieldvalue">
-						<v-row
+						<VRow
 							v-for="(zoteroView, index) in zoteroCitationsBy"
 							:key="`zoteroCitationBy_${index}`"
 							class="zotero-citation"
 						>
-							<v-col>{{ zoteroView.citation }}</v-col>
-						</v-row>
+							<VCol>{{ zoteroView.citation }}</VCol>
+						</VRow>
 					</div>
 				</div>
 				<div class="field zoteroCitationsAbout">
-					<v-row>
-						<v-col>
+					<VRow>
+						<VCol>
 							<div class="fieldname">
-								<!-- @vue-expect-error -->
 								"{{ labels.zoteroKeysAbout.de }}" ({{ zoteroCitationsAbout.length }})
 							</div>
-						</v-col>
-					</v-row>
+						</VCol>
+					</VRow>
 					<div class="fieldvalue">
-						<v-row
+						<VRow
 							v-for="(zoteroView, index) in zoteroCitationsAbout"
 							:key="`zoteroCitationAbout_${index}`"
 							class="zotero-citation"
 						>
-							<v-col>{{ zoteroView.citation }}</v-col>
-						</v-row>
+							<VCol>{{ zoteroView.citation }}</VCol>
+						</VRow>
 					</div>
 				</div>
 			</section>
+
 			<section class="external-resources">
-				<v-row>
-					<v-col><h2>Externe Ressourcen</h2></v-col>
-				</v-row>
-				<v-row>
-					<v-col><h3>GND</h3></v-col>
-				</v-row>
-				<v-row>
-					<v-col>
-						<lobid-preview-card
+				<VRow>
+					<VCol><h2>Externe Ressourcen</h2></VCol>
+				</VRow>
+				<VRow>
+					<VCol><h3>GND</h3></VCol>
+				</VRow>
+				<VRow>
+					<VCol>
+						<LobidPreviewCard
 							v-if="lemma.gnd.length > 0"
 							:limit="1"
 							:gnd="lemma.gnd"
 							:show-full-link="true"
 						/>
-					</v-col>
-				</v-row>
+					</VCol>
+				</VRow>
 				<div v-if="lemma.columns_scrape" class="scrape-data">
-					<lemma-scrape-result
+					<LemmaScrapeResult
 						v-for="(source, sourceName) in lemma.columns_scrape"
 						:key="sourceName"
 						:value="source"
@@ -305,7 +296,7 @@ export default class LemmaPrintView extends Vue {
 				</div>
 			</section>
 		</section>
-	</v-container>
+	</VContainer>
 </template>
 
 <style scoped>

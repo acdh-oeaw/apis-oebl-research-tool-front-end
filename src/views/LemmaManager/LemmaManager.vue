@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import LemmaDetails from "@/features/common/lemma-details.vue";
+import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
@@ -11,7 +12,6 @@ import prompt from "@/store/prompt";
 import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 import DragImage from "@/views/LemmaManager/DragImage.vue";
 import LemmaAdd from "@/views/LemmaManager/LemmaAdd.vue";
-import LobidPreviewCard from "@/views/LemmaManager/LobidPreviewCard.vue";
 import DataFilter from "@/views/lib/DataFilter.vue";
 import VirtualTable from "@/views/lib/VirtualTable.vue";
 import ThemeToggle from "@/views/ThemeToggle.vue";

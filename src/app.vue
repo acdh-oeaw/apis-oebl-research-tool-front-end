@@ -17,10 +17,17 @@ import LoginForm from "@/features/common/login-form.vue";
 import Prompt from "@/features/common/prompt.vue";
 import SideBar from "@/features/common/side-bar.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
+import { useRoute } from "vue-router/composables";
 
+const route = useRoute()
 const isLoggedIn = computed(() => store.isLoggedIn === true);
 
-const isDrawerVisible = computed(() => store.settings.showNavDrawer === true);
+const isDrawerVisible = computed(() => {
+	/** This is set for the print preview, see `lemma-printer`. */
+	if (route.query.minimal) return false
+
+	return store.settings.showNavDrawer === true
+});
 
 const initialDrawerWidth = store.settings.drawerLeftWidth;
 
