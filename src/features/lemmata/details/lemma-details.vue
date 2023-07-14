@@ -6,8 +6,14 @@ import { ref } from "vue";
 
 import { GenderAe0Enum, type List } from "@/api";
 import LemmaPrintPreviewButton from "@/features/common/lemma-print-preview-button.vue";
+import FullNameArrayField from "@/features/lemmata/details/full-name-array-field.vue";
+import ProfessionGroupField from "@/features/lemmata/details/profession-group-field.vue";
 import LemmaScrapeResult from "@/features/lemmata/lemma-scrape-result.vue";
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
+import DateField from "@/features/ui/date-field.vue";
+import SelectMenu from "@/features/ui/select-menu.vue";
+import TextField from "@/features/ui/text-field.vue";
+import TextFieldAlternatives from "@/features/ui/text-field-alternatives.vue";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
@@ -16,12 +22,6 @@ import { lemmaRowTranslations } from "@/util/labels";
 import VueFileList from "@/views/LemmaManager/FileList.vue";
 import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
 import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
-import DateField from "@/views/lib/DateField.vue";
-import FullNameArrayField from "@/views/lib/FullNameArrayField.vue";
-import ProfessionGroupField from "@/views/lib/ProfessionGroupField.vue";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
-import TextField from "@/views/lib/TextField.vue";
-import TextFieldAlternatives from "@/views/lib/TextFieldAlternatives.vue";
 
 const dragClassName = "drag-over";
 

@@ -12,7 +12,7 @@ const vuetify = useVuetify();
 
 const readable = computed(() => {
 	if (typeof props.content === "number" && props.content >= 1000) {
-		const formatter = new Intl.NumberFormat('en', { notation: 'compact', compactDisplay:'short'})
+		const formatter = new Intl.NumberFormat("en", { notation: "compact", compactDisplay: "short" });
 		return formatter.format(props.content);
 	} else {
 		return props.content ?? "";

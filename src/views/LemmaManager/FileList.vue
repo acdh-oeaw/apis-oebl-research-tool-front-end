@@ -12,7 +12,7 @@ export default class FileList extends Vue {
 	}
 
 	formatNumber(n: number) {
-		const formatter = new Intl.NumberFormat('en', { notation: 'compact', compactDisplay:'short'})
+		const formatter = new Intl.NumberFormat("en", { notation: "compact", compactDisplay: "short" });
 		return formatter.format(n);
 	}
 

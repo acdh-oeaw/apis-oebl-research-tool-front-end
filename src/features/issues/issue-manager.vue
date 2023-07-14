@@ -4,16 +4,16 @@ import { chain } from "lodash";
 import { computed, onMounted, ref, watch } from "vue";
 
 import { type IssueLemma, type LemmaStatus } from "@/api";
+import ThemeToggle from "@/features/common/theme-toggle.vue";
 import IssueBoard from "@/features/issues/issue-board.vue";
 import IssueDetail from "@/features/issues/issue-details.vue";
 import IssueList from "@/features/issues/issue-list.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
+import SwitchButton from "@/features/ui/switch-button.vue";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type WithId } from "@/types";
-import SwitchButton from "@/views/lib/SwitchButton.vue";
-import ThemeToggle from "@/views/ThemeToggle.vue";
 
 const props = defineProps<{
 	id: number | null;

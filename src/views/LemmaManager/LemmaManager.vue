@@ -3,18 +3,18 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import LemmaDetails from "@/features/common/lemma-details.vue";
+import ThemeToggle from "@/features/common/theme-toggle.vue";
+import DataFilter from "@/features/lemmata/data-filter.vue";
+import LemmaDetails from "@/features/lemmata/details/lemma-details.vue";
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import ResizableDrawer from "@/features/ui/resizable-drawer.vue";
+import VirtualTable from "@/features/ui/virtual-table.vue";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 import DragImage from "@/views/LemmaManager/DragImage.vue";
 import LemmaAdd from "@/views/LemmaManager/LemmaAdd.vue";
-import DataFilter from "@/views/lib/DataFilter.vue";
-import VirtualTable from "@/views/lib/VirtualTable.vue";
-import ThemeToggle from "@/views/ThemeToggle.vue";
 
 @Component({
 	components: {

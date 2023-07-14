@@ -2,12 +2,13 @@
 import { computed } from "vue";
 
 const props = defineProps<{
-	items: Array<{ icon: string; value: string }>;
-	value: string;
+	/** Can emit string or boolean, should use generic instead of any. */
+	items: Array<{ icon: string; value: any }>;
+	value: any;
 }>();
 
 const emit = defineEmits<{
-	(event: "input", value: string): void;
+	(event: "input", value: any): void;
 }>();
 
 const valueIndex = computed(() => {
@@ -21,12 +22,12 @@ function updateValue(i: number) {
 
 <template>
 	<VTabs
-		grow
-		slider-size="40"
-		class="rounded-lg"
-		height="40"
-		:value="valueIndex"
 		background-color="transparent"
+		class="rounded-lg"
+		grow
+		height="40"
+		slider-size="40"
+		:value="valueIndex"
 		@click.native.prevent.stop=""
 		@change="updateValue"
 	>

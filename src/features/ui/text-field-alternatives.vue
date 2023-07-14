@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import TextField from "@/views/lib/TextField.vue";
+import TextField from "@/features/ui/text-field.vue";
 
 const props = defineProps<{
 	value: Array<string>;

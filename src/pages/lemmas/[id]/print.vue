@@ -3,7 +3,7 @@ import { assert } from "@acdh-oeaw/lib";
 import { computed } from "vue";
 import { useRoute } from "vue-router/composables";
 
-import LemmaPrintPreview from '@/features/lemmata/lemma-print-preview.vue'
+import LemmaPrintPreview from "@/features/lemmata/lemma-print-preview.vue";
 import { isPositiveInteger } from "@/lib/is-positive-integer";
 
 const route = useRoute();

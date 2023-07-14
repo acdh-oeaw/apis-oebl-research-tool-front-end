@@ -22,7 +22,7 @@ const routes: Array<RouteConfig> = [
 			if (!isPositiveInteger(id)) {
 				return { path: "/not-found", replace: true };
 			}
-			return undefined
+			return undefined;
 		},
 	},
 	// {
@@ -65,7 +65,7 @@ const routes: Array<RouteConfig> = [
 			if (!isPositiveInteger(id)) {
 				return { path: "/not-found", replace: true };
 			}
-			return undefined
+			return undefined;
 		},
 	},
 	// {

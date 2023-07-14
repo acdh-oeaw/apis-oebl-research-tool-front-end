@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-const _props = defineProps<{
+const props = defineProps<{
 	label: string;
 }>();
 </script>
 
 <template>
-	<VRow style="height: 35px" class="align-center" no-gutters>
+	<VRow class="align-center" no-gutters style="height: 35px">
 		<VCol cols="5">
-			{{ label }}
+			{{ props.label }}
 		</VCol>
 		<VCol cols="7">
 			<slot />

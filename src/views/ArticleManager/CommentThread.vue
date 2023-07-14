@@ -2,11 +2,11 @@
 import { type Editor } from "@tiptap/vue-2";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import TextField from "@/features/ui/text-field.vue";
 import { getRelativeTime } from "@/lib/get-relative-time";
 import { emoji } from "@/service/emoji";
 import store from "@/store";
 import { type CommentThreadAttributes } from "@/views/ArticleManager/extensionComment";
-import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

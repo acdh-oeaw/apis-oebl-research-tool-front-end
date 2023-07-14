@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
+import SwitchButton from "@/features/ui/switch-button.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
-import SwitchButton from "@/views/lib/SwitchButton.vue";
 
 const vuetify = useVuetify();
 

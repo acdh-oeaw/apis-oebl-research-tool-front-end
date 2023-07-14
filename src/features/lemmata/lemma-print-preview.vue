@@ -17,8 +17,8 @@ const zoteroBy = new ZoteroLemmaManagmentController();
 const zoteroAbout = new ZoteroLemmaManagmentController();
 
 const props = defineProps<{
-	id: number
-}>()
+	id: number;
+}>();
 
 const lemma = ref<LemmaRow | null>(null);
 const labels = lemmaRowTranslations;
@@ -41,17 +41,13 @@ db.lemmas
 
 		lemma.value = lemmaRow;
 
-		zoteroBy
-			.load(lemmaRow.zoteroKeysBy)
-			.then((z) => {
-				zoteroCitationsBy.value = z.zoteroItems.map(convertZoteroItemToView)
-			});
+		zoteroBy.load(lemmaRow.zoteroKeysBy).then((z) => {
+			zoteroCitationsBy.value = z.zoteroItems.map(convertZoteroItemToView);
+		});
 
-			zoteroAbout
-			.load(lemmaRow.zoteroKeysAbout)
-			.then((z) => {
-				zoteroCitationsAbout.value = z.zoteroItems.map(convertZoteroItemToView)
-			});
+		zoteroAbout.load(lemmaRow.zoteroKeysAbout).then((z) => {
+			zoteroCitationsAbout.value = z.zoteroItems.map(convertZoteroItemToView);
+		});
 	})
 	.catch((error) => {
 		window.alert("Die Datenbank konnt nicht geladen werden.");
@@ -65,7 +61,6 @@ db.lemmas
 		throw new Error("Could not select from db");
 	});
 </script>
-
 
 <template>
 	<VContainer class="lemma-print-view-container">

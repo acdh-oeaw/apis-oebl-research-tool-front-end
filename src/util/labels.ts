@@ -1,8 +1,8 @@
-import  { type LemmaRow } from "@/types/lemma";
+import { type LemmaRow } from "@/types/lemma";
 
 interface Translation {
 	de: string;
-};
+}
 
 export const lemmaRowTranslations: Record<keyof LemmaRow, Translation> = {
 	id: { de: "ID" },

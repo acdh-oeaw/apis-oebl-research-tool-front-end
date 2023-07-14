@@ -4,7 +4,7 @@ import type Vue from "vue";
 import { computed, onMounted, onScopeDispose, ref, watch } from "vue";
 import { useRouter } from "vue-router/composables";
 
-import LemmaDetails from "@/features/common/lemma-details.vue";
+import LemmaDetails from "@/features/lemmata/details/lemma-details.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 import { type SearchItem } from "@/store/search";

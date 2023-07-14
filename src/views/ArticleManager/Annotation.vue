@@ -5,10 +5,10 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
+import TextField from "@/features/ui/text-field.vue";
 import * as apis_autocomplete from "@/service/apis_autocomplete";
 import { entityTranslations } from "@/util/labels";
 import { type AnnotationAttributes } from "@/views/ArticleManager/extensionAnnotation";
-import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

@@ -6,13 +6,13 @@ import { requestState } from "@/api/core/request";
 import { type List as LemmaList, type List } from "@/api/models/List";
 import Badge from "@/features/ui/badge.vue";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
+import TextField from "@/features/ui/text-field.vue";
 import { useVuetify } from "@/lib/use-vuetify";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type WithId } from "@/types";
 import { type LemmaRow } from "@/types/lemma";
-import TextField from "@/views/lib/TextField.vue";
 
 const vuetify = useVuetify();
 

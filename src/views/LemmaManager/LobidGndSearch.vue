@@ -4,10 +4,10 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import LoadingSpinner from "@/features/ui/loading-spinner.vue";
+import TextField from "@/features/ui/text-field.vue";
 import { findPerson } from "@/service/lobid";
 import { type LemmaRow } from "@/types/lemma";
 import { lemmaRowTranslations } from "@/util/labels";
-import TextField from "@/views/lib/TextField.vue";
 
 @Component({
 	components: {

@@ -1,59 +1,58 @@
-<script lang="ts">
+<script lang="ts" setup>
 import { clone, debounce } from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed } from "vue";
 
+import SelectMenu from "@/features/ui/select-menu.vue";
 import { type LemmaColumn, type LemmaFilterComparator, type LemmaFilterItem } from "@/types/lemma";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
 
-@Component({
-	components: {
-		SelectMenu,
-	},
-})
-export default class DataFilter extends Vue {
-	@Prop({ default: () => [] }) columns!: Array<LemmaColumn>;
-	@Prop({ default: () => [] }) value!: Array<LemmaFilterItem>;
-	@Prop({ default: () => [] }) comparators!: Array<LemmaFilterComparator>;
+const props = defineProps<{
+	columns: Array<LemmaColumn>;
+	value: Array<LemmaFilterItem>;
+	comparators: Array<LemmaFilterComparator>;
+}>();
 
-	defaultFilterItem = {
-		column: this.columns[1],
-		comparator: this.comparators[0]?.value,
-		query: "",
-	};
+const emit = defineEmits<{
+	(event: "input", value: Array<LemmaFilterItem>): void;
+}>();
 
-	debouncedEmitInput = debounce(this.emitInput);
+const defaultFilterItem = computed(() => ({
+	column: props.columns[1]!,
+	comparator: props.comparators[0]!.value,
+	query: "",
+}));
 
-	emitInput() {
-		this.$emit("input", this.localFilterItems);
+function emitInput() {
+	emit("input", localFilterItems.value);
+}
+
+const debouncedEmitInput = debounce(emitInput);
+
+function isFilterWithInput(f: LemmaFilterItem): boolean {
+	return f.comparator !== "exists" && f.comparator !== "exists-not";
+}
+
+const localFilterItems = computed(() => {
+	if (props.value.length === 0) {
+		return [clone(defaultFilterItem.value)];
+	} else {
+		return props.value;
 	}
+});
 
-	isFilterWithInput(f: LemmaFilterItem): boolean {
-		return f.comparator !== "exists" && f.comparator !== "exists-not";
-	}
+function addFilterItem() {
+	emit("input", localFilterItems.value.concat(clone(defaultFilterItem.value)));
+}
 
-	get localFilterItems() {
-		if (this.value.length === 0) {
-			return [clone(this.defaultFilterItem)];
-		} else {
-			return this.value;
-		}
-	}
-
-	addFilterItem() {
-		this.$emit("input", this.localFilterItems.concat(clone(this.defaultFilterItem)));
-	}
-
-	removeFilterItem(i: number) {
-		if (this.value.length === 1) {
-			// reset first query value
-			this.$emit("input", [{ ...this.value[0], query: "" }]);
-		} else {
-			// remove filter item
-			this.$emit(
-				"input",
-				this.value.filter((f, fi) => i !== fi),
-			);
-		}
+function removeFilterItem(i: number) {
+	if (props.value.length === 1) {
+		// reset first query value
+		emit("input", [{ ...props.value[0]!, query: "" }]);
+	} else {
+		// remove filter item
+		emit(
+			"input",
+			props.value.filter((f, fi) => i !== fi),
+		);
 	}
 }
 </script>
@@ -61,13 +60,13 @@ export default class DataFilter extends Vue {
 <template>
 	<div>
 		<div v-for="(filter, i) in localFilterItems" :key="i">
-			<v-card
+			<VCard
 				flat
 				color="transparent"
 				height="38"
 				class="text-body-2 input-no-stroke d-flex pa-1 pr-2 flex-nowrap align-center"
 			>
-				<select-menu
+				<SelectMenu
 					v-model="filter.column"
 					btn-class="caption"
 					:width="80"
@@ -77,7 +76,7 @@ export default class DataFilter extends Vue {
 					key-value="value"
 					@input="emitInput"
 				/>
-				<select-menu
+				<SelectMenu
 					v-model="filter.comparator"
 					btn-class="caption"
 					:width="70"
@@ -89,7 +88,7 @@ export default class DataFilter extends Vue {
 					@input="emitInput"
 				/>
 				<div class="flex-grow-1 pl-2">
-					<v-select
+					<VSelect
 						v-if="filter.column?.type === 'boolean'"
 						v-model="filter.query"
 						:value="'true'"
@@ -109,12 +108,11 @@ export default class DataFilter extends Vue {
 						class="text-body-2"
 						@input="emitInput"
 					/>
-					<v-text-field
+					<VTextField
 						v-else
 						v-model="filter.query"
 						:disabled="
 							!isFilterWithInput(
-								// @ts-expect-error
 								filter,
 							)
 						"
@@ -134,7 +132,7 @@ export default class DataFilter extends Vue {
 					/>
 				</div>
 				<div class="flex-nowrap text-no-wrap">
-					<v-btn
+					<VBtn
 						:disabled="
 							localFilterItems.length === 1 && (filter.query === '' || filter.query === null)
 						"
@@ -142,20 +140,20 @@ export default class DataFilter extends Vue {
 						small
 						@click="removeFilterItem(i)"
 					>
-						<v-icon
+						<VIcon
 							v-if="localFilterItems.length === 1 && filter.query !== null && filter.query !== ''"
 							style="transform: rotate(45deg)"
 						>
 							mdi-plus-circle-outline
-						</v-icon>
-						<v-icon v-else>mdi-minus-circle-outline</v-icon>
-					</v-btn>
-					<v-btn icon small @click="addFilterItem">
-						<v-icon>mdi-plus-circle-outline</v-icon>
-					</v-btn>
+						</VIcon>
+						<VIcon v-else>mdi-minus-circle-outline</VIcon>
+					</VBtn>
+					<VBtn icon small @click="addFilterItem">
+						<VIcon>mdi-plus-circle-outline</VIcon>
+					</VBtn>
 				</div>
-			</v-card>
-			<v-divider
+			</VCard>
+			<VDdivider
 				v-if="localFilterItems.length > 1 && i !== localFilterItems.length - 1"
 				class="mx-2"
 			/>

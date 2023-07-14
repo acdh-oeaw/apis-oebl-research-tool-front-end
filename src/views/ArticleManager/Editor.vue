@@ -3,9 +3,9 @@ import { type Editor as TipTapEditor, EditorContent as TipTapEditorContent } fro
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { type LemmaArticleVersion } from "@/api";
+import CharPicker from "@/features/articles/char-picker.vue";
+import SelectMenu from "@/features/ui/select-menu.vue";
 import { type ArticleStore, type Markup } from "@/store/article";
-import CharPicker from "@/views/lib/CharPicker.vue";
-import SelectMenu from "@/views/lib/SelectMenu.vue";
 
 /**
  * Edits a single version of an article.
@@ -142,7 +142,7 @@ export default class Editor extends Vue {
 							<v-icon small left>mdi-message-outline</v-icon>
 							Kommentar
 						</v-btn>
-						<char-picker @returnSpecialChar="insertSpecialChar" />
+						<char-picker @input="insertSpecialChar" />
 					</v-card>
 				</v-slide-item>
 				<v-slide-item>

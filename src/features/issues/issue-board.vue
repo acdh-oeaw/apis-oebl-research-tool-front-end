@@ -143,7 +143,9 @@ const selectedStyle = {
 }
 
 .flip-list-move {
-	transition: transform 0.5s, opacity 0.5s;
+	transition:
+		transform 0.5s,
+		opacity 0.5s;
 }
 
 .no-move {

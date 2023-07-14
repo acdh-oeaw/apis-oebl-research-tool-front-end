@@ -1,16 +1,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import ZoteroSearch from "@/features/lemmata/details/zotero-search.vue";
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import { type ZoteroItem, type ZoteroView } from "@/types/zotero";
-import ZoteroSearch from "@/views/lib/ZoteroSearch.vue";
 
-/**
- * Manage Zotero Items from and about a lemma (https://gitlab.com/acdh-oeaw/oebl/oebl-research-tool-front-end/-/issues/17):
- *
- * - List items
- * - … more to come
- */
 @Component({
 	components: {
 		ZoteroSearch,
