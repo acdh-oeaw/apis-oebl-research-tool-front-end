@@ -2,9 +2,9 @@
 import lodash, { truncate } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import CsvImporter from "@/features/lemmata/import/csv-importer.vue";
 import { Data2D } from "@/lib/lemmaimport/datacontainers";
 import { defaultOptions, type SupportedFilesOptions } from "@/lib/lemmaimport/options";
-import CsvImporter from "@/views/LemmaManager/LemmaImporter/CsvImporter.vue";
 
 /**
  * Select A File, Choose Options, Have A Preview

@@ -16,8 +16,7 @@ import confirm from "@/store/confirm";
 import prompt from "@/store/prompt";
 import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/lemma";
 
-const LemmaImportManager = () =>
-	import("@/views/LemmaManager/LemmaImporter/LemmaImportManager.vue");
+const LemmaImportManager = () => import("@/features/lemmata/import/lemma-import-manager.vue");
 
 const props = defineProps<{
 	// FIXME: where is lemmaListId set?

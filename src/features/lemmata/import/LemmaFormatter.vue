@@ -1,6 +1,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import DateFormatter from "@/features/lemmata/import/date-formatter.vue";
+import GenderMapper from "@/features/lemmata/import/gender-mapper.vue";
+import LemmaPreviewer from "@/features/lemmata/import/LemmaPreviewer.vue";
+import NullManager from "@/features/lemmata/import/NullManager.vue";
 import {
 	type LemmaDates,
 	type LemmaGender,
@@ -10,10 +14,6 @@ import {
 import { mergeBuildNewLemmaRows } from "@/lib/lemmaimport/dataconversion";
 import { defautLemmaFormatterOptions, type LemmaFormatterOptions } from "@/lib/lemmaimport/options";
 import { type NewLemmaRow } from "@/types/lemma";
-import DateFormatter from "@/views/LemmaManager/LemmaImporter/DateFormatter.vue";
-import GenderMapper from "@/views/LemmaManager/LemmaImporter/GenderMapper.vue";
-import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
-import NullManager from "@/views/LemmaManager/LemmaImporter/NullManager.vue";
 
 /**
  * Takes LemmaPrototypes And Converts Them To LemmaRows

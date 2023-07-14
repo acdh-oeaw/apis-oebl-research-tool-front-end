@@ -6,8 +6,11 @@ import { ref } from "vue";
 
 import { GenderAe0Enum, type List } from "@/api";
 import LemmaPrintPreviewButton from "@/features/common/lemma-print-preview-button.vue";
+import VueFileList from "@/features/lemmata/details/file-list.vue";
 import FullNameArrayField from "@/features/lemmata/details/full-name-array-field.vue";
+import LobidGndSearch from "@/features/lemmata/details/lobid-gnd-search.vue";
 import ProfessionGroupField from "@/features/lemmata/details/profession-group-field.vue";
+import ZoteroManager from "@/features/lemmata/details/zotero-manager.vue";
 import LemmaScrapeResult from "@/features/lemmata/lemma-scrape-result.vue";
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
 import DateField from "@/features/ui/date-field.vue";
@@ -19,9 +22,6 @@ import { lemmaRowTranslations } from "@/lib/labels";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
-import VueFileList from "@/views/LemmaManager/FileList.vue";
-import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
-import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
 
 const dragClassName = "drag-over";
 

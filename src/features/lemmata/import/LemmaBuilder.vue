@@ -1,6 +1,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import ColumnSelect from "@/features/lemmata/import/column-select.vue";
+import LemmaPreviewer from "@/features/lemmata/import/lemma-previewer.vue";
 import { type Data2D, type LemmaPrototypeStringType } from "@/lib/lemmaimport/datacontainers";
 import { createEmptyLemmaPrototype } from "@/lib/lemmaimport/dataconversion";
 import {
@@ -10,8 +12,6 @@ import {
 	type ExtractColumnOptions,
 	getEmptyColumnConversion,
 } from "@/lib/lemmaimport/options";
-import ColumnSelect from "@/views/LemmaManager/LemmaImporter/ColumnSelect.vue";
-import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 
 type ColumnGroups = {
 	[groupName: string]: Array<{ name: keyof ColumnConversions; required?: boolean }>;

@@ -1,27 +1,31 @@
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-@Component
-export default class FileList extends Vue {
-	@Prop({ default: () => [] }) value!: Array<{ name: string; url: string; size: number }>;
+const props = withDefaults(
+	defineProps<{
+		value: Array<{ name: string; url: string; size: number }>;
+	}>(),
+	{
+		value: () => [],
+	},
+);
 
-	replaceWithDefaultIcon(e: Event) {
-		if (e.target instanceof HTMLImageElement) {
-			e.target.src = "/img/file-icons/unknown.svg";
-		}
-	}
-
-	formatNumber(n: number) {
-		const formatter = new Intl.NumberFormat("en", { notation: "compact", compactDisplay: "short" });
-		return formatter.format(n);
-	}
-
-	get totalSize(): number {
-		return this.value.reduce((m, e) => {
-			return m + e.size;
-		}, 0);
+function replaceWithDefaultIcon(e: Event) {
+	if (e.target instanceof HTMLImageElement) {
+		e.target.src = "/img/file-icons/unknown.svg";
 	}
 }
+
+function formatNumber(n: number) {
+	const formatter = new Intl.NumberFormat("en", { notation: "compact", compactDisplay: "short" });
+	return formatter.format(n);
+}
+
+const totalSize = computed(() => {
+	return props.value.reduce((m, e) => {
+		return m + e.size;
+	}, 0);
+});
 </script>
 
 <template>
