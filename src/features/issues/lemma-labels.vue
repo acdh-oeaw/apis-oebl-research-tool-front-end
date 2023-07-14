@@ -1,69 +1,76 @@
-<script lang="ts">
-import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" setup>
+import { mapKeys, startCase } from "lodash";
+import {computed,ref} from 'vue'
 import colors from "vuetify/lib/util/colors";
 
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type Label } from "@/types/issue";
 
-@Component
-export default class LemmaLabels extends Vue {
-	@Prop({ default: [] }) value!: Array<number>;
+const props = defineProps<{
+	value: Array<number>
+}>()
 
-	searchText: string | null = null;
-	editingLabel: Label | null = null;
-	defaultLabelColor = colors.blueGrey.base;
+const emit = defineEmits<{
+	(event: "update", value: any): void
+}>()
 
-	labelNameRules = [
+	const searchText = ref<string | null>(null);
+	const editingLabel = ref<Label | null>(null);
+	const defaultLabelColor = colors.blueGrey.base;
+
+const	labelNameRules = [
+		(n: unknown) =>
+			(n == null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
 		(n: string) =>
-			(n === null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
-		(n: string) =>
-			this.labels.findIndex(
+			labels.value.findIndex(
 				(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
 			) > -1 && "Dieses Label exisitiert bereits.",
 	];
 
-	get colors() {
-		return _.mapKeys(colors, (v, k) => _.startCase(k));
-	}
+	const _colors = computed(() => {
+		return mapKeys(colors, (v, k) => startCase(k));
+	})
 
-	get selectedLabels() {
-		return this.value
-			.map((id) => this.labels.find((l) => l.id === id))
+	const selectedLabels = computed(() => {
+		return props.value
+			.map((id) => labels.value.find((l) => l.id === id))
 			.filter((v) => v !== undefined);
-	}
+	})
 
-	get labels() {
+	const labels = computed(() => {
 		return store.issue.labels;
-	}
+	})
 
-	isNewLabel(l: Label | string): l is string {
+	function isNewLabel(l: Label | string): l is string {
 		return typeof l === "string";
 	}
 
-	addLabel(name: string) {
-		this.editingLabel = {
+	function addLabel(name: string) {
+		editingLabel.value = {
 			name: name,
-			color: this.defaultLabelColor,
+			color: defaultLabelColor,
 			id: -1,
 		};
 	}
 
-	onChange(ls: Array<Label | string>) {
-		this.searchText = "";
-		const newLabel = ls.find(this.isNewLabel);
+	function onChange(ls: Array<Label | string>) {
+		searchText.value = "";
+
+		const newLabel = ls.find(isNewLabel);
+
 		if (newLabel !== undefined) {
-			this.addLabel(newLabel);
+			addLabel(newLabel);
 		}
-		this.$emit(
+
+		emit(
 			"update",
-			ls.filter((l): l is Label => !this.isNewLabel(l)).map((l) => l.id),
+			ls.filter((l): l is Label => !isNewLabel(l)).map((l) => l.id),
 		);
 	}
 
-	async deleteEditingLabel() {
-		const i = this.editingLabel;
+	async function deleteEditingLabel() {
+		const i = editingLabel.value;
 		if (i !== null && i.id !== undefined && i.id > -1) {
 			if (
 				await confirm.confirm(
@@ -72,48 +79,47 @@ export default class LemmaLabels extends Vue {
 				)
 			) {
 				store.issue.deleteLabel(i.id);
-				this.editingLabel = null;
+				editingLabel.value = null;
 			}
 		}
 	}
 
-	async editLabel(item: Label) {
-		this.editingLabel = item;
+	async function editLabel(item: Label) {
+		editingLabel.value = item;
 	}
 
-	async saveLabel() {
-		if (this.editingLabel !== null) {
-			if (this.editingLabel.id === -1) {
+	async function saveLabel() {
+		if (editingLabel.value != null) {
+			if (editingLabel.value.id === -1) {
 				const { id } = await store.issue.createLabel(
-					this.editingLabel.name,
-					this.editingLabel.color || this.defaultLabelColor,
+					editingLabel.value.name,
+					editingLabel.value.color || defaultLabelColor,
 				);
 				if (id !== undefined) {
-					this.$emit("update", this.value.concat(id));
+					emit("update", props.value.concat(id));
 				}
 			} else {
 				await store.issue.updateLabel(
-					this.editingLabel.id!,
-					this.editingLabel.color || this.defaultLabelColor,
-					this.editingLabel.name,
+					editingLabel.value.id!,
+					editingLabel.value.color || defaultLabelColor,
+					editingLabel.value.name,
 				);
 			}
-			this.editingLabel = null;
+			editingLabel.value = null;
 		}
 	}
 
-	onRemove(label: Label) {
-		this.$emit(
+	function onRemove(label: Label) {
+		emit(
 			"update",
-			this.value.filter((id) => id !== label.id),
+			props.value.filter((id) => id !== label.id),
 		);
 	}
-}
 </script>
 
 <template>
 	<div>
-		<v-combobox
+		<VCombobox
 			multiple
 			flat
 			solo
@@ -135,7 +141,7 @@ export default class LemmaLabels extends Vue {
 			@change="onChange"
 		>
 			<template #selection="{ selected, select, item }">
-				<v-chip
+				<VChip
 					:key="item.id"
 					:input-value="selected"
 					close
@@ -148,60 +154,60 @@ export default class LemmaLabels extends Vue {
 					@click:close="onRemove(item)"
 				>
 					{{ item.name }}
-				</v-chip>
+				</VChip>
 			</template>
 			<template #item="{ item, on, props }">
-				<v-list-item :ripple="false" class="label-list-item" v-bind="props" v-on="on">
-					<v-list-item-avatar size="15">
-						<v-icon v-if="value.find((id) => id === item.id) !== undefined" :color="item.color">
+				<VListItem :ripple="false" class="label-list-item" v-bind="props" v-on="on">
+					<VListItemAvatar size="15">
+						<VIcon v-if="value.find((id) => id === item.id) !== undefined" :color="item.color">
 							mdi-checkbox-marked-circle
-						</v-icon>
-						<v-icon v-else :color="item.color">mdi-checkbox-blank-circle</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
+						</VIcon>
+						<VIcon v-else :color="item.color">mdi-checkbox-blank-circle</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>
 						{{ item.name }}
-					</v-list-item-content>
-					<v-list-item-action-text class="action">
-						<v-btn depressed small rounded @click.stop.prevent="editLabel(item)">bearbeiten</v-btn>
-					</v-list-item-action-text>
-				</v-list-item>
+					</VListItemContent>
+					<VListItemActionText class="action">
+						<VBtn depressed small rounded @click.stop.prevent="editLabel(item)">bearbeiten</VBtn>
+					</VListItemActionText>
+				</VListItem>
 			</template>
 			<template #prepend-item>
-				<v-list-item
+				<VListItem
 					style="border-bottom: 1px solid rgb(0 0 0 / 10%)"
 					@click="addLabel(searchText || 'unbenanntes Label')"
 				>
-					<v-list-item-avatar size="15">
-						<v-icon>mdi-plus</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>Label erstellen…</v-list-item-content>
-				</v-list-item>
-				<!-- <v-divider /> -->
+					<VListItemAvatar size="15">
+						<VIcon>mdi-plus</VIcon>
+					</VListItemAvatar>
+					<VListItemContent>Label erstellen…</VListItemContent>
+				</VListItem>
 			</template>
-		</v-combobox>
-		<v-dialog
+		</VCombobox>
+
+		<VDialog
 			v-if="editingLabel !== null"
 			scrollable
 			max-width="620"
 			:value="editingLabel !== null"
 			@input="editingLabel = null"
 		>
-			<v-card color="background" class="rounded-lg elevation-25">
-				<v-card-title class="px-3 py-2">
-					<v-row dense>
-						<v-col class="">
-							<v-btn
+			<VCard color="background" class="rounded-lg elevation-25">
+				<VCardTitle class="px-3 py-2">
+					<VRow dense>
+						<VCol class="">
+							<VBtn
 								color="background darken-2"
 								class="rounded-lg px-4"
 								elevation="0"
 								@click="editingLabel = null"
 							>
 								Abbrechen
-							</v-btn>
-						</v-col>
-						<v-col class="text-center">Label erstellen</v-col>
-						<v-col class="text-right">
-							<v-btn
+							</VBtn>
+						</VCol>
+						<VCol class="text-center">Label erstellen</VCol>
+						<VCol class="text-right">
+							<VBtn
 								class="rounded-lg px-4"
 								color="primary"
 								:disabled="!editingLabel.name"
@@ -209,12 +215,12 @@ export default class LemmaLabels extends Vue {
 								@click="saveLabel"
 							>
 								Speichern
-							</v-btn>
-						</v-col>
-					</v-row>
-				</v-card-title>
-				<v-card-title class="pt-0 px-3 pb-0">
-					<v-text-field
+							</VBtn>
+						</VCol>
+					</VRow>
+				</VCardTitle>
+				<VCardTitle class="pt-0 px-3 pb-0">
+					<VTextField
 						v-model="editingLabel.name"
 						solo
 						flat
@@ -227,13 +233,15 @@ export default class LemmaLabels extends Vue {
 						<template #prepend-inner>
 							<span class="caption pr-2">Labelname</span>
 						</template>
-					</v-text-field>
-				</v-card-title>
-				<v-divider />
-				<v-card-text class="overflow-y-auto pt-3 background lighten-2" style="height: 300px">
+					</VTextField>
+				</VCardTitle>
+
+				<VDivider />
+
+				<VCardText class="overflow-y-auto pt-3 background lighten-2" style="height: 300px">
 					<div v-for="(color, name) in colors" :key="name">
-						<v-subheader class="pl-0">{{ name }}</v-subheader>
-						<v-btn
+						<VSubheader class="pl-0">{{ name }}</VSubheader>
+						<VBtn
 							v-for="(shade, shadeName) in color"
 							:key="shadeName"
 							icon
@@ -242,12 +250,14 @@ export default class LemmaLabels extends Vue {
 							@click="editingLabel.color = shade"
 						/>
 					</div>
-				</v-card-text>
-				<v-divider />
-				<v-card-actions>
-					<v-row dense>
-						<v-col cols="2">
-							<v-btn
+				</VCardText>
+
+				<VDivider />
+
+				<VCardActions>
+					<VRow dense>
+						<VCol cols="2">
+							<VBtn
 								v-if="
 									editingLabel !== undefined &&
 									editingLabel.id !== undefined &&
@@ -259,22 +269,22 @@ export default class LemmaLabels extends Vue {
 								@click="deleteEditingLabel"
 							>
 								Label löschen
-							</v-btn>
-						</v-col>
-						<v-col cols="8" class="text-center">
-							<v-chip
+							</VBtn>
+						</VCol>
+						<VCol cols="8" class="text-center">
+							<VChip
 								style="color: #fff; font-weight: 500"
 								class="label mx-auto"
 								:color="editingLabel.color"
 							>
 								{{ editingLabel.name }}
-							</v-chip>
-						</v-col>
-						<v-col cols="2"></v-col>
-					</v-row>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
+							</VChip>
+						</VCol>
+						<VCol cols="2"></VCol>
+					</VRow>
+				</VCardActions>
+			</VCard>
+		</VDialog>
 	</div>
 </template>
 

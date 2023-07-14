@@ -2,12 +2,12 @@
 import { computed, ref, watch } from "vue";
 
 import { type IssueLemma, type LemmaNote } from "@/api";
+import LemmaLabels from "@/features/issues/lemma-labels.vue";
 import FormRow from "@/features/ui/form-row.vue";
 import SelectMenu from "@/features/ui/select-menu.vue";
 import { getRelativeTime } from "@/lib/get-relative-time";
 import { getYear } from "@/lib/get-year";
 import store from "@/store";
-import LemmaLabels from "@/views/IssueManager/LemmaLabels.vue";
 
 const props = defineProps<{
 	lemma: IssueLemma;
