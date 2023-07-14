@@ -21,12 +21,13 @@ const props = withDefaults(
 	defineProps<{
 		gnd: Array<string>;
 		limit: number;
-		value: Array<string>;
-		showFullLink: boolean;
+		value?: Array<string>;
+		showFullLink?: boolean;
 	}>(),
 	{
 		limit: Infinity,
 		showFullLink: false,
+		value: () => [],
 	},
 );
 

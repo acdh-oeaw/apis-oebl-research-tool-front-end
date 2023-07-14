@@ -2,8 +2,8 @@
 import { computed, ref, watch } from "vue";
 
 import FullNameField from "@/features/lemmata/details/full-name-field.vue";
+import { lemmaRowTranslations } from "@/lib/labels";
 import { type FullName as FullNameType } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
 
 const props = defineProps<{
 	fullNames: Array<FullNameType>;
@@ -147,3 +147,4 @@ function editItem(edit_index: number) {
 	width: 100%;
 }
 </style>
+@/lib/labels

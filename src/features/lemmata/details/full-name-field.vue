@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TextField from "@/features/ui/text-field.vue";
+import { lemmaRowTranslations } from "@/lib/labels";
 import { type FullName as FullNameType } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
 
 const props = defineProps<{
 	disabled?: boolean;
@@ -40,3 +40,4 @@ function onUpdateLastName(lastName: string) {
 		/>
 	</div>
 </template>
+@/lib/labels

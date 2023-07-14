@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import _ from "lodash";
 
+import { isValidHttpUrl } from "@/lib/is-valid-http-url";
+import { parseDate } from "@/lib/parse-date";
 import { type ServerResearchLemma } from "@/types/lemma";
-import { isValidHttpUrl, maybeParseDate } from "@/util";
 
 type ScrapeValue =
 	ServerResearchLemma["columns_scrape"][keyof ServerResearchLemma["columns_scrape"]];
@@ -27,7 +28,7 @@ function formatKey(s: number | string) {
 }
 
 function formatValue(key: number | string, value: any) {
-	const maybeDate = maybeParseDate(value);
+	const maybeDate = parseDate(value);
 	if (maybeDate != null) {
 		const formatter = Intl.DateTimeFormat("de", { dateStyle: "long" });
 		return formatter.format(new Date(maybeDate));

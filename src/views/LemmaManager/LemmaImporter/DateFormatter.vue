@@ -1,15 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { lemmaRowTranslations } from "@/util/labels";
+import { lemmaRowTranslations } from "@/lib/labels";
 import {
 	type LemmaDates,
 	type LemmaPrototypeRequiredFieldsType,
-} from "@/util/lemmaimport/datacontainers";
+} from "@/lib/lemmaimport/datacontainers";
 import {
 	type SupportedDateFormats as SupportedDateFormatType,
 	supportedDateFormats,
-} from "@/util/lemmaimport/options";
+} from "@/lib/lemmaimport/options";
 
 type DateComparisionView = {
 	firstName: string;
@@ -118,3 +118,4 @@ export default class DateFormatter extends Vue {
 		</v-container>
 	</div>
 </template>
+@/lib/labels

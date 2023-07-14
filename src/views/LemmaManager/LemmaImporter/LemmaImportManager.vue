@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+import { Data2D, type LemmaPrototypeStringType } from "@/lib/lemmaimport/datacontainers";
+import { ImportOptions } from "@/lib/lemmaimport/options";
 import { type NewLemmaRow } from "@/types/lemma";
-import { Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
-import { ImportOptions } from "@/util/lemmaimport/options";
 import ImportFileDialog from "@/views/LemmaManager/LemmaImporter/ImportFileDialog.vue";
 import ImportOptionsSaver from "@/views/LemmaManager/LemmaImporter/ImportOptionsSaver.vue";
 import LemmaBuilder from "@/views/LemmaManager/LemmaImporter/LemmaBuilder.vue";

@@ -2,8 +2,8 @@
 import lodash, { truncate } from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { Data2D } from "@/util/lemmaimport/datacontainers";
-import { defaultOptions, type SupportedFilesOptions } from "@/util/lemmaimport/options";
+import { Data2D } from "@/lib/lemmaimport/datacontainers";
+import { defaultOptions, type SupportedFilesOptions } from "@/lib/lemmaimport/options";
 import CsvImporter from "@/views/LemmaManager/LemmaImporter/CsvImporter.vue";
 
 /**

@@ -5,13 +5,13 @@ import {
 	type LemmaPrototypeNullableStringType,
 	type LemmaPrototypeRequiredFieldsType,
 	type LemmaPrototypeStringType,
-} from "@/util/lemmaimport/datacontainers";
+} from "@/lib/lemmaimport/datacontainers";
 import {
 	filterMissingRequiredFields,
 	getMissingRequiredFieldIndexes,
 	replaceNullStrings,
 	showMissingRequiredFields,
-} from "@/util/lemmaimport/dataconversion";
+} from "@/lib/lemmaimport/dataconversion";
 import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 
 @Component({

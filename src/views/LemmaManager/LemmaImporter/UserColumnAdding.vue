@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { type Data2D } from "@/lib/lemmaimport/datacontainers";
+import { addUserColumns } from "@/lib/lemmaimport/dataconversion";
+import { type ColumnConversions, type UserColumnMapping } from "@/lib/lemmaimport/options";
 import { type NewLemmaRow, type UserColumn } from "@/types/lemma";
-import { type Data2D } from "@/util/lemmaimport/datacontainers";
-import { addUserColumns } from "@/util/lemmaimport/dataconversion";
-import { type ColumnConversions, type UserColumnMapping } from "@/util/lemmaimport/options";
 
 /**
  * Add custum user columns to lemmas. Called it UserColumn

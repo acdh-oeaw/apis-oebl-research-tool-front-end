@@ -3,12 +3,12 @@ import { ref } from "vue";
 
 import LemmaScrapeResult from "@/features/lemmata/lemma-scrape-result.vue";
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
+import { lemmaRowTranslations } from "@/lib/labels";
 import { convertZoteroItemToView, ZoteroLemmaManagmentController } from "@/service/zotero";
 import store from "@/store";
 import { LemmaDatabase } from "@/store/lemma";
 import { type LemmaRow } from "@/types/lemma";
 import { type ZoteroView } from "@/types/zotero";
-import { lemmaRowTranslations } from "@/util/labels";
 
 // FIXME: why is this needed when we have ?minimal search param?
 store.settings.showNavDrawer = false;
@@ -357,3 +357,4 @@ db.lemmas
 	}
 }
 </style>
+@/lib/labels

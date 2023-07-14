@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import { importLemmas } from "@/lib/lemmaimport/lemmaimport";
 import { type NewLemmaRow } from "@/types/lemma";
-import { importLemmas } from "@/util/lemmaimport/lemmaimport";
 import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 
 @Component({

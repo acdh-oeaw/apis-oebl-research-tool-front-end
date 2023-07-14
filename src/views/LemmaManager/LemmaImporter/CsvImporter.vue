@@ -3,7 +3,7 @@ import lodash from "lodash";
 import neatCsv from "neat-csv";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type CsvOptions, defaultOptions } from "@/util/lemmaimport/options";
+import { type CsvOptions, defaultOptions } from "@/lib/lemmaimport/options";
 
 @Component
 export default class CsvImporter extends Vue {

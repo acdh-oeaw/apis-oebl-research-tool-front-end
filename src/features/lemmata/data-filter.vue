@@ -111,11 +111,7 @@ function removeFilterItem(i: number) {
 					<VTextField
 						v-else
 						v-model="filter.query"
-						:disabled="
-							!isFilterWithInput(
-								filter,
-							)
-						"
+						:disabled="!isFilterWithInput(filter)"
 						autocomplete="off"
 						style="min-width: 60px"
 						placeholder="Abfrage…"

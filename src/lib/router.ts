@@ -3,9 +3,9 @@ import VueRouter, { type RouteConfig } from "vue-router";
 
 import { isPositiveInteger } from "@/lib/is-positive-integer";
 import IssueByIdPage from "@/pages/issues/[id]/index.vue";
+import LemmaByIdPrintPage from "@/pages/lemmata/[id]/print.vue";
 // import EditorLoader from "@/views/ArticleManager/EditorLoader.vue";
-// import LemmaManager from "@/views/LemmaManager/LemmaManager.vue";
-import LemmaByIdPrintPage from "@/pages/lemmas/[id]/print.vue";
+import LemmataPage from "@/pages/lemmata/index.vue";
 
 Vue.use(VueRouter);
 
@@ -25,15 +25,10 @@ const routes: Array<RouteConfig> = [
 			return undefined;
 		},
 	},
-	// {
-	// 	path: "/lemmata",
-	// 	component: LemmaManager,
-	// 	props(route) {
-	// 		return {
-	// 			highlightId: Number(route.query.focus) || null,
-	// 		};
-	// 	},
-	// },
+	{
+		path: "/lemmata",
+		component: LemmataPage,
+	},
 	// {
 	// 	path: "/lemmata/list/:lemmaListId",
 	// 	component: LemmaManager,

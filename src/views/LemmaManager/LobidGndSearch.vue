@@ -7,7 +7,7 @@ import LoadingSpinner from "@/features/ui/loading-spinner.vue";
 import TextField from "@/features/ui/text-field.vue";
 import { findPerson } from "@/service/lobid";
 import { type LemmaRow } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
+import { lemmaRowTranslations } from "@/lib/labels";
 
 @Component({
 	components: {
@@ -142,3 +142,4 @@ export default class LobidGndSearch extends Vue {
 	position: relative;
 }
 </style>
+@/lib/labels

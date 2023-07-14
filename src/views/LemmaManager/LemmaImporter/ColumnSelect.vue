@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { lemmaRowTranslations } from "@/lib/labels";
+import { type Data2D } from "@/lib/lemmaimport/datacontainers";
+import { type ExtractColumnOptions } from "@/lib/lemmaimport/options";
 import { type LemmaRow } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
-import { type Data2D } from "@/util/lemmaimport/datacontainers";
-import { type ExtractColumnOptions } from "@/util/lemmaimport/options";
 
 @Component
 export default class ColumnSelect extends Vue {
@@ -86,3 +86,4 @@ export default class ColumnSelect extends Vue {
 		</v-container>
 	</div>
 </template>
+@/lib/labels

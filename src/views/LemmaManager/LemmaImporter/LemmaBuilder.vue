@@ -1,15 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type Data2D, type LemmaPrototypeStringType } from "@/util/lemmaimport/datacontainers";
-import { createEmptyLemmaPrototype } from "@/util/lemmaimport/dataconversion";
+import { type Data2D, type LemmaPrototypeStringType } from "@/lib/lemmaimport/datacontainers";
+import { createEmptyLemmaPrototype } from "@/lib/lemmaimport/dataconversion";
 import {
 	type ColumnConversion,
 	type ColumnConversions,
 	defaultLemmaBuilderOptions,
 	type ExtractColumnOptions,
 	getEmptyColumnConversion,
-} from "@/util/lemmaimport/options";
+} from "@/lib/lemmaimport/options";
 import ColumnSelect from "@/views/LemmaManager/LemmaImporter/ColumnSelect.vue";
 import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";
 

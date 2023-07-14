@@ -15,10 +15,10 @@ import SelectMenu from "@/features/ui/select-menu.vue";
 import TextField from "@/features/ui/text-field.vue";
 import TextFieldAlternatives from "@/features/ui/text-field-alternatives.vue";
 import { getYear } from "@/lib/get-year";
+import { lemmaRowTranslations } from "@/lib/labels";
 import store from "@/store";
 import confirm from "@/store/confirm";
 import { type LemmaRow } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
 import VueFileList from "@/views/LemmaManager/FileList.vue";
 import LobidGndSearch from "@/views/LemmaManager/LobidGndSearch.vue";
 import ZoteroManager from "@/views/LemmaManager/ZoteroManager.vue";
@@ -593,3 +593,4 @@ h4 {
 	content: ", ";
 }
 </style>
+@/lib/labels

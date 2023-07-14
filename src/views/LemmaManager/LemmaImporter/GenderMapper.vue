@@ -2,13 +2,13 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { GenderAe0Enum } from "@/api";
-import { lemmaRowTranslations } from "@/util/labels";
+import { lemmaRowTranslations } from "@/lib/labels";
 import {
 	type LemmaGender,
 	type LemmaPrototypeRequiredFieldsType,
-} from "@/util/lemmaimport/datacontainers";
-import { mapGender } from "@/util/lemmaimport/dataconversion";
-import { defautLemmaFormatterOptions, type GenderMappingOption } from "@/util/lemmaimport/options";
+} from "@/lib/lemmaimport/datacontainers";
+import { mapGender } from "@/lib/lemmaimport/dataconversion";
+import { defautLemmaFormatterOptions, type GenderMappingOption } from "@/lib/lemmaimport/options";
 
 @Component
 export default class GenderMapper extends Vue {
@@ -143,3 +143,4 @@ export default class GenderMapper extends Vue {
 		</v-container>
 	</div>
 </template>
+@/lib/labels

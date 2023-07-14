@@ -4,7 +4,7 @@ import { ref, watch } from "vue";
 
 import { type ProfessionGroup } from "@/api";
 import { OpenAPI } from "@/api/core/OpenAPI";
-import { lemmaRowTranslations } from "@/util/labels";
+import { lemmaRowTranslations } from "@/lib/labels";
 
 interface VAutoComplete {
 	id?: number;
@@ -139,3 +139,4 @@ function findProfessionGroup(): ProfessionGroup | undefined {
 		/>
 	</div>
 </template>
+@/lib/labels

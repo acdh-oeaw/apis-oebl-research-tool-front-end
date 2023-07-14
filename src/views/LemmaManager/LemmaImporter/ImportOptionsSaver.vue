@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { ImportOptionsManager } from "@/util/lemmaimport/optionmanagement";
-import { ImportOptions } from "@/util/lemmaimport/options";
+import { ImportOptionsManager } from "@/lib/lemmaimport/optionmanagement";
+import { ImportOptions } from "@/lib/lemmaimport/options";
 
 @Component
 export default class ImportOptionsSaver extends Vue {

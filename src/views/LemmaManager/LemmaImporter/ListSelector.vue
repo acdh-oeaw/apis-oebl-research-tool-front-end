@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { ListManager } from "@/lib/lemmaimport/listmanagement";
+import { type SelectedList } from "@/lib/lemmaimport/options";
 import { type NewLemmaRow } from "@/types/lemma";
-import { ListManager } from "@/util/lemmaimport/listmanagement";
-import { type SelectedList } from "@/util/lemmaimport/options";
 
 const listManager = ListManager.createObservableListManager();
 

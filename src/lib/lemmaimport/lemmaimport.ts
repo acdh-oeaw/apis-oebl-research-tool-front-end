@@ -20,11 +20,7 @@ export async function importLemmas(lemmas: Array<NewLemmaRow>): Promise<void> {
 	}
 
 	const requestReadyLemmas: Array<LemmasCreateRequest> = lemmas.map((lemma) =>
-		Object.assign(lemma, {
-			selected: false, // Now this makes sense, doesn't it?
-			dateOfBirth: lemma.dateOfBirth.generateISO_OnlyDate(),
-			dateOfDeath: lemma.dateOfDeath.generateISO_OnlyDate(),
-		}),
+		Object.assign(lemma, { selected: false }),
 	);
 
 	await ResearchService.researchApiV1LemmaresearchCreate({

@@ -1,18 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { type NewLemmaRow } from "@/types/lemma";
 import {
 	type LemmaDates,
 	type LemmaGender,
 	type LemmaPrototypeRequiredFieldsType,
 	type LemmaPrototypeStringType,
-} from "@/util/lemmaimport/datacontainers";
-import { mergeBuildNewLemmaRows } from "@/util/lemmaimport/dataconversion";
-import {
-	defautLemmaFormatterOptions,
-	type LemmaFormatterOptions,
-} from "@/util/lemmaimport/options";
+} from "@/lib/lemmaimport/datacontainers";
+import { mergeBuildNewLemmaRows } from "@/lib/lemmaimport/dataconversion";
+import { defautLemmaFormatterOptions, type LemmaFormatterOptions } from "@/lib/lemmaimport/options";
+import { type NewLemmaRow } from "@/types/lemma";
 import DateFormatter from "@/views/LemmaManager/LemmaImporter/DateFormatter.vue";
 import GenderMapper from "@/views/LemmaManager/LemmaImporter/GenderMapper.vue";
 import LemmaPreviewer from "@/views/LemmaManager/LemmaImporter/LemmaPreviewer.vue";

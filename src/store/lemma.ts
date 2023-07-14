@@ -22,7 +22,7 @@ import {
 	type SecondaryCitation,
 	type ServerResearchLemma,
 } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/util/labels";
+import { lemmaRowTranslations } from "@/lib/labels";
 
 interface LemmaFilter {
 	id: string;
