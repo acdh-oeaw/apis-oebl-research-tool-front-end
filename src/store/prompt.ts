@@ -23,7 +23,7 @@ class ConfirmStore {
 	value: string | null = null;
 
 	isValid(input: string | null): boolean {
-		return input !== null && (this.rules || []).every((r) => r(input) === true);
+		return input != null && (this.rules || []).every((r) => r(input) === true);
 	}
 
 	async prompt(message: string, options?: PromptOptions): Promise<string | null> {

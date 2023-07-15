@@ -9,7 +9,10 @@ import {
 	type List,
 	ResearchService,
 } from "@/api";
+import { lemmaRowTranslations } from "@/lib/labels";
 import notifyService from "@/service/notify/notify";
+import store from "@/store";
+import { type UserProfile } from "@/store/user";
 import { type WithId } from "@/types";
 import {
 	type FullName,
@@ -18,14 +21,8 @@ import {
 	type LemmaFilterComparator,
 	type LemmaRow,
 	type SecondaryCitation,
-	type SerializedLemmaRow,
 	type ServerResearchLemma,
 } from "@/types/lemma";
-import { DateContainer } from "@/util/dates";
-
-import { lemmaRowTranslations } from "../util/labels";
-import store from ".";
-import { type UserProfile } from "./user";
 
 interface LemmaFilter {
 	id: string;
@@ -33,47 +30,18 @@ interface LemmaFilter {
 	filterItems: { [key: string]: boolean | string | null };
 }
 
-function serializeLemmaRow(lemmaRow: LemmaRow): SerializedLemmaRow {
-	const copy: any = { ...lemmaRow };
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (lemmaRow.dateOfBirth) {
-		copy.dateOfBirth = new DateContainer(
-			lemmaRow.dateOfBirth.calendarYear,
-			lemmaRow.dateOfBirth.calendarMonth,
-			lemmaRow.dateOfBirth.calendarDate,
-		).generateISO_OnlyDate();
-	}
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (lemmaRow.dateOfDeath) {
-		copy.dateOfDeath = new DateContainer(
-			lemmaRow.dateOfDeath.calendarYear,
-			lemmaRow.dateOfDeath.calendarMonth,
-			lemmaRow.dateOfDeath.calendarDate,
-		).generateISO_OnlyDate();
-	}
-	return copy;
-}
-
-export function unserializeLemmaRow(serializedLemmaRow: SerializedLemmaRow): LemmaRow {
-	return {
-		...serializedLemmaRow,
-		dateOfBirth: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfBirth),
-		dateOfDeath: DateContainer.fromISO_OnlyDate(serializedLemmaRow.dateOfDeath),
-	};
-}
-
 export function getValueFromLemmaRowByColumn(row: LemmaRow, column: LemmaColumn) {
 	if (column.isUserColumn) {
 		return row.columns_user[column.value];
 	}
-	return row[column.value as keyof LemmaRow]; // Yeaaah :-(
+	return row[column.value as keyof LemmaRow];
 }
 
 // if incremented, the local DBs will be wiped and repopulated from the server.
 const currentDbVersion = "2.0";
 
 export class LemmaDatabase extends Dexie {
-	public lemmas: Dexie.Table<SerializedLemmaRow, number>;
+	public lemmas: Dexie.Table<LemmaRow, number>;
 	public constructor() {
 		super("LemmaDb", { allowEmptyDB: true });
 		this.version(8).stores({
@@ -109,7 +77,7 @@ export default class LemmaStore {
 
 		incrementStatus(ls: Array<LemmaRow>) {
 			const userLemmasCount = ls.filter(
-				(l) => l.list !== undefined && l.list.editor === store.user.userProfile.userId,
+				(l) => l.list != null && l.list.editor === store.user.userProfile.userId,
 			).length;
 			this.status = this.status + userLemmasCount;
 			// reset if we’re finished
@@ -335,17 +303,17 @@ export default class LemmaStore {
 
 	doesUpdateDescribeListChange(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
-			update.list !== undefined &&
-			update.list.id !== undefined &&
+			update.list != null &&
+			update.list.id != null &&
 			ls.length > 0 &&
-			ls[0]!.list !== undefined &&
+			ls[0]!.list != null &&
 			ls[0]!.list.id !== update.list.id
 		);
 	}
 
 	getUserLists(lists: Array<List>, u: UserProfile): Array<List> {
 		return lists.filter((ll) => {
-			return ll.editor !== undefined && ll.editor.userId === u.userId;
+			return ll.editor != null && ll.editor.userId === u.userId;
 		});
 	}
 
@@ -392,7 +360,7 @@ export default class LemmaStore {
 		notifyService.on("updateLemmas", (lemmas, updates, e) => {
 			const _updatedLemmas = this.updateLemmas(lemmas, updates, false);
 			if (this.isMovementToUserList(lemmas, updates)) {
-				if (updates.list?.id !== undefined) {
+				if (updates.list?.id != null) {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));
 					this.newLemmasInUserList[updates.list.id] = {
 						...this.newLemmasInUserList[updates.list.id],
@@ -410,7 +378,7 @@ export default class LemmaStore {
 
 	get lastLemmaFetchDate(): Date | null {
 		const stored = JSON.parse(localStorage.getItem("lastLemmaFetchDate") || "null");
-		if (stored !== null) {
+		if (stored != null) {
 			return new Date(stored);
 		} else {
 			return null;
@@ -443,8 +411,7 @@ export default class LemmaStore {
 			return {
 				...ll,
 				count: this._lemmas.filter((l) => l.list?.id === ll.id).length,
-				countNew:
-					ll.id !== undefined ? Object.keys(this.newLemmasInUserList[ll.id] || {}).length : 0,
+				countNew: ll.id != null ? Object.keys(this.newLemmasInUserList[ll.id] || {}).length : 0,
 			};
 		});
 	}
@@ -459,17 +426,16 @@ export default class LemmaStore {
 
 	get selectedLemmas() {
 		const localSelectedLemmasJSON = localStorage.getItem("selectedLemmas");
-		const localSelectedLemmasObjects: Array<SerializedLemmaRow> = localSelectedLemmasJSON
+		const localSelectedLemmasObjects: Array<LemmaRow> = localSelectedLemmasJSON
 			? JSON.parse(localSelectedLemmasJSON)
 			: [];
-		const unserializedSelectedLemmas = localSelectedLemmasObjects.map(unserializeLemmaRow);
-		this._selectedLemmas = unserializedSelectedLemmas;
+		this._selectedLemmas = localSelectedLemmasObjects;
 		return this._selectedLemmas;
 	}
 
 	set selectedLemmas(lemmas: Array<LemmaRow>) {
 		this._selectedLemmas = lemmas;
-		localStorage.setItem("selectedLemmas", JSON.stringify(lemmas.map(serializeLemmaRow)));
+		localStorage.setItem("selectedLemmas", JSON.stringify(lemmas));
 	}
 
 	get selectedLemmaIssueId() {
@@ -525,7 +491,7 @@ export default class LemmaStore {
 	}
 
 	private async updateLemmasInIndexedDB(newLemmas: Array<LemmaRow>): Promise<void> {
-		const serializedLemmas = newLemmas.map(serializeLemmaRow);
+		const serializedLemmas = newLemmas;
 		try {
 			await this.localDb.lemmas.bulkPut(serializedLemmas);
 		} catch (error) {
@@ -534,12 +500,14 @@ export default class LemmaStore {
 	}
 
 	private async updateLemmasOnServer(newLemmas: Array<LemmaRow>) {
-		const serializedLemmas = newLemmas.map(serializeLemmaRow);
+		const serializedLemmas = newLemmas;
 		await Promise.all(
 			serializedLemmas.map(async (lemma) => {
 				await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, {
 					...lemma,
-					firstName: lemma.firstName === null ? undefined : lemma.firstName,
+					firstName: lemma.firstName == null ? undefined : lemma.firstName,
+					dateOfBirth: lemma.dateOfBirth == null ? undefined : lemma.dateOfBirth,
+					dateOfDeath: lemma.dateOfDeath == null ? undefined : lemma.dateOfDeath,
 				});
 			}),
 		);
@@ -614,7 +582,7 @@ export default class LemmaStore {
 		this.deleteLemmaListLocally(id);
 		this.selectedLemmaListId = null;
 		await ResearchService.researchApiV1ListresearchDestroy(id);
-		if (list !== undefined) {
+		if (list != null) {
 			notifyService.emit("deleteLemmaList", list);
 		}
 		await this.loadRemoteLemmaLists();
@@ -627,8 +595,8 @@ export default class LemmaStore {
 			lemmas: [
 				{
 					...lemmaRow,
-					dateOfBirth: lemmaRow.dateOfBirth.generateISO_OnlyDate(),
-					dateOfDeath: lemmaRow.dateOfDeath.generateISO_OnlyDate(),
+					dateOfBirth: lemmaRow.dateOfBirth,
+					dateOfDeath: lemmaRow.dateOfDeath,
 					firstName: lemmaRow.firstName || undefined,
 					lastName: lemmaRow.lastName || undefined,
 					selected: false,
@@ -674,7 +642,7 @@ export default class LemmaStore {
 
 	getSumSimilarity(l: LemmaRow, lc: LemmaRow): number {
 		return this.columns.reduce((m, e) => {
-			if (e.getSimilarityFactor !== undefined) {
+			if (e.getSimilarityFactor != null) {
 				return m + e.getSimilarityFactor(l, lc);
 			}
 			return m;
@@ -695,14 +663,14 @@ export default class LemmaStore {
 	}
 
 	async getLocalLemmaCache(): Promise<Array<LemmaRow>> {
-		let lemmas: Array<SerializedLemmaRow> = [];
+		let lemmas: Array<LemmaRow> = [];
 		try {
 			lemmas = await this.localDb.lemmas.toArray();
 		} catch (error) {
 			console.error({ catchedError: error });
 			lemmas = [];
 		}
-		return lemmas.map(unserializeLemmaRow);
+		return lemmas;
 	}
 
 	private async deleteLemmasLocally(ids: Array<number>) {
@@ -757,10 +725,10 @@ export default class LemmaStore {
 			lastName: rs.lastName,
 			alternativeNames: rs.alternativeNames as Array<FullName>,
 			gender: rs.gender as GenderAe0Enum,
-			dateOfBirth: DateContainer.fromISO_OnlyDate(rs.dateOfBirth),
-			dateOfDeath: DateContainer.fromISO_OnlyDate(rs.dateOfDeath),
+			dateOfBirth: rs.dateOfBirth ?? null,
+			dateOfDeath: rs.dateOfDeath ?? null,
 			updated: rs.last_updated,
-			gnd: rs.gnd !== undefined ? rs.gnd.filter((g) => g !== "None") : [],
+			gnd: rs.gnd != null ? rs.gnd.filter((g) => g !== "None") : [],
 			columns_user: rs.columns_user,
 			columns_scrape: rs.columns_scrape,
 			professionDetail: rs.professionDetail,
@@ -800,7 +768,7 @@ export default class LemmaStore {
 			modifiedAfter,
 		);
 		// call progress handler if available
-		if (onProgress !== undefined) {
+		if (onProgress != null) {
 			await onProgress(
 				((firstRes.results as Array<ServerResearchLemma> | undefined) || []).map(
 					this.convertRemoteLemmaToLemmaRow,
@@ -808,7 +776,7 @@ export default class LemmaStore {
 			);
 		}
 		// if there’s more than on page: loop from second page until we have all items and return
-		if (firstRes.count !== undefined && firstRes.count > chunkSize) {
+		if (firstRes.count != null && firstRes.count > chunkSize) {
 			const chunks = Math.ceil(firstRes.count / chunkSize);
 			let lemmaAgg: Array<LemmaRow> = [];
 			for (let i = 1; i < chunks; i++) {
@@ -822,7 +790,7 @@ export default class LemmaStore {
 						)
 					).results as Array<ServerResearchLemma> | undefined) || [];
 				const converted = res.map(this.convertRemoteLemmaToLemmaRow);
-				if (onProgress !== undefined) {
+				if (onProgress != null) {
 					await onProgress(converted);
 				}
 				lemmaAgg = lemmaAgg.concat(converted);
@@ -974,7 +942,7 @@ export default class LemmaStore {
 
 	get lemmas() {
 		const lemmas =
-			this.selectedLemmaListId !== null
+			this.selectedLemmaListId != null
 				? this.getLemmasByList(this.selectedLemmaListId)
 				: this._lemmas;
 		return this.filterLemmas(lemmas);

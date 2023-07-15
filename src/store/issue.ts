@@ -121,7 +121,7 @@ export default class IssueStore {
 		return WorkflowService.workflowApiV1LemmaNoteCreate({
 			lemma: lemmaId,
 			text: text,
-			user: 4,
+			user: 4, // FIXME: who is user 4?
 		});
 	}
 
@@ -133,7 +133,7 @@ export default class IssueStore {
 		const index = this.issueLemmas.findIndex((l) => l.id === id);
 		if (index > -1) {
 			const newIssueLemma = { ...this.issueLemmas[index], ...l };
-			if (this.selectedLemma !== null && this.issueLemmas[index]!.id === this.selectedLemma.id) {
+			if (this.selectedLemma != null && this.issueLemmas[index]!.id === this.selectedLemma.id) {
 				this.selectedLemma = this.issueLemmas[index]!;
 			}
 			this.updateIssueLemmasLocally([id], l);

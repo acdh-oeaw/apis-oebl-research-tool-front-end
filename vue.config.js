@@ -24,7 +24,6 @@ const config = defineConfig({
 		compress: true,
 		port: 8080,
 	},
-	runtimeCompiler: true,
 	transpileDependencies: ["vuetify"],
 });
 

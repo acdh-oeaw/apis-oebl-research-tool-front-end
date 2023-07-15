@@ -1,14 +1,25 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import { ApiError } from "@/api/core/ApiError";
-import type { ApiRequestOptions } from "@/api/core/ApiRequestOptions";
-import type { ApiResult } from "@/api/core/ApiResult";
+import { type ApiRequestOptions } from "@/api/core/ApiRequestOptions";
+import { type ApiResult } from "@/api/core/ApiResult";
 import { OpenAPI } from "@/api/core/OpenAPI";
+
 import store from "@/store";
 import confirm from "@/store/confirm";
 
-/** Singleton for State */
+/**
+ * These were added or changed compared to the upstream request module:
+ * - `requestState` added
+ * - `beforeunload` event added
+ * - token authentication changed to use "Token" prefix instead of "Bearer" to
+ *   align with django restframework
+ * - active request counting in `request` funtion
+ * - changes to error handling in `request` function
+ */
+
 export const requestState = {
 	countWriteRequests: 0,
 	countRequests: 0,
@@ -18,17 +29,21 @@ export const requestState = {
 	},
 };
 
-function warnBeforeLeave(e: BeforeUnloadEvent): string | undefined {
+function warnBeforeLeave(event: BeforeUnloadEvent): string | undefined {
 	if (requestState.countWriteRequests > 0) {
-		e.returnValue = "";
-		return "Synchronisierung läuft noch. Beim Beenden können Änderungen verloren gehen. Wirklich beenden?";
+		const confirmationMessage =
+			"Synchronisierung läuft noch. Beim Beenden können Änderungen verloren gehen. Wirklich beenden?";
+		event.returnValue = confirmationMessage;
+		return confirmationMessage;
 	}
 }
 
 window.addEventListener("beforeunload", warnBeforeLeave);
 
+//
+
 function isDefined<T>(value: T | null | undefined): value is Exclude<T, null | undefined> {
-	return value !== undefined && value !== null;
+	return value != null && value != null;
 }
 
 function isString(value: any): value is string {
@@ -205,16 +220,6 @@ function catchErrors(options: ApiRequestOptions, result: ApiResult): void {
 	}
 }
 
-function isHttpWriteCall(opts?: ApiRequestOptions): boolean {
-	return (
-		opts !== undefined &&
-		opts.method !== undefined &&
-		opts.method !== "GET" &&
-		opts.method !== "HEAD" &&
-		opts.method !== "OPTIONS"
-	);
-}
-
 /**
  * Request using fetch client
  * @param options The request options from the the service
@@ -222,11 +227,14 @@ function isHttpWriteCall(opts?: ApiRequestOptions): boolean {
  * @throws ApiError
  */
 export async function request(options: ApiRequestOptions): Promise<ApiResult> {
-	const isWriteCall = isHttpWriteCall(options);
-	if (isWriteCall) {
-		requestState.countWriteRequests = requestState.countWriteRequests + 1;
+	const isWriteRequest = ["delete", "patch", "post", "put"].includes(options.method.toLowerCase());
+
+	if (isWriteRequest) {
+		requestState.countWriteRequests++;
 	}
-	requestState.countRequests = requestState.countRequests + 1;
+	requestState.countRequests++;
+
+	//
 
 	const url = getUrl(options);
 	const response = await sendRequest(options, url);
@@ -241,34 +249,38 @@ export async function request(options: ApiRequestOptions): Promise<ApiResult> {
 		body: responseHeader || responseBody,
 	};
 
-	if (isWriteCall) {
-		requestState.countWriteRequests = requestState.countWriteRequests - 1;
+	//
+
+	if (isWriteRequest) {
+		requestState.countWriteRequests--;
 	}
-	requestState.countRequests = requestState.countRequests - 1;
+	requestState.countRequests--;
+
+	//
 
 	if (result.ok) {
 		return result;
 	} else {
-		// the user’s not logged in.
 		if (result.status === 401) {
-			console.log("Unauthorized Access. Waiting for log-in before continuing.");
 			store.isLoggedIn = false;
-			// return a new, long-running promise.
+
+			console.log("Unauthorized Access. Waiting for log-in before continuing.");
+
 			return new Promise((resolve, reject) => {
-				// this promise only resolves after the user logs in.
 				store.onLoginSuccess(async () => {
-					// recursion (with the same parameters, i. e. repeating the same request).
 					return request(options).then(resolve).catch(reject);
 				});
 			});
-			// a normal error: alert user.
 		} else {
 			requestState.hasErrored = true;
+
 			console.error(result);
+
 			await confirm.confirm("Serverfehler. Details in der Console.", {
 				showCancel: false,
 				icon: "mdi-error",
 			});
+
 			return result;
 		}
 	}

@@ -7,12 +7,13 @@
 		"experimentalDecorators": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": true,
 		"noUncheckedIndexedAccess": true,
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": ["./src/*"]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,

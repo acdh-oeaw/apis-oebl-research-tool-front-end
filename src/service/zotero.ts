@@ -1,8 +1,6 @@
 import Dexie from "dexie";
-import fetch from "node-fetch";
-// If not imported, there is some type error, with auto-imported (?) stuff
-import { Headers, type Response } from "node-fetch";
 
+import { env } from "@/config/env";
 import {
 	type ZoteroItem,
 	type ZoteroItemCreatorType,
@@ -29,12 +27,12 @@ class ZoteroStore {
 	}
 
 	async getInitialData() {
-		return (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/initial-data")).json();
+		return (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/initial-data")).json();
 	}
 
 	async createItem(i: ZoteroItem["data"]) {
 		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item", {
+			await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item", {
 				method: "POST",
 				body: JSON.stringify([i]),
 				headers: {
@@ -45,16 +43,16 @@ class ZoteroStore {
 	}
 
 	async searchItem(q: string): Promise<Array<ZoteroItem>> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
+		return await (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/search/" + q)).json();
 	}
 
 	async getItem(key: string): Promise<ZoteroItem> {
-		return await (await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key)).json();
+		return await (await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key)).json();
 	}
 
 	async updateTitle(key: string, t: ZoteroPatchData): Promise<{ version: number }> {
 		return await (
-			await fetch(process.env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key, {
+			await fetch(env.VUE_APP_EVENTBUS_HOST + "/zotero/item/" + key, {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
@@ -89,9 +87,7 @@ class ZoteroItemCache {
 
 	async select(zoteroKeys: Array<string>): Promise<Array<ZoteroItem>> {
 		const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
-		return allResults.filter(
-			(row: ZoteroItem | null | undefined) => row !== undefined && row !== null,
-		);
+		return allResults.filter((row: ZoteroItem | null | undefined) => row != null && row != null);
 	}
 
 	/**
@@ -128,14 +124,13 @@ async function getZoteroResponse(
 ): Promise<Response> {
 	const requestHeaders = new Headers();
 	requestHeaders.set("Content-Type", "application/json");
-	if (version !== null) {
+	if (version != null) {
 		requestHeaders.set("if-Modified-Since-Version", String(version));
 	}
 
-	const djangoResponse = await fetch(
-		`${process.env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`,
-		{ headers: requestHeaders },
-	);
+	const djangoResponse = await fetch(`${env.VUE_APP_EVENTBUS_HOST}/zotero/item/${zoteroKey}`, {
+		headers: requestHeaders,
+	});
 
 	if (!djangoResponse.ok) {
 		throw new Error(`Error in server ${djangoResponse.status} ${djangoResponse.statusText}`);
@@ -270,7 +265,7 @@ export class ZoteroLemmaManagmentController {
 		// Load them from zotero
 		const newZoteroItems = await Promise.all(notCachedKeys.map(getZoteroItem));
 		// Try to cache the new items
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.insert(newZoteroItems);
 			} catch (error) {
@@ -311,7 +306,7 @@ export class ZoteroLemmaManagmentController {
 		); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
 		// If changed, update cache
 		const changedRevisions = zoteroSyncStati.filter((status) => status.changed);
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.update(changedRevisions.map((status) => status.zoteroItem));
 			} catch (error) {
@@ -334,7 +329,7 @@ export class ZoteroLemmaManagmentController {
 	}
 
 	async add(zoteroItems: Array<ZoteroItem>) {
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.update(zoteroItems);
 			} catch (error) {
