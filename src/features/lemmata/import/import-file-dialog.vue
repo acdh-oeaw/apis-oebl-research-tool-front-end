@@ -1,164 +1,159 @@
-<script lang="ts">
-import lodash, { truncate } from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { range, truncate, zip } from "lodash";
+import { computed, ref, watch } from "vue";
 
 import CsvImporter from "@/features/lemmata/import/csv-importer.vue";
 import { Data2D } from "@/lib/lemmaimport/datacontainers";
 import { defaultOptions, type SupportedFilesOptions } from "@/lib/lemmaimport/options";
 
-/**
- * Select A File, Choose Options, Have A Preview
- */
-@Component({
-	components: {
-		CsvImporter,
-	},
-})
-export default class ImportFileDialog extends Vue {
-	/**
-	 * Preloaded file options from storage
-	 */
-	@Prop({ required: true }) preloadedFileOptions!: SupportedFilesOptions;
+const props = defineProps<{
+	preloadedFileOptions: SupportedFilesOptions;
+}>();
 
-	file: File | null = null;
+const emit = defineEmits<{
+	(event: "options", value: SupportedFilesOptions): void;
+	(event: "data", value: Data2D | null): void;
+	(event: "submit"): void;
+}>();
 
-	localOptions: SupportedFilesOptions = defaultOptions;
+const file = ref<File | null>(null);
 
-	rawData: Array<Array<string>> | null = null;
-	fileType: SupportedFilesOptions["fileType"] = "text/csv";
+const localOptions = ref<SupportedFilesOptions>(defaultOptions);
 
-	get localData(): Data2D | null {
-		if (this.rawData === null || this.rawData.length === 0) {
-			return null;
-		}
+const rawData = ref<Array<Array<string>> | null>(null);
+const fileType = ref<SupportedFilesOptions["fileType"]>("text/csv");
 
-		return new Data2D(this.headers, this.tableBody);
+const localData = computed(() => {
+	if (rawData.value == null || rawData.value.length === 0) {
+		return null;
 	}
 
-	get headers(): Array<string> {
-		if (this.rawData === null || this.rawData.length === 0) {
-			return [];
-		}
-		return this.localOptions.useFirstRowAsHeaders
-			? this.rawData[0]!
-			: lodash.range(1, this.rawData[0]!.length + 1).map(String);
+	return new Data2D(headers.value, tableBody.value);
+});
+
+const headers = computed(() => {
+	if (rawData.value == null || rawData.value.length === 0) {
+		return [];
 	}
 
-	get tableBody(): Array<Array<string>> {
-		if (this.rawData === null || this.rawData.length === 0) {
-			return [];
-		}
+	return localOptions.value.useFirstRowAsHeaders
+		? rawData.value[0]!
+		: range(1, rawData.value[0]!.length + 1).map(String);
+});
 
-		return this.localOptions.useFirstRowAsHeaders
-			? this.rawData.slice(1, this.rawData.length)
-			: this.rawData;
+const tableBody = computed(() => {
+	if (rawData.value == null || rawData.value.length === 0) {
+		return [];
 	}
 
-	emitOptions(): void {
-		this.$emit("options", this.localOptions);
-	}
+	return localOptions.value.useFirstRowAsHeaders
+		? rawData.value.slice(1, rawData.value.length)
+		: rawData.value;
+});
 
-	emitData(): void {
-		if (this.localData === null) {
-			return;
-		}
-
-		this.$emit("data", this.localData);
-	}
-
-	submit(): void {
-		this.$emit("submit");
-	}
-
-	@Watch("preloadedOptions", { deep: true, immediate: true })
-	watchPreloadedOptions() {
-		this.localOptions = this.preloadedFileOptions;
-		this.fileType = this.preloadedFileOptions.fileType;
-	}
-
-	@Watch("rawData")
-	@Watch("localOptions")
-	watchLocalData() {
-		this.emitData();
-	}
-
-	@Watch("localOptions")
-	watchLocalOptions() {
-		this.emitOptions();
-	}
-
-	/**
-	 * Provide this: https://vuetifyjs.com/en/api/v-data-table/#props-headers
-	 */
-	get vuetifyDataTableHeaders() {
-		return this.headers.map((header) => {
-			return {
-				text: header,
-				value: header,
-				align: "start",
-				sortable: false, // Preview only, don't give the feeling, that you can chnge here anything.
-				filterable: false, // Preview only, don't give the feeling, that you can chnge here anything.
-			};
-		});
-	}
-
-	/**
-	 * According to the documentation the await any array (https://vuetifyjs.com/en/api/v-data-table/#props-items), but this does not work.
-	 *
-	 *  In https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/prop-custom-filter.vue they await an object with heder names as keys …
-	 */
-	get vuetifyDataTableItems() {
-		const headers = this.headers;
-		const truncatedRows = this.tableBody.map((row) =>
-			row.map((value) => truncate(value, { length: 25, omission: " […]" })),
-		);
-		return truncatedRows.map((row) => Object.fromEntries(lodash.zip(headers, row)));
-	}
+function emitOptions(): void {
+	emit("options", localOptions.value);
 }
+
+function emitData(): void {
+	if (localData.value == null) {
+		return;
+	}
+
+	emit("data", localData.value);
+}
+
+function submit(): void {
+	emit("submit");
+}
+
+watch(
+	() => props.preloadedFileOptions,
+	() => {
+		localOptions.value = props.preloadedFileOptions;
+		fileType.value = props.preloadedFileOptions.fileType;
+	},
+	{ deep: true, immediate: true },
+);
+
+watch([rawData, localOptions], () => {
+	emitData();
+});
+
+watch(localOptions, () => {
+	emitOptions();
+});
+
+/**
+ * Provide this: https://vuetifyjs.com/en/api/v-data-table/#props-headers
+ */
+const vuetifyDataTableHeaders = computed(() => {
+	return headers.value.map((header) => {
+		return {
+			text: header,
+			value: header,
+			align: "start",
+			sortable: false, // Preview only, don't give the feeling, that you can chnge here anything.
+			filterable: false, // Preview only, don't give the feeling, that you can chnge here anything.
+		};
+	});
+});
+
+/**
+ * According to the documentation the await any array (https://vuetifyjs.com/en/api/v-data-table/#props-items), but this does not work.
+ *
+ *  In https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/prop-custom-filter.vue they await an object with heder names as keys …
+ */
+const vuetifyDataTableItems = computed(() => {
+	const truncatedRows = tableBody.value.map((row) =>
+		row.map((value) => truncate(value, { length: 25, omission: " […]" })),
+	);
+	return truncatedRows.map((row) => Object.fromEntries(zip(headers.value, row)));
+});
 </script>
 
 <template>
 	<div class="file-options-container">
-		<v-container>
-			<v-row class="select-file">
-				<v-file-input
+		<VContainer>
+			<VRow class="select-file">
+				<VFileInput
 					:accept="fileType"
 					label="Bitte eine Datei auswählen"
 					@change="file = $event === undefined ? null : $event"
-				></v-file-input>
-				<v-spacer />
-				<v-select
+				/>
+				<VSpacer />
+				<VSelect
 					v-model="fileType"
 					label="Dateityp"
 					:items="[{ text: 'csv', value: 'text/csv' }]"
 				/>
-			</v-row>
-			<v-row class="file-type-options">
-				<csv-importer
+			</VRow>
+			<VRow class="file-type-options">
+				<CsvImporter
 					v-if="file !== null && file.type === 'text/csv'"
 					:file="file"
 					:preloaded-options="preloadedFileOptions"
 					@options="localOptions = $event"
 					@data="rawData = $event"
 				/>
-			</v-row>
-			<v-row class="general-file-options">
-				<v-col>
-					<v-checkbox
+			</VRow>
+			<VRow class="general-file-options">
+				<VCol>
+					<VCheckbox
 						v-if="localOptions"
 						v-model="localOptions.useFirstRowAsHeaders"
 						label="Enthält Spaltenüberschriften"
 					/>
-				</v-col>
-			</v-row>
-			<v-row class="submit">
-				<v-col>
-					<v-btn :disabled="rawData === null" @click="submit()">Weiter</v-btn>
-				</v-col>
-			</v-row>
-			<v-row class="data-preview">
-				<v-data-table dense :headers="vuetifyDataTableHeaders" :items="vuetifyDataTableItems" />
-			</v-row>
-		</v-container>
+				</VCol>
+			</VRow>
+			<VRow class="submit">
+				<VCol>
+					<VBtn :disabled="rawData === null" @click="submit()">Weiter</VBtn>
+				</VCol>
+			</VRow>
+			<VRow class="data-preview">
+				<VDataTable dense :headers="vuetifyDataTableHeaders" :items="vuetifyDataTableItems" />
+			</VRow>
+		</VContainer>
 	</div>
 </template>

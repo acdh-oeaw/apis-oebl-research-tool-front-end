@@ -2,12 +2,12 @@
 import { computed, ref } from "vue";
 
 import ImportFileDialog from "@/features/lemmata/import/import-file-dialog.vue";
-import ImportOptionsSaver from "@/features/lemmata/import/ImportOptionsSaver.vue";
-import LemmaBuilder from "@/features/lemmata/import/LemmaBuilder.vue";
-import LemmaFormatter from "@/features/lemmata/import/LemmaFormatter.vue";
-import LemmaImporter from "@/features/lemmata/import/LemmaImporter.vue";
-import ListSelector from "@/features/lemmata/import/ListSelector.vue";
-import UserColumnAdding from "@/features/lemmata/import/UserColumnAdding.vue";
+import ImportOptionsSaver from "@/features/lemmata/import/import-options-saver.vue";
+import LemmaBuilder from "@/features/lemmata/import/lemma-builder.vue";
+import LemmaFormatter from "@/features/lemmata/import/lemma-formatter.vue";
+import LemmaImporter from "@/features/lemmata/import/lemma-importer.vue";
+import ListSelector from "@/features/lemmata/import/list-selector.vue";
+import UserColumnAdding from "@/features/lemmata/import/user-column-adding.vue";
 import { Data2D, type LemmaPrototypeStringType } from "@/lib/lemmaimport/datacontainers";
 import { ImportOptions } from "@/lib/lemmaimport/options";
 import { type NewLemmaRow } from "@/types/lemma";
@@ -154,7 +154,7 @@ function setOptionsAndAdvanceToEnd(options: ImportOptions) {
 
 							<VStepperContent step="2">
 								<LemmaBuilder
-									:incomming-data="rawImportData"
+									:incoming-data="rawImportData"
 									:preloaded-options="importOptions.lemmaBuilderOptions"
 									@options="importOptions.lemmaBuilderOptions = $event"
 									@data="lemmaPrototypes = $event"

@@ -7,10 +7,14 @@ import type * as undici from "undici";
  */
 
 declare global {
-	export const { FormData, Headers, Request, Response, fetch }: typeof undici;
+	export const { fetch, FormData, Headers, Request, Response }: typeof undici;
 
+	type BodyInit = undici.BodyInit;
 	type FormData = undici.FormData;
 	type Headers = undici.Headers;
+	type HeadersInit = undici.HeadersInit;
 	type Request = undici.Request;
+	type RequestInfo = undici.RequestInfo;
+	type RequestInit = undici.RequestInit;
 	type Response = undici.Response;
 }
