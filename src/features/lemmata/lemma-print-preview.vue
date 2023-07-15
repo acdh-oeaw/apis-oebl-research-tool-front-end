@@ -64,7 +64,7 @@ db.lemmas
 
 <template>
 	<VContainer class="lemma-print-view-container">
-		<section v-if="lemma !== null" class="lemma-print-view">
+		<section v-if="lemma != null" class="lemma-print-view">
 			<VRow>
 				<VCol cols="11">
 					<h1>

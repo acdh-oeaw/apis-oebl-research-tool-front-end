@@ -48,7 +48,7 @@ function onImportLemmas() {
 					<VAlert v-else-if="percentDone === 100" type="success">
 						{{ lemmasToImport.length }} Lemmas importiert
 					</VAlert>
-					<VAlert v-else-if="errorMessage !== null" type="error">{{ errorMessage }}</VAlert>
+					<VAlert v-else-if="errorMessage != null" type="error">{{ errorMessage }}</VAlert>
 				</VCol>
 			</VRow>
 			<VRow class="lemma-importer-preview">

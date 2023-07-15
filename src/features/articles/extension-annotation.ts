@@ -1,8 +1,8 @@
 import { type Command, mergeAttributes } from "@tiptap/core";
 import { v4 as uuid } from "uuid";
 
-import AnnotationComponent from "@/views/ArticleManager/Annotation.vue";
-import popupMark from "@/views/ArticleManager/popupPlugin";
+import AnnotationComponent from "@/features/articles/annotation.vue";
+import popupMark from "@/features/articles/popup-plugin";
 
 export interface AnnotationOptions {
 	HTMLAttributes: Record<string, any>;

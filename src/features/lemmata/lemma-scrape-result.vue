@@ -20,7 +20,7 @@ const keyNamesReadable: { [key: string]: string } = {
 };
 
 function formatKey(s: number | string) {
-	if (keyNamesReadable[String(s)] !== undefined) {
+	if (keyNamesReadable[String(s)] != null) {
 		return "";
 	} else {
 		return _.startCase(String(s));

@@ -9,6 +9,7 @@ import {
 	type List,
 	ResearchService,
 } from "@/api";
+import { lemmaRowTranslations } from "@/lib/labels";
 import notifyService from "@/service/notify/notify";
 import store from "@/store";
 import { type UserProfile } from "@/store/user";
@@ -22,7 +23,6 @@ import {
 	type SecondaryCitation,
 	type ServerResearchLemma,
 } from "@/types/lemma";
-import { lemmaRowTranslations } from "@/lib/labels";
 
 interface LemmaFilter {
 	id: string;
@@ -77,7 +77,7 @@ export default class LemmaStore {
 
 		incrementStatus(ls: Array<LemmaRow>) {
 			const userLemmasCount = ls.filter(
-				(l) => l.list !== undefined && l.list.editor === store.user.userProfile.userId,
+				(l) => l.list != null && l.list.editor === store.user.userProfile.userId,
 			).length;
 			this.status = this.status + userLemmasCount;
 			// reset if we’re finished
@@ -303,17 +303,17 @@ export default class LemmaStore {
 
 	doesUpdateDescribeListChange(ls: Array<LemmaRow>, update: Partial<LemmaRow>): boolean {
 		return (
-			update.list !== undefined &&
-			update.list.id !== undefined &&
+			update.list != null &&
+			update.list.id != null &&
 			ls.length > 0 &&
-			ls[0]!.list !== undefined &&
+			ls[0]!.list != null &&
 			ls[0]!.list.id !== update.list.id
 		);
 	}
 
 	getUserLists(lists: Array<List>, u: UserProfile): Array<List> {
 		return lists.filter((ll) => {
-			return ll.editor !== undefined && ll.editor.userId === u.userId;
+			return ll.editor != null && ll.editor.userId === u.userId;
 		});
 	}
 
@@ -360,7 +360,7 @@ export default class LemmaStore {
 		notifyService.on("updateLemmas", (lemmas, updates, e) => {
 			const _updatedLemmas = this.updateLemmas(lemmas, updates, false);
 			if (this.isMovementToUserList(lemmas, updates)) {
-				if (updates.list?.id !== undefined) {
+				if (updates.list?.id != null) {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));
 					this.newLemmasInUserList[updates.list.id] = {
 						...this.newLemmasInUserList[updates.list.id],
@@ -378,7 +378,7 @@ export default class LemmaStore {
 
 	get lastLemmaFetchDate(): Date | null {
 		const stored = JSON.parse(localStorage.getItem("lastLemmaFetchDate") || "null");
-		if (stored !== null) {
+		if (stored != null) {
 			return new Date(stored);
 		} else {
 			return null;
@@ -411,8 +411,7 @@ export default class LemmaStore {
 			return {
 				...ll,
 				count: this._lemmas.filter((l) => l.list?.id === ll.id).length,
-				countNew:
-					ll.id !== undefined ? Object.keys(this.newLemmasInUserList[ll.id] || {}).length : 0,
+				countNew: ll.id != null ? Object.keys(this.newLemmasInUserList[ll.id] || {}).length : 0,
 			};
 		});
 	}
@@ -583,7 +582,7 @@ export default class LemmaStore {
 		this.deleteLemmaListLocally(id);
 		this.selectedLemmaListId = null;
 		await ResearchService.researchApiV1ListresearchDestroy(id);
-		if (list !== undefined) {
+		if (list != null) {
 			notifyService.emit("deleteLemmaList", list);
 		}
 		await this.loadRemoteLemmaLists();
@@ -643,7 +642,7 @@ export default class LemmaStore {
 
 	getSumSimilarity(l: LemmaRow, lc: LemmaRow): number {
 		return this.columns.reduce((m, e) => {
-			if (e.getSimilarityFactor !== undefined) {
+			if (e.getSimilarityFactor != null) {
 				return m + e.getSimilarityFactor(l, lc);
 			}
 			return m;
@@ -729,7 +728,7 @@ export default class LemmaStore {
 			dateOfBirth: rs.dateOfBirth ?? null,
 			dateOfDeath: rs.dateOfDeath ?? null,
 			updated: rs.last_updated,
-			gnd: rs.gnd !== undefined ? rs.gnd.filter((g) => g !== "None") : [],
+			gnd: rs.gnd != null ? rs.gnd.filter((g) => g !== "None") : [],
 			columns_user: rs.columns_user,
 			columns_scrape: rs.columns_scrape,
 			professionDetail: rs.professionDetail,
@@ -769,7 +768,7 @@ export default class LemmaStore {
 			modifiedAfter,
 		);
 		// call progress handler if available
-		if (onProgress !== undefined) {
+		if (onProgress != null) {
 			await onProgress(
 				((firstRes.results as Array<ServerResearchLemma> | undefined) || []).map(
 					this.convertRemoteLemmaToLemmaRow,
@@ -777,7 +776,7 @@ export default class LemmaStore {
 			);
 		}
 		// if there’s more than on page: loop from second page until we have all items and return
-		if (firstRes.count !== undefined && firstRes.count > chunkSize) {
+		if (firstRes.count != null && firstRes.count > chunkSize) {
 			const chunks = Math.ceil(firstRes.count / chunkSize);
 			let lemmaAgg: Array<LemmaRow> = [];
 			for (let i = 1; i < chunks; i++) {
@@ -791,7 +790,7 @@ export default class LemmaStore {
 						)
 					).results as Array<ServerResearchLemma> | undefined) || [];
 				const converted = res.map(this.convertRemoteLemmaToLemmaRow);
-				if (onProgress !== undefined) {
+				if (onProgress != null) {
 					await onProgress(converted);
 				}
 				lemmaAgg = lemmaAgg.concat(converted);
@@ -943,7 +942,7 @@ export default class LemmaStore {
 
 	get lemmas() {
 		const lemmas =
-			this.selectedLemmaListId !== null
+			this.selectedLemmaListId != null
 				? this.getLemmasByList(this.selectedLemmaListId)
 				: this._lemmas;
 		return this.filterLemmas(lemmas);

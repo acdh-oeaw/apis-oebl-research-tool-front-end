@@ -137,7 +137,7 @@ function removeFilterItem(i: number) {
 						@click="removeFilterItem(i)"
 					>
 						<VIcon
-							v-if="localFilterItems.length === 1 && filter.query !== null && filter.query !== ''"
+							v-if="localFilterItems.length === 1 && filter.query != null && filter.query !== ''"
 							style="transform: rotate(45deg)"
 						>
 							mdi-plus-circle-outline

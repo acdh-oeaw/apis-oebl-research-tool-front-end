@@ -100,7 +100,7 @@ const filteredItems = computed(() => {
 		return props.items.filter((i) => {
 			return (
 				i[props.keyName].toLowerCase().indexOf(searchTextLow) > -1 ||
-				(props.keyDescription !== null &&
+				(props.keyDescription != null &&
 					get(i, props.keyDescription).toLowerCase().indexOf(searchTextLow) > -1)
 			);
 		});
@@ -123,7 +123,7 @@ const filteredItems = computed(() => {
 				@click="onClickActivator"
 				v-on="on"
 			>
-				<VIcon v-if="prependIcon !== null" class="mr-1" small>{{ prependIcon }}</VIcon>
+				<VIcon v-if="prependIcon != null" class="mr-1" small>{{ prependIcon }}</VIcon>
 				{{ label ? label + ": " : "" }}
 				{{ displayValue }}
 				<VIcon v-if="showChevron" small>mdi-unfold-more-horizontal</VIcon>
@@ -145,7 +145,7 @@ const filteredItems = computed(() => {
 					@click.prevent.stop=""
 				/>
 				<VBtn
-					v-if="searchText !== null && searchText !== ''"
+					v-if="searchText != null && searchText !== ''"
 					color="primary"
 					icon
 					x-small
@@ -160,14 +160,14 @@ const filteredItems = computed(() => {
 				v-if="filteredItems.length > 0"
 				color="transparent"
 				class="overflow-y-auto x-dense"
-				:two-line="keyDescription !== null"
+				:two-line="keyDescription != null"
 				nav
 			>
 				<VListItem v-for="item in filteredItems" :key="item[keyValue]" @click="selectItem(item)">
 					<VListItemAvatar>
 						<VIcon
 							v-if="
-								value === item[keyValue] || (value !== null && value[keyValue] === item[keyValue])
+								value === item[keyValue] || (value != null && value[keyValue] === item[keyValue])
 							"
 							small
 						>
@@ -178,7 +178,7 @@ const filteredItems = computed(() => {
 						<VListItemTitle>
 							{{ item[keyName] }}
 						</VListItemTitle>
-						<VListItemSubtitle v-if="keyDescription !== null">
+						<VListItemSubtitle v-if="keyDescription != null">
 							{{ get(item, keyDescription) }}
 						</VListItemSubtitle>
 					</VListItemContent>

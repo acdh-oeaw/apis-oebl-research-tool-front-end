@@ -1,8 +1,8 @@
 import { type Command, mergeAttributes } from "@tiptap/core";
 import { v4 as uuid } from "uuid";
 
-import CommentThread from "@/views/ArticleManager/CommentThread.vue";
-import popupMark from "@/views/ArticleManager/popupPlugin";
+import CommentThread from "@/features/articles/comment-thread.vue";
+import popupMark from "@/features/articles/popup-plugin";
 
 export interface CommentOptions {
 	HTMLAttributes: Record<string, any>;

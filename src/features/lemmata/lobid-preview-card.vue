@@ -81,13 +81,13 @@ watch(
 			v-for="(fragment, i) in fragments"
 			:key="i"
 			style="overflow: hidden"
-			:class="['fragment', $listeners['input'] !== undefined && 'clickable', 'rounded-lg', 'mt-1']"
+			:class="['fragment', $listeners['input'] != null && 'clickable', 'rounded-lg', 'mt-1']"
 			no-gutters
 			@click="selectOrDeselectFragment(fragment.gnd)"
 		>
 			<slot />
 			<div
-				v-if="$listeners['input'] !== undefined"
+				v-if="$listeners['input'] != null"
 				style="flex: 0 0 40px"
 				class="align-self-center text-center"
 			>
@@ -95,7 +95,7 @@ watch(
 				<VIcon v-else>mdi-checkbox-blank-circle-outline</VIcon>
 			</div>
 			<div
-				v-if="fragment.html !== null"
+				v-if="fragment.html != null"
 				style="flex: 0 0 100px; overflow: hidden; height: 100px"
 				class="pt-1 pb-1 text-center"
 				cols="3"

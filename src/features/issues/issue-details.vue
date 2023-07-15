@@ -54,7 +54,7 @@ function getUserName(id: number): string {
 }
 
 async function loadNotes() {
-	if (props.lemma.id && props.lemma.notes !== undefined && props.lemma.notes.length > 0) {
+	if (props.lemma.id && props.lemma.notes != null && props.lemma.notes.length > 0) {
 		isLoadingNotes.value = true;
 		notes.value = (await store.issue.loadNotes(props.lemma.id)).reverse();
 		isLoadingNotes.value = false;
@@ -96,7 +96,7 @@ async function addNote() {
 
 <template>
 	<VCard v-if="lemma" class="transparent flex-column d-flex fill-height" flat>
-		<VCardTitle v-if="researchLemma !== null">
+		<VCardTitle v-if="researchLemma != null">
 			<VContainer class="pa-0">
 				<VRow no-gutters>
 					<VCol cols="2"></VCol>

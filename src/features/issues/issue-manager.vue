@@ -16,7 +16,7 @@ import confirm from "@/store/confirm";
 import { type WithId } from "@/types";
 
 const props = defineProps<{
-	id: number | null;
+	id: number;
 }>();
 
 const isSideBarVisible = ref(false);
@@ -169,11 +169,11 @@ const filteredIssues = computed(() => {
 			searchItems.value.find(
 				(si) =>
 					si.type === "label" &&
-					issue.labels !== undefined &&
-					issue.labels.find((l) => l === si.id) !== undefined,
-			) !== undefined ||
-			searchItems.value.find((si) => si.type === "text" && si.id === issue.id) !== undefined
-			// searchItems.value.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
+					issue.labels != null &&
+					issue.labels.find((l) => l === si.id) != null,
+			) != null ||
+			searchItems.value.find((si) => si.type === "text" && si.id === issue.id) != null
+			// searchItems.value.find(si => si.type === 'author' && si.id === issue.author) != null ||
 		);
 	});
 });
@@ -348,20 +348,19 @@ onMounted(() => {
 						v-ripple="false"
 						class="filter-autocomplete-item mx-2 mb-1"
 						:class="{
-							selected:
-								searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined,
+							selected: searchItems.find((i) => i.id === item.id && i.type === item.type) != null,
 						}"
 						v-on="on"
 					>
 						<VListItemAvatar>
 							<img
-								v-if="item.type === 'editor' && item.image !== undefined"
+								v-if="item.type === 'editor' && item.image != null"
 								:key="item.type + '__' + item.id"
 								alt=""
 								:src="item.image"
 							/>
 							<VIcon v-if="item.type === 'author'">mdi-account-edit-outline</VIcon>
-							<VIcon v-if="item.type === 'label' && item.color !== undefined" :color="item.color">
+							<VIcon v-if="item.type === 'label' && item.color != null" :color="item.color">
 								mdi-checkbox-blank-circle
 							</VIcon>
 							<VIcon v-if="item.type === 'text'">mdi-card-text-outline</VIcon>
@@ -375,7 +374,7 @@ onMounted(() => {
 							</VListItemSubtitle>
 						</VListItemContent>
 						<VListItemAction
-							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined"
+							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) != null"
 							width="20"
 						>
 							<VIcon small>mdi-check</VIcon>
@@ -498,9 +497,9 @@ onMounted(() => {
 				<VIcon>mdi-dock-right</VIcon>
 			</VBtn>
 			<IssueDetail
-				v-if="selectedLemma !== null"
+				v-if="selectedLemma != null"
 				:lemma="selectedLemma"
-				:value="selectedLemma !== null"
+				:value="selectedLemma != null"
 				@update="updateLemmaById"
 				@update-status="updateLemmaStatus"
 				@delete-issue-lemma="deleteIssueLemma"

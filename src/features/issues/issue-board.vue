@@ -72,7 +72,7 @@ const selectedStyle = {
 							v-for="(item, itemIndex) in column.items"
 							:key="item.id"
 							color="background lighten-2"
-							:style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
+							:style="selectedLemma != null && selectedLemma.id === item.id ? selectedStyle : null"
 							class="issue-lemma-card rounded-lg pa-3 mb-3"
 							:data-issue-lemma-id="item.id"
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"

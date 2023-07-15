@@ -130,7 +130,7 @@ const vuetifyDataTableItems = computed(() => {
 			</VRow>
 			<VRow class="file-type-options">
 				<CsvImporter
-					v-if="file !== null && file.type === 'text/csv'"
+					v-if="file != null && file.type === 'text/csv'"
 					:file="file"
 					:preloaded-options="preloadedFileOptions"
 					@options="localOptions = $event"

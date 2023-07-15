@@ -87,9 +87,7 @@ class ZoteroItemCache {
 
 	async select(zoteroKeys: Array<string>): Promise<Array<ZoteroItem>> {
 		const allResults = await this.database.zoteroItems.bulkGet(zoteroKeys);
-		return allResults.filter(
-			(row: ZoteroItem | null | undefined) => row !== undefined && row !== null,
-		);
+		return allResults.filter((row: ZoteroItem | null | undefined) => row != null && row != null);
 	}
 
 	/**
@@ -126,7 +124,7 @@ async function getZoteroResponse(
 ): Promise<Response> {
 	const requestHeaders = new Headers();
 	requestHeaders.set("Content-Type", "application/json");
-	if (version !== null) {
+	if (version != null) {
 		requestHeaders.set("if-Modified-Since-Version", String(version));
 	}
 
@@ -267,7 +265,7 @@ export class ZoteroLemmaManagmentController {
 		// Load them from zotero
 		const newZoteroItems = await Promise.all(notCachedKeys.map(getZoteroItem));
 		// Try to cache the new items
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.insert(newZoteroItems);
 			} catch (error) {
@@ -308,7 +306,7 @@ export class ZoteroLemmaManagmentController {
 		); // or bether getLocallyCachedSynginZoteroCitationsAPIManagerDonaudampschiffahrtsKabinenSchlüsselPutzerAssistentenAPI
 		// If changed, update cache
 		const changedRevisions = zoteroSyncStati.filter((status) => status.changed);
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.update(changedRevisions.map((status) => status.zoteroItem));
 			} catch (error) {
@@ -331,7 +329,7 @@ export class ZoteroLemmaManagmentController {
 	}
 
 	async add(zoteroItems: Array<ZoteroItem>) {
-		if (this._cache !== null) {
+		if (this._cache != null) {
 			try {
 				await this._cache.update(zoteroItems);
 			} catch (error) {

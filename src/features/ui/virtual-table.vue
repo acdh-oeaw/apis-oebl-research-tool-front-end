@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { keyBy, map,toArray } from "lodash";
+import { keyBy, map, toArray } from "lodash";
 import Vue, { computed, ref, watch } from "vue";
 import Draggable from "vuedraggable";
 
@@ -29,7 +29,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(event: 'click:cell', item: any, e: any, value: any, index: any): void
+	(event: "click:cell", item: any, e: any, value: any, index: any): void;
 	(event: "dblclick:row", item: any, e: any): void;
 	(event: "update:columns", value: any): void;
 	(event: "update:filter", value: { [key: string]: boolean | string | null }): void;
@@ -37,7 +37,7 @@ const emit = defineEmits<{
 	(event: "update:selection", value: Array<any>): void;
 }>();
 
-const tableRef = ref<HTMLElement|null>(null)
+const tableRef = ref<HTMLElement | null>(null);
 const scroller = ref<Vue | null>(null);
 const selected = ref<{ [key: number]: LemmaRow }>({});
 let scrollLeft = 0;
@@ -122,7 +122,7 @@ function getStringFromLemmaRowByColumn(
 }
 
 function emitFilterEvent(c: LemmaColumn, ev?: boolean | string | null) {
-	if (ev !== undefined && ev !== null && ev !== "") {
+	if (ev != null && ev != null && ev !== "") {
 		columnQueries.value[c.value] = ev;
 	} else {
 		Vue.delete(columnQueries.value, c.value);
@@ -222,7 +222,7 @@ function selectPrevious() {
 	const selectedIndexes = map(selected.value, (v) => props.data.findIndex((r) => r.id === v.id));
 	const newIndex = Math.min(...selectedIndexes) - 1;
 	const prevItem = props.data[newIndex];
-	if (prevItem !== undefined) {
+	if (prevItem != null) {
 		selected.value = { [prevItem.id]: prevItem };
 		emit("update:selection", [prevItem]);
 		scrollToIndex(newIndex);
@@ -233,7 +233,7 @@ function selectNext() {
 	const selectedIndexes = map(selected.value, (v) => props.data.findIndex((r) => r.id === v.id));
 	const newIndex = Math.max(...selectedIndexes) + 1;
 	const nextItem = props.data[newIndex];
-	if (nextItem !== undefined) {
+	if (nextItem != null) {
 		selected.value = { [nextItem.id]: nextItem };
 		emit("update:selection", [nextItem]);
 		scrollToIndex(newIndex);
@@ -242,7 +242,7 @@ function selectNext() {
 
 function selectFirst() {
 	const firstItem = props.data[0];
-	if (firstItem !== undefined) {
+	if (firstItem != null) {
 		selected.value = { [firstItem.id]: firstItem };
 		emit("update:selection", [firstItem]);
 		scrollToIndex(0);
@@ -251,7 +251,7 @@ function selectFirst() {
 
 function selectLast() {
 	const lastItem = props.data[props.data.length - 1];
-	if (lastItem !== undefined) {
+	if (lastItem != null) {
 		selected.value = { [lastItem.id]: lastItem };
 		emit("update:selection", [lastItem]);
 		scrollToIndex(props.data.length - 1);
@@ -284,7 +284,9 @@ function selectItem(item: LemmaRow, event: MouseEvent) {
 		} else {
 			// deselect everything, then select this.
 			if (tableRef.value instanceof HTMLElement) {
-				tableRef.value.querySelectorAll(".selected").forEach((el) => el.classList.remove("selected"));
+				tableRef.value
+					.querySelectorAll(".selected")
+					.forEach((el) => el.classList.remove("selected"));
 			}
 			event.currentTarget.classList.add("selected");
 			selected.value = { [item.id]: item };
@@ -311,13 +313,13 @@ function updateColumnOrder(cs: Array<LemmaColumn>) {
 	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 	<div ref="tableRef" class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
 		<VMenu
-			v-if="editPopUp !== null"
+			v-if="editPopUp != null"
 			:close-on-content-click="false"
 			min-width="130"
 			max-width="400"
 			content-class="transition-left"
 			class="soft-shadow"
-			:value="editPopUp !== null"
+			:value="editPopUp != null"
 			:position-x="editPopUp.x - 3"
 			:position-y="editPopUp.y - 10"
 			@input="(e) => e === false && (editPopUp = null)"
@@ -363,7 +365,7 @@ function updateColumnOrder(cs: Array<LemmaColumn>) {
 				:class="[
 					'header-cell',
 					$listeners['click:header'] && 'clickable',
-					column.sort !== null && column.sort !== undefined && 'sort-active',
+					column.sort != null && column.sort != null && 'sort-active',
 				]"
 			>
 				<!-- FIXME: a11y -->

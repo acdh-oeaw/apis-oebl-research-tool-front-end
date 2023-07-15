@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { mapKeys, startCase } from "lodash";
-import {computed,ref} from 'vue'
+import { computed, ref } from "vue";
 import colors from "vuetify/lib/util/colors";
 
 import store from "@/store";
@@ -8,113 +8,111 @@ import confirm from "@/store/confirm";
 import { type Label } from "@/types/issue";
 
 const props = defineProps<{
-	value: Array<number>
-}>()
+	value: Array<number>;
+}>();
 
 const emit = defineEmits<{
-	(event: "update", value: any): void
-}>()
+	(event: "update", value: any): void;
+}>();
 
-	const searchText = ref<string | null>(null);
-	const editingLabel = ref<Label | null>(null);
-	const defaultLabelColor = colors.blueGrey.base;
+const searchText = ref<string | null>(null);
+const editingLabel = ref<Label | null>(null);
+const defaultLabelColor = colors.blueGrey.base;
 
-const	labelNameRules = [
-		(n: unknown) =>
-			(n == null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
-		(n: string) =>
-			labels.value.findIndex(
-				(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
-			) > -1 && "Dieses Label exisitiert bereits.",
-	];
+const labelNameRules = [
+	(n: unknown) =>
+		(n == null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
+	(n: string) =>
+		labels.value.findIndex(
+			(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),
+		) > -1 && "Dieses Label exisitiert bereits.",
+];
 
-	const _colors = computed(() => {
-		return mapKeys(colors, (v, k) => startCase(k));
-	})
+const _colors = computed(() => {
+	return mapKeys(colors, (v, k) => startCase(k));
+});
 
-	const selectedLabels = computed(() => {
-		return props.value
-			.map((id) => labels.value.find((l) => l.id === id))
-			.filter((v) => v !== undefined);
-	})
+const selectedLabels = computed(() => {
+	return props.value.map((id) => labels.value.find((l) => l.id === id)).filter((v) => v != null);
+});
 
-	const labels = computed(() => {
-		return store.issue.labels;
-	})
+const labels = computed(() => {
+	return store.issue.labels;
+});
 
-	function isNewLabel(l: Label | string): l is string {
-		return typeof l === "string";
+function isNewLabel(l: Label | string): l is string {
+	return typeof l === "string";
+}
+
+function addLabel(name: string) {
+	editingLabel.value = {
+		name: name,
+		color: defaultLabelColor,
+		id: -1,
+	};
+}
+
+function onChange(ls: Array<Label | string>) {
+	searchText.value = "";
+
+	const newLabel = ls.find(isNewLabel);
+
+	if (newLabel != null) {
+		addLabel(newLabel);
 	}
 
-	function addLabel(name: string) {
-		editingLabel.value = {
-			name: name,
-			color: defaultLabelColor,
-			id: -1,
-		};
-	}
+	emit(
+		"update",
+		ls.filter((l): l is Label => !isNewLabel(l)).map((l) => l.id),
+	);
+}
 
-	function onChange(ls: Array<Label | string>) {
-		searchText.value = "";
-
-		const newLabel = ls.find(isNewLabel);
-
-		if (newLabel !== undefined) {
-			addLabel(newLabel);
-		}
-
-		emit(
-			"update",
-			ls.filter((l): l is Label => !isNewLabel(l)).map((l) => l.id),
-		);
-	}
-
-	async function deleteEditingLabel() {
-		const i = editingLabel.value;
-		if (i !== null && i.id !== undefined && i.id > -1) {
-			if (
-				await confirm.confirm(
-					"Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.",
-					{ icon: "mdi-delete-outline" },
-				)
-			) {
-				store.issue.deleteLabel(i.id);
-				editingLabel.value = null;
-			}
-		}
-	}
-
-	async function editLabel(item: Label) {
-		editingLabel.value = item;
-	}
-
-	async function saveLabel() {
-		if (editingLabel.value != null) {
-			if (editingLabel.value.id === -1) {
-				const { id } = await store.issue.createLabel(
-					editingLabel.value.name,
-					editingLabel.value.color || defaultLabelColor,
-				);
-				if (id !== undefined) {
-					emit("update", props.value.concat(id));
-				}
-			} else {
-				await store.issue.updateLabel(
-					editingLabel.value.id!,
-					editingLabel.value.color || defaultLabelColor,
-					editingLabel.value.name,
-				);
-			}
+async function deleteEditingLabel() {
+	const i = editingLabel.value;
+	if (i != null && i.id != null && i.id > -1) {
+		if (
+			await confirm.confirm(
+				"Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.",
+				{ icon: "mdi-delete-outline" },
+			)
+		) {
+			store.issue.deleteLabel(i.id);
 			editingLabel.value = null;
 		}
 	}
+}
 
-	function onRemove(label: Label) {
-		emit(
-			"update",
-			props.value.filter((id) => id !== label.id),
-		);
+async function editLabel(item: Label) {
+	editingLabel.value = item;
+}
+
+async function saveLabel() {
+	if (editingLabel.value != null) {
+		if (editingLabel.value.id === -1) {
+			const { id } = await store.issue.createLabel(
+				editingLabel.value.name,
+				editingLabel.value.color || defaultLabelColor,
+			);
+			if (id != null) {
+				emit("update", props.value.concat(id));
+			}
+		} else {
+			await store.issue.updateLabel(
+				editingLabel.value.id!,
+				editingLabel.value.color || defaultLabelColor,
+				editingLabel.value.name,
+			);
+		}
+		editingLabel.value = null;
 	}
+}
+
+function onRemove(label: Label) {
+	emit(
+		"update",
+		props.value.filter((id) => id !== label.id),
+	);
+}
 </script>
 
 <template>
@@ -159,7 +157,7 @@ const	labelNameRules = [
 			<template #item="{ item, on, props }">
 				<VListItem :ripple="false" class="label-list-item" v-bind="props" v-on="on">
 					<VListItemAvatar size="15">
-						<VIcon v-if="value.find((id) => id === item.id) !== undefined" :color="item.color">
+						<VIcon v-if="value.find((id) => id === item.id) != null" :color="item.color">
 							mdi-checkbox-marked-circle
 						</VIcon>
 						<VIcon v-else :color="item.color">mdi-checkbox-blank-circle</VIcon>
@@ -186,10 +184,10 @@ const	labelNameRules = [
 		</VCombobox>
 
 		<VDialog
-			v-if="editingLabel !== null"
+			v-if="editingLabel != null"
 			scrollable
 			max-width="620"
-			:value="editingLabel !== null"
+			:value="editingLabel != null"
 			@input="editingLabel = null"
 		>
 			<VCard color="background" class="rounded-lg elevation-25">
@@ -258,11 +256,7 @@ const	labelNameRules = [
 					<VRow dense>
 						<VCol cols="2">
 							<VBtn
-								v-if="
-									editingLabel !== undefined &&
-									editingLabel.id !== undefined &&
-									editingLabel.id > -1
-								"
+								v-if="editingLabel != null && editingLabel.id != null && editingLabel.id > -1"
 								depressed
 								class="rounded-lg"
 								color="background darken-2"

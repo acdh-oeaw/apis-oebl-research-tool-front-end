@@ -66,7 +66,7 @@ function onDragStart() {
 						v-for="(item, itemIndex) in column.items"
 						:key="item.id"
 						v-ripple="false"
-						:style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
+						:style="selectedLemma != null && selectedLemma.id === item.id ? selectedStyle : null"
 						class="pa-5 cursor-grab rounded-lg"
 						:data-issue-lemma-id="item.id"
 						:tabindex="(columnIndex + 1) * 100 + itemIndex"

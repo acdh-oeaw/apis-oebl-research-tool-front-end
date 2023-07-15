@@ -79,7 +79,7 @@ watch(
 
 async function saveFilter() {
 	const name = await prompt.prompt("Filter speichern", { placeholder: "Filtername eingeben…" });
-	if (name !== null) {
+	if (name != null) {
 		store.lemma.storedLemmaFilters = [
 			...store.lemma.storedLemmaFilters,
 			{
@@ -124,7 +124,7 @@ const columns = computed({
 function openWikipedia(item: LemmaRow) {
 	const link = get(item, "columns_scrape.wikidata.wiki_de");
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (link !== undefined) {
+	if (link != null) {
 		window.open(link);
 	}
 }
@@ -136,7 +136,7 @@ function updateColumn(c: LemmaColumn, u: Partial<LemmaColumn>) {
 }
 
 function cancelUpdateListName(event: KeyboardEvent) {
-	if (props.lemmaListId !== null && event.target instanceof HTMLElement) {
+	if (props.lemmaListId != null && event.target instanceof HTMLElement) {
 		event.target.textContent = store.lemma.getListById(props.lemmaListId)?.title || "Listenname";
 		event.target.blur();
 	}
@@ -145,8 +145,8 @@ function cancelUpdateListName(event: KeyboardEvent) {
 function updateListName(event: Event) {
 	if (
 		event.currentTarget instanceof HTMLElement &&
-		props.lemmaListId !== null &&
-		event.currentTarget.textContent !== null
+		props.lemmaListId != null &&
+		event.currentTarget.textContent != null
 	) {
 		store.lemma.updateList(props.lemmaListId, { title: event.currentTarget.textContent });
 		event.currentTarget.scrollLeft = 0;
@@ -168,9 +168,9 @@ async function updateLemma(l: LemmaRow, u: Partial<LemmaRow>) {
 }
 
 async function deleteList(id: number | null) {
-	if (id !== null) {
+	if (id != null) {
 		const list = store.lemma.getListById(id);
-		if (list !== undefined) {
+		if (list != null) {
 			if (
 				await confirm.confirm(
 					`Wollen Sie die Liste ”${list.title}” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`,
@@ -222,8 +222,8 @@ function sortLemmas(c: LemmaColumn) {
 }
 
 const sortedFilteredLemmas = computed(() => {
-	const sortByColumn = columns.value.find((c) => c.sort !== undefined && c.sort !== null);
-	if (sortByColumn !== undefined) {
+	const sortByColumn = columns.value.find((c) => c.sort != null && c.sort != null);
+	if (sortByColumn != null) {
 		return orderBy(store.lemma.lemmas, sortByColumn.value, sortByColumn.sort || "asc");
 	} else {
 		return store.lemma.lemmas;
@@ -252,7 +252,7 @@ async function deleteSelectedLemmas(e: KeyboardEvent) {
 
 	// A list is selected
 	// remove from list.
-	if (props.lemmaListId !== null && !(e.ctrlKey || e.metaKey)) {
+	if (props.lemmaListId != null && !(e.ctrlKey || e.metaKey)) {
 		const msg = `Wollen Sie wirklich ${selectedRows.value.length} Lemma(ta) aus dieser Liste entfernen?`;
 
 		if (await confirm.confirm(msg)) {
@@ -293,9 +293,9 @@ async function deleteSelectedLemmas(e: KeyboardEvent) {
 watch(
 	() => store.lemma.selectedLemmaFilterId,
 	(id) => {
-		if (id !== null) {
+		if (id != null) {
 			const l = store.lemma.getStoredLemmaFilterById(id);
-			if (l !== undefined) {
+			if (l != null) {
 				store.lemma.currentFilters = l.filterItems;
 			}
 		} else {
@@ -306,7 +306,7 @@ watch(
 );
 
 async function deleteFilter(id: string | null) {
-	if (id !== null) {
+	if (id != null) {
 		store.lemma.deleteStoredLemmaFilter(id);
 	}
 }
@@ -323,7 +323,7 @@ function openFileDialog(cb: (f: File) => unknown) {
 		"text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 	input.addEventListener("change", () => {
-		if (input.files !== null && input.files[0] !== undefined) {
+		if (input.files != null && input.files[0] != null) {
 			cb(input.files[0]);
 		}
 		input.value = "";
@@ -454,12 +454,12 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 					>
 						Lemmabibliothek
 					</h1>
-					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
+					<h1 v-else-if="store.lemma.selectedLemmaIssueId != null">
 						<!-- @vue-expect-error -->
 						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
 					</h1>
 					<h1
-						v-else-if="selectedList !== null"
+						v-else-if="selectedList != null"
 						contenteditable="true"
 						@blur="updateListName"
 						@keyup.enter.prevent.stop="$event.target.blur()"
@@ -467,7 +467,7 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 						v-text="selectedList.title"
 					/>
 					<h1
-						v-else-if="store.lemma.selectedLemmaFilterId !== null"
+						v-else-if="store.lemma.selectedLemmaFilterId != null"
 						contenteditable="true"
 						@blur="
 							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
@@ -539,7 +539,7 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 								</VListItemAvatar>
 								<VListItemContent>Excel oder CSV importieren…</VListItemContent>
 							</VListItem>
-							<VListItem v-if="lemmaListId !== null" @click="deleteList(lemmaListId)">
+							<VListItem v-if="lemmaListId != null" @click="deleteList(lemmaListId)">
 								<VListItemAvatar size="15">
 									<VIcon small>mdi-delete-outline</VIcon>
 								</VListItemAvatar>
@@ -559,7 +559,7 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 								<VListItemContent>Abfrage sichern…</VListItemContent>
 							</VListItem>
 							<VListItem
-								v-else-if="store.lemma.selectedLemmaFilterId !== null"
+								v-else-if="store.lemma.selectedLemmaFilterId != null"
 								dense
 								@click="deleteFilter(store.lemma.selectedLemmaFilterId)"
 							>
