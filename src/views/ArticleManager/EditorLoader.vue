@@ -218,7 +218,7 @@ export default class EditorLoader extends Vue {
 		this.setState("LOADING");
 
 		// The url param could not be parsed into a number, for example http://localhost:8080/article/THIS_IS_NOT_NUMBER
-		if (this.issueLemmaId === null) {
+		if (this.issueLemmaId == null) {
 			this.setState(
 				"ERROR",
 				// This URL is wrong. Contact the technical support team.
@@ -249,7 +249,7 @@ export default class EditorLoader extends Vue {
 		const newestVersion: LemmaArticleVersion | undefined = articleStore.newestVersion;
 
 		// and give the user great feedback!
-		if (newestVersion === undefined) {
+		if (newestVersion == null) {
 			this.setState(
 				"ERROR",
 				// We could not load any version for this article.
@@ -282,7 +282,7 @@ export default class EditorLoader extends Vue {
 		dateModifiedDELocale: string;
 		isShownInEditor: boolean;
 	}> {
-		if (this.articleStore === null) {
+		if (this.articleStore == null) {
 			return [];
 		}
 		type SavedArticleVersionWithDate = {
@@ -320,7 +320,7 @@ export default class EditorLoader extends Vue {
 	}
 
 	selectVersion(versionId: number): void {
-		if (this.articleStore === null) {
+		if (this.articleStore == null) {
 			console.error({
 				message:
 					"There must be some programming error. Article store should be loaded, when calling this method. Check it out.",
@@ -328,7 +328,7 @@ export default class EditorLoader extends Vue {
 			return;
 		}
 		const versionToSelect = this.articleStore.versions.find((version) => version.id === versionId);
-		if (versionToSelect === undefined) {
+		if (versionToSelect == null) {
 			console.error({
 				message:
 					"There must be some programming error. This method should only be called with existing versions. Check it out.",
@@ -356,7 +356,7 @@ export default class EditorLoader extends Vue {
 	}
 
 	async createNewVersion(): Promise<void> {
-		if (this.articleStore === null || this.tipTapEditor === null) {
+		if (this.articleStore == null || this.tipTapEditor == null) {
 			console.error({
 				message:
 					"There must be some programming error. Article store and editor should be loaded, when calling this method. Check it out.",

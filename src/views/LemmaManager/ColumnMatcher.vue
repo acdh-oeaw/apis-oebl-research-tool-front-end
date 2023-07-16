@@ -22,7 +22,7 @@
 					flat
 					:value="h.matchWith"
 					background-color="background darken-1"
-					:class="['col-select', h.matchWith === null ? 'not-selected' : '', 'rounded-lg']"
+					:class="['col-select', h.matchWith == null ? 'not-selected' : '', 'rounded-lg']"
 					dense
 					:items="getTargetColumnsOptions(h)"
 					@input="matchHeaderWith(i, $event)"
@@ -36,7 +36,7 @@
 					:key="i"
 					:class="[
 						isIgnoredValue(item[h.value]) && 'is-null-equivalent',
-						h.matchWith === null && 'do-not-import',
+						h.matchWith == null && 'do-not-import',
 					]"
 				>
 					{{ item[h.value] }}
@@ -215,7 +215,7 @@ export default class ColumnMatcher extends Vue {
 						m[e.matchWith] = r[e.value]!;
 					}
 					// if the column is ignored, and we should return the ignored columns with a prefix.
-				} else if (this.returnIgnoredColumns && e.matchWith === null) {
+				} else if (this.returnIgnoredColumns && e.matchWith == null) {
 					m[this.prefixIgnoredColumns + e.value] = r[e.value]!;
 				}
 				return m;

@@ -265,7 +265,7 @@ export default class Annotation extends Vue {
 		this.results = [];
 		this.selectedRelationType = null;
 		// update search to the selected text
-		if (this.entityId === null && this.relationTypeId === null) {
+		if (this.entityId == null && this.relationTypeId == null) {
 			const selectedText = this.editor.state.doc.textBetween(
 				this.editor.state.selection.from,
 				this.editor.state.selection.to,

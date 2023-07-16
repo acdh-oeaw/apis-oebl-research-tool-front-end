@@ -74,7 +74,7 @@ export default class ProfessionGroupField extends Vue {
 
 	@Watch("selected", { immediate: true, deep: false })
 	setLocalSelected() {
-		if (this.selected === null) {
+		if (this.selected == null) {
 			return;
 		}
 		this.professionGroupCache.push(this.selected);
@@ -85,7 +85,7 @@ export default class ProfessionGroupField extends Vue {
 	emitSelection() {
 		const localSelected = this.findProfessionGroup();
 
-		if (localSelected === undefined) {
+		if (localSelected == null) {
 			console.error({
 				message: "Could not find professionGroup AutoComplete Result from search term.",
 				localSelected: this.localSelected,

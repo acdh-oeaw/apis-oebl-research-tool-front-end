@@ -26,7 +26,7 @@ export default class LemmaPrinter extends Vue {
 			`popup,innerHeight=${height},innerWidth=${width}`,
 		);
 
-		if (printWindow === null) {
+		if (printWindow == null) {
 			alert(
 				"Derzeit ist leider kein Druck möglich. Bitte wenden Sie sich an das Entwicklungsteam.",
 			); // Top message! ;-)

@@ -107,9 +107,9 @@ export default class DateField extends Vue {
 
 	get errorMessages(): Array<string> {
 		if (
-			this.localDate.calendarYear === undefined ||
-			this.localDate.calendarMonth === undefined ||
-			this.localDate.calendarDate === undefined
+			this.localDate.calendarYear == null ||
+			this.localDate.calendarMonth == null ||
+			this.localDate.calendarDate == null
 		) {
 			return [];
 		}

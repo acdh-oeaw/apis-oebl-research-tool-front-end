@@ -538,7 +538,7 @@ export default class LemmaDetail extends Vue {
 	}
 
 	countScrapedResources(r: LemmaRow["columns_scrape"]) {
-		if (r === undefined) {
+		if (r == null) {
 			return 0;
 		} else {
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

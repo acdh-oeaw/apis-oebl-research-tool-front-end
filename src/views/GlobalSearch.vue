@@ -221,7 +221,7 @@ export default class GlobalSearch extends Vue {
 	 */
 	lemmaPassesOrSearch(lemma: LemmaRow, searchTerms: Array<string>): boolean {
 		for (let value of this.yieldLemmaSearchFields(lemma)) {
-			if (value === undefined || value === null || value === "") {
+			if (value == null || value === "") {
 				continue;
 			}
 

@@ -96,7 +96,7 @@ export default class ImportOptionsSaver extends Vue {
 	}
 
 	loadOption() {
-		if (this.newOptionsName === null || this.newOptionsName === undefined) {
+		if (this.newOptionsName == null) {
 			console.error("Can not save with no options name defined.");
 			return;
 		}
@@ -113,7 +113,7 @@ export default class ImportOptionsSaver extends Vue {
 	}
 
 	saveOption() {
-		if (this.newOptionsName === null || this.newOptionsName === undefined) {
+		if (this.newOptionsName == null) {
 			console.error("Can not save with no options name defined.");
 			return;
 		}

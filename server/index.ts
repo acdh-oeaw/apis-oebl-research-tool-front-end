@@ -8,7 +8,7 @@ import socketIo from "socket.io";
 
 import zotero from "./zotero";
 
-if (process.env.ZOTERO_API_KEY === undefined || process.env.ZOTERO_USER === undefined) {
+if (process.env.ZOTERO_API_KEY == null || process.env.ZOTERO_USER == null) {
 	const environment = JSON.stringify({
 		ZOTERO_USER: process.env.ZOTERO_USER,
 		ZOTERO_API_KEY: process.env.ZOTERO_API_KEY,

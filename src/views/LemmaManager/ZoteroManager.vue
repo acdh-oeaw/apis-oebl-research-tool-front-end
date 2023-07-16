@@ -59,7 +59,7 @@ export default class ZoteroManager extends Vue {
 	_zoteroLemmaManagmentController?: ZoteroLemmaManagmentController = undefined; // make it not reactive
 
 	getZoteroController(): ZoteroLemmaManagmentController {
-		if (this._zoteroLemmaManagmentController === undefined) {
+		if (this._zoteroLemmaManagmentController == null) {
 			this._zoteroLemmaManagmentController = new ZoteroLemmaManagmentController();
 		}
 		return this._zoteroLemmaManagmentController;

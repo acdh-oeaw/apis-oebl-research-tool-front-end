@@ -64,9 +64,9 @@
 				<v-flex shrink align-self-start class="mr-5 lemma-view-title">
 					<h1
 						v-if="
-							store.lemma.selectedLemmaFilterId === null &&
-							store.lemma.selectedLemmaIssueId === null &&
-							lemmaListId === null
+							store.lemma.selectedLemmaFilterId == null &&
+							store.lemma.selectedLemmaIssueId == null &&
+							lemmaListId == null
 						"
 					>
 						Lemmabibliothek
@@ -168,7 +168,7 @@
 							</v-list-item>
 							<v-list-item
 								v-if="
-									store.lemma.selectedLemmaFilterId === null &&
+									store.lemma.selectedLemmaFilterId == null &&
 									Object.keys(store.lemma.currentFilters).length > 0
 								"
 								dense
@@ -579,7 +579,7 @@ export default class LemmaManager extends Vue {
 	}
 
 	sortLemmas(c: LemmaColumn) {
-		const sort = c.sort === null || c.sort === undefined || c.sort === "desc" ? "asc" : "desc";
+		const sort = c.sort == null || c.sort === "desc" ? "asc" : "desc";
 		this.columns = this.columns.map((cO) => ({
 			...cO,
 			sort: cO.value === c.value ? sort : undefined,

@@ -39,7 +39,7 @@ export default class ZoteroSearch extends Vue {
 
 	@Watch("searchTerm")
 	populateZoteroResults(): void {
-		if (this.searchTerm === null || this.searchTerm === undefined) {
+		if (this.searchTerm == null) {
 			return;
 		}
 		const searchTerm = this.searchTerm.trim();
@@ -76,7 +76,7 @@ export default class ZoteroSearch extends Vue {
 
 	submitItem(zoteroKey: string) {
 		const zoteroItem = this.zoteroResults.find((zoteroItem) => zoteroItem.key === zoteroKey);
-		if (zoteroItem === undefined) {
+		if (zoteroItem == null) {
 			throw new Error(
 				`Could not find selected zoteroItem with Key ${zoteroKey} from auto-complete in auto-complete list.`,
 			);

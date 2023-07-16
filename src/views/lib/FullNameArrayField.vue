@@ -6,9 +6,9 @@
 				{{ lemmaRowTranslations.alternativeNames.de }}
 			</h4>
 			<v-card-actions
-				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit === null }"
+				:class="{ 'edit-full-names-area': true, 'justify-center': selectedToEdit == null }"
 			>
-				<div v-if="selectedToEdit === null" class="add-new-full-name-btn">
+				<div v-if="selectedToEdit == null" class="add-new-full-name-btn">
 					<v-btn class="rounded-lg" icon @click.stop="createEmptyItem()">
 						Weiteren Namen hinzufügen
 						<v-icon class="pl-6">mdi-plus-circle-outline</v-icon>
@@ -81,7 +81,7 @@ export default class FullNameArrayField extends Vue {
 		return this.selectedToEdit != null;
 	}
 	get disregardText(): string {
-		if (this.selectedToEdit === null) {
+		if (this.selectedToEdit == null) {
 			throw new ErrorEvent("Nothing to disregard: No Item selected");
 		}
 		if (this.selectedToEdit.firstName || this.selectedToEdit.lastName) {
@@ -121,7 +121,7 @@ export default class FullNameArrayField extends Vue {
 	}
 
 	saveSelectedItem() {
-		if (this.selectedToEdit === null) {
+		if (this.selectedToEdit == null) {
 			throw new Error("Can not save selected FullName, it is null.");
 		}
 		this.localFullNames.unshift(this.selectedToEdit);

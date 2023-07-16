@@ -180,7 +180,7 @@ export default class LemmaLabels extends Vue {
 
 	labelNameRules = [
 		(n: unknown) =>
-			(n === null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
+			(n == null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
 		(n: string) =>
 			this.labels.findIndex(
 				(l) => l.name.trim().toLocaleLowerCase() === n.trim().toLocaleLowerCase(),

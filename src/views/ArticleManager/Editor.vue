@@ -112,7 +112,7 @@ export default class Editor extends Vue {
 	@Prop({ required: true }) userCanComment!: boolean;
 
 	dateToLocale(isoDate?: string): string {
-		return isoDate === undefined
+		return isoDate == null
 			? "(Das Datum konnte nicht ermittelt werden)"
 			: new Date(isoDate).toLocaleString("de");
 	}
@@ -142,7 +142,7 @@ export default class Editor extends Vue {
 
 	async save(): Promise<void> {
 		const markup = this.tipTapEditor.getJSON();
-		if (markup === null) {
+		if (markup == null) {
 			return;
 		}
 		await this.articleStore.updateMarkup(markup as Markup);

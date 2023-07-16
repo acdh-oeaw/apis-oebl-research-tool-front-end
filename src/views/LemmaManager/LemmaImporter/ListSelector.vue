@@ -72,7 +72,7 @@ export default class ListSelector extends Vue {
 
 	@Watch("selectedListTitle")
 	updateList() {
-		if (this.selectedListTitle === undefined || this.selectedListTitle === null) {
+		if (this.selectedListTitle == null) {
 			return;
 		}
 

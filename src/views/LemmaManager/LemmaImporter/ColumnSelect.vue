@@ -39,7 +39,7 @@ export default class ColumnSelect extends Vue {
 	}
 
 	get extractedData(): Array<Partial<LemmaRow>> {
-		if (this.options.sourceKey === null) {
+		if (this.options.sourceKey == null) {
 			return [];
 		}
 

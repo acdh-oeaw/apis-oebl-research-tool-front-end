@@ -128,7 +128,7 @@
 					<template #append>
 						<v-btn
 							small
-							:disabled="newNote === null || newNote.trim() === ''"
+							:disabled="newNote == null || newNote.trim() === ''"
 							elevation="0"
 							class="rounded-lg"
 							icon

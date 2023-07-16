@@ -517,7 +517,7 @@ export default class LemmaStore {
 	}
 
 	async addLemmasToList(list: LemmaRow["list"], lemmas: Array<LemmaRow>) {
-		if (list === undefined) {
+		if (list == null) {
 			return;
 		}
 		await this.updateLemmas(lemmas, { list });
@@ -538,7 +538,7 @@ export default class LemmaStore {
 			serializedLemmas.map(async (lemma) => {
 				await ResearchService.researchApiV1LemmaresearchPartialUpdate(lemma.id, {
 					...lemma,
-					firstName: lemma.firstName === null ? undefined : lemma.firstName,
+					firstName: lemma.firstName == null ? undefined : lemma.firstName,
 				});
 			}),
 		);
@@ -855,7 +855,7 @@ export default class LemmaStore {
 
 		// there are no lemmas, or no last modified date,
 		// or the DB must be cleared => get all lemmas
-		if (modifiedAfter === null || currentLemmasLength === 0 || this.shouldClearDb()) {
+		if (modifiedAfter == null || currentLemmasLength === 0 || this.shouldClearDb()) {
 			this._lemmas = [];
 			try {
 				await this.localDb.lemmas.clear();
@@ -898,7 +898,7 @@ export default class LemmaStore {
 	}
 
 	getLemmaById(id?: number) {
-		return id === undefined ? undefined : this._lemmas.find((l) => l.id === id);
+		return id == null ? undefined : this._lemmas.find((l) => l.id === id);
 	}
 
 	getLemmasByList(listId: number) {
@@ -937,7 +937,7 @@ export default class LemmaStore {
 			}
 
 			// If there is nothing to compare to, this lemma should not pass filter.
-			if (lookUpValue === undefined || lookUpValue === null) {
+			if (lookUpValue == null || lookUpValue == null) {
 				return false;
 			}
 

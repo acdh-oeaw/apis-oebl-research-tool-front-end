@@ -284,7 +284,7 @@ export default class LemmaPrintView extends Vue {
 		db.lemmas
 			.get(Number(this.$route.params["lemmaId"]))
 			.then((serializedLemmaRow) => {
-				if (serializedLemmaRow === undefined) {
+				if (serializedLemmaRow == null) {
 					window.alert(`Das Lemma mit der id <${this.lemmaId}> konnte nicht gefunden werden`);
 					throw new Error(`Could not find Lemma with id <${this.lemmaId}>`);
 				}

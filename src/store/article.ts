@@ -88,7 +88,7 @@ export class ArticleStore implements ArticleStoreInterface {
 
 	async updateMarkup(new_markup: Markup): Promise<ArticleStore> {
 		const newestVersion = this.newestVersion;
-		if (newestVersion === undefined) {
+		if (newestVersion == null) {
 			throw new Error("Can not update markup – newest version not found");
 		}
 

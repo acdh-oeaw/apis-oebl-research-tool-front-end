@@ -75,7 +75,7 @@ export default class CsvImporter extends Vue {
 	@Watch("plainText", { deep: false, immediate: false })
 	@Watch("localOptions", { deep: true, immediate: false })
 	parsePlainText() {
-		if (this.plainText === null) {
+		if (this.plainText == null) {
 			return;
 		}
 		neatCsv(

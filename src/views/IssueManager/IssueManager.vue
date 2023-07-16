@@ -352,7 +352,7 @@ export default class IssueManager extends Vue {
 	}
 
 	convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
-		if (this.issueStatus.find((s) => s.id === l.status) === undefined) {
+		if (this.issueStatus.find((s) => s.id === l.status) == null) {
 			return { ...l, status: this.issueStatus[0]?.id };
 		} else {
 			return l;

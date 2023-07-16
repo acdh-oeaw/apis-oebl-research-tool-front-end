@@ -111,7 +111,7 @@ export default class LobidGndSearch extends Vue {
 	}
 
 	useCustomGnd(gnd: string | null) {
-		if (gnd === null) {
+		if (gnd == null) {
 			return;
 		}
 		const normalizedGND = gnd.trim();

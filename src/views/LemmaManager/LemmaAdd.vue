@@ -34,7 +34,7 @@
 					cols="5"
 					class="background darken-1 pa-4 fill-height overflow-y-hidden rounded-lg mr-3"
 				>
-					<v-window reverse class="pt-1 fill-height" :value="viewLemmaDetail === null ? 0 : 1">
+					<v-window reverse class="pt-1 fill-height" :value="viewLemmaDetail == null ? 0 : 1">
 						<v-window-item class="fill-height" :value="0">
 							<div class="d-flex flex-column fill-height">
 								<v-btn-toggle
@@ -246,11 +246,11 @@ export default class LemmaAdd extends Vue {
 				firstName: this.person.firstName,
 				lastName: this.person.lastName,
 				dateOfBirth:
-					this.person.dateOfBirth.calendarYear === undefined
+					this.person.dateOfBirth.calendarYear == null
 						? null
 						: String(this.person.dateOfBirth.calendarYear),
 				dateOfDeath:
-					this.person.dateOfDeath.calendarYear === undefined
+					this.person.dateOfDeath.calendarYear == null
 						? null
 						: String(this.person.dateOfDeath.calendarYear),
 				gnd: this.person.gnd,

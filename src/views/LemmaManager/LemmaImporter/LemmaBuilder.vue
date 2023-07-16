@@ -32,7 +32,7 @@
 										</v-col>
 										<v-col>
 											<div
-												v-if="column.required && getOptionsByName(column.name).sourceKey === null"
+												v-if="column.required && getOptionsByName(column.name).sourceKey == null"
 												class="missing-required-field-column-select"
 											>
 												<v-alert type="warning">Dieses Feld muss ausgefüllt werden</v-alert>
@@ -196,7 +196,7 @@ export default class LemmaBuilder extends Vue {
 		const storedColumnConversion: ColumnConversion | undefined = this.options[name];
 		const columnConversionInUse: ColumnConversion =
 			storedColumnConversion ?? getEmptyColumnConversion();
-		if (storedColumnConversion === undefined) {
+		if (storedColumnConversion == null) {
 			this.options[name] = columnConversionInUse;
 		}
 		columnConversionInUse.extractOptions = option;
@@ -206,7 +206,7 @@ export default class LemmaBuilder extends Vue {
 
 	groupHasMissingRequiredValue(group: string): boolean {
 		const columnConversions = this.columnGroups[group];
-		if (columnConversions === undefined) {
+		if (columnConversions == null) {
 			return false;
 		}
 		const requiredColumns = columnConversions.filter(
@@ -218,7 +218,7 @@ export default class LemmaBuilder extends Vue {
 
 		for (const requiredColumn of requiredColumns) {
 			const option = this.options[requiredColumn.name];
-			if (option === undefined || option.extractOptions.sourceKey === null) {
+			if (option == null || option.extractOptions.sourceKey == null) {
 				return true;
 			}
 		}

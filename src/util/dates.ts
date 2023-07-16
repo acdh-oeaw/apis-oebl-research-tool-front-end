@@ -49,7 +49,7 @@ export class DateContainer {
 		parseCallback: (date: string) => Date,
 		validCallback: (parseAttempt: any) => boolean,
 	): DateContainer {
-		if (date === undefined || date === null) {
+		if (date == null) {
 			return new DateContainer();
 		}
 
@@ -72,7 +72,7 @@ export class DateContainer {
 			return null;
 		}
 		const date = this.getDateObject();
-		if (date === undefined) {
+		if (date == null) {
 			return null;
 		}
 		return formatISO(date, { representation: "date" });
@@ -80,25 +80,21 @@ export class DateContainer {
 
 	isValid(): boolean {
 		const date = this.getDateObject();
-		if (date === undefined) {
+		if (date == null) {
 			return false;
 		}
 		return isValid(date);
 	}
 
 	isEmpty(): boolean {
-		return (
-			this.calendarYear === undefined &&
-			this.calendarMonth === undefined &&
-			this.calendarDate === undefined
-		);
+		return this.calendarYear == null && this.calendarMonth == null && this.calendarDate == null;
 	}
 
 	getDateObject(): Date | undefined {
 		if (
-			this.calendarYear === undefined ||
-			this.calendarMonth === undefined ||
-			this.calendarDate === undefined ||
+			this.calendarYear == null ||
+			this.calendarMonth == null ||
+			this.calendarDate == null ||
 			// https://en.wikipedia.org/wiki/Year_zero differs from Javascript's implementation
 			// https://gitlab.com/acdh-oeaw/oebl/oebl-irs-devops/-/issues/41
 			this.calendarYear < 1
@@ -122,13 +118,13 @@ export class DateContainer {
 		const defaultMaxDate = 31;
 
 		// Early return 1: No way to tell
-		if (this.calendarYear === undefined || this.calendarMonth === undefined) {
+		if (this.calendarYear == null || this.calendarMonth == null) {
 			return defaultMaxDate;
 		}
 
 		// Check for cached date uptodate and try to create if not
 		if (
-			this._cachedFirstDateOfTheMonth === undefined ||
+			this._cachedFirstDateOfTheMonth == null ||
 			!this.equalsDate(this._cachedFirstDateOfTheMonth, true)
 		) {
 			this._cachedFirstDateOfTheMonth = DateContainer.createDate(
@@ -139,7 +135,7 @@ export class DateContainer {
 		}
 
 		// Early return 2: Could not create first day of month -> default
-		if (this._cachedFirstDateOfTheMonth === undefined) {
+		if (this._cachedFirstDateOfTheMonth == null) {
 			return defaultMaxDate;
 		}
 		return getDaysInMonth(this._cachedFirstDateOfTheMonth);
@@ -196,7 +192,7 @@ export class DateContainer {
 
 	toString(): string {
 		const date = this.getDateObject();
-		if (date === undefined) {
+		if (date == null) {
 			return "";
 		}
 		return format(date, "dd.LL.u");

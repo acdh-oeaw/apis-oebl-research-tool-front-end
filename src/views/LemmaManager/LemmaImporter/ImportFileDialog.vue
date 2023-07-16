@@ -5,7 +5,7 @@
 				<v-file-input
 					:accept="fileType"
 					label="Bitte eine Datei auswählen"
-					@change="file = $event === undefined ? null : $event"
+					@change="file = $event == null ? null : $event"
 				></v-file-input>
 				<v-spacer />
 				<v-select
@@ -34,7 +34,7 @@
 			</v-row>
 			<v-row class="submit">
 				<v-col>
-					<v-btn :disabled="rawData === null" @click="submit()">Weiter</v-btn>
+					<v-btn :disabled="rawData == null" @click="submit()">Weiter</v-btn>
 				</v-col>
 			</v-row>
 			<v-row class="data-preview">
@@ -75,7 +75,7 @@ export default class ImportFileDialog extends Vue {
 	fileType: SupportedFilesOptions["fileType"] = "text/csv";
 
 	get localData(): Data2D | null {
-		if (this.rawData === null || this.rawData.length === 0) {
+		if (this.rawData == null || this.rawData.length === 0) {
 			return null;
 		}
 
@@ -83,7 +83,7 @@ export default class ImportFileDialog extends Vue {
 	}
 
 	get headers(): Array<string> {
-		if (this.rawData === null || this.rawData.length === 0) {
+		if (this.rawData == null || this.rawData.length === 0) {
 			return [];
 		}
 		return this.localOptions.useFirstRowAsHeaders
@@ -92,7 +92,7 @@ export default class ImportFileDialog extends Vue {
 	}
 
 	get tableBody(): Array<Array<string>> {
-		if (this.rawData === null || this.rawData.length === 0) {
+		if (this.rawData == null || this.rawData.length === 0) {
 			return [];
 		}
 
@@ -106,7 +106,7 @@ export default class ImportFileDialog extends Vue {
 	}
 
 	emitData(): void {
-		if (this.localData === null) {
+		if (this.localData == null) {
 			return;
 		}
 

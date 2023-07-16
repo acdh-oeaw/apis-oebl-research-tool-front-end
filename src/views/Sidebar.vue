@@ -401,11 +401,11 @@ export default class Sidebar extends Vue {
 				: [];
 		const lemmaNameRules = [
 			(n: string | null) =>
-				n === null || (typeof n === "string" && n.trim() === "")
+				n == null || (typeof n === "string" && n.trim() === "")
 					? "Geben Sie einen Namen ein."
 					: true,
 			(n: string | null) => {
-				if (n === null) {
+				if (n == null) {
 					return "Geben Sie einen Namen ein";
 				} else if (
 					this.filteredLemmaLists.findIndex(
@@ -470,7 +470,7 @@ export default class Sidebar extends Vue {
 
 	get filteredLemmaListsOtherUsers() {
 		return this.filteredLemmaLists.filter(
-			(l) => l.editor === undefined || l.editor.userId !== store.user.userProfile.userId,
+			(l) => l.editor == null || l.editor.userId !== store.user.userProfile.userId,
 		);
 	}
 

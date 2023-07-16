@@ -63,7 +63,7 @@ export default class IssueStore {
 	}
 
 	async getIssueLemmas(id: number | null) {
-		if (id === null) {
+		if (id == null) {
 			return [];
 		}
 		return (await WorkflowService.workflowApiV1IssueLemmaList(undefined, id, undefined))
@@ -101,7 +101,7 @@ export default class IssueStore {
 	}
 
 	async loadStatuses(id: number | null) {
-		if (id === null) {
+		if (id == null) {
 			return [];
 		}
 		this._statuses = (await WorkflowService.workflowApiV1LemmaStatusList([id])).results as Array<
@@ -148,7 +148,7 @@ export default class IssueStore {
 
 	async getIssueLemmaById(id: number): Promise<IssueLemma | undefined> {
 		const local = this.issueLemmas.find((il) => il.id === id);
-		if (local === undefined) {
+		if (local == null) {
 			try {
 				return await WorkflowService.workflowApiV1IssueLemmaRetrieve(id);
 			} catch (e) {

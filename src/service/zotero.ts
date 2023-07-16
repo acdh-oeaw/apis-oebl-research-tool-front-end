@@ -258,7 +258,7 @@ export class ZoteroLemmaManagmentController {
 		// If there is a cache, load data from there
 		let cachedItems: Array<ZoteroItem> = [];
 		try {
-			cachedItems = this._cache === null ? [] : await this._cache.select(zoteroItemKeys);
+			cachedItems = this._cache == null ? [] : await this._cache.select(zoteroItemKeys);
 		} catch (error) {
 			console.error({ catchedError: error });
 		}

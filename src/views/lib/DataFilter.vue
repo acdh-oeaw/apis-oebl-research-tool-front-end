@@ -76,7 +76,7 @@
 				<div class="flex-nowrap text-no-wrap">
 					<v-btn
 						:disabled="
-							localFilterItems.length === 1 && (filter.query === '' || filter.query === null)
+							localFilterItems.length === 1 && (filter.query === '' || filter.query == null)
 						"
 						icon
 						small

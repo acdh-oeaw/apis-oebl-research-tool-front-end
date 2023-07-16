@@ -1,7 +1,7 @@
 <template>
 	<v-list-group
 		:class="[
-			((Array.isArray(value) && value.length === 0) || value === undefined) && 'list-disabled',
+			((Array.isArray(value) && value.length === 0) || value == null) && 'list-disabled',
 			'scrape-result',
 		]"
 		:value="defaultExpand"
