@@ -8,9 +8,9 @@ const previewCache: { [gnd: string]: string | null } = {};
 export async function getPreviews(gnds: Array<string | null>): Promise<Array<string | null>> {
 	return Promise.all(
 		gnds.map(async (gnd) => {
-			if (gnd !== null && previewCache[gnd] !== undefined) {
+			if (gnd != null && previewCache[gnd] != null) {
 				return previewCache[gnd]!;
-			} else if (gnd !== null) {
+			} else if (gnd != null) {
 				previewCache[gnd] = await fetch("https://lobid.org/gnd/" + gnd + ".preview")
 					.then((r) => {
 						if (r.ok) {
@@ -29,7 +29,7 @@ export async function getPreviews(gnds: Array<string | null>): Promise<Array<str
 }
 
 function isQueryableValue(e?: string | null): boolean {
-	return e !== undefined && e !== null && e.trim() !== "" && e.trim() !== "*";
+	return e != null && e != null && e.trim() !== "" && e.trim() !== "*";
 }
 
 function makeLobidQueryString(p: ImportablePerson): string {

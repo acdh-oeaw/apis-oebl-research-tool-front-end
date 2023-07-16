@@ -106,7 +106,7 @@ export class DateContainer {
 			return undefined;
 		}
 
-		if (this._cachedDate !== undefined && this.equalsDate(this._cachedDate)) {
+		if (this._cachedDate != null && this.equalsDate(this._cachedDate)) {
 			return this._cachedDate;
 		}
 

@@ -81,7 +81,7 @@
 						</v-list>
 						<div style="width: 40%" class="preview-panel background">
 							<lemma-detail
-								v-if="selectedLemma !== null"
+								v-if="selectedLemma != null"
 								:value="selectedLemma.item"
 								:show-tooggle-side-bar-button="false"
 								@update="updateLemma"
@@ -133,7 +133,7 @@ export default class GlobalSearch extends Vue {
 		store.lemma.selectedLemmas = [this.selectedLemma.item];
 		console.log(this.selectedLemma.item.list, "this.selectedLemma.item.list");
 		// open a list
-		if (this.selectedLemma.item.list !== undefined && this.selectedLemma.item.list !== null) {
+		if (this.selectedLemma.item.list != null) {
 			this.$router
 				.push({
 					path: `/lemmas/list/${this.selectedLemma.item.list.id}`,
@@ -165,7 +165,7 @@ export default class GlobalSearch extends Vue {
 	}
 
 	updateLemma(u: Partial<LemmaRow>) {
-		if (this.selectedLemma !== null) {
+		if (this.selectedLemma != null) {
 			store.lemma.updateLemmas([this.selectedLemma.item], u);
 		}
 	}

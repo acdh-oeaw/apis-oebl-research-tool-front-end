@@ -332,7 +332,7 @@ export default class Sidebar extends Vue {
 	}
 
 	onEscSearch(e: KeyboardEvent) {
-		if (this.searchQuery !== "" && this.searchQuery !== null) {
+		if (this.searchQuery !== "" && this.searchQuery != null) {
 			this.searchQuery = null;
 		} else {
 			if (e.target instanceof HTMLInputElement) {
@@ -342,14 +342,14 @@ export default class Sidebar extends Vue {
 	}
 
 	async loadIssue(issueId: number | null) {
-		if (issueId !== null) {
+		if (issueId != null) {
 			store.lemma.selectedLemmaIssueId = issueId;
 			store.issue.loadIssue(issueId);
 		}
 	}
 
 	async loadIssueLemmas(issueId: number | null) {
-		if (issueId !== null) {
+		if (issueId != null) {
 			store.lemma.selectedLemmaIssueId = issueId;
 			const ls = await store.issue.getIssueLemmas(issueId);
 			store.lemma.selectedIssueLemmas = ls;
@@ -357,7 +357,7 @@ export default class Sidebar extends Vue {
 	}
 
 	async deleteList(list: LemmaList) {
-		if (list.id !== undefined) {
+		if (list.id != null) {
 			if (await confirm.confirm(`Liste ”${list.title}” löschen?`, { icon: "mdi-delete-outline" })) {
 				store.lemma.deleteLemmaList(list.id);
 			}
@@ -426,7 +426,7 @@ export default class Sidebar extends Vue {
 			placeholder: "Listenname…",
 			rules: lemmaNameRules,
 		});
-		if (name !== null) {
+		if (name != null) {
 			const l = (await store.lemma.createList(name)) as WithId<LemmaList>;
 			if (lemmas.length) {
 				await store.lemma.addLemmasToList(
@@ -443,7 +443,7 @@ export default class Sidebar extends Vue {
 	}
 
 	get filteredStoredLemmaFilters() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
+		if (this.searchQuery != null && this.searchQuery.trim() !== "") {
 			return store.lemma.storedLemmaFilters.filter((l) =>
 				l.name.toLocaleLowerCase().includes(this.searchQuery || ""),
 			);
@@ -453,7 +453,7 @@ export default class Sidebar extends Vue {
 	}
 
 	get filteredLemmaLists() {
-		if (this.searchQuery !== null && this.searchQuery.trim() !== "") {
+		if (this.searchQuery != null && this.searchQuery.trim() !== "") {
 			return store.lemma.lemmaLists.filter((l) =>
 				l.title.toLocaleLowerCase().includes(this.searchQuery || ""),
 			);
@@ -464,7 +464,7 @@ export default class Sidebar extends Vue {
 
 	get filteredLemmaListsCurrentUser() {
 		return this.filteredLemmaLists.filter(
-			(l) => l.editor !== undefined && l.editor.userId === store.user.userProfile.userId,
+			(l) => l.editor != null && l.editor.userId === store.user.userProfile.userId,
 		);
 	}
 

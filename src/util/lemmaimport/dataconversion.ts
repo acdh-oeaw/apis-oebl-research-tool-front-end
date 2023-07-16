@@ -38,8 +38,7 @@ export function replaceNullStrings(
 ): LemmaPrototypeNullableStringType {
 	const sourceEntries = Object.entries(source);
 	const notUndefinedEntries = sourceEntries.filter(
-		(keyValue: [string, string | undefined]): keyValue is [string, string] =>
-			keyValue[1] !== undefined,
+		(keyValue: [string, string | undefined]): keyValue is [string, string] => keyValue[1] != null,
 	);
 	const targetEntries = notUndefinedEntries.map(
 		(

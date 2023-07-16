@@ -28,7 +28,7 @@ function warnBeforeLeave(e: BeforeUnloadEvent): string | undefined {
 window.addEventListener("beforeunload", warnBeforeLeave);
 
 function isDefined<T>(value: T | null | undefined): value is Exclude<T, null | undefined> {
-	return value !== undefined && value !== null;
+	return value != null;
 }
 
 function isString(value: any): value is string {
@@ -207,8 +207,8 @@ function catchErrors(options: ApiRequestOptions, result: ApiResult): void {
 
 function isHttpWriteCall(opts?: ApiRequestOptions): boolean {
 	return (
-		opts !== undefined &&
-		opts.method !== undefined &&
+		opts != null &&
+		opts.method != null &&
 		opts.method !== "GET" &&
 		opts.method !== "HEAD" &&
 		opts.method !== "OPTIONS"

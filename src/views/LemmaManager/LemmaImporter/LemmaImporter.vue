@@ -10,7 +10,7 @@
 					<v-alert v-else-if="percentDone === 100" type="success">
 						{{ lemmasToImport.length }} Lemmas importiert
 					</v-alert>
-					<v-alert v-else-if="errorMessage !== null" type="error">{{ errorMessage }}</v-alert>
+					<v-alert v-else-if="errorMessage != null" type="error">{{ errorMessage }}</v-alert>
 				</v-col>
 			</v-row>
 			<v-row class="lemma-importer-preview">

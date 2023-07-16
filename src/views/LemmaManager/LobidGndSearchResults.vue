@@ -49,7 +49,7 @@ export default class LobidGndSearchResults extends Vue {
 
 	@Watch("person", { deep: true })
 	async onChangePersonQuery() {
-		if (this.searchPerson !== null) {
+		if (this.searchPerson != null) {
 			this.loading = true;
 			this.resultGnds = (
 				await findPerson({

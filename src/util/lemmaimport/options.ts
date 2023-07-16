@@ -122,6 +122,6 @@ export class ImportOptions {
 	selectedList: SelectedList = undefined;
 
 	allIsFilledIn(): boolean {
-		return this.lemmaBuilderOptions.lastName.extractOptions.sourceKey !== null;
+		return this.lemmaBuilderOptions.lastName.extractOptions.sourceKey != null;
 	}
 }

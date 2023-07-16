@@ -40,7 +40,7 @@ export class ListManager {
 	public async getLemmaList(title: string): Promise<ChosenLemmaList> {
 		const lemmaLists = this.lemmaLists.filter(
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			(list) => list.title !== undefined && list.title === title,
+			(list) => list.title != null && list.title === title,
 		);
 		if (lemmaLists.length === 1) {
 			return lemmaLists[0]!;

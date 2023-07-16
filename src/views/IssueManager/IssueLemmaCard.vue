@@ -68,7 +68,7 @@ export default class IssueLemmaCard extends Vue {
 	}
 
 	dateToYear(d: string | null | undefined): string | null {
-		if (d !== null && d !== undefined) {
+		if (d != null) {
 			try {
 				return format(new Date(d), "yyyy");
 			} catch (e) {
@@ -80,7 +80,7 @@ export default class IssueLemmaCard extends Vue {
 	}
 
 	get labels(): Array<LemmaLabel> {
-		if (this.value.labels !== undefined) {
+		if (this.value.labels != null) {
 			return this.value.labels.map((id) => this.labelsById[id]!);
 		} else {
 			return [];
@@ -88,7 +88,7 @@ export default class IssueLemmaCard extends Vue {
 	}
 
 	get labelsLimited(): Array<LemmaLabel> {
-		if (this.maxLabels !== null) {
+		if (this.maxLabels != null) {
 			return _.take(this.labels, this.maxLabels);
 		} else {
 			return this.labels;

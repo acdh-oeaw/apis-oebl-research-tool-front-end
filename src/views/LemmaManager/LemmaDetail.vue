@@ -1,6 +1,6 @@
 <template>
 	<v-card
-		v-if="value !== undefined && value !== null"
+		v-if="value != null"
 		class="transparent flex-column d-flex fill-height lemma-detail"
 		elevation="0"
 		@dragover.prevent=""
@@ -480,8 +480,8 @@ export default class LemmaDetail extends Vue {
 
 	onDragEnter(event: DragEvent) {
 		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
+			event.currentTarget != null &&
+			event.dataTransfer != null &&
 			// during the "drag" phase, the "files" prop is still empty
 			// so we use the items prop instead to check _what_ is being dragged.
 			event.dataTransfer.items[0] != null &&
@@ -504,8 +504,8 @@ export default class LemmaDetail extends Vue {
 
 	onDrop(event: DragEvent) {
 		if (
-			event.currentTarget !== null &&
-			event.dataTransfer !== null &&
+			event.currentTarget != null &&
+			event.dataTransfer != null &&
 			event.dataTransfer.files.length > 0
 		) {
 			const target = event.currentTarget as HTMLElement;
@@ -542,7 +542,7 @@ export default class LemmaDetail extends Vue {
 			return 0;
 		} else {
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			return Object.values(r).filter((r) => r !== undefined && !Array.isArray(r)).length;
+			return Object.values(r).filter((r) => r != null && !Array.isArray(r)).length;
 		}
 	}
 

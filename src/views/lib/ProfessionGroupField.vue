@@ -95,7 +95,7 @@ export default class ProfessionGroupField extends Vue {
 			return;
 		}
 
-		if (this.selected !== null && localSelected.id === this.selected.id) {
+		if (this.selected != null && localSelected.id === this.selected.id) {
 			return;
 		}
 

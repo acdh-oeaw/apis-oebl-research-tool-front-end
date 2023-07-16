@@ -78,7 +78,7 @@ export default class FullNameArrayField extends Vue {
 	selectedToEdit: FullNameType | null = null;
 	// When editing, do not sync
 	get isLocked(): boolean {
-		return this.selectedToEdit !== null;
+		return this.selectedToEdit != null;
 	}
 	get disregardText(): string {
 		if (this.selectedToEdit === null) {

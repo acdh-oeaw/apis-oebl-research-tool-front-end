@@ -50,7 +50,7 @@ interface Settings {
  * */
 
 class Store {
-	public isLoggedIn = OpenAPI.TOKEN !== undefined;
+	public isLoggedIn = OpenAPI.TOKEN != null;
 
 	/** This is where we put functions that we want to run after the login. */
 	private loginCallbacks: Array<() => any> = [];

@@ -1,6 +1,6 @@
 <template>
 	<v-card v-if="lemma" class="transparent flex-column d-flex fill-height" flat>
-		<v-card-title v-if="researchLemma !== null">
+		<v-card-title v-if="researchLemma != null">
 			<v-container class="pa-0">
 				<v-row no-gutters>
 					<v-col cols="2"></v-col>
@@ -192,7 +192,7 @@ export default class IssueLemmaDetail extends Vue {
 	isLoadingNotes = false;
 
 	dateToYear(d: string | null | undefined): string | null {
-		if (d !== null && d !== undefined) {
+		if (d != null) {
 			try {
 				return format(new Date(d), "yyyy");
 			} catch (e) {
@@ -235,7 +235,7 @@ export default class IssueLemmaDetail extends Vue {
 	}
 
 	formatTimeDistance(d: string | undefined): string {
-		if (d !== undefined) {
+		if (d != null) {
 			return `${formatDistanceToNow(new Date(d), { locale: de, addSuffix: true })}`;
 		} else {
 			return "";
@@ -244,7 +244,7 @@ export default class IssueLemmaDetail extends Vue {
 
 	getUserName(id: number): string {
 		const u = store.editors.getById(id);
-		if (u !== undefined) {
+		if (u != null) {
 			return u.name || "";
 		} else {
 			return "";
@@ -257,7 +257,7 @@ export default class IssueLemmaDetail extends Vue {
 	}
 
 	async loadNotes() {
-		if (this.lemma.id && this.lemma.notes !== undefined && this.lemma.notes.length > 0) {
+		if (this.lemma.id && this.lemma.notes != null && this.lemma.notes.length > 0) {
 			this.isLoadingNotes = true;
 			this.notes = (await store.issue.loadNotes(this.lemma.id)).reverse();
 			this.isLoadingNotes = false;

@@ -64,20 +64,19 @@
 						v-ripple="false"
 						class="filter-autocomplete-item mx-2 mb-1"
 						:class="{
-							selected:
-								searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined,
+							selected: searchItems.find((i) => i.id === item.id && i.type === item.type) != null,
 						}"
 						v-on="on"
 					>
 						<v-list-item-avatar>
 							<img
-								v-if="item.type === 'editor' && item.image !== undefined"
+								v-if="item.type === 'editor' && item.image != null"
 								:key="item.type + '__' + item.id"
 								alt=""
 								:src="item.image"
 							/>
 							<v-icon v-if="item.type === 'author'">mdi-account-edit-outline</v-icon>
-							<v-icon v-if="item.type === 'label' && item.color !== undefined" :color="item.color">
+							<v-icon v-if="item.type === 'label' && item.color != null" :color="item.color">
 								mdi-checkbox-blank-circle
 							</v-icon>
 							<v-icon v-if="item.type === 'text'">mdi-card-text-outline</v-icon>
@@ -91,7 +90,7 @@
 							</v-list-item-subtitle>
 						</v-list-item-content>
 						<v-list-item-action
-							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) !== undefined"
+							v-if="searchItems.find((i) => i.id === item.id && i.type === item.type) != null"
 							width="20"
 						>
 							<v-icon small>mdi-check</v-icon>
@@ -207,9 +206,9 @@
 				<v-icon>mdi-dock-right</v-icon>
 			</v-btn>
 			<issue-lemma-detail
-				v-if="selectedLemma !== null"
+				v-if="selectedLemma != null"
 				:lemma="selectedLemma"
-				:value="selectedLemma !== null"
+				:value="selectedLemma != null"
 				@update="updateLemmaById"
 				@update-status="updateLemmaStatus"
 				@delete-issue-lemma="deleteIssueLemma"
@@ -285,7 +284,7 @@ import IssueLemmaDetail from "./IssueLemmaDetail.vue";
 import IssueLemmaList from "./IssueLemmaList.vue";
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-	return value !== null && value !== undefined;
+	return value != null;
 }
 
 @Component({
@@ -531,11 +530,11 @@ export default class IssueManager extends Vue {
 				this.searchItems.find(
 					(si) =>
 						si.type === "label" &&
-						issue.labels !== undefined &&
-						issue.labels.find((l) => l === si.id) !== undefined,
-				) !== undefined ||
-				this.searchItems.find((si) => si.type === "text" && si.id === issue.id) !== undefined
-				// this.searchItems.find(si => si.type === 'author' && si.id === issue.author) !== undefined ||
+						issue.labels != null &&
+						issue.labels.find((l) => l === si.id) != null,
+				) != null ||
+				this.searchItems.find((si) => si.type === "text" && si.id === issue.id) != null
+				// this.searchItems.find(si => si.type === 'author' && si.id === issue.author) != null ||
 			);
 		});
 	}

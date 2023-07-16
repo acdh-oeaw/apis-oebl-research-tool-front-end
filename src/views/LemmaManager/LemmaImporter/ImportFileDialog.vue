@@ -16,7 +16,7 @@
 			</v-row>
 			<v-row class="file-type-options">
 				<csv-importer
-					v-if="file !== null && file.type === 'text/csv'"
+					v-if="file != null && file.type === 'text/csv'"
 					:file="file"
 					:preloaded-options="preloadedFileOptions"
 					@options="localOptions = $event"

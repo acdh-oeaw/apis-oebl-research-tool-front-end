@@ -220,7 +220,7 @@ export default class Annotation extends Vue {
 
 	get searchTerm(): string {
 		// if possible, use the cached search term
-		if (this.id !== null && this.searchQueries[this.id] !== undefined) {
+		if (this.id != null && this.searchQueries[this.id] != null) {
 			return this.searchQueries[this.id]!;
 			// otherwise it’s empty
 		} else {
@@ -272,7 +272,7 @@ export default class Annotation extends Vue {
 			);
 			this.searchTerm = selectedText;
 		}
-		if (this.entityId !== null && this.entityType !== null) {
+		if (this.entityId != null && this.entityType != null) {
 			//this.results = [await lobid.get(this.entityId)]
 			this.results = await apis_autocomplete.searchEntity(this.entityType, this.entityId);
 		}
@@ -288,9 +288,9 @@ export default class Annotation extends Vue {
 	debouncedSearchEntity = _.debounce(this.searchEntity, 300);
 
 	async searchEntity(v: string | null) {
-		if (this.entityType !== null) {
+		if (this.entityType != null) {
 			this.loading = true;
-			if (v !== null && v.trim() !== "") {
+			if (v != null && v.trim() !== "") {
 				this.results = await apis_autocomplete.searchEntity(this.entityType, v);
 			} else {
 				this.searchTerm = "";
@@ -315,9 +315,9 @@ export default class Annotation extends Vue {
 	async onChangeselectedEntityType() {
 		this.updateProps({ entityType: this.entityType });
 		const relation = `person${this.entityType}relation`;
-		if (this.entityType !== null) {
+		if (this.entityType != null) {
 			await this.getAvailableRelations(relation);
-			if (this.relationTypeId !== null) {
+			if (this.relationTypeId != null) {
 				this.selectedRelationType =
 					this.availableRelations.find((rel) => {
 						return (rel.id = String(this.relationTypeId));
@@ -328,7 +328,7 @@ export default class Annotation extends Vue {
 
 	@Watch("selectedRelationType", { immediate: true })
 	async onChangeselectedRelationType() {
-		if (this.selectedRelationType !== null) {
+		if (this.selectedRelationType != null) {
 			this.updateProps({ relationTypeId: this.selectedRelationType });
 			const SearchTextField = this.$refs.searchTerm as TextField;
 			if (SearchTextField.value !== "") {

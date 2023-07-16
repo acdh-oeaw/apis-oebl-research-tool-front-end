@@ -40,7 +40,7 @@
 			<template #item="{ item, on, props }">
 				<v-list-item :ripple="false" class="label-list-item" v-bind="props" v-on="on">
 					<v-list-item-avatar size="15">
-						<v-icon v-if="value.find((id) => id === item.id) !== undefined" :color="item.color">
+						<v-icon v-if="value.find((id) => id === item.id) != null" :color="item.color">
 							mdi-checkbox-marked-circle
 						</v-icon>
 						<v-icon v-else :color="item.color">mdi-checkbox-blank-circle</v-icon>
@@ -67,10 +67,10 @@
 			</template>
 		</v-combobox>
 		<v-dialog
-			v-if="editingLabel !== null"
+			v-if="editingLabel != null"
 			scrollable
 			max-width="620"
-			:value="editingLabel !== null"
+			:value="editingLabel != null"
 			@input="editingLabel = null"
 		>
 			<v-card color="background" class="rounded-lg elevation-25">
@@ -135,11 +135,7 @@
 					<v-row dense>
 						<v-col cols="2">
 							<v-btn
-								v-if="
-									editingLabel !== undefined &&
-									editingLabel.id !== undefined &&
-									editingLabel.id > -1
-								"
+								v-if="editingLabel != null && editingLabel.id != null && editingLabel.id > -1"
 								depressed
 								class="rounded-lg"
 								color="background darken-2"
@@ -183,7 +179,7 @@ export default class LemmaLabels extends Vue {
 	defaultLabelColor = colors.blueGrey.base;
 
 	labelNameRules = [
-		(n: string) =>
+		(n: unknown) =>
 			(n === null || (typeof n === "string" && n.trim() === "")) && "Geben Sie einen Namen ein.",
 		(n: string) =>
 			this.labels.findIndex(
@@ -196,9 +192,7 @@ export default class LemmaLabels extends Vue {
 	}
 
 	get selectedLabels() {
-		return this.value
-			.map((id) => this.labels.find((l) => l.id === id))
-			.filter((v) => v !== undefined);
+		return this.value.map((id) => this.labels.find((l) => l.id === id)).filter((v) => v != null);
 	}
 
 	get labels() {
@@ -220,7 +214,7 @@ export default class LemmaLabels extends Vue {
 	onChange(ls: Array<Label | string>) {
 		this.searchText = "";
 		const newLabel = ls.find(this.isNewLabel);
-		if (newLabel !== undefined) {
+		if (newLabel != null) {
 			this.addLabel(newLabel);
 		}
 		this.$emit(
@@ -231,7 +225,7 @@ export default class LemmaLabels extends Vue {
 
 	async deleteEditingLabel() {
 		const i = this.editingLabel;
-		if (i !== null && i.id !== undefined && i.id > -1) {
+		if (i != null && i.id != null && i.id > -1) {
 			if (
 				await confirm.confirm(
 					"Wollen Sie dieses Label löschen? Das Label wird von allen Einträgen entfernt.",
@@ -249,13 +243,13 @@ export default class LemmaLabels extends Vue {
 	}
 
 	async saveLabel() {
-		if (this.editingLabel !== null) {
+		if (this.editingLabel != null) {
 			if (this.editingLabel.id === -1) {
 				const { id } = await store.issue.createLabel(
 					this.editingLabel.name,
 					this.editingLabel.color || this.defaultLabelColor,
 				);
-				if (id !== undefined) {
+				if (id != null) {
 					this.$emit("update", this.value.concat(id));
 				}
 			} else {

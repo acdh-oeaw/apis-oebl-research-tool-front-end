@@ -128,7 +128,7 @@
 									Ergebnisse
 								</v-btn>
 								<lemma-detail
-									v-if="viewLemmaDetail !== null"
+									v-if="viewLemmaDetail != null"
 									class="flex-grow-1 fill-height background mt-2"
 									:value="viewLemmaDetail"
 								/>

@@ -202,7 +202,7 @@ export default class EditorLoader extends Vue {
 		this.tipTapEditor = tipTapEditor;
 		this.versionToEdit = versionToEdit;
 
-		if (this.assignmentStore !== null) {
+		if (this.assignmentStore != null) {
 			this.userCanView = this.assignmentStore.userCanView;
 			this.userCanComment = this.assignmentStore.userCanComment;
 			this.userCanAnnotate = this.assignmentStore.userCanAnnotate;
@@ -314,7 +314,7 @@ export default class EditorLoader extends Vue {
 				ordinalNumber: index + 1,
 				dateCreatedDELocale: version.date_created.toLocaleDateString("de"),
 				dateModifiedDELocale: version.date_modified.toLocaleDateString("de"),
-				isShownInEditor: this.versionToEdit !== null && version.id === this.versionToEdit.id,
+				isShownInEditor: this.versionToEdit != null && version.id === this.versionToEdit.id,
 			};
 		});
 	}
@@ -338,14 +338,14 @@ export default class EditorLoader extends Vue {
 		this.versionToEdit = versionToSelect;
 		this.tipTapEditor = this.createTipTapEditor(
 			this.versionToEdit.markup as TipTapContent,
-			this.versionToEdit.id !== undefined &&
-				this.articleStore.newestVersion !== undefined &&
+			this.versionToEdit.id != null &&
+				this.articleStore.newestVersion != null &&
 				this.versionToEdit.id === this.articleStore.newestVersion.id,
 		);
 	}
 
 	createTipTapEditor(content: TipTapContent, editable: boolean): TipTapEditor {
-		if (this.tipTapEditor !== null) {
+		if (this.tipTapEditor != null) {
 			this.tipTapEditor.destroy();
 		}
 		return new TipTapEditor({

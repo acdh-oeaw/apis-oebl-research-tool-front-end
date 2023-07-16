@@ -15,7 +15,7 @@ const vueComponents: { [name: string]: VueRenderer } = {};
 
 function updateComponent(name: string, id: string, attrs: any, tagName: string, editor: Editor) {
 	const el = document.querySelector(`${tagName}[data-id="${id}"]`);
-	if (el instanceof HTMLElement && vueComponents[name] !== undefined) {
+	if (el instanceof HTMLElement && vueComponents[name] != null) {
 		vueComponents[name]?.updateProps({ ...attrs, editor });
 	}
 }
@@ -31,14 +31,14 @@ function showPopUp(
 	tagName: string,
 ) {
 	const el = document.querySelector(`${tagName}[data-id="${id}"]`);
-	if (el instanceof HTMLElement && t !== null) {
+	if (el instanceof HTMLElement && t != null) {
 		t.setProps({
 			getReferenceClientRect() {
 				return el.getBoundingClientRect();
 			},
 		});
 		t.show();
-		if (vueComponents[name] !== undefined) {
+		if (vueComponents[name] != null) {
 			vueComponents[name]?.updateProps({
 				...attributes,
 				editor,
@@ -140,7 +140,7 @@ const ex = Mark.create({
 		} else if (isAddingTypeMark && isRemovingTypeMark) {
 			updateComponent(this.name, attrs.id, attrs, this.options.tagName, this.editor);
 			const el = document.querySelector(`${this.options.tagName}[data-id="${attrs.id}"]`);
-			if (t !== null && el !== null) {
+			if (t != null && el != null) {
 				t.setProps({
 					getReferenceClientRect() {
 						return el.getBoundingClientRect();
@@ -150,7 +150,7 @@ const ex = Mark.create({
 			// when the transaction only removes a mark of this type,
 			// close the popup
 		} else if (!isAddingTypeMark && isRemovingTypeMark) {
-			if (t !== null) {
+			if (t != null) {
 				t.hide();
 			}
 		}
@@ -159,7 +159,7 @@ const ex = Mark.create({
 		return {
 			Escape: () => {
 				console.log("esc!", t);
-				if (t !== null && t.state.isVisible) {
+				if (t != null && t.state.isVisible) {
 					t.hide();
 					return true;
 				} else {
@@ -184,7 +184,7 @@ const ex = Mark.create({
 				);
 			}
 		} else {
-			if (t !== null) {
+			if (t != null) {
 				hideAll({
 					exclude: t,
 				});

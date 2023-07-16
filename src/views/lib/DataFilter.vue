@@ -83,7 +83,7 @@
 						@click="removeFilterItem(i)"
 					>
 						<v-icon
-							v-if="localFilterItems.length === 1 && filter.query !== null && filter.query !== ''"
+							v-if="localFilterItems.length === 1 && filter.query != null && filter.query !== ''"
 							style="transform: rotate(45deg)"
 						>
 							mdi-plus-circle-outline

@@ -14,7 +14,7 @@ const lines = fileContent.split("\n");
 
 const newLines = lines.map((l) => {
 	const matches = serviceRegEx.exec(l);
-	if (matches !== null && !allowedServices.includes(matches[1]!.trim())) {
+	if (matches != null && !allowedServices.includes(matches[1]!.trim())) {
 		// remove/comment out line
 		return "// " + l;
 	} else {

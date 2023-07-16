@@ -145,7 +145,7 @@ export default class CommentThread extends Vue {
 	get comment() {
 		console.warn("not implemented TODO");
 		return undefined;
-		// if (this.id !== null) {
+		// if (this.id != null) {
 		//   return this.store.article.getThread(this.id)
 		// }
 	}
@@ -191,7 +191,7 @@ export default class CommentThread extends Vue {
 			this.scrollToBottom();
 		}
 		// this.shouldShowEmojiPicker = false
-		// if (this.id !== null) {
+		// if (this.id != null) {
 		//   this.store.article.addComment(this.id, {
 		//     commentId: uuid(),
 		//     date: new Date(),
@@ -250,13 +250,13 @@ export default class CommentThread extends Vue {
 	get thread() {
 		console.warn("this is also ot implemented. TODO");
 		return undefined;
-		// if (this.id !== null) {
+		// if (this.id != null) {
 		//   return this.store.article.getThread(this.id)
 		// }
 	}
 
 	formatTimeDistance(d: string | undefined): string {
-		if (d !== undefined) {
+		if (d != null) {
 			return `${formatDistanceToNow(new Date(d), { locale: de, addSuffix: true })}`;
 		} else {
 			return "";

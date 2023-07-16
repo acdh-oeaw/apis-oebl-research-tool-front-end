@@ -71,12 +71,12 @@
 					>
 						Lemmabibliothek
 					</h1>
-					<h1 v-else-if="store.lemma.selectedLemmaIssueId !== null">
+					<h1 v-else-if="store.lemma.selectedLemmaIssueId != null">
 						<!-- @vue-expect-error -->
 						{{ store.issue.getIssueById(store.lemma.selectedLemmaIssueId).name }}
 					</h1>
 					<h1
-						v-else-if="selectedList !== null"
+						v-else-if="selectedList != null"
 						contenteditable="true"
 						@blur="updateListName"
 						@keyup.enter.prevent.stop="$event.target.blur()"
@@ -84,7 +84,7 @@
 						v-text="selectedList.title"
 					></h1>
 					<h1
-						v-else-if="store.lemma.selectedLemmaFilterId !== null"
+						v-else-if="store.lemma.selectedLemmaFilterId != null"
 						contenteditable="true"
 						@blur="
 							updateLemmaFilterName(store.lemma.selectedLemmaFilterId, $event.target.textContent)
@@ -157,7 +157,7 @@
 								<v-list-item-content>Excel oder CSV importieren…</v-list-item-content>
 							</v-list-item>
 							<v-list-item
-								v-if="lemmaListId !== null"
+								v-if="lemmaListId != null"
 								test-id="lemma-list-delete-btn"
 								@click="deleteList(lemmaListId)"
 							>
@@ -180,7 +180,7 @@
 								<v-list-item-content>Abfrage sichern…</v-list-item-content>
 							</v-list-item>
 							<v-list-item
-								v-else-if="store.lemma.selectedLemmaFilterId !== null"
+								v-else-if="store.lemma.selectedLemmaFilterId != null"
 								dense
 								@click="deleteFilter(store.lemma.selectedLemmaFilterId)"
 							>
@@ -434,7 +434,7 @@ export default class LemmaManager extends Vue {
 	}
 
 	get newLemmas(): Array<LemmaRow> {
-		if (this.lemmaListId !== null) {
+		if (this.lemmaListId != null) {
 			return Object.values(store.lemma.newLemmasInUserList[this.lemmaListId] || {}).map(
 				(e) => e.item,
 			);
@@ -450,7 +450,7 @@ export default class LemmaManager extends Vue {
 
 	async saveFilter() {
 		const name = await prompt.prompt("Filter speichern", { placeholder: "Filtername eingeben…" });
-		if (name !== null) {
+		if (name != null) {
 			store.lemma.storedLemmaFilters = [
 				...store.lemma.storedLemmaFilters,
 				{
@@ -464,7 +464,7 @@ export default class LemmaManager extends Vue {
 
 	@Watch("highlightId", { immediate: true })
 	async onChangeHighlightId() {
-		if (this.highlightId !== null) {
+		if (this.highlightId != null) {
 			this.store.lemma.setFilter({});
 			await this.$nextTick();
 			const index = this.sortedFilteredLemmas.findIndex((l) => l.id === this.highlightId);
@@ -473,7 +473,7 @@ export default class LemmaManager extends Vue {
 	}
 
 	get selectedList() {
-		if (this.lemmaListId !== null) {
+		if (this.lemmaListId != null) {
 			return store.lemma.getListById(this.lemmaListId) || null;
 		} else {
 			return null;
@@ -491,7 +491,7 @@ export default class LemmaManager extends Vue {
 	openWikipedia(item: LemmaRow) {
 		const link = _.get(item, "columns_scrape.wikidata.wiki_de");
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (link !== undefined) {
+		if (link != null) {
 			window.open(link);
 		}
 	}
@@ -503,7 +503,7 @@ export default class LemmaManager extends Vue {
 	}
 
 	cancelUpdateListName(event: KeyboardEvent) {
-		if (this.lemmaListId !== null && event.target instanceof HTMLElement) {
+		if (this.lemmaListId != null && event.target instanceof HTMLElement) {
 			event.target.textContent = store.lemma.getListById(this.lemmaListId)?.title || "Listenname";
 			event.target.blur();
 		}
@@ -512,8 +512,8 @@ export default class LemmaManager extends Vue {
 	updateListName(event: Event) {
 		if (
 			event.currentTarget instanceof HTMLElement &&
-			this.lemmaListId !== null &&
-			event.currentTarget.textContent !== null
+			this.lemmaListId != null &&
+			event.currentTarget.textContent != null
 		) {
 			store.lemma.updateList(this.lemmaListId, { title: event.currentTarget.textContent });
 			event.currentTarget.scrollLeft = 0;
@@ -534,9 +534,9 @@ export default class LemmaManager extends Vue {
 	}
 
 	async deleteList(id: number | null) {
-		if (id !== null) {
+		if (id != null) {
 			const list = store.lemma.getListById(id);
-			if (list !== undefined) {
+			if (list != null) {
 				if (
 					await confirm.confirm(
 						`Wollen Sie die Liste ”${list.title}” wirklich löschen?\nDie Lemmata in dieser Liste werden nicht gelöscht, sondern bleiben in der Lemmabibliothek.`,
@@ -587,8 +587,8 @@ export default class LemmaManager extends Vue {
 	}
 
 	get sortedFilteredLemmas(): Array<LemmaRow> {
-		const sortByColumn = this.columns.find((c) => c.sort !== undefined && c.sort !== null);
-		if (sortByColumn !== undefined) {
+		const sortByColumn = this.columns.find((c) => c.sort != null);
+		if (sortByColumn != null) {
 			return _.orderBy(this.store.lemma.lemmas, sortByColumn.value, sortByColumn.sort || "asc");
 		} else {
 			return this.store.lemma.lemmas;
@@ -617,7 +617,7 @@ export default class LemmaManager extends Vue {
 		console.log(e);
 		// A list is selected
 		// remove from list.
-		if (this.lemmaListId !== null && !(e.ctrlKey || e.metaKey)) {
+		if (this.lemmaListId != null && !(e.ctrlKey || e.metaKey)) {
 			const msg = `Wollen Sie wirklich ${this.selectedRows.length} Lemma(ta) aus dieser Liste entfernen?`;
 			if (await confirm.confirm(msg)) {
 				this.removeLemmasFromList(this.selectedRows);
@@ -628,7 +628,7 @@ export default class LemmaManager extends Vue {
 			}
 			// An issue is selected
 			// remove from issue
-		} else if (store.lemma.selectedLemmaIssueId !== null) {
+		} else if (store.lemma.selectedLemmaIssueId != null) {
 			const msg = `Wollen Sie wirklich ${this.selectedRows.length} Lemma(ta) aus dieser Abgabe entfernen?`;
 			if (await confirm.confirm(msg)) {
 				this.removeLemmasFromIssue(this.selectedRows);
@@ -653,9 +653,9 @@ export default class LemmaManager extends Vue {
 
 	@Watch("store.lemma.selectedLemmaFilterId", { immediate: true })
 	async onSelectLemmaFilter(id: string | null) {
-		if (id !== null) {
+		if (id != null) {
 			const l = store.lemma.getStoredLemmaFilterById(id);
-			if (l !== undefined) {
+			if (l != null) {
 				this.store.lemma.currentFilters = l.filterItems;
 			}
 		} else {
@@ -664,7 +664,7 @@ export default class LemmaManager extends Vue {
 	}
 
 	async deleteFilter(id: string | null) {
-		if (id !== null) {
+		if (id != null) {
 			store.lemma.deleteStoredLemmaFilter(id);
 		}
 	}
@@ -680,7 +680,7 @@ export default class LemmaManager extends Vue {
 			"text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 		input.addEventListener("change", () => {
 			console.log("input change", input.files);
-			if (input.files !== null && input.files[0] !== undefined) {
+			if (input.files != null && input.files[0] != null) {
 				cb(input.files[0]);
 			}
 			input.value = "";

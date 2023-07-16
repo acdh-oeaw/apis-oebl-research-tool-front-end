@@ -1,6 +1,6 @@
 <template>
 	<v-container class="lemma-print-view-container">
-		<section v-if="lemma !== null" class="lemma-print-view">
+		<section v-if="lemma != null" class="lemma-print-view">
 			<v-row>
 				<v-col cols="11">
 					<h1>

@@ -3,13 +3,13 @@
 	<!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
 	<div class="virtual-table-outer" tabindex="-1" @keydown="handleKey">
 		<v-menu
-			v-if="editPopUp !== null"
+			v-if="editPopUp != null"
 			:close-on-content-click="false"
 			min-width="130"
 			max-width="400"
 			content-class="transition-left"
 			class="soft-shadow"
-			:value="editPopUp !== null"
+			:value="editPopUp != null"
 			:position-x="editPopUp.x - 3"
 			:position-y="editPopUp.y - 10"
 			@input="(e) => e === false && (editPopUp = null)"
@@ -55,7 +55,7 @@
 				:class="[
 					'header-cell',
 					$listeners['click:header'] && 'clickable',
-					column.sort !== null && column.sort !== undefined && 'sort-active',
+					column.sort != null && 'sort-active',
 				]"
 			>
 				<!-- FIXME: a11y -->
@@ -219,7 +219,7 @@ export default class VirtualTable extends Vue {
 	} | null = null;
 
 	editNextField(dir: -1 | 1) {
-		if (this.editPopUp !== null) {
+		if (this.editPopUp != null) {
 			const currentColumIndex = this.editableColumns.findIndex(
 				(c) => c.value === this.editPopUp?.column.value,
 			);
@@ -265,7 +265,7 @@ export default class VirtualTable extends Vue {
 	}
 
 	emitFilterEvent(c: LemmaColumn, ev?: boolean | string | null) {
-		if (ev !== undefined && ev !== null && ev !== "") {
+		if (ev != null && ev !== "") {
 			this.columnQueries[c.value] = ev;
 		} else {
 			Vue.delete(this.columnQueries, c.value);
@@ -279,7 +279,7 @@ export default class VirtualTable extends Vue {
 
 	@Watch("scrollToRow")
 	onChangeScrollToRow() {
-		if (this.scrollToRow !== null && this.$refs.scroller instanceof Vue) {
+		if (this.scrollToRow != null && this.$refs.scroller instanceof Vue) {
 			(this.$refs.scroller as Vue).$el.scrollTo({
 				top: this.scrollToRow * this.rowHeight,
 			});
@@ -292,7 +292,7 @@ export default class VirtualTable extends Vue {
 	}
 
 	onEditItem() {
-		if (this.editPopUp !== null) {
+		if (this.editPopUp != null) {
 			this.$emit("update:item", this.editPopUp.item, {
 				[this.editPopUp.column.value]: this.editPopUp.value,
 			});
@@ -361,7 +361,7 @@ export default class VirtualTable extends Vue {
 		const selectedIndexes = _.map(this.selected, (v) => this.data.findIndex((r) => r.id === v.id));
 		const newIndex = Math.min(...selectedIndexes) - 1;
 		const prevItem = this.data[newIndex];
-		if (prevItem !== undefined) {
+		if (prevItem != null) {
 			this.selected = { [prevItem.id]: prevItem };
 			this.$emit("update:selection", [prevItem]);
 			this.scrollToIndex(newIndex);
@@ -372,7 +372,7 @@ export default class VirtualTable extends Vue {
 		const selectedIndexes = _.map(this.selected, (v) => this.data.findIndex((r) => r.id === v.id));
 		const newIndex = Math.max(...selectedIndexes) + 1;
 		const nextItem = this.data[newIndex];
-		if (nextItem !== undefined) {
+		if (nextItem != null) {
 			this.selected = { [nextItem.id]: nextItem };
 			this.$emit("update:selection", [nextItem]);
 			this.scrollToIndex(newIndex);
@@ -381,7 +381,7 @@ export default class VirtualTable extends Vue {
 
 	selectFirst() {
 		const firstItem = this.data[0];
-		if (firstItem !== undefined) {
+		if (firstItem != null) {
 			this.selected = { [firstItem.id]: firstItem };
 			this.$emit("update:selection", [firstItem]);
 			this.scrollToIndex(0);
@@ -390,7 +390,7 @@ export default class VirtualTable extends Vue {
 
 	selectLast() {
 		const lastItem = this.data[this.data.length - 1];
-		if (lastItem !== undefined) {
+		if (lastItem != null) {
 			this.selected = { [lastItem.id]: lastItem };
 			this.$emit("update:selection", [lastItem]);
 			this.scrollToIndex(this.data.length - 1);

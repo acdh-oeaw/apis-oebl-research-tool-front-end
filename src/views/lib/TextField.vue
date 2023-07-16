@@ -37,13 +37,13 @@
 			<div>
 				<slot />
 			</div>
-			<div v-if="clearable === true && localValue !== null && localValue !== ''">
+			<div v-if="clearable === true && localValue != null && localValue !== ''">
 				<v-btn small icon tile class="rounded-lg mt-1 mr-1" @click="clearInput">
 					<v-icon size="16" color="primary">mdi-close</v-icon>
 				</v-btn>
 			</div>
 		</div>
-		<div v-if="msg !== null" class="text-center caption hint" v-text="msg" />
+		<div v-if="msg != null" class="text-center caption hint" v-text="msg" />
 	</div>
 </template>
 

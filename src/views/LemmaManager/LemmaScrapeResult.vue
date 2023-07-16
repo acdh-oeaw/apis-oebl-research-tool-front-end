@@ -91,7 +91,7 @@ export default class LemmaScrapeResult extends Vue {
 	};
 
 	formatKey(s: number | string) {
-		if (this.keyNamesReadable[String(s)] !== undefined) {
+		if (this.keyNamesReadable[String(s)] != null) {
 			return "";
 		} else {
 			return _.startCase(String(s));
@@ -100,7 +100,7 @@ export default class LemmaScrapeResult extends Vue {
 
 	formatValue(key: number | string, value: any) {
 		const maybeDate = maybeParseDate(value);
-		if (maybeDate !== null) {
+		if (maybeDate != null) {
 			return format(maybeDate, "do MMM. yyyy", { locale: de });
 		} else {
 			return value;

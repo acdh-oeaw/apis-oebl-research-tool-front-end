@@ -1,5 +1,5 @@
 export async function fileToArrayBuffer(f: File): Promise<ArrayBuffer> {
-	if (f.arrayBuffer !== undefined) {
+	if (f.arrayBuffer != null) {
 		return await f.arrayBuffer();
 	} else {
 		return new Promise((resolve, reject) => {

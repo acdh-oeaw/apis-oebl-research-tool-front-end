@@ -8,7 +8,7 @@
 	>
 		<v-card color="background" class="rounded-lg pa-3">
 			<v-card-text class="text-center pb-4 pt-2">
-				<div v-if="confirmStore.icon !== undefined" class="my-2">
+				<div v-if="confirmStore.icon != null" class="my-2">
 					<v-icon large>{{ confirmStore.icon }}</v-icon>
 				</div>
 				{{ confirmStore.message }}

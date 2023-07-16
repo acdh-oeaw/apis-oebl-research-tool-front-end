@@ -11,7 +11,7 @@
 				@click="onClickActivator"
 				v-on="on"
 			>
-				<v-icon v-if="prependIcon !== null" class="mr-1" small>{{ prependIcon }}</v-icon>
+				<v-icon v-if="prependIcon != null" class="mr-1" small>{{ prependIcon }}</v-icon>
 				{{ label ? label + ": " : "" }}
 				{{ displayValue }}
 				<v-icon v-if="showChevron" small>mdi-unfold-more-horizontal</v-icon>
@@ -33,7 +33,7 @@
 					@click.prevent.stop=""
 				/>
 				<v-btn
-					v-if="searchText !== null && searchText !== ''"
+					v-if="searchText != null && searchText !== ''"
 					color="primary"
 					icon
 					x-small
@@ -48,14 +48,14 @@
 				v-if="filteredItems.length > 0"
 				color="transparent"
 				class="overflow-y-auto x-dense"
-				:two-line="keyDescription !== null"
+				:two-line="keyDescription != null"
 				nav
 			>
 				<v-list-item v-for="item in filteredItems" :key="item[keyValue]" @click="selectItem(item)">
 					<v-list-item-avatar>
 						<v-icon
 							v-if="
-								value === item[keyValue] || (value !== null && value[keyValue] === item[keyValue])
+								value === item[keyValue] || (value != null && value[keyValue] === item[keyValue])
 							"
 							small
 						>
@@ -66,7 +66,7 @@
 						<v-list-item-title>
 							{{ item[keyName] }}
 						</v-list-item-title>
-						<v-list-item-subtitle v-if="keyDescription !== null">
+						<v-list-item-subtitle v-if="keyDescription != null">
 							{{ get(item, keyDescription) }}
 						</v-list-item-subtitle>
 					</v-list-item-content>
@@ -125,7 +125,7 @@ export default class SelectMenu extends Vue {
 	}
 
 	onKeyDownSearch(e: KeyboardEvent) {
-		if (e.key === "Escape" && this.searchText !== "" && this.searchText !== null) {
+		if (e.key === "Escape" && this.searchText !== "" && this.searchText != null) {
 			e.preventDefault();
 			e.stopPropagation();
 			this.searchText = "";
@@ -184,12 +184,12 @@ export default class SelectMenu extends Vue {
 	}
 
 	get filteredItems() {
-		if (this.searchText !== null) {
+		if (this.searchText != null) {
 			const searchTextLow = this.searchText.toLowerCase();
 			return this.items.filter((i) => {
 				return (
 					i[this.keyName].toLowerCase().indexOf(searchTextLow) > -1 ||
-					(this.keyDescription !== null &&
+					(this.keyDescription != null &&
 						this.get(i, this.keyDescription).toLowerCase().indexOf(searchTextLow) > -1)
 				);
 			});

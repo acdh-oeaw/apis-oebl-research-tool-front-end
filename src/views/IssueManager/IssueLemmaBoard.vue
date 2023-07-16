@@ -44,7 +44,7 @@
 							v-for="(item, itemIndex) in column.items"
 							:key="item.id"
 							color="background lighten-2"
-							:style="selectedLemma !== null && selectedLemma.id === item.id ? selectedStyle : null"
+							:style="selectedLemma != null && selectedLemma.id === item.id ? selectedStyle : null"
 							class="issue-lemma-card rounded-lg pa-3 mb-3"
 							:data-issue-lemma-id="item.id"
 							:tabindex="(columnIndex + 1) * 100 + itemIndex"
@@ -110,10 +110,10 @@ export default class LemmaBoard extends Vue {
 	//     const lemma: IIssueLemma = { ...update.added.element, order: update.added.newIndex, status }
 	//     this.$emit('update-lemma', lemma, update.added.newIndex)
 	//   }
-	//   // if (update.added !== undefined && update.added.element !== undefined) {
+	//   // if (update.added != null && update.added.element != null) {
 	//   //   this.$emit('update-lemma', status, update.added.element, update.added.newIndex)
 	//   // }
-	//   // if (update.moved && update.moved.newIndex !== undefined) {
+	//   // if (update.moved && update.moved.newIndex != null) {
 	//   //   update.moved.element.order = update.moved.newIndex
 	//   //   console.log('old', update.moved.element.order)
 	//   //   console.log('new', update.moved.newIndex)

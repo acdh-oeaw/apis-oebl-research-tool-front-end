@@ -49,7 +49,7 @@ export default class IssueLemmaRow extends Vue {
 	@Prop({ default: true }) showDescription!: boolean;
 
 	dateToYear(d: string | null | undefined): string | null {
-		if (d !== null && d !== undefined) {
+		if (d != null) {
 			try {
 				return format(new Date(d), "yyyy");
 			} catch (e) {
@@ -69,7 +69,7 @@ export default class IssueLemmaRow extends Vue {
 	}
 
 	get labelsLimited(): Array<LemmaLabel> {
-		return this.maxLabels !== null
+		return this.maxLabels != null
 			? _.take(this.value.labels, this.maxLabels).map((id) => this.labelsById[id]!)
 			: this.value.labels.map((id) => this.labelsById[id]!);
 	}
