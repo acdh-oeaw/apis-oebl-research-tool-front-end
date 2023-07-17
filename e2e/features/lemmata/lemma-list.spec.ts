@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "~/e2e/fixtures";
 
 test("add new lemmalist", async ({ page }) => {
 	// https://playwright.dev/docs/test-timeouts#set-timeout-for-a-single-test
@@ -6,7 +6,6 @@ test("add new lemmalist", async ({ page }) => {
 
 	const randomListName = `Testliste ${Math.random().toString(36).substring(2, 10)}`;
 
-	await page.goto("/");
 	await page.goto("/lemmata");
 
 	expect(page.getByRole("heading", { name: "Lemmabibliothek" })).toBeVisible();

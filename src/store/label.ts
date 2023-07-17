@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import { type LemmaLabel, WorkflowService } from "@/api";
 
 export default class LabelStore {

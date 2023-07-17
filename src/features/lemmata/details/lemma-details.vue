@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { groupBy, isNonEmptyArray } from "@acdh-oeaw/lib";
+import { debounce, groupBy, isNonEmptyArray } from "@acdh-oeaw/lib";
 import fileDialog from "file-dialog";
-import { debounce } from "lodash";
 import { ref } from "vue";
 
 import { GenderAe0Enum, type List } from "@/api";
@@ -325,6 +324,9 @@ const debouncedUpdateData = debounce(updateData, 300);
 								</VBtn>
 							</template>
 						</TextField>
+
+						<!-- FIXME: why are noble title and alternative noble titles not handled like other user columns? -->
+
 						<!-- @vue-expect-error -->
 						<TextField
 							tabindex="-1"
@@ -351,12 +353,14 @@ const debouncedUpdateData = debounce(updateData, 300);
 								<v-icon>mdi-plus-circle-outline</v-icon>
 							</VBtn>
 						</TextField>
+
 						<!-- @vue-expect-error -->
 						<TextFieldAlternatives
 							:label="lemmaRowTranslations.nobleTitle.de"
 							:value="value.columns_user.alternativeNobleTitle"
 							@input="updateUserColumns('alternativeNobleTitle', $event)"
 						/>
+
 						<VSpacer class="my-5" />
 						<DateField
 							:key="'dateOfBirth_' + value.id"
@@ -431,8 +435,8 @@ const debouncedUpdateData = debounce(updateData, 300);
 						<TextField
 							v-for="(userValue, userKey) in value.columns_user"
 							:key="userKey"
-							:value="userValue"
-							:label="userKey"
+							:value="String(userValue)"
+							:label="String(userKey)"
 							@input="debouncedUpdateUserColumns(String(userKey), $event)"
 						/>
 					</VCardText>

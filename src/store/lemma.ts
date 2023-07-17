@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import _ from "lodash";
+import { chain, clone, get, keyBy, uniqBy } from "lodash";
 
 import {
 	type Editor,
@@ -364,7 +364,7 @@ export default class LemmaStore {
 					const lemmasWithEditor = lemmas.map((l) => ({ editor: e, item: l }));
 					this.newLemmasInUserList[updates.list.id] = {
 						...this.newLemmasInUserList[updates.list.id],
-						..._.keyBy(lemmasWithEditor, (e) => e.item.id),
+						...keyBy(lemmasWithEditor, (e) => e.item.id),
 					};
 				}
 			}
@@ -484,7 +484,7 @@ export default class LemmaStore {
 	}
 
 	async addLemmasToList(list: LemmaRow["list"], lemmas: Array<LemmaRow>) {
-		if (list === undefined) {
+		if (list == null) {
 			return;
 		}
 		await this.updateLemmas(lemmas, { list });
@@ -634,10 +634,10 @@ export default class LemmaStore {
 			console.error({ costomErrorMessage: "Could not run initLemmaData", error: error });
 			this._lemmas = [];
 		}
-		const fetchUpdatesFrom = _.clone(this.lastLemmaFetchDate);
+		const fetchUpdatesFrom = clone(this.lastLemmaFetchDate);
 		this.lastLemmaFetchDate = new Date();
 		await this.getAndApplyRemoteLemmas(fetchUpdatesFrom);
-		this.columns = _.uniqBy([...this.columns, ...this.getAllUserColumns(this.lemmas)], "value");
+		this.columns = uniqBy([...this.columns, ...this.getAllUserColumns(this.lemmas)], "value");
 	}
 
 	getSumSimilarity(l: LemmaRow, lc: LemmaRow): number {
@@ -650,7 +650,7 @@ export default class LemmaStore {
 	}
 
 	getMostSimilarLemmas(l: LemmaRow) {
-		const s = _(this.lemmas)
+		const s = chain(this.lemmas)
 			.map((lc) => ({ ...lc, similarity: this.getSumSimilarity(lc, l) }))
 			.filter((lc) => lc.similarity > 0)
 			.orderBy("similarity", "desc")
@@ -716,11 +716,11 @@ export default class LemmaStore {
 			id: rs.id,
 			selected: rs.selected || false,
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			loc: _.get(rs, "columns_scrape.wikidata.loc") ?? null,
+			loc: get(rs, "columns_scrape.wikidata.loc") ?? null,
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			viaf_id: _.get(rs, "columns_scrape.wikidata.viaf") ?? null,
+			viaf_id: get(rs, "columns_scrape.wikidata.viaf") ?? null,
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			wiki_edits: _.get(rs, "columns_scrape.wikipedia.edits_count") ?? null,
+			wiki_edits: get(rs, "columns_scrape.wikipedia.edits_count") ?? null,
 			firstName: rs.firstName,
 			lastName: rs.lastName,
 			alternativeNames: rs.alternativeNames as Array<FullName>,
@@ -824,7 +824,7 @@ export default class LemmaStore {
 
 		// there are no lemmas, or no last modified date,
 		// or the DB must be cleared => get all lemmas
-		if (modifiedAfter === null || currentLemmasLength === 0 || this.shouldClearDb()) {
+		if (modifiedAfter == null || currentLemmasLength === 0 || this.shouldClearDb()) {
 			this._lemmas = [];
 			try {
 				await this.localDb.lemmas.clear();
@@ -867,7 +867,7 @@ export default class LemmaStore {
 	}
 
 	getLemmaById(id?: number) {
-		return id === undefined ? undefined : this._lemmas.find((l) => l.id === id);
+		return id == null ? undefined : this._lemmas.find((l) => l.id === id);
 	}
 
 	getLemmasByList(listId: number) {
@@ -906,7 +906,7 @@ export default class LemmaStore {
 			}
 
 			// If there is nothing to compare to, this lemma should not pass filter.
-			if (lookUpValue === undefined || lookUpValue === null) {
+			if (lookUpValue == null) {
 				return false;
 			}
 

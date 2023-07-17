@@ -13,7 +13,9 @@
 		"noEmit": true,
 		"noUncheckedIndexedAccess": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@server/*": ["./server/*"],
+			"~/*": ["./*"]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,

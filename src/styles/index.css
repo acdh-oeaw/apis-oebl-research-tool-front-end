@@ -22,11 +22,11 @@ body,
 }
 
 .theme--light .soft-shadow {
-	box-shadow: 0 5px 55px hsl(240deg 100% 1%) !important;
+	box-shadow: 0 5px 55px hsl(240deg 100% 1% / 20%) !important;
 }
 
 .theme--dark .soft-shadow {
-	box-shadow: 0 0 55px hsl(0deg 0% 0%) !important;
+	box-shadow: 0 0 55px hsl(0deg 0% 0% / 30%) !important;
 }
 
 .v-application .v-btn {
@@ -51,11 +51,11 @@ body,
 }
 
 .theme--dark ::-webkit-scrollbar-thumb {
-	background-color: hsl(60deg 100% 53%);
+	background-color: hsl(60deg 100% 53% / 50%);
 }
 
 .theme--light ::-webkit-scrollbar-thumb {
-	background-color: hsl(240deg 100% 1%);
+	background-color: hsl(240deg 100% 1% / 25%);
 }
 
 .sticky {
@@ -127,7 +127,7 @@ header h1:focus {
 .tippy-box {
 	border-radius: 13px !important;
 	background: var(--v-background-base) !important;
-	box-shadow: 0 5px 55px hsl(240deg 100% 1%) !important;
+	box-shadow: 0 5px 55px hsl(240deg 100% 1% / 20%) !important;
 }
 
 .tippy-box[data-placement^="top"] > .tippy-arrow::before {

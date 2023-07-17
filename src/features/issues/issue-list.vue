@@ -10,11 +10,16 @@ interface Column extends LemmaStatus {
 	items: Array<IssueLemma>;
 }
 
-const props = defineProps<{
-	animate: boolean;
-	columns: Array<Column>;
-	selectedLemma: IssueLemma;
-}>();
+const props = withDefaults(
+	defineProps<{
+		animate: boolean;
+		columns: Array<Column>;
+		selectedLemma: IssueLemma;
+	}>(),
+	{
+		columns: () => [],
+	},
+);
 
 const emit = defineEmits<{
 	(event: "end-drag", e: Event): void;

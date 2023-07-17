@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import _ from "lodash";
+import { chain, startCase } from "lodash";
 
 import { isValidHttpUrl } from "@/lib/is-valid-http-url";
 import { parseDate } from "@/lib/parse-date";
@@ -23,7 +23,7 @@ function formatKey(s: number | string) {
 	if (keyNamesReadable[String(s)] != null) {
 		return "";
 	} else {
-		return _.startCase(String(s));
+		return startCase(String(s));
 	}
 }
 
@@ -38,14 +38,14 @@ function formatValue(key: number | string, value: any) {
 }
 
 function arrayable(v: ScrapeValue) {
-	return _(v)
+	return chain(v)
 		.omitBy((a) => !Array.isArray(a))
 		.value();
 	// return Object.values(v).filter(Array.isArray)
 }
 
 function nonArrayable(v: ScrapeValue) {
-	return _(v).omitBy(Array.isArray).value();
+	return chain(v).omitBy(Array.isArray).value();
 	// return Object.values(v).filter(a => !Array.isArray(a))
 }
 
@@ -62,7 +62,7 @@ function maybeLinkItem(key: number | string, value: any): string | undefined {
 <template>
 	<VListGroup
 		:class="[
-			((Array.isArray(value) && value.length === 0) || value === undefined) && 'list-disabled',
+			((Array.isArray(value) && value.length === 0) || value == null) && 'list-disabled',
 			'scrape-result',
 		]"
 		:value="defaultExpand"

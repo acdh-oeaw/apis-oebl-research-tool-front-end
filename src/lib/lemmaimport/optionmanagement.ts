@@ -15,7 +15,7 @@ export class ImportOptionsManager {
 	load() {
 		const loadedString = localStorage.getItem(this.storageKey);
 
-		if (loadedString === null) {
+		if (loadedString == null) {
 			this.importOptionsCollections = {};
 			return;
 		}
@@ -39,7 +39,7 @@ export class ImportOptionsManager {
 
 	getImportOptionByName(name: string): ImportOptions {
 		const options = this.importOptionsCollections[name];
-		if (options === undefined) {
+		if (options == null) {
 			throw new Error(`Can't find options with name ${name}`);
 		}
 

@@ -88,8 +88,8 @@ function editItem(edit_index: number) {
 			<h4 class="py-2">
 				{{ lemmaRowTranslations.alternativeNames.de }}
 			</h4>
-			<VCardActions :class="{ 'justify-center': selectedToEdit === null }">
-				<div v-if="selectedToEdit === null" class="add-new-full-name-btn">
+			<VCardActions :class="{ 'justify-center': selectedToEdit == null }">
+				<div v-if="selectedToEdit == null" class="add-new-full-name-btn">
 					<VBtn class="rounded-lg" icon @click.stop="createEmptyItem()">
 						Weiteren Namen hinzufügen
 						<VIcon class="pl-6">mdi-plus-circle-outline</VIcon>

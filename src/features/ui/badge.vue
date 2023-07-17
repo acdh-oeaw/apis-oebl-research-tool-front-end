@@ -34,7 +34,7 @@ const readable = computed(() => {
 	padding: 1px 6px;
 	border-radius: 10px;
 	background: var(--v-background-darken3);
-	color: hsl(0deg 0% 0%);
+	color: hsl(0deg 0% 0% / 80%);
 	font-size: 11px;
 	letter-spacing: 0;
 	text-align: center;
@@ -45,6 +45,6 @@ const readable = computed(() => {
 
 .badge.theme--dark {
 	background: var(--v-background-lighten2);
-	color: hsl(60deg 100% 52%);
+	color: hsl(0deg 0 100% / 80%);
 }
 </style>

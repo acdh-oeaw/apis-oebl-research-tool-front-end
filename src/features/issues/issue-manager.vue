@@ -32,7 +32,7 @@ const issueStatus = computed(() => {
 });
 
 function convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
-	if (issueStatus.value.find((s) => s.id === l.status) === undefined) {
+	if (issueStatus.value.find((s) => s.id === l.status) == null) {
 		return { ...l, status: issueStatus.value[0]?.id };
 	} else {
 		return l;
@@ -560,7 +560,7 @@ onMounted(() => {
 
 <style scoped>
 .selected {
-	background: hsl(0deg 0% 0%);
+	background: hsl(0deg 0% 0% / 10%);
 }
 
 .filter-autocomplete-item {

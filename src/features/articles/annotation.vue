@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { debounce } from "@acdh-oeaw/lib";
 import { type Editor } from "@tiptap/vue-2";
-import { debounce } from "lodash";
 import { computed, ref, watch } from "vue";
 
 import { type AnnotationAttributes } from "@/features/articles/extension-annotation";

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { clone, debounce } from "lodash";
+import { debounce } from "@acdh-oeaw/lib";
+import { clone } from "lodash";
 import { computed, ref, watch } from "vue";
 
 import LemmaDetails from "@/features/lemmata/details/lemma-details.vue";

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { clone, debounce } from "lodash";
+import { debounce } from "@acdh-oeaw/lib";
+import { clone } from "lodash";
 import { ref, watch } from "vue";
 
 import LobidPreviewCard from "@/features/lemmata/lobid-preview-card.vue";
@@ -62,7 +63,7 @@ watch(
 );
 
 function useCustomGnd(gnd: string | null) {
-	if (gnd === null) {
+	if (gnd == null) {
 		return;
 	}
 	const normalizedGND = gnd.trim();

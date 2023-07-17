@@ -118,7 +118,7 @@ const filteredItems = computed(() => {
 				:width="width"
 				text
 				class="px-1 ellipsis select-button rounded-lg"
-				:class="[btnClass, value === null && 'muted']"
+				:class="[btnClass, value == null && 'muted']"
 				v-bind="attrs"
 				@click="onClickActivator"
 				v-on="on"
@@ -186,7 +186,7 @@ const filteredItems = computed(() => {
 				<VDivider v-if="addNullOption" />
 				<VListItem v-if="addNullOption" @click="returnNull">
 					<VListItemAvatar>
-						<VIcon v-if="value === null || value[keyValue] === null" small>mdi-check</VIcon>
+						<VIcon v-if="value == null || value[keyValue] == null" small>mdi-check</VIcon>
 					</VListItemAvatar>
 					<VListItemContent>
 						<VListItemTitle>

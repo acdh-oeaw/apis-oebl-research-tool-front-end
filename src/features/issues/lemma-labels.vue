@@ -7,9 +7,14 @@ import store from "@/store";
 import confirm from "@/store/confirm";
 import { type Label } from "@/types/issue";
 
-const props = defineProps<{
-	value: Array<number>;
-}>();
+const props = withDefaults(
+	defineProps<{
+		value: Array<number>;
+	}>(),
+	{
+		value: () => [],
+	},
+);
 
 const emit = defineEmits<{
 	(event: "update", value: any): void;
@@ -172,7 +177,7 @@ function onRemove(label: Label) {
 			</template>
 			<template #prepend-item>
 				<VListItem
-					style="border-bottom: 1px solid rgb(0 0 0 / 10%)"
+					style="border-bottom: 1px solid hsl(0deg 0% 0% / 10%)"
 					@click="addLabel(searchText || 'unbenanntes Label')"
 				>
 					<VListItemAvatar size="15">

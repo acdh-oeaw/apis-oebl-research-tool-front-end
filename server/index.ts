@@ -4,27 +4,30 @@ import express from "express";
 import fs from "fs";
 import http from "http";
 import socketIo from "socket.io";
+import { z } from "zod";
 
 import zotero from "./zotero";
 
-if (process.env.ZOTERO_API_KEY === undefined || process.env.ZOTERO_USER === undefined) {
-	const environment = JSON.stringify({
-		ZOTERO_USER: process.env.ZOTERO_USER,
-		ZOTERO_API_KEY: process.env.ZOTERO_API_KEY,
-	});
-	throw new Error(`Zotero is not correctly configered. See environment: ${environment}`);
-}
+const schema = z.object({
+	ZOTERO_API_KEY: z.string().min(1),
+	ZOTERO_USER: z.string().min(1),
+	ALLOWED_ORIGIN: z.string().min(1),
+	SERVICE_SECRET: z.string().min(1),
+	PORT: z.coerce.number().default(3333),
+});
+
+const env = schema.parse(process.env);
 
 const app = express();
-const port = process.env.NODE_PORT || process.env.PORT || 3333;
+const port = env.PORT;
 
-const serviceSecret = process.env.SERVICE_SECRET;
+const serviceSecret = env.SERVICE_SECRET;
 
 const server = http.createServer(app);
 // @ts-expect-error FIXME:
 const io = socketIo(server, {
 	cors: {
-		origin: JSON.parse(process.env.ALLOWED_ORIGIN),
+		origin: JSON.parse(env.ALLOWED_ORIGIN),
 	},
 });
 
@@ -62,10 +65,10 @@ app.post("/message/import-lemmas", (req, res) => {
 app.get("/zotero/search/:query", async (req, res) => {
 	const x = await (
 		await fetch(
-			"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items?q=" + req.params.query,
+			"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items?q=" + req.params.query,
 			{
 				headers: {
-					"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+					"Zotero-API-Key": env.ZOTERO_API_KEY,
 				},
 			},
 		)
@@ -75,7 +78,7 @@ app.get("/zotero/search/:query", async (req, res) => {
 
 app.get("/zotero/item/:id", async (request, response) => {
 	const zoteroHeaders = new Headers();
-	zoteroHeaders.set("Zotero-API-Key", process.env.ZOTERO_API_KEY);
+	zoteroHeaders.set("Zotero-API-Key", env.ZOTERO_API_KEY);
 	zoteroHeaders.set("Zotero-Api-Version", "3");
 	zoteroHeaders.set("Content-Type", "application/json");
 
@@ -87,10 +90,12 @@ app.get("/zotero/item/:id", async (request, response) => {
 	}
 
 	const zoteroResponse = await fetch(
-		"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/" + request.params.id,
+		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + request.params.id,
 		{ headers: zoteroHeaders },
 	);
+	// @ts-expect-error Remove later
 	response.header["zoteroStatus"] = String(zoteroResponse.status);
+	// @ts-expect-error Remove later
 	response.header["zoteroStatusText"] = zoteroResponse.statusText;
 
 	let responseBody = null;
@@ -103,12 +108,12 @@ app.get("/zotero/item/:id", async (request, response) => {
 app.patch("/zotero/item/:id", async (req, res) => {
 	console.log(req.body);
 	const x = await fetch(
-		"https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/" + req.params.id,
+		"https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/" + req.params.id,
 		{
 			method: "PATCH",
 			body: JSON.stringify(req.body),
 			headers: {
-				"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+				"Zotero-API-Key": env.ZOTERO_API_KEY,
 			},
 		},
 	);
@@ -133,11 +138,11 @@ app.patch("/zotero/item/:id", async (req, res) => {
 
 app.post("/zotero/item", async (req, res) => {
 	console.log(req.body);
-	const x = await fetch("https://api.zotero.org/users/" + process.env.ZOTERO_USER + "/items/", {
+	const x = await fetch("https://api.zotero.org/users/" + env.ZOTERO_USER + "/items/", {
 		method: "POST",
 		body: JSON.stringify(req.body),
 		headers: {
-			"Zotero-API-Key": process.env.ZOTERO_API_KEY,
+			"Zotero-API-Key": env.ZOTERO_API_KEY,
 		},
 	});
 	if (x.ok) {

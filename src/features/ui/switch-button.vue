@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-const props = defineProps<{
-	/** Can emit string or boolean, should use generic instead of any. */
-	items: Array<{ icon: string; value: any }>;
-	value: any;
-}>();
+const props = withDefaults(
+	defineProps<{
+		/** Can emit string or boolean, should use generic instead of any. */
+		items: Array<{ icon: string; value: any }>;
+		value: any;
+	}>(),
+	{
+		items: () => [],
+	},
+);
 
 const emit = defineEmits<{
 	(event: "input", value: any): void;
@@ -50,6 +55,6 @@ function updateValue(i: number) {
 
 <style scoped>
 .custom-tab-slider {
-	background-color: hsl(0deg 0% 0%) !important;
+	background-color: hsl(0deg 0% 0% / 15%) !important;
 }
 </style>

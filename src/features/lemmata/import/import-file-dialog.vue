@@ -119,7 +119,7 @@ const vuetifyDataTableItems = computed(() => {
 				<VFileInput
 					:accept="fileType"
 					label="Bitte eine Datei auswählen"
-					@change="file = $event === undefined ? null : $event"
+					@change="file = $event == null ? null : $event"
 				/>
 				<VSpacer />
 				<VSelect
@@ -148,7 +148,7 @@ const vuetifyDataTableItems = computed(() => {
 			</VRow>
 			<VRow class="submit">
 				<VCol>
-					<VBtn :disabled="rawData === null" @click="submit()">Weiter</VBtn>
+					<VBtn :disabled="rawData == null" @click="submit()">Weiter</VBtn>
 				</VCol>
 			</VRow>
 			<VRow class="data-preview">

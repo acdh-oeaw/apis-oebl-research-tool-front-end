@@ -172,7 +172,7 @@ function onVisibilityChange(value: boolean) {
 
 .nav-drawer.display-card :deep(.v-navigation-drawer__content) {
 	border-radius: 13px;
-	box-shadow: 10px 10px 100px hsl(240deg 100% 2%);
+	box-shadow: 10px 10px 100px hsl(240deg 100% 10% / 15%);
 }
 
 .nav-drawer.display-card :deep(.v-navigation-drawer__content) {
@@ -213,6 +213,6 @@ function onVisibilityChange(value: boolean) {
 }
 
 .theme--light {
-	color: hsl(0deg 0% 0%);
+	color: hsl(0deg 0% 0% / 70%);
 }
 </style>

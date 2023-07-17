@@ -20,7 +20,7 @@ const props = defineProps<{
 }>();
 
 function dateToLocale(isoDate?: string): string {
-	return isoDate === undefined
+	return isoDate == null
 		? "(Das Datum konnte nicht ermittelt werden)"
 		: new Date(isoDate).toLocaleString("de");
 }

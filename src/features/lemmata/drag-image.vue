@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import _ from "lodash";
 import { computed } from "vue";
 
 import Badge from "@/features/ui/badge.vue";

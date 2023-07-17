@@ -19,9 +19,8 @@ import { type LemmaColumn, type LemmaFilterItem, type LemmaRow } from "@/types/l
 const LemmaImportManager = () => import("@/features/lemmata/import/lemma-import-manager.vue");
 
 const props = defineProps<{
-	// FIXME: where is lemmaListId set?
-	lemmaListId: number | null;
-	highlightId: number | null;
+	lemmaListId?: number;
+	highlightId?: number | null;
 }>();
 
 const toolbarMinHeight = 80;
@@ -41,6 +40,10 @@ const lobidPreviewGnds = ref<Array<string>>([]);
 const filteredLemmas = computed(() => store.lemma.lemmas);
 
 const importerOpened = ref(false);
+
+const toolbarHeight = computed(() => {
+	return store.settings.showLemmaFilter ? 120 : 80;
+});
 
 function onKeyDown(e: KeyboardEvent) {
 	if (e.key.toLowerCase() === "enter") {
@@ -205,16 +208,12 @@ function toggleDrawer() {
 	};
 }
 
-const toolbarHeight = computed(() => {
-	return store.settings.showLemmaFilter ? 120 : 80;
-});
-
 function getTableHeight() {
 	return window.innerHeight - toolbarHeight.value;
 }
 
 function sortLemmas(c: LemmaColumn) {
-	const sort = c.sort === null || c.sort === undefined || c.sort === "desc" ? "asc" : "desc";
+	const sort = c.sort == null || c.sort === "desc" ? "asc" : "desc";
 	columns.value = columns.value.map((cO) => ({
 		...cO,
 		sort: cO.value === c.value ? sort : undefined,
@@ -222,7 +221,7 @@ function sortLemmas(c: LemmaColumn) {
 }
 
 const sortedFilteredLemmas = computed(() => {
-	const sortByColumn = columns.value.find((c) => c.sort != null && c.sort != null);
+	const sortByColumn = columns.value.find((c) => c.sort != null);
 	if (sortByColumn != null) {
 		return orderBy(store.lemma.lemmas, sortByColumn.value, sortByColumn.sort || "asc");
 	} else {
@@ -447,9 +446,9 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 					<!-- FIXME: a11y why som many h1 -->
 					<h1
 						v-if="
-							store.lemma.selectedLemmaFilterId === null &&
-							store.lemma.selectedLemmaIssueId === null &&
-							lemmaListId === null
+							store.lemma.selectedLemmaFilterId == null &&
+							store.lemma.selectedLemmaIssueId == null &&
+							lemmaListId == null
 						"
 					>
 						Lemmabibliothek
@@ -547,7 +546,7 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 							</VListItem>
 							<VListItem
 								v-if="
-									store.lemma.selectedLemmaFilterId === null &&
+									store.lemma.selectedLemmaFilterId == null &&
 									Object.keys(store.lemma.currentFilters).length > 0
 								"
 								dense
@@ -762,7 +761,7 @@ function dragListener(item: LemmaRow, ev: DragEvent) {
 }
 
 .virtual-table .table-row.selected {
-	background-color: hsl(0deg 0% 0%) !important;
+	background-color: hsl(0deg 0% 0% / 15%) !important;
 }
 
 :focus .table-row.selected {

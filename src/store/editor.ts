@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { keyBy } from "lodash";
 
 import { type Editor, WorkflowService } from "@/api";
 
@@ -12,7 +12,7 @@ export default class EditorStore {
 
 	async loadEditors() {
 		this._editors = (await WorkflowService.workflowApiV1EditorsList()).results || [];
-		this.editorsById = _.keyBy(this._editors, "userId");
+		this.editorsById = keyBy(this._editors, "userId");
 	}
 
 	getById(id: number) {

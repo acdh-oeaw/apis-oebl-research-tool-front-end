@@ -9,13 +9,13 @@ export async function importLemmas(lemmas: Array<NewLemmaRow>): Promise<void> {
 
 	const list = lemmas[0]!.list;
 
-	if (list === undefined) {
+	if (list == null) {
 		throw new Error("Can not import lemmas without a list");
 	}
 
 	const id = list.id;
 
-	if (id === undefined) {
+	if (id == null) {
 		throw new Error("can not import with a list, without an ID");
 	}
 

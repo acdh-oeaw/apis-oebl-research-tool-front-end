@@ -4,7 +4,7 @@ const { ProvidePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const config = defineConfig({
-	configureWebpack: (config) => {
+	configureWebpack(config) {
 		/** Disable typechecking via webpack plugin. */
 		config.plugins = config.plugins.filter((p) => !(p instanceof ForkTsCheckerWebpackPlugin));
 

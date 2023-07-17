@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { clone, debounce } from "lodash";
+import { debounce } from "@acdh-oeaw/lib";
+import { clone } from "lodash";
 import { computed } from "vue";
 
 import SelectMenu from "@/features/ui/select-menu.vue";
@@ -25,7 +26,7 @@ function emitInput() {
 	emit("input", localFilterItems.value);
 }
 
-const debouncedEmitInput = debounce(emitInput);
+const debouncedEmitInput = debounce(emitInput, 150);
 
 function isFilterWithInput(f: LemmaFilterItem): boolean {
 	return f.comparator !== "exists" && f.comparator !== "exists-not";
@@ -130,7 +131,7 @@ function removeFilterItem(i: number) {
 				<div class="flex-nowrap text-no-wrap">
 					<VBtn
 						:disabled="
-							localFilterItems.length === 1 && (filter.query === '' || filter.query === null)
+							localFilterItems.length === 1 && (filter.query === '' || filter.query == null)
 						"
 						icon
 						small

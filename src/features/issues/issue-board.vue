@@ -11,11 +11,16 @@ interface Column extends LemmaStatus {
 	order: number;
 }
 
-const props = defineProps<{
-	animate: boolean;
-	columns: Array<Column>;
-	selectedLemma: IssueLemma;
-}>();
+const props = withDefaults(
+	defineProps<{
+		animate: boolean;
+		columns: Array<Column>;
+		selectedLemma: IssueLemma;
+	}>(),
+	{
+		columns: () => [],
+	},
+);
 
 const emit = defineEmits<{
 	(event: "end-drag", e: Event): void;
@@ -124,7 +129,7 @@ const selectedStyle = {
 
 .issue-lemma-card {
 	/* FIXME: this looks like crap */
-	box-shadow: 0 2px 4px hsl(0deg 0% 0%) !important;
+	box-shadow: 0 2px 4px hsl(0deg 0% 0% / 10%) !important;
 	cursor: default;
 }
 
@@ -143,9 +148,7 @@ const selectedStyle = {
 }
 
 .flip-list-move {
-	transition:
-		transform 0.5s,
-		opacity 0.5s;
+	transition: transform 0.5s, opacity 0.5s;
 }
 
 .no-move {

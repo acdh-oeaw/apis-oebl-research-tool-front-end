@@ -1,18 +1,27 @@
 <script lang="ts" setup>
+import { v4 as uuid } from "uuid";
 import { ref, watch } from "vue";
 
-const props = defineProps<{
-	allowNewLine?: boolean;
-	clearable?: boolean;
-	color?: string | null;
-	disabled?: boolean;
-	maxlength?: number;
-	placeholder?: string;
-	required?: boolean;
-	selected?: boolean;
-	rules?: Array<(e: string | null) => string | false>;
-	value?: string | null;
-}>();
+const props = withDefaults(
+	defineProps<{
+		allowNewLine?: boolean;
+		ariaLabel?: string;
+		clearable?: boolean;
+		color?: string;
+		disabled?: boolean;
+		id?: string;
+		label?: string;
+		maxlength?: number;
+		placeholder?: string;
+		required?: boolean;
+		rules?: Array<(e: string | null) => string | false>;
+		selected?: boolean;
+		value?: string | null;
+	}>(),
+	{
+		id: uuid(),
+	},
+);
 
 const emit = defineEmits<{
 	(event: "input", value: string): void;
@@ -107,47 +116,51 @@ function onKeyDown(e: KeyboardEvent) {
 	<div :class="['rounded-lg mb-1 text-field-outer', color || 'background darken-2']">
 		<div class="d-flex flex-grow-1">
 			<slot name="prepend">
-				<!-- FIXME: a11y -->
-				<!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-				<div
-					v-if="$attrs && $attrs.label"
+				<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+				<label
+					v-if="props.label"
+					:for="props.id"
 					class="caption pa-2 text-field-label"
 					@click="selectAll"
-					v-text="$attrs.label"
-				/>
-				<!-- eslint-enable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+				>
+					{{ props.label }}
+				</label>
 			</slot>
+
 			<div style="position: relative" class="fill-width">
 				<slot name="input">
 					<div
 						class="text-body-2 pa-2 fill-height fill-width fake-textarea"
 						v-text="localValue || '&nbsp;'"
 					/>
-					<!-- FIXME: a11y -->
-					<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+
 					<textarea
+						:id="props.id"
 						ref="textarea"
+						:aria-label="props.ariaLabel"
 						class="fill-height fill-width pa-2 text-body-2"
-						style="position: absolute; inset: 0"
-						:placeholder="placeholder"
-						:value="localValue"
 						:disabled="disabled"
 						:maxlength="maxlength"
+						:placeholder="placeholder"
+						style="position: absolute; inset: 0"
+						:value="localValue"
 						@keydown="onKeyDown"
 						@input="onInput"
 					/>
-					<!-- eslint-enable vuejs-accessibility/form-control-has-label -->
 				</slot>
 			</div>
+
 			<div>
 				<slot />
 			</div>
+
 			<div v-if="props.clearable === true && localValue != null && localValue !== ''">
 				<VBtn small icon tile class="rounded-lg mt-1 mr-1" @click="clearInput">
 					<VIcon size="16" color="primary">mdi-close</VIcon>
 				</VBtn>
 			</div>
 		</div>
+
 		<div v-if="msg != null" class="text-center caption hint" v-text="msg" />
 	</div>
 </template>
@@ -190,12 +203,10 @@ textarea {
 }
 
 .text-field-outer:focus-within {
-	box-shadow:
-		0 0 0 1px var(--v-primary-base),
-		inset 0 0 0 2px var(--v-primary-base);
+	box-shadow: 0 0 0 1px var(--v-primary-base), inset 0 0 0 2px var(--v-primary-base);
 }
 
 .hint {
-	background: hsl(60deg 100% 63%);
+	background: hsl(0deg 0% 100% / 10%);
 }
 </style>

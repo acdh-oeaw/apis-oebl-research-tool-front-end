@@ -101,7 +101,7 @@ watch(
 		const newestVersion: LemmaArticleVersion | undefined = articleStore.newestVersion;
 
 		// and give the user great feedback!
-		if (newestVersion === undefined) {
+		if (newestVersion == null) {
 			setState(
 				"ERROR",
 				// We could not load any version for this article.
@@ -181,7 +181,7 @@ function selectVersion(versionId: number): void {
 
 	const versionToSelect = articleStore.value.versions.find((version) => version.id === versionId);
 
-	if (versionToSelect === undefined) {
+	if (versionToSelect == null) {
 		console.error({
 			message:
 				"There must be some programming error. This method should only be called with existing versions. Check it out.",

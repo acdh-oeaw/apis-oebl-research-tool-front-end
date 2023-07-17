@@ -50,7 +50,7 @@ export function replaceNullStrings(
 }
 
 function hasMissingRequiredField(prototype: LemmaPrototypeNullableStringType) {
-	return prototype.lastName === null;
+	return prototype.lastName == null;
 }
 
 export function filterMissingRequiredFields(
@@ -81,7 +81,7 @@ export function mapGender(
 	mapping: GenderMappingOption,
 ): GenderAe0Enum | undefined {
 	// All cases of empty value return undefined gender
-	if (gender === null || gender === undefined || gender === "") {
+	if (gender == null || gender === "") {
 		return undefined;
 	}
 
@@ -138,8 +138,8 @@ export function buildNewLemmaRowAfterFormatting(
 		...lemmaDates, // New Formatted Data
 		...lemmaGender, // New Formatted Data
 		gnd: lemmaPrototype.gnd ? [lemmaPrototype.gnd] : [],
-		loc: lemmaPrototype.loc === null ? null : Number(lemmaPrototype.loc),
-		viaf_id: lemmaPrototype.viaf_id === null ? null : Number(lemmaPrototype.viaf_id),
+		loc: lemmaPrototype.loc == null ? null : Number(lemmaPrototype.loc),
+		viaf_id: lemmaPrototype.viaf_id == null ? null : Number(lemmaPrototype.viaf_id),
 		professionDetail: lemmaPrototype.professionDetail,
 		bioNote: lemmaPrototype.bioNote,
 		kinship: lemmaPrototype.kinship,

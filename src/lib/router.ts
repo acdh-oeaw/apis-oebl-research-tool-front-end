@@ -6,14 +6,15 @@ import ArticleByIdPage from "@/pages/articles/[id]/index.vue";
 import IssueByIdPage from "@/pages/issues/[id]/index.vue";
 import LemmaByIdPrintPage from "@/pages/lemmata/[id]/print.vue";
 import LemmataPage from "@/pages/lemmata/index.vue";
+import LemmaListByIdPage from "@/pages/lemmata/list/[id]/index.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-	// {
-	// 	path: "/",
-	// 	redirect: "/lemmas",
-	// },
+	{
+		path: "/",
+		redirect: "/lemmata",
+	},
 	{
 		path: "/issues/:id(\\d+)",
 		component: IssueByIdPage,
@@ -29,17 +30,6 @@ const routes: Array<RouteConfig> = [
 		path: "/lemmata",
 		component: LemmataPage,
 	},
-	// FIXME: why are filter and list separate routes?
-	// {
-	// 	path: "/lemmata/filter/:lemmaFilterId(\\d+)",
-	// 	component: LemmaManager,
-	// 	props(route) {
-	// 		return {
-	// 			lemmaFilterId: Number(route.params.lemmaFilterId) || null,
-	// 			highlightId: Number(route.query.focus) || null,
-	// 		};
-	// 	},
-	// },
 	{
 		path: "/lemmata/list/:id(\\d+)",
 		component: LemmaListByIdPage,
@@ -50,12 +40,6 @@ const routes: Array<RouteConfig> = [
 			}
 			return undefined;
 		},
-		// props(route) {
-		// 	return {
-		// 		id: Number(route.params.id) || null,
-		// 		highlightId: Number(route.query.focus) || null,
-		// 	};
-		// },
 	},
 	{
 		path: "/lemmata/:id(\\d+)/print",

@@ -22,6 +22,8 @@ const props = withDefaults(
 		showFilter?: boolean;
 	}>(),
 	{
+		columns: () => [],
+		data: () => [],
 		rowHeight: 40,
 		sortableColumns: true,
 		keyboardSelection: true,

@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { reduce, startCase } from "lodash";
 import { type Person as LdPerson } from "schema-dts";
 
 import { type ImportablePerson } from "@/types/lemma";
@@ -38,7 +38,7 @@ function makeLobidQueryString(p: ImportablePerson): string {
 		dateOfDeath: (p.dateOfDeath || "") + "*",
 		dateOfBirth: (p.dateOfBirth || "") + "*",
 	};
-	return _.reduce(
+	return reduce(
 		lobidQ,
 		(m, e, k) => {
 			return m.concat(isQueryableValue(e) ? k + ":" + e : []);
@@ -55,7 +55,7 @@ export async function searchAny(q: string) {
 		return {
 			name: m.preferredName,
 			id: m.gndIdentifier,
-			type: m.type.map(_.startCase).join(", "),
+			type: m.type.map(startCase).join(", "),
 		};
 	});
 }
@@ -67,7 +67,7 @@ export async function get(gnd: string) {
 	return {
 		name: res.preferredName,
 		id: res.gndIdentifier,
-		type: res.type.map(_.startCase).join(", "),
+		type: res.type.map(startCase).join(", "),
 		description: res.biographicalOrHistoricalInformation
 			? res.biographicalOrHistoricalInformation[0]
 			: null,

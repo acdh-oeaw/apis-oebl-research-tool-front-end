@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { take, uniqBy } from "lodash";
 
 import { type LemmaRow } from "@/types/lemma";
 
@@ -25,8 +25,8 @@ export default class SearchStore {
 	}
 
 	addRecentSearchItem(si: SearchItem) {
-		this.recentSearchItems = _.uniqBy(
-			[si].concat(_.take(this.recentSearchItems, this.maxSearchItems - 1)),
+		this.recentSearchItems = uniqBy(
+			[si].concat(take(this.recentSearchItems, this.maxSearchItems - 1)),
 			(i) => i.item.id + "__" + i.type,
 		);
 	}

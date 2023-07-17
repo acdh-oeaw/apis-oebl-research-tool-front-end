@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import TextField from "@/features/ui/text-field.vue";
 
-const props = defineProps<{
-	value: Array<string>;
-	label: string;
-}>();
+const props = withDefaults(
+	defineProps<{
+		value: Array<string>;
+		label: string;
+	}>(),
+	{
+		value: () => [],
+	},
+);
 
 const emit = defineEmits<{
 	(event: "input", value: Array<string>): void;

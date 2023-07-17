@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import _ from "lodash";
 import { computed, ref, watch } from "vue";
 
 import * as lobidService from "@/service/lobid";

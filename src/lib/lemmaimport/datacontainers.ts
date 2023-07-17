@@ -41,7 +41,7 @@ export class Data2D {
 	getNumericalHeaderName(headerName: string): number {
 		const numericalHeaderName = this.headers.indexOf(headerName);
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (numericalHeaderName === undefined) {
+		if (numericalHeaderName == null) {
 			const headers = JSON.stringify(this.headers);
 			throw new Error(`Did not find <${headerName}> in ${headers}`);
 		}

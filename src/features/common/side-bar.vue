@@ -167,11 +167,9 @@ async function createLemmaList(event: DragEvent | MouseEvent) {
 
 	const lemmaNameRules = [
 		(n: string | null) =>
-			n === null || (typeof n === "string" && n.trim() === "")
-				? "Geben Sie einen Namen ein."
-				: true,
+			n == null || (typeof n === "string" && n.trim() === "") ? "Geben Sie einen Namen ein." : true,
 		(n: string | null) => {
-			if (n === null) {
+			if (n == null) {
 				return "Geben Sie einen Namen ein";
 			} else if (
 				filteredLemmaLists.value.findIndex(
@@ -310,7 +308,7 @@ function onToggleDrawer() {
 				<VIcon class="mr-1" small>mdi-chevron-down</VIcon>
 				Meine Listen
 				<VSpacer />
-				<VBVtn
+				<VBtn
 					class="droppable rounded-lg"
 					style="margin-right: -2px"
 					elevation="0"
@@ -322,7 +320,7 @@ function onToggleDrawer() {
 				>
 					Liste anlegen
 					<VIcon class="ml-2" small>mdi-plus-circle-outline</VIcon>
-				</VBVtn>
+				</VBtn>
 			</VSubheader>
 
 			<VList v-show="showMyLists" class="pa-0 ma-0 lemma-nav-list x-dense" color="transparent" nav>
