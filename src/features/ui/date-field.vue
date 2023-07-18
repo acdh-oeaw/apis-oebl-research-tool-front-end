@@ -40,8 +40,6 @@ watch(
 watch(
 	localDate,
 	() => {
-		debouncedOnChange();
-
 		if (localDate.value != null) {
 			const _date = new Date(localDate.value);
 			day.value = _date.getUTCDate();
@@ -51,6 +49,12 @@ watch(
 	},
 	{ immediate: true },
 );
+
+watch(localDate, (date, previousDate) => {
+	if (date !== previousDate) {
+		debouncedOnChange();
+	}
+});
 
 watch([day, month, year], () => {
 	try {
