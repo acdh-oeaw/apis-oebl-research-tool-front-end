@@ -124,7 +124,7 @@ async function getHeaders(options: ApiRequestOptions): Promise<Headers> {
 	});
 
 	if (isStringWithValue(token)) {
-		headers.append("Authorization", `Token ${token}`);
+		headers.append("Authorization", `Bearer ${token}`);
 	}
 
 	if (isStringWithValue(username) && isStringWithValue(password)) {
