@@ -53,6 +53,8 @@ function onInput(_event: Event) {
 function onEscape() {
 	if (searchText.value !== "") {
 		searchText.value = "";
+	}  else {
+		isVisible.value = false
 	}
 }
 

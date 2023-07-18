@@ -41,6 +41,8 @@ function convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
 
 const issueLemmas = computed({
 	get() {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (store.issue.issueLemmas == null) return []
 		return store.issue.issueLemmas.map(convertUnknownStatus);
 	},
 	set(issueLemmas) {

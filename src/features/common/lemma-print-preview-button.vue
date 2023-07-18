@@ -11,7 +11,7 @@ function generatePrintWindow(): Window {
 	const width = height * 0.707;
 
 	const printWindow = window.open(
-		`/lemmas/${props.lemmaRow.id}/print?minimal=1`,
+		`/lemmata/${props.lemmaRow.id}/print?minimal=1`,
 		"_printLemmaWindow",
 		`popup,innerHeight=${height},innerWidth=${width}`,
 	);

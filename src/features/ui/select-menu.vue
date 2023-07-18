@@ -8,8 +8,8 @@ const props = withDefaults(
 	defineProps<{
 		items: Array<Item>;
 		value?: Item | null;
-		keyName: string;
-		keyValue: string;
+		keyName?: string;
+		keyValue?: string;
 		keyDescription?: string | null;
 		returnValue?: boolean;
 		width?: number;

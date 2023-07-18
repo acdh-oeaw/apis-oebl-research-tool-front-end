@@ -124,7 +124,7 @@ function getStringFromLemmaRowByColumn(
 }
 
 function emitFilterEvent(c: LemmaColumn, ev?: boolean | string | null) {
-	if (ev != null && ev != null && ev !== "") {
+	if (ev != null && ev !== "") {
 		columnQueries.value[c.value] = ev;
 	} else {
 		Vue.delete(columnQueries.value, c.value);
@@ -327,7 +327,7 @@ function updateColumnOrder(cs: Array<LemmaColumn>) {
 			@input="(e) => e === false && (editPopUp = null)"
 		>
 			<VCard elevation="0" color="background lighten-2" rounded="lg">
-				<TextTield
+				<TextField
 					v-model="editPopUp.value"
 					class="mx-2"
 					style="min-height: 1em"

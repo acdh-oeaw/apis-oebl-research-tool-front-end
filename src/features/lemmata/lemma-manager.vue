@@ -78,6 +78,7 @@ watch(
 	(lemmaListId) => {
 		store.lemma.selectedLemmaListId = lemmaListId;
 	},
+	{ immediate: true }
 );
 
 async function saveFilter() {

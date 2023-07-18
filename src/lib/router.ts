@@ -16,17 +16,6 @@ const routes: Array<RouteConfig> = [
 		redirect: "/lemmata",
 	},
 	{
-		path: "/issues/:id(\\d+)",
-		component: IssueByIdPage,
-		beforeEnter(to) {
-			const id = Number(to.params.id);
-			if (!isPositiveInteger(id)) {
-				return { path: "/not-found", replace: true };
-			}
-			return undefined;
-		},
-	},
-	{
 		path: "/lemmata",
 		component: LemmataPage,
 	},
@@ -44,6 +33,17 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/lemmata/:id(\\d+)/print",
 		component: LemmaByIdPrintPage,
+		beforeEnter(to) {
+			const id = Number(to.params.id);
+			if (!isPositiveInteger(id)) {
+				return { path: "/not-found", replace: true };
+			}
+			return undefined;
+		},
+	},
+	{
+		path: "/issues/:id(\\d+)",
+		component: IssueByIdPage,
 		beforeEnter(to) {
 			const id = Number(to.params.id);
 			if (!isPositiveInteger(id)) {
