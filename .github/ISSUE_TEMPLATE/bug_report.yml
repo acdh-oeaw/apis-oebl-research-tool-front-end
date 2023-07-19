@@ -17,10 +17,10 @@ body:
     id: reprod-url
     attributes:
       label: "Reproduction URL"
-      description: Please enter your GitHub URL to provide a reproduction of the issue
-      placeholder: ex. https://github.com/USERNAME/REPO-NAME
+      description: Please enter the URL you viewed when the problem occured
+      placeholder: ex. https://oebl-research.acdh-dev.oeaw.ac.at/issue/1
     validations:
-      required: true
+      required: false
   - type: textarea
     id: reprod
     attributes:
@@ -38,7 +38,7 @@ body:
     id: screenshot
     attributes:
       label: "Screenshots"
-      description: If applicable, add screenshots to help explain your problem.
+      description: If applicable, add screenshots to help explain your problem. Files can be dragged and droped to the field.
       value: |
         ![DESCRIPTION](LINK.png)
       render: bash
@@ -57,7 +57,7 @@ body:
         - Microsoft Edge
         - Opera
     validations:
-      required: false
+      required: true
   - type: dropdown
     id: os
     attributes:
