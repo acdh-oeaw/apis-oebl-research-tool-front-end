@@ -70,7 +70,7 @@ function showPopUp(
 }
 
 const ex = Mark.create({
-	defaultOptions: {
+	addOptions: {
 		component: Vue,
 		tagName: "",
 	},
