@@ -49,7 +49,6 @@
 						item-value="id"
 					></v-select>
 				</div>
-				{{ searchTerm }}
 				<text-field
 					ref="searchTerm"
 					v-model="searchTerm"
