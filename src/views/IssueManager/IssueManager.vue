@@ -228,7 +228,13 @@
 						</v-btn>
 					</v-col>
 					<v-col>
-						<v-btn class="rounded-lg" elevation="0" block color="primary">
+						<v-btn
+							:to="`/article/${selectedLemma.article}`"
+							class="rounded-lg"
+							elevation="0"
+							block
+							color="primary"
+						>
 							<v-icon style="opacity: 70%" left>mdi-pen</v-icon>
 							Artikel anzeigen
 						</v-btn>
