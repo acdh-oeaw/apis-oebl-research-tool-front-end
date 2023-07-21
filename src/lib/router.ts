@@ -22,45 +22,45 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/lemmata/list/:id(\\d+)",
 		component: LemmaListByIdPage,
-		beforeEnter(to) {
+		beforeEnter(to, _from, next) {
 			const id = Number(to.params.id);
 			if (!isPositiveInteger(id)) {
-				return { path: "/not-found", replace: true };
+				return next({ path: "/not-found", replace: true });
 			}
-			return undefined;
+			return next();
 		},
 	},
 	{
 		path: "/lemmata/:id(\\d+)/print",
 		component: LemmaByIdPrintPage,
-		beforeEnter(to) {
+		beforeEnter(to, _from, next) {
 			const id = Number(to.params.id);
 			if (!isPositiveInteger(id)) {
-				return { path: "/not-found", replace: true };
+				return next({ path: "/not-found", replace: true });
 			}
-			return undefined;
+			return next();
 		},
 	},
 	{
 		path: "/issues/:id(\\d+)",
 		component: IssueByIdPage,
-		beforeEnter(to) {
+		beforeEnter(to, _from, next) {
 			const id = Number(to.params.id);
 			if (!isPositiveInteger(id)) {
-				return { path: "/not-found", replace: true };
+				return next({ path: "/not-found", replace: true });
 			}
-			return undefined;
+			return next();
 		},
 	},
 	{
 		path: "/articles/:id(\\d+)",
 		component: ArticleByIdPage,
-		beforeEnter(to) {
+		beforeEnter(to, _from, next) {
 			const id = Number(to.params.id);
 			if (!isPositiveInteger(id)) {
-				return { path: "/not-found", replace: true };
+				return next({ path: "/not-found", replace: true });
 			}
-			return undefined;
+			return next();
 		},
 	},
 	// {
