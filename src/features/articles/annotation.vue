@@ -239,7 +239,6 @@ watch(
 						item-value="id"
 					/>
 				</div>
-				{{ searchTerm }}
 				<TextField
 					ref="textFieldRef"
 					v-model="searchTerm"

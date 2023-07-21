@@ -42,7 +42,7 @@ function convertUnknownStatus(l: WithId<IssueLemma>): WithId<IssueLemma> {
 const issueLemmas = computed({
 	get() {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (store.issue.issueLemmas == null) return []
+		if (store.issue.issueLemmas == null) return [];
 		return store.issue.issueLemmas.map(convertUnknownStatus);
 	},
 	set(issueLemmas) {
@@ -521,7 +521,13 @@ onMounted(() => {
 						</VBtn>
 					</VCol>
 					<VCol>
-						<VBtn class="rounded-lg" elevation="0" block color="primary">
+						<VBtn
+							:to="`/article/${selectedLemma.article}`"
+							block
+							class="rounded-lg"
+							color="primary"
+							:elevation="0"
+						>
 							<VIcon style="opacity: 70%" left>mdi-pen</VIcon>
 							Artikel anzeigen
 						</VBtn>
